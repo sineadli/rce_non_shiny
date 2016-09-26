@@ -294,6 +294,7 @@ module.exports = function(app, passport) {
 
     app.get('/api/wizard', function (req, res) {
 
+      
         WizardStep.find({}, function (err, wizardStep) {
             if (err) {
 
@@ -305,6 +306,21 @@ module.exports = function(app, passport) {
             }
         });
 
+    });
+
+    app.post('/api/wizard', function (req, res) {
+
+        console.log(req.body);
+        var wizard = new WizardStep(req.body);
+
+        wizard.save(function (err) {
+            if (err)
+                console.log(err);
+            else
+                res.status(201).send(wizard);
+
+
+        });
     });
 };
 
