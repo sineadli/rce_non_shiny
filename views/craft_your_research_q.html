@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!-- craft_your_research_q.html -->
+<html lang="en">
+<head>
+    <title>Craft your research question</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <form action="/craft_your_research_q" method="post">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-header">
+                        <h1 class="tool-title"> Craft your research question</h1>
+                        <div class="tool-intro">
+                            <p>
+                                Your <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>research question</span> will drive the rest of your study. A good question has four building blocks, which we call the "A, B, C, D's". Click on sections A through D below to see examples, read a description, and build your own question, piece by piece.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="tool-help">
+                        <div class="blue-print">
+                            <h3>The blue print: Does <b>a</b> do <b>b</b> among <b>c</b> compared to <b>d</b>?</h3>
+                        </div>
+                        <div class="tool-example">
+                            <p>
+                                <b>Example:</b> Does DreamBox Learning increase student achievement on the Smarter Balanced math assessment among 5th grade English Learners compared to similar students with no access to Dreambox Learning?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-instructions">
+                        <p>Answer the 4 questions below to see an automatically generated research question.</p>
+                    </div>
+                </div>
+                <div class="tool-questions">
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#A">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> A. What is the name of the educational technology you are testing?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="A" class="row collapse in">
+                        <div class="col-xs-7">
+                            <div class="step-action">
+                                <textarea name="Plan_Question_A" id="Plan_Question_A" placeholder="Ex., Dreambox Learning"><%= planQuestion.Plan_Question_A %></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#B">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-right" aria-hidden="true"></i> B. What is the intended effect?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="B" class="row  collapse in">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <p>
+                                    What is the <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>outcome of interest</span>?
+                                </p>
+                            </div>
+                            <div class="step-action">
+                                <select required name="Plan_Question_B_1" id="q11">
+                                    <%
+                                    var options = ["Select an option","Student academic achievement", "Student non-academic achievement","Teacher performance" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selected;
+
+                                    if (planQuestion) { selected = ( planQuestion.Plan_Question_B_1== options[i] ) ? "selected" : "";}
+
+                                    %>
+                                    <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                    }
+                                    %>
+
+                                </select>
+                                <div id="Plan_Question_B_Other" hidden="true">
+                                    <p>Please specify:</p>
+                                    <input type="text" id="other-specify-text-q11" />
+                                </div>
+                            </div>
+                            <div class="step-subquestion">
+                                <p>What measure will you use to test whether there was an effect?</p>
+                            </div>
+                            <div class="step-action">
+                                <textarea name="Plan_Question_B_2" id="q12" placeholder="Ex., Smarter Balanced math assessment"><%= planQuestion.Plan_Question_B_2 %></textarea>
+                            </div>
+                            <div class="step-subquestion">
+                                <p>What is the direction of intended change?</p>
+                            </div>
+                            <div class="step-action">
+                                <select required name="Plan_Question_B_3" id="Plan_Question_B_3">
+                                    <%
+                                    var options = ["Select an option", "Increase", "Decrease" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selected;
+                                    if (planQuestion) { selected = ( planQuestion.Plan_Question_B_3== options[i] ) ? "selected" : "";}
+                                    %>
+                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                    }
+                                    %>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <p>
+                                    It's important to think how you are going to measure the outcome that you want to affect.
+                                </p>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step2example">See Example</button>
+                                <!--(Button data-target should be = to the id of the example content below.)-->
+                                <div id="step2example" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Example</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="step-example-box">
+                                                    <ul>
+                                                        <li>Increase student achievement on the PARCC reading interim assessment</li>
+                                                        <li>Decrease chronic absenteeism</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#C">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-right" aria-hidden="true"></i> C. Among whom are you hoping to see results?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="C" class="row collapse">
+                        <div class="col-xs-7">
+                            <div class="step-action">
+                                <textarea name="Plan_Question_C" id="Plan_Question_C" placeholder="Ex., 5th grade English learners"><%= planQuestion.Plan_Question_C %></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <p>
+                                    What is the group of individuals you are trying to impact? This could be the same as the individuals using the technology, or it could be different. For example, students may be using the technology to increase their own achievement or teachers could be using the technology to increase their students' achievement. In both cases, the answer to Part C would be: students.
+                                </p>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#stepCexample">See Example</button>
+                                <!--(Button data-target should be = to the id of the example content below.)-->
+                                <div id="stepCexample" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Example</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="step-example-box">
+                                                    <ul>
+                                                        <li>6th grade students</li>
+                                                        <li>5th grade English learners</li>
+                                                        <li>3rd through 5th grade teachers</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#D">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-right" aria-hidden="true"></i> D. Who are you comparing them against?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="D" class="row collapse">
+                        <div class="col-xs-7">
+                            <div class="step-action">
+                                <textarea name="Plan_Question_D" id="Plan_Question_D" placeholder="Ex., other 5th grade English Learners with no access to DreamBox Learning"><%= planQuestion.Plan_Question_D %></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <p>It is important to be clear about whether you are comparing users to a group with no access to an educational technology, or with access to a different educational technology. As shown above, this will determine how you interpret your findings later on and what kinds of decisions this data will empower you to make.</p>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step4example">See Example</button>
+                                <!--(Button data-target should be = to the id of the example content below.)-->
+                                <div id="step4example" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Example</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="step-example-box">
+                                                    <ul>
+                                                        <li>Similar 5th grade English Learners with no access to DreamBox Learning</li>
+                                                        <li>Similar 5th grade English Learners that use IXL Math instead of DreamBox Learning</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-conclusion container">
+
+                        <h2>Your Question</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <em>DOES <b><span class='q1answer'>A</span></b> <b><span class='q12aanswer'>DO</span></b> <b><span class='q11answer'>B</span></b> AMONG <b><span class='q8answer'>C</span></b> COMPARED TO <b><span class='qdanswer'>D</span></b>?</em>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <p>Look at your question. Does it makes sense? If not, you can make changes on this page until it does.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-warning btn-lg">Save</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <input class="hidden" name="userid" value="<%= planQuestion.userid %>" />
+            <input class="hidden" name="_id" value="<%= planQuestion._id %>" />
+        </div>
+    </form>
+    <script src='/static/js/custom.js'></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>RCTE Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    <style>
+        body        { padding-top:80px; }
+        .vbutton {
+                   margin-top: 50px;  
+           
+                }
+         .vtop {
+                   margin-top: 25px;             
+                }
+         .vbottom  {
+                   margin-bottom: 25px;              
+                }
+         .fadelabel {
+                    font-weight: 100;
+             }
+         .hcenter{
+             margin-left:25px;
+             }
+         .txtcenter{
+             text-align: center;
+             }
+.rh-box-breadcrumbs {
+    line-height: 35px;
+    visibility: visible;
+}
+rh2 {
+    display: inline-block;
+    height: 35px;
+    overflow: hidden;
+    padding: 0;
+    width: 300px;
+}
+
+.rh-box-breadcrumbs.bcactive0 >.target0 > .unit {
+    background: #aaa;
+}
+
+.rh-box-breadcrumbs > .target.bcfirst > .unit {
+    margin-left: 12px;
+}
+.rh-box-breadcrumbs > .target:hover > .unit {
+    background: #aaa;
+}
+
+.rh-box-breadcrumbs > .target > .unit {
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    display: inline-block;
+    height: 20px;
+    margin: 10px 8px;
+    width: 20px;
+}
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+
+<div class="col-sm-6 col-sm-offset-3">
+
+    <h1><span class="fa fa-sign-in"></span> Signup</h1>
+    <hr>
+    <!-- show any messages that come back with authentication -->
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
+      <!-- LOGIN FORM -->
+       <div class="container-fluid"> 
+        <div class="col-sm-2 vbutton "><button  id="mpr-back-to-login" tabindex="3"  class="btn btn-md hide">BACK</button></div>
+    <form action="/signup" method="post" >
+      
+        <div class="col-sm-7">
+            <div id="login-username-form" class="form-group hcenter">
+            <label for="login-username" class="vtop">Create a username with your email</label>
+            <input id="login-username" type="text"  name="email" class="form-control" autofocus required>
+            <p class="small vtop vbottom">Your email is a unique identifier that will help us keep your account secure and allow us to send you important information.</p>
+            <p class="small vtop vbottom txtcenter ">Already have an account?</br> Click <a href="/login">here</a> to login.</p>
+            </div>
+            <div id="login-username-password" class="form-group hcenter hide">
+                <label for="login-password" class="vtop" >Password</label>
+                <input type="password" id="login-password"  name="password" class="form-control" required novalidate  >
+                <label for="login-confirmpassword" >Confirm Password</label>
+                <input type="password" id="login-confirmpassword"  name="confirmpassword" class="form-control" required validate >
+                <label class="registrationFormAlert" id="checkPasswordMatch"></label> 
+                <p class="small vtop vbottom">Passwords should be at least 8 characters in length and contain at least 3 of the following characters:</p>
+                <p>
+                    <ul  class="small vtop vbottom">
+                        <li>Lower case letters(a-z)</li>
+                        <li>Upper case letters(A-Z)</li>
+                        <li>Integers(0-9)</li>
+                        <li>Special characters(!@#$%^&*())</li>
+                    </ul?
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-3 vbutton"><button  id="mpr-login-signin" name="signin" tabindex="3"  class="btn btn-md">NEXT</button></div>      
+        </div>
+      
+         <div class="row rh-box-breadcrumbs rh2 bcactive0">
+        
+            <div class="col-sm-2 col-sm-offset-4 target target0 bcfirst" data-bc-index="0">
+                <div class="unit" data-bc-index="0"></div>
+            </div>
+            <div class="col-sm-2 target target1 bclast" data-bc-index="1">
+                <div class="unit" data-bc-index="1"></div>
+            </div>
+        </div>
+    </form>
+
+  
+
+</div>
+
+</div>
+</body>
+<script type="text/javascript">
+  $(document).ready(function(){
+       $("#mpr-login-signin").click(function(){
+           var txt = $("#mpr-login-signin").html();
+           var username = $("#login-username").val();
+   
+          
+          
+           
+           if (txt == "NEXT" && username) {
+               $("#login-username-form").addClass("hide");
+               $("#mpr-back-to-login, #login-username-password").removeClass("hide");
+                $("#mpr-login-signin").html("SIGN IN").prop("disabled", true);
+                $(".row.rh-box-breadcrumbs.bcactive0 >.target0 >.unit").css("background-color", "transparent");
+                $(".row.rh-box-breadcrumbs > .target1.bclast > .unit").css("background-color", "#aaa");
+                $("#login-confirmpassword").val("")
+                $(".alert.alert-danger").hide();
+               }
+         
+         });
+        $("#mpr-back-to-login").click(function(){
+             $("#login-username-form").removeClass("hide");
+             $("#mpr-back-to-login, #login-username-password").addClass("hide");
+              $(".row.rh-box-breadcrumbs.bcactive0 >.target0 >.unit").css("background-color", "#aaa");
+             $(".row.rh-box-breadcrumbs > .target1.bclast > .unit").css("background-color", "transparent");
+             $("#mpr-login-signin").html("NEXT").prop("disabled", false);
+             return false;
+            });
+         $("#login-confirmpassword").keyup(checkPasswordMatch);
+
+           function checkPasswordMatch() {
+
+            var password = $("#login-password").val();
+            var confirmPassword = $("#login-confirmpassword").val();
+ 
+            if (password && confirmPassword && password != confirmPassword) {
+                $("#mpr-login-signin").prop("disabled", true)
+                $("#checkPasswordMatch").html("Passwords do not match!");
+                }
+            else {
+                    $("#checkPasswordMatch").html("");
+                    if (password && password == confirmPassword) $("#mpr-login-signin").prop("disabled", false);
+                    }
+        }
+      });
+    
+</script>
+</html>

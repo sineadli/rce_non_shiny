@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!-- craft_your_research_q.html -->
+<html lang="en">
+  <head>
+  	<title>Craft your research question</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+      <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/static/css/main.css" />
+      <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+      <form action="/context_and_usage" method="post">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-xs-12">
+                      <div class="tool-header">
+                          <h1 class="tool-title"> Summarize Context</h1>
+                          <div class="tool-intro">
+                              <p>
+                                  When you present others with the results from your study, the information provided here will help your audience make sense of the program, its <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>implementation</span>, and the results. Study context is important for understanding how the research applies to other environments.
+                              </p>
+
+                          </div>
+                      </div>                   
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-xs-12">
+                      <div class="tool-instructions">
+                          <p>Answer the questions below to see an automatically generated list of important context features here.
+                          </p>
+                      
+                      </div>
+                  </div>
+                  <div class="tool-questions">
+                      <div class="step-header container">
+                          <div data-toggle="collapse" data-target="#A">
+                              <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> A. What is the education technology and how it is being used?(Required)</h2>
+                          </div>
+                      </div>
+                      <div id="A" class="row collapse">
+                          <div class="col-xs-7">
+
+                              <div class="step-subquestion">
+                                  <p>What is the education technology?</p>
+                              </div>
+                              <div class="step-action">
+                                  <textarea name="Plan_Context_A_1" id="Plan_Context_A_1" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= planContext.Plan_Context_A_1 %></textarea>
+                              </div>
+
+                              <div class="step-subquestion">
+                                  <p>What are the key components of the educational technology?</p>
+                              </div>
+                              <div class="step-action">                         
+                                  <textarea name="Plan_Context_A_2" id="Plan_Context_A_2" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= planContext.Plan_Context_A_2 %></textarea>
+                              </div>
+
+                              <div class="step-subquestion">
+                                  <p>: How often and for how long are users supposed to be using the educational technology during your study?</p>
+                              </div>
+                              <div class="step-action">
+                                  
+                                  <textarea name="Plan_Context_A_3" id="Plan_Context_A_3" placeholder="Ex., Twice per week for 40 minutes per session."><%= planContext.Plan_Context_A_3 %></textarea>
+                              </div>
+
+                              <div class="step-subquestion">
+                                  <p>How often and for how long did users actually use the educational technology during the evaluation period?</p>
+                              </div>
+                              <div class="step-action">                      
+                                  <textarea name="Plan_Context_A_4" id="Plan_Context_A_4" placeholder="Ex., 75 percent of students used the educational technology for the intended 80 minutes per week"><%= planContext.Plan_Context_A_4 %></textarea>
+                              </div>
+
+                              <div class="step-subquestion">
+                                  <p>To what extent was the educational technology used as intended?</p>
+                              </div>
+                              <div class="step-action">
+                                  <textarea name="Plan_Context_A_5" id="f3" placeholder="Ex., at the beginning of the 2016-2017 school year"><%= planContext.Plan_Context_A_5 %></textarea>
+                              </div>
+
+                              <div class="step-subquestion">
+                                  <p>How is the educational technology being used or delivered?</p>
+                              </div>
+                              <div class="step-action">
+                                  <textarea name="Plan_Context_A_6" id="f3" placeholder="Ex., In small groups during an afterschool program OR individually during regular instruction"><%= planContext.Plan_Context_A_6 %></textarea>
+                              </div>
+                          </div>
+
+                          <div class="col-xs-5">
+                              <div class="step-to-consider">
+                                  <p>Think about what information others would need to understand your results and to implement the educational techology you evaluated? </p>
+
+                                  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step4example">See Example</button>
+                                  <!--(Button data-target should be = to the id of the example content below.)-->
+                                  <div id="step4example" class="modal fade" role="dialog">
+                                      <div class="modal-dialog">
+                                          <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                  <h4 class="modal-title">Example</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <div class="step-example-box">
+                                                      <ul>
+                                                          <li>Description: a software program designed to improve reading achievement among under-performing students"</li>
+                                                          <li>Key components: a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress.</li>
+                                                          <li>Planned usage level: Twice per week for 40 minutes per session.</li>
+                                                          <li>Actual usage level: 75 percent of students used the educational technology for the intended 80 minutes per week.</li>
+                                                          <li>Time period: The beginning of the 2016-2017 school year</li>
+                                                          <li>Delivered: In small groups during an afterschool program OR individually during regular instruction</li>
+                                                      </ul>
+                                                  </div>
+                                              </div>
+                                              <div class="modal-footer">
+                                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                     
+                     
+                      <div class="step-header container">
+                          <div data-toggle="collapse" data-target="#B">
+                              <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> B. What is the educational setting? (Optional)</h2>
+                          </div>
+                      </div>
+                      <div id="B" class="row collapse">
+                          <div class="col-xs-7">
+                              <div class="step-action">
+                                  <textarea name="Plan_Context_B" id="Plan_Context_B" placeholder="Ex., Suburban district with 2,000 students, 25% of whom have IEPs, and with 1:1 laptops "><%= planContext.Plan_Context_B %></textarea>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="step-header container">
+                          <div data-toggle="collapse" data-target="#C">
+                              <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> C. Have you experienced any implementation issues? (Optional)</h2>
+                          </div>
+                      </div>
+                      <div id="C" class="row collapse">
+                          <div class="col-xs-7">
+                             <div class="step-action">
+                                  <textarea name="Plan_Context_C" id="Plan_Context_C" placeholder="Ex., Students had difficulty logging into their accounts for the first 2 weeks of class. About half the teachers got frustrated and used other products for the rest of the term."><%= planContext.Plan_Context_C %></textarea>
+                              </div>
+                          </div>
+                          <div class="col-xs-5">
+                              <div class="step-to-consider">
+                              <p>
+                                  This information will be included in the appendix and can be very useful to others.
+                              </p>
+                              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step2example">See Example</button>
+                              <!--(Button data-target should be = to the id of the example content below.)-->
+                              <div id="step2example" class="modal fade" role="dialog">
+                                  <div class="modal-dialog">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              <h4 class="modal-title">Example</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                              <div class="step-example-box">
+                                                  <ul>
+                                                      <li>Teachers did not find the tool user-friendly and therefore often chose to use one of the many other options available to them</li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          </div>
+                      </div>
+
+                      <div class="step-header container">
+                          <div data-toggle="collapse" data-target="#D">
+                              <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> D. Was the educational technology used as recommended?</h2>
+                          </div>
+                      </div>
+                      <div id="D" class="row collapse">
+                          <div class="col-xs-7">
+
+                              <div class="step-action">
+                                  <span> [Q1] is </span>
+                                  <textarea name="Plan_Context_A_1" id="q6" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= planContext.Plan_Context_A_1 %></textarea>
+                              </div>
+
+
+                              <div class="col-xs-5">
+                                  <div class="step-to-consider">
+                                      <p>System data (also sometimes called log data) can provide information about technology was actually used, which may differ from intended use.</p>
+                                      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step2example">See Example</button>
+                                      <div id="step2example" class="modal fade" role="dialog">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="modal-title">Example</h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <div class="step-example-box">
+                                                          <ul>
+                                                              <li>According to the vendor, students who complete all 10 modules are most likely to benefit from the education technology. 90% of students attempted the first three modules. Usage dropped dramatically for modules 4-10, with only 5% of students attempted module 10.</li>
+                                                          </ul>
+                                                      </div>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+
+
+
+
+
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div>
+              <button type="submit" class="btn btn-warning btn-lg">Save</button>
+          </div>
+          <div>
+              <input class="hidden" name="userid" value="<%= planContext.userid %>" />
+              <input class="hidden" name="_id" value="<%= planContext._id %>" />
+          </div>
+      </form>
+    <script src='../public/js/custom.js'></script>
+  </body>
+</html>

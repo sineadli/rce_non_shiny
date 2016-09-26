@@ -1,0 +1,368 @@
+body {
+  font-family: 'Open Sans';
+  max-width:1000px;
+  font-size:1.4em;
+  line-height:1.6em;
+}
+div.container-fluid {
+	width:85%;
+	font-size:100%;
+}
+
+div.tool-header div.tool-intro {
+    padding: 15px 25% 15px 15px;
+    /* max-width: 800px; */
+   
+    border-bottom: solid 3px #8C866B;
+  }
+div.breadcrumb, div.sec-label {
+	color:#56ACE0;
+	text-transform:uppercase;
+	font-size:1.1em;
+	font-weight:bold;
+}
+div.sec-label {
+    font-size: .9em;
+}
+
+.tooltip-gr {
+  color:#00CC66;
+}
+
+div.tool-help{
+  width:80%;
+  margin:0px auto;
+  margin-top: 35px;
+   margin-bottom: 35px;
+}
+.row {
+	/*margin-top:35px;*/
+}
+.container {
+  width:925px;
+  margin:0 auto;
+  height: 100%;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+#content-container {
+  width: 75%;
+  display:inline-block;
+  background-color:#FBFAF8;
+  padding:10px;
+  box-shadow: 2px 2px 2px 2px #888888;
+  height: 100%;
+}
+#side-box-container {
+  width:24%;
+  display:inline-block;
+  float:right;
+  margin-left:5px;
+  height: 100%;
+}
+div.side-box {
+  width:100%;
+  box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
+  padding:10px;
+  margin-bottom: 5px;
+  border-style:solid;
+  border-width:1px;
+  border-radius: 5px;
+  border-color: #B8B28F;
+  background-color: white;
+}
+div.side-box-last {
+  width:100%;
+  box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
+  padding:10px;
+  margin-bottom: 0;
+  border-style:solid;
+  border-width:1px;
+  border-radius: 5px;
+  border-color: #B8B28F;
+  background-color: white;
+}
+ul {
+  padding-left:20px;
+}
+ul.no-bullet {
+	list-style-type: none;
+}
+hr {
+  border-width: 3px;
+  border-color:#B8B28F;
+  width:100%;
+}
+h2,p.clickable {
+  cursor:pointer;
+}
+h2 {
+  font-size:20px;
+  font-weight:bold;
+  margin-top: 5px;
+}
+h3 {
+  color:#8C866B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  margin-top:5px;
+}
+h4 {
+  font-size:15px;
+  font-style:italic;
+  font-weight:300;
+}
+div.header-section {
+}
+div.body-section {
+  margin-left:5%;
+}
+
+/* Wizard Landing page */
+div.wizard-header-row {
+    border: 1px #ccc solid;
+     box-shadow: 5px 5px 5px #ccc;
+    margin: 15px 0px;
+    padding-top: 15px;
+   
+}
+h2.eval-header {
+    font-size: 1.6em;
+    margin-bottom: 25px;
+}
+
+ul.wizard-menu {
+    list-style: none;
+    display: inline-block;
+    height: 50px;
+    border-top: 1px #ccc solid;
+    margin: 0;
+    padding: 0;
+}
+ul.wizard-menu li {
+    display: inline-block;
+    width: 16.3%;
+    height: 75px;
+    vertical-align: bottom;
+    font-size: .9em;
+    border-left: #ccc 1px solid;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px;
+    
+}
+
+ul.wizard-menu li span {
+     vertical-align: middle;
+}
+    ul.wizard-menu li.active {
+        color: #4081A8;
+        border-bottom: #4081A8 3px solid;
+        font-weight: bold;
+        height: 75px;
+    }
+div.tool-row div.col-xs-3 {
+    padding-right: 0;
+}
+div.tool-div {
+    border: 1px solid #ddd;
+     box-shadow: 3px 3px 3px #ccc;
+    padding: 15px;
+    margin: 5px;
+    height: 275px;
+}
+div.tool-div div.tool-title {
+    height: 75px;
+}
+    div.tool-div p {
+        height: 125px;
+        margin-bottom: 5px;
+    }
+
+    div.tool-div.complete {
+        background-color: #ddd;
+    }
+
+    div.tool-div a.button {
+        display: block;
+        background-color: #4081a8;
+        color: #fff;
+        text-align: center;
+        padding: 8px;
+        width: 100px;
+        float: right;
+        vertical-align: bottom;
+
+
+    }
+
+
+/* Tool pages */
+div.tool-questions {
+	padding:25px;
+}
+div.step {
+  width:100%;
+  display:inline-block;
+}
+div.step-header {
+  display:inline-block;
+}
+div.step-conclusion {
+
+    display: inline-block;
+             margin-top:20px;
+    padding-left: 0;
+}
+
+div.step-conclusion h2 {
+    font-size: 1.8em;
+    font-family: 'Open Sans';
+    font-weight: normal;
+}
+div.step-subquestion {
+	    margin: 5px 25px 0 25px;
+	font-size:1.1em;
+}
+div.step-action {
+ margin:0 0 25px 25px;
+  display:inline-block;
+  font-size:1.1em;
+  width:100%
+}
+div.step-action label {
+  display:none;
+}
+div.step-action-long {
+  width:75%;
+  display:inline-block;
+}
+
+div.step-to-consider {
+	padding:20px;
+	background-color:#F4F2EB;
+}
+div.step-to-consider h3 {
+	transform-text:uppercase;
+	color:#8C866B;
+	font-weight:bold;
+	margin-bottom:20px;
+}
+div.step-to-consider p {
+	margin-bottom:20px;
+}
+
+div.step-to-consider .btn {
+	/*float:left;*/
+	padding:5px;
+}
+		
+div.step-info {
+  width:65%;
+  display:inline-block;
+}
+div.step-example-box {
+  box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  border-style:solid;
+  border-width:1px;
+  border-radius: 5px;
+  border-color: #B8B28F;
+  background-color: white;
+  margin-bottom:5px;
+}
+
+#step-height {
+	height:45px;	
+	margin-bottom:3px;
+  vertical-align:top;
+}
+div.action-buttons {
+  margin-left:70%;
+}
+div.action-buttons > button {
+  background-color: #58A5D5;
+  color:white;
+  text-transform: uppercase;
+  font-size:12px;
+  padding:10px;
+  border-radius:8px;
+}
+div.step-action > button {
+  box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
+}
+div#upload {
+  box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  border-style:solid;
+  border-width:1px;
+  border-radius: 5px;
+  border-color: #B8B28F;
+  background-color: white;
+  height:35px;
+}
+div > select,input,textarea {
+	width:95%;
+	padding-left:5px;
+  border-radius: 5px; 
+  border-color: #B8B28F;
+  border-style: solid;
+  border-width: 1px;
+ 
+}
+p > select,textarea,input {
+  border-color: #B8B28F;
+  border-radius: 5px;
+}
+textarea {
+ 
+  height:auto;
+}
+textarea.simplebox{
+  width:auto;
+  height:24px;
+  font-size:.8em;
+}
+div.selectize-input {
+  border-color:#B8B28F;
+  box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
+}
+.selectize-control.single .selectize-input:after {
+  border-color: #B8B28F transparent transparent transparent !important;
+}
+input#file-box {
+  font-style:italic;
+  border:none;
+}
+#file-box, #browse-button {
+    position:absolute;
+    cursor:pointer;
+    margin-top:-5px;
+}
+#browse-button {
+  margin-left:115px;
+  margin-top: -4px;
+  text-transform: uppercase;
+}
+#wrapper {
+    opacity : 0;
+    overflow: hidden;
+    width: 300px;
+    height : 30px;
+    padding:0;
+    margin:0;
+}
+#wrapper > input {
+  cursor:pointer;
+}
+.clearfix {
+	clear:both;
+	line-height:0;
+}
+

@@ -1,0 +1,24 @@
+{
+  "name": "50183_rce",
+  "description": "50183_RCE",
+  "main": "server.js",
+  "authors": [
+    "Nancy Wu"
+  ],
+  "license": "MPR",
+  "keywords": [
+    "rce"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

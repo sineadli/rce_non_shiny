@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- craft_your_research_q.html -->
+<html lang="en">
+  <head>
+  	<title>Determine your approach</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+   <form action="/determine_your_approach" method="post">
+          <div class="container-fluid">
+          <div class="row">
+              <div class="col-xs-12">
+                  <div class="tool-header">
+                      <h1 class="tool-title"> Determine your approach</h1>
+                      <div class="tool-intro">
+                          <p>
+                              The Ed Tech RCE Wizard can use different approaches to answer your research question. To determine the right one we need you to answer the following questions:
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="tool-questions">
+                  <div class="step-header container">
+                      <div data-toggle="collapse" data-target="#A">
+                          <h2 class="clickable">
+                              <i class="fa fa-caret-down" aria-hidden="false"></i>
+                              A. Are you already using this technology?
+                          </h2>
+                      </div>
+
+                  </div>
+                  <div id="A" class="row  collapse in">
+                      <div class="col-xs-7">
+                          <div class="step-action">
+                              <select required name="Prob_Appr_A" id="Prob_Appr_A">
+                                  <%
+                                  var options = ["Select an option", "Yes", "No"];
+                                  for ( var i = 0; i < options.length; i++ )
+                                  {
+                                  var selected;
+                                  if (probAppr) { selected = ( probAppr.Prob_Appr_A== options[i] ) ? "selected" : "";}
+                                  %>
+                                  <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                  }
+                                  %>
+
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="step-header container">
+                      <div data-toggle="collapse" data-target="#B">
+                          <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> B. Who are the technology users?</h2>
+                      </div>
+                  </div>
+                  <div id="B" class="row collapse in">
+                      <div class="col-xs-7">
+                         
+                          <div class="step-action">
+                          
+                              <select required name="Prob_Appr_B" id="Prob_Appr_B">
+                                  <%
+                                    var options = ["Select an option", "students", "schools", "teachers",  "other"];
+                                
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                        var selected;
+                                            if (probAppr) { selected = ( probAppr.Prob_Appr_B == options[i] ) ? "selected" : "";}
+                                        %><option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                    }
+                                  %>
+                              
+                              </select>
+                       
+                              <div id="other-specify" hidden="true">
+                                <div><p>Please specify:</p></div>
+                                  <input type="text" name='Prob_Apprr_B_other' id="Prob_Apprr_B_other" value=<%= probAppr.Prob_Apprr_B_other %> />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+               
+                  <div class="step-header container">
+                      <div data-toggle="collapse" data-target="#C">
+                          <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> C. <span class="section-c-header">subjects use</span> the technology?</h2>
+                      </div>
+                  </div>
+                  <div id="C" class="row collapse in">
+                      <div class="col-xs-7">
+                          <div class="step-action">
+                              <select required name="Prob_Appr_C" id="Q.a.1">
+                                  <%
+                                  var options = ["Select an option", "Yes", "No"];
+                                  for ( var i = 0; i < options.length; i++ )
+                                  {
+                                  var selected;
+                                  if (probAppr) { selected = ( probAppr.Prob_Appr_C == options[i] ) ? "selected" : "";}
+                                  %>
+                                  <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                  }
+                                  %>
+
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="step-conclusion container">
+                      <h2>Conclusion</h2>
+                      <p>
+                          Based on your answer we will guide you through a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>matched comparison design</span>. This is a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>quasi-experimental design</span>. To compare apples to apples, this quasi-experimental design will identify a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>comparison group</span> with similar characteristics to the <span class="section-b-header">subjects</span> using the technology that you want to test.
+                      </p>
+                  </div>
+                  <div>
+                     <button type="submit" class="btn btn-warning btn-lg">Save</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div>
+          <input class="hidden" name="userid" value="<%= probAppr.userid %>" />
+          <input class="hidden" name="_id" value="<%= probAppr._id %>" />
+      </div>
+   </form>
+    
+    <script src='/static/js/custom.js'></script>
+  </body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>Turn plain webform into a powerful wizard with jQuery</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+<style type="text/css">
+body { font - family:Lucida Sans, Arial, Helvetica, Sans-Serif; font-size:13px; margin:20px;}
+#main { width:90%; margin: 0px auto; border:solid 1px #b2b3b5; -moz-border-radius:10px; padding:20px; background-color:#f6f6f6;}
+#header { text-align:center; border-bottom:solid 1px #b2b3b5; margin: 0 0 20px 0; }
+fieldset { border:none; width:80%; margin-left:40px;}
+legend { font-size:18px; margin:0px; padding:10px 0px; color:#aaa; font-weight:bold;}
+label { display:block; margin:15px 0 5px;}
+input[type=text], input[type=password] { width:60%; padding:5px; border:solid 1px #000;}
+.prev, .next { background-color:#aaa; padding:5px 10px; color:#fff; text-decoration:none;}
+.prev:hover, .next:hover { background-color:#000; text-decoration:none;}
+.prev { float:left;}
+.next { float:right;}
+#steps {display: block;  width:100%; overflow:hidden; margin:0px; padding:0px; text-align: center}
+#steps  li  {border: 1px solid #aaa;
+border-radius: 50%;
+display: inline-block;
+height: 20px;
+margin: 10px 8px;
+width: 20px;}
+#steps li span {font-size:11px; display:block;}
+#steps li.current { background-color:#aaa;}
+.container ul{
+list-style: none;
+height: 100%;
+width: 100%;
+margin: 0;
+padding: 0;
+}
+ul li{
+color: #AAAAAA;
+display: block;
+position: relative;
+float: center;
+height: 70px;
+
+}
+ul li input[type=radio]{
+position: absolute;
+visibility: hidden;
+}
+
+ul li label{
+display: block;
+position: relative;
+font-weight: 300;
+font-size: 1.35em;
+padding: 38px 25px 25px 80px;
+margin: 10px auto;
+height: 25px;
+z-index: 9;
+cursor: pointer;
+-webkit-transition: all 0.25s linear;
+}
+
+ul li:hover label{
+color:#9999ff;
+}
+
+ul li .check{
+display: block;
+position: absolute;
+border: 5px solid #AAAAAA;
+border-radius: 100%;
+height: 25px;
+width: 25px;
+top: 30px;
+left: 20px;
+z-index: 5;
+transition: border .25s linear;
+-webkit-transition: border .25s linear;
+}
+ul li:hover .check {
+border: 5px solid #9999ff;
+}
+
+ul li .check::before {
+display: block;
+position: absolute;
+content: '';
+border-radius: 100%;
+height: 15px;
+width: 15px;
+top: 5px;
+left: 5px;
+margin: auto;
+transition: background 0.25s linear;
+-webkit-transition: background 0.25s linear;
+}
+
+input[type=radio]:checked ~ .check {
+border: 5px solid #aaa;
+}
+
+input[type=radio]:checked ~ .check::before{
+background: #aaa;
+}
+
+input[type=radio]:checked ~ label{
+color: #aaa;
+}
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/formToWizard.js"></script>
+<% include ../views/partials/head.html %>
+</head>
+<body>
+<div id="main">
+    
+<div id="header">
+<h3>BUILD YOUR PROFILE</h3>
+    <% include ../views/partials/header.html %>
+    
+<span id="info" style="display:none;">You don't have to fill the form, really. Just click on Next and Back to see the demo.</span></p>
+</div>
+<form id="ProfileForm" action="/profile" method="post">
+<fieldset>
+
+<div class="container">
+    <label for="organiztion_type">What type of organization do you work for?</label>
+    <select id="organiztion_type" name="organiztion_type"  >
+        
+        <option value="school">School</option>
+        <option value="district">School district</option>      
+        <option value="research">Research organization</option>
+        <option value="other">other</option>
+    </select>
+    <div id="other-specify-type" hidden="hidden">
+        <p>Please specify:</p>
+        <input type="text" id="organiztion_type_other" name="organiztion_type_other" />
+    </div>     
+</div>
+</fieldset>
+
+    <fieldset>
+
+        <div class="container">
+            
+            <label for="role">What is your role in the organization?</label>
+            <select id="role" name="role">
+
+                <option value="teacher">Teacher</option>
+                <option value="princple">Princple</option>
+                <option value="tech">Technology/IT Advisor</option>
+                <option value="other">other</option>
+            </select>
+            <div id="other-specify-role" hidden="hidden">
+                <p>Please specify:</p>
+                <input type="text" id="role_other" name="role_other" />
+            </div>
+        </div>
+    </fieldset>
+
+<fieldset>
+    <div class="container">
+        <label for="organization_name">Name</label>
+        <input id="organization_name" name="organization_name"  type="text" />
+    </div>
+
+</fieldset>
+<p>
+<input id="SaveProfile" type="submit" value="Save Profile" />
+</p>
+</form>
+</div>
+    <footer>
+        <% include ../views/partials/footer.html %>
+    </footer>
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#ProfileForm").formToWizard({ submitButton: 'SaveProfile' })
+});
+
+
+$('#organiztion_type').change(function () {
+    var value = $(this).val();
+
+    var otherSpecify = $("#other_specify_type");
+
+    if (value === "other") otherSpecify.show();
+    else otherSpecify.hide();
+});
+
+$('#role').change(function () {
+    var value = $(this).val();
+
+    var otherSpecify = $("#other_specify_role");
+
+    if (value === "other") otherSpecify.show();
+    else otherSpecify.hide();
+});
+</script>
+
+</html>

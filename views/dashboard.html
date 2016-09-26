@@ -1,0 +1,76 @@
+﻿<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>RCTE Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body {
+            padding-top: 80px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="page-header text-center">
+            <h1>Welcome to your dashboard!</h1>
+            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        </div>
+
+        <div class="row">
+
+           
+            <div class="col-sm-4">
+                <div class="well">
+                    <h3><span class="fa fa-user"></span> <%= user.profile.user_name %></h3>
+                    <p><img src=<%= user.profile.user_pic %>   alt="" ></p>
+                    <p>
+                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>organization name:</strong>: <%= user.profile.organization_name %>
+                    </p>
+
+                </div>
+            </div>
+             <div class="col-sm-8">
+                <div class="well">
+                    <h3>RECENT EVALUATION</h3>
+                    <h1>Start a new evaluation</h1>
+
+                    <p>
+                        <strong>start date</strong>: <%= user.created_at %><br>
+                        <strong>status</strong>: <%= user.updated_at %><br>
+                        <button type="button" class="btn btn-warning btn-lg">START EVALUATION</button>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-sm-4">
+                <div class="well">
+                    <p><a href="">view all your evaluations..</a> </p>                
+
+                </div>
+            </div>
+             <div class="col-sm-8">
+                <div class="well">
+                    <h3>ALL TOOLS</h3>
+                   
+                    <ul>
+                    
+                       <li> <a href="">Using Extant Data.</a> </li>
+                       <li> <a href="">Understanding Types of Evidene.</a> </li>
+                       <li> <a href="">Crafting a Research Question.</a> </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
