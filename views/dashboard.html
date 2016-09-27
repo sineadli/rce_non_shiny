@@ -5,6 +5,7 @@
     <title>RCTE Authentication</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <style>
         body {
             padding-top: 80px;
@@ -43,7 +44,7 @@
                     <p>
                         <strong>start date</strong>: <%= user.created_at %><br>
                         <strong>status</strong>: <%= user.updated_at %><br>
-                        <button type="button" class="btn btn-warning btn-lg">START EVALUATION</button>
+                        <a href="/planning" id="startEval" class="btn btn-warning btn-lg">START EVALUATION</a>
                     </p>
 
                 </div>
