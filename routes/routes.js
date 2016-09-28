@@ -2,7 +2,8 @@
 // load up the evaluation model
 var fs = require('fs');
 var Evaluation = require('../models/evaluation');
-var WizardStep = require('../models/wizardStep');
+var WizardStep = require('../models/wizardStep'),
+    Tool = require('../models/tool.js');
 
 var ProbAppr = require('../models/probAppr.js'),
     PlanQuestion = require('../models/planQuestion.js'),
@@ -286,16 +287,53 @@ module.exports = function(app, passport) {
 
     });
 
-    app.get('/planning', function (req, res) {
+    // this is for returning the partial view
+    app.get('/tools/:wizardPath', function (req, res) {
 
-        res.render('planning.html')
+        console.log(req.params.wizardPath);
+        Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
+            if (err) {
+
+                res.status(500).send(err);
+            }
+            else {
+                console.log(tools);
+                res.render('partials/tool.html', { tools: tools });
+            }
+        });
+
 
     });
 
+    app.get('/wizard', function (req, res) {
+
+        res.render('wizard.html')
+
+    });
+
+
+    //all api routes starting from here, will move to a controller, still having trouble set it up in the controller!
+    //wizard and tool don't need authentication
     app.get('/api/wizard', function (req, res) {
 
       
         WizardStep.find({}, function (err, wizardStep) {
+            if (err) {
+
+                res.status(500).send(err);
+            }
+            else {
+
+                res.json(wizardStep);
+            }
+        });
+
+    });
+
+    app.get('/api/wizard/:id', function (req, res) {
+
+
+        WizardStep.findById(req.params.id, function (err, wizardStep) {
             if (err) {
 
                 res.status(500).send(err);
@@ -318,6 +356,51 @@ module.exports = function(app, passport) {
                 console.log(err);
             else
                 res.status(201).send(wizard);
+
+
+        });
+    });
+    app.get('/api/tools', function (req, res) {
+
+
+        Tool.find({}, function (err, tools) {
+            if (err) {
+
+                res.status(500).send(err);
+            }
+            else {
+
+                res.json(tools);
+            }
+        });
+
+    });
+    app.get('/api/tools/:wizardPath', function (req, res) {
+
+        console.log(req.params.wizardPath);
+        Tool.find({ wizardPath: req.params.wizardPath}, function (err, tool) {
+            if (err) {
+
+                res.status(500).send(err);
+            }
+            else {
+
+                res.json(tool);
+            }
+        });
+
+    });
+    
+    app.post('/api/tool', function (req, res) {
+
+        console.log(req.body);
+        var tool = new Tool(req.body);
+
+        tool.save(function (err) {
+            if (err)
+                console.log(err);
+            else
+                res.status(201).send(tool);
 
 
         });
