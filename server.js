@@ -40,8 +40,8 @@ app.use(bodyParser.json()); //get information from json--api use
 
 //app.use('/api/step1', stepOneRouter); 
 
-//var wizarStepRouter = require('./Routes/wizardStepRoutes');
-//app.use('/api/wizard', wizarStepRouter);
+//var wizardRouter = require('./routes/wizardRoutes');
+//app.use('/api/wizard', wizardRouter);
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
