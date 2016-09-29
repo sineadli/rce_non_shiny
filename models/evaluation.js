@@ -12,10 +12,11 @@ unitmeasured = ["student", "teacher", "school"];
 
 // define the schema for our evaluation model
 var evaluationSchema = mongoose.Schema({
-    user_id: { type: mongoose.Schema.ObjectId, required: true },
+    userid: { type: mongoose.Schema.ObjectId, required: true },
     title: { type: String, required: true },
     last_step: Number,
     next_path: Number,
+    is_completed: Boolean,
     is_current: Boolean,
     created_at: { type: Date, default: Date.now },
     updated_at: Date,
