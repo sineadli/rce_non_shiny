@@ -19,7 +19,7 @@
                 <div class="wizard-header-row">
                     <div class="col-xs-7">
                         <div class="sec-label">Evaluating</div>
-                        <h2 class="eval-header">Splash Math Games</h2>
+                        <h2 class="eval-header"><%= eval.title %></h2>
                     </div>
                     <div class="col-xs-2">
                         <div class="sec-label">Start Date</div>
@@ -54,14 +54,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="step-row">
-                    <div class="col-xs-12">
-                        <h1>Planning your research</h1>
-                        <p>This step prepares you to begin your evaluation by helping you write a research question, plan what your next steps will be based on the evaluation findings, and describe your education technology and the context in which you will be implementing it.</p>
-                    </div>
-                </div>
-            </div>
 
             <div class="result"></div>
 
@@ -79,6 +71,8 @@
             });
             $('ul.wizard-menu li').click(function (e) {
                 var id = $(this).attr('id');
+                //var data = wizardStep[id];
+                //alert(data);
                 var url = "/tools/" + id;
                 $.get(url, function (data) {
                     $(".result").html(data);
