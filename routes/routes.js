@@ -290,24 +290,54 @@ module.exports = function(app, passport) {
     // this is for returning the partial view
     app.get('/tools/:wizardPath', function (req, res) {
 
-        console.log(req.params.wizardPath);
+        //console.log(req.params.wizardPath);
+        var wizardStep;
+        WizardStep.findOne({ step: req.params.wizardPath}, function (err, wizard) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                console.log(wizardStep);
+                wizardStep = wizard;
+            }
+        });
         Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
             if (err) {
 
                 res.status(500).send(err);
             }
             else {
-                console.log(tools);
-                res.render('partials/tool.html', { tools: tools });
+                //console.log(tools);
+                res.render('partials/tool.html', {wizardStep: wizardStep, tools: tools });
             }
         });
 
 
     });
 
-    app.get('/wizard', function (req, res) {
+    app.get('/wizard', isLoggedIn, function (req, res) {
 
-        res.render('wizard.html')
+        
+        if (!req.eval) {
+            app.use(getEval);
+            console.log(req.user._id);
+            eval = new Evaluation({ userid: req.user._id, title: "New Eval 1" });
+            console.log(eval);
+        }
+
+        WizardStep.find(function (err, wizardSteps) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                console.log(wizardSteps);
+                res.render('wizard.html', { wizardSteps: wizardSteps, eval:eval });
+            }
+
+
+        });
+
+        
 
     });
 
@@ -330,7 +360,7 @@ module.exports = function(app, passport) {
 
     });
 
-    app.get('/api/wizard/:id', function (req, res) {
+    app.get('/api/wizard/:id',  function (req, res) {
 
 
         WizardStep.findById(req.params.id, function (err, wizardStep) {

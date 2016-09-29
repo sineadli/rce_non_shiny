@@ -13,7 +13,8 @@ var toolSchema = mongoose.Schema({
     wizardName: String,
     wizardPath: Number,
     step: Number,
-    prereq: Boolean
+    prereq: Boolean,
+    path: String
 });
 
 // create the model for users and expose it to our app
