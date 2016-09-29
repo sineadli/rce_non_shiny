@@ -1,6 +1,14 @@
 ﻿<!-- views/partials/tool.html -->
 
 <div class="row">
+    <div class="step-row">
+        <div class="col-xs-12">
+            <h1><%= wizardStep.name %></h1>
+            <p><%= wizardStep.intro %></p>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="tool-row">
         <% for (var i=0; i< tools.length; i++) { %>
 
@@ -11,7 +19,7 @@
                         <p><%= tools[i].desc %></p>
                     </div>
                     <div>
-                        <a href="" class="button">View</a>
+                        <a href="<%= tools[i].path %>" class="button">View</a>
                     </div>
                 </div>
                 </div>
