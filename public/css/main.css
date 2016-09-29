@@ -135,7 +135,7 @@ h2.eval-header {
 ul.wizard-menu {
     list-style: none;
     display: inline-block;
-    height: 50px;
+    height: 70px;
     border-top: 1px #ccc solid;
     margin: 0;
     padding: 0;
@@ -150,11 +150,15 @@ ul.wizard-menu li {
     text-transform: uppercase;
     text-align: center;
     padding: 8px;
+    float: left;
+    cursor: pointer;
     
 }
 
 ul.wizard-menu li span {
      vertical-align: middle;
+    font-weight: bold;
+    color: #666;
 }
     ul.wizard-menu li.active {
         color: #4081A8;
@@ -173,10 +177,10 @@ div.tool-div {
     height: 275px;
 }
 div.tool-div div.tool-title {
-    height: 75px;
+    height: 200px;
 }
     div.tool-div p {
-        height: 125px;
+
         margin-bottom: 5px;
     }
 

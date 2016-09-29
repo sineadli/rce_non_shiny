@@ -13,14 +13,18 @@
         <% for (var i=0; i< tools.length; i++) { %>
 
             <div class="col-xs-3">
-                <div class="tool-div complete">
-                    <div class="tool-title"><h2><%= tools[i].name %> </h2></div>
-                    <p><%= tools[i].desc %></p>
+
+                <div class="tool-div">
+                    <div class="tool-title">
+                        <h2><%= tools[i].name %> </h2>
+                        <p><%= tools[i].desc %></p>
+                    </div>
+
                     <div>
                         <a href="<%= tools[i].path %>" class="button">View</a>
                     </div>
                 </div>
-                </div>
+            </div>
 
        <% } %>
        
