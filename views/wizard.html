@@ -31,20 +31,20 @@
                     </div>
                     <div class="col-xs-12" style="padding: 0;margin:0">
                         <ul class="wizard-menu">
-                            <li id="1" class="active">
+                            <li id="1" class="wizard-item active">
                                 <span>Welcome</span>
                             </li>
-                            <li id="2"><span>Understanding Your Problem</span></li>
-                            <li id="3">
+                            <li id="2" class="wizard-item"><span>Understanding Your Problem</span></li>
+                            <li id="3" class="wizard-item">
                                 <span>Planning Your Research</span>
                             </li>
-                            <li id="4">
+                            <li id="4" class="wizard-item ">
                                 <span>Preparing Your Data</span>
                             </li>
-                            <li id="5">
+                            <li id="5" class="wizard-item">
                                 <span>Analyzing your Data</span>
                             </li>
-                            <li id="6">
+                            <li id="6" class="wizard-item">
                                 <span>Summarizing Your Findings</span>
                             </li>
                         </ul>
@@ -71,6 +71,8 @@
             });
             $('ul.wizard-menu li').click(function (e) {
                 var id = $(this).attr('id');
+                $("ul.wizard-menu li.wizard-item").removeClass("active");
+                $("#" + id).addClass("active");
                 //var data = wizardStep[id];
                 //alert(data);
                 var url = "/tools/" + id;
