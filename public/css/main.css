@@ -3,10 +3,12 @@ body {
   max-width:1000px;
   font-size:1.4em;
   line-height:1.6em;
+     margin: 20px auto;
 }
 div.container-fluid {
 	width:85%;
 	font-size:100%;
+ 
 }
 
 div.tool-header div.tool-intro {
