@@ -13,57 +13,83 @@
 <body>
 
     <form action="/planning" method="post">
-        <div class="container-fluid">
+        
+            <div class="container-fluid">
+                
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
 
-            <div class="row">
-                <div class="wizard-header-row">
-                    <div class="col-xs-7">
-                        <div class="sec-label">Evaluating</div>
-                        <h2 class="eval-header"><%= eval.title %></h2>
-                    </div>
-                    <div class="col-xs-2">
-                        <div class="sec-label">Start Date</div>
-                        <p>4/25/2016</p>
-                    </div>
-                    <div class="col-xs-3">
-                        <div class="sec-label">Status</div>
-                        <p>50% Complete</p>
-                    </div>
-                    <div class="col-xs-12" style="padding: 0;margin:0">
-                        <ul class="wizard-menu">
-                            <li id="1" class="active">
-                                <span>Welcome</span>
-                            </li>
-                            <li id="2"><span>Understanding Your Problem</span></li>
-                            <li id="3">
-                                <span>Planning Your Research</span>
-                            </li>
-                            <li id="4">
-                                <span>Preparing Your Data</span>
-                            </li>
-                            <li id="5">
-                                <span>Analyzing your Data</span>
-                            </li>
-                            <li id="6">
-                                <span>Summarizing Your Findings</span>
-                            </li>
-                        </ul>
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Enter evaluation title</h4>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" id="evalid" value="<%= eval._id %>"/>
+                                <input type="text" id="title"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="getTitle" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                            </div>
+                        </div>
 
                     </div>
-                    <div style="clear: both; line-height: 0;"></div>
                 </div>
+                <div class="row">
+                    <div class="wizard-header-row">
+                        <div class="col-xs-7">
+                            <div class="sec-label">Evaluating</div>
+                            
+                                <h2 class="eval-header" id="evalTitle"><%= eval.title %></h2>
+                                <button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal">Edit</button>
+                           
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="sec-label">Start Date</div>
+                            <p>4/25/2016</p>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="sec-label">Status</div>
+                            <p>50% Complete</p>
+                        </div>
+                        <div class="col-xs-12" style="padding: 0;margin:0">
+                            <ul class="wizard-menu">
+                                <li id="1" class="active">
+                                    <span>Welcome</span>
+                                </li>
+                                <li id="2"><span>Understanding Your Problem</span></li>
+                                <li id="3">
+                                    <span>Planning Your Research</span>
+                                </li>
+                                <li id="4">
+                                    <span>Preparing Your Data</span>
+                                </li>
+                                <li id="5">
+                                    <span>Analyzing your Data</span>
+                                </li>
+                                <li id="6">
+                                    <span>Summarizing Your Findings</span>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div style="clear: both; line-height: 0;"></div>
+                    </div>
+                </div>
+
+
+                <div class="result"></div>
+
+
+
             </div>
-
-
-            <div class="result"></div>
-
-
-
-        </div>
 
     </form>
     <script type="text/javascript">
         $(document).ready(function () {
+            
             //just load the first one for now, will have to determine which is the active currently for returning user with
             //an ongoing eval
             $.get("/tools/1", function (data) {
@@ -79,6 +105,26 @@
                 });
             });
         });
+        $("#getTitle").click(function (e) {
+
+            $("#evalTitle").html($("#title").val());
+            var etitle = $("#title").val();
+            var url = '/api/eval';
+            var evalid = $("#evalid").val();
+        
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({
+                    "id": evalid, "title": etitle
+        }),
+               
+                dataType: "json",
+                contentType: "application/json"
+            }
+               
+                );
+        })
     </script>
 </body>
 </html>
