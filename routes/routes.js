@@ -79,7 +79,7 @@ module.exports = function(app, passport) {
         req.user.profile.user_pic.data = fs.readFile('../50183_RCE/public/image/me.jpg');
         req.user.profile.user_pic.contentType = 'image/jpg'
         req.user.save();
-        res.redirect('/index');
+        res.redirect('/dashboard');
     });
     // =====================================
     // LOGOUT ==============================
@@ -98,7 +98,7 @@ module.exports = function(app, passport) {
         // render the page and pass in any flash data if it exists
         res.send({ foo: "testing" });
     });
-   // app.use(getEval);
+    //app.use(getEval);
     //non shiny tool routes
     app.get('/index', isLoggedIn, function (req, res) {
         req.user.userSession = req.headers['cookie'];
@@ -109,7 +109,8 @@ module.exports = function(app, passport) {
 
     });
     app.get('/determine_your_approach', isLoggedIn, function (req, res) {
-        ProbAppr.findOne({ userid: req.user._id },
+        console.log(req.eval);
+        ProbAppr.findOne({ userid: req.user._id},
             function (err, probAppr) {
                 if (err || !probAppr) res.render('determine_your_approach.html', { probAppr: new ProbAppr() });
                 if (probAppr) {
@@ -134,16 +135,23 @@ module.exports = function(app, passport) {
                 if (err)
                     console.log(err);
                 else
-                    res.redirect('/index');
+                    res.redirect('/wizard');
             })
                 }
         else {
-            ProbAppr.findByIdAndUpdate(obj._id, obj, function (err) {
+
+            ProbAppr.findById(obj._id, function (err, probAppr) {
                 if (err)
                     console.log(err);
-                else
-                    res.redirect('/index');
-            })
+                else if (probAppr) {
+                    probAppr.Prob_Appr_A = obj.Prob_Appr_A;
+                    probAppr.Prob_Appr_B = obj.Prob_Appr_B;
+                    probAppr.Prob_Apprr_B_other = obj.Prob_Apprr_B_other;
+                    probAppr.Prob_Apprr_C = obj.Prob_Apprr_C;
+                    probAppr.save(function (err) { if (err) console.log(err); });
+                    res.redirect('/wizard');
+                }
+            });
         }
         
 
@@ -175,16 +183,26 @@ module.exports = function(app, passport) {
                 if (err)
                     console.log(err);
                 else
-                    res.redirect('/index');
+                    res.redirect('/wizard');
             })
         }
         else {
-            PlanQuestion.findByIdAndUpdate(obj._id, obj, function (err) {
+            PlanQuestion.findById(obj._id, function (err, planQuestion) {
                 if (err)
                     console.log(err);
-                else
-                    res.redirect('/index');
-            })
+                else if (planQuestion) {
+                    planQuestion.Plan_Question_A = obj.Plan_Question_A;
+                    planQuestion.Plan_Question_B_1 = obj.Plan_Question_B_1;
+                    planQuestion.Plan_Question_B_Other = obj.Plan_Question_B_Other;
+                    planQuestion.Plan_Question_B_2 = obj.Plan_Question_B_2;
+                    planQuestion.Plan_Question_B_3 = obj.Plan_Question_B_3;
+                    planQuestion.Plan_Question_C = obj.Plan_Question_C;
+                    planQuestion.Plan_Question_D = obj.Plan_Question_D;
+                    planQuestion.save(function (err) { if (err) console.log(err); });
+                    res.redirect('/wizard');
+                }
+            });
+            
         }
 
 
@@ -219,12 +237,26 @@ module.exports = function(app, passport) {
             })
         }
         else {
-            PlanNext.findByIdAndUpdate(obj._id, obj, function (err) {
+
+            PlanNext.findById(obj._id, function (err, planNext) {
                 if (err)
                     console.log(err);
-                else
-                    res.redirect('/index');
-            })
+                else if (planNext) {
+                    planNext.Plan_Next_A_1 = obj.Plan_Next_A_1;
+                    planNext.Plan_Next_A_2 = obj.Plan_Next_A_2;
+                    planNext.Plan_Next_A_3 = obj.Plan_Next_A_3;
+                    planNext.Plan_Next_A_4 = obj.Plan_Next_A_4;
+                    planNext.Plan_Next_B = obj.Plan_Next_B;
+                    planNext.Plan_Next_C_1 = obj.Plan_Next_C_1;
+                    planNext.Plan_Next_C_2 = obj.Plan_Next_C_2;
+                    planNext.Plan_Next_D_1 = obj.Plan_Next_D_1;
+                    planNext.Plan_Next_D_2 = obj.Plan_Next_D_2;
+                    planNext.Plan_Next_D_3 = obj.Plan_Next_D_3;
+                    planNext.save(function (err) { if (err) console.log(err); });
+                    res.redirect('/wizard');
+                }
+            });
+            
         }
 
 
@@ -265,12 +297,23 @@ module.exports = function(app, passport) {
             })
         }
         else {
-            PlanContext.findByIdAndUpdate(obj._id, obj, function (err) {
+
+            PlanContext.findById(obj._id, function (err, planContext) {
                 if (err)
                     console.log(err);
-                else
-                    res.redirect('/index');
-            })
+                else if (planContext) {
+                    planContext.Plan_Context_A_1 = obj.Plan_Context_A_1;
+                    planContext.Plan_Context_A_2 = obj.Plan_Context_A_2;
+                    planContext.Plan_Context_A_3 = obj.Plan_Context_A_3;
+                    planContext.Plan_Context_A_4 = obj.Plan_Context_A_4;
+                    planContext.Plan_Context_A_5 = obj.Plan_Context_A_5;
+                    planContext.Plan_Context_B = obj.Plan_Context_B;
+                    
+                    planContext.save(function (err) { if (err) console.log(err); });
+                    res.redirect('/wizard');
+                }
+            });
+            
         }
 
 
@@ -317,12 +360,23 @@ module.exports = function(app, passport) {
 
     app.get('/wizard', isLoggedIn, function (req, res) {
 
-        
+      
+   
         if (!req.eval) {
-            app.use(getEval);
-            console.log(req.user._id);
-            eval = new Evaluation({ userid: req.user._id, title: "New Eval 1" });
-            console.log(eval);
+            Evaluation.findOne({ userid: req.user._id }).sort({ created_at: -1 }).exec(function (err, eval) {
+                if (err) {
+                    console.log(err);
+                } else {
+                   
+                    if (eval) { req.eval = eval; }
+                    else {
+                        req.eval = new Evaluation({ userid: req.user._id, title: "Your New Eval " });
+                        req.eval.save(function (err) { if (err) console.log(err);});
+                    }
+                   
+                }
+
+            });
         }
 
         WizardStep.find(function (err, wizardSteps) {
@@ -330,8 +384,8 @@ module.exports = function(app, passport) {
                 res.status(500).send(err);
             }
             else {
-                console.log(wizardSteps);
-                res.render('wizard.html', { wizardSteps: wizardSteps, eval:eval });
+                console.log(req.eval);
+                res.render('wizard.html', { wizardSteps: wizardSteps, eval: req.eval });
             }
 
 
@@ -378,7 +432,7 @@ module.exports = function(app, passport) {
 
     app.post('/api/wizard', function (req, res) {
 
-        console.log(req.body);
+    
         var wizard = new WizardStep(req.body);
 
         wizard.save(function (err) {
@@ -423,7 +477,7 @@ module.exports = function(app, passport) {
     
     app.post('/api/tool', function (req, res) {
 
-        console.log(req.body);
+     
         var tool = new Tool(req.body);
 
         tool.save(function (err) {
@@ -434,6 +488,39 @@ module.exports = function(app, passport) {
 
 
         });
+    });
+
+
+    app.post('/api/eval', isLoggedIn, function (req, res) {
+
+        console.log(req.body.id);
+        Evaluation.findById(req.body.id, function (err, eval) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                eval.title = req.body.title;
+                eval.save(function (err) {
+                     if (err)
+                        console.log(err);
+                else
+                    req.eval = eval;
+                    res.status(201).send(eval);});
+            }
+
+        });
+     
+
+  
+        //eval.save(function (err) {
+        //    if (err)
+        //        console.log(err);
+        //    else
+        //        req.eval = eval;
+        //        res.status(201).send(eval);
+
+
+        //});
     });
 };
 
@@ -448,8 +535,19 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 };
 function getEval(req, res, isLoggedIn, next) {
-    Evaluation.findOne({ userid: req.user._id }).sort({ created_at: -1 }).exec(function (error, eval) {
-        if (eval) req.eval = eval;
-    });
+    if (!req.eval) {
+        Evaluation.findOne({ userid: req.user._id }).sort({ created_at: -1 }).exec(function (eror, eval) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (eval) { req.eval = eval; }
+                else {
+                    req.eval = new Evaluation({ userid: req.user._id, title: "Your New Eval " });
+                }
+                //console.log(req.eval);
+            }
+           
+        });}
+   
     next;
 }
