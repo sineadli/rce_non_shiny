@@ -9,7 +9,7 @@ var ProbAppr = require('../models/probAppr.js'),
     PlanQuestion = require('../models/planQuestion.js'),
     PlanNext = require('../models/planNext.js'),
     PlanContext = require('../models/planContext.js');
-
+var step=1;
 module.exports = function(app, passport) {
 
     // =====================================
@@ -128,6 +128,7 @@ module.exports = function(app, passport) {
         console.log(req.body);
         
         var obj = req.body;
+        step = 2;
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
             var probAppr = new ProbAppr(req.body);
@@ -174,7 +175,7 @@ module.exports = function(app, passport) {
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
 
         console.log(req.body);
-
+        step = 3;
         var obj = req.body;
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
@@ -222,9 +223,7 @@ module.exports = function(app, passport) {
 
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
-        console.log(req.body);
-        console.log(req.user._id);
-
+        step = 3;
         var obj = req.body;
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
@@ -281,7 +280,7 @@ module.exports = function(app, passport) {
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
         //console.log(req.body);
        // console.log(req.user._id);
-
+        step = 3;
         var obj = req.body;
         
         console.log(obj);
@@ -293,7 +292,7 @@ module.exports = function(app, passport) {
                 if (err)
                     console.log(err);
                 else
-                    res.redirect('/index');
+                    res.redirect('/wizard');
             })
         }
         else {
@@ -361,7 +360,10 @@ module.exports = function(app, passport) {
     app.get('/wizard', isLoggedIn, function (req, res) {
 
       
-   
+        if (res.wizardstep && res.wizardstep != "") {
+            step = res.wizardstep
+        }
+       
         if (!req.eval) {
             Evaluation.findOne({ userid: req.user._id }).sort({ created_at: -1 }).exec(function (err, eval) {
                 if (err) {
@@ -384,8 +386,8 @@ module.exports = function(app, passport) {
                 res.status(500).send(err);
             }
             else {
-                console.log(req.eval);
-                res.render('wizard.html', { wizardSteps: wizardSteps, eval: req.eval });
+                console.log(step);
+                res.render('wizard.html', { wizardSteps: wizardSteps, eval: req.eval, wizardstep: step});
             }
 
 

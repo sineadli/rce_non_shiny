@@ -27,7 +27,8 @@
                                 <h4 class="modal-title">Enter evaluation title</h4>
                             </div>
                             <div class="modal-body">
-                                <input type="text" id="evalid" value="<%= eval._id %>"/>
+                                <input type="hidden" id="evalid" value="<%= eval._id %>"/>
+                                <input type="text" id="step" value="<%= wizardstep %>" />
                                 <input type="text" id="title"/>
                             </div>
                             <div class="modal-footer">
@@ -57,7 +58,7 @@
                         </div>
                         <div class="col-xs-12" style="padding: 0;margin:0">
                             <ul class="wizard-menu">
-                                <li id="1" class="wizard-item active">
+                                <li id="1" class="wizard-item ">
                                     <span>Welcome</span>
                                 </li>
                                 <li id="2" class="wizard-item"><span>Understanding Your Problem</span></li>
@@ -94,7 +95,13 @@
             
             //just load the first one for now, will have to determine which is the active currently for returning user with
             //an ongoing eval
-            $.get("/tools/1", function (data) {
+            var step = $("#step").val();
+            $("li").each(function (index) {
+                if (index == step-1) { $(this).addClass("active"); }
+             
+            });
+            
+            $.get("/tools/" + step, function (data) {
                 $(".result").html(data);
             });
             $('ul.wizard-menu li').click(function (e) {
