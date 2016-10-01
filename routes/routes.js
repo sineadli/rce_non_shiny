@@ -85,12 +85,16 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function(req, res) {
-
-        req.user.userSession='';
-        req.user.save();
-        req.session.destroy(function (err) {
-            res.redirect('/'); 
-        });
+        if (req.session) {
+            if (req.user) {
+                req.user.userSession = '';
+                req.user.save();
+            }
+            req.session.destroy(function (err) {
+                res.redirect('/');
+            });
+        }
+       
     });
 
    
@@ -373,23 +377,23 @@ module.exports = function(app, passport) {
                         req.eval = new Evaluation({ userid: req.user._id, title: "Your New Eval " });
                         req.eval.save(function (err) { if (err) console.log(err);});
                     }
-                   
+                    WizardStep.find(function (err, wizardSteps) {
+                        if (err) {
+                            res.status(500).send(err);
+                        }
+                        else {
+                            console.log(step);
+                            res.render('wizard.html', { wizardSteps: wizardSteps, eval: req.eval, step: sess.step });
+                        }
+
+
+                    });
                 }
 
             });
         }
 
-        WizardStep.find(function (err, wizardSteps) {
-            if (err) {
-                res.status(500).send(err);
-            }
-            else {
-                console.log(step);
-                res.render('wizard.html', { wizardSteps: wizardSteps, eval: req.eval, step: sess.step});
-            }
-
-
-        });
+       
 
         
 
