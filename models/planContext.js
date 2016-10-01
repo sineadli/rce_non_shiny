@@ -6,11 +6,11 @@ var mongoose = require('mongoose');
 var planContextSchema = mongoose.Schema({
     userid: { type: mongoose.Schema.ObjectId, require: true},
     evalid: { type: mongoose.Schema.ObjectId, require: true },
-    Plan_Context_A_1: { type: String, require: true }, 
-    Plan_Context_A_2: { type: String, require: true },
-    Plan_Context_A_3: { type: String, require: true },
-    Plan_Context_A_4: { type: String, require: true },
-    Plan_Context_A_5: { type: String, require: true },
+    Plan_Context_A_1: { type: String}, 
+    Plan_Context_A_2: { type: String },
+    Plan_Context_A_3: { type: String },
+    Plan_Context_A_4: { type: String},
+    Plan_Context_A_5: { type: String },
 
     Plan_Context_B: String,
  

@@ -12,12 +12,12 @@ direction = ["Increase", "Decrease"]
 var planQuestionSchema = mongoose.Schema({
     userid: { type: mongoose.Schema.ObjectId, require: true },
     evalid: { type: mongoose.Schema.ObjectId, require: true },
-    Plan_Question_A: { type: String, required: true },
-    Plan_Question_B_1: { type: String, required: true, enum: achievement },
-    Plan_Question_B_Other: { type: String, required: false },
-    Plan_Question_B_2: { type: String, required: true },  
-    Plan_Question_B_3: { type: String, required: true, enum: direction },
-    Plan_Question_C: { type: String, required: true },
+    Plan_Question_A: { type: String},
+    Plan_Question_B_1: { type: String },
+    Plan_Question_B_Other: { type: String },
+    Plan_Question_B_2: { type: String },  
+    Plan_Question_B_3: { type: String },
+    Plan_Question_C: { type: String },
     Plan_Question_D: String,
     created_at: { type: Date, default: Date.now },
     updated_at: Date

@@ -9,9 +9,9 @@ var ProbAppr = require('../models/probAppr.js'),
     PlanQuestion = require('../models/planQuestion.js'),
     PlanNext = require('../models/planNext.js'),
     PlanContext = require('../models/planContext.js');
-var step=1;
+var sess;
 module.exports = function(app, passport) {
-
+    var step = 1;
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
@@ -93,11 +93,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.post('/landing', function (req, res) {
-       // var param = req.param("foo");
-        // render the page and pass in any flash data if it exists
-        res.send({ foo: "testing" });
-    });
+   
     //app.use(getEval);
     //non shiny tool routes
     app.get('/index', isLoggedIn, function (req, res) {
@@ -125,10 +121,10 @@ module.exports = function(app, passport) {
     app.post('/determine_your_approach', isLoggedIn, function (req, res) {
         //req.body.userid = req.user._id;
         //var body = req.body;
-        console.log(req.body);
-        
+        sess = req.session;
+        sess.step = 2
         var obj = req.body;
-        step = 2;
+        
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
             var probAppr = new ProbAppr(req.body);
@@ -136,6 +132,7 @@ module.exports = function(app, passport) {
                 if (err)
                     console.log(err);
                 else
+                     
                     res.redirect('/wizard');
             })
                 }
@@ -174,8 +171,8 @@ module.exports = function(app, passport) {
 
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
 
-        console.log(req.body);
-        step = 3;
+        sess = req.session;
+        sess.step = 3;
         var obj = req.body;
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
@@ -223,7 +220,8 @@ module.exports = function(app, passport) {
 
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
-        step = 3;
+        sess = req.session;
+        sess.step = 3;
         var obj = req.body;
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
@@ -232,7 +230,7 @@ module.exports = function(app, passport) {
                 if (err)
                     console.log(err);
                 else
-                    res.redirect('/index');
+                    res.redirect('/wizard');
             })
         }
         else {
@@ -269,7 +267,7 @@ module.exports = function(app, passport) {
                 if (err || !planContext) res.render('context_and_usage.html', { planContext: new PlanContext() });
                 if (planContext) {
                     console.log(planContext)
-                    res.render('context_and_usage', { planContext: planContext })
+                    res.render('context_and_usage.html', { planContext: planContext })
                 }
             }
         );
@@ -280,7 +278,8 @@ module.exports = function(app, passport) {
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
         //console.log(req.body);
        // console.log(req.user._id);
-        step = 3;
+        sess = req.session;
+        sess.step = 3;
         var obj = req.body;
         
         console.log(obj);
@@ -341,28 +340,27 @@ module.exports = function(app, passport) {
             else {
                 console.log(wizardStep);
                 wizardStep = wizard;
-            }
-        });
-        Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
-            if (err) {
+                Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
+                    if (err) {
 
-                res.status(500).send(err);
-            }
-            else {
-                //console.log(tools);
-                res.render('partials/tool.html', {wizardStep: wizardStep, tools: tools });
+                        res.status(500).send(err);
+                    }
+                    else {
+                        //console.log(tools);
+                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools });
+                    }
+                });
             }
         });
+        
 
 
     });
 
     app.get('/wizard', isLoggedIn, function (req, res) {
-
+        sess = req.session;
+        if (!sess.step) { sess.step = 1 }
       
-        if (res.wizardstep && res.wizardstep != "") {
-            step = res.wizardstep
-        }
        
         if (!req.eval) {
             Evaluation.findOne({ userid: req.user._id }).sort({ created_at: -1 }).exec(function (err, eval) {
@@ -387,7 +385,7 @@ module.exports = function(app, passport) {
             }
             else {
                 console.log(step);
-                res.render('wizard.html', { wizardSteps: wizardSteps, eval: req.eval, wizardstep: step});
+                res.render('wizard.html', { wizardSteps: wizardSteps, eval: req.eval, step: sess.step});
             }
 
 

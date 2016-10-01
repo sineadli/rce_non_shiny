@@ -21,7 +21,8 @@
                     </div>
 
                     <div>
-                        <a href="<%= tools[i].path %>" class="button">View</a>
+                        <% var option=""; if (tools[i].path) {option=tools[i].path } %>
+                        <a href="<%= option %>" class="button">View</a>
                     </div>
                 </div>
             </div>
