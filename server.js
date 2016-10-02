@@ -9,6 +9,8 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var nodemailer = require('nodemailer');  //for password reset
+var crypto = require('crypto'); 
 
 var configDB = require('./config/database.js');
 
@@ -29,19 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); //get information from json--api use
 
 
-//for api
-// load up the user model
-//var StepOne = require('./models/stepOne.js'),
-//    StepTwo = require('./models/stepTwo.js'),
-//    StepThree = require('./models/stepThree.js'),
-//    StepFour = require('./models/stepFour.js');
 
-//stepOneRouter = require('./Routes/stepOneRoutes')(StepOne);
-
-//app.use('/api/step1', stepOneRouter); 
-
-//var wizardRouter = require('./routes/wizardRoutes');
-//app.use('/api/wizard', wizardRouter);
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -57,13 +47,12 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 console.log(" passport loaded ");
 
 
-//app.get('/gateway/', function(req, res){
-//console.log("in app.get");
-//  res.send('hello, express');
-//});
+
 // routes ======================================================================
 //require('./routes/routes.js')(app, passport, StepOne, StepTwo, StepThree, StepFour); // load our routes and pass in our app and fully configured passport
 require('./routes/routes.js')(app, passport); 
+require('./routes/wizardRoutes.js')(app, passport);
+require('./routes/toolRoutes.js')(app, passport);
 // launch ======================================================================
 app.listen(port);
 console.log('Listening on port ' + port);

@@ -65,7 +65,8 @@ module.exports = function(passport) {
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
-                //newUser.userSession = req.currentSession.cookie;
+               // console.log('cookie: ' + JSON.stringify(req.headers['cookie']));
+                newUser.userSession = JSON.stringify(req.headers['cookie']);
                 // save the user
                 newUser.save(function(err) {
                     if (err)
@@ -111,8 +112,14 @@ module.exports = function(passport) {
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
             
-            // all is well, return successful user
-            return done(null, user);
+            user.userSession = JSON.stringify(req.headers['cookie']);
+            // save the user
+            user.save(function (err) {
+                if (err)
+                    throw err;
+                // all is well, return successful user
+                return done(null, user);
+            });
         });
 
     }));
