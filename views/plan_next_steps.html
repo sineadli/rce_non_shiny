@@ -26,7 +26,7 @@
                     </div>
                     <div class="tool-help">
                         <div class='blue-print'>
-                            <h3>When making decisions, it is important to think about the costs of the technology you're considering and the risks associated with your decision. The following 4 steps will help you think about that.<h3>
+                            <h3>When making decisions, it is important to think about the costs of the technology you're considering and the risks associated with your decision. The following 4 steps will help you think about that.</h3>
                         </div>
                         <div class="tool-example">
                             <p> <b>For example</b>, you may be trying to decide: </p>
@@ -71,7 +71,7 @@
                                         }
                                         %>
                                     </select>
-                                    approximately $<textarea name="Plan_Next_A_2" id="Plan_Next_A_2" placeholder="20" value="20" style="height:29px; width:50px"><%= planNext.Plan_Next_A_2 %></textarea>
+                                    approximately $<input type="text" style="width: 40px;" name="Plan_Next_A_2" id="Plan_Next_A_2" placeholder="20" value="<%= planNext.Plan_Next_A_2 %>"/>
                                     per
                                     <select required name="Plan_Next_A_3">
                                         <%
@@ -140,16 +140,18 @@
                             <div class="step-action">
                                 <p>
                                     I would consider any increase larger than
-                                    <textarea name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="0" style="height:29px; width:50px"><%= planNext.Plan_Next_B %></textarea>
+                                    <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= planNext.Plan_Next_B %>" style=" width:50px" />
                                     units on the outcome a success.
                                 </p>
                             </div>
                         </div>
                         <div class="col-xs-5">
                             <div class="step-to-consider">
-                                <li>The wizard will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here</li>
-                                <li>The units reflect whatever you are using to measure outcomes. For example, if you are looking at student performance on a test, the units would be points. If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
-                                <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money you may be willing to consider any change that is greater than a small negative number a success.</li>
+                                <ul>
+                                    <li>The wizard will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here</li>
+                                    <li>The units reflect whatever you are using to measure outcomes. For example, if you are looking at student performance on a test, the units would be points. If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
+                                    <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money you may be willing to consider any change that is greater than a small negative number a success.</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -164,11 +166,11 @@
                                 <p>the educational technology moved the needle?</p>
                             </div>
                             <div class="step-action">
-                                <p>If I learned that there was a <textarea name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value='0.75' style="height:29px; width:50px"><%= planNext.Plan_Next_C_1 %></textarea> probability that [Q1] [Q12a] [Q11] by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that [Q1] had the intended effect. </p>
+                                <p>If I learned that there was a <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= planNext.Plan_Next_C_1 %>" style=" width:50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect. </p>
                             </div>
                             <div class="step-subquestion">
                                 <p>the educational technology did not move the needle?</p>
-                                <p>If I learned that there was less than a <textarea name="Plan_Next_C_2" id="QBD-2b" placeholder="25%" value='0.25' style="height:29px; width:50px"><%= planNext.Plan_Next_C_2 %></textarea> probability that [Q1] [Q12a] [Q11] by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that [Q1] did not have the intended effect.</p>
+                                <p>If I learned that there was less than a <input type="text"  name="Plan_Next_C_2" id="QBD-2b" placeholder="25%" value="<%= planNext.Plan_Next_C_2 %>" style="width:50px"/> probability that the educational technologyincreased the outcomeby by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.</p>
                             </div>
                         </div>
                         <div class="col-xs-5">
@@ -185,13 +187,13 @@
                     <div id="D" class="row collapse">
                         <div class="col-xs-7">
                             <div class="step-subquestion">
-                                <p>the evidence suggests that it is likely that [A] does [B] among [C] compared to [D]?</p>
+                                <p>the evidence suggests that it is likely that A does B among C compared to D?</p>
                             </div>
                             <div class="step-action">
                                 <textarea name="Plan_Next_D_1"><%= planNext.Plan_Next_D_1 %></textarea>
                             </div>
                             <div class="step-subquestion">
-                                <p>the evidence suggests that it is not likely that [A] does [B] among [C] compared to [D]?</p>
+                                <p>the evidence suggests that it is not likely that A does B among C compared to D?</p>
                             </div>
                             <div class="step-action">
                                 <textarea name="Plan_Next_D_2"><%= planNext.Plan_Next_D_2 %></textarea>

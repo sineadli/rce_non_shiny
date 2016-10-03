@@ -1,7 +1,7 @@
 ﻿// middleware/getCurrentEvaluation.js
 //load the thing we need
 var Evaluation = require('../models/evaluation');
-var isLoggedIn = require('../middleware/isLoggedIn.js')
+var isLoggedIn = require('../middleware/isLoggedIn.js');
 
 
 var getCurrentEvaluation = function (req, res, next) {

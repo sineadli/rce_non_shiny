@@ -19,7 +19,7 @@ var evaluationSchema = mongoose.Schema({
     is_completed: Boolean,
     is_current: Boolean,
     created_at: { type: Date, default: Date.now },
-    updated_at: Date,
+    updated_at: Date
    
 
 

@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        res.render('landing.html'); // load the index.html file
+        res.render('landing.html'); // load the ndex.html file
     });
 
     // =====================================
@@ -92,11 +92,11 @@ module.exports = function(app, passport) {
     // FORGOT PASSWORD =====================
     // =====================================
     // for reset password
-    app.get('/forgot', function (req, res) {
-        res.render('forgot', {
-            user: req.user
-        });
-    });
+//    app.get('/forgot', function (req, res) {
+  //    res.render('forgot.html', {
+    //        user: req.user
+      //  });
+    //});
    
     //app.use(getEval);
     //non shiny tool routes, this route should go away!
