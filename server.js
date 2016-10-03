@@ -14,7 +14,7 @@ var crypto = require('crypto');
 
 var configDB = require('./config/database.js');
 
-var toolkitRouter = express.Router();
+
 
 // configuration ===============================================================
 mongoose.connect(configDB.url, configDB.config); // connect to our database
@@ -53,6 +53,8 @@ console.log(" passport loaded ");
 require('./routes/routes.js')(app, passport); 
 require('./routes/wizardRoutes.js')(app, passport);
 require('./routes/toolRoutes.js')(app, passport);
+require('./routes/apiRoutes.js')(app);
+require('./routes/resetPasswordRoutes.js')(app);
 // launch ======================================================================
 app.listen(port);
 console.log('Listening on port ' + port);

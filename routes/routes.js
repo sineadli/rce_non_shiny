@@ -1,7 +1,7 @@
 // routes/routes.js
 // load up the evaluation model
 var fs = require('fs');
-var isLoggedIn = require("../middleware/isLoggedIn.js")
+var isLoggedIn = require("../middleware/isLoggedIn.js");
 var sess;
 module.exports = function(app, passport) {
     
@@ -88,6 +88,7 @@ module.exports = function(app, passport) {
         }
        
     });
+
     // =====================================
     // FORGOT PASSWORD =====================
     // =====================================
@@ -97,6 +98,8 @@ module.exports = function(app, passport) {
     //        user: req.user
       //  });
     //});
+//=======
+
    
     //app.use(getEval);
     //non shiny tool routes, this route should go away!
