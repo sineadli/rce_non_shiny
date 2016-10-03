@@ -9,7 +9,7 @@ var sess;
 //please note that req.session.step is for managing the active tab for wizard.html
 //the following defines the tool routes available 
 module.exports = function (app, passport) {
-
+    //02.03 determine your approach
     app.get('/determine_your_approach', isLoggedIn, function (req, res) {
        
         ProbAppr.findOne({ userid: req.user._id },
@@ -29,10 +29,11 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.step = 2
         var obj = req.body;
+        if (!obj.evalid) { obj.evalid = sess.eval._id; }
 
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
-            var probAppr = new ProbAppr(req.body);
+            var probAppr = new ProbAppr(obj);
             probAppr.save(function (err) {
                 if (err)
                     console.log(err);
@@ -70,14 +71,15 @@ module.exports = function (app, passport) {
             }
         );
     });
-
+    //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
+        if (!obj.evalid) { obj.evalid = sess.eval._id; }
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
-            var planQuestion = new PlanQuestion(req.body);
+            var planQuestion = new PlanQuestion(obj);
             planQuestion.save(function (err) {
                 if (err)
                     console.log(err);
@@ -106,6 +108,7 @@ module.exports = function (app, passport) {
 
 
     });
+    //03.02 plan next steps
     app.get('/plan_next_steps', isLoggedIn, function (req, res) {
         PlanNext.findOne({ userid: req.user._id },
             function (err, planNext) {
@@ -124,9 +127,10 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
+        if (!obj.evalid) { obj.evalid = sess.eval._id; }
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
-            var planNext = new PlanNext(req.body);
+            var planNext = new PlanNext(obj);
             planNext.save(function (err) {
                 if (err)
                     console.log(err);
@@ -161,7 +165,7 @@ module.exports = function (app, passport) {
     });
 
 
-
+//03.03 context and usage
     app.get('/context_and_usage', isLoggedIn, function (req, res) {
         PlanContext.findOne({ userid: req.user._id },
             function (err, planContext) {
@@ -180,11 +184,12 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
+        if (!obj.evalid) { obj.evalid = sess.eval._id; }
 
         console.log(obj);
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
-            var planContext = new PlanContext(req.body);
+            var planContext = new PlanContext(obj);
             console.log(planContext);
             planContext.save(function (err) {
                 if (err)
