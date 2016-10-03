@@ -88,15 +88,7 @@ module.exports = function(app, passport) {
         }
        
     });
-    // =====================================
-    // FORGOT PASSWORD =====================
-    // =====================================
-    // for reset password
-    app.get('/forgot', function (req, res) {
-        res.render('forgot', {
-            user: req.user
-        });
-    });
+   
    
     //app.use(getEval);
     //non shiny tool routes, this route should go away!
