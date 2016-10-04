@@ -11,8 +11,10 @@ var planContextSchema = mongoose.Schema({
     Plan_Context_A_3: { type: String },
     Plan_Context_A_4: { type: String},
     Plan_Context_A_5: { type: String },
-
+    Plan_Context_A_6: { type: String },
     Plan_Context_B: String,
+    Plan_Context_C: String,
+    Plan_Context_D: String,
  
     created_at: { type: Date, default: Date.now },
     updated_at: Date

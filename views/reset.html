@@ -1,0 +1,66 @@
+﻿<!-- views/login.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="col-sm-6 col-sm-offset-3">
+
+            <h1><span class="fa fa-sign-in"></span> Reset Password</h1>
+
+
+            <!-- LOGIN FORM -->
+            <form  method="post">
+                <div class="form-group">
+                    <label for="password">New Password</label>
+                    <input type="password" class="form-control" id="reset-password" name="password" placeholder='New password' required novalidate autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="confirm">Confirm Password</label>
+                    <input type="password" class="form-control" id="reset-confirmpassword" name="confirm" placeholder='Confirm password' required validate>
+                    <label class="registrationFormAlert" id="checkPasswordMatch"></label> 
+                </div>
+                
+                <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg" disabled>Update Password</button>
+            </form>
+
+        </div>
+
+    </div>
+</body>
+<script>
+    $(document).ready(function(){
+        $("#reset-confirmpassword").keyup(checkPasswordMatch);
+
+        function checkPasswordMatch() {
+            var password = $("#reset-password").val();
+            var confirmPassword = $("#reset-confirmpassword").val();
+
+            if (password && confirmPassword && password != confirmPassword) {
+                $("#mpr-reset").prop("disabled", true)
+                $("#checkPasswordMatch").html("Passwords do not match!");
+            }
+            else {
+                $("#checkPasswordMatch").html("");
+                if (password && password == confirmPassword) $("#mpr-reset").prop("disabled", false);
+            }
+        };
+    })
+</script>
+</html>
+
+
+
+
