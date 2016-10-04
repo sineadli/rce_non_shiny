@@ -23,6 +23,8 @@ var userSchema = mongoose.Schema({
 
     },
     userSession: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     created_at: {type: Date, default: Date.now},
     updated_at: Date
 

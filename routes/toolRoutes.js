@@ -3,7 +3,8 @@ var fs = require('fs');
 var ProbAppr = require('../models/probAppr.js'),
     PlanQuestion = require('../models/planQuestion.js'),
     PlanNext = require('../models/planNext.js'),
-    PlanContext = require('../models/planContext.js');
+    PlanContext = require('../models/planContext.js'),
+    Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var sess;
 //please note that req.session.step is for managing the active tab for wizard.html
@@ -11,8 +12,8 @@ var sess;
 module.exports = function (app, passport) {
     //02.03 determine your approach
     app.get('/determine_your_approach', isLoggedIn, function (req, res) {
-       
-        ProbAppr.findOne({ userid: req.user._id },
+        sess = req.session;
+        ProbAppr.findOne({ userid: req.user._id, evalid:sess.eval._id },
             function (err, probAppr) {
                 if (err || !probAppr) res.render('determine_your_approach.html', { probAppr: new ProbAppr() });
                 if (probAppr) {
@@ -25,10 +26,32 @@ module.exports = function (app, passport) {
 
     });
     app.post('/determine_your_approach', isLoggedIn, function (req, res) {
-       
+        var toollist = { "name": "Determine Your Approach", "status": "completed", "visited_at": new Date() };
         sess = req.session;
         sess.step = 2
         var obj = req.body;
+       // console.log(sess.eval)
+   
+        if (sess.eval) {
+            Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (eval) {
+                        var tool = eval.toolsvisited.filter(x => x.name === "Determine Your Approach");
+                        console.log(tool.length);
+                        if (tool.length==0) {
+                            eval.toolsvisited.push(toollist);
+                            eval.save(function (err) { if (err) console.log(err); })
+                        }                   
+                        
+                    }
+                }
+            });
+        };
+      
+
+
         if (!obj.evalid) { obj.evalid = sess.eval._id; }
 
         if (!obj.userid) {
@@ -61,7 +84,8 @@ module.exports = function (app, passport) {
 
     });
     app.get('/craft_your_research_q', isLoggedIn, function (req, res) {
-        PlanQuestion.findOne({ userid: req.user._id },
+        sess = req.session;
+        PlanQuestion.findOne({ userid: req.user._id,  evalid:sess.eval._id },
             function (err, planQuestion) {
                 if (err || !planQuestion) res.render('craft_your_research_q.html', { planQuestion: new PlanQuestion() });
                 if (planQuestion) {
@@ -73,10 +97,27 @@ module.exports = function (app, passport) {
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Crafting a Research Question", "status": "completed", "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
         if (!obj.evalid) { obj.evalid = sess.eval._id; }
+        if (sess.eval) {
+            Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (eval) {
+                        var tool = eval.toolsvisited.filter(x => x.name === "Crafting a Research Question");
+                        if (tool.length == 0) {
+                            eval.toolsvisited.push(toollist);
+                            eval.save(function (err) { if (err) console.log(err); })
+                        }     
+                
+                    }
+                }
+            });
+        };
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
             var planQuestion = new PlanQuestion(obj);
@@ -110,7 +151,8 @@ module.exports = function (app, passport) {
     });
     //03.02 plan next steps
     app.get('/plan_next_steps', isLoggedIn, function (req, res) {
-        PlanNext.findOne({ userid: req.user._id },
+        sess = req.session;
+        PlanNext.findOne({ userid: req.user._id, evalid: sess.eval._id },
             function (err, planNext) {
                 if (err || !planNext) res.render('plan_next_steps.html', { planNext: new PlanNext() });
                 if (planNext) {
@@ -124,101 +166,134 @@ module.exports = function (app, passport) {
 
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Plan Next Steps", "status": "completed", "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
-        if (!obj.evalid) { obj.evalid = sess.eval._id; }
-        if (!obj.userid) {
-            if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
-            var planNext = new PlanNext(obj);
-            planNext.save(function (err) {
-                if (err)
+        if (!obj.evalid) { obj.evalid = sess.eval._id; };
+        if (sess.eval) {
+            Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                if (err) {
                     console.log(err);
-                else
-                    res.redirect('/wizard');
-            })
-        }
-        else {
+                } else {
+                    if (eval) {
+                        var tool = eval.toolsvisited.filter(x => x.name === "Plan Next Steps");
+                        if (tool.length == 0) {
+                            eval.toolsvisited.push(toollist);
+                            eval.save(function (err) { if (err) console.log(err); })
+                        }
 
-            PlanNext.findById(obj._id, function (err, planNext) {
-                if (err)
-                    console.log(err);
-                else if (planNext) {
-                    planNext.Plan_Next_A_1 = obj.Plan_Next_A_1;
-                    planNext.Plan_Next_A_2 = obj.Plan_Next_A_2;
-                    planNext.Plan_Next_A_3 = obj.Plan_Next_A_3;
-                    planNext.Plan_Next_A_4 = obj.Plan_Next_A_4;
-                    planNext.Plan_Next_B = obj.Plan_Next_B;
-                    planNext.Plan_Next_C_1 = obj.Plan_Next_C_1;
-                    planNext.Plan_Next_C_2 = obj.Plan_Next_C_2;
-                    planNext.Plan_Next_D_1 = obj.Plan_Next_D_1;
-                    planNext.Plan_Next_D_2 = obj.Plan_Next_D_2;
-                    planNext.Plan_Next_D_3 = obj.Plan_Next_D_3;
-                    planNext.save(function (err) { if (err) console.log(err); });
-                    res.redirect('/wizard');
+                    }
                 }
             });
+        };
+                if (!obj.userid) {
+                    if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
+                    var planNext = new PlanNext(obj);
+                    planNext.save(function (err) {
+                        if (err)
+                            console.log(err);
+                        else
+                            res.redirect('/wizard');
+                    })
+                }
+                else {
 
-        }
+                    PlanNext.findById(obj._id, function (err, planNext) {
+                        if (err)
+                            console.log(err);
+                        else if (planNext) {
+                            planNext.Plan_Next_A_1 = obj.Plan_Next_A_1;
+                            planNext.Plan_Next_A_2 = obj.Plan_Next_A_2;
+                            planNext.Plan_Next_A_3 = obj.Plan_Next_A_3;
+                            planNext.Plan_Next_A_4 = obj.Plan_Next_A_4;
+                            planNext.Plan_Next_B = obj.Plan_Next_B;
+                            planNext.Plan_Next_C_1 = obj.Plan_Next_C_1;
+                            planNext.Plan_Next_C_2 = obj.Plan_Next_C_2;
+                            planNext.Plan_Next_D_1 = obj.Plan_Next_D_1;
+                            planNext.Plan_Next_D_2 = obj.Plan_Next_D_2;
+                            planNext.Plan_Next_D_3 = obj.Plan_Next_D_3;
+                            planNext.save(function (err) { if (err) console.log(err); });
+                            res.redirect('/wizard');
+                        }
+                    });
+
+                }
 
 
-    });
+            });
 
 
-//03.03 context and usage
+            //03.03 context and usage
     app.get('/context_and_usage', isLoggedIn, function (req, res) {
-        PlanContext.findOne({ userid: req.user._id },
+        sess = req.session;
+        PlanContext.findOne({ userid: req.user._id, evalid: sess.eval._id },
             function (err, planContext) {
                 if (err || !planContext) res.render('context_and_usage.html', { planContext: new PlanContext() });
+
                 if (planContext) {
-                    console.log(planContext)
                     res.render('context_and_usage.html', { planContext: planContext })
                 }
             }
+
         );
-
-
-
-    });
+ });
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
-        sess = req.session;
-        sess.step = 3;
-        var obj = req.body;
-        if (!obj.evalid) { obj.evalid = sess.eval._id; }
+                var toollist = { "name": "Planning your research", "status": "completed", "visited_at": new Date() };
+                sess = req.session;
+                sess.step = 3;
+                var obj = req.body;
+                if (!obj.evalid) { obj.evalid = sess.eval._id; }
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            if (eval) {
+                                var tool = eval.toolsvisited.filter(x => x.name === "Planning your research");
+                                if (tool.length == 0) {
+                                    eval.toolsvisited.push(toollist);
+                                    eval.save(function (err) { if (err) console.log(err); })
+                                }
 
-        console.log(obj);
-        if (!obj.userid) {
-            if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
-            var planContext = new PlanContext(obj);
-            console.log(planContext);
-            planContext.save(function (err) {
-                if (err)
-                    console.log(err);
-                else
-                    res.redirect('/wizard');
-            })
-        }
-        else {
-
-            PlanContext.findById(obj._id, function (err, planContext) {
-                if (err)
-                    console.log(err);
-                else if (planContext) {
-                    planContext.Plan_Context_A_1 = obj.Plan_Context_A_1;
-                    planContext.Plan_Context_A_2 = obj.Plan_Context_A_2;
-                    planContext.Plan_Context_A_3 = obj.Plan_Context_A_3;
-                    planContext.Plan_Context_A_4 = obj.Plan_Context_A_4;
-                    planContext.Plan_Context_A_5 = obj.Plan_Context_A_5;
-                    planContext.Plan_Context_B = obj.Plan_Context_B;
-
-                    planContext.save(function (err) { if (err) console.log(err); });
-                    res.redirect('/wizard');
+                            }
+                        }
+                    });
+                };
+                if (!obj.userid) {
+                    if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
+                    var planContext = new PlanContext(obj);
+                    planContext.save(function (err) {
+                        if (err)
+                            console.log(err);
+                        else
+                            res.redirect('/wizard');
+                    })
                 }
+                else {
+
+                    PlanContext.findById(obj._id, function (err, planContext) {
+                        if (err)
+                            console.log(err);
+                        else if (planContext) {
+                            planContext.Plan_Context_A_1 = obj.Plan_Context_A_1;
+                            planContext.Plan_Context_A_2 = obj.Plan_Context_A_2;
+                            planContext.Plan_Context_A_3 = obj.Plan_Context_A_3;
+                            planContext.Plan_Context_A_4 = obj.Plan_Context_A_4;
+                            planContext.Plan_Context_A_5 = obj.Plan_Context_A_5;
+                            planContext.Plan_Context_A_6 = obj.Plan_Context_A_6
+                            planContext.Plan_Context_B = obj.Plan_Context_B;
+                            planContext.Plan_Context_C = obj.Plan_Context_C;
+                            planContext.Plan_Context_D = obj.Plan_Context_D;
+
+                            planContext.save(function (err) { if (err) console.log(err); });
+                            res.redirect('/wizard');
+                        }
+                    });
+
+                }
+
+
             });
 
-        }
-
-
-    });
-   
 };
