@@ -29,9 +29,10 @@ var evaluationSchema = mongoose.Schema({
     toolsvisited: [toollist]
 });
 
-evaluationSchema.methods.findToolList = function findToolList(name, cb) {
-    return this.toolsvisited.filter(x => x.name === name);
-};
+
+//evaluationSchema.methods.findToolList = function findToolList(name, cb) {
+   // return this.toolsvisited.filter(x => x.name === name);
+///};
 
 evaluationSchema.pre('save', function (next) {
     var currentDate = new Date();

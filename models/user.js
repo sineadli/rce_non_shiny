@@ -5,12 +5,12 @@ var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
 org_types = ["school", "district", "research", "Other"];
-roles = ["teacher", "princple", "tech", "other"]
+roles = ["teacher", "princple", "technology", "other"]
 var userSchema = mongoose.Schema({
 
     local            : {
         email        : String,
-        password     : String,
+        password     : String
     },
     profile: {
         organiztion_type: { type: String, enum: org_types },

@@ -3,30 +3,40 @@ body {
   max-width:1000px;
   font-size:1.4em;
   line-height:1.6em;
-     margin: 20px auto;
+     margin: 0 auto;
 }
 div.container-fluid {
 	width:85%;
 	font-size:100%;
  
 }
+/* Header */
+.navbar {
+    height: auto;
+    padding: 5px;
+    margin: 0 !important;
+}
+.navbar h3 {
+    color: #71714A;
+}
+.navbar-default {
+    background-color: #E3E1CE;
+}
 
-div.tool-header div.tool-intro {
-    padding: 15px 25% 15px 15px;
-    /* max-width: 800px; */
-   
-    border-bottom: solid 3px #8C866B;
-  }
-div.breadcrumb, div.sec-label {
+div.breadcrumb, .sec-label {
 	color:#56ACE0;
 	text-transform:uppercase;
 	font-size:1.1em;
 	font-weight:bold;
 }
-div.sec-label {
+.sec-label {
     font-size: .9em;
+    color: #979762;
 }
-
+a.sec-label {
+    font-size: .9em;
+    color: #4081A8;
+}
 .tooltip-gr {
   color:#00CC66;
 }
@@ -121,38 +131,57 @@ div.body-section {
   margin-left:5%;
 }
 
+/* Dashboard */
+div.dash-well {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    border: 1px solid #BAB38F;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+div.dash-well h2 {
+    font-size: 1.8em;
+}
+
 /* Wizard Landing page */
 div.wizard-header-row {
-    border: 1px #ccc solid;
-     box-shadow: 5px 5px 5px #ccc;
+   border: 1px solid #BAB38F;
+    border-radius: 4px;
+     box-shadow: 3px 3px 3px #DBDBD1;
     margin: 15px 0px;
     padding-top: 15px;
+
    
 }
 h2.eval-header {
     font-size: 1.6em;
     margin-bottom: 25px;
+    display: inline-block;
 }
 
 ul.wizard-menu {
     list-style: none;
     display: inline-block;
     height: 70px;
-    border-top: 1px #ccc solid;
+   
     margin: 0;
     padding: 0;
 }
 ul.wizard-menu li {
     display: inline-block;
     width: 16.3%;
+    min-width: 132px;
     height: 75px;
     vertical-align: bottom;
     font-size: .9em;
     border-left: #ccc 1px solid;
+    border-top: #ccc 1px solid;
     text-transform: uppercase;
     text-align: center;
     padding: 8px;
-    float: left;
+   
     cursor: pointer;
     
 }
@@ -162,21 +191,31 @@ ul.wizard-menu li span {
     font-weight: bold;
     color: #666;
 }
-    ul.wizard-menu li.active {
+    ul.wizard-menu li.active span {
         color: #4081A8;
+    }
+    ul.wizard-menu li.active {
+        
         border-bottom: #4081A8 3px solid;
         font-weight: bold;
         height: 75px;
     }
+
+
 div.tool-row div.col-xs-3 {
     padding-right: 0;
 }
+div.col-xs-3 {
+    min-width: 175px;
+}
 div.tool-div {
-    border: 1px solid #ddd;
-     box-shadow: 3px 3px 3px #ccc;
+    border: 1px solid #BAB38F;
+    border-radius: 4px;
+     box-shadow: 3px 3px 3px #DBDBD1;
     padding: 15px;
     margin: 5px;
     height: 275px;
+
 }
 div.tool-div div.tool-title {
     height: 200px;
@@ -196,15 +235,24 @@ div.tool-div div.tool-title {
         color: #fff;
         text-align: center;
         padding: 8px;
-        width: 100px;
+        width: auto;
         float: right;
         vertical-align: bottom;
+        border-radius: 2px;
 
 
     }
 
 
 /* Tool pages */
+
+div.tool-header div.tool-intro {
+    padding: 15px 25% 15px 15px;
+    /* max-width: 800px; */
+   
+    border-bottom: solid 3px #8C866B;
+  }
+
 div.tool-questions {
 	padding:25px;
 }

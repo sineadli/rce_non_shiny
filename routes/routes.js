@@ -1,7 +1,7 @@
 // routes/routes.js
 // load up the evaluation model
 var fs = require('fs');
-var isLoggedIn = require("../middleware/isLoggedIn.js")
+var isLoggedIn = require("../middleware/isLoggedIn.js");
 var sess;
 module.exports = function(app, passport) {
     
@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        res.render('landing.html'); // load the index.html file
+        res.render('landing.html'); // load the ndex.html file
     });
 
     // =====================================
@@ -88,7 +88,18 @@ module.exports = function(app, passport) {
         }
        
     });
-   
+
+    // =====================================
+    // FORGOT PASSWORD =====================
+    // =====================================
+    // for reset password
+//    app.get('/forgot', function (req, res) {
+  //    res.render('forgot.html', {
+    //        user: req.user
+      //  });
+    //});
+
+
    
     //app.use(getEval);
     //non shiny tool routes, this route should go away!
@@ -99,7 +110,14 @@ module.exports = function(app, passport) {
 
     });
 
+
   
+
+	app.get('/header', function (req, res) {
+        //console.log(req.params.wizardPath);
+        res.render('partials/header.html', { user: req.user });
+    });
+
 
 };
 
