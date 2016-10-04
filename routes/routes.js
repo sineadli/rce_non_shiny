@@ -110,5 +110,10 @@ module.exports = function(app, passport) {
 
     });
 
+	app.get('/header', function (req, res) {
+        //console.log(req.params.wizardPath);
+        res.render('partials/header.html', { user: req.user });
+    });
+
 };
 

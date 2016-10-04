@@ -8,6 +8,10 @@ $(document).ready( function() {
     caret.toggleClass('fa-caret-down');
   });
 
+	/** Load Header **/
+  $.get("/header", function (data) {
+	  $("#header").html(data);
+  });
 
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
     $('#Prob_Appr_B').change(function () {
