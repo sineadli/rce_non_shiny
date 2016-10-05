@@ -16,7 +16,7 @@
 
     <div id="header"></div>
 <form action="/planning" method="post">
-    <div class="sec-label"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></div>        
+    <div class="breadcrumbs"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></div>        
             <div class="container-fluid">
                 
                 <!-- Modal -->
@@ -31,7 +31,7 @@
                             </div>
                             <div class="modal-body">
                                 <input type="hidden" id="evalid" value="<%= eval._id %>"/>
-                                <input type="text" id="step" value="<%= step %>" />
+                                <input type="hidden" id="step" value="<%= step %>" />
                                 <input type="text" id="title"/>
                             </div>
                             <div class="modal-footer">
