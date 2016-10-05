@@ -17,11 +17,11 @@
         $(element).after("<ul id='steps'></ul>");
         
         steps.each(function(i) {
-            $(this).wrap("<div id='step" + i + "'></div>");
-            $(this).append("<p id='step" + i + "commands'></p>");
+            $(this).wrap("<div id='step" + i + "'></div>"); //wrap a div outside the fieldset element
+            $(this).append("<p id='step" + i + "commands'></p>");  //append p to hold "next" and "back" buttons at the end of each fieldset element
 
             // 2
-            var name = $(this).find("legend").html();
+    
             $("#steps").append("<li  id='stepDesc" + i + "'></li> " );
 
             if (i == 0) {
