@@ -10,12 +10,13 @@
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
     <script src='/static/js/custom.js'></script>
+
 </head>
 <body>
 
     <div id="header"></div>
 <form action="/planning" method="post">
-        
+    <div class="breadcrumbs"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></div>        
             <div class="container-fluid">
                 
                 <!-- Modal -->
@@ -30,7 +31,7 @@
                             </div>
                             <div class="modal-body">
                                 <input type="hidden" id="evalid" value="<%= eval._id %>"/>
-                                <input type="text" id="step" value="<%= step %>" />
+                                <input type="hidden" id="step" value="<%= step %>" />
                                 <input type="text" id="title"/>
                             </div>
                             <div class="modal-footer">
