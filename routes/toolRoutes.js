@@ -26,7 +26,8 @@ module.exports = function (app, passport) {
 
     });
     app.post('/determine_your_approach', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Determine Your Approach", "status": "completed", "visited_at": new Date() };
+        
+        var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 2
         var obj = req.body;
@@ -38,12 +39,21 @@ module.exports = function (app, passport) {
                     console.log(err);
                 } else {
                     if (eval) {
-                        var tool = eval.toolsvisited.filter(x => x.name === "Determine Your Approach");
-                        console.log(tool.length);
-                        if (tool.length==0) {
+                        var tool = eval.toolsvisited.filter(function (x) { return x.name === "Determine Your Approach"});
+                        
+                        if (tool.length == 0) {
                             eval.toolsvisited.push(toollist);
                             eval.save(function (err) { if (err) console.log(err); })
-                        }                   
+                        }
+                        else {
+                            var index = eval.toolsvisited.indexOf(tool[0]);
+                            if (index > -1) {
+                                eval.toolsvisited.splice(index, 1);
+                                eval.toolsvisited.push(toollist);
+                                eval.save(function (err) { if (err) console.log(err); })
+                            }
+
+                        }                  
                         
                     }
                 }
@@ -97,7 +107,7 @@ module.exports = function (app, passport) {
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Crafting a Research Question", "status": "completed", "visited_at": new Date() };
+        var toollist = { "name": "Crafting a Research Question", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
@@ -108,11 +118,20 @@ module.exports = function (app, passport) {
                     console.log(err);
                 } else {
                     if (eval) {
-                        var tool = eval.toolsvisited.filter(x => x.name === "Crafting a Research Question");
+                        var tool = eval.toolsvisited.filter(function (x) { return x.name === "Crafting a Research Question" });
                         if (tool.length == 0) {
                             eval.toolsvisited.push(toollist);
                             eval.save(function (err) { if (err) console.log(err); })
-                        }     
+                        }
+                        else {
+                            var index = eval.toolsvisited.indexOf(tool[0]);
+                            if (index > -1) {
+                                eval.toolsvisited.splice(index, 1);
+                                eval.toolsvisited.push(toollist);
+                                eval.save(function (err) { if (err) console.log(err); })
+                            }
+
+                        }      
                 
                     }
                 }
@@ -166,7 +185,7 @@ module.exports = function (app, passport) {
 
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Plan Next Steps", "status": "completed", "visited_at": new Date() };
+        var toollist = { "name": "Plan Next Steps", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
@@ -177,11 +196,20 @@ module.exports = function (app, passport) {
                     console.log(err);
                 } else {
                     if (eval) {
-                        var tool = eval.toolsvisited.filter(x => x.name === "Plan Next Steps");
+                        var tool = eval.toolsvisited.filter(function (x) { return x.name === "Plan Next Steps" });
                         if (tool.length == 0) {
                             eval.toolsvisited.push(toollist);
                             eval.save(function (err) { if (err) console.log(err); })
                         }
+                        else {
+                            var index = eval.toolsvisited.indexOf(tool[0]);
+                            if (index > -1) {
+                                eval.toolsvisited.splice(index, 1);
+                                eval.toolsvisited.push(toollist);
+                                eval.save(function (err) { if (err) console.log(err); })
+                            }
+
+                        }   
 
                     }
                 }
@@ -239,7 +267,7 @@ module.exports = function (app, passport) {
         );
  });
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
-                var toollist = { "name": "Planning your research", "status": "completed", "visited_at": new Date() };
+        var toollist = { "name": "Planning your research", "status": req.body.status, "visited_at": new Date() };
                 sess = req.session;
                 sess.step = 3;
                 var obj = req.body;
@@ -250,11 +278,20 @@ module.exports = function (app, passport) {
                             console.log(err);
                         } else {
                             if (eval) {
-                                var tool = eval.toolsvisited.filter(x => x.name === "Planning your research");
+                                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Planning your research" });
                                 if (tool.length == 0) {
                                     eval.toolsvisited.push(toollist);
                                     eval.save(function (err) { if (err) console.log(err); })
                                 }
+                                else {
+                                    var index = eval.toolsvisited.indexOf(tool[0]);
+                                    if (index > -1) {
+                                        eval.toolsvisited.splice(index, 1);
+                                        eval.toolsvisited.push(toollist);
+                                        eval.save(function (err) { if (err) console.log(err); })
+                                    }
+
+                                }   
 
                             }
                         }
