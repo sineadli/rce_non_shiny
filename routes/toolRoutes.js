@@ -32,23 +32,23 @@ module.exports = function (app, passport) {
         var obj = req.body;
        // console.log(sess.eval)
    
-        //if (sess.eval) {
-        //    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-        //        if (err) {
-        //            console.log(err);
-        //        } else {
-        //            if (eval) {
-        //                var tool = eval.toolsvisited.filter(x => x.name === "Determine Your Approach");
-        //                console.log(tool.length);
-        //                if (tool.length==0) {
-        //                    eval.toolsvisited.push(toollist);
-        //                    eval.save(function (err) { if (err) console.log(err); })
-        //                }                   
+        if (sess.eval) {
+            Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (eval) {
+                        var tool = eval.toolsvisited.filter(function (x) { return x.name === "Determine Your Approach"});
+                        console.log(tool.length);
+                        if (tool.length==0) {
+                            eval.toolsvisited.push(toollist);
+                            eval.save(function (err) { if (err) console.log(err); })
+                        }                   
                         
-        //            }
-        //        }
-        //    });
-        //};
+                    }
+                }
+            });
+        };
       
 
 
@@ -102,22 +102,22 @@ module.exports = function (app, passport) {
         sess.step = 3;
         var obj = req.body;
         if (!obj.evalid) { obj.evalid = sess.eval._id; }
-        //if (sess.eval) {
-        //    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-        //        if (err) {
-        //            console.log(err);
-        //        } else {
-        //            if (eval) {
-        //                var tool = eval.toolsvisited.filter(x => x.name === "Crafting a Research Question");
-        //                if (tool.length == 0) {
-        //                    eval.toolsvisited.push(toollist);
-        //                    eval.save(function (err) { if (err) console.log(err); })
-        //                }     
+        if (sess.eval) {
+            Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (eval) {
+                        var tool = eval.toolsvisited.filter(function (x) { return x.name === "Crafting a Research Question" });
+                        if (tool.length == 0) {
+                            eval.toolsvisited.push(toollist);
+                            eval.save(function (err) { if (err) console.log(err); })
+                        }     
                 
-        //            }
-        //        }
-        //    });
-        //};
+                    }
+                }
+            });
+        };
         if (!obj.userid) {
             if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
             var planQuestion = new PlanQuestion(obj);
@@ -171,22 +171,22 @@ module.exports = function (app, passport) {
         sess.step = 3;
         var obj = req.body;
         if (!obj.evalid) { obj.evalid = sess.eval._id; };
-        //if (sess.eval) {
-        //    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-        //        if (err) {
-        //            console.log(err);
-        //        } else {
-        //            if (eval) {
-        //                var tool = eval.toolsvisited.filter(x => x.name === "Plan Next Steps");
-        //                if (tool.length == 0) {
-        //                    eval.toolsvisited.push(toollist);
-        //                    eval.save(function (err) { if (err) console.log(err); })
-        //                }
+        if (sess.eval) {
+            Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (eval) {
+                        var tool = eval.toolsvisited.filter(function (x) { return x.name === "Plan Next Steps" });
+                        if (tool.length == 0) {
+                            eval.toolsvisited.push(toollist);
+                            eval.save(function (err) { if (err) console.log(err); })
+                        }
 
-        //            }
-        //        }
-        //    });
-        //};
+                    }
+                }
+            });
+        };
                 if (!obj.userid) {
                     if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
                     var planNext = new PlanNext(obj);
@@ -244,22 +244,22 @@ module.exports = function (app, passport) {
                 sess.step = 3;
                 var obj = req.body;
                 if (!obj.evalid) { obj.evalid = sess.eval._id; }
-                //if (sess.eval) {
-                //    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-                //        if (err) {
-                //            console.log(err);
-                //        } else {
-                //            if (eval) {
-                //                var tool = eval.toolsvisited.filter(x => x.name === "Planning your research");
-                //                if (tool.length == 0) {
-                //                    eval.toolsvisited.push(toollist);
-                //                    eval.save(function (err) { if (err) console.log(err); })
-                //                }
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            if (eval) {
+                                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Planning your research" });
+                                if (tool.length == 0) {
+                                    eval.toolsvisited.push(toollist);
+                                    eval.save(function (err) { if (err) console.log(err); })
+                                }
 
-                //            }
-                //        }
-                //    });
-                //};
+                            }
+                        }
+                    });
+                };
                 if (!obj.userid) {
                     if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
                     var planContext = new PlanContext(obj);

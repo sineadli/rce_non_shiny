@@ -250,11 +250,13 @@
 </div>
 </div>
 <div>
-    <button type="submit" class="btn btn-warning btn-lg">Save</button>
+    <button type="submit" class="btn btn-primary btn-lg">Save</button>
+    <button type="submit" class="btn btn-primary btn-lg">Complete</button>   
 </div>
 <div>
     <input class="hidden" name="userid" value="<%= planNext.userid %>"/>
     <input class="hidden" name="_id" value="<%= planNext._id %>"/>
+    <input calss="hidden" name="status" id="status" />
 </div>
 </form>
 <script src='/static/js/custom.js'></script>
