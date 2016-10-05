@@ -1,12 +1,12 @@
 body {
   font-family: 'Open Sans';
-  max-width:1000px;
+  max-width:980px;
   font-size:1.4em;
   line-height:1.6em;
      margin: 0 auto;
 }
 div.container-fluid {
-	width:85%;
+	width:100%;
 	font-size:100%;
  
 }
@@ -206,7 +206,7 @@ div.tool-row div.col-xs-3 {
     padding-right: 0;
 }
 div.col-xs-3 {
-    min-width: 175px;
+    min-width: 225px;
 }
 div.tool-div {
     border: 1px solid #BAB38F;
