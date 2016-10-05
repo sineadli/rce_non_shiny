@@ -1,12 +1,12 @@
 ﻿
-div > select,input {width:80%;}
-fieldset { border:none; width:100%; margin-left:40px;}
+div > select,input {width:80%;height:30px;}
+fieldset { border:none; width:95%; margin-left:40px;}
 .prev, .next { background-color:#aaa; padding:5px 10px; color:#fff; text-decoration:none;
                 margin-bottom:20px; margin-top:20px;}
 .prev:hover, .next:hover { background-color:#000; text-decoration:none;}
 .prev { float:left;}
 .next { float:right;}
-#steps {display: block;  width:80%; overflow:hidden; margin:0px; padding:0px; text-align: center}
+#steps {display: block;  width:100%; overflow:hidden; margin:0px; padding:0px; text-align: center}
 #steps  li  {border: 1px solid #aaa;
 border-radius: 50%;
 display: inline-block;
@@ -18,7 +18,7 @@ width: 20px;}
 .container ul{
 list-style: none;
 height: 100%;
-width: 100%;
+width: 80%;
 margin: 0;
 padding: 0;
 }
