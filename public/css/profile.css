@@ -6,7 +6,7 @@ fieldset { border:none; width:100%; margin-left:40px;}
 .prev:hover, .next:hover { background-color:#000; text-decoration:none;}
 .prev { float:left;}
 .next { float:right;}
-#steps {display: block;  width:100%; overflow:hidden; margin:0px; padding:0px; text-align: center}
+#steps {display: block;  width:80%; overflow:hidden; margin:0px; padding:0px; text-align: center}
 #steps  li  {border: 1px solid #aaa;
 border-radius: 50%;
 display: inline-block;
