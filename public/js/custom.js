@@ -1,6 +1,6 @@
 /*~~~~~~~~~~~~~~~~~~ ALL ~~~~~~~~~~~~~~~~~~*/
 $(document).ready( function() {
-
+   
   $('[data-toggle=collapse]').click( function() {
 
     var caret = $(this).find('i');
@@ -13,6 +13,15 @@ $(document).ready( function() {
 	  $("#header").html(data);
   });
 
+  $(':button').click(function () {
+      if ($(this).html() === 'Save') {
+          $('#status').val('Incomplete');
+      }
+      else {
+          $('#status').val('completed');
+      }
+      
+  });
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
     $('#Prob_Appr_B').change(function () {
         var value = $(this).val();
