@@ -66,6 +66,7 @@ module.exports = function(app, passport) {
         req.user.profile.role = req.body.role;
         req.user.profile.role_other = req.body.role_other;
         req.user.profile.organization_name = req.body.organization_name;
+        req.user.profile.user_name = req.body.user_name;
         
        // req.user.profile.user_pic.data = fs.readFile('../50183_RCE/public/image/me.jpg');
        // req.user.profile.user_pic.contentType = 'image/jpg'
