@@ -1,0 +1,226 @@
+﻿<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>RCTE Authentication</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <style>
+
+        .label-one{
+          width:22%;
+          font-weight:normal;
+        }
+        .label-two{
+          width:60%;
+          font-weight:normal;
+        }
+         .label-three{
+          width:15%;
+          font-weight:normal;
+          text-align:right;
+        }
+    </style>
+    
+</head>
+<body>
+    <% include ../views/partials/header.html %>
+    <form action="/setting" method="post">
+        <div class="container-fluid">
+            <div class="page-header">
+                <h1 class="page-title">Profile and Setting</h1>
+
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-sm-3">
+                    <div class="dash-well">
+                        <h2 class="text-center">
+                            Edit Profile Picture
+                        </h2>
+                        <p class="text-center"><%= user.profile.role %></p>
+                        <p class="text-center">
+                            <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <h2>Account Settings</h2>
+                    <div class="panel-group" id="setting">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one" style="text-align:left;">Username </label>
+                                    <label class="label-two"><%= user.local.email  %></label>
+                                    <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseOne">Update</a></label>
+                                </h4>
+                               
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="form-group col-sm-6 col-sm-offset-2">
+                                            <label for="email">Username</label>
+                                            <input type="email" name="email" />
+                                        </div>
+                                        <div class="col-sm-3 col-sm-offset-9 ">
+                                            <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one" style="text-align:left;">Password </label>
+                                    <label class="label-two">&nbsp;</label>
+                                    <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseTwo">Update</a></label>
+                                </h4>
+                              
+                            </div>
+                            
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group col-sm-6 col-sm-offset-2">
+                                        <label for="password">New Password</label>
+                                        <input type="password" class="form-control" id="reset-password" name="password" novalidate>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-sm-offset-2">
+                                        <label for="confirm">Confirm Password</label>
+                                        <input type="password" class="form-control" id="reset-confirmpassword" name="confirm" validate>
+                                        <label class="registrationFormAlert" id="checkPasswordMatch"></label>
+                                    </div>
+                                    <div class="col-sm-3 col-sm-offset-9 ">
+                                        <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg" disabled>Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <h2>Profile Information</h2>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one">Name </label>
+                                    <label class="label-two"><%= user.profile.user_name  %> </label>
+                                    <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileOne">Update</a></label>
+                                </h4>
+                            </div>
+                            <div id="collapseProfileOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="form-group col-sm-6 col-sm-offset-2">
+                                            <label for="first_name">First Name</label>
+                                            <input type="text" name="first_name" />
+                                            <label for="last_name">Last Name</label>
+                                            <input type="text" name="last_name" />
+                                        </div>
+                                        <div class="col-sm-3 col-sm-offset-9 ">
+                                            <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one">Place of Work </label>
+                                    <label class="label-two"><%= user.profile.organization_name %></label>
+                                    <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileTwo">Update</a></label>
+                                </h4>
+                            </div>
+                            <div id="collapseProfileTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group col-sm-6 col-sm-offset-2">
+                                        <label for="organization_name">Place of Work</label>
+                                        <input type="text" class="form-control" name="organization_name">
+                                    </div>
+
+                                    <div class="col-sm-3 col-sm-offset-9 ">
+                                        <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one">Role</label>
+                                    <label class="label-two"><%= user.profile.role %> <% if (user.profile.role=="other") { %> <%=  user.profile.role_other %> <% } %></label>
+                                    <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileThree">Update</a></label>
+                                </h4>
+                            </div>
+                            <div id="collapseProfileThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group col-sm-6 col-sm-offset-2">
+                                        <label for="role">Role</label>
+                                        <select id="role" name="role">
+                                            <option value="">Select an option</option>
+                                            <option value="teacher">Teacher</option>
+                                            <option value="princple">Princple</option>
+                                            <option value="tech">Technology/IT Advisor</option>
+                                            <option value="other">other</option>
+                                        </select>
+                                        <div id="other-specify-role" hidden="hidden">
+                                            <p>Please specify:</p>
+                                            <input type="text" id="role_other" name="role_other" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-sm-offset-9 ">
+                                        <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <script>
+        $(document).ready(function () {
+            $("#reset-confirmpassword").keyup(checkPasswordMatch);
+
+            function checkPasswordMatch() {
+                var password = $("#reset-password").val();
+                var confirmPassword = $("#reset-confirmpassword").val();
+
+                if (password && confirmPassword && password != confirmPassword) {
+                    $("#mpr-reset").prop("disabled", true)
+                    $("#checkPasswordMatch").html("Passwords do not match!");
+                }
+                else {
+                    $("#checkPasswordMatch").html("");
+                    if (password && password == confirmPassword) {
+                        $("#mpr-reset").prop("disabled", false);
+                    }
+                }
+            };
+        })
+      $( function() {
+        $( "#accordion" ).accordion();
+      });
+      $('#role').change(function () {
+          var value = $(this).val();
+
+          var otherSpecify = $("#other-specify-role");
+
+          if (value === "other") otherSpecify.show();
+          else otherSpecify.hide();
+      });
+    </script>
+</body>
+
+</html>
