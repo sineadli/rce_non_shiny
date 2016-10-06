@@ -4,8 +4,8 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
-org_types = ["school", "district", "research", "Other"];
-roles = ["teacher", "princple", "technology", "other"]
+//org_types = ["school", "district", "research", "Other"];
+//roles = ["teacher", "princple", "technology", "other"]
 var userSchema = mongoose.Schema({
 
     local            : {
@@ -13,9 +13,9 @@ var userSchema = mongoose.Schema({
         password     : String
     },
     profile: {
-        organiztion_type: { type: String, enum: org_types },
+        organiztion_type: { type: String },
         organiztion_type_other: String, 
-        role: { type: String, enum: roles},
+        role: { type: String},
         role_other: String,
         organization_name: String,
         user_name: String,

@@ -30,19 +30,12 @@
 
                         <div class="row">
                             <label for="organiztion_type">What type of organization do you work for?</label>
-                            <select required=required name="organiztion_type" id="organiztion_type">
-                                <%
-                                var options = ["Select an option", "School", "School district", "Research organization", "Other"];
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                var selected;
-                                console.log(user);
-                                if (user) { selected = ( user.profile.organiztion_type== options[i] ) ? "selected" : "";}
-                                %>
-                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                                }
-                                %>
-
+                            <select id="organiztion_type" name="organiztion_type">
+                                <option value="">Select an option</option>
+                                <option value="school">School</option>
+                                <option value="district">School district</option>
+                                <option value="research">Research organization</option>
+                                <option value="other">other</option>
                             </select>
                            
                         </div>
@@ -58,25 +51,20 @@
              
                         <div class="row">
                             <label for="role">What is your role in the organization?</label>
-                            <select required=required name="role" id="role">
-                                <%
-                                var options = ["Select an option", "Teacher", "Princple", "Technology/IT Advisor", "Other"];
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                var selected;
-                                console.log(user);
-                                if (user) { selected = ( user.profile.role== options[i] ) ? "selected" : "";}
-                                %>
-                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                                }
-                                %>
+                            <select id="role" name="role">
 
+                                <option value="">Select an option</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="princple">Princple</option>
+                                <option value="tech">Technology/IT Advisor</option>
+                                <option value="other">other</option>
+                         
                             </select>
                           
                         </div>
                         <div id="other-specify-role" hidden="hidden">
                             <p>Please specify:</p>
-                            <input type="text" id="role_other" name="role_other" value="<%= user.profile.role_other %>" />
+                            <input type="text" id="role_other" name="role_other"  />
                         </div>
             
                 </fieldset>
@@ -87,7 +75,7 @@
                             <label for="organization_name">Organization Name</label>
                         </div>
                         <div class="row">
-                            <input id="organization_name" name="organization_name" type="text" value="<%= user.profile.organization_name %>" />
+                            <input id="organization_name" name="organization_name" type="text"  />
                         </div>
           
 
@@ -99,7 +87,7 @@
                             <label for="user_name">User Name</label>
                         </div>
                         <div class="row">
-                            <input id="user_name" name="user_name" type="text" value="<%= user.profile.user_name %>" />
+                            <input id="user_name" name="user_name" type="text"  />
                         </div>
           
 

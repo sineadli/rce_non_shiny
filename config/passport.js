@@ -112,7 +112,8 @@ module.exports = function(passport) {
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
             
-            user.userSession = JSON.stringify(req.headers['cookie']);
+            //user.userSession = JSON.stringify(req.headers['cookie']);
+            user.userSession = req.headers['cookie'];
             // save the user
             user.save(function (err) {
                 if (err)
