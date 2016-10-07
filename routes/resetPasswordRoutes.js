@@ -88,8 +88,8 @@ module.exports = function (app) {
                         req.flash('error', 'Password reset token is invalid or has expired.');
                         return res.redirect('back');
                     }
-                    console.log(req.body.password);
-                    console.log(user);
+                    //console.log(req.body.password);
+                    //console.log(user);
                     user.local.password = user.generateHash(req.body.password);
                     user.resetPasswordToken = undefined;
                     user.resetPasswordExpires = undefined;

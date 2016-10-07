@@ -59,6 +59,7 @@ module.exports = function(app, passport) {
             user : req.user // get the user out of session and pass to template
         });
     });
+
     app.post('/profile', isLoggedIn, function (req, res) {
         console.log(req.body);
         req.user.profile.organiztion_type = req.body.organiztion_type;
@@ -72,6 +73,43 @@ module.exports = function(app, passport) {
        // req.user.profile.user_pic.contentType = 'image/jpg'
         req.user.save();
         res.redirect('/dashboard');
+    });
+
+    //==========================================================
+    //Profile and Setting
+    //===========================================================
+    app.get('/setting', isLoggedIn, function (req, res) {
+        //console.log('cookie: ' + JSON.stringify(req.headers['cookie']));
+        res.render('profileAndSetting.html', {
+            user: req.user // get the user out of session and pass to template
+        });
+    });
+    app.post('/setting', isLoggedIn, function (req, res) {
+      
+  
+        if (req.body.email) req.user.local.email = req.body.email
+        if (req.body.password) req.user.local.password = req.user.generateHash(req.body.password);
+        if (req.body.role) req.user.profile.role = req.body.role;
+        if (req.body.role_other) req.user.profile.role_other = req.body.role_other;
+        if (req.body.organization_name) req.user.profile.organization_name = req.body.organization_name;
+        if (req.body.first_name) {
+            req.user.profile.first_name = req.body.first_name;
+            req.user.profile.user_name = req.body.first_name;
+        }
+        if (req.body.last_name) {
+            req.user.profile.last_name = req.body.last_name;
+            req.user.profile.user_name = req.body.last_name;
+        }
+        if (req.body.first_name && req.body.last_name) req.user.profile.user_name = req.body.first_name + " " + req.body.last_name;
+
+        // req.user.profile.user_pic.data = fs.readFile('../50183_RCE/public/image/me.jpg');
+        // req.user.profile.user_pic.contentType = 'image/jpg'
+  
+        req.user.save(function (err) {
+            if (err) console.log(err);
+            res.redirect('/setting');
+        });
+        
     });
     // =====================================
     // LOGOUT ==============================

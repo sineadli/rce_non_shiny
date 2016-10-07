@@ -19,7 +19,9 @@ var userSchema = mongoose.Schema({
         role_other: String,
         organization_name: String,
         user_name: String,
-        user_pic: { data: Buffer, contentType: String }
+        user_pic: { data: Buffer, contentType: String },
+        first_name: String,
+        last_name: String
 
     },
     userSession: String,
