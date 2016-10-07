@@ -28,7 +28,7 @@ module.exports = function (app) {
                         req.flash('error', 'No account with that email address exists.');
                         return res.redirect('/forgot');
                     }
-
+                    
                     user.resetPasswordToken = token;
                     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -40,17 +40,18 @@ module.exports = function (app) {
             function (token, user, done) {
               
                 var transport = nodemailer.createTransport( {
-                    service: '???',
-                    //port: 25, //confirm with company or 465?
-                    //host: 'smtp.mathematica-mpr.com',
-                    auth: {
-                        user: '???',    //get this from ITS?
-                        pass: '???'
-                    }
+                   // service: '???',
+                    port: 25, //confirm with company or 465?
+                    host: 'intrelay.mathematica-mpr.com'
+                   // host: 'smtp.mathematica-mpr.com',
+                    //auth: {
+                    //    user: '???',    //get this from ITS?
+                    //    pass: '???'
+                    //}
                 });
                 var mailOptions = {
-                    to: user.email,
-                    from: '???',
+                    to: user.local.email,
+                    from: 'intrelay.mathematica-mpr.com',
                     subject: 'RCE USER Password Reset',
                     text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -58,7 +59,7 @@ module.exports = function (app) {
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                 };
                 transport.sendMail(mailOptions, function (err) {
-                    req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+                    req.flash('info', 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
                     done(err, 'done');
                 });
             }
@@ -93,7 +94,6 @@ module.exports = function (app) {
                     user.local.password = user.generateHash(req.body.password);
                     user.resetPasswordToken = undefined;
                     user.resetPasswordExpires = undefined;
-                    console.log(user);
                     user.save(function (err) {
                         done(err, user);
                     });
@@ -101,20 +101,21 @@ module.exports = function (app) {
             },
             function (user, done) {
                 var transport = nodemailer.createTransport({
-                    service: 'Yahoo',
-                    //port: 25, //confirm with company or 465?
-                    //host: 'smtp.mathematica-mpr.com',
-                    auth: {
-                        user: '???',    //get this from ITS?
-                        pass: '???'
-                    }
+                    //service: 'Yahoo',
+                    port: 25, //confirm with company or 465?
+                    host: 'intrelay.mathematica-mpr.com'
+                   // host: 'smtp.mathematica-mpr.com',
+                    //auth: {
+                    //    user: '???',    //get this from ITS?
+                    //    pass: '???'
+                    //}
                 });
                 var mailOptions = {
-                    to: user.email,
-                    from: '???',
+                    to: user.local.email,
+                    from: 'intrelay.mathematica-mpr.com',
                     subject: 'Your password has been changed',
                     text: 'Hello,\n\n' +
-                    'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+                    'This is a confirmation that the password for your account ' + user.local.email + ' has just been changed.\n'
                 };
                 transport.sendMail(mailOptions, function (err) {
                     req.flash('success', 'Success! Your password has been changed.');

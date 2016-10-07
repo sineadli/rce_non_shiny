@@ -16,8 +16,10 @@
 
     <div id="header"></div>
 <form action="/planning" method="post">
-    <div class="breadcrumbs"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></div>        
-            <div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+    </ol>        
+    <div class="container-fluid">
                 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" role="dialog">
@@ -53,7 +55,8 @@
                         </div>
                         <div class="col-xs-2">
                             <div class="sec-label">Start Date</div>
-                            <p>4/25/2016</p>
+                            <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
+                            <p><%= d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
                         </div>
                         <div class="col-xs-3">
                             <div class="sec-label">Status</div>
@@ -91,7 +94,6 @@
 
 
             </div>
-
     </form>
 <script type="text/javascript">
     $(document).ready(function() {
