@@ -9,7 +9,7 @@ var ProbAppr = require('../models/probAppr.js'),
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var sess;
 //please note that req.session.step is for managing the active tab for wizard.html
-//the following defines the tool routes available 
+//the following defines the tool routes available, only four routes available currently
 module.exports = function (app, passport) {
     //02.03 determine your approach
     app.get('/determine_your_approach', isLoggedIn, function (req, res) {

@@ -91,7 +91,9 @@ rh2 {
                 <input type="password" id="login-password"  name="password" class="form-control" required novalidate  >
                 <label for="login-confirmpassword" >Confirm Password</label>
                 <input type="password" id="login-confirmpassword"  name="confirmpassword" class="form-control" required validate >
-                <label class="registrationFormAlert" id="checkPasswordMatch"></label> 
+                <label class="registrationFormAlert" id="checkPasswordMatch"></label>
+                <p><input type="checkbox" id="chkAgree"> <label for="chkAgree">I agree with the terms and conditions</label></p>
+                
                 <p class="small vtop vbottom">Passwords should be at least 8 characters in length and contain at least 3 of the following characters:</p>
                 <p>
                     <ul  class="small vtop vbottom">
@@ -143,17 +145,17 @@ rh2 {
                }
          
          });
-        $("#mpr-back-to-login").click(function(){
+       $("#mpr-back-to-login").click(function(){
              $("#login-username-form").removeClass("hide");
              $("#mpr-back-to-login, #login-username-password").addClass("hide");
-              $(".row.rh-box-breadcrumbs.bcactive0 >.target0 >.unit").css("background-color", "#aaa");
+             $(".row.rh-box-breadcrumbs.bcactive0 >.target0 >.unit").css("background-color", "#aaa");
              $(".row.rh-box-breadcrumbs > .target1.bclast > .unit").css("background-color", "transparent");
              $("#mpr-login-signin").html("NEXT").prop("disabled", false);
              return false;
             });
-         $("#login-confirmpassword").keyup(checkPasswordMatch);
-
-           function checkPasswordMatch() {
+       $("#login-confirmpassword").keyup(checkPasswordMatch);
+       $("#chkAgree").click(checkPasswordMatch);
+       function checkPasswordMatch() {
 
             var password = $("#login-password").val();
             var confirmPassword = $("#login-confirmpassword").val();
@@ -164,8 +166,9 @@ rh2 {
                 }
             else {
                     $("#checkPasswordMatch").html("");
-                    if (password && password == confirmPassword) $("#mpr-login-signin").prop("disabled", false);
-                    }
+                
+                    if (password && password == confirmPassword && $('#chkAgree').is(':checked')) $("#mpr-login-signin").prop("disabled", false);
+                 }
         }
       });
     
