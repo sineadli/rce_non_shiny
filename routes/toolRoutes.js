@@ -45,23 +45,25 @@ module.exports = function (app, passport) {
                     probAppr.save(function (err) {
                         if (err)
                             console.log(err);
-                        else
+                        //else
 
-                            done(err);
+                         return   done(err);
                     })
                 }
                 else {
 
                     ProbAppr.findById(obj._id, function (err, probAppr) {
-                        if (err)
+                        if (err) {
                             console.log(err);
+                            return done(err);
+                        }
                         else if (probAppr) {
                             probAppr.Prob_Appr_A = obj.Prob_Appr_A;
                             probAppr.Prob_Appr_B = obj.Prob_Appr_B;
                             probAppr.Prob_Apprr_B_other = obj.Prob_Apprr_B_other;
                             probAppr.Prob_Apprr_C = obj.Prob_Apprr_C;
-                            probAppr.save(function (err) { if (err) console.log(err); });
-                            done(err);
+                            probAppr.save(function (err) { if (err) console.log(err); return done(err); });
+                           
                         }
                     });
                 }
@@ -75,6 +77,7 @@ module.exports = function (app, passport) {
                     }
                     if (err) {
                         console.log(err);
+                        return res.redirect('/wizard');
                     } else {
                         if (eval) {
                             eval.last_step = 2;
@@ -149,8 +152,10 @@ module.exports = function (app, passport) {
                 }
                 else {
                     PlanQuestion.findById(obj._id, function (err, planQuestion) {
-                        if (err)
+                        if (err) {
                             console.log(err);
+                            return done(err);
+                        }
                         else if (planQuestion) {
                             planQuestion.Plan_Question_A = obj.Plan_Question_A;
                             planQuestion.Plan_Question_B_1 = obj.Plan_Question_B_1;
@@ -159,8 +164,8 @@ module.exports = function (app, passport) {
                             planQuestion.Plan_Question_B_3 = obj.Plan_Question_B_3;
                             planQuestion.Plan_Question_C = obj.Plan_Question_C;
                             planQuestion.Plan_Question_D = obj.Plan_Question_D;
-                            planQuestion.save(function (err) { if (err) console.log(err); });
-                            done(err);
+                            planQuestion.save(function (err) { if (err) console.log(err); return done(err);});
+                           
                         }
                     });
                 }
@@ -174,6 +179,7 @@ module.exports = function (app, passport) {
                         }
                         if (err) {
                             console.log(err);
+                            return res.redirect('/wizard');
                         } else {
                             if (eval) {
                                 eval.last_step = 3;
@@ -246,15 +252,17 @@ module.exports = function (app, passport) {
                     planNext.save(function (err) {
                         if (err)
                             console.log(err);
-                        else
+                        //else
                            done(err);
                     })
                 }
                 else {
 
                     PlanNext.findById(obj._id, function (err, planNext) {
-                        if (err)
+                        if (err) {
                             console.log(err);
+                            return done(err);
+                        }
                         else if (planNext) {
                             planNext.Plan_Next_A_1 = obj.Plan_Next_A_1;
                             planNext.Plan_Next_A_2 = obj.Plan_Next_A_2;
@@ -266,8 +274,8 @@ module.exports = function (app, passport) {
                             planNext.Plan_Next_D_1 = obj.Plan_Next_D_1;
                             planNext.Plan_Next_D_2 = obj.Plan_Next_D_2;
                             planNext.Plan_Next_D_3 = obj.Plan_Next_D_3;
-                            planNext.save(function (err) { if (err) console.log(err); });
-                            done(err);
+                            planNext.save(function (err) { if (err) console.log(err); done(err); });
+                            
                         }
                     });
 
@@ -282,6 +290,7 @@ module.exports = function (app, passport) {
                         }
                         if (err) {
                             console.log(err);
+                            return res.redirect('/wizard');
                         } else {
                             if (eval) {
                                 eval.last_step = 3;
@@ -350,15 +359,17 @@ module.exports = function (app, passport) {
                     planContext.save(function (err) {
                         if (err)
                             console.log(err);
-                        else
-                            res.redirect('/wizard');
+                       // else
+                        return done(err);
                     })
                 }
                 else {
 
                     PlanContext.findById(obj._id, function (err, planContext) {
-                        if (err)
+                        if (err) {
                             console.log(err);
+                            return done(err);
+                        }
                         else if (planContext) {
                             planContext.Plan_Context_A_1 = obj.Plan_Context_A_1;
                             planContext.Plan_Context_A_2 = obj.Plan_Context_A_2;
@@ -370,8 +381,8 @@ module.exports = function (app, passport) {
                             planContext.Plan_Context_C = obj.Plan_Context_C;
                             planContext.Plan_Context_D = obj.Plan_Context_D;
 
-                            planContext.save(function (err) { if (err) console.log(err); });
-                            res.redirect('/wizard');
+                            planContext.save(function (err) { if (err) console.log(err); return done(err);});
+                            
                         }
                     });
 
@@ -386,11 +397,15 @@ module.exports = function (app, passport) {
                         }
                         if (err) {
                             console.log(err);
-                        } else {
+                            res.redirect('/wizard');
+                        }
+                        else
+                        {
                             if (eval) {
                                 eval.last_step = 3;
                                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Planning your research" });
-
+                                console.log("hi");
+                               
                                 if (tool.length == 0) {
                                     eval.toolsvisited.push(toollist);
                                     eval.save(function (err) {
