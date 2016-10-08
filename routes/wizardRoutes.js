@@ -20,6 +20,8 @@ module.exports = function (app, passport) {
     app.get('/wizard', isLoggedIn, function (req, res) {
         sess = req.session;
         if (!sess.step) { sess.step = 1 }
+        console.log(2);
+        console.log(sess.eval);
         WizardStep.find(function (err, wizardSteps) {
             if (err) {
                 res.status(500).send(err);
@@ -57,11 +59,12 @@ module.exports = function (app, passport) {
     });
 
     //this route is update evaluation object, it is called from dashboard.html and wizard.html
+    //new or change title only
     app.post('/api/eval', isLoggedIn, function (req, res) {
         sess = req.session;
         // console.log(req.body.id);
         if (req.body.id == "") {
-            var eval = new Evaluation({ userid: req.user._id, title: req.body.title });
+            var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: 'New' });
             sess.eval = eval;
             eval.save(function (err) {
                 if (err)

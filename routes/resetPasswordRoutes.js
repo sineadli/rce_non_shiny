@@ -58,10 +58,17 @@ module.exports = function (app) {
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                 };
-                transport.sendMail(mailOptions, function (err) {
-                    req.flash('info', 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
-                    done(err, 'done');
-                });
+                console.log("hi");
+                try {
+                    transport.sendMail(mailOptions, function (err) {
+                        req.flash('info', 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+                        done(err, 'done');
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+                 
+                
             }
         ], function (err) {
             if (err) return next(err);

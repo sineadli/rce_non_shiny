@@ -33,7 +33,8 @@
                             </div>
                             <div class="modal-body">
                                 <input type="hidden" id="evalid" value="<%= eval._id %>"/>
-                                <input type="hidden" id="step" value="<%= step %>" />
+                                
+                                <input type="hidden" id="step" value="<%= eval.last_step %>" />
                                 <input type="text" id="title"/>
                             </div>
                             <div class="modal-footer">
@@ -56,11 +57,12 @@
                         <div class="col-xs-2">
                             <div class="sec-label">Start Date</div>
                             <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
-                            <p><%= d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
+                            <p><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
                         </div>
                         <div class="col-xs-3">
                             <div class="sec-label">Status</div>
-                            <p>50% Complete</p>
+                            <% var status='New'; if (eval) {status = eval.status;} %>
+                            <p><%= status %></p>
                         </div>
                         <div class="col-xs-12" style="padding: 0;margin:0">
                             <ul class="wizard-menu">
@@ -101,8 +103,9 @@
         //just load the first one for now, will have to determine which is the active currently for returning user with
         //an ongoing eval
         var step = $("#step").val();
+        if (!step || step == 0 || step == "") { step = 1;}
         $("li").each(function(index) {
-            if (index == step - 1) {
+            if (index == step) {
                 $(this).addClass("active");
             }
 
