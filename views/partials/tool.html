@@ -19,7 +19,13 @@
                         <h2><%= tools[i].name %> </h2>
                         <p><%= tools[i].desc %></p>
                     </div>
-
+                    <% var tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
+                        if (tool.length > 0) {var status =tool[0].status; var d=new Date(tool[0].visited_at) %>
+                    <div class="tool-status status">
+                        <p>Status: <%= status %></p>
+                        <p>Last Visited: <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></p>
+                    </div>
+                    <% } %>
                     <div>
                         <% var option=""; if (tools[i].path) {option=tools[i].path } %>
                         <a href="<%= option %>" class="button">View</a>

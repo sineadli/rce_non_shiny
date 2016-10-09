@@ -35,13 +35,14 @@ module.exports = function (app, passport) {
     // this is for returning the partial view tool.html on the wizard.html
     app.get('/tools/:wizardPath', function (req, res) {
         //console.log(req.params.wizardPath);
+        sess = req.session;
         var wizardStep;
         WizardStep.findOne({ step: req.params.wizardPath }, function (err, wizard) {
             if (err) {
                 res.status(500).send(err);
             }
             else {
-                console.log(wizardStep);
+               // console.log(wizardStep);
                 wizardStep = wizard;
                 Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
                     if (err) {
@@ -50,7 +51,7 @@ module.exports = function (app, passport) {
                     }
                     else {
                         //console.log(tools);
-                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools });
+                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval });
                     }
                 });
             }
