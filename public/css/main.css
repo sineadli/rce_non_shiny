@@ -115,7 +115,7 @@ h2,p.clickable {
   cursor:pointer;
 }
 h2 {
-  font-size:20px;
+  font-size:2em;
   font-weight:bold;
   margin-top: 5px;
 }
@@ -137,6 +137,48 @@ div.body-section {
   margin-left:5%;
 }
 
+/*Home Page*/
+div.front-header {
+    background-image: url('/static/image/HandsForFront.png');
+    background-repeat: no-repeat;
+    height: 500px;
+    width: 1000px;
+    padding: 25px;
+
+    color: #ffffff;
+    margin-bottom: 45px;
+   
+}
+div.welcome-text {
+     padding: 25px;
+    background-color: #e7e7e7;
+    margin-top: 35px;
+}
+div.front-header div.front-text {
+    width: 70%;
+    margin: 0 auto;
+    vertical-align: middle;
+}
+ul.front-list {
+    margin: 10px auto;
+    width: 80%;
+    
+}
+div.front-header h1 {
+    font-size: 2.6em;
+    margin-bottom: 25px;
+    text-align: center;
+}
+    div.front-header p {
+        font-size: 1.1em;
+        line-height: 1.6em;
+         text-align: center;
+    }
+  div.front-header p a.btn-primary.larger {
+       font-size: 1.6em;
+    padding: 10px 25px;
+      margin-top: 25px;
+   }
 /* Dashboard */
 div.dash-well {
     min-height: 20px;
@@ -169,35 +211,38 @@ h2.eval-header {
 
 ul.wizard-menu {
     list-style: none;
-    display: inline-block;
-    height: 70px;
-   
+    display: block;
     margin: 0;
     padding: 0;
+    height: auto;
+    overflow: auto
 }
 ul.wizard-menu li {
-    display: inline-block;
-    width: 16.3%;
-    min-width: 132px;
+    display: table;
+    width: 165px;
+    float: left;
+  
     height: 75px;
-    vertical-align: bottom;
+     text-align: center;
     font-size: .9em;
     border-left: #ccc 1px solid;
     border-top: #ccc 1px solid;
     text-transform: uppercase;
-    text-align: center;
     padding: 8px;
-   
     cursor: pointer;
     
 }
 
-ul.wizard-menu li span {
+ul.wizard-menu li p {
      vertical-align: middle;
+       text-align: center;
+    display: table-cell;
     font-weight: bold;
-    color: #666;
+    color: #979762;
+    height: 55px;
+  
 }
-    ul.wizard-menu li.active span {
+    ul.wizard-menu li.active p {
         color: #4081A8;
     }
     ul.wizard-menu li.active {

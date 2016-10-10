@@ -58,38 +58,38 @@
                         <div class="col-xs-2">
                             <div class="sec-label">Start Date</div>
                             <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
-                            <p><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
+                            <p><strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear()  %></strong></p>
                         </div>
                         <div class="col-xs-3">
                             <div class="sec-label">Status</div>
                             <% var status='New'; if (eval) {status = eval.status;} %>
-                            <p><%= status %></p>
+                            <p><strong><%= status %></strong></p>
                         </div>
-                        <div class="col-xs-12" style="padding: 0;margin:0">
+                        <div class="col-xs-12" style="padding: 0; margin: 0; height: 75px;">
                             <ul class="wizard-menu">
-                                <li id="1" class="wizard-item ">
-                                    <span>Welcome</span>
+                                <li id="1" class="wizard-item">
+                                    <p>Welcome</p>
                                 </li>
                                 <li id="2" class="wizard-item">
-                                    <span>Understanding Your Problem</span>
+                                    <p>Understanding Your Problem</p>
                                 </li>
                                 <li id="3" class="wizard-item">
-                                    <span>Planning Your Research</span>
+                                    <p>Planning Your Research</p>
                                 </li>
                                 <li id="4" class="wizard-item ">
-                                    <span>Preparing Your Data</span>
+                                    <p>Preparing Your Data</p>
                                 </li>
                                 <li id="5" class="wizard-item">
-                                    <span>Analyzing your Data</span>
+                                    <p>Analyzing your Data</p>
                                 </li>
                                 <li id="6" class="wizard-item">
-                                    <span>Summarizing Your Findings</span>
+                                    <p>Summarizing Your Findings</p>
                                 </li>
                             </ul>
-                           
+                            <div style="clear: both;  display: block;"></div>
 
                         </div>
-                        <div style="clear: both; line-height: 0;"></div>
+                        <div style="clear: both;  display: block;"></div>
                     </div>
                 </div>
 

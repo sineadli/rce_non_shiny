@@ -18,11 +18,13 @@ module.exports = function (app, passport) {
 
 
     app.get('/wizard', isLoggedIn, function (req, res) {
-        sess = req.session;
-        if (!sess.step) { sess.step = 1 }
+		sess = req.session;
+		console.log(sess);
+		if (!sess.step) { sess.step = 1 }
+		if (!sess.last_tool) {sess.last_tool = "none"}
       
         WizardStep.find(function (err, wizardSteps) {
-            if (err) {
+			if (err) {
                 res.status(500).send(err);
             }
 			else {
@@ -39,7 +41,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         var wizardStep;
         WizardStep.findOne({ step: req.params.wizardPath }, function (err, wizard) {
-            if (err) {
+			if (err) {
                 res.status(500).send(err);
             }
             else {

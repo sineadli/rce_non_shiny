@@ -8,8 +8,11 @@ module.exports = function(app, passport) {
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
-    app.get('/', function(req, res) {
-        res.render('landing.html'); // load the ndex.html file
+    //app.get('/', function(req, res) {
+    //    res.render('landing.html'); // load the ndex.html file
+    //});
+	app.get('/', function (req, res) {
+        res.render('index.html'); // load the ndex.html file
     });
 
     // =====================================
