@@ -73,7 +73,8 @@
                         }
                         %>
                     </select>
-                    approximately $<input type="text" style="width: 40px;" name="Plan_Next_A_2" id="Plan_Next_A_2" placeholder="20" value="<%= planNext.Plan_Next_A_2 %>"/>
+                    <% var a2=''; if (planNext) {a2 = planNext.Plan_Next_A_2 } %>
+                    approximately $<input type="text" style="width: 40px;" name="Plan_Next_A_2" id="Plan_Next_A_2" placeholder="20" value="<%= a2 %>"/>
                     per
                     <select required name="Plan_Next_A_3">
                         <%
@@ -143,7 +144,8 @@
             <div class="step-action">
                 <p>
                     I would consider any increase larger than
-                    <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= planNext.Plan_Next_B %>" style="width: 50px"/>
+                    <% var b=''; if (planNext) {b = planNext.Plan_Next_B } %>
+                    <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= b %>" style="width: 50px"/>
                     units on the outcome a success.
                 </p>
             </div>
@@ -170,12 +172,15 @@
                 <p>the educational technology moved the needle?</p>
             </div>
             <div class="step-action">
-                <p>If I learned that there was a <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= planNext.Plan_Next_C_1 %>" style="width: 50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
+                <p>If I learned that there was a 
+                 <% var c1=''; if (planNext) {c1 = planNext.Plan_Next_C_1 } %>
+                <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= c1 %>" style="width: 50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
                 </p>
             </div>
             <div class="step-subquestion">
                 <p>the educational technology did not move the needle?</p>
-                <p>If I learned that there was less than a <input type="text" name="Plan_Next_C_2" id="QBD-2b" placeholder="25%" value="<%= planNext.Plan_Next_C_2 %>" style="width: 50px"/> probability that the educational technologyincreased the outcomeby by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.
+                <% var c2=''; if (planNext) {c2 = planNext.Plan_Next_C_2 } %>
+                <p>If I learned that there was less than a <input type="text" name="Plan_Next_C_2" id="QBD-2b" placeholder="25%" value="<%= c2 %>" style="width: 50px"/> probability that the educational technologyincreased the outcomeby by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.
                 </p>
             </div>
         </div>
@@ -197,19 +202,22 @@
                 <p>the evidence suggests that it is likely that A does B among C compared to D?</p>
             </div>
             <div class="step-action">
-                <textarea name="Plan_Next_D_1"><%= planNext.Plan_Next_D_1 %></textarea>
+                <% var d1=''; if (planNext) {d1 = planNext.Plan_Next_D_1 } %>
+                <textarea name="Plan_Next_D_1"><%= d1 %></textarea>
             </div>
             <div class="step-subquestion">
                 <p>the evidence suggests that it is not likely that A does B among C compared to D?</p>
             </div>
             <div class="step-action">
-                <textarea name="Plan_Next_D_2"><%= planNext.Plan_Next_D_2 %></textarea>
+                <% var d2=''; if (planNext) {d2 = planNext.Plan_Next_D_2 } %>
+                <textarea name="Plan_Next_D_2"><%= d2 %></textarea>
             </div>
             <div class="step-subquestion">
                 <p>the results are inconclusive?</p>
             </div>
             <div class="step-action">
-                <textarea name="Plan_Next_D_3"><%= planNext.Plan_Next_D_3 %></textarea>
+                <% var d3=''; if (planNext) {d3 = planNext.Plan_Next_D_3 } %>
+                <textarea name="Plan_Next_D_3"><%= d3 %></textarea>
             </div>
         </div>
         <div class="col-xs-5">
@@ -254,8 +262,6 @@
     <button type="submit" class="btn btn-primary btn-lg">Complete</button>   
 </div>
 <div>
-    <input class="hidden" name="userid" value="<%= planNext.userid %>"/>
-    <input class="hidden" name="_id" value="<%= planNext._id %>"/>
     <input calss="hidden" name="status" id="status" />
 </div>
 </form>

@@ -11,17 +11,16 @@
 <div class="row">
     <div class="tool-row">
         <% for (var i=0; i< tools.length; i++) {
-        var tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
+        var tool =[], status = "", d = "";
+        if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
+            if (tool.length > 0) {
+                 status = tool[0].status;
+                 d=new Date(tool[0].visited_at)
+                }
+        }       
         var current = last_tool == tools[i].name ? "current" : "";
-        var buttondivid = tools[i].name;
-        var status = "";
-        var d = "";
-        if (tool.length > 0) {
-        status =tool[0].status = "incomplete" ? "Started" : tool[0].status;
-        d=new Date(tool[0].visited_at)
-        }
+        var buttondivid = tools[i].name;      
         %>
-
         <div class="col-xs-3">
 
             <div class="tool-div <%= status %> <%= current %>">
