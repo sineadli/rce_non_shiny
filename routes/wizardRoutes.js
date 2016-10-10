@@ -51,9 +51,6 @@ module.exports = function (app, passport) {
                         res.status(500).send(err);
                     }
                     else {
-						console.log(tools);
-						console.log(sess);
-						console.log(sess.eval.toolsvisited);
                         res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval, last_tool: sess.last_tool });
                     }
                 });
