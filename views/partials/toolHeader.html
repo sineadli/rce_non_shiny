@@ -2,19 +2,18 @@
     <div class="wizard-header-row">
         <div class="col-xs-7">
             <div class="sec-label">Evaluating</div>
-
-            <h2 class="eval-header" id="evalTitle"><%= eval.title %><button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button></h2>
-
-
+            <% var t = ""; if (title) t = title; %>
+            <h2 class="eval-header" id="evalTitle"><%= t %></h2>
         </div>
         <div class="col-xs-2">
             <div class="sec-label">Start Date</div>
-            <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
+            <% var d = new Date(); if(start_date) {d= new Date(start_date);} %>
             <p><%= d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
         </div>
         <div class="col-xs-3">
             <div class="sec-label">Status</div>
-            <p><%= eval.status %></p>
+            <% var sts = 'New'; if (status) sts= status; %>
+            <p><%= sts %></p>
         </div>
         <div style="clear: both; line-height: 0;"></div>
     </div>

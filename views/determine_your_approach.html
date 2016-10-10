@@ -12,7 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </head>
 <body>
-    <div id="header"></div>
+    <% include ../views/partials/toolHeader.html %>
 <form action="/determine_your_approach" method="post">
     <div class="container-fluid">
         <div class="row">
@@ -86,7 +86,8 @@
                                 <div>
                                     <p>Please specify:</p>
                                 </div>
-                                <input type="text" name='Prob_Apprr_B_other' id="Prob_Apprr_B_other" value=<%= probAppr.Prob_Apprr_B_other %> />
+                                <% var val=''; if (probAppr) {val = probAppr.Prob_Apprr_B_other } %>
+                                <input type="text" name='Prob_Apprr_B_other' id="Prob_Apprr_B_other" value=<%= val %> />
                             </div>
                         </div>
                     </div>
@@ -131,8 +132,7 @@
         </div>
     </div>
     <div>
-        <input class="hidden" name="userid" value="<%= probAppr.userid %>"/>
-        <input class="hidden" name="_id" value="<%= probAppr._id %>"/>
+       
         <input calss="hidden" name="status" id="status" />
     </div>
 </form>

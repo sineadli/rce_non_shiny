@@ -11,7 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div id="header"></div>
+    <% include ../views/partials/toolHeader.html %>
 <form action="/craft_your_research_q" method="post">
 <div class="container-fluid">
 <div class="row">
@@ -54,7 +54,8 @@
 <div id="A" class="row collapse in">
     <div class="col-xs-7">
         <div class="step-action">
-            <textarea name="Plan_Question_A" id="Plan_Question_A" placeholder="Ex., Dreambox Learning"><%= planQuestion.Plan_Question_A %></textarea>
+            <% var a =''; if (planQuestion) {a = planQuestion.Plan_Question_A } %>
+            <textarea name="Plan_Question_A" id="Plan_Question_A" placeholder="Ex., Dreambox Learning"><%= a %></textarea>
         </div>
     </div>
 </div>
@@ -97,7 +98,8 @@
             <p>What measure will you use to test whether there was an effect?</p>
         </div>
         <div class="step-action">
-            <textarea name="Plan_Question_B_2" id="q12" placeholder="Ex., Smarter Balanced math assessment"><%= planQuestion.Plan_Question_B_2 %></textarea>
+            <% var b2 =''; if (planQuestion) {b2 = planQuestion.Plan_Question_B_2 } %>
+            <textarea name="Plan_Question_B_2" id="Plan_Question_B_2" placeholder="Ex., Smarter Balanced math assessment"><%= b2 %></textarea>
         </div>
         <div class="step-subquestion">
             <p>What is the direction of intended change?</p>
@@ -159,7 +161,8 @@
 <div id="C" class="row collapse">
     <div class="col-xs-7">
         <div class="step-action">
-            <textarea name="Plan_Question_C" id="Plan_Question_C" placeholder="Ex., 5th grade English learners"><%= planQuestion.Plan_Question_C %></textarea>
+            <% var c =''; if (planQuestion) {c = planQuestion.Plan_Question_C } %>
+            <textarea name="Plan_Question_C" id="Plan_Question_C" placeholder="Ex., 5th grade English learners"><%= c %></textarea>
         </div>
     </div>
     <div class="col-xs-5">
@@ -204,7 +207,8 @@
 <div id="D" class="row collapse">
     <div class="col-xs-7">
         <div class="step-action">
-            <textarea name="Plan_Question_D" id="Plan_Question_D" placeholder="Ex., other 5th grade English Learners with no access to DreamBox Learning"><%= planQuestion.Plan_Question_D %></textarea>
+            <% var d =''; if (planQuestion) {d = planQuestion.Plan_Question_D } %>
+            <textarea name="Plan_Question_D" id="Plan_Question_D" placeholder="Ex., other 5th grade English Learners with no access to DreamBox Learning"><%= d %></textarea>
         </div>
     </div>
     <div class="col-xs-5">
@@ -261,8 +265,6 @@
 </div>
 </div>
 <div>
-    <input class="hidden" name="userid" value="<%= planQuestion.userid %>"/>
-    <input class="hidden" name="_id" value="<%= planQuestion._id %>"/>
     <input calss="hidden" name="status" id="status" />
 </div>
 </form>
