@@ -6,19 +6,30 @@ $(document).ready( function() {
     var caret = $(this).find('i');
     caret.toggleClass('fa-caret-right');
     caret.toggleClass('fa-caret-down');
-  });
+	});
+
+	
 
 	/** Load Header **/
   $.get("/header", function (data) {
 	  $("#header").html(data);
   });
 
+ $(document).on('click', '.tool-view-button', function (e) {
+	 e.preventDefault();
+	  $("div.tool-div").removeClass("current");
+	  var href = $(this).attr("href");
+	  $(this).parent(".tool-view-btn").parent(".tool-div").addClass("current");
+   
+      window.location = href;
+ });
+
   $(':button').click(function () {
       if ($(this).html() === 'Save') {
-          $('#status').val('Incomplete');
+          $('#status').val('Started');
       }
       else {
-          $('#status').val('completed');
+          $('#status').val('Completed');
       }
       
   });

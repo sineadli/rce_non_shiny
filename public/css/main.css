@@ -1,6 +1,6 @@
 body {
   font-family: 'Open Sans';
-  max-width:980px;
+  max-width:1000px;
   font-size:1.4em;
   line-height:1.6em;
      margin: 0 auto;
@@ -36,7 +36,7 @@ div.breadcrumbs {
     padding: 20px 20px 10px 20px;
 }
 .sec-label {
-    font-size: .9em;
+    font-size: 1em;
     color: #979762;
 }
 a.sec-label {
@@ -212,7 +212,7 @@ div.tool-row div.col-xs-3 {
     padding-right: 0;
 }
 div.col-xs-3 {
-    min-width: 225px;
+    width: 248px;
 }
 div.tool-div {
     border: 1px solid #BAB38F;
@@ -223,6 +223,11 @@ div.tool-div {
     height: 275px;
 
 }
+
+div.tool-div.current {
+    border: 2px solid #4081A8;
+     box-shadow: 3px 3px 3px #AFCBDA
+}
 div.tool-div div.tool-title {
     height: 200px;
 }
@@ -231,11 +236,15 @@ div.tool-div div.tool-title {
         margin-bottom: 5px;
     }
 
-    div.tool-div.complete {
+    div.tool-div.Completed, div.tool-div.completed {
         background-color: #ddd;
     }
 
-    div.tool-div a.button {
+     div.tool-div.Started {
+        background-color: #eee;
+    }
+
+    div.tool-div a.tool-view-button {
         display: block;
         background-color: #4081a8;
         color: #fff;
@@ -249,6 +258,17 @@ div.tool-div div.tool-title {
 
     }
 
+div.tool-status {
+    width: 75%;
+    display: inline-block;
+    font-size: .9em;
+}
+div.tool-view-btn {    
+    width: 22%;
+    display: inline-block;
+    margin-left: 2px;
+
+}
 
 /* Tool pages */
 
@@ -314,7 +334,7 @@ div.step-to-consider p {
 }
 
 div.step-to-consider .btn {
-	/*float:left;*/
+    margin-left: 60%;
 	padding:5px;
 }
 		

@@ -10,30 +10,49 @@
 </div>
 <div class="row">
     <div class="tool-row">
-        <% for (var i=0; i< tools.length; i++) { %>
+        <% for (var i=0; i< tools.length; i++) {
+        var tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
+        var current = last_tool == tools[i].name ? "current" : "";
+        var buttondivid = tools[i].name;
+        var status = "";
+        var d = "";
+        if (tool.length > 0) {
+        status =tool[0].status = "incomplete" ? "Started" : tool[0].status;
+        d=new Date(tool[0].visited_at)
+        }
+        %>
 
-            <div class="col-xs-3">
+        <div class="col-xs-3">
 
-                <div class="tool-div">
-                    <div class="tool-title">
-                        <h2><%= tools[i].name %> </h2>
-                        <p><%= tools[i].desc %></p>
-                    </div>
-                    <% var tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
-                        if (tool.length > 0) {var status =tool[0].status; var d=new Date(tool[0].visited_at) %>
-                    <div class="tool-status status">
-                        <p>Status: <%= status %></p>
-                        <p>Last Visited: <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></p>
-                    </div>
+            <div class="tool-div <%= status %> <%= current %>">
+                <div class="tool-title">
+                    <h2><%= tools[i].name %> </h2>
+                    <p><%= tools[i].desc %></p>
+                </div>
+                <div class="tool-status status">
+                    <% if (tool.length > 0) { %>
+                    <p>
+                        Status: <strong><%= status %></strong><br/>
+                        Last Visit: <strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></strong>
+                    </p>
+
                     <% } %>
-                    <div>
-                        <% var option=""; if (tools[i].path) {option=tools[i].path } %>
-                        <a href="<%= option %>" class="button">View</a>
-                    </div>
+                    <% if(tool.length == 0 ) { %>
+                    <p>&nbsp;</p>
+                    <% } %>
+                </div>
+                <div class="tool-view-btn" >
+                    <% var option=""; if (tools[i].path) {option=tools[i].path } %>
+                    <a href="<%= option %>"  class="tool-view-button">View</a>
                 </div>
             </div>
+        </div>
 
-       <% } %>
-       
+        <% } %>
+
         <div style="clear: both; line-height: 0">&nbsp;</div>
     </div>
+</div>
+
+
+

@@ -33,8 +33,9 @@
                             </div>
                             <div class="modal-body">
                                 <input type="hidden" id="evalid" value="<%= eval._id %>"/>
-                                
-                                <input type="hidden" id="step" value="<%= eval.last_step %>" />
+
+                                <input type="hidden" id="step" value="<%= eval.last_step %>"/>
+                               
                                 <input type="text" id="title"/>
                             </div>
                             <div class="modal-footer">
@@ -69,7 +70,9 @@
                                 <li id="1" class="wizard-item ">
                                     <span>Welcome</span>
                                 </li>
-                                <li id="2" class="wizard-item"><span>Understanding Your Problem</span></li>
+                                <li id="2" class="wizard-item">
+                                    <span>Understanding Your Problem</span>
+                                </li>
                                 <li id="3" class="wizard-item">
                                     <span>Planning Your Research</span>
                                 </li>
@@ -110,6 +113,8 @@
             }
 
         });
+
+        
         /** Load Header **/
         $.get("/header", function (data) {
             $("#header").html(data);
@@ -131,7 +136,7 @@
                 $(".result").html(data);
             });
         });
-    });
+       
     $("#getTitle").click(function(e) {
 
         $("#evalTitle").html($("#title").val());
@@ -151,6 +156,7 @@
                 contentType: "application/json"
             }
         );
+    });
     });
 </script>
 

@@ -30,7 +30,7 @@ module.exports = function (app, passport) {
         
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
-        sess.step = 2
+		sess.step = 2;
         var obj = req.body;
        // console.log(sess.eval)
         async.waterfall([
@@ -80,11 +80,13 @@ module.exports = function (app, passport) {
                         return res.redirect('/wizard');
                     } else {
                         if (eval) {
-                            eval.last_step = 2;
+								eval.last_step = 2;
+								sess.last_tool = "Determine Your Approach";
                             var tool = eval.toolsvisited.filter(function (x) { return x.name === "Determine Your Approach" });
 
                             if (tool.length == 0) {
-                                eval.toolsvisited.push(toollist);
+									eval.toolsvisited.push(toollist);
+
                                 eval.save(function (err) {
                                     if (err) console.log(err);
 
@@ -143,12 +145,12 @@ module.exports = function (app, passport) {
                 if (!obj.userid) {
                     if (!obj.userid || obj.userid == '') obj.userid = req.user._id;
                     var planQuestion = new PlanQuestion(obj);
-                    planQuestion.save(function (err) {
+                    planQuestion.save(function(err) {
                         if (err)
                             console.log(err);
                         else
                             done(err);
-                    })
+                    });
                 }
                 else {
                     PlanQuestion.findById(obj._id, function (err, planQuestion) {
@@ -182,11 +184,12 @@ module.exports = function (app, passport) {
                             return res.redirect('/wizard');
                         } else {
                             if (eval) {
-                                eval.last_step = 3;
+								eval.last_step = 3;
+								sess.last_tool = "Crafting a Research Question";
                                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Crafting a Research Question" });
 
                                 if (tool.length == 0) {
-                                    eval.toolsvisited.push(toollist);
+									eval.toolsvisited.push(toollist);
                                     eval.save(function (err) {
                                         if (err) console.log(err);
 
@@ -293,11 +296,13 @@ module.exports = function (app, passport) {
                             return res.redirect('/wizard');
                         } else {
                             if (eval) {
-                                eval.last_step = 3;
+								eval.last_step = 3;
+								sess.last_tool = "Plan Next Steps";
                                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Plan Next Steps" });
 
                                 if (tool.length == 0) {
-                                    eval.toolsvisited.push(toollist);
+									eval.toolsvisited.push(toollist);
+
                                     eval.save(function (err) {
                                         if (err) console.log(err);
 
@@ -346,7 +351,7 @@ module.exports = function (app, passport) {
         );
  });
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Planning your research", "status": req.body.status, "visited_at": new Date() };
+        var toollist = { "name": "Context and Usage", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
@@ -402,12 +407,14 @@ module.exports = function (app, passport) {
                         else
                         {
                             if (eval) {
-                                eval.last_step = 3;
-                                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Planning your research" });
+								eval.last_step = 3;
+								sess.last_tool = "Context and Usage";
+                                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Context and Usage" });
                                 console.log("hi");
                                
                                 if (tool.length == 0) {
-                                    eval.toolsvisited.push(toollist);
+									eval.toolsvisited.push(toollist);
+
                                     eval.save(function (err) {
                                         if (err) console.log(err);
 

@@ -25,8 +25,9 @@ module.exports = function (app, passport) {
             if (err) {
                 res.status(500).send(err);
             }
-            else {
-                res.render('wizard.html', { wizardSteps: wizardSteps, eval: sess.eval, step: sess.step });
+			else {
+
+                res.render('wizard.html', { wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
             }
         });
 
@@ -50,8 +51,10 @@ module.exports = function (app, passport) {
                         res.status(500).send(err);
                     }
                     else {
-                        //console.log(tools);
-                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval });
+						console.log(tools);
+						console.log(sess);
+						console.log(sess.eval.toolsvisited);
+                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval, last_tool: sess.last_tool });
                     }
                 });
             }
