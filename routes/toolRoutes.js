@@ -324,5 +324,11 @@ module.exports = function (app, passport) {
             res.redirect('/wizard');
         });
     });
+    app.get('/matching', isLoggedIn, function (req, res) {
+        sess = req.session;
+        sess.eval.last_step = 5;
+        sess.last_tool = "Matching";
+        res.render('matching.html', { probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title });
+    });
 };
 
