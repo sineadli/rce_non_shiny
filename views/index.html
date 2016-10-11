@@ -16,7 +16,7 @@
 
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
-                <h3 class="sec-label">Rapid Cycle Evaluation <span style="text-transform: none;"><em>beta</em></span></h3>
+                <h3 class="sec-label">Ed Tech RCE Coach <span style="text-transform: none;"><em>beta</em></span></h3>
             </a>
         </div>
 
@@ -49,24 +49,24 @@
 <div class="container-fluid">
     <div class="row">
 
-            <div class="front-header">
-                <div class="front-text">
-                    <h1> Is your Educational Technology moving the needle in the classroom?</h1>
-                    <p>The Ed Tech RCE (Rapid Cycle Evaluation) Coach helps you evaluate educational technology use in your school so that you can make better and more informed decisions about how it can best be used to improved student outcomes.</p>
-                    
-                    <p>
-                        <a class="text-center btn btn-primary larger" href="/dashboard" id="startEval" class="btn btn-primary btn-lg">GET STARTED</a>
-                    </p>
-                </div>
+        <div class="front-header">
+            <div class="front-text">
+                <h1> Is your Educational Technology moving the needle in the classroom?</h1>
+                <p>The Ed Tech RCE (Rapid Cycle Evaluation) Coach helps you evaluate educational technology use in your school so that you can make better and more informed decisions and improve student outcomes.</p>
+
+                <p>
+                    <a class="text-center btn btn-primary larger" href="/dashboard.html" id="startEval" class="btn btn-primary btn-lg">GET STARTED</a>
+                </p>
             </div>
-    
+        </div>
+
 
     </div>
     <div class="row">
         <div class="col-xs-6">
             <h2>Testing your tech is more important than you think.</h2>
             <p>
-                The Ed Tech RCE (Rapid Cycle Evaluation) Coach is a powerful tool that helps you collect and analyze your own data to answer important questions such as:
+                The Ed Tech RCE (Rapid Cycle Evaluation) Coach is a powerful tool that helps you collect and analyze your own data to evaluate educational technology use in your school and answer important questions such as:
             </p>
             <ul class="front-list">
                 <li>Does your ed tech program lead to the desired outcomes?</li>
@@ -89,8 +89,169 @@
                 <p>Coming soon: We’ll be adding more tools in the coming months to support forward-looking pilots of new technologies or implementation strategies. We’re also looking for partners who want to evaluate products that support teacher productivity, professional development or non-academic student outcomes. Let us know what else you’d like to see! </p>
             </div>
         </div>
-       
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="testimonials" class="carousel" data-ride="carousel">
+                <h2>Whose using Ed Tech RCE Coach</h2>
+                <hr style="margin: 35px auto; width: 15%;"/>
+
+                <div style="display: inline-block; width: 19.5%; vertical-align: top; text-align: right;">
+                    <div class="btn-bar">
+                        <div id="buttons">
+                            <a id="prev" href="#" style="font-size: 4em;"><</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="carousel">
+
+
+                    <div id="slides">
+                        <ul>
+                            <li class="slide">
+                                <div class="quoteContainer">
+                                    <p class="quote-phrase">A public school district is using over 40 different education technology products to support elementary math. To help principals make good decisions about which products to use in their buildings, the district is conducting rapid cycle evaluations (RCEs) using data from last year and a technique called matching to assess which products work best at supporting elementary math learning. </p>
+                                </div>
+                            </li>
+                            <li class="slide">
+                                <div class="quoteContainer">
+                                    <p class="quote-phrase">A district has recently upgraded its technology infrastructure and is providing devices to all students and teachers for the first time. The district is piloting a real-time student feedback app with ten teachers across several schools. The district will use matching to identify teachers who are similar to the pilot teachers and learn whether the feedback app is improving student comprehension, measured by formative assessments. </p>
+                                </div>
+                            </li>
+                            <li class="slide">
+                                <div class="quoteContainer">
+                                    <p class="quote-phrase">
+                                        Interested in setting up a new pilot? We’re looking for partners to field test the new tools. We’re also looking for partners to do RCEs for tools that are focused on non-achievement outcomes. Email us at <a mailto:href="EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a> to find out more.
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+
+
+                    </div>
+
+                </div>
+                <div style="display: inline-block; width: 19.5%; vertical-align: top; text-align: left;">
+                    <div class="btn-bar">
+                        <div id="buttons">
+                            <a id="next" href="#" style="font-size: 4em;">></a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
     </div>
 </div>
+    <nav class="footer navbar-default" role="navigation">
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        <h3 class="sec-label">Ed Tech RCE Coach <span style="text-transform: none;"><em>beta</em></span></h3>
+                    </a>
+                </div>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-xs-8">
+
+
+
+                <ul class="footer-list">
+                    <li>
+                        <a href="/about" class="sec-label">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/terms" class="sec-label">Terms of Use</a>
+                    </li>
+                    <li>
+                        <a href="/terms" class="sec-label">Privacy Policy</a>
+                    </li>
+
+                </ul>
+                <p class="text-center text-muted">© Copyright 2016 The RCTE </p>
+            </div>
+        </div>
+    </nav>
+    <script>
+$(document).ready(function () {
+    //rotation speed and timer
+    var speed = 50000;
+
+    var run = setInterval(rotate, speed);
+    var slides = $('.slide');
+    var container = $('#slides ul');
+    var elm = container.find(':first-child').prop("tagName");
+    var item_width = container.width();
+    var previous = 'prev'; //id of previous button
+    var next = 'next'; //id of next button
+    slides.width(item_width); //set the slides to the correct pixel width
+    container.parent().width(item_width);
+    container.width(slides.length * item_width); //set the slides container to the correct total width
+    container.find(elm + ':first').before(container.find(elm + ':last'));
+    resetSlides();
+
+
+    //if user clicked on prev button
+
+    $('#buttons a').click(function (e) {
+        //slide the item
+
+        if (container.is(':animated')) {
+            return false;
+        }
+        if (e.target.id == previous) {
+            container.stop().animate({
+                'left': 0
+            }, 1500, function () {
+                container.find(elm + ':first').before(container.find(elm + ':last'));
+                resetSlides();
+            });
+        }
+
+        if (e.target.id == next) {
+            container.stop().animate({
+                'left': item_width * -2
+            }, 1500, function () {
+                container.find(elm + ':last').after(container.find(elm + ':first'));
+                resetSlides();
+            });
+        }
+
+        //cancel the link behavior
+        return false;
+
+    });
+
+    //if mouse hover, pause the auto rotation, otherwise rotate it
+    container.parent().mouseenter(function () {
+        clearInterval(run);
+    }).mouseleave(function () {
+        run = setInterval(rotate, speed);
+    });
+
+
+    function resetSlides() {
+        //and adjust the container so current is in the frame
+        container.css({
+            'left': -1 * item_width
+        });
+    }
+
+});
+//a simple function to click next link
+//a timer will call this function, and the rotation will begin
+
+function rotate() {
+    $('#next').click();
+}
+    </script>
+
 </body>
 </html>
