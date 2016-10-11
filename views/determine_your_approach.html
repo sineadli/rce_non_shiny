@@ -12,8 +12,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </head>
 <body>
-    <% include ../views/partials/toolHeader.html %>
+    <div id="header"></div>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Understanding Your Problem</a></li>
+    </ol> 
 <form action="/determine_your_approach" method="post">
+    <% include ../views/partials/toolHeader.html %>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12">

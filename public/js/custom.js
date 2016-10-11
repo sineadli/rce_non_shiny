@@ -1,6 +1,9 @@
 /*~~~~~~~~~~~~~~~~~~ ALL ~~~~~~~~~~~~~~~~~~*/
 $(document).ready( function() {
-   
+    /** Load Header **/
+    $.get("/header", function (data) {
+        $("#header").html(data);
+    });
   $('[data-toggle=collapse]').click( function() {
 
     var caret = $(this).find('i');
