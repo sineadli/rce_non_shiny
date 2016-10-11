@@ -121,6 +121,9 @@ hr {
 h2,p.clickable {
   cursor:pointer;
 }
+h2.clickable {
+    font-size:1.2em;
+}
 h2 {
   font-size:2em;
   font-weight:bold;
@@ -301,7 +304,8 @@ a#next:hover, a#next:focus {
 .authorContainer {
   display: table;
   width: 100%;
-}
+}
+
 
 /* Dashboard */
 div.dash-well {
