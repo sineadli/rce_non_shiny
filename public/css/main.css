@@ -121,6 +121,9 @@ hr {
 h2,p.clickable {
   cursor:pointer;
 }
+h2.clickable {
+    font-size: 1.4em;
+}
 h2 {
   font-size:2em;
   font-weight:bold;
