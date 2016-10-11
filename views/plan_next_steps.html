@@ -48,223 +48,224 @@
     </div>
 </div>
 <div class="tool-questions">
-    <div class="step-header container">
-        <div data-toggle="collapse" data-target="#A">
-            <h2 class="clickable">
-                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                A. What is the cost of the educational technology?
-            </h2>
-        </div>
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#A">
+        <h2 class="clickable">
+            <i class="fa fa-caret-down" aria-hidden="false"></i>
+            A. What is the cost of the educational technology?
+        </h2>
     </div>
-    <div id="A" class="row  collapse">
-        <div class="col-xs-7">
-            <div class="step-action">
-                <p>
-                    It
-                    <select required id="dropdn-cost-saves" name="Plan_Next_A_1">
-                        <%
-                        var options = [ "costs", "saves" ];
-                        for ( var i = 0; i < options.length; i++ )
-                        {
-                        var selected;
-                        if (planNext) { selected = ( planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}
-                        %>
-                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                        }
-                        %>
-                    </select>
-                    <% var a2=''; if (planNext) {a2 = planNext.Plan_Next_A_2 } %>
-                    approximately $<input type="text" style="width: 40px;" name="Plan_Next_A_2" id="Plan_Next_A_2" placeholder="20" value="<%= a2 %>"/>
-                    per
-                    <select required name="Plan_Next_A_3">
-                        <%
-                        var options = [ "student", "teacher", "school" ];
-                        for ( var i = 0; i < options.length; i++ )
-                        {
-                        var selected;
-                        if (planNext) { selected = ( planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}
-                        %>
-                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                        }
-                        %>
+</div>
+<div id="A" class="row  collapse in">
+    <div class="col-xs-7">
+        <div class="step-action">
+            <p>
+                It
+                <select required id="dropdn-cost-saves" name="Plan_Next_A_1">
+                    <%
+                    var options = [ "costs", "saves" ];
+                    for ( var i = 0; i < options.length; i++ )
+                    {
+                    var selected;
+                    if (planNext) { selected = ( planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}
+                    %>
+                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                    }
+                    %>
+                </select>
+                <% var a2=''; if (planNext) {a2 = planNext.Plan_Next_A_2 } %>
+                approximately $<input type="text" style="width: 40px;" name="Plan_Next_A_2" id="Plan_Next_A_2" placeholder="20" value="<%= a2 %>"/>
+                per
+                <select required name="Plan_Next_A_3">
+                    <%
+                    var options = [ "student", "teacher", "school" ];
+                    for ( var i = 0; i < options.length; i++ )
+                    {
+                    var selected;
+                    if (planNext) { selected = ( planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}
+                    %>
+                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                    }
+                    %>
 
-                    </select>
-                    to use the educational technology?
+                </select>
+                to use the educational technology?
+            </p>
+            <div data-toggle="collapse" data-target="#Plan_Next_A_4">
+                <p class="clickable">
+                    If the sentence above does not fit your technology,<a> you can describe the cost in a couple of sentences instead.</a>
                 </p>
-                <div data-toggle="collapse" data-target="#Plan_Next_A_4">
-                    <p class="clickable">
-                        If the sentence above does not fit your technology,<a> you can describe the cost in a couple of sentences instead.</a>
-                    </p>
-                </div>
-                <div id="Plan_Next_A_4" class="collapse">
-                    <textarea placeholder="Type your own option here"></textarea>
-                </div>
+            </div>
+            <div id="Plan_Next_A_4" class="collapse">
+                <textarea placeholder="Type your own option here"></textarea>
             </div>
         </div>
-        <div class="col-xs-5">
-            <div class="step-to-consider">
-                <p>
-                    The cost of a technology will probably be a factor in your decision about how much uncertainty you are willing to tolerate and how big the effect has to be in order for the technology to be worth implementing more widely.
-                </p>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step1example">See Example</button>
-                <!--(Button data-target should be = to the id of the example content below.)-->
-                <div id="step1example" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Example</h4>
+    </div>
+    <div class="col-xs-5">
+        <div class="step-to-consider">
+            <p>
+                The cost of a technology will probably be a factor in your decision about how much uncertainty you are willing to tolerate and how big the effect has to be in order for the technology to be worth implementing more widely.
+            </p>
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step1example">See Example</button>
+            <!--(Button data-target should be = to the id of the example content below.)-->
+            <div id="step1example" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Example</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="step-example-box">
+                                <ul>
+                                    <li>It costs approximately $20 per student to use the educational technology</li>
+                                    <li>It saves approximately $1,000 per classroom to use the educational technology</li>
+                                    <li>We're not sure. We believe using this tool will save teachers 20 minutes per day on prep time</li>
+                                </ul>
                             </div>
-                            <div class="modal-body">
-                                <div class="step-example-box">
-                                    <ul>
-                                        <li>It costs approximately $20 per student to use the educational technology</li>
-                                        <li>It saves approximately $1,000 per classroom to use the educational technology</li>
-                                        <li>We're not sure. We believe using this tool will save teachers 20 minutes per day on prep time</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="step-header container">
-        <div data-toggle="collapse" data-target="#B">
-            <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> B. What would success look like?
-            </h2>
+</div>
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#B">
+        <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> B. What would success look like?
+        </h2>
+    </div>
+</div>
+<div id="B" class="row collapse">
+    <div class="col-xs-7">
+        <div class="step-action">
+            <p>
+                I would consider any increase larger than
+                <% var b=''; if (planNext) {b = planNext.Plan_Next_B } %>
+                <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= b %>" style="width: 50px"/>
+                units on the outcome a success.
+            </p>
         </div>
     </div>
-    <div id="B" class="row collapse">
-        <div class="col-xs-7">
-            <div class="step-action">
-                <p>
-                    I would consider any increase larger than
-                    <% var b=''; if (planNext) {b = planNext.Plan_Next_B } %>
-                    <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= b %>" style="width: 50px"/>
-                    units on the outcome a success.
-                </p>
-            </div>
-        </div>
-        <div class="col-xs-5">
-            <div class="step-to-consider">
-                <ul>
-                    <li>The wizard will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here</li>
-                    <li>The units reflect whatever you are using to measure outcomes. For example, if you are looking at student performance on a test, the units would be points. If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
-                    <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money you may be willing to consider any change that is greater than a small negative number a success.</li>
-                </ul>
-            </div>
+    <div class="col-xs-5">
+        <div class="step-to-consider">
+            <ul>
+                <li>The wizard will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here</li>
+                <li>The units reflect whatever you are using to measure outcomes. For example, if you are looking at student performance on a test, the units would be points. If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
+                <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money you may be willing to consider any change that is greater than a small negative number a success.</li>
+            </ul>
         </div>
     </div>
-    <div class="step-header container">
-        <div data-toggle="collapse" data-target="#C">
-            <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> C. How confident do you want to be that:
-            </h2>
-        </div>
+</div>
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#C">
+        <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> C. How confident do you want to be that:
+        </h2>
     </div>
-    <div id="C" class="row collapse">
-        <div class="col-xs-7">
-            <div class="step-subquestion">
-                <p>the educational technology moved the needle?</p>
-            </div>
-            <div class="step-action">
-                <p>If I learned that there was a 
-                 <% var c1=''; if (planNext) {c1 = planNext.Plan_Next_C_1 } %>
+</div>
+<div id="C" class="row collapse in">
+    <div class="col-xs-7">
+        <div class="step-subquestion">
+            <p>the educational technology moved the needle?</p>
+        </div>
+        <div class="step-action">
+            <p>If I learned that there was a
+                <% var c1=''; if (planNext) {c1 = planNext.Plan_Next_C_1 } %>
                 <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= c1 %>" style="width: 50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
-                </p>
-            </div>
-            <div class="step-subquestion">
-                <p>the educational technology did not move the needle?</p>
-                <% var c2=''; if (planNext) {c2 = planNext.Plan_Next_C_2 } %>
-                <p>If I learned that there was less than a <input type="text" name="Plan_Next_C_2" id="QBD-2b" placeholder="25%" value="<%= c2 %>" style="width: 50px"/> probability that the educational technologyincreased the outcomeby by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.
-                </p>
-            </div>
+            </p>
         </div>
-        <div class="col-xs-5">
-            <div class="step-to-consider">
-                <p>It is a rare occurrence that we have enough evidence to be nearly certain (close to 100% certainty) that an ed tech product will work if implemented well. Most of the time we have to make a choice with incomplete evidence. Thinking forward to your results, what probability would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum, than if you’re considering a tool that will be used for a lower stakes decision, such as how to use a small amount of time in one class.</p>
-            </div>
+        <div class="step-subquestion">
+            <p>the educational technology did not move the needle?</p>
+            <% var c2=''; if (planNext) {c2 = planNext.Plan_Next_C_2 } %>
+            <p>If I learned that there was less than a <input type="text" name="Plan_Next_C_2" id="QBD-2b" placeholder="25%" value="<%= c2 %>" style="width: 50px"/> probability that the educational technologyincreased the outcomeby by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.
+            </p>
         </div>
     </div>
-    <div class="step-header container">
-        <div data-toggle="collapse" data-target="#D">
-            <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> D. What will you do if...
-            </h2>
+    <div class="col-xs-5">
+        <div class="step-to-consider">
+            <p>It is a rare occurrence that we have enough evidence to be nearly certain (close to 100% certainty) that an ed tech product will work if implemented well. Most of the time we have to make a choice with incomplete evidence. Thinking forward to your results, what probability would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum, than if you’re considering a tool that will be used for a lower stakes decision, such as how to use a small amount of time in one class.</p>
         </div>
     </div>
-    <div id="D" class="row collapse">
-        <div class="col-xs-7">
-            <div class="step-subquestion">
-                <p>the evidence suggests that it is likely that A does B among C compared to D?</p>
-            </div>
-            <div class="step-action">
-                <% var d1=''; if (planNext) {d1 = planNext.Plan_Next_D_1 } %>
-                <textarea name="Plan_Next_D_1"><%= d1 %></textarea>
-            </div>
-            <div class="step-subquestion">
-                <p>the evidence suggests that it is not likely that A does B among C compared to D?</p>
-            </div>
-            <div class="step-action">
-                <% var d2=''; if (planNext) {d2 = planNext.Plan_Next_D_2 } %>
-                <textarea name="Plan_Next_D_2"><%= d2 %></textarea>
-            </div>
-            <div class="step-subquestion">
-                <p>the results are inconclusive?</p>
-            </div>
-            <div class="step-action">
-                <% var d3=''; if (planNext) {d3 = planNext.Plan_Next_D_3 } %>
-                <textarea name="Plan_Next_D_3"><%= d3 %></textarea>
-            </div>
+</div>
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#D">
+        <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> D. What will you do if...
+        </h2>
+    </div>
+</div>
+<div id="D" class="row collapse">
+    <div class="col-xs-7">
+        <div class="step-subquestion">
+            <p>the evidence suggests that it is likely that A does B among C compared to D?</p>
         </div>
-        <div class="col-xs-5">
-            <div class="step-to-consider">
-                <p><b>Your Research Question:</b> Does [A] do [B] among [C] compared to [D]?
-                </p>
-                <p>This rapid-cycle evaluation will provide you with 1 of 3 answers to your research question. It is important that you think what you will do under each scenario.</p>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step4example">See Example</button>
-                <!--(Button data-target should be = to the id of the example content below.)-->
-                <div id="step4example" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Example</h4>
+        <div class="step-action">
+            <% var d1=''; if (planNext) {d1 = planNext.Plan_Next_D_1 } %>
+            <textarea name="Plan_Next_D_1"><%= d1 %></textarea>
+        </div>
+        <div class="step-subquestion">
+            <p>the evidence suggests that it is not likely that A does B among C compared to D?</p>
+        </div>
+        <div class="step-action">
+            <% var d2=''; if (planNext) {d2 = planNext.Plan_Next_D_2 } %>
+            <textarea name="Plan_Next_D_2"><%= d2 %></textarea>
+        </div>
+        <div class="step-subquestion">
+            <p>the results are inconclusive?</p>
+        </div>
+        <div class="step-action">
+            <% var d3=''; if (planNext) {d3 = planNext.Plan_Next_D_3 } %>
+            <textarea name="Plan_Next_D_3"><%= d3 %></textarea>
+        </div>
+    </div>
+    <div class="col-xs-5">
+        <div class="step-to-consider">
+            <p><b>Your Research Question:</b> Does [A] do [B] among [C] compared to [D]?
+            </p>
+            <p>This rapid-cycle evaluation will provide you with 1 of 3 answers to your research question. It is important that you think what you will do under each scenario.</p>
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step4example">See Example</button>
+            <!--(Button data-target should be = to the id of the example content below.)-->
+            <div id="step4example" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Example</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="step-example-box">
+                                <ul>
+                                    <li>Roll out dreambox to all students in grades 3-5</li>
+                                    <li>Not renew our dreambox license for the next school year</li>
+                                    <li>Collect more data to improve the precision of our analysis</li>
+                                </ul>
                             </div>
-                            <div class="modal-body">
-                                <div class="step-example-box">
-                                    <ul>
-                                        <li>Roll out dreambox to all students in grades 3-5</li>
-                                        <li>Not renew our dreambox license for the next school year</li>
-                                        <li>Collect more data to improve the precision of our analysis</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>
+
     </div>
+</div>
 </div>
 </div>
 </div>
 <div>
     <button type="submit" class="btn btn-primary btn-lg">Save</button>
-    <button type="submit" class="btn btn-primary btn-lg">Complete</button>   
+    <button type="submit" class="btn btn-primary btn-lg">Complete</button>
 </div>
 <div>
-    <input calss="hidden" name="status" id="status" />
+    <input class="hidden" name="status" id="status"/>
 </div>
 </form>
+    <% include ../views/partials/footer.html %>
 <script src='/static/js/custom.js'></script>
 </body>
 </html>

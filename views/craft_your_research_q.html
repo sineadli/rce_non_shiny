@@ -62,7 +62,7 @@
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#B">
         <h2 class="clickable">
-            <i class="fa fa-caret-right" aria-hidden="true"></i> B. What is the intended effect?
+            <i class="fa fa-caret-down" aria-hidden="false"></i> B. What is the intended effect?
         </h2>
     </div>
 </div>
@@ -154,11 +154,11 @@
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#C">
         <h2 class="clickable">
-            <i class="fa fa-caret-right" aria-hidden="true"></i> C. Among whom are you hoping to see results?
+            <i class="fa fa-caret-down" aria-hidden="false"></i> C. Among whom are you hoping to see results?
         </h2>
     </div>
 </div>
-<div id="C" class="row collapse">
+<div id="C" class="row collapse in">
     <div class="col-xs-7">
         <div class="step-action">
             <% var c =''; if (planQuestion) {c = planQuestion.Plan_Question_C } %>
@@ -265,9 +265,10 @@
 </div>
 </div>
 <div>
-    <input calss="hidden" name="status" id="status" />
+    <input class="hidden" name="status" id="status"/>
 </div>
 </form>
+    <% include ../views/partials/footer.html %>
 <script src='/static/js/custom.js'></script>
 </body>
 </html>

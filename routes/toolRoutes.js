@@ -39,7 +39,8 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
                 //eval find so update the toolsVisisted accordingly
-                eval.last_step = 2;
+				eval.last_step = 2;
+                sess.last_tool = "Determine Your Approach";
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Determine Your Approach" });
                 if (tool.length == 0) {
                     eval.toolsvisited.push(toollist);
@@ -81,7 +82,8 @@ module.exports = function (app, passport) {
         });
     });
     app.get('/craft_your_research_q', isLoggedIn, function (req, res) {
-        sess = req.session;
+		sess = req.session;
+		
         res.render('craft_your_research_q.html', { planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title  })
     });
     //03.01 crafting a research question
@@ -111,7 +113,8 @@ module.exports = function (app, passport) {
                     res.redirect('/wizard');
             },
             function (eval, done) {
-                eval.last_step = 3;
+				eval.last_step = 3;
+                sess.last_tool = "Crafting a Research Question";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Crafting a Research Question" });
                 if (tool.length == 0) {
@@ -186,7 +189,8 @@ module.exports = function (app, passport) {
                     res.redirect('/wizard');
             },
             function (eval, done) {
-                eval.last_step = 3;
+				eval.last_step = 3;
+				sess.last_tool = "Plan Next Steps";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Plan Next Steps" });
                 if (tool.length == 0) {
@@ -264,7 +268,8 @@ module.exports = function (app, passport) {
                     res.redirect('/wizard');
             },
             function (eval, done) {
-                eval.last_step = 3;
+				eval.last_step = 3;
+                sess.last_tool = "Context and Usage";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Context and Usage" });
                 if (tool.length == 0) {
