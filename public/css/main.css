@@ -39,9 +39,10 @@ div.breadcrumbs {
     font-size: 1em;
     color: #979762;
 }
-a.sec-label {
+a.sec-label, button.sec-label {
     font-size: .9em;
     color: #4081A8;
+    padding: 0;
 }
 .tooltip-gr {
   color:#00CC66;
@@ -181,11 +182,15 @@ div.front-header h1 {
     font-size: 2.6em;
     margin-bottom: 25px;
     text-align: center;
+    text-shadow: 1px 2px #000;
 }
+
+
     div.front-header p {
         font-size: 1.1em;
         line-height: 1.6em;
          text-align: center;
+          text-shadow: 1px 1px #000;
     }
         div.front-header p a.btn-primary.larger {
             font-size: 1.6em;
@@ -320,6 +325,10 @@ div.dash-well {
 }
 div.dash-well h2 {
     font-size: 1.8em;
+}
+div.dash-well a.btn-primary {
+    font-size: 1.2em;
+    padding: 8px 12px;
 }
 
 /* Wizard Landing page */
