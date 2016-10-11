@@ -127,9 +127,10 @@ h2.clickable {
 
 }
 h2 {
-  font-size:2em;
+  font-size:1.55em;
   font-weight:bold;
   margin-top: 5px;
+    margin-bottom: 15px;
 }
 h3 {
   color:#8C866B;
@@ -342,7 +343,7 @@ div.wizard-header-row {
    
 }
 h2.eval-header {
-    font-size: 1.6em;
+    font-size: 1.8em;
     margin-bottom: 25px;
     display: inline-block;
 }
