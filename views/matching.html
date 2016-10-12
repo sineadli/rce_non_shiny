@@ -10,20 +10,21 @@
           <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>   
     <style>
       #container{
-        width: 800px;
-        height: 1000px;
+        width: 1000px;
+        height: 2000px;
         overflow: hidden;
         margin-left: auto;
         margin-right: auto;
       }
       iframe{
-        width: 818px;
-        height: auto;
+        width: 1000px;
+        height: 2000px;
         border: 0px;
       }
     </style>
   </head>
 <body>
+
     <div id="header"></div>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Analyzing Your Data</a></li>
@@ -35,6 +36,13 @@
     </iframe>
   </div>
 <br/>
+    <form action="/matching" method="post">
+        <div class="bottom-buttons">
+            <button type="submit" class="btn btn-primary btn-lg">Save</button>
+            <button type="submit" class="btn btn-primary btn-lg">Complete</button>
+            <input class="hidden" name="status" id="status" />
+        </div>
+    </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
 </body>

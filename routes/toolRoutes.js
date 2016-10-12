@@ -329,7 +329,175 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 5;
         sess.last_tool = "Matching";
-        res.render('matching.html', { probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+        res.render('matching.html', {  start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+    });
+    app.post('/matching', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.step = 5;
+        //var obj = req.body;
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/wizard');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/wizard');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/wizard');
+            },
+            function (eval, done) {
+                eval.last_step = 5;
+                sess.last_tool = "Matching";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Matching" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    return res.redirect('/wizard');
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/wizard');
+        });
+    });
+    app.get('/getresult', isLoggedIn, function (req, res) {
+        sess = req.session;
+        sess.eval.last_step = 5;
+        sess.last_tool = "Get Results";
+        res.render('getresult.html', {  start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+    });
+    app.post('/getresult', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.step = 5;
+        //var obj = req.body;
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/wizard');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/wizard');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/wizard');
+            },
+            function (eval, done) {
+                eval.last_step = 5;
+                sess.last_tool = "Get Results";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Get Results" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    return res.redirect('/wizard');
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/wizard');
+        });
+    });
+    app.get('/shareresult', isLoggedIn, function (req, res) {
+        sess = req.session;
+        sess.eval.last_step = 5;
+        sess.last_tool = "Share Your Results";
+        res.render('shareresult.html', { start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+    });
+    app.post('/shareresult', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.step = 6;
+        //var obj = req.body;
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/wizard');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/wizard');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/wizard');
+            },
+            function (eval, done) {
+                eval.last_step = 5;
+                sess.last_tool = "Share Your Results";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    return res.redirect('/wizard');
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/wizard');
+        });
     });
 };
 
