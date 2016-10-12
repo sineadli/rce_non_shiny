@@ -66,7 +66,7 @@ module.exports = function(passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
                // console.log('cookie: ' + JSON.stringify(req.headers['cookie']));
-                newUser.userSession = JSON.stringify(req.headers['cookie']);
+                newUser.userSession = req.headers['cookie'];
                 // save the user
                 newUser.save(function(err) {
                     if (err)

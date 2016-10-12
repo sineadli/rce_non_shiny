@@ -9,7 +9,7 @@ achievement = ["Student academic achievement", "Student non-academic achievement
 direction = ["Increase", "Decrease"];
 spendresults = ["costs", "saves"];
 unitmeasured = ["student", "teacher", "school"];
-totalToolNumber = 6; //for completed status
+totalToolNumber = 7; //for completed status
 
 //02.03 determine your approach
 var ProbAppr = mongoose.Schema({
@@ -111,7 +111,7 @@ evaluationSchema.pre('save', function (next) {
             console.log(this.toolsvisited.length);
             if (this.toolsvisited.length == totalToolNumber) this.status = " 100% Completed"
             if (this.toolsvisited.length > 0) {
-                var per = this.toolsvisited.filter(function (x) { return x.status === "Completed" }).length / 6 * 100;
+                var per = this.toolsvisited.filter(function (x) { return x.status === "Completed" }).length / 7 * 100;
                 this.status = per.toPrecision(3) + "% Completed";
             }
         }
