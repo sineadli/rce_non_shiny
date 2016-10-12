@@ -58,14 +58,14 @@ module.exports = function (app, passport) {
                 if (!eval.probAppr) {
                     probAppr = {
                         "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
-                        "Prob_Apprr_B_other": obj.Prob_Apprr_B_other, "Prob_Apprr_C": obj.Prob_Apprr_C,
+                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Apprr_C,
                         "created_at":dt
                     };
                 }
                 else {
                     probAppr = {
                         "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
-                        "Prob_Apprr_B_other": obj.Prob_Apprr_B_other, "Prob_Apprr_C": obj.Prob_Apprr_C,
+                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Appr_C,
                         "created_at": eval.probAppr.created_at, "updated_at": dt
                     };
                 }

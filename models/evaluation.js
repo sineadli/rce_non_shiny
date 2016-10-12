@@ -15,7 +15,7 @@ totalToolNumber = 6; //for completed status
 var ProbAppr = mongoose.Schema({
     Prob_Appr_A: { type: String }, //Q.A.1
     Prob_Appr_B: { type: String },   //q8
-    Prob_Apprr_B_other: { type: String },  //Q.A.2
+    Prob_Appr_B_other: { type: String },  //Q.A.2
     Prob_Appr_C: { type: String },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
