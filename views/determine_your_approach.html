@@ -90,8 +90,8 @@
                                 <div>
                                     <p>Please specify:</p>
                                 </div>
-                                <% var val=''; if (probAppr) {val = probAppr.Prob_Apprr_B_other } %>
-                                <input type="text" name='Prob_Apprr_B_other' id="Prob_Apprr_B_other" value=<%= val %> />
+                                <% var val=''; if (probAppr) {val = probAppr.Prob_Appr_B_other } %>
+                                <input type="text" name='Prob_Appr_B_other' id="Prob_Appr_B_other" value=<%= val %> />
                             </div>
                         </div>
                     </div>
@@ -99,14 +99,14 @@
 
                 <div class="step-header container">
                     <div data-toggle="collapse" data-target="#C">
-                        <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> C. <span class="section-c-header">subjects use</span> the technology?
+                        <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> C. Are all <span class="section-c-header">subject</span> using the technology?
                         </h2>
                     </div>
                 </div>
                 <div id="C" class="row collapse in">
                     <div class="col-xs-7">
                         <div class="step-action">
-                            <select required name="Prob_Appr_C" id="Q.a.1">
+                            <select required name="Prob_Appr_C" id="Prob_Appr_C">
                                 <%
                                 var options = ["Select an option", "Yes", "No"];
                                 for ( var i = 0; i < options.length; i++ )
@@ -123,10 +123,27 @@
                     </div>
                 </div>
                 <div class="step-conclusion container">
-                    <h2>Conclusion</h2>
-                    <p>
-                        Based on your answer we will guide you through a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>matched comparison design</span>. This is a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>quasi-experimental design</span>. To compare apples to apples, this quasi-experimental design will identify a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>comparison group</span> with similar characteristics to the <span class="section-b-header">subjects</span> using the technology that you want to test.
-                    </p>
+                    
+                    <div class="p1" hidden>
+                        <h2>Conclusion</h2>
+                        <p>
+                            Based on your answer ....
+                        </p>
+                    </div>
+                    <div class="p2" hidden>
+                        <h2>Conclusion</h2>
+                        <p>
+                            Based on your answer we will guide you through a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>matched comparison design</span>. This is a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>quasi-experimental design</span>. To compare apples to apples, this quasi-experimental design will identify a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>comparison group</span> with similar characteristics to the <span class="section-b-header">subjects</span> using the technology that you want to test.
+                        </p>
+                    </div>
+                   
+                    <div class="p3" hidden>
+                        <h2>Conclusion</h2>
+                        <p>
+                            Based on your answer you can use a randomized control trial to evaluate your technology. We will be able to support using and RCT soon.
+                        </p>
+                    </div>
+                   
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary btn-lg">Save</button>
@@ -143,5 +160,19 @@
 </form>
 
 <script src='/static/js/custom.js'></script>
+<script>
+    $(document).ready(function () {
+        var a = $("#Prob_Appr_A").val();
+        var c = $("#Prob_Appr_C").val();
+        var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
+        if ((a == "Yes") && c == "No") {
+            p2.show(); p1.hide(); p3.hide();
+        }
+        else if (a == "No" && c == "No") {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else { p1.show(); p2.hide(); p3.hide(); }
+    });
+</script>
 </body>
 </html>

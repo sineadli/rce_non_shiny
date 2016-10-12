@@ -58,14 +58,14 @@ module.exports = function (app, passport) {
                 if (!eval.probAppr) {
                     probAppr = {
                         "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
-                        "Prob_Apprr_B_other": obj.Prob_Apprr_B_other, "Prob_Apprr_C": obj.Prob_Apprr_C,
+                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Apprr_C,
                         "created_at":dt
                     };
                 }
                 else {
                     probAppr = {
                         "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
-                        "Prob_Apprr_B_other": obj.Prob_Apprr_B_other, "Prob_Apprr_C": obj.Prob_Apprr_C,
+                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Appr_C,
                         "created_at": eval.probAppr.created_at, "updated_at": dt
                     };
                 }
@@ -167,7 +167,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.last_tool = "Plan Next Steps";
-        res.render('plan_next_steps.html', { planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title  });
+        res.render('plan_next_steps.html', { planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion  });
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
         var toollist = { "name": "Plan Next Steps", "status": req.body.status, "visited_at": new Date() };
@@ -248,7 +248,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.last_tool = "Context and Usage";
-        res.render('context_and_usage.html', { planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title });
+        res.render('context_and_usage.html', { planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
     });
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
         var toollist = { "name": "Context and Usage", "status": req.body.status, "visited_at": new Date() };

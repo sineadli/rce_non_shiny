@@ -11,12 +11,6 @@ $(document).ready( function() {
     caret.toggleClass('fa-caret-down');
 	});
 
-	
-
-	/** Load Header **/
-  $.get("/header", function (data) {
-	  $("#header").html(data);
-  });
 
  $(document).on('click', '.tool-view-button', function (e) {
 	 e.preventDefault();
@@ -39,17 +33,15 @@ $(document).ready( function() {
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
     $('#Prob_Appr_B').change(function () {
         var value = $(this).val();
-        var subject = "";        
-        var a = $("#Prob_Appr_A").val();
-        if (a === "Yes") { subject = "Are all " + value + " using " }
-        else if (a === "No") { subject = "Will all " + value + " use " }
-    
+        var subject = "subjects";        
 
     var otherSpecify = $("#other-specify");
 
     if (value === "other") otherSpecify.show();
     else otherSpecify.hide();
-
+    if (value != "Select an option" && value != "other") {
+        subject = value;
+    }
         if (value !== "other") {
         $(".section-c-header").text(subject);
     }
@@ -61,34 +53,44 @@ $(document).ready( function() {
     
     $('#Prob_Appr_A').change(function () {
         var a = $(this).val();
-        var subject = "";
-        var value = $("#Prob_Appr_B").val();
-        if (a === "Yes") { subject = "Are all " + value + " using " }
-        else if (a === "No") { subject = "Will all " + value + " use " }
-        
-        
-        var otherSpecify = $("#Prob_Apprr_B_other");
-        
-        if (value === "other") otherSpecify.show();
-        else otherSpecify.hide();
-        
-        if (value !== "other") {
-            $(".section-c-header").text(subject);
+        var c = $("#Prob_Appr_C").val();
+        var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
+        if ((a == "Yes") && c == "No") {
+            p2.show(); p1.hide(); p3.hide();
         }
-        else {
-            $(".section-c-header").text("subjects");
+        else if (a == "No" && c == "No") {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else { p1.show(); p2.hide(); p3.hide(); }
+    });
 
+    $('#Prob_Appr_C').change(function () {
+        var c = $(this).val();
+        var a = $("#Prob_Appr_A").val();
+        var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
+        if (a == "Yes" && c == "No") {
+            p2.show(); p1.hide(); p3.hide();
         }
+        else if (a == "No" && c == "No") {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else { p1.show(); p2.hide(); p3.hide();}
+
+       
     });
     
   
     $(".section-c-header").text(function () {
-        var subject = "";
-        var a = $("#Prob_Appr_A").val();
+        var subject = "subjects";
         var value = $("#Prob_Appr_B").val();
-        if (value === "other") { $("#other-specify").show();}
-        if (a === "Yes") { subject = "Are all " + value + " using " }
-        else if (a === "No") { subject = "Will all " + value + " use " }
+        if (value == "other") {
+            $("#other-specify").show();
+            subject = $("#Prob_Appr_B_other").val();
+        }
+        
+        if (value != "Select an option" && value != "other") {
+            subject = value;
+        }
         return subject;
      }
     );
@@ -96,12 +98,8 @@ $(document).ready( function() {
 
 
   $("#Prob_Apprr_B_other").keyup( function() {
-        var value = $(this).val();
-        var a = $("#Prob_Appr_A").val();
-        var subject = "";
-        if (a === "Yes") { subject = "Are all " + value + " using " }
-        else if (a === "No") { subject = "Will all " + value + " use " }
-    $(".section-c-header").text(subject);    
+      var value = $(this).val();
+      $(".section-c-header").text(value);   
   });
 
 
