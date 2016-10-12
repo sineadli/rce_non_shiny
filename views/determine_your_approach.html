@@ -12,7 +12,7 @@
   </head>
 <body>
     <div id="header"></div>
-    <ol class="breadcrumbs">
+    <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Understanding Your Problem</a></li>
     </ol> 
 <form action="/determine_your_approach" method="post">
@@ -126,7 +126,7 @@
                     <div class="p1" hidden>
                         <h2>Conclusion</h2>
                         <p>
-                            Based on your answer ....
+                            Based on your answer neither an experimental nor matched design are appropriate – alternatives for such a situation are under consideration
                         </p>
                     </div>
                     <div class="p2" hidden>
@@ -163,14 +163,18 @@
     $(document).ready(function () {
         var a = $("#Prob_Appr_A").val();
         var c = $("#Prob_Appr_C").val();
+        var b = $("#Prob_Appr_B").val();
         var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
-        if ((a == "Yes") && c == "No") {
+        if ((a === "Yes") && c === "No" && b !== "Select an option" ) {
             p2.show(); p1.hide(); p3.hide();
         }
-        else if (a == "No" && c == "No") {
+        else if (a === "No" && c === "No" && b !== "Select an option") {
             p3.show(); p1.hide(); p2.hide();
         }
-        else { p1.show(); p2.hide(); p3.hide(); }
+        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else { p1.hide(); p2.hide(); p3.hide(); }
     });
 </script>
 </body>

@@ -12,12 +12,12 @@
 </head>
 <body>
     <div id="header"></div>
-    <ol class="breadcrumbs">
+    <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
-    </ol> 
-    
+    </ol>
+
 <form action="/craft_your_research_q" method="post">
-    <% include ../views/partials/toolHeader.html %>
+<% include ../views/partials/toolHeader.html %>
 <div class="container-fluid">
 <div class="row">
     <div class="col-xs-12">
@@ -98,7 +98,7 @@
                 <p>
                     <label for="Plan_Question_B_Other">Please specify:</label>
                     <% var val=''; if (planQuestion) {val = planQuestion.Plan_Question_B_Other } %>
-                    <input type="text" name='Plan_Question_B_Other' id="Plan_Question_B_Other" value="<%= val %>" />
+                    <input type="text" name='Plan_Question_B_Other' id="Plan_Question_B_Other" value="<%= val %>"/>
                 </p>
             </div>
         </div>
@@ -130,6 +130,7 @@
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
+            <h3 class="sec-label">Things to Consider</h3>
             <p>
                 It's important to think how you are going to measure the outcome that you want to affect.
             </p>
@@ -175,6 +176,7 @@
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
+             <h3 class="sec-label">Things to Consider</h3>
             <p>
                 What is the group of individuals you are trying to impact? This could be the same as the individuals using the technology, or it could be different. For example, students may be using the technology to increase their own achievement or teachers could be using the technology to increase their students' achievement. In both cases, the answer to Part C would be: students.
             </p>
@@ -208,11 +210,11 @@
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#D">
         <h2 class="clickable">
-            <i class="fa fa-caret-right" aria-hidden="true"></i> D. Who are you comparing them against?
+            <i class="fa fa-caret-down" aria-hidden="false"></i> D. Who are you comparing them against?
         </h2>
     </div>
 </div>
-<div id="D" class="row collapse">
+<div id="D" class="row collapse in">
     <div class="col-xs-7">
         <div class="step-action">
             <% var d =''; if (planQuestion) {d = planQuestion.Plan_Question_D } %>
@@ -255,10 +257,12 @@
 </div>
 <div class="row">
     <div class="col-xs-7">
-        <em>DOES <b><span class='q1answer'><%= planQuestion.length > 0 ? planQuestion.Plan_Question_A : "A" %></span></b> <b><span class='q12aanswer'>DO</span></b> <b><span class='q11answer'>B</span></b> AMONG <b><span class='q8answer'>C</span></b> COMPARED TO <b><span class='qdanswer'> <%= planQuestion.length > 0 ? planQuestion.Plan_Question_D : "D"  %></span></b>?</em>
+
+        <em>DOES <b><span class='q1answer'>A</span></b> <b><span class='q12aanswer'>DO</span></b> <b><span class='q11answer'>B</span></b> AMONG <b><span class='q8answer'>C</span></b> COMPARED TO <b><span class='qdanswer'>D</span></b>?</em>
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
+            <h3 class="sec-label">Things to Consider</h3>
             <p>Look at your question. Does it makes sense? If not, you can make changes on this page until it does.</p>
         </div>
     </div>
@@ -276,7 +280,41 @@
     <input class="hidden" name="status" id="status"/>
 </div>
 </form>
-    <% include ../views/partials/footer.html %>
-<script src='/static/js/custom.js'></script>
+    <script src='/static/js/custom.js'></script>
+    <script>
+    $(document).ready(function () {
+        var a = $("#Plan_Question_A").val();
+        if (a === "") {
+            a = "A";
+        }
+        var c = $("#Plan_Question_C").val();
+        if (c === "") {
+            c = "C";
+        }
+        var b = $("#Plan_Question_B_1").val();
+        if (b === "Select an option") {
+            b = "B";
+        }
+        var dot = $("#Plan_Question_B_3").val();
+        if (dot === "Select an option") {
+            dot = "DO";
+        }
+        if ($("#Plan_Question_B_1").val() === "Other") {
+            var b = $("#Plan_Question_B_Other").val();
+        }
+        var d = $("#Plan_Question_D").val();
+        if (d === "") {
+            d = "D";
+        }
+        $(".q11answer").text(b);
+        $('.q1answer').text(a);
+        $('.q12aanswer').text(dot);
+        $('.q8answer').text(c);
+        $('.qdanswer').text(d);
+
+
+    });
+    </script>
+   
 </body>
 </html>

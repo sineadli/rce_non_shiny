@@ -54,31 +54,54 @@ $(document).ready( function() {
     $('#Prob_Appr_A').change(function () {
         var a = $(this).val();
         var c = $("#Prob_Appr_C").val();
-        var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
-        if ((a == "Yes") && c == "No") {
+        var b = $("#Prob_Appr_B").val();
+		var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
+        if ((a === "Yes") && c === "No" && b !== "Select an option") {
             p2.show(); p1.hide(); p3.hide();
         }
-        else if (a == "No" && c == "No") {
+        else if (a === "No" && c === "No" && b !== "Select an option") {
             p3.show(); p1.hide(); p2.hide();
         }
-        else { p1.show(); p2.hide(); p3.hide(); }
+        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an option")) {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else { p1.hide(); p2.hide(); p3.hide(); }
     });
 
     $('#Prob_Appr_C').change(function () {
         var c = $(this).val();
-        var a = $("#Prob_Appr_A").val();
-        var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
-        if (a == "Yes" && c == "No") {
+		var a = $("#Prob_Appr_A").val(); 
+        var b = $("#Prob_Appr_B").val();
+		var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
+        if ((a === "Yes") && c === "No" && b !== "Select an option") {
             p2.show(); p1.hide(); p3.hide();
         }
-        else if (a == "No" && c == "No") {
+        else if (a === "No" && c === "No" && b !== "Select an option") {
             p3.show(); p1.hide(); p2.hide();
         }
-        else { p1.show(); p2.hide(); p3.hide();}
-
-       
+        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else { p1.hide(); p2.hide(); p3.hide(); }
     });
-    
+
+	$("#Prob_Appr_B").change(function () {
+		var b = $(this).val();
+		var c = $("#Prob_Appr_C").val();
+        var a = $("#Prob_Appr_A").val();
+		var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
+        if ((a === "Yes") && c === "No" && b !== "Select an option") {
+            p2.show(); p1.hide(); p3.hide();
+        }
+        else if (a === "No" && c === "No" && b !== "Select an option") {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
+            p3.show(); p1.hide(); p2.hide();
+        }
+        else { p1.hide(); p2.hide(); p3.hide(); }
+    });
+
   
     $(".section-c-header").text(function () {
         var subject = "subjects";
