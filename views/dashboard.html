@@ -148,11 +148,11 @@
 
         var etitle = $("#title").val();
         var url = '/api/eval';
-        var evalid = $("#evalid").val();
+       
         $.ajax({
             type: "POST",
             url: url,
-            data: JSON.stringify({ "id": evalid, "title": etitle }),
+            data: JSON.stringify({  "title": etitle }),
             dataType: "json",
             contentType: "application/json",
             success: function(data) {
