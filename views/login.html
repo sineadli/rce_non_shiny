@@ -2,47 +2,60 @@
 <!doctype html>
 <html>
 <head>
-    <title>RCTE Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <title>Login Ed Tech RCE Coach</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
     <style>
         body        { padding-top:80px; }
     </style>
 </head>
 <body>
+
 <div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+    <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span> Login</h1>
+        <h1><span class="fa fa-sign-in"></span> Login
+        </h1>
 
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
+        <!-- show any messages that come back with authentication -->
+        <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+        <% } %>
 
-    <!-- LOGIN FORM -->
-    <form action="/login" method="post">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" name="email" autofocus>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
+        <!-- LOGIN FORM -->
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" name="email" autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
 
-        <button type="submit" class="btn btn-primary btn-lg">Login</button>
-    </form>
+            <button type="submit" class="btn btn-primary btn-lg">Login</button>
+        </form>
 
-    <hr>
+        <hr>
 
-    <p>Need an account? <a href="/signup">Signup</a></p>
-    <p>Forgot password? <a href="/forgot">Reset password</a></p>
-    <p>Or go <a href="/">home</a>.</p>
+        <p>Need an account? <a href="/signup">Create an account</a>
+        </p>
+        <p>Forgot password? <a href="/forgot">Reset password</a>
+        </p>
+        <p>Or go <a href="/">home</a>.
+        </p>
+
+    </div>
 
 </div>
-
-</div>
+    <div style="position: fixed; bottom: 0; width: 1000px;">
+        <% include ../views/partials/footer.html %>
+    </div>
 </body>
 </html>
