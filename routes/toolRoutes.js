@@ -86,12 +86,12 @@ module.exports = function (app, passport) {
     app.get('/craft_your_research_q', isLoggedIn, function (req, res) {
 		sess = req.session;
         sess.eval.last_step = 3;
-        sess.last_tool = "Crafting a Research Question";
-        res.render('craft_your_research_q.html', { planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title  })
+        sess.last_tool = "Craft Your Research Question";
+        res.render('craft_your_research_q.html', { planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title });
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Crafting a Research Question", "status": req.body.status, "visited_at": new Date() };
+        var toollist = { "name": "Craft Your Research Question", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
@@ -117,9 +117,9 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-                sess.last_tool = "Crafting a Research Question";
+                sess.last_tool = "Craft Your Research Question";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Crafting a Research Question" });
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Craft Your Research Question" });
                 if (tool.length == 0) {
                     eval.toolsvisited.push(toollist);
                 }
@@ -166,11 +166,11 @@ module.exports = function (app, passport) {
     app.get('/plan_next_steps', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
-        sess.last_tool = "Plan Next Steps";
+        sess.last_tool = "How to Use Your Results";
         res.render('plan_next_steps.html', { planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion  });
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Plan Next Steps", "status": req.body.status, "visited_at": new Date() };
+        var toollist = { "name": "How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
@@ -195,9 +195,9 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-				sess.last_tool = "Plan Next Steps";
+				sess.last_tool = "How to Use Your Result";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Plan Next Steps" });
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "How to Use Your Results" });
                 if (tool.length == 0) {
                     eval.toolsvisited.push(toollist);
                 }
@@ -247,11 +247,11 @@ module.exports = function (app, passport) {
     app.get('/context_and_usage', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
-        sess.last_tool = "Context and Usage";
+        sess.last_tool = "Summarize Context";
         res.render('context_and_usage.html', { planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
     });
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Context and Usage", "status": req.body.status, "visited_at": new Date() };
+        var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
@@ -276,9 +276,9 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-                sess.last_tool = "Context and Usage";
+                sess.last_tool = "Summarize Context";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Context and Usage" });
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Summarize Context" });
                 if (tool.length == 0) {
                     eval.toolsvisited.push(toollist);
                 }
@@ -328,7 +328,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 5;
         sess.last_tool = "Matching";
-        res.render('matching.html', { probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title });
+        res.render('matching.html', { probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
     });
 };
 
