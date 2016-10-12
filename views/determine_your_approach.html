@@ -13,7 +13,7 @@
 <body>
     <div id="header"></div>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Understanding Your Problem</a></li>
+        <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
     </ol> 
 <form action="/determine_your_approach" method="post">
     <% include ../views/partials/toolHeader.html %>
@@ -126,7 +126,7 @@
                     <div class="p1" hidden>
                         <h2>Conclusion</h2>
                         <p>
-                            Based on your answer neither an experimental nor matched design are appropriate – alternatives for such a situation are under consideration
+                            Based on your answer neither an experimental nor matched design are appropriate. Alternatives for such a situation are under consideration
                         </p>
                     </div>
                     <div class="p2" hidden>
@@ -172,7 +172,7 @@
             p3.show(); p1.hide(); p2.hide();
         }
         else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
-            p3.show(); p1.hide(); p2.hide();
+            p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
     });

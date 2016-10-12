@@ -2,7 +2,7 @@
 <!-- craft_your_research_q.html -->
 <html lang="en">
 <head>
-    <title>Plan Next Steps</title>
+    <title>how you will use the results</title>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/main.css" />
@@ -14,7 +14,7 @@
 <body>
     <div id="header"></div>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Understanding Your Problem</a></li>
+        <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
     </ol> 
     
 <form action="/plan_next_steps" method="post">
@@ -57,7 +57,7 @@
     <div data-toggle="collapse" data-target="#A">
         <h2 class="clickable">
             <i class="fa fa-caret-down" aria-hidden="false"></i>
-            A. What is the cost of the educational technology?
+            A. What is the cost of <%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>?
         </h2>
     </div>
 </div>
@@ -108,6 +108,7 @@
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
+            <h3 class="sec-label">Things to Consider</h3>
             <p>
                 The cost of a technology will probably be a factor in your decision about how much uncertainty you are willing to tolerate and how big the effect has to be in order for the technology to be worth implementing more widely.
             </p>
@@ -140,11 +141,11 @@
 </div>
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#B">
-        <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> B. What would success look like?
+        <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> B. What would success look like?
         </h2>
     </div>
 </div>
-<div id="B" class="row collapse">
+<div id="B" class="row collapse in">
     <div class="col-xs-7">
         <div class="step-action">
             <p>
@@ -157,6 +158,7 @@
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
+            <h3 class="sec-label">Things to Consider</h3>
             <ul>
                 <li>The wizard will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here</li>
                 <li>The units reflect whatever you are using to measure outcomes. For example, if you are looking at student performance on a test, the units would be points. If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
@@ -191,17 +193,18 @@
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
+            <h3 class="sec-label">Things to Consider</h3>
             <p>It is a rare occurrence that we have enough evidence to be nearly certain (close to 100% certainty) that an ed tech product will work if implemented well. Most of the time we have to make a choice with incomplete evidence. Thinking forward to your results, what probability would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum, than if you’re considering a tool that will be used for a lower stakes decision, such as how to use a small amount of time in one class.</p>
         </div>
     </div>
 </div>
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#D">
-        <h2 class="clickable"><i class="fa fa-caret-right" aria-hidden="true"></i> D. What will you do if...
+        <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> D. What will you do if...
         </h2>
     </div>
 </div>
-<div id="D" class="row collapse">
+<div id="D" class="row collapse in">
     <div class="col-xs-7">
         <div class="step-subquestion">
             <p>the evidence suggests that it is likely that A does B among C compared to D?</p>
@@ -227,8 +230,9 @@
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
-            <p><b>Your Research Question:</b> Does [A] do [B] among [C] compared to [D]?
-            </p>
+            <h3 class="sec-label">Things to Consider</h3>
+            <p><b>Your Research Question:</b> <br/>
+                DOES <strong><span class='q1answer'><%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "A") : "" %></span> <span class='q12aanswer'><%= planQuestion ?  (planQuestion.Plan_Question_B_3 ? (planQuestion.Plan_Question_B_3 == "Select an option" ? "DO" : planQuestion.Plan_Question_B_3) : "DO") : "DO" %></span> <span class='q11answer'><%= planQuestion ?  (planQuestion.Plan_Question_B_1 ? (planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : planQuestion.Plan_Question_B_1) : "B") : "B" %></span></strong> AMONG <strong><span class='q8answer'><%= planQuestion ?  (planQuestion.Plan_Question_C ? planQuestion.Plan_Question_C : "C") : "C" %></span></strong> COMPARED TO <strong><span class='qdanswer'><%= planQuestion ?  (planQuestion.Plan_Question_D ? planQuestion.Plan_Question_D : "D") : "D" %></span></strong>?</p>
             <p>This rapid-cycle evaluation will provide you with 1 of 3 answers to your research question. It is important that you think what you will do under each scenario.</p>
             <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#step4example">See Example</button>
             <!--(Button data-target should be = to the id of the example content below.)-->

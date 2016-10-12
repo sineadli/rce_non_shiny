@@ -129,6 +129,7 @@ h2,p.clickable {
 }
 h2.clickable {
     font-size: 1.4em;
+    margin-top: 25px;
 
 }
 h2 {

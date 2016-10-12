@@ -63,7 +63,7 @@ $(document).ready( function() {
             p3.show(); p1.hide(); p2.hide();
         }
         else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an option")) {
-            p3.show(); p1.hide(); p2.hide();
+            p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
     });
@@ -80,7 +80,7 @@ $(document).ready( function() {
             p3.show(); p1.hide(); p2.hide();
         }
         else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
-            p3.show(); p1.hide(); p2.hide();
+            p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
     });
@@ -97,7 +97,7 @@ $(document).ready( function() {
             p3.show(); p1.hide(); p2.hide();
         }
         else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
-            p3.show(); p1.hide(); p2.hide();
+            p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
     });
