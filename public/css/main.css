@@ -23,14 +23,17 @@ div.container-fluid {
     background-color: #E3E1CE;
 }
 
-div.breadcrumbs, .sec-label {
+div.breadcrumbs, .sec-label, li.breadcrumb-item {
 	color:#56ACE0;
 	text-transform:uppercase;
 	font-size:.9em;
 	font-weight:bold;
 }
-div.breadcrumbs {
-    margin: 5px 5px;
+ol.breadcrumb {
+    background-color: #ffffff;
+}
+li.breadcrumb-item {
+    font-size: 1.1em;
 }
 .add-padding {
     padding: 20px 20px 10px 20px;
@@ -43,6 +46,9 @@ a.sec-label, button.sec-label {
     font-size: .9em;
     color: #4081A8;
     padding: 0;
+}
+div.bottom-next a.sec-label {
+    font-size: 1.1em;
 }
 .tooltip-gr {
   color:#00CC66;
@@ -63,7 +69,7 @@ div.tool-help{
 	/*margin-top:35px;*/
 }
 .footer {
-    margin-top: 35px;
+    margin-top: 55px;
 }
   ul.footer-list {
         list-style: none; border-left: 2px solid #ccc;
@@ -552,6 +558,11 @@ div.step-example-box {
 	height:45px;	
 	margin-bottom:3px;
   vertical-align:top;
+}
+div.bottom-buttons {
+    margin-top: 35px;
+    text-align: center;
+    /*margin-right: 20px;*/
 }
 div.action-buttons {
   margin-left:70%;

@@ -95,9 +95,9 @@
 
 
                 <div class="result"></div>
-
-
-
+<% if(step !== "6") { %>
+        <div class="bottom-next pull-right"><a href="#" id="Next-link" class="sec-label">Next Step <span class="fa fa-caret-right"></span></a></div>
+<% } %>
             </div>
     </form>
     <% include ../views/partials/footer.html %>
@@ -128,12 +128,32 @@
         $('ul.wizard-menu li').click(function(e) {
 
             var id = $(this).attr('id');
+            $('.bottom-next').hide();
+            if (id !== "6") {
+                $('.bottom-next').show();
+            }
             $("ul.wizard-menu li.wizard-item").removeClass("active");
             $("#" + id).addClass("active");
             //var data = wizardStep[id];
             //alert(data);
             var url = "/tools/" + id;
             $.get(url, function(data) {
+                $(".result").html(data);
+            });
+        });
+
+        $("#Next-link").click(function (e) {
+
+            var id = $("ul.wizard-menu li.active").attr('id');
+            $("#" + id).removeClass("active");
+            var next = parseInt(id) + 1;
+            if (next === 6) {
+                $('.bottom-next').hide();
+            }
+
+            $("#" + next).addClass("active");
+            var url = "/tools/" + next;
+            $.get(url, function (data) {
                 $(".result").html(data);
             });
         });
