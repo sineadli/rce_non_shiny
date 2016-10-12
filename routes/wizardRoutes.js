@@ -65,14 +65,14 @@ module.exports = function (app, passport) {
     app.post('/api/eval', isLoggedIn, function (req, res) {
         sess = req.session;
         // console.log(req.body.id);
-        if (req.body.id == "") {
+        if (!req.body.id) {
             var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: 'New' });
-            sess.eval = eval;
+            
             eval.save(function (err) {
                 if (err)
                     console.log(err);
                 else {
-
+                    sess.eval = eval;
                     res.status(201).send(eval);
                 }
             });
