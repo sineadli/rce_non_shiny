@@ -104,23 +104,25 @@ $(document).ready( function() {
 
 
 /*~~~~~~~~~~~~~~~~~~ craft_your_research_q.html ~~~~~~~~~~~~~~~~~~*/
+
+
   $('#Plan_Question_B_1').change( function() {
     var value = $(this).val();
 
-    var otherSpecify = $("#other-specify-q11");
+    var otherSpecify = $("#Question_B_Other");
 
-    if (value === "other") otherSpecify.show();
+    if (value === "Other") otherSpecify.show();
     else otherSpecify.hide();
 
-    if (value !== "other") {
-        $("#other-specify-text-q11").text(value);
+    if (value !== "Other" && value !== "Select an option") {
+        $(".q11answer").text(value);
     }
     else {
         $(".q11answer").text("B");
     }
   });
 
-    $("#other-specify-text-q11").keyup( function() {
+  $("#Plan_Question_B_Other").keyup( function() {
     var value = $(this).val();
     $(".q11answer").text(value);
   });
@@ -131,10 +133,10 @@ $(document).ready( function() {
     $('.q1answer').text(value);
   });
 
-  $('#q11').change( function() {
-    var value = $(this).val();
-    $('.q11answer').text(value);
-  });
+  //$('#q11').change( function() {
+  //  var value = $(this).val();
+  //  $('.q11answer').text(value);
+  //});
 
   $('#Plan_Question_B_3').change( function() {
     var value = $(this).val();

@@ -47,12 +47,17 @@ a.sec-label, button.sec-label {
 .tooltip-gr {
   color:#00CC66;
 }
+div.tool-header {
+       margin-bottom: 35px;
 
+}
 div.tool-help{
   width:80%;
   margin:0px auto;
-  margin-top: 35px;
    margin-bottom: 35px;
+}
+.tool-instructions {
+    font-style: italic;
 }
 .row {
 	/*margin-top:35px;*/
@@ -496,7 +501,9 @@ div.step-action {
   width:100%
 }
 div.step-action label {
-  display:none;
+  /*display:none;*/
+    font-weight: normal;
+    margin-top: 10px;
 }
 div.step-action-long {
   width:75%;
