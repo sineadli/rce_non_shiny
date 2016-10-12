@@ -97,7 +97,7 @@ $(document).ready( function() {
   
 
 
-  $("#Prob_Apprr_B_other").keyup( function() {
+  $("#Prob_Appr_B_other").keyup( function() {
       var value = $(this).val();
       $(".section-c-header").text(value);   
   });
