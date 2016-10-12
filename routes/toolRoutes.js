@@ -86,7 +86,8 @@ module.exports = function (app, passport) {
     app.get('/craft_your_research_q', isLoggedIn, function (req, res) {
 		sess = req.session;
         sess.eval.last_step = 3;
-        sess.last_tool = "Craft Your Research Question";
+		sess.last_tool = "Craft Your Research Question";
+        console.log("sess.eval.planQuestion");
         res.render('craft_your_research_q.html', { planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title });
     });
     //03.01 crafting a research question

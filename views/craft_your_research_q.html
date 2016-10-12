@@ -12,7 +12,7 @@
 </head>
 <body>
     <div id="header"></div>
-    <ol class="breadcrumb">
+    <ol class="breadcrumbs">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
     </ol> 
     
@@ -52,7 +52,7 @@
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#A">
         <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> A. What is the name of the educational technology you are testing?
+            <span class="fa fa-caret-down" aria-hidden="false"></span> A. What is the name of the educational technology you are testing?
         </h2>
     </div>
 </div>
@@ -79,9 +79,9 @@
             </p>
         </div>
         <div class="step-action">
-            <select required name="Plan_Question_B_1" id="q11">
+            <select required name="Plan_Question_B_1" id="Plan_Question_B_1">
                 <%
-                var options = ["Select an option","Student academic achievement", "Student non-academic achievement","Teacher performance" ];
+                var options = ["Select an option","Student academic achievement", "Student non-academic achievement","Teacher performance","Other" ];
                 for ( var i = 0; i < options.length; i++ )
                 {
                 var selected;
@@ -94,9 +94,12 @@
                 %>
 
             </select>
-            <div id="Plan_Question_B_Other" hidden="true">
-                <p>Please specify:</p>
-                <input type="text" id="other-specify-text-q11"/>
+            <div id="Question_B_Other" hidden="true">
+                <p>
+                    <label for="Plan_Question_B_Other">Please specify:</label>
+                    <% var val=''; if (planQuestion) {val = planQuestion.Plan_Question_B_Other } %>
+                    <input type="text" name='Plan_Question_B_Other' id="Plan_Question_B_Other" value="<%= val %>" />
+                </p>
             </div>
         </div>
         <div class="step-subquestion">
@@ -252,7 +255,7 @@
 </div>
 <div class="row">
     <div class="col-xs-7">
-        <em>DOES <b><span class='q1answer'>A</span></b> <b><span class='q12aanswer'>DO</span></b> <b><span class='q11answer'>B</span></b> AMONG <b><span class='q8answer'>C</span></b> COMPARED TO <b><span class='qdanswer'>D</span></b>?</em>
+        <em>DOES <b><span class='q1answer'><%= planQuestion.length > 0 ? planQuestion.Plan_Question_A : "A" %></span></b> <b><span class='q12aanswer'>DO</span></b> <b><span class='q11answer'>B</span></b> AMONG <b><span class='q8answer'>C</span></b> COMPARED TO <b><span class='qdanswer'> <%= planQuestion.length > 0 ? planQuestion.Plan_Question_D : "D"  %></span></b>?</em>
     </div>
     <div class="col-xs-5">
         <div class="step-to-consider">
