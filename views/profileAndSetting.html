@@ -48,7 +48,8 @@
                         <h2 class="text-center">
                             Edit Profile Picture
                         </h2>
-                        <p class="text-center"><%= user.profile.role %></p>
+                        <% var role = user.profile.role; if (role == "other") (role =user.profile.role_other ) %>
+                        <p class="text-center"><%= role %></p>
                         <p class="text-center">
                             <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
                         </p>
