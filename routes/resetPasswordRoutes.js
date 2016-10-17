@@ -42,7 +42,8 @@ module.exports = function (app) {
                 var transport = nodemailer.createTransport( {
                    // service: '???',
                     port: 25, //confirm with company or 465?
-                    host: 'intrelay.mathematica-mpr.com'
+                   // host: 'edtechrce.org' //for qa server
+                    host: 'intrelay.mathematica-mpr.com' //for local
                    // host: 'smtp.mathematica-mpr.com',
                     //auth: {
                     //    user: '???',    //get this from ITS?
@@ -110,7 +111,8 @@ module.exports = function (app) {
                 var transport = nodemailer.createTransport({
                     //service: 'Yahoo',
                     port: 25, //confirm with company or 465?
-                    host: 'intrelay.mathematica-mpr.com'
+                    // host: 'edtechrce.org' //for qa server
+                    host: 'intrelay.mathematica-mpr.com' //for local
                    // host: 'smtp.mathematica-mpr.com',
                     //auth: {
                     //    user: '???',    //get this from ITS?

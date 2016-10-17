@@ -443,14 +443,14 @@ module.exports = function (app, passport) {
     });
     app.get('/shareresult', isLoggedIn, function (req, res) {
         sess = req.session;
-        sess.eval.last_step = 5;
+        sess.eval.last_step = 6;
         sess.last_tool = "Share Your Results";
         res.render('shareresult.html', { start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
     });
     app.post('/shareresult', isLoggedIn, function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
-        sess.step = 6;
+        sess.eval.last_step = 6;
         //var obj = req.body;
         var dt = new Date();
         async.waterfall([
@@ -472,7 +472,7 @@ module.exports = function (app, passport) {
                     res.redirect('/wizard');
             },
             function (eval, done) {
-                eval.last_step = 5;
+                eval.last_step = 6;
                 sess.last_tool = "Share Your Results";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
