@@ -201,6 +201,12 @@ div.front-header {
     margin-bottom: 45px;
    
 }
+div#home-access {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height: 20px;
+    color: #4081A8;
+}
 div.welcome-text {
      padding: 25px;
     background-color: #D9D7BE;
