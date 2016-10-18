@@ -202,8 +202,7 @@ div.front-header {
    
 }
 div#home-access {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 15px 15px 0;
     line-height: 20px;
     color: #4081A8;
 }
