@@ -3,13 +3,23 @@
 var mongoose = require('mongoose');
 
 
-
+var tool = mongoose.Schema({
+    name: String,
+    desc: String,
+    note: String,
+    type: String,
+    wizardName: String,
+    wizardPath: Number,
+    step: Number,
+    prereq: Boolean,
+    path: String
+});
 
 // define the schema for our evaluation model
 var wizardStepSchema = mongoose.Schema({
     name: String,
     step: Number,
-    numTools: Number,
+    tools: [tool],
     intro: String
 });
 

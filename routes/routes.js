@@ -11,7 +11,16 @@ module.exports = function(app, passport) {
     //app.get('/', function(req, res) {
     //    res.render('landing.html'); // load the ndex.html file
     //});
-	app.get('/', function (req, res) {
+    app.get('/', function (req, res) {
+        if (req.session) {
+            if (req.user) {
+                req.user.userSession = '';
+                req.user.save();
+            }
+            req.session.destroy(function (err) {
+                res.render('index.html');;
+            });
+        }
         res.render('index.html'); // load the ndex.html file
     });
 
@@ -118,17 +127,7 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function (req, res) {
-        console.log(req.user);
-        if (req.session) {
-            if (req.user) {
-                req.user.userSession = '';
-                req.user.save();
-            }
-            req.session.destroy(function (err) {
-                res.redirect('/');
-            });
-        }
-       
+        res.redirect('/');       
     });
 
     // =====================================

@@ -27,8 +27,8 @@
             <div class="dash-well">
                 <h2 class="text-center"> <%= user.profile.user_name %>
                 </h2>
-
-                <p class="text-center"><%= user.profile.role %></p>
+                <% var role = user.profile.role; if (role == "other") (role =user.profile.role_other ) %>
+                <p class="text-center"><%= role %></p>
 
                 <p class="text-center">
 
@@ -49,7 +49,7 @@
 
                 var status= "New";
                 if (eval) {
-                evaltitle = eval.title; status="On going";
+                evaltitle = eval.title; status=eval.status;
                 evallabel = "Current Evaluation";
                 if (eval.created_at)
                 {

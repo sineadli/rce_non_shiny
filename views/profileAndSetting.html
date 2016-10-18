@@ -48,7 +48,8 @@
                         <h2 class="text-center">
                             Edit Profile Picture
                         </h2>
-                        <p class="text-center"><%= user.profile.role %></p>
+                        <% var role = user.profile.role; if (role == "other") (role =user.profile.role_other ) %>
+                        <p class="text-center"><%= role %></p>
                         <p class="text-center">
                             <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
                         </p>
@@ -60,7 +61,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one" style="text-align:left;">Username </label>
+                                    <label class="label-one" style="text-align:left;">Username (email) </label>
                                     <label class="label-two"><%= user.local.email  %></label>
                                     <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseOne">Update</a></label>
                                 </h4>
@@ -70,7 +71,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <label for="email">Username</label>
+                                            <label for="email">Username (email)</label>
                                             <input type="email" name="email" />
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
@@ -170,7 +171,7 @@
                                         <select id="role" name="role">
                                             <option value="">Select an option</option>
                                             <option value="teacher">Teacher</option>
-                                            <option value="princple">Princple</option>
+                                            <option value="principal">Principal</option>
                                             <option value="tech">Technology/IT Advisor</option>
                                             <option value="other">other</option>
                                         </select>

@@ -41,8 +41,12 @@
                     <% } %>
                 </div>
                 <div class="tool-view-btn" >
-                    <% var option=""; if (tools[i].path) {option=tools[i].path } %>
-                    <a href="<%= option %>"  class="tool-view-button">View</a>
+                    <% var option="";  if (tools[i].path) {option=tools[i].path;} %>
+                    <% if (option.indexOf(".pdf") !== -1)  { %>
+                    <a onclick="window.open('<%= option %>', ''); return false" href="javascript:void(0);"  class="tool-view-button">View</a>
+                    <% } else { %>
+                    <a href="<%= option %>" class="tool-view-button">View</a>
+                    <% } %>
                 </div>
             </div>
         </div>
