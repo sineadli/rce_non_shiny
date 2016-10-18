@@ -4,12 +4,20 @@ body {
   font-size:1.4em;
   line-height:1.6em;
      margin: 0 auto;
+      height: 100%;
 }
 div.container-fluid {
 	width:100%;
 	font-size:100%;
+    min-height: 100%;
  
 }
+div.container-fluid {
+    position: relative;
+ }div.footer {
+    position: absolute;
+    bottom: 0;
+ }
 /* Header */
 .navbar {
     height: auto;
