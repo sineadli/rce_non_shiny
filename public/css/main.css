@@ -143,6 +143,38 @@ hr {
   border-color:#B8B28F;
   width:100%;
 }
+h1, h2, h3 {
+     color:#000000;
+    font-weight: 600;
+}
+h1 {
+    font-size: 36px;
+}
+h2 {
+  font-size:1.55em;
+    font-size: 24px;
+  font-weight:600;
+  margin-top: 5px;
+    margin-bottom: 15px;
+}
+h3 {
+  color:#000000;
+  letter-spacing: 1px;
+  font-size: 18px;
+  margin-top:5px;
+}
+h4 {
+  font-size:15px;
+  font-style:italic;
+  font-weight:300;
+}
+label {
+    color:#8C866B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  margin-top:5px;
+}
 h2,p.clickable {
   cursor:pointer;
 }
@@ -150,24 +182,6 @@ h2.clickable {
     font-size: 1.4em;
     margin-top: 25px;
 
-}
-h2 {
-  font-size:1.55em;
-  font-weight:bold;
-  margin-top: 5px;
-    margin-bottom: 15px;
-}
-h3 {
-  color:#8C866B;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 14px;
-  margin-top:5px;
-}
-h4 {
-  font-size:15px;
-  font-style:italic;
-  font-weight:300;
 }
 div.header-section {
 }
@@ -189,7 +203,7 @@ div.front-header {
 }
 div.welcome-text {
      padding: 25px;
-    background-color: #e7e7e7;
+    background-color: #D9D7BE;
     margin-top: 35px;
 }
 div.front-header div.front-text, div.slide-item {
@@ -206,9 +220,11 @@ ul.front-list {
 }
 div.front-header h1 {
     font-size: 2.6em;
+    color: #ffffff;
     margin-bottom: 25px;
     text-align: center;
     text-shadow: 1px 2px #000;
+
 }
 
 
@@ -425,6 +441,9 @@ div.tool-row div.col-xs-3 {
 }
 div.col-xs-3 {
     width: 248px;
+}
+div.no-padding {
+    padding: 0 !important;
 }
 div.tool-div {
     border: 1px solid #BAB38F;
