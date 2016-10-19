@@ -37,7 +37,7 @@ module.exports = function(passport) {
     passport.use('local-signup', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
-        passwordField : 'password',
+        passwordField: 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
         function (req, email, password, done) {
@@ -68,6 +68,7 @@ module.exports = function(passport) {
                // console.log('cookie: ' + JSON.stringify(req.headers['cookie']));
                 newUser.userSession = req.headers['cookie'];
                 // save the user
+                newUser.receive_update = req.body.receive_update;
                 newUser.save(function(err) {
                     if (err)
                         throw err;
