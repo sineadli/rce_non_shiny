@@ -21,9 +21,9 @@ var userSchema = mongoose.Schema({
         user_name: String,
         user_pic: { data: Buffer, contentType: String },
         first_name: String,
-        last_name: String
-
-    },
+        last_name: String,
+        receive_update: Boolean
+    },   
     userSession: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
