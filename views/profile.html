@@ -9,56 +9,57 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/static/css/profile.css" />
-<script type="text/javascript" src="/static/js/formToWizard.js"></script>
 </head>
 <body>    
  <% include ../views/partials/header.html %>
      
 <div class="container-fluid" id="main">
 
-        <div class="page-header">
+        <div class="page-header col-sm-8 col-sm-offset-2 ">
             <h1 class="page-title">Build Your Profile!</h1>
             <span id="info">You are almost ready to start evaluating. Just a few brief questions to build your profile.</span></p>
         </div>      
- 
-    <div class="row">
-        
-   
-            <form id="ProfileForm" action="/profile" method="post">
-                <fieldset>
+  
+        <form id="ProfileForm" action="/profile" method="post">
+             <div class="row col-sm-8 col-sm-offset-2 step-to-consider ">
+                 <div class="form-group">
 
+                     <div class="row">
+                         <label for="user_name">Full Name:</label>
+                     </div>
+                     <div class="row">
+                         <input id="user_name" name="user_name" type="text" />
+                     </div>
+
+
+                 </div>
+                 <div class="form-group">
+                     <div class="row">
+                         <label for="organization_name">Organization Name:</label>
+                     </div>
+                     <div class="row">
+                         <input id="organization_name" name="organization_name" type="text" />
+                     </div>
+                 </div>                     
+                 <div class="form-group">
+                     <div class="row">
+                         <label for="organiztion_type">Type of organization:</label>
+                         <select id="organiztion_type" name="organiztion_type">
+                             <option value="">Select an option</option>
+                             <option value="school">School</option>
+                             <option value="district">School district</option>
+                             <option value="research">Research organization</option>
+                             <option value="other">other</option>
+                         </select>
+                     </div>
+                     <div class="row" id="other-specify-type" hidden="hidden">
+                         <label for="organiztion_type_other">Please specify:</label>
+                         <input type="text" id="organiztion_type_other" name="organiztion_type_other" value="<%= user.profile.organiztion_type_other %>" />
+                     </div>
+                 </div>
+                 <div class="form-group">
                         <div class="row">
-                            <label for="organiztion_type">What type of organization do you work for?</label>
-                            <select id="organiztion_type" name="organiztion_type">
-                                <option value="">Select an option</option>
-                                <option value="school">School</option>
-                                <option value="district">School district</option>
-                                <option value="research">Research organization</option>
-                                <option value="other">other</option>
-                            </select>
-                           
-                        </div>
-                        <div class="row" id="other-specify-type" hidden="hidden">
-                            <p>Please specify:</p>
-                            <input type="text" id="organiztion_type_other" name="organiztion_type_other" value="<%= user.profile.organiztion_type_other %>" />
-                        </div>
-      
-                </fieldset>
-                <fieldset>
-
-                    <div class="row">
-                        <label for="organization_name">Organization Name</label>
-                    </div>
-                    <div class="row">
-                        <input id="organization_name" name="organization_name" type="text" />
-                    </div>
-
-                </fieldset>
-                <fieldset>
-           
-                        <div class="row">
-                            <label for="role">What is your role in the organization?</label>
+                            <label for="role">Role in the organization?</label>
                             <select id="role" name="role">
 
                                 <option value="">Select an option</option>
@@ -66,51 +67,31 @@
                                 <option value="Principal">Principal</option>
                                 <option value="Technology/IT Advisor">Technology/IT Advisor</option>
                                 <option value="other">Other</option>
-                         
+
                             </select>
-                          
-                        </div>
-                        <div id="other-specify-role" hidden="hidden">
-                            <p>Please specify:</p>
-                            <input type="text" id="role_other" name="role_other"  />
-                        </div>
-            
-                </fieldset>
 
-              
+                        </div>
+                        <div class="row" id="other-specify-role" hidden="hidden">
+                            <label for="role_other">Please specify:</label>
+                            <input type="text" id="role_other" name="role_other" />
+                        </div>
 
-                <fieldset>
-            
-                        <div class="row">
-                            <label for="user_name">User's Name</label>
-                        </div>
-                        <div class="row">
-                            <input id="user_name" name="user_name" type="text"  />
-                        </div>
+                    </div>
+                    
+
+                 <button class="btn btn-primary" id="SaveProfile" type="submit" value="Save Profile">Save Profile</button>
+             </div>
           
-
-                </fieldset>
-                <div class="row">
-                    <p>
-                        <button class="btn btn-lg btn-primary" id="SaveProfile" type="submit" value="Save Profile">Save Profile</button>
-                    </p>
-                </div>
-
-            </form>
+        </form>
             
-        </div>
-        
-    </div>
+  
+  </div>    
 
-        <% include ../views/partials/footer.html %>
-
-   
+<div> <% include ../views/partials/footer.html %></div>
    
 </body>
+
 <script type="text/javascript">
-$(document).ready(function(){
-$("#ProfileForm").formToWizard({ submitButton: 'SaveProfile' })
-});
 
 
 $('#organiztion_type').change(function () {
