@@ -68,7 +68,7 @@ module.exports = function(passport) {
                // console.log('cookie: ' + JSON.stringify(req.headers['cookie']));
                 newUser.userSession = req.headers['cookie'];
                 // save the user
-                newUser.profile.receive_update = req.body.receive_update;
+                newUser.receive_update = req.body.receive_update;
                 newUser.save(function(err) {
                     if (err)
                         throw err;
