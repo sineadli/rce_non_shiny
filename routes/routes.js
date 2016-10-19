@@ -114,9 +114,12 @@ module.exports = function(app, passport) {
         }
         if (req.body.first_name && req.body.last_name) req.user.profile.user_name = req.body.first_name + " " + req.body.last_name;
 
+        if (req.body.receive_update) req.user.receive_update = req.body.receive_update;
+        if (req.body.organiztion_type) req.user.profile.organiztion_type = req.body.organiztion_type;
+        if (req.body.organiztion_type_other) req.user.profile.organiztion_type_other = req.body.organiztion_type_other;
         // req.user.profile.user_pic.data = fs.readFile('../50183_RCE/public/image/me.jpg');
         // req.user.profile.user_pic.contentType = 'image/jpg'
-  
+        console.log(req.body.organiztion_type);
         req.user.save(function (err) {
             if (err) console.log(err);
             res.redirect('/setting');

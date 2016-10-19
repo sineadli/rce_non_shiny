@@ -11,11 +11,12 @@
 <div class="row">
     <div class="tool-row">
         <% for (var i=0; i< tools.length; i++) {
-        var tool =[], status = "", d = "";
+        var tool =[], status = "NOT STARTED", d = "", btnText = "START";
         if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
             if (tool.length > 0) {
                  status = tool[0].status;
                  d=new Date(tool[0].visited_at)
+                 if (status=="IN PROGRESS") {btnText="CONTINUE"} else {btnText="EDIT"}
                 }
         }       
         var current = last_tool == tools[i].name ? "current" : "";
@@ -37,15 +38,16 @@
 
                     <% } %>
                     <% if(tool.length == 0 ) { %>
-                    <p>&nbsp;</p>
+                    <p>Status: <strong><%= status %></strong><br /></p>
                     <% } %>
                 </div>
                 <div class="tool-view-btn" >
+                    
                     <% var option="";  if (tools[i].path) {option=tools[i].path;} %>
                     <% if (option.indexOf(".pdf") !== -1)  { %>
                     <a onclick="window.open('<%= option %>', ''); return false" href="javascript:void(0);"  class="tool-view-button">View</a>
                     <% } else { %>
-                    <a href="<%= option %>" class="tool-view-button">View</a>
+                    <a href="<%= option %>" class="tool-view-button"><%= btnText %></a>
                     <% } %>
                 </div>
             </div>

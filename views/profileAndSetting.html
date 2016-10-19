@@ -13,15 +13,15 @@
     <style>
 
         .label-one{
-          width:22%;
+          width:35%;
           font-weight:normal;
         }
         .label-two{
-          width:60%;
+          width:52%;
           font-weight:normal;
         }
          .label-three{
-          width:15%;
+          width:10%;
           font-weight:normal;
           text-align:right;
         }
@@ -45,13 +45,14 @@
 
                 <div class="col-sm-3">
                     <div class="dash-well">
-                        <h3 class="text-center">
-                            Coming soon, image upload and editing
-                        </h3>
+                       
                         <% var role = user.profile.role; if (role == "other") (role =user.profile.role_other ) %>
                         <p class="text-center"><%= role %></p>
                         <p class="text-center">
                             <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
+                        </p>
+                        <p class="text-center">
+                            Coming soon, image upload and editing
                         </p>
                     </div>
                 </div>
@@ -110,6 +111,31 @@
                             </div>
                             
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one" style="text-align:left;">Receive Updates </label>
+                                    <% var rcv = "No"; if (user.receive_update) {rcv = "Yes";} %>
+                                    <label class="label-two"><%= rcv %></label>
+                                    <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseThree">Update</a></label>
+                                </h4>
+
+                            </div>
+
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="form-group col-sm-6 col-sm-offset-2">
+                                            <input type="checkbox" id="chkRecUpdate" name="receive_update"> <label for="chkRecUpdate">I like to receive updates</label>
+                                        </div>
+                                        <div class="col-sm-3 col-sm-offset-9 ">
+                                            <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg">Save</button>
+                                        </div>
+                                    </div>                               
+                                </div>
+                            </div>
+
+                        </div>
                         <h2 style="margin-top: 45px;">Profile Information</h2>
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -138,7 +164,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one">Place of Work </label>
+                                    <label class="label-one">Organization Name </label>
                                     <label class="label-two"><%= user.profile.organization_name %></label>
                                     <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileTwo">Update</a></label>
                                 </h4>
@@ -146,7 +172,7 @@
                             <div id="collapseProfileTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="form-group col-sm-6 col-sm-offset-2">
-                                        <label for="organization_name">Place of Work</label>
+                                        <label for="organization_name">Organization Name</label>
                                         <input type="text" class="form-control" name="organization_name">
                                     </div>
 
@@ -159,12 +185,43 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one">Role</label>
-                                    <label class="label-two"><%= user.profile.role %> <% if (user.profile.role=="other") { %> <%=  user.profile.role_other %> <% } %></label>
+                                    <label class="label-one">Type of Organization</label>
+                                    <label class="label-two"><%= user.profile.organiztion_type %><% if (user.profile.organiztion_type=="other") { %> <%=  user.profile.organiztion_type_other %> <% } %></label>
                                     <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileThree">Update</a></label>
                                 </h4>
                             </div>
                             <div id="collapseProfileThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group col-sm-6 col-sm-offset-2">
+                                        <label for="organiztion_type">Type of Organization</label>
+                                        <select id="organiztion_type" name="organiztion_type">
+                                            <option value="">Select an option</option>
+                                            <option value="school">School</option>
+                                            <option value="district">School district</option>
+                                            <option value="research">Research organization</option>
+                                            <option value="other">other</option>
+                                        </select>
+                                        <div id="other-specify-type" hidden="hidden">
+                                            <p>Please specify:</p>
+                                            <input type="text" id="organiztion_type_other" name="organiztion_type_other" />
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-sm-3 col-sm-offset-9 ">
+                                        <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one">Role</label>
+                                    <label class="label-two"><%= user.profile.role %> <% if (user.profile.role=="other") { %> <%=  user.profile.role_other %> <% } %></label>
+                                    <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileFour">Update</a></label>
+                                </h4>
+                            </div>
+                            <div id="collapseProfileFour" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="form-group col-sm-6 col-sm-offset-2">
                                         <label for="role">Role</label>
@@ -221,6 +278,14 @@
           var value = $(this).val();
 
           var otherSpecify = $("#other-specify-role");
+
+          if (value === "other") otherSpecify.show();
+          else otherSpecify.hide();
+      });
+      $('#organiztion_type').change(function () {
+          var value = $(this).val();
+
+          var otherSpecify = $("#other-specify-type");
 
           if (value === "other") otherSpecify.show();
           else otherSpecify.hide();
