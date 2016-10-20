@@ -13,7 +13,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 2;
         sess.last_tool = "Determine Your Approach";
-        res.render('determine_your_approach.html', { probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
+        res.render('determine_your_approach.html', { user: req.user.local.email, probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
     });
     app.post('/determine_your_approach', isLoggedIn, function (req, res) {
         sess = req.session;
@@ -96,7 +96,7 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 3;
 		sess.last_tool = "Craft Your Research Question";
         console.log("sess.eval.planQuestion");
-        res.render('craft_your_research_q.html', { planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
+        res.render('craft_your_research_q.html', { user: req.user.local.email, planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
@@ -183,7 +183,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.last_tool = "How to Use Your Results";
-        res.render('plan_next_steps.html', { planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
+        res.render('plan_next_steps.html', {user: req.user.local.email, planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
         var toollist = { "name": "How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
@@ -271,7 +271,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.last_tool = "Summarize Context";
-        res.render('context_and_usage.html', { planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
+        res.render('context_and_usage.html', { user: req.user.local.email, planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
     });
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
         var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
@@ -359,7 +359,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 5;
         sess.last_tool = "Matching";
-        res.render('matching.html', { start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
+        res.render('matching.html', { user: req.user.local.email, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
     });
     app.post('/matching', isLoggedIn, function (req, res) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
@@ -425,7 +425,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 5;
         sess.last_tool = "Get Results";
-        res.render('getresult.html', {  start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+        res.render('getresult.html', { user: req.user.local.email, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
     });
     app.post('/getresult', isLoggedIn, function (req, res) {
         var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
@@ -491,7 +491,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 6;
         sess.last_tool = "Share Your Results";
-        res.render('shareresult.html', { start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+        res.render('shareresult.html', { user: req.user.local.email, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
     });
     app.post('/shareresult', isLoggedIn, function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
