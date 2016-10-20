@@ -5,6 +5,7 @@ body {
   line-height:1.6em;
      margin: 0 auto;
       height: 100%;
+    background-color: #FBFAF7;
 }
 div.container-fluid {
 	width:100%;
@@ -63,6 +64,9 @@ div.bottom-next a.sec-label {
 }
 .tooltip-gr {
   color:#00CC66;
+}
+.all-caps {
+    text-transform: uppercase;
 }
 div.tool-header {
        margin-bottom: 35px;
@@ -150,6 +154,9 @@ h1, h2, h3 {
 h1 {
     font-size: 36px;
 }
+h1.form-title {
+   
+}
 h2 {
   font-size:1.55em;
     font-size: 24px;
@@ -169,7 +176,7 @@ h4 {
   font-weight:300;
 }
 label {
-    color:#8C866B;
+    color:#65614D;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 14px;
@@ -369,6 +376,7 @@ div.dash-well {
     border-radius: 6px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    background-color: #ffffff;
 }
 div.dash-well h2 {
     font-size: 1.8em;
@@ -439,13 +447,23 @@ ul.wizard-menu li p {
         font-weight: bold;
         height: 75px;
     }
-
-
+div.result {
+    min-height: 500px;
+    margin-bottom: 15px;
+}
+div.step-nav {
+    min-height: 25px;
+    margin-bottom: 15px;
+}
+div.tool-row {
+    margin: 0 auto;
+}
 div.tool-row div.col-xs-3 {
     padding-right: 0;
+    padding-left: 0;
 }
 div.col-xs-3 {
-    width: 248px;
+    min-width: 240px;
 }
 div.no-padding {
     padding: 0 !important;
@@ -456,53 +474,57 @@ div.tool-div {
      box-shadow: 3px 3px 3px #DBDBD1;
     padding: 15px;
     margin: 5px;
-    height: 275px;
-
+    height: 350px;
+    background-color: #ffffff;
 }
 
 div.tool-div.current {
     border: 2px solid #4081A8;
      box-shadow: 3px 3px 3px #AFCBDA
 }
-div.tool-div div.tool-title {
-    height: 200px;
+div.tool-div.completed div.tool-status p span.all-caps, div.tool-div.Completed div.tool-status p span.all-caps {
+    color: #4081A8;
 }
-    div.tool-div p {
+div.tool-div div.tool-title {
+    height: 225px;
+}
+div.tool-div div.tool-bottom {
+    height: 100px;
+    display: table;
+}
 
-        margin-bottom: 5px;
-    }
 
     div.tool-div.Completed, div.tool-div.completed {
-        background-color: #ddd;
+        background-color: #ECEBDD;
     }
 
      div.tool-div.Started {
-        background-color: #eee;
+        background-color: #fff;
     }
 
     div.tool-div a.tool-view-button {
-        display: block;
-        background-color: #4081a8;
-        color: #fff;
-        text-align: center;
-        padding: 8px;
-        width: auto;
+
+        width: 110px;
+        margin: 0 0px 15px 0;
         float: right;
-        vertical-align: bottom;
-        border-radius: 2px;
+        padding: 10px 6px;
+        font-size: 1em;
+       
 
 
     }
 
 div.tool-status {
-    width: 75%;
-    display: inline-block;
+    width: 135px;
+    display: table-cell;
     font-size: .9em;
+    vertical-align: top;
 }
-div.tool-view-btn {    
-    width: 22%;
-    display: inline-block;
+div.tool-view-btn {
+    width: 150px;
+    display: table-cell;
     margin-left: 2px;
+    vertical-align: bottom;
 
 }
 
@@ -639,6 +661,28 @@ div > select,input,textarea {
   border-width: 1px;
  
 }
+div.build-profile input {
+    width: 100%;
+}
+
+
+input[type=checkbox] {
+    width: 25px;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+div.form-group label {
+    width: 90%;
+}
+div.form-group p.vbottom {
+    margin-bottom: 20px;
+}
+
+div.form-group p.vtop {
+    margin-top: 20px;
+}
+
 p > select,textarea,input {
   border-color: #B8B28F;
   border-radius: 5px;

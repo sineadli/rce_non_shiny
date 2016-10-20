@@ -52,7 +52,7 @@
                             <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
                         </p>
                         <p class="text-center">
-                            Coming soon, image upload and editing
+                            <em>Coming soon, image upload and editing</em>
                         </p>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one" style="text-align:left;">Receive Updates </label>
+                                    <label class="label-one" style="text-align:left;">email notifications </label>
                                     <% var rcv = "No"; if (user.receive_update) {rcv = "Yes";} %>
                                     <label class="label-two"><%= rcv %></label>
                                     <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseThree">Update</a></label>
@@ -126,7 +126,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <input type="checkbox" id="chkRecUpdate" name="receive_update"> <label for="chkRecUpdate">I like to receive updates</label>
+                                            <input type="checkbox" id="chkRecUpdate" name="receive_update"> <label for="chkRecUpdate">I would like to receive e-mail notifications when this site is updated.</label>
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
                                             <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg">Save</button>

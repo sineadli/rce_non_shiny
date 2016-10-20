@@ -23,10 +23,10 @@ $(document).ready( function() {
 
   $(':button').click(function () {
       if ($(this).html() === 'Save') {
-          $('#status').val('IN PROGRESS'); 
+          $('#status').val('started'); 
       }
       else {
-          $('#status').val('COMPLETE');
+          $('#status').val('completed');
       }
       
   });
