@@ -22,7 +22,7 @@ $(document).ready( function() {
  });
 
   $(':button').click(function () {
-      if ($(this).html() === 'Save') {
+      if ($(this).html() === 'SAVE CHANGES') {
           $('#status').val('started'); 
       }
       else {

@@ -13,7 +13,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 2;
         sess.last_tool = "Determine Your Approach";
-        res.render('determine_your_approach.html', { probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title });
+        res.render('determine_your_approach.html', { probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
     });
     app.post('/determine_your_approach', isLoggedIn, function (req, res) {
         sess = req.session;
@@ -50,6 +50,7 @@ module.exports = function (app, passport) {
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
                     if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": "Determine Your Approach", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -75,7 +76,13 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    return res.redirect('/wizard');
+                    if (req.body.status == "started") {
+                        return res.redirect('/determine_your_approach');
+                    }
+                    else {
+                        return res.redirect('/wizard');
+                    }
+                    
                 });
             }
         ], function (err) {
@@ -88,7 +95,7 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 3;
 		sess.last_tool = "Craft Your Research Question";
         console.log("sess.eval.planQuestion");
-        res.render('craft_your_research_q.html', { planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title });
+        res.render('craft_your_research_q.html', { planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
@@ -127,6 +134,7 @@ module.exports = function (app, passport) {
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
                     if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": "Craft Your Research Question", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -155,7 +163,12 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    return res.redirect('/wizard');
+                    if (req.body.status == "started") {
+                        return res.redirect('/craft_your_research_q');
+                    }
+                    else {
+                        return res.redirect('/wizard');
+                    }
                 });
             }
         ], function (err) {
@@ -168,7 +181,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.last_tool = "How to Use Your Results";
-        res.render('plan_next_steps.html', { planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion  });
+        res.render('plan_next_steps.html', { planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
         var toollist = { "name": "How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
@@ -205,6 +218,7 @@ module.exports = function (app, passport) {
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
                     if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": "How to Use Your Results", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -236,7 +250,12 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    return res.redirect('/wizard');
+                    if (req.body.status == "started") {
+                        return res.redirect('/plan_next_steps');
+                    }
+                    else {
+                        return res.redirect('/wizard');
+                    }
                 });
             }
         ], function (err) {
@@ -249,7 +268,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.last_tool = "Summarize Context";
-        res.render('context_and_usage.html', { planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+        res.render('context_and_usage.html', { planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
     });
     app.post('/context_and_usage', isLoggedIn, function (req, res) {
         var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
@@ -285,7 +304,8 @@ module.exports = function (app, passport) {
                 }
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
+                    if (index > -1) { 
+                        if (tool[0].status == "completed") toollist = { "name": "Summarize Context", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -317,7 +337,14 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    return res.redirect('/wizard');
+                    if (req.body.status == "started") {
+
+                        req.flash('saveMessage', 'Save Success!')
+                        return res.redirect('/context_and_usage');
+                    }
+                    else {
+                        return res.redirect('/wizard');
+                    }
                 });
             }
         ], function (err) {
