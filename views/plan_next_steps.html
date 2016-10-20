@@ -16,7 +16,9 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
     </ol> 
-    
+    <% if (message.length>0) { %>
+    <div class="alert alert-success"><%= message %></div>
+    <% } %>
 <form action="/plan_next_steps" method="post">
     <% include ../views/partials/toolHeader.html %>
 <div class="container-fluid">
