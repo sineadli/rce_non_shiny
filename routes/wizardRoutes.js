@@ -29,7 +29,7 @@ module.exports = function (app, passport) {
             }
 			else {
 
-                res.render('wizard.html', { wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
+                res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
             }
         });
 

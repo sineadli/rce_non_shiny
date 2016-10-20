@@ -157,7 +157,7 @@ module.exports = function(app, passport) {
                     to: "bgelhard@mathematica-mpr.com",
                     from: 'intrelay.mathematica-mpr.com',
                     subject: 'RCE Feedback',
-                    text: 'Feedback from ' + req.body.user_name + ' viewing ' + req.body.page + '\n\n' + req.body.message
+                    text: 'Feedback from ' + req.body.user_email + ' viewing ' + req.body.page + '\n\n' + req.body.message
 
                 };
                 console.log("feedback");
