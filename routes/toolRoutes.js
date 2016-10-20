@@ -77,6 +77,7 @@ module.exports = function (app, passport) {
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {
+                        req.flash('saveMessage', 'Save Success!')
                         return res.redirect('/determine_your_approach');
                     }
                     else {
@@ -164,6 +165,7 @@ module.exports = function (app, passport) {
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {
+                        req.flash('saveMessage', 'Save Success!')
                         return res.redirect('/craft_your_research_q');
                     }
                     else {
@@ -251,6 +253,7 @@ module.exports = function (app, passport) {
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {
+                        req.flash('saveMessage', 'Save Success!')
                         return res.redirect('/plan_next_steps');
                     }
                     else {
