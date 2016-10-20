@@ -67,7 +67,7 @@
                         </div>
                         <div class="col-xs-12" style="padding: 0; margin: 0; height: 75px;">
                             <ul class="wizard-menu">
-                                <!--<li id="1" class="wizard-item">
+                                <!--<li id="1" class="wizard-item" hidden="hidden">
                                     <p>Welcome</p>
                                 </li>-->
                                 <li id="2" class="wizard-item">
@@ -109,9 +109,9 @@
         //just load the first one for now, will have to determine which is the active currently for returning user with
         //an ongoing eval
         var step = $("#step").val();
-        if (!step || step == 0 || step == "") { step = 1;}
+        if (!step || step == 0 || step == "") { step = 2;}  //step 1 is moved to dashboard
         $("li").each(function(index) {
-            if (index == step) {
+            if (index == step-1) {
                 $(this).addClass("active");
             }
 
