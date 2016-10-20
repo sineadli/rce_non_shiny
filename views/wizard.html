@@ -94,10 +94,12 @@
                 </div>
 
 
-                <div class="result"></div>
-<% if(step !== "6") { %>
-        <div class="bottom-next pull-right"><a href="#" id="Next-link" class="sec-label">Next Step <span class="fa fa-caret-right"></span></a></div>
-<% } %>
+        <div class="result"></div>
+        <div class="step-nav">
+            <% if(step !== "6") { %>
+            <div class="bottom-next pull-right"><a href="#" id="Next-link" class="sec-label">Next Step <span class="fa fa-caret-right"></span></a></div>
+            <% } %>
+        </div>
             </div>
     </form>
     <% include ../views/partials/footer.html %>

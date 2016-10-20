@@ -13,36 +13,36 @@
 <body>    
  <% include ../views/partials/header.html %>
      
-<div class="container-fluid" id="main">
+<div class="container-fluid" id="main build-profile">
 
         <div class="page-header col-sm-8 col-sm-offset-2 ">
-            <h1 class="page-title">Build Your Profile</h1>
-            <span id="info">You are almost ready to start evaluating. Just a few brief questions to build your profile.</span></p>
+            <h1 class="form-title">Build Your Profile</h1>
+            <p>You are almost ready to start evaluating. Just a few brief questions to build your profile.</p>
         </div>      
   
         <form id="ProfileForm" action="/profile" method="post">
-             <div class="row col-sm-8 col-sm-offset-2 step-to-consider ">
+             <div class="row col-sm-8 col-sm-offset-2  ">
                  <div class="form-group">
 
-                     <div class="row">
+                     <div >
                          <label for="user_name">Full Name</label>
                      </div>
-                     <div class="row">
+                     <div >
                          <input id="user_name" name="user_name" type="text" />
                      </div>
 
 
                  </div>
                  <div class="form-group">
-                     <div class="row">
+                     <div >
                          <label for="organization_name">Organization Name</label>
                      </div>
-                     <div class="row">
+                     <div >
                          <input id="organization_name" name="organization_name" type="text" />
                      </div>
                  </div>                     
                  <div class="form-group">
-                     <div class="row">
+                     <div >
                          <label for="organiztion_type">Type of organization</label>
                          <select id="organiztion_type" name="organiztion_type">
                              <option value="">Select an option</option>
@@ -52,13 +52,13 @@
                              <option value="other">other</option>
                          </select>
                      </div>
-                     <div class="row" id="other-specify-type" hidden="hidden">
+                     <div  id="other-specify-type" hidden="hidden">
                          <label for="organiztion_type_other">Please specify</label>
                          <input type="text" id="organiztion_type_other" name="organiztion_type_other" value="<%= user.profile.organiztion_type_other %>" />
                      </div>
                  </div>
                  <div class="form-group">
-                        <div class="row">
+                        <div >
                             <label for="role">Role</label>
                             <select id="role" name="role">
 
@@ -71,15 +71,16 @@
                             </select>
 
                         </div>
-                        <div class="row" id="other-specify-role" hidden="hidden">
+                        <div  id="other-specify-role" hidden="hidden">
                             <label for="role_other">Please specify</label>
                             <input type="text" id="role_other" name="role_other" />
                         </div>
 
                     </div>
                     
-
-                 <button class="btn btn-primary" id="SaveProfile" type="submit" value="Save Profile">Save Profile</button>
+                 <div class="bottom-buttons">
+                     <button class="btn btn-primary" id="SaveProfile" type="submit" value="Save Profile">Save Profile</button>
+                 </div>
              </div>
           
         </form>

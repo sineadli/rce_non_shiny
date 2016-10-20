@@ -16,7 +16,7 @@
             if (tool.length > 0) {
                  status = tool[0].status;
                  d=new Date(tool[0].visited_at)
-                 if (status=="IN PROGRESS") {btnText="CONTINUE"} else {btnText="EDIT"}
+                 if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}
                 }
         }       
         var current = last_tool == tools[i].name ? "current" : "";
@@ -26,29 +26,30 @@
 
             <div class="tool-div <%= status %> <%= current %>">
                 <div class="tool-title">
+                    <p class="sec-label"><%= tools[i].type %></p>
                     <h2><%= tools[i].name %> </h2>
                     <p><%= tools[i].desc %></p>
                 </div>
-                <div class="tool-status status">
-                    <% if (tool.length > 0) { %>
-                    <p>
-                        Status: <strong><%= status %></strong><br/>
-                        Last Visit: <strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></strong>
-                    </p>
+                <div class="tool-bottom">
+                    <div class="tool-status status">
+                        <% if (tool.length > 0) { %>
+                        <p>
+                            Status<br /><span class="all-caps"><strong><%= status %></strong></span><br />
+                            Last Visit<br /><strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></strong>
+                        </p>
 
-                    <% } %>
-                    <% if(tool.length == 0 ) { %>
-                    <p>Status: <strong><%= status %></strong><br /></p>
-                    <% } %>
-                </div>
-                <div class="tool-view-btn" >
-                    
-                    <% var option="";  if (tools[i].path) {option=tools[i].path;} %>
-                    <% if (option.indexOf(".pdf") !== -1)  { %>
-                    <a onclick="window.open('<%= option %>', ''); return false" href="javascript:void(0);"  class="tool-view-button">View</a>
-                    <% } else { %>
-                    <a href="<%= option %>" class="tool-view-button"><%= btnText %></a>
-                    <% } %>
+                        <% } %>
+                   
+                    </div>
+                    <div class="tool-view-btn">
+
+                        <% var option=""; if (tools[i].path) {option=tools[i].path;} %>
+                        <% if (option.indexOf(".pdf") !== -1) { %>
+                        <a onclick=" window.open('<%= option %>', ''); return false " href="javascript:void(0);" class="tool-view-button btn btn-primary btn-lg">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                        <% } else { %>
+                        <a href="<%= option %>" class="tool-view-button btn btn-primary btn-lg"><%= btnText %></a>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
