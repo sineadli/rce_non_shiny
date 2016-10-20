@@ -22,11 +22,11 @@ $(document).ready( function() {
  });
 
   $(':button').click(function () {
-      if ($(this).html() === 'Save') {
-          $('#status').val('IN PROGRESS'); 
+      if ($(this).html() === 'SAVE CHANGES') {
+          $('#status').val('started'); 
       }
       else {
-          $('#status').val('COMPLETE');
+          $('#status').val('completed');
       }
       
   });
