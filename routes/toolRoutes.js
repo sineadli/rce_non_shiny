@@ -359,7 +359,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 5;
         sess.last_tool = "Matching";
-        res.render('matching.html', {  start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion });
+        res.render('matching.html', { start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
     });
     app.post('/matching', isLoggedIn, function (req, res) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
@@ -396,6 +396,7 @@ module.exports = function (app, passport) {
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
                     if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": "Matching", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -405,7 +406,14 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    return res.redirect('/wizard');
+                    if (req.body.status == "started") {
+
+                        req.flash('saveMessage', 'Save Success!')
+                        return res.redirect('/matching');
+                    }
+                    else {
+                        return res.redirect('/wizard');
+                    }
                 });
             }
         ], function (err) {
@@ -454,6 +462,7 @@ module.exports = function (app, passport) {
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
                     if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": "Get Results", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -463,7 +472,14 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    return res.redirect('/wizard');
+                    if (req.body.status == "started") {
+
+                        req.flash('saveMessage', 'Save Success!')
+                        return res.redirect('/getresult');
+                    }
+                    else {
+                        return res.redirect('/wizard');
+                    }
                 });
             }
         ], function (err) {
@@ -512,6 +528,7 @@ module.exports = function (app, passport) {
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
                     if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": "Share Your Results", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -521,7 +538,14 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    return res.redirect('/wizard');
+                    if (req.body.status == "started") {
+
+                        req.flash('saveMessage', 'Save Success!')
+                        return res.redirect('/shareresult');
+                    }
+                    else {
+                        return res.redirect('/wizard');
+                    }
                 });
             }
         ], function (err) {
