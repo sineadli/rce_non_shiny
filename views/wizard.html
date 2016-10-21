@@ -35,6 +35,7 @@
                                 <input type="hidden" id="evalid" value="<%= eval._id %>"/>
 
                                 <input type="hidden" id="step" value="<%= eval.last_step %>"/>
+                                <input type="hidden" id="stepvisited" value="<%= eval.stepsclicked %>" />
                                
                                 <input type="text" id="title"/>
                             </div>
@@ -108,13 +109,15 @@
 
         //just load the first one for now, will have to determine which is the active currently for returning user with
         //an ongoing eval
+        var stepvisited = $("#stepvisited").val();
+
         var step = $("#step").val();
         if (!step || step == 0 || step == "") { step = 2;}  //step 1 is moved to dashboard
         $("li").each(function(index) {
             if (index == step-1) {
                 $(this).addClass("active");
             }
-
+            if (stepvisited.indexOf(index + 1) > -1) { $(this).addClass("previous"); }
         });
 
         
@@ -135,7 +138,7 @@
                 $('.bottom-next').show();
             }
             $("ul.wizard-menu li.wizard-item").removeClass("active");
-            $("#" + id).addClass("active");
+            $("#" + id).addClass("previous").addClass("active");
             //var data = wizardStep[id];
             //alert(data);
             var url = "/tools/" + id;
@@ -153,7 +156,7 @@
                 $('.bottom-next').hide();
             }
 
-            $("#" + next).addClass("active");
+            $("#" + next).addClass("previous").addClass("active");
             var url = "/tools/" + next;
             $.get(url, function (data) {
                 $(".result").html(data);

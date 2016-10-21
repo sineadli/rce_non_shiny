@@ -472,8 +472,14 @@ ul.wizard-menu li p {
         color: #4081A8;
     }
     ul.wizard-menu li.active {
-        
+         background:#fff;
         border-bottom: #4081A8 3px solid;
+        font-weight: bold;
+        height: 75px;
+    }
+     ul.wizard-menu li.previous {
+        
+        background:#F4F2EB ;
         font-weight: bold;
         height: 75px;
     }

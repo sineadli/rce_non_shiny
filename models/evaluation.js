@@ -88,7 +88,8 @@ var evaluationSchema = mongoose.Schema({
     probAppr: ProbAppr,
     planQuestion: PlanQuestion,
     planNext: PlanNext,
-    planContext: PlanContext
+    planContext: PlanContext,
+    stepsclicked: [String]
 
 });
 
