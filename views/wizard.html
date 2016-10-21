@@ -138,7 +138,7 @@
                 $('.bottom-next').show();
             }
             $("ul.wizard-menu li.wizard-item").removeClass("active");
-            $("#" + id).addClass("previous").addClass("active");
+            $("#" + id).addClass("active");
             //var data = wizardStep[id];
             //alert(data);
             var url = "/tools/" + id;
@@ -156,7 +156,7 @@
                 $('.bottom-next').hide();
             }
 
-            $("#" + next).addClass("previous").addClass("active");
+            $("#" + next).addClass("active");
             var url = "/tools/" + next;
             $.get(url, function (data) {
                 $(".result").html(data);

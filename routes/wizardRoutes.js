@@ -40,15 +40,7 @@ module.exports = function (app, passport) {
         //console.log(req.params.wizardPath);
         sess = req.session;
         var wizardStep;
-        console.log(sess.eval._id);
-        Evaluation.findOne({ "_id": sess.eval._id }, function (err, eval) {
-            if (!err) {
-                if (eval.stepsclicked.indexOf(req.params.wizardPath) < 0 ) eval.stepsclicked.push(req.params.wizardPath);
-                eval.save(function (err) {
-                    if (err) console.log(err);
-                });
-            }
-            });
+      
         WizardStep.findOne({ step: req.params.wizardPath }, function (err, wizard) {
 			if (err) {
                 res.status(500).send(err);

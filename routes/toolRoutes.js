@@ -71,6 +71,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.probAppr = probAppr;
+                if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -159,6 +160,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.planQuestion = planQuestion;
+                if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -247,6 +249,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.planNext = planNext;
+                if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -335,6 +338,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.planContext = planContext;
+                if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -401,6 +405,7 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
+                if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -467,6 +472,7 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
+                if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -533,6 +539,7 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
