@@ -38,6 +38,12 @@ module.exports = function(app, passport) {
         res.render('login.html', { message: req.flash('loginMessage') });
     });
 
+	app.get('/test', function (req, res) {
+
+        // render the page and pass in any flash data if it exists
+        res.render('test.html');
+    });
+
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/dashboard', // redirect to the secure profile section

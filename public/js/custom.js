@@ -29,7 +29,36 @@ $(document).ready( function() {
           $('#status').val('completed');
       }
       
-  });
+ });
+
+
+	function ShowDialog(id) {
+		var myPos = { my: "center top", at: "center top+50", of: window };
+		$("#"+ id).removeClass("hide");
+		$("#" + id).dialog({
+			autoOpen: true,
+			appendTo: "#s-page",
+			height: 'auto',
+			width: 300,
+			position: myPos,
+			modal: true,
+			title: "Example " ,
+			fluid: true,
+			closeText: 'X',
+			
+			buttons: {
+				"OK": function () {
+
+					$(this).dialog("close");
+
+
+				}
+
+			},
+			close: function () {
+			}
+		});
+	}
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
     $('#Prob_Appr_B').change(function () {
         var value = $(this).val();

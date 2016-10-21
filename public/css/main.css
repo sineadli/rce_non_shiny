@@ -6,6 +6,7 @@ body {
      margin: 0 auto;
       height: 100%;
     background-color: #FBFAF7;
+    color: #000;
 }
 div.container-fluid {
 	width:100%;
@@ -378,8 +379,36 @@ div.dash-well {
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     background-color: #ffffff;
 }
+div.dash-well.panel {
+    padding: 5px;
+
+}
+div.dash-well div.panel-heading {
+    background-color: #ffffff;
+    border: none;
+}
+div.dash-well div.panel-heading a {
+    text-decoration: none;
+}
+    div.dash-well div.panel-heading h2.clickable {
+        margin: 0;
+    }
 div.dash-well h2 {
     font-size: 1.8em;
+}
+    div.dash-well div.help-panel {
+        padding-top: 10px;
+    }
+div.dash-well div.help-main {
+    border-bottom: 2px #D9D7BE solid;
+    
+   border-top: 2px #D9D7BE solid;
+    padding: 10px 15px 0 15px;
+
+}
+div.dash-well div.help-sec {
+    border-right: 2px #D9D7BE solid;
+
 }
 div.dash-well a.btn-primary {
     font-size: 1.2em;
@@ -535,7 +564,7 @@ div.tool-header div.tool-intro {
     padding: 15px 25% 15px 15px;
     /* max-width: 800px; */
    
-    border-bottom: solid 3px #8C866B;
+    border-bottom: solid 3px #E0DDDD;
   }
 
 div.tool-questions {
@@ -579,16 +608,26 @@ div.step-action-long {
   width:75%;
   display:inline-block;
 }
+div.q-row {
+    border-bottom: solid 3px #E0DDDD;
 
-div.step-to-consider {
-	padding:20px;
+}
+div.step-to-consider .panel-group .panel, div.step-to-consider .panel-heading {
+	background-color:#F4F2EB;
+}
+div.step-to-consider .panel-heading {
+    padding: 12px;
+}
+div.step-to-consider .panel-collapse {
+	padding:8px 20px 0px 20px;
 	background-color:#F4F2EB;
 }
 div.step-to-consider h3 {
 	transform-text:uppercase;
 	color:#8C866B;
 	font-weight:bold;
-	margin-bottom:20px;
+    background-color:#F4F2EB;
+	
 }
 div.step-to-consider p {
 	margin-bottom:20px;
@@ -597,6 +636,9 @@ div.step-to-consider p {
 div.step-to-consider .btn {
     margin-left: 60%;
 	padding:5px;
+}
+.no-titlebar .ui-dialog-titlebar {
+    display: none;
 }
 		
 div.step-info {

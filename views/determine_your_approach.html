@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <script src="/static/js/jquery-accessible-dialog-tooltip-aria.js"></script>
   </head>
 <body>
     <div id="header"></div>
@@ -19,6 +20,18 @@
     <div class="alert alert-success"><%= message %></div>
     <% } %>
 <form action="/determine_your_approach" method="post">
+
+    <button class="js-tooltip"
+            data-tooltip-content-id="tooltip_id_2nd_example"
+            data-tooltip-title="Title for your tooltip"
+            data-tooltip-close-text="Close it"
+            data-tooltip-close-title="Close it, really">
+        Show me another dialog tooltip window
+    </button>
+    <div id="tooltip_id_2nd_example" class="hidden">Woot, you can take the content of a hidden
+       
+    </div>
+
     <% include ../views/partials/toolHeader.html %>
     <div class="container-fluid">
         <div class="row">
@@ -125,7 +138,7 @@
                     </div>
                 </div>
                 <div class="step-conclusion container">
-                    
+
                     <div class="p1" hidden>
                         <h2>Conclusion</h2>
                         <p>
@@ -138,14 +151,14 @@
                             Based on your answer we will guide you through a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>matched comparison design</span>. This is a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>quasi-experimental design</span>. To compare apples to apples, this quasi-experimental design will identify a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>comparison group</span> with similar characteristics to the <span class="section-b-header">subjects</span> using the technology that you want to test.
                         </p>
                     </div>
-                   
+
                     <div class="p3" hidden>
                         <h2>Conclusion</h2>
                         <p>
                             Based on your answer you can use a randomized control trial to evaluate your technology. We will be able to support using and RCT soon.
                         </p>
                     </div>
-                   
+
                 </div>
                 <div class="bottom-buttons">
                     <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
@@ -178,6 +191,9 @@
             p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
+
+
+        InitToolTips();
     });
 </script>
 </body>

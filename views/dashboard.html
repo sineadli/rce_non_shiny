@@ -20,7 +20,7 @@
     <input type="hidden" id="user_name" value="<%= user.profile.user_name %>"/>
     <input type="hidden" id="user_email" value="<%= user.email %>" />
     <div class="page-header">
-        <h1 class="page-title">Welcome to your dashboard.</h1>
+        <h1 class="page-title">Evaluation Dashboard.</h1>
 
     </div>
 
@@ -46,21 +46,64 @@
             </div>
         </div>
         <div class="col-sm-9">
+            <%
+            var evallabel = "Begin Evaluation"
+            var evaltitle = "Ready to test an app?";
+            var status= "New";
+            var helpcaret = "fa-caret-down";
+            var helphidden = "false"
+            var helpdetail = "in"
+            if (eval) {
+            evaltitle = eval.title; status=eval.status;
+            evallabel = "Current Evaluation";
+            helpcaret = "fa-caret-right";
+            helphidden = "true"
+            helpdetail = ""
+            if (eval.created_at)
+            {
+            startdate = eval.created_at;
+            }
+            }
+            %>
+           
+                <div class="panel panel-default dash-well">
+                    <div class="panel-heading">
+                        <h2 class="panel-title  clickable">                         
+                            <a data-toggle="collapse" data-parent="#dashboard" href="#welcomeDetails">
+                                <span class="fa <%= helpcaret %>" aria-hidden="false"></span> Welcome <%= user.profile.user_name %></a>
+                        </h2>
+                    </div>
+                    <div id="welcomeDetails" class="panel-collapse collapse <%= helpdetail %>">
+                        <div class="help-panel help-main">
+                            <h3 class="sec-label">What do I need to get started?</h3>
+                            <p>Read  the basics on using the Ed Tech Rapid Cycle Evaluation Coach. You will get a brief overview of the Coach's goals, the steps and how to complete them, and a checklist that lists what you will need to get started.</p>
+                            <p class="pull-right">
+                                <a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                            </p>
+                            <div class="clearfix"></div>
+                        </div>
+                            <div class="col-sm-6 help-panel help-sec">
+                                <h3 class="sec-label">Choosing a technology</h3>
+                                <p>See how to choose a technology. Identifies useful resources for finding and assessing educational technologies.</p>
+                                <p class="pull-right"><a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                </p>
+                            </div>
+                            <div class="col-sm-6 help-panel ">
+                                <h3 class="sec-label">Understanding types of evidence.</h3>
+                                <p>Describes common types of effectiveness evidence. Explains how to tell if the evidence can support effectiveness claims.</p>
+                                <p class="pull-right">
+                                    <a onclick=" window.open('/static/pdf/01.03UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                        
+                    </div>
+                    <div class="clearfix"></div>
+                 </div>
+               
+           
             <div class="dash-well">
-                <%
-                var evallabel = "Begin Evaluation"
-                var evaltitle = "Ready to test an app?";
-
-                var status= "New";
-                if (eval) {
-                evaltitle = eval.title; status=eval.status;
-                evallabel = "Current Evaluation";
-                if (eval.created_at)
-                {
-                startdate = eval.created_at;
-                }
-                }
-                %>
+               
                 <div class="sec-label"><%= evallabel %></div>
 
                 <h2><%= evaltitle %></h2>

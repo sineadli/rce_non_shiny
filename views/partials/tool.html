@@ -45,7 +45,7 @@
 
                         <% var option=""; if (tools[i].path) {option=tools[i].path;} %>
                         <% if (option.indexOf(".pdf") !== -1) { %>
-                        <a onclick=" window.open('<%= option %>', ''); return false " href="javascript:void(0);" class="tool-view-button btn btn-primary btn-lg">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                        <a onclick="window.open('<%= option %>', ''); return false;" href="javascript:void(0);" class="tool-view-button btn btn-primary btn-lg">View <span class="fa fa-download" aria-hidden="true"></span></a>
                         <% } else { %>
                         <a href="<%= option %>" class="tool-view-button btn btn-primary btn-lg"><%= btnText %></a>
                         <% } %>
