@@ -2,6 +2,7 @@
 // load up things we need
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
+var getAllEvaluations = require('../middleware/getAllEvaluations.js');
 
 var WizardStep = require('../models/wizardStep'),
     Tool = require('../models/tool.js');
@@ -14,6 +15,12 @@ module.exports = function (app, passport) {
     app.get('/dashboard', isLoggedIn, getCurrentEvaluation,  function (req, res) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, eval: sess.eval });
+    });
+
+    app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
+        sess = req.session;
+       // console.log(sess.evals)
+        res.render('evaluations.html', { user: req.user, evals: sess.evals });
     });
 
 
