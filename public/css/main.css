@@ -8,6 +8,19 @@ body {
     background-color: #FBFAF7;
     color: #000;
 }
+.legal {
+    margin: 45px auto;
+    font-size: 1.3em;
+    line-height: 1.8em;
+    width: 80%;
+    float: none;
+}
+.legal p, .legal h2, .legal h3 {
+    margin-top: 25px;
+}
+.legal ul, .legal ol {
+    padding-left: 40px;
+}
 div.container-fluid {
 	width:100%;
 	font-size:100%;
