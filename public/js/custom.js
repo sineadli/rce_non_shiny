@@ -1,16 +1,17 @@
 /*~~~~~~~~~~~~~~~~~~ ALL ~~~~~~~~~~~~~~~~~~*/
-$(document).ready( function() {
+$(document).ready(function() {
     /** Load Header **/
-    $.get("/header", function (data) {
+    $.get("/header", function(data) {
         $("#header").html(data);
     });
-  $('[data-toggle=collapse]').click( function() {
+    $('[data-toggle=collapse]').click(function() {
 
-    var caret = $(this).find('i');
-    caret.toggleClass('fa-caret-right');
-    caret.toggleClass('fa-caret-down');
-	});
+        var caret = $(this).find('i');
+        caret.toggleClass('fa-caret-right');
+        caret.toggleClass('fa-caret-down');
+    });
 
+   
 
  $(document).on('click', '.tool-view-button', function (e) {
 	 e.preventDefault();
@@ -31,34 +32,8 @@ $(document).ready( function() {
       
  });
 
+  
 
-	function ShowDialog(id) {
-		var myPos = { my: "center top", at: "center top+50", of: window };
-		$("#"+ id).removeClass("hide");
-		$("#" + id).dialog({
-			autoOpen: true,
-			appendTo: "#s-page",
-			height: 'auto',
-			width: 300,
-			position: myPos,
-			modal: true,
-			title: "Example " ,
-			fluid: true,
-			closeText: 'X',
-			
-			buttons: {
-				"OK": function () {
-
-					$(this).dialog("close");
-
-
-				}
-
-			},
-			close: function () {
-			}
-		});
-	}
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
     $('#Prob_Appr_B').change(function () {
         var value = $(this).val();
@@ -232,3 +207,27 @@ $(document).ready(function(){
 });
 
 }); //<-end document.ready
+
+function setFeedbackOptions(email, page) {
+	var fm_options = {
+		bootstrap: true,
+		position: "right-top",
+		name_placeholder: "Name please",
+		name_required: true,
+		title_label: "",
+		message_label: "Message",
+		message_placeholder: "Please send us your feedback on the site&rsquo;s functionality and appearance",
+		feedback_url: "/feedback",
+		custom_params: {
+			user_email: email,
+			page: page
+		},
+        delayed_options: {
+			success_color: "#5cb85c",
+			fail_color: "#d2322d",
+			delay_success_milliseconds: 3500,
+			send_success: "Thanks for your feedback."
+		}
+	}
+    return fm_options;
+};

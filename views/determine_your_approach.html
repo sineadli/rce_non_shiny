@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-      <script src="/static/js/jquery-accessible-dialog-tooltip-aria.js"></script>
+      <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+      <script src="/static/js/jquery.feedback_me.js"></script>
   </head>
 <body>
     <div id="header"></div>
@@ -20,19 +21,8 @@
     <div class="alert alert-success"><%= message %></div>
     <% } %>
 <form action="/determine_your_approach" method="post">
-
-    <button class="js-tooltip"
-            data-tooltip-content-id="tooltip_id_2nd_example"
-            data-tooltip-title="Title for your tooltip"
-            data-tooltip-close-text="Close it"
-            data-tooltip-close-title="Close it, really">
-        Show me another dialog tooltip window
-    </button>
-    <div id="tooltip_id_2nd_example" class="hidden">Woot, you can take the content of a hidden
-       
-    </div>
-
     <% include ../views/partials/toolHeader.html %>
+    <input type="hidden" id="user_email" value="<%= user %>" />
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12">
@@ -40,7 +30,7 @@
                     <h1 class="tool-title"> Determine your approach</h1>
                     <div class="tool-intro">
                         <p>
-                            The Ed Tech RCE Wizard can use different approaches to answer your research question. To determine the right one we need you to answer the following questions:
+                            The Ed Tech RCE Coach offers a few different approaches to answer your research question. To determine the right one we need you to answer the following questions
                         </p>
                     </div>
                 </div>
@@ -110,6 +100,30 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-5">
+                        <div class="step-to-consider">
+
+                            <div class="panel-group" id="ttc3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title sec-label clickable">
+                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                            <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                Things to Consider
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div id="consider2" class="panel-collapse collapse in">
+                                        <p>
+                                            You should select the group that is directly engaging with the technology. In some cases this may not be the same group for which you are trying improve outcomes. Your answer to this question should reflect who is logging in to the educational technology and completing the program. 
+                                        </p>
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
                 <div class="step-header container">
@@ -136,26 +150,28 @@
                             </select>
                         </div>
                     </div>
+
+                   
                 </div>
                 <div class="step-conclusion container">
 
                     <div class="p1" hidden>
                         <h2>Conclusion</h2>
                         <p>
-                            Based on your answer neither an experimental nor matched design are appropriate. Alternatives for such a situation are under consideration
+                            Based on your answers, neither an experimental nor matched design is appropriate. You indicated that all <span class="section-c-header">subjects</span> are using the technology. To evaluate your technology, you need to compare a group using the technology with a group not using the technology. Please reach out to us at <a href="mailto:dTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a> and we can help you determine a research approach. In the meantime, you can still explore the site. Alternatives for such a situation are under consideration
                         </p>
                     </div>
                     <div class="p2" hidden>
                         <h2>Conclusion</h2>
                         <p>
-                            Based on your answer we will guide you through a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>matched comparison design</span>. This is a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>quasi-experimental design</span>. To compare apples to apples, this quasi-experimental design will identify a <span data-toggle="tooltip" title="Lorem Ipsum" class='tooltip-gr'>comparison group</span> with similar characteristics to the <span class="section-b-header">subjects</span> using the technology that you want to test.
+                            Based on your answers, the Coach will guide you through a matched comparison design. You indicated that some <span class="section-c-header">subjects</span> are using the technology and others are not. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the subjects using the technology that you want to test.
                         </p>
                     </div>
 
                     <div class="p3" hidden>
                         <h2>Conclusion</h2>
                         <p>
-                            Based on your answer you can use a randomized control trial to evaluate your technology. We will be able to support using and RCT soon.
+                            Based on your answers, the Coach recommends that you use a randomized pilot to evaluate your technology. This is the best method for determining the effectiveness of a technology that you have not yet begun using. Tools for this approach are coming soon! Please reach out to us at <a href="mailto:dTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a> and we can help you set up a study now. In the meantime, you can still explore the site.
                         </p>
                     </div>
 
@@ -193,7 +209,9 @@
         else { p1.hide(); p2.hide(); p3.hide(); }
 
 
-        InitToolTips();
+        //init feedback_me plugin
+        var fm_options = setFeedbackOptions($("#user_email").val(), "determine_your_approach");
+        fm.init(fm_options);
     });
 </script>
 </body>

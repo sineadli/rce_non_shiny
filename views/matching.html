@@ -7,8 +7,11 @@
           <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>   
-    <style>
+      <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+      <script src="/static/js/jquery.feedback_me.js"></script>
+
+      
+      <style>
       #container{
         width: 1000px;
         height: 2000px;
@@ -39,14 +42,20 @@
     </iframe>
   </div>
 <br/>
-    <form action="/matching" method="post">
-        <div class="bottom-buttons">
-            <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
-            <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
-            <input class="hidden" name="status" id="status" />
-        </div>
-    </form>
+<form action="/matching" method="post">
+    <input type="hidden" id="user_email" value="<%= user %>" />
+    <div class="bottom-buttons">
+        <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
+        <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
+        <input class="hidden" name="status" id="status"/>
+    </div>
+</form>
     <% include ../views/partials/footer.html %>
-    <script src='/static/js/custom.js'></script>
+<script src='/static/js/custom.js'></script>
+<script>
+    //init feedback_me plugin
+    var fm_options = setFeedbackOptions($("#user_email").val(), "matching");
+    fm.init(fm_options);
+</script>
 </body>
 </html>

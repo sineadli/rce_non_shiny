@@ -15,6 +15,10 @@ body {
     width: 80%;
     float: none;
 }
+.legal .copyright {
+    margin: 65px;
+    font-style: italic;
+}
 .legal p, .legal h2, .legal h3 {
     margin-top: 25px;
 }
@@ -41,6 +45,18 @@ div.container-fluid {
 }
 .navbar h3 {
     color: #71714A;
+}
+.feedback_title h3 {
+    margin: 8px;
+    padding: 0;
+    display: block;
+}
+.fm_bootstrap .feedback_title {
+    margin: 0;
+    padding: 0;
+}
+.fm_bootstrap .feedback_trigger_text {
+    top: 38px;
 }
 .navbar-default {
     background-color: #E3E1CE;

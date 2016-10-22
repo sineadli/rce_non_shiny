@@ -9,6 +9,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+    <script src="/static/js/jquery.feedback_me.js"></script>
     <script src='/static/js/custom.js'></script>
 
 </head>
@@ -16,93 +18,98 @@
 
     <div id="header"></div>
 <form action="/planning" method="post">
+    <input type="hidden" id="user_email" value="<%= user %>" />
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
-    </ol>        
+    </ol>
     <div class="container-fluid">
-                
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" role="dialog">
-                    <div class="modal-dialog">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Enter evaluation title</h4>
-                            </div>
-                            <div class="modal-body">
-                                <input type="hidden" id="evalid" value="<%= eval._id %>"/>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
 
-                                <input type="hidden" id="step" value="<%= eval.last_step %>"/>
-                                <input type="hidden" id="stepvisited" value="<%= eval.stepsclicked %>" />
-                               
-                                <input type="text" id="title"/>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="getTitle" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-                            </div>
-                        </div>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Enter evaluation title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="evalid" value="<%= eval._id %>"/>
 
-                    </div> 
+                        <input type="hidden" id="step" value="<%= eval.last_step %>"/>
+                        <input type="hidden" id="stepvisited" value="<%= eval.stepsclicked %>"/>
 
-                </div>
-                <div class="row">
-                    <div class="wizard-header-row">
-                        <div class="col-xs-7">
-                            <div class="sec-label">Evaluating</div>
-
-                            <h2 class="eval-header" id="evalTitle"><%= eval.title %><button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button></h2>
-                               
-                           
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="sec-label">Start Date</div>
-                            <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
-                            <p><strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear()  %></strong></p>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="sec-label">Status</div>
-                            <% var status='New'; if (eval) {status = eval.status;} %>
-                            <p><strong><%= status %></strong></p>
-                        </div>
-                        <div class="col-xs-12" style="padding: 0; margin: 0; height: 75px;">
-                            <ul class="wizard-menu">
-                                <!--<li id="1" class="wizard-item" hidden="hidden">
-                                    <p>Welcome</p>
-                                </li>-->
-                                <li id="2" class="wizard-item">
-                                    <p>Getting Started</p>
-                                </li>
-                                <li id="3" class="wizard-item">
-                                    <p>Planning Your Research</p>
-                                </li>
-                                <li id="4" class="wizard-item ">
-                                    <p>Preparing Your Data</p>
-                                </li>
-                                <li id="5" class="wizard-item">
-                                    <p>Analyzing your Data</p>
-                                </li>
-                                <li id="6" class="wizard-item">
-                                    <p>Summarizing Your Findings</p>
-                                </li>
-                            </ul>
-                            <div style="clear: both;  display: block;"></div>
-
-                        </div>
-                        <div style="clear: both;  display: block;"></div>
+                        <input type="text" id="title"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="getTitle" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="wizard-header-row">
+                <div class="col-xs-7">
+                    <div class="sec-label">Evaluating</div>
+
+                    <h2 class="eval-header" id="evalTitle"><%= eval.title %><button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button>
+                    </h2>
+
+
+                </div>
+                <div class="col-xs-2">
+                    <div class="sec-label">Start Date</div>
+                    <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
+                    <p><strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></strong>
+                    </p>
+                </div>
+                <div class="col-xs-3">
+                    <div class="sec-label">Status</div>
+                    <% var status='New'; if (eval) {status = eval.status;} %>
+                    <p><strong><%= status %></strong>
+                    </p>
+                </div>
+                <div class="col-xs-12" style="padding: 0; margin: 0; height: 75px;">
+                    <ul class="wizard-menu">
+                        <!--<li id="1" class="wizard-item" hidden="hidden">
+                            <p>Welcome</p>
+                        </li>-->
+                        <li id="2" class="wizard-item">
+                            <p>Getting Started</p>
+                        </li>
+                        <li id="3" class="wizard-item">
+                            <p>Planning Your Research</p>
+                        </li>
+                        <li id="4" class="wizard-item ">
+                            <p>Preparing Your Data</p>
+                        </li>
+                        <li id="5" class="wizard-item">
+                            <p>Analyzing your Data</p>
+                        </li>
+                        <li id="6" class="wizard-item">
+                            <p>Summarizing Your Findings</p>
+                        </li>
+                    </ul>
+                    <div style="clear: both; display: block;"></div>
+
+                </div>
+                <div style="clear: both; display: block;"></div>
+            </div>
+        </div>
 
 
         <div class="result"></div>
         <div class="step-nav">
             <% if(step !== "6") { %>
-            <div class="bottom-next pull-right"><a href="#" id="Next-link" class="sec-label">Next Step <span class="fa fa-caret-right"></span></a></div>
+            <div class="bottom-next pull-right"><a href="#" id="Next-link" class="sec-label">Next Step <span class="fa fa-caret-right"></span></a>
+            </div>
             <% } %>
         </div>
-            </div>
-    </form>
+    </div>
+</form>
     <% include ../views/partials/footer.html %>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -184,6 +191,10 @@
         );
     });
     });
+
+    //init feedback_me plugin
+    var fm_options = setFeedbackOptions($("#user_email").val(), "context_and_usage");
+    fm.init(fm_options);
 </script>
 
 </body>
