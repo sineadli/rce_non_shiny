@@ -20,7 +20,7 @@ module.exports = function (app, passport) {
     app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
         sess = req.session;
        // console.log(sess.evals)
-        res.render('evaluations.html', { user: req.user, evals: sess.evals });
+        res.render('evaluations.html', { user: req.user, evals: sess.evals, currentEvalid: sess.eval._id });
     });
 
 

@@ -16,6 +16,9 @@
 </head>
 <body>
     <% include ../views/partials/header.html %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+    </ol>
     <div class="container-fluid">
         <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
         <input type="hidden" id="user_email" value="<%= user.email %>" />
@@ -26,7 +29,7 @@
         <div class="row">
             <% if(evals.length>0){ for (var i=0; i < evals.length; i++){ 
             var evallabel = "Recent Evaluation"
-            <!--if (i==0) evallabel = "Current Evaluation"-->
+            if (evals[i]._id == currentEvalid) evallabel = "Current Evaluation"
             var evaltitle = evals[i].title;
             var status= evals[i].status;
             var d = new Date(evals[i].created_at) 
