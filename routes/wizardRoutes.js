@@ -41,6 +41,24 @@ module.exports = function (app, passport) {
         });
 
     });
+    app.get('/wizard/:id', isLoggedIn, function (req, res) {
+        sess = req.session;
+        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+            sess.eval = eval;
+            sess.step = 1
+            sess.last_tool = "none"
+            
+            WizardStep.find(function (err, wizardSteps) {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                else {
+
+                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
+                }
+            });
+        });
+    });
 
     // this is for returning the partial view tool.html on the wizard.html
     app.get('/tools/:wizardPath', function (req, res) {

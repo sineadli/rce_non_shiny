@@ -26,7 +26,7 @@
         <div class="row">
             <% if(evals.length>0){ for (var i=0; i < evals.length; i++){ 
             var evallabel = "Recent Evaluation"
-            if (i==0) evallabel = "Current Evaluation"
+            <!--if (i==0) evallabel = "Current Evaluation"-->
             var evaltitle = evals[i].title;
             var status= evals[i].status;
             var d = new Date(evals[i].created_at) 
@@ -49,7 +49,7 @@
                     </p>
                     <div>
                         <p class="text-center add-padding">
-                            <a class="text-right btn btn-primary" href="/wizard" id="startEval" class="btn btn-primary btn-lg">CONTINUE THIS EVALUATION</a> <br />
+                            <a class="text-right btn btn-primary" href="/wizard/<%= evals[i]._id %>" id="startEval">CONTINUE THIS EVALUATION</a> <br />
                         </p>
 
                     </div>
