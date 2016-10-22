@@ -2,6 +2,7 @@
 // load up things we need
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
+var getAllEvaluations = require('../middleware/getAllEvaluations.js');
 
 var WizardStep = require('../models/wizardStep'),
     Tool = require('../models/tool.js');
@@ -14,6 +15,12 @@ module.exports = function (app, passport) {
     app.get('/dashboard', isLoggedIn, getCurrentEvaluation,  function (req, res) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, eval: sess.eval });
+    });
+
+    app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
+        sess = req.session;
+       // console.log(sess.evals)
+        res.render('evaluations.html', { user: req.user, evals: sess.evals, currentEvalid: sess.eval._id });
     });
 
 
@@ -34,21 +41,31 @@ module.exports = function (app, passport) {
         });
 
     });
+    app.get('/wizard/:id', isLoggedIn, function (req, res) {
+        sess = req.session;
+        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+            sess.eval = eval;
+            sess.step = 1
+            sess.last_tool = "none"
+            
+            WizardStep.find(function (err, wizardSteps) {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                else {
+
+                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
+                }
+            });
+        });
+    });
 
     // this is for returning the partial view tool.html on the wizard.html
     app.get('/tools/:wizardPath', function (req, res) {
         //console.log(req.params.wizardPath);
         sess = req.session;
         var wizardStep;
-        console.log(sess.eval._id);
-        Evaluation.findOne({ "_id": sess.eval._id }, function (err, eval) {
-            if (!err) {
-                if (eval.stepsclicked.indexOf(req.params.wizardPath) < 0 ) eval.stepsclicked.push(req.params.wizardPath);
-                eval.save(function (err) {
-                    if (err) console.log(err);
-                });
-            }
-            });
+      
         WizardStep.findOne({ step: req.params.wizardPath }, function (err, wizard) {
 			if (err) {
                 res.status(500).send(err);

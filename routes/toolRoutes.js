@@ -71,6 +71,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.probAppr = probAppr;
+                if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -159,6 +160,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.planQuestion = planQuestion;
+                if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -182,11 +184,11 @@ module.exports = function (app, passport) {
     app.get('/plan_next_steps', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
-        sess.last_tool = "How to Use Your Results";
+        sess.last_tool = "Think About How to Use Your Results";
         res.render('plan_next_steps.html', {user: req.user.local.email, planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
     });
     app.post('/plan_next_steps', isLoggedIn, function (req, res) {
-        var toollist = { "name": "How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
+        var toollist = { "name": "Think About How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
         var obj = req.body;
@@ -211,9 +213,9 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-				sess.last_tool = "How to Use Your Result";
+                sess.last_tool = "Think About How to Use Your Result";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "How to Use Your Results" });
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Think About How to Use Your Results" });
                 if (tool.length == 0) {
                     eval.toolsvisited.push(toollist);
                 }
@@ -247,6 +249,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.planNext = planNext;
+                if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -335,6 +338,7 @@ module.exports = function (app, passport) {
                     };
                 }
                 eval.planContext = planContext;
+                if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -401,6 +405,7 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
+                if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -467,6 +472,7 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
+                if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -533,6 +539,7 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
