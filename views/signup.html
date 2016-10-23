@@ -39,7 +39,8 @@
                            </div>
                            <div id="login-username-password" class="form-group hcenter hide">
                                <label for="login-password" class="vtop">Password</label>
-                               <input type="password" id="login-password" name="password" class="form-control" required novalidate>
+                               <input type="password" id="login-password" name="password" class="form-control" required validate>
+                               <label class="registrationFormAlert" id="validatePassword"></label>
                                <label for="login-confirmpassword">Confirm Password</label>
                                <input type="password" id="login-confirmpassword" name="confirmpassword" class="form-control" required validate>
                                <label class="registrationFormAlert" id="checkPasswordMatch"></label>
@@ -107,7 +108,8 @@
              $(".row.rh-box-breadcrumbs > .target1.bclast > .unit").css("background-color", "transparent");
              $("#mpr-login-signin").html("NEXT").prop("disabled", false);
              return false;
-            });
+       });
+       $("#login-password").keyup(checkPassword);
        $("#login-confirmpassword").keyup(checkPasswordMatch);
        $("#chkAgree").click(checkPasswordMatch);
        function checkPasswordMatch() {
@@ -124,7 +126,20 @@
                 
                     if (password && password == confirmPassword && $('#chkAgree').is(':checked')) $("#mpr-login-signin").prop("disabled", false);
                  }
-        }
+       }
+       function checkPassword() {
+           var re = /^((?=.*[A-Z])(?=.*[a-z])(?=.*\d)|(?=.*[a-z])(?=.*\d)(?=.*[\$\%\&])|(?=.*[A-Z])(?=.*\d)(?=.*[\$\%\&])|(?=.*[A-Z])(?=.*[a-z])(?=.*[\$\%\&])).{8,}$/;
+           var password = $("#login-password").val();
+           if (password && !re.test(password)) {
+               
+               $("#validatePassword").html("Passwords not passing requirements!");
+           }
+           else {
+               $("#validatePassword").html("");
+               
+           }
+           }
+       
       });
     
 </script>
