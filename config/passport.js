@@ -45,7 +45,9 @@ module.exports = function(passport) {
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
-
+            var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+            if (!re.test(password)) {
+                return done(null, false, req.flash('signupMessage', 'Password not meet requirments!')); }
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
