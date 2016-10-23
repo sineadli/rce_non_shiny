@@ -26,7 +26,7 @@ module.exports = function (app, passport) {
 
     app.get('/wizard', isLoggedIn, function (req, res) {
 		sess = req.session;
-		console.log(sess);
+		//console.log(sess);
 		if (!sess.step) { sess.step = 1 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
       
@@ -35,7 +35,7 @@ module.exports = function (app, passport) {
                 res.status(500).send(err);
             }
 			else {
-
+				//console.log(wizardSteps);
                 res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
             }
         });
@@ -46,14 +46,14 @@ module.exports = function (app, passport) {
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
             sess.step = 1
-            sess.last_tool = "none"
+            sess.last_tool = "none";
             
             WizardStep.find(function (err, wizardSteps) {
                 if (err) {
                     res.status(500).send(err);
                 }
                 else {
-
+                    //console.log(wizardSteps);
                     res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
                 }
             });
@@ -71,7 +71,7 @@ module.exports = function (app, passport) {
                 res.status(500).send(err);
             }
             else {
-               // console.log(wizardStep);
+               console.log(wizardStep);
                 wizardStep = wizard;
                 Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
                     if (err) {
