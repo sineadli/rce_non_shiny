@@ -89,7 +89,7 @@
         <div class="step-action">
             <select required name="Plan_Question_B_1" id="Plan_Question_B_1">
                 <%
-                var options = ["Select an option","Student academic achievement", "Student non-academic achievement","Teacher performance","Other" ];
+                var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","other" ];
                 for ( var i = 0; i < options.length; i++ )
                 {
                 var selected;
@@ -123,7 +123,7 @@
         <div class="step-action">
             <select required name="Plan_Question_B_3" id="Plan_Question_B_3">
                 <%
-                var options = ["Select an option", "Increase", "Decrease" ];
+                var options = ["Select an option", "increase", "decrease" ];
                 for ( var i = 0; i < options.length; i++ )
                 {
                 var selected;
@@ -353,7 +353,7 @@
         if (dot === "Select an option") {
             dot = "DO";
         }
-        if ($("#Plan_Question_B_1").val() === "Other") {
+        if ($("#Plan_Question_B_1").val().toLowerCase() === "other") {
             var b = $("#Plan_Question_B_Other").val();
         }
         var d = $("#Plan_Question_D").val();
