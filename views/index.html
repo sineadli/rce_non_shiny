@@ -252,9 +252,30 @@ function rotate() {
     $('#next').click();
 }
 
+ 
     //init feedback_me plugin
-
-
+var fm_options = {
+    bootstrap: true,
+    position: "right-top",
+    name_placeholder: "Name please",
+    name_required: true,
+    title_label: "",
+    message_label: "Message",
+    message_placeholder: "Please send us your feedback on the site&rsquo;s functionality and appearance",
+    feedback_url: "/feedback",
+    custom_params: {
+        user_email: "Anonymous",
+        page: "index"
+    },
+    delayed_options: {
+        success_color: "#5cb85c",
+        fail_color: "#d2322d",
+        delay_success_milliseconds: 3500,
+        send_success: "Thanks for your feedback."
+    }
+   
+}
+fm.init(fm_options);
 });
     </script>
 
