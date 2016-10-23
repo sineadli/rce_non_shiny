@@ -1,16 +1,17 @@
 /*~~~~~~~~~~~~~~~~~~ ALL ~~~~~~~~~~~~~~~~~~*/
-$(document).ready( function() {
+$(document).ready(function() {
     /** Load Header **/
-    $.get("/header", function (data) {
+    $.get("/header", function(data) {
         $("#header").html(data);
     });
-  $('[data-toggle=collapse]').click( function() {
+    $('[data-toggle=collapse]').click(function() {
 
-    var caret = $(this).find('i');
-    caret.toggleClass('fa-caret-right');
-    caret.toggleClass('fa-caret-down');
-	});
+        var caret = $(this).find('i');
+        caret.toggleClass('fa-caret-right');
+        caret.toggleClass('fa-caret-down');
+    });
 
+   
 
  $(document).on('click', '.tool-view-button', function (e) {
 	 e.preventDefault();
@@ -31,34 +32,8 @@ $(document).ready( function() {
       
  });
 
+  
 
-	function ShowDialog(id) {
-		var myPos = { my: "center top", at: "center top+50", of: window };
-		$("#"+ id).removeClass("hide");
-		$("#" + id).dialog({
-			autoOpen: true,
-			appendTo: "#s-page",
-			height: 'auto',
-			width: 300,
-			position: myPos,
-			modal: true,
-			title: "Example " ,
-			fluid: true,
-			closeText: 'X',
-			
-			buttons: {
-				"OK": function () {
-
-					$(this).dialog("close");
-
-
-				}
-
-			},
-			close: function () {
-			}
-		});
-	}
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
     $('#Prob_Appr_B').change(function () {
         var value = $(this).val();
@@ -68,10 +43,10 @@ $(document).ready( function() {
 
     if (value === "other") otherSpecify.show();
     else otherSpecify.hide();
-    if (value != "Select an option" && value != "other") {
+    if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
         subject = value;
     }
-        if (value !== "other") {
+	if (value.toLowerCase() !== "other") {
         $(".section-c-header").text(subject);
     }
     else {
@@ -85,13 +60,13 @@ $(document).ready( function() {
         var c = $("#Prob_Appr_C").val();
         var b = $("#Prob_Appr_B").val();
 		var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
-        if ((a === "Yes") && c === "No" && b !== "Select an option") {
+        if ((a === "Yes") && c === "No" && b.toLowerCase() !== "select an option") {
             p2.show(); p1.hide(); p3.hide();
         }
-        else if (a === "No" && c === "No" && b !== "Select an option") {
+        else if (a === "No" && c === "No" && b.toLowerCase() !== "select an option") {
             p3.show(); p1.hide(); p2.hide();
         }
-        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an option")) {
+        else if ((a === "Yes" && c === "Yes" && b.toLowerCase() !== "select an option") || (a === "No" && c === "Yes" && b.toLowerCase() !== "Select an option")) {
             p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
@@ -102,13 +77,13 @@ $(document).ready( function() {
 		var a = $("#Prob_Appr_A").val(); 
         var b = $("#Prob_Appr_B").val();
 		var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
-        if ((a === "Yes") && c === "No" && b !== "Select an option") {
+        if ((a === "Yes") && c === "No" && b.toLowerCase() !== "select an option") {
             p2.show(); p1.hide(); p3.hide();
         }
-        else if (a === "No" && c === "No" && b !== "Select an option") {
+        else if (a === "No" && c === "No" && b.toLowerCase() !== "select an option") {
             p3.show(); p1.hide(); p2.hide();
         }
-        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
+        else if ((a === "Yes" && c === "Yes" && b.toLowerCase() !== "select an option") || (a === "No" && c === "Yes" && b.toLowerCase() !== "select an Option")) {
             p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
@@ -119,13 +94,13 @@ $(document).ready( function() {
 		var c = $("#Prob_Appr_C").val();
         var a = $("#Prob_Appr_A").val();
 		var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
-        if ((a === "Yes") && c === "No" && b !== "Select an option") {
+        if ((a === "Yes") && c === "No" && b.toLowerCase() !== "select an option") {
             p2.show(); p1.hide(); p3.hide();
         }
-        else if (a === "No" && c === "No" && b !== "Select an option") {
+        else if (a === "No" && c === "No" && b.toLowerCase() !== "select an option") {
             p3.show(); p1.hide(); p2.hide();
         }
-        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
+        else if ((a === "Yes" && c === "Yes" && b.toLowerCase() !== "select an option") || (a === "No" && c === "Yes" && b.toLowerCase() !== "select an Option")) {
             p1.show(); p3.hide(); p2.hide();
         }
         else { p1.hide(); p2.hide(); p3.hide(); }
@@ -140,7 +115,7 @@ $(document).ready( function() {
             subject = $("#Prob_Appr_B_other").val();
         }
         
-        if (value != "Select an option" && value != "other") {
+        if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
             subject = value;
         }
         return subject;
@@ -163,10 +138,10 @@ $(document).ready( function() {
 
     var otherSpecify = $("#Question_B_Other");
 
-    if (value === "Other") otherSpecify.show();
+    if (value.toLowerCase() === "other") otherSpecify.show();
     else otherSpecify.hide();
 
-    if (value !== "Other" && value !== "Select an option") {
+    if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
         $(".q11answer").text(value);
     }
     else {
@@ -232,3 +207,77 @@ $(document).ready(function(){
 });
 
 }); //<-end document.ready
+
+function setFeedbackOptions(email, page) {
+	var fm_options = {
+		bootstrap: true,
+		position: "right-top",
+		name_placeholder: "Name please",
+		name_required: true,
+		title_label: "",
+		message_label: "Message",
+		message_placeholder: "Please send us your feedback on the site&rsquo;s functionality and appearance",
+		feedback_url: "/feedback",
+		custom_params: {
+			user_email: email,
+			page: page
+		},
+        delayed_options: {
+			success_color: "#5cb85c",
+			fail_color: "#d2322d",
+			delay_success_milliseconds: 3500,
+			send_success: "Thanks for your feedback."
+		}
+	}
+    return fm_options;
+};
+
+function setWizardNav(step, stepvisited) {
+    step = parseInt(step);
+
+	$("li.wizard-item").each(function (index) {
+
+		if (index === step - 2) {
+			$(this).addClass("active");
+		}
+		if (index === step - 1) {
+			$("#Next-link").html($(this).children("p").text() + " <span class='fa fa-chevron-right fa-2x'></span> ");
+		}
+		if (index === step - 3) {
+			$("#Prev-link").html("<span class='fa fa-chevron-left fa-2x'></span> " + $(this).children("p").text());
+		}
+		if (stepvisited.indexOf(index + 2) > -1) { $(this).addClass("previous"); }
+	});
+
+	if (step === 6) {
+		$('.bottom-next').hide();
+	} else {
+		$('.bottom-next').show();
+	}
+	if (step === 2) {
+		$('.bottom-prev').hide();
+	} else {
+		$('.bottom-prev').show();
+	}
+}
+function recordViewPDF(name, step, path) {
+
+	$.ajax({
+		type: "POST",
+		url: "/pdf_view",
+		data: JSON.stringify({
+			"tname": name,
+			"step": step
+		}),
+
+		dataType: "json",
+		contentType: "application/json"
+
+	}).done(function (msg) {
+
+		
+        });
+
+	window.open(path, '_blank', 'fullscreen=yes');
+	return false;
+};

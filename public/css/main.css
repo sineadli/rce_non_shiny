@@ -8,12 +8,20 @@ body {
     background-color: #FBFAF7;
     color: #000;
 }
+body.one-col div.row div.content {
+    margin: 0px auto;
+    float: none;
+}
 .legal {
     margin: 45px auto;
     font-size: 1.3em;
     line-height: 1.8em;
     width: 80%;
     float: none;
+}
+.legal .copyright {
+    margin: 65px;
+    font-style: italic;
 }
 .legal p, .legal h2, .legal h3 {
     margin-top: 25px;
@@ -42,6 +50,18 @@ div.container-fluid {
 .navbar h3 {
     color: #71714A;
 }
+.feedback_title h3 {
+    margin: 8px;
+    padding: 0;
+    display: block;
+}
+.fm_bootstrap .feedback_title {
+    margin: 0;
+    padding: 0;
+}
+.fm_bootstrap .feedback_trigger_text {
+    top: 38px;
+}
 .navbar-default {
     background-color: #E3E1CE;
     border-radius: 0;
@@ -53,13 +73,23 @@ div.breadcrumbs, .sec-label, li.breadcrumb-item {
 	color:#56ACE0;
 	text-transform:uppercase;
 	font-size:.9em;
+
 	
 }
 ol.breadcrumb {
-    background-color: #ffffff;
+    background-color: #FBFAF7;
+    margin: 0;
+    padding: 0;
 }
 li.breadcrumb-item {
     font-size: 1.1em;
+        padding: 5px 10px;
+}
+.page-header {
+    margin-top: 20px;
+}
+body.dashboard div.page-header {
+   margin-top: 40px; 
 }
 .add-padding {
     padding: 20px 20px 10px 20px;
@@ -455,11 +485,10 @@ ul.wizard-menu {
 }
 ul.wizard-menu li {
     display: table;
-    width: 198px;
+    width: 20%;
     float: left;
-  
     height: 75px;
-     text-align: center;
+    text-align: center;
     font-size: 1.1em;
     border-left: #ccc 1px solid;
     border-top: #ccc 1px solid;
@@ -468,17 +497,27 @@ ul.wizard-menu li {
     cursor: pointer;
     
 }
+a.step-label {
+     text-transform: uppercase;
+     font-size: 1.3em;
+    line-height: 2em;
+    font-weight: bold;
+     color: #4081A8;
+}
+    a.step-label span {
+        vertical-align: middle;
+    }
 ul.wizard-menu li:first-child {
     border-left: none;
 }
 
 ul.wizard-menu li p {
-     vertical-align: middle;
-       text-align: center;
+    vertical-align: middle;
+    text-align: center;
     display: table-cell;
-
     color: #979762;
     height: 55px;
+    font-weight: 600;
   
 }
     ul.wizard-menu li.active p {
@@ -493,7 +532,6 @@ ul.wizard-menu li p {
      ul.wizard-menu li.previous {
         
         background:#F4F2EB ;
-        font-weight: bold;
         height: 75px;
     }
 div.result {
