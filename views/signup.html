@@ -93,7 +93,7 @@
            if (txt == "NEXT" && username) {
                $("#login-username-form").addClass("hide");
                $("#mpr-back-to-login, #login-username-password").removeClass("hide");
-                $("#mpr-login-signin").html("SIGN IN").prop("disabled", true);
+                $("#mpr-login-signin").html("SIGN UP").prop("disabled", true);
                 $(".row.rh-box-breadcrumbs.bcactive0 >.target0 >.unit").css("background-color", "transparent");
                 $(".row.rh-box-breadcrumbs > .target1.bclast > .unit").css("background-color", "#aaa");
                 $("#login-confirmpassword").val("")
@@ -117,8 +117,8 @@
             var password = $("#login-password").val();
             var confirmPassword = $("#login-confirmpassword").val();
  
-            if (password && confirmPassword && password != confirmPassword) {
-                $("#mpr-login-signin").prop("disabled", true)
+            if (password && confirmPassword && password !== confirmPassword) {
+                $("#mpr-login-signin").prop("disabled", true);
                 $("#checkPasswordMatch").html("Passwords do not match!");
                 }
             else {
