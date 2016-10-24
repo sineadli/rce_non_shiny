@@ -99,60 +99,33 @@ module.exports = function (app, passport) {
 		var toollist = { "name": obj.tname, "status": "completed", "visited_at": new Date() };
 		var dt = new Date();
 	    //console.log(req.body);
-		async.waterfall([
-			function (done) {
-				if (sess.eval) {
-					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-						if (!eval) {
-							req.flash('error', 'No evaluation exists.');
-							return res.redirect('/wizard');
-						}
-						if (err) {
-							console.log(err);
-							return res.redirect('/wizard');
-						}
-						return done(err, eval);
-					});
-				}
-				else
-					res.redirect('/wizard');
-			},
-			function (eval, done) {
-				//console.log(eval);
-				//eval find so update the toolsVisisted accordingly
-				eval.last_step = obj.step;
-				sess.last_tool = obj.tname;
-				var tool = eval.toolsvisited.filter(function (x) { return x.name === obj.tname });
-				//console.log(tool);
-				if (tool.length == 0) {
-					eval.toolsvisited.push(toollist);
-				}
-				else {
-					var index = eval.toolsvisited.indexOf(tool[0]);
-					if (index > -1) {
-						if (tool[0].status == "completed") toollist = { "name": obj.tname, "status": "completed", "visited_at": new Date() };
-						eval.toolsvisited.splice(index, 1);
-						eval.toolsvisited.push(toollist);
-					}
-				}
-				
-				if (eval.stepsclicked.indexOf(obj.step) < 0) eval.stepsclicked.push(obj.step);
-				eval.save(function (err) {
-					if (err) {
-						console.log(err); return done(err);
-					}
-					else {
-					    console.log("redirect to wizard now.");
-						return res.redirect('/wizard/' + eval._id);
-					}
-                    
-				});
-			}
-		], function (err) {
-			console.log(err);
-			if (err) return next(err);
-			res.redirect('/wizard');
-		});
+        Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+            if (eval) {
+                eval.last_step = obj.step;
+                sess.last_tool = obj.tname;
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === obj.tname });
+                //console.log(tool);
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": obj.tname, "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                
+                if (eval.stepsclicked.indexOf(obj.step) < 0) eval.stepsclicked.push(obj.step);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                });
+            }
+        });
+	
 	});
 
     app.get('/craft_your_research_q', isLoggedIn, function (req, res) {
