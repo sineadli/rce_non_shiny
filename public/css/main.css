@@ -14,8 +14,8 @@ body.one-col div.row div.content {
 }
 .legal {
     margin: 45px auto;
-    font-size: 1.3em;
-    line-height: 1.8em;
+    font-size: 1.1em;
+    line-height: 1.6em;
     width: 80%;
     float: none;
 }
@@ -29,6 +29,9 @@ body.one-col div.row div.content {
 .legal ul, .legal ol {
     padding-left: 40px;
 }
+.legal ol li, .legal ul li {
+    margin-top: 10px;
+}
 div.container-fluid {
 	width:100%;
 	font-size:100%;
@@ -37,10 +40,20 @@ div.container-fluid {
 }
 div.container-fluid {
     position: relative;
- }div.footer {
-    position: absolute;
-    bottom: 0;
  }
+#main {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -142px; 
+}
+#main:after {
+  content: "";
+  display: block;
+}
+.footer, #main:after {
+  height: 142px; 
+}
+
 /* Header */
 .navbar {
     height: auto;
@@ -225,6 +238,10 @@ label {
   letter-spacing: 1px;
   font-size: 14px;
   margin-top:5px;
+}
+label.registrationFormAlert {
+    text-transform: none;
+    color: #800000;
 }
 h2,p.clickable {
   cursor:pointer;
