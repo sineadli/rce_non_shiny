@@ -64,7 +64,7 @@
         </h2>
     </div>
 </div>
-<div id="A" class="row collapse in">
+<div id="A" class="row collapse in  q-row">
     <div class="col-xs-7">
         <div class="step-action">
             <% var a =''; if (planQuestion) {a = planQuestion.Plan_Question_A } %>
@@ -79,7 +79,7 @@
         </h2>
     </div>
 </div>
-<div id="B" class="row  collapse in">
+<div id="B" class="row  collapse in  q-row">
     <div class="col-xs-7">
         <div class="step-subquestion">
             <p>
@@ -137,9 +137,6 @@
         </div>
     </div>
 
-
-
-
     <div class="col-xs-5">
         <div class="step-to-consider">
 
@@ -182,11 +179,6 @@
         </div>
     </div>
 
-
-
-
-
-
 </div>
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#C">
@@ -195,7 +187,7 @@
         </h2>
     </div>
 </div>
-<div id="C" class="row collapse in">
+<div id="C" class="row collapse in  q-row">
     <div class="col-xs-7">
         <div class="step-action">
             <% var c =''; if (planQuestion) {c = planQuestion.Plan_Question_C } %>
@@ -241,14 +233,15 @@
             </div>
         </div>
     </div>
-    <div class="step-header container">
-        <div data-toggle="collapse" data-target="#D">
-            <h2 class="clickable">
-                <i class="fa fa-caret-down" aria-hidden="false"></i> D. Who are you comparing them against?
-            </h2>
-        </div>
+</div>
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#D">
+        <h2 class="clickable">
+            <i class="fa fa-caret-down" aria-hidden="false"></i> D. Who are you comparing them against?
+        </h2>
     </div>
-    <div id="D" class="row collapse in">
+</div>
+    <div id="D" class="row collapse in q-row">
         <div class="col-xs-7">
             <div class="step-action">
                 <% var d =''; if (planQuestion) {d = planQuestion.Plan_Question_D } %>
@@ -268,7 +261,7 @@
                             </h3>
                         </div>
                         <div id="consider4" class="panel-collapse collapse in">
-                            <p>It is important to be clear about whether you are comparing users to a group with no access to an educational technology, or with access to a different educational technology. As shown above, this will determine how you interpret your findings later on and what kinds of decisions this data will empower you to make.</p>
+                            <p>Are you comparing users to a group with no access to an educational technology, or with access to a different educational technology? This will determine how you interpret your findings later on and what kinds of decisions the results will empower you to make.</p>
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -283,40 +276,41 @@
                         <div id="example4" class="panel-collapse collapse">
                             <ul>
                                 <li>Similar 5th grade English Learners with no access to eZumi Learning</li>
-                                <li>Similar 5th grade English Learners that use IXL Math instead of eZumi Learning</li>
+                                <li>Similar 5th grade English Learners that use Wizlet Math instead of eZumi Learning</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="step-conclusion container">
+    </div>
+    <div class="step-conclusion container">
 
-            <h2>Your Question</h2>
+        <h2>Your Question</h2>
+    </div>
+    <div class="row">
+        <div class="col-xs-7">
+
+            <em>DOES <strong><span class='q1answer'>A</span></strong> <span class='q12aanswer'>DO</span> <strong><span class='q11answer'>B</span></strong> AMONG <strong><span class='q8answer'>C</span></strong> COMPARED TO <strong><span class='qdanswer'>D</span></strong>?</em>
         </div>
-        <div class="row">
-            <div class="col-xs-7">
-
-                <em>DOES <strong><span class='q1answer'>A</span></strong> <span class='q12aanswer'>DO</span> <strong><span class='q11answer'>B</span></strong> AMONG <strong><span class='q8answer'>C</span></strong> COMPARED TO <strong><span class='qdanswer'>D</span></strong>?</em>
-            </div>
-            <div class="col-xs-5">
-                <div class="step-to-consider">
-                    <div class="panel-group" id="ttc5">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title sec-label clickable">
-                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                    <a data-toggle="collapse" data-parent="#ttc2" href="#consider5">
-                                        Things to Consider
-                                    </a>
-                                </h3>
-                            </div>
-                            <div id="consider5" class="panel-collapse collapse in">
-                                <p>Look at your question. Does it makes sense? If not, you can make changes on this page until it does.</p>
-                            </div>
+        <div class="col-xs-5">
+            <div class="step-to-consider">
+                <div class="panel-group" id="ttc5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title sec-label clickable">
+                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider5">
+                                    Things to Consider
+                                </a>
+                            </h3>
                         </div>
-                       
+                        <div id="consider5" class="panel-collapse collapse in">
+                            <p>Look at your question. Does it makes sense? If not, you can make changes on this page until it does.</p>
+                        </div>
                     </div>
+
+                </div>
             </div>
         </div>
 
@@ -326,12 +320,14 @@
         <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
         <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
     </div>
-</div>
-</div>
+
+
 <div>
     <input class="hidden" name="status" id="status"/>
 </div>
 </div>
+</div>
+    </div>
 </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
