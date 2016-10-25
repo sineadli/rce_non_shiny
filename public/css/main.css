@@ -274,9 +274,9 @@ div#home-access {
     line-height: 20px;
     color: #4081A8;
 }
-div.welcome-text {
+div.welcome-text, div.prev-tools {
      padding: 25px;
-    background-color: #D9D7BE;
+    background-color: #ECEBDD;
     margin-top: 35px;
 }
 div.front-header div.front-text, div.slide-item {
@@ -788,7 +788,20 @@ input[type=checkbox] {
     vertical-align: top;
     margin-top: 10px;
 }
-
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #999;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #999
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #999
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #999
+}
 div.form-group label {
     width: 90%;
 }
