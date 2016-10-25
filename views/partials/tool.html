@@ -10,7 +10,9 @@
 </div>
 <div class="row">
     <div class="tool-row">
-        <%  for (var i=0; i< tools.length; i++) {
+        <% for (var i=0; i< tools.length; i++) {
+        var divid = "ToolDiv-"+tools[i].step;
+        var statusdivid = "StatusDiv" + tools[i].step;
         var tool =[], status = "NOT STARTED", d = "", btnText = "START";
         if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
 
@@ -26,7 +28,7 @@
         %>
         <div class="col-xs-3">
 
-            <div class="tool-div <%= status %> <%= current %>">
+            <div id="<%= divid %>" class="tool-div <%= status %> <%= current %>">
                 <div class="tool-title">
                     <%
                     if (status.toLowerCase()=="completed" && tools[i].type.toLowerCase() == "guide") { status = "Viewed";}
@@ -36,11 +38,11 @@
                     <p><%= tools[i].desc %></p>
                 </div>
                 <div class="tool-bottom">
-                    <div class="tool-status status">
+                    <div id="<%= statusdivid %>" class="tool-status status">
                         <% if (tool.length > 0) { %>
                         <p>
-                            Status<br /><span class="all-caps"><strong><%= status %></strong></span><br />
-                            Last Visit<br /><strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></strong>
+                            Status<br /><span class="all-caps" id="status"><strong><%= status %></strong></span><br />
+                            Last Visit<br /><strong><span id="visitedat"><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></span></strong>
                         </p>
 
                         <% } %>
@@ -50,7 +52,8 @@
 
                         <% var option=""; if (tools[i].path) {option=tools[i].path;} %>
                         <% if (option.indexOf(".pdf") !== -1) { %>
-                        <a onclick= 'recordViewPDF("<%= tools[i].name %>","<%= tools[i].wizardPath %>","<%= tools[i].path %>"); return false;' href="" class="tool-view-button btn btn-primary btn-lg">VIEW <span class="fa fa-download" aria-hidden="true"></span></a>
+                        <!--<button type="button" id="viewpdf" class="btn btn-primary btn-lg" >VIEW</button>-->
+                        <a id="viewpdf" class="tool-view-button btn btn-primary btn-lg" href="#">VIEW <span class="fa fa-download" aria-hidden="true"></span></a>
                         <% } else { %>
                         <a href="<%= option %>" class="tool-view-button btn btn-primary btn-lg"><%= btnText %></a>
                         <% } %>
@@ -58,14 +61,69 @@
                 </div>
             </div>
         </div>
-
+        <div>
+            <input class="hidden" id="toolname" value="<%= tools[i].name  %>" />
+            <input class="hidden" id="toolpath" value="<%= tools[i].path  %>"/>
+            <input class="hidden" id="toolstep" value="<%= tools[i].step  %>" />
+            <input class="hidden" id="wizardpath" value="<%= tools[i].wizardPath  %>" />
+        </div>
         <% } %>
 
         <div style="clear: both; line-height: 0">&nbsp;</div>
-    
+      
         
     </div>
 </div>
+<script>
+    $("#viewpdf").click(function (e) {
+      
+        var name = $("#toolname").val();
+        var step = $("#wizardpath").val();
+        var path = $("#toolpath").val();
+        var currentStatus = $("#status").text();
+    
+
+        $.ajax({
+            type: "POST",
+            url: "../pdf_view",
+            data: JSON.stringify({
+                "tname": name,
+                "step": step
+            }),
+
+            dataType: "json",
+            contentType: "application/json",
+            success: function(eval, status, xhr) {
+               
+                if (eval.toolsvisited) {
+                    tool = eval.toolsvisited.filter(function(x) { return x.name === $("#toolname").val() });
+                    if (tool.length > 0) {
+                      
+                        status = tool[0].status;
+                        var usestatus = "";
+                        if (status.toLowerCase() === "completed") {
+                            usestatus = "Viewed";
+                        }
+                        d = new Date(tool[0].visited_at);
+                        var NewStatus = '<p> Status<br /><span class="all-caps"><strong>' + usestatus + '</strong></span><br />Last Visit<br /><strong><span>' + d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() + '</span></strong></p>';
+                        $("#ToolDiv-" + $("#toolstep").val()).addClass(status);
+                        $("#ToolDiv-" + $("#toolstep").val()).addClass("current");
+                        $("#StatusDiv" + $("#toolstep").val()).html(NewStatus);
+                        setWizardNav($("#wizardpath").val(), $("#wizardpath").val());
+                    }
+                }
+
+
+            }
+        });
+        
+            
+        window.open($("#toolpath").val(), "_blank", "fullscreen=yes");
+    });
+   
+</script>
+
+
 
 
 
