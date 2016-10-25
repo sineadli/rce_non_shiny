@@ -1,0 +1,60 @@
+﻿
+      
+        .vbutton {
+                   margin-top: 50px;  
+           
+                }
+         .vtop {
+                   margin-top: 25px;             
+                }
+         .vbottom  {
+                   margin-bottom: 25px;              
+                }
+         .fadelabel {
+                    font-weight: 100;
+             }
+         .hcenter{
+             margin-left:25px;
+             }
+         .txtcenter{
+             text-align: center;
+             }
+.rh-box-breadcrumbs {
+    line-height: 35px;
+    visibility: visible;
+}
+rh2 {
+    display: inline-block;
+    height: 35px;
+    overflow: hidden;
+    padding: 0;
+    width: 300px;
+}
+
+.rh-box-breadcrumbs.bcactive0 >.target0 > .unit {
+    background: #aaa;
+}
+
+.rh-box-breadcrumbs > .target.bcfirst > .unit {
+    margin-left: 12px;
+}
+.rh-box-breadcrumbs > .target:hover > .unit {
+    background: #aaa;
+}
+
+.rh-box-breadcrumbs > .target > .unit {
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    display: inline-block;
+    height: 20px;
+    margin: 10px 8px;
+    width: 20px;
+}
+.bcfirst {
+    text-align:right;
+    padding:0;
+}
+.bclast {
+    text-align:left;
+    padding:0;
+}
