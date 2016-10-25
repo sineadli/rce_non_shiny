@@ -45,7 +45,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
-            sess.step = 1
+           // sess.last_step = 1
             sess.last_tool = "none";
             
             WizardStep.find(function (err, wizardSteps) {
@@ -54,7 +54,7 @@ module.exports = function (app, passport) {
                 }
                 else {
                     //console.log(wizardSteps);
-                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
+                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.last_step, last_tool: sess.last_tool });
                 }
             });
         });

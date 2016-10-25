@@ -40,7 +40,7 @@
                         <input type="hidden" id="step" value="<%= eval.last_step %>"/>
                         <input type="hidden" id="stepvisited" value="<%= eval.stepsclicked %>"/>
 
-                        <input type="text" id="title"/>
+                        <input type="text" id="title" autofocus/>
                     </div>
                     <div class="modal-footer">
                         <button id="getTitle" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
@@ -124,6 +124,14 @@
 
         //just load the first one for now, will have to determine which is the active currently for returning user with
         //an ongoing eval
+        if (document.URL.indexOf("#") == -1) {
+            // Set the URL to whatever it was plus "#".
+            url = document.URL + "#";
+            location = "#";
+
+            //Reload the page
+            location.reload(true);
+        }
         var stepvisited = $("#stepvisited").val();
         var step = $("#step").val();
         if (!step || step === "0" || step === "") { step = 2;}  //step 1 is moved to dashboard
