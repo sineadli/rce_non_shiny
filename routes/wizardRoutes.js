@@ -3,12 +3,14 @@
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var getAllEvaluations = require('../middleware/getAllEvaluations.js');
+var noCache = require('../middleware/noCache.js');
 
 var WizardStep = require('../models/wizardStep'),
     Tool = require('../models/tool.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
 var sess;
 module.exports = function (app, passport) {
+	app.use(noCache);
 
     //dashboard, require logged in and get current evaluation
    // app.use(getCurrentEvaluation);
@@ -24,8 +26,9 @@ module.exports = function (app, passport) {
     });
 
 
-    app.get('/wizard', isLoggedIn, function (req, res) {
+    app.get('/wizard', isLoggedIn,  function (req, res) {
 		sess = req.session;
+		console.log(sess.eval);
 		//console.log(sess);
 		if (!sess.step) { sess.step = 1 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
@@ -45,7 +48,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
-           // sess.last_step = 1
+            sess.step = 1;
             sess.last_tool = "none";
             
             WizardStep.find(function (err, wizardSteps) {
@@ -61,7 +64,7 @@ module.exports = function (app, passport) {
     });
 
     // this is for returning the partial view tool.html on the wizard.html
-    app.get('/tools/:wizardPath', function (req, res) {
+    app.get('/tools/:wizardPath',  function (req, res) {
         //console.log(req.params.wizardPath);
         sess = req.session;
         var wizardStep;

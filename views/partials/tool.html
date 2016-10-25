@@ -10,11 +10,12 @@
 </div>
 <div class="row">
     <div class="tool-row">
-        <% for (var i=0; i< tools.length; i++) {
+        <%  for (var i=0; i< tools.length; i++) {
         var tool =[], status = "NOT STARTED", d = "", btnText = "START";
         if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
+
         if (tool.length > 0) {
-        console.log(tool);
+
                  status = tool[0].status;                 
                  d=new Date(tool[0].visited_at)
                  if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}

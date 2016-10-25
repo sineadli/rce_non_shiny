@@ -52,13 +52,13 @@
             var evaltitle = "Ready to test an app?";
             var status= "New";
             var helpcaret = "fa-caret-down";
-            var helphidden = "false"
+            var helphidden = "aria-hidden='false'"
             var helpdetail = "in"
             if (eval) {
             evaltitle = eval.title; status=eval.status;
             evallabel = "Current Evaluation";
             helpcaret = "fa-caret-right";
-            helphidden = "true"
+            helphidden = "aria-hidden='true'"
             helpdetail = ""
             if (eval.created_at)
             {
@@ -70,8 +70,8 @@
                 <div class="panel panel-default dash-well">
                     <div class="panel-heading">
                         <h2 class="panel-title  clickable">                         
-                            <a data-toggle="collapse" data-parent="#dashboard" href="#welcomeDetails">
-                                <span class="fa <%= helpcaret %>" aria-hidden="false"></span> Welcome <%= user.profile.user_name %></a>
+                            <a data-toggle="collapse" data-target="#welcomeDetails" >
+                                <span class="fa <%= helpcaret %>" <%= helphidden %> ></span> Welcome <%= user.profile.user_name %></a>
                         </h2>
                     </div>
                     <div id="welcomeDetails" class="panel-collapse collapse <%= helpdetail %>">
@@ -79,7 +79,7 @@
                             <h3 class="sec-label">What does it take to conduct a rapid cycle evaluation? </h3>
                             <p>Read the basics on using the Ed Tech Rapid Cycle Evaluation Coach to conduct your own RCE. This overview shows the steps that you’ll need to complete and the tools that will help you through the process. </p>
                             <p class="pull-right">
-                                <a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                <a onclick=" window.open('/static/pdf/01.01 RCE overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
                             </p>
                             <div class="clearfix"></div>
                         </div>
@@ -93,7 +93,7 @@
                                 <h3 class="sec-label">Understanding types of evidence.</h3>
                                 <p>Describes common types of effectiveness evidence. Explains how to tell if the evidence can support effectiveness claims.</p>
                                 <p class="pull-right">
-                                    <a onclick=" window.open('/static/pdf/01.03UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                    <a onclick="window.open('/static/pdf/01.03 UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
                                 </p>
                             </div>
                             <div class="clearfix"></div>
@@ -129,9 +129,9 @@
                 </div>
                 <% } %>
 
-                <% if (!eval) { %>
+                <% if (!eval) { %> 
                 <p>
-                    Let the RCE Evaluation Wizard guide you through each step of evaluating your educational technology.
+                    Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
                 </p>
                 <div>
                     <p class="text-center add-padding">
@@ -173,16 +173,13 @@
 
         </div>
         <div class="col-sm-9">
-            <div class="well">
-                <h2 class="sec-label">Preview TOOLS</h2>
-                <p>Directly browse to any tool in the RCE toolkit and launch or download that tool. Every tool is available to be used outside of the Evaluation Wizard. Any information you enter when using the RCE tools for single use will not be saved or shared between other tools. </p>
-                <h3>Welcome to RCE for Ed Tech</h3>
-                <ul class="tool-list">
-
-                    <li> <a onclick="window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false" href="javascript:void(0);">How to choose a technology </a> </li>
-                    <li> <a onclick="window.open('/static/pdf/01.03UnderstandTypesofEvidence.pdf', ''); return false" href="javascript:void(0);">Understand types of evidence </a> </li>
-
-                </ul>
+            <div class="well prev-tools">
+                <h2>Preview Tools</h2>
+                <p>Directly browse to a downloadable version of any tool within the RCE Coach. </p>
+                <div class="text-right">
+                    <a href="/PreviewTools" class="sec-label">Preview all tools <span class="fa fa-caret-right"></span></a>
+                </div>
+                
 
             </div>
         </div>

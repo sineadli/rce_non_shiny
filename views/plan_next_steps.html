@@ -74,7 +74,7 @@
                 It
                 <select required id="dropdn-cost-saves" name="Plan_Next_A_1">
                     <%
-                    var options = [ "costs", "saves" ];
+                    var options = ["Select an option", "costs", "saves" ];
                     for ( var i = 0; i < options.length; i++ )
                     {
                     var selected;
@@ -89,7 +89,7 @@
                 per
                 <select required name="Plan_Next_A_3">
                     <%
-                    var options = [ "student", "teacher", "school" ];
+                    var options = ["Select an option", "student", "teacher", "school" ];
                     for ( var i = 0; i < options.length; i++ )
                     {
                     var selected;
@@ -149,7 +149,8 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
+</div>
         <div class="step-header container">
             <div data-toggle="collapse" data-target="#B">
                 <h2 class="clickable">
@@ -157,46 +158,46 @@
                 </h2>
             </div>
         </div>
-        <div id="B" class="row collapse in">
-            <div class="col-xs-7">
-                <div class="step-action">
-                    <p>The Coach will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here.  The units reflect whatever you are using to measure outcomes. If you are looking at student performance on a test, the units would be points. </p>
-                    <p>
-                        I would consider any increase larger than
-                        <% var b=''; if (planNext) {b = planNext.Plan_Next_B } %>
-                        <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= b %>" style="width: 50px"/>
-                        units on the outcome a success.
-                    </p>
-                </div>
-            </div>
-            <div class="col-xs-5">
-                <div class="step-to-consider">
-                    <div class="step-to-consider">
-                        <div class="panel-group" id="ttc5">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="consider5" class="panel-collapse collapse in">
-                                    <ul>
-                                        <li>If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
-                                        <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.</li>
-                                       
-                                       
-                                       
-                                    </ul>
-                                </div>
-                            </div>
+<div id="B" class="row collapse in">
+    <div class="col-xs-7">
+        <div class="step-action">
+            <p>The Coach will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here. The units reflect whatever you are using to measure outcomes. If you are looking at student performance on a test, the units would be points. </p>
+            <p>
+                I would consider any increase larger than
+                <% var b=''; if (planNext) {b = planNext.Plan_Next_B } %>
+                <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= b %>" style="width: 50px"/>
+                units on the outcome a success.
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-5">
+        <div class="step-to-consider">
+            <div class="step-to-consider">
+                <div class="panel-group" id="ttc5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title sec-label clickable">
+                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                    Things to Consider
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="consider5" class="panel-collapse collapse in">
+                            <ul>
+                                <li>If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
+                                <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.</li>
+
+
+
+                            </ul>
                         </div>
                     </div>
                 </div>
-                </div>
-
+            </div>
+        </div>
+    </div>
+</div>
                         <div class="step-header container">
                             <div data-toggle="collapse" data-target="#C">
                                 <h2 class="clickable">
@@ -204,47 +205,48 @@
                                 </h2>
                             </div>
                         </div>
-            <div id="C" class="row collapse in">
-                <div class="col-xs-7">
-                    <div class="step-subquestion">
-                        <p>&hellip; the educational technology moved the needle?</p>
-                    </div>
-                    <div class="step-action">
-                        <p>
-                            If I learned that there was a
-                            <% var c1=''; if (planNext) {c1 = planNext.Plan_Next_C_1 } %>
-                            <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= c1 %>" style="width: 50px" /> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
-                        </p>
-                    </div>
-                    <div class="step-subquestion">
-                        <p>&hellip; the educational technology did not move the needle?</p>
-                        <% var c2=''; if (planNext) {c2 = planNext.Plan_Next_C_2 } %>
-                        <p>
-                            If I learned that there was less than a <input type="text" name="Plan_Next_C_2" id="QBD-2b" placeholder="50%" value="<%= c2 %>" style="width: 50px" /> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-                        <div class="step-to-consider">
-                            <div class="panel-group" id="ttc6">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title sec-label clickable">
-                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                            <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
-                                                Things to Consider
-                                            </a>
-                                        </h3>
-                                    </div>
-                                    <div id="consider6" class="panel-collapse collapse in">
-                                        <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. Thinking forward to your results, what likelihood (or probability) would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
-                                    </div>
-                                </div>
-                            </div>
+<div id="C" class="row collapse in">
+    <div class="col-xs-7">
+        <div class="step-subquestion">
+            <p>&hellip; the educational technology moved the needle?</p>
+        </div>
+        <div class="step-action">
+            <p>
+                If I learned that there was a
+                <% var c1=''; if (planNext) {c1 = planNext.Plan_Next_C_1 } %>
+                <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= c1 %>" style="width: 50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
+            </p>
+        </div>
+        <div class="step-subquestion">
+            <p>&hellip; the educational technology did not move the needle?</p>
+            <% var c2=''; if (planNext) {c2 = planNext.Plan_Next_C_2 } %>
+            <p>
+                If I learned that there was less than a <input type="text" name="Plan_Next_C_2" id="QBD-2b" placeholder="50%" value="<%= c2 %>" style="width: 50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-5">
+        <div class="step-to-consider">
+            <div class="step-to-consider">
+                <div class="panel-group" id="ttc6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title sec-label clickable">
+                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
+                                    Things to Consider
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="consider6" class="panel-collapse collapse in">
+                            <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. Thinking forward to your results, what likelihood (or probability) would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
                 <div class="step-header container">
                     <div data-toggle="collapse" data-target="#D">
                         <h2 class="clickable">
@@ -252,73 +254,76 @@
                         </h2>
                     </div>
                 </div>
-                <div id="D" class="row collapse in">
-                    <div class="col-xs-7">
-                        <div class="step-subquestion">
-                            <p>&hellip; the evidence suggests that it is likely that A does B among C compared to D?</p>
+<div id="D" class="row collapse in">
+    <div class="col-xs-7">
+        <div class="step-subquestion">
+            <p>&hellip; the evidence suggests that it is likely that A does B among C compared to D?</p>
+        </div>
+        <div class="step-action">
+            <% var d1=''; if (planNext) {d1 = planNext.Plan_Next_D_1 } %>
+            <textarea name="Plan_Next_D_1"><%= d1 %></textarea>
+        </div>
+        <div class="step-subquestion">
+            <p>&hellip; the evidence suggests that it is not likely that A does B among C compared to D?</p>
+        </div>
+        <div class="step-action">
+            <% var d2=''; if (planNext) {d2 = planNext.Plan_Next_D_2 } %>
+            <textarea name="Plan_Next_D_2"><%= d2 %></textarea>
+        </div>
+        <div class="step-subquestion">
+            <p>&hellip; the results are inconclusive?</p>
+        </div>
+        <div class="step-action">
+            <% var d3=''; if (planNext) {d3 = planNext.Plan_Next_D_3 } %>
+            <textarea name="Plan_Next_D_3"><%= d3 %></textarea>
+        </div>
+    </div>
+    <div class="col-xs-5">
+        <div class="step-to-consider">
+            <div class="step-to-consider">
+                <div class="panel-group" id="ttc7">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title sec-label clickable">
+                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                <a data-toggle="collapse" data-parent="#ttc7" href="#consider7">
+                                    Things to Consider
+                                </a>
+                            </h3>
                         </div>
-                        <div class="step-action">
-                            <% var d1=''; if (planNext) {d1 = planNext.Plan_Next_D_1 } %>
-                            <textarea name="Plan_Next_D_1"><%= d1 %></textarea>
-                        </div>
-                        <div class="step-subquestion">
-                            <p>&hellip; the evidence suggests that it is not likely that A does B among C compared to D?</p>
-                        </div>
-                        <div class="step-action">
-                            <% var d2=''; if (planNext) {d2 = planNext.Plan_Next_D_2 } %>
-                            <textarea name="Plan_Next_D_2"><%= d2 %></textarea>
-                        </div>
-                        <div class="step-subquestion">
-                            <p>&hellip; the results are inconclusive?</p>
-                        </div>
-                        <div class="step-action">
-                            <% var d3=''; if (planNext) {d3 = planNext.Plan_Next_D_3 } %>
-                            <textarea name="Plan_Next_D_3"><%= d3 %></textarea>
+                        <div id="consider7" class="panel-collapse collapse in">
+                            <p>
+                                <b>Your Research Question:</b> <br/>
+                                DOES <strong><span class='q1answer'><%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "A") : "A" %></span></strong> <span class='q12aanswer'><%= planQuestion ?  (planQuestion.Plan_Question_B_3 ? (planQuestion.Plan_Question_B_3 == "Select an option" ? "DO" : planQuestion.Plan_Question_B_3) : "DO") : "DO" %></span> <strong><span class='q11answer'><%= planQuestion ?  (planQuestion.Plan_Question_B_1 ? (planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : planQuestion.Plan_Question_B_1) : "B") : "B" %></span></strong> AMONG <strong><span class='q8answer'><%= planQuestion ?  (planQuestion.Plan_Question_C ? planQuestion.Plan_Question_C : "C") : "C" %></span></strong> COMPARED TO <strong><span class='qdanswer'><%= planQuestion ?  (planQuestion.Plan_Question_D ? planQuestion.Plan_Question_D : "D") : "D" %></span></strong>?
+                            </p>
+                            <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you need to make</p>
                         </div>
                     </div>
-                    <div class="col-xs-5">
-                        <div class="step-to-consider">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc7">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc7" href="#consider7">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider7" class="panel-collapse collapse in">
-                                            <p>
-                                                <b>Your Research Question:</b> <br />
-                                                DOES <strong><span class='q1answer'><%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "A") : "A" %></span></strong> <span class='q12aanswer'><%= planQuestion ?  (planQuestion.Plan_Question_B_3 ? (planQuestion.Plan_Question_B_3 == "Select an option" ? "DO" : planQuestion.Plan_Question_B_3) : "DO") : "DO" %></span> <strong><span class='q11answer'><%= planQuestion ?  (planQuestion.Plan_Question_B_1 ? (planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : planQuestion.Plan_Question_B_1) : "B") : "B" %></span></strong> AMONG <strong><span class='q8answer'><%= planQuestion ?  (planQuestion.Plan_Question_C ? planQuestion.Plan_Question_C : "C") : "C" %></span></strong> COMPARED TO <strong><span class='qdanswer'><%= planQuestion ?  (planQuestion.Plan_Question_D ? planQuestion.Plan_Question_D : "D") : "D" %></span></strong>?
-                                            </p>
-                                            <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you need to make</p>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading accordion-toggle">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc7" href="#example7">
-                                                    Example
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="example7" class="panel-collapse collapse">
-                                            <ul>
-                                                <li>Roll out eZumi  to all students in grades 3-5</li>
-                                                <li>Not renew our eZumi  license for the next school year</li>
-                                                <li>Collect more data to improve the precision of our analysis</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading accordion-toggle">
+                            <h3 class="panel-title sec-label clickable">
+                                <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                <a data-toggle="collapse" data-parent="#ttc7" href="#example7">
+                                    Example
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="example7" class="panel-collapse collapse">
+                            <ul>
+                                <li>Roll out eZumi to all students in grades 3-5</li>
+                                <li>Not renew our eZumi license for the next school year</li>
+                                <li>Collect more data to improve the precision of our analysis</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
     <div class="bottom-buttons">
         <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
         <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>

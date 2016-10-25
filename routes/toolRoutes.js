@@ -76,7 +76,8 @@ module.exports = function (app, passport) {
                     if (err) {
                         console.log(err); return done(err);
                     }
-                    sess.eval = eval;
+					sess.eval = eval;
+                    console.log(eval);
                     if (req.body.status == "started") {
                         req.flash('saveMessage', 'Save Success!')
                         return res.redirect('/determine_your_approach');
@@ -474,10 +475,11 @@ module.exports = function (app, passport) {
                     if (err) {
                         console.log(err); return done(err);
                     }
-                    sess.eval = eval;
+					sess.eval = eval;
+
                     if (req.body.status == "started") {
 
-                        req.flash('saveMessage', 'Save Success!')
+                        req.flash('saveMessage', 'Save Success!');
                         return res.redirect('/matching');
                     }
                     else {
