@@ -57,7 +57,7 @@ module.exports = function (app, passport) {
                 }
                 else {
                     //console.log(wizardSteps);
-                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
+                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.last_step, last_tool: sess.last_tool });
                 }
             });
         });
