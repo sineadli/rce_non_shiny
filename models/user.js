@@ -29,7 +29,8 @@ var userSchema = mongoose.Schema({
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     created_at: {type: Date, default: Date.now},
-    updated_at: Date
+    updated_at: Date,
+    evalid: mongoose.Schema.ObjectId
 
 });
 //define index if needed

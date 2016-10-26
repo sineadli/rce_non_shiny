@@ -79,7 +79,7 @@ module.exports = function (app, passport) {
 					sess.eval = eval;
                     console.log(eval);
                     if (req.body.status == "started") {
-                        req.flash('saveMessage', 'Save Success!')
+                        req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/determine_your_approach');
                     }
                     else {
@@ -105,18 +105,16 @@ module.exports = function (app, passport) {
 				if (sess.eval) {
 					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
 						if (!eval) {
-							req.flash('error', 'No evaluation exists.');
-							return res.redirect('/wizard');
+                            res.status(404).send("Eval not found");
 						}
 						if (err) {
-							console.log(err);
-							return res.redirect('/wizard');
+                            res.status(500).send(err);
 						}
 						return done(err, eval);
 					});
 				}
 				else
-					res.redirect('/wizard');
+                    res.status(404).send("Eval not found");
 			},
 			function (eval, done) {
 				//console.log(eval);
@@ -140,20 +138,18 @@ module.exports = function (app, passport) {
 				if (eval.stepsclicked.indexOf(obj.step) < 0) eval.stepsclicked.push(obj.step);
 				eval.save(function (err) {
 					if (err) {
-						console.log(err); return done(err);
+                        res.status(500).send(err);
 					}
 					else {
-						console.log("redirect to wizard now.");
-					    sess.eval = eval;
-						return res.redirect('/wizard');
+                        sess.eval = eval;
+                        console.log(eval);
+                        res.send(eval);
 					}
                     
 				});
 			}
 		], function (err) {
-			console.log(err);
-			if (err) return next(err);
-			res.redirect('/wizard');
+            res.status(500).send(err);
 		});
 	});
 
@@ -232,7 +228,7 @@ module.exports = function (app, passport) {
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {
-                        req.flash('saveMessage', 'Save Success!')
+                        req.flash('saveMessage', 'Changes Saved.')
                         return res.redirect('/craft_your_research_q');
                     }
                     else {
@@ -321,7 +317,7 @@ module.exports = function (app, passport) {
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {
-                        req.flash('saveMessage', 'Save Success!')
+                        req.flash('saveMessage', 'Changes Saved.')
                         return res.redirect('/plan_next_steps');
                     }
                     else {
@@ -411,7 +407,7 @@ module.exports = function (app, passport) {
                     sess.eval = eval;
                     if (req.body.status == "started") {
 
-                        req.flash('saveMessage', 'Save Success!')
+                        req.flash('saveMessage', 'Changes Saved.')
                         return res.redirect('/context_and_usage');
                     }
                     else {
@@ -479,7 +475,7 @@ module.exports = function (app, passport) {
 
                     if (req.body.status == "started") {
 
-                        req.flash('saveMessage', 'Save Success!');
+                        req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/matching');
                     }
                     else {
@@ -546,7 +542,7 @@ module.exports = function (app, passport) {
                     sess.eval = eval;
                     if (req.body.status == "started") {
 
-                        req.flash('saveMessage', 'Save Success!')
+                        req.flash('saveMessage', 'Changes Saved.')
                         return res.redirect('/getresult');
                     }
                     else {
@@ -613,7 +609,7 @@ module.exports = function (app, passport) {
                     sess.eval = eval;
                     if (req.body.status == "started") {
 
-                        req.flash('saveMessage', 'Save Success!')
+                        req.flash('saveMessage', 'Changes Saved.')
                         return res.redirect('/shareresult');
                     }
                     else {

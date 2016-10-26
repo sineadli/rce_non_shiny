@@ -683,7 +683,8 @@ div.step-action-long {
   display:inline-block;
 }
 div.q-row {
-    border-bottom: solid 3px #E0DDDD;
+    border-bottom: solid 2px #E0DDDD;
+    padding: 15px 0px;
 
 }
 div.step-to-consider .panel-group .panel, div.step-to-consider .panel-heading {
@@ -790,17 +791,21 @@ input[type=checkbox] {
 }
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #999;
+    font-style: italic;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
    color:    #999
    opacity:  1;
+   font-style: italic;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
    color:    #999
    opacity:  1;
+   font-style: italic;
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:    #999
+    color: #999;
+   font-style: italic;
 }
 div.form-group label {
     width: 90%;

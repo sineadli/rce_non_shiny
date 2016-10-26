@@ -13,7 +13,12 @@ var getCurrentEvaluation = function (req, res, next) {
                 return next();
             } else {
 
-                if (eval) { sess.eval = eval; console.log(sess.eval); return next(); }
+                if (eval) {
+                    sess.eval = eval;
+                    req.user.evalid = eval._id;
+                    req.user.save();
+                    return next();
+                }
                 return next();
             }
         });
