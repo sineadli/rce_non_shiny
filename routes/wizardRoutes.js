@@ -103,6 +103,8 @@ module.exports = function (app, passport) {
                     console.log(err);
                 else {
                     sess.eval = eval;
+                    req.user.evalid = eval._id;
+                    req.user.save();
                     res.status(201).send(eval);
                 }
             });
