@@ -50,7 +50,8 @@ module.exports = function (app, passport) {
             sess.eval = eval;
             sess.step = 1;
             sess.last_tool = "none";
-            
+            req.user.evalid = eval._id;
+            req.user.save();
             WizardStep.find(function (err, wizardSteps) {
                 if (err) {
                     res.status(500).send(err);
@@ -102,6 +103,8 @@ module.exports = function (app, passport) {
                     console.log(err);
                 else {
                     sess.eval = eval;
+                    req.user.evalid = eval._id;
+                    req.user.save();
                     res.status(201).send(eval);
                 }
             });

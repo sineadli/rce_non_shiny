@@ -262,22 +262,19 @@ function setWizardNav(step, stepvisited) {
 }
 function recordViewPDF(name, step, path) {
 
-	$.ajax({
-		type: "POST",
-		url: "/pdf_view",
-		data: JSON.stringify({
-			"tname": name,
-			"step": step
-		}),
+    $.ajax({
+        type: "POST",
+        url: "/pdf_view",
+        data: JSON.stringify({
+            "tname": name,
+            "step": step
+        }),
 
-		dataType: "json",
-		contentType: "application/json"
+        dataType: "json",
+        contentType: "application/json",
+      
+    });
+    setTimeout('', 10000);
+    window.open(path, '_blank', 'fullscreen=yes');
 
-	}).done(function (msg) {
-
-		
-        });
-
-	window.open(path, '_blank', 'fullscreen=yes');
-	return false;
 };
