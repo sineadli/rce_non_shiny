@@ -15,14 +15,19 @@
 </head>
 <body>
     <div id="header"></div>
+    <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
     </ol>
     <% if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
-    <% } %>
+    <% }} %>
 <form action="/craft_your_research_q" method="post">
-<% include ../views/partials/toolHeader.html %>
+ <% if (user != "NOAUTHENTICATED") { %>
+    <% include ../views/partials/toolHeader.html %>
+    <% } else { %>
+    <% include ../views/partials/toolheadunknown.html %>
+    <%  } %>
     <input type="hidden" id="user_email" value="<%= user %>" />
 <div class="container-fluid">
 <div class="row">
@@ -67,7 +72,7 @@
 <div id="A" class="row collapse in  q-row">
     <div class="col-xs-7">
         <div class="step-action">
-            <% var a =''; if (planQuestion) {a = planQuestion.Plan_Question_A } %>
+            <% var a =''; if (user != "NOAUTHENTICATED") { if (planQuestion) {a = planQuestion.Plan_Question_A} } %>
             <textarea name="Plan_Question_A" id="Plan_Question_A" placeholder="Ex., eZumi Learning"><%= a %></textarea>
         </div>
     </div>
@@ -93,9 +98,9 @@
                 for ( var i = 0; i < options.length; i++ )
                 {
                 var selected;
+                if (user != "NOAUTHENTICATED"){ if (planQuestion) { selected = ( planQuestion.Plan_Question_B_1== options[i] ) ? "selected" : "";}}
 
-                if (planQuestion) { selected = ( planQuestion.Plan_Question_B_1== options[i] ) ? "selected" : "";}
-
+               
                 %>
                 <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
                 }
@@ -105,7 +110,7 @@
             <div id="Question_B_Other" hidden="true">
                 <p>
                     <label for="Plan_Question_B_Other">Please specify:</label>
-                    <% var val=''; if (planQuestion) {val = planQuestion.Plan_Question_B_Other } %>
+                    <% var val=''; if (user != "NOAUTHENTICATED"){ if (planQuestion) {val = planQuestion.Plan_Question_B_Other }} %>
                     <input type="text" name='Plan_Question_B_Other' id="Plan_Question_B_Other" value="<%= val %>"/>
                 </p>
             </div>
@@ -114,7 +119,7 @@
             <p>What measure will you use to test whether there was an effect?</p>
         </div>
         <div class="step-action">
-            <% var b2 =''; if (planQuestion) {b2 = planQuestion.Plan_Question_B_2 } %>
+            <% var b2 =''; if (user != "NOAUTHENTICATED") { if (planQuestion) {b2 = planQuestion.Plan_Question_B_2 }} %>
             <textarea name="Plan_Question_B_2" id="Plan_Question_B_2" placeholder="Ex., midyear math assessment"><%= b2 %></textarea>
         </div>
         <div class="step-subquestion">
@@ -127,7 +132,8 @@
                 for ( var i = 0; i < options.length; i++ )
                 {
                 var selected;
-                if (planQuestion) { selected = ( planQuestion.Plan_Question_B_3== options[i] ) ? "selected" : "";}
+                if  (user != "NOAUTHENTICATED") {
+                if (planQuestion) { selected = ( planQuestion.Plan_Question_B_3== options[i] ) ? "selected" : "";}}
                 %>
                 <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                 }
@@ -190,7 +196,7 @@
 <div id="C" class="row collapse in  q-row">
     <div class="col-xs-7">
         <div class="step-action">
-            <% var c =''; if (planQuestion) {c = planQuestion.Plan_Question_C } %>
+            <% var c =''; if  (user != "NOAUTHENTICATED") { if (planQuestion) {c = planQuestion.Plan_Question_C } }%>
             <textarea name="Plan_Question_C" id="Plan_Question_C" placeholder="Ex., 5th grade English learners"><%= c %></textarea>
         </div>
     </div>
@@ -244,7 +250,7 @@
     <div id="D" class="row collapse in q-row">
         <div class="col-xs-7">
             <div class="step-action">
-                <% var d =''; if (planQuestion) {d = planQuestion.Plan_Question_D } %>
+                <% var d =''; if  (user != "NOAUTHENTICATED") { if (planQuestion) {d = planQuestion.Plan_Question_D }} %>
                 <textarea name="Plan_Question_D" id="Plan_Question_D" placeholder="Ex., other 5th grade English Learners with no access to eZumi Learning"><%= d %></textarea>
             </div>
         </div>
@@ -316,11 +322,12 @@
 
 
     </div>
+    <% if  (user != "NOAUTHENTICATED") { %>
     <div class="bottom-buttons">
         <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
         <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
     </div>
-
+    <% } %>
 
 <div>
     <input class="hidden" name="status" id="status"/>

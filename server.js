@@ -55,6 +55,7 @@ require('./routes/wizardRoutes.js')(app, passport);
 require('./routes/toolRoutes.js')(app, passport);
 require('./routes/apiRoutes.js')(app);
 require('./routes/resetPasswordRoutes.js')(app);
+require('./routes/toolsAnonymousRoutes.js')(app);
 // launch ======================================================================
 app.listen(port);
 console.log('Listening on port ' + port);
