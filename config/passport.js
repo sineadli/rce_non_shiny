@@ -67,8 +67,13 @@ module.exports = function(passport) {
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
-               // console.log('cookie: ' + JSON.stringify(req.headers['cookie']));
-                newUser.userSession = req.headers['cookie'];
+                //user.userSession = JSON.stringify(req.headers['cookie']);
+                var arr = JSON.stringify(req.headers['cookie']).split(";");
+                arr.forEach(function (element) {
+                    if (element.indexOf("connect.id=")) {
+                        newUser.userSession = element.substring(13, element.length - 1);
+                    }
+                });
                 // save the user
                 newUser.receive_update = req.body.receive_update;
                 newUser.save(function(err) {
@@ -116,7 +121,13 @@ module.exports = function(passport) {
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
             
             //user.userSession = JSON.stringify(req.headers['cookie']);
-            user.userSession = req.headers['cookie'];
+            var arr = JSON.stringify(req.headers['cookie']).split(";");
+            arr.forEach(function (element) {
+                if (element.indexOf("connect.id=")) {
+                    user.userSession = element.substring(13, element.length - 1);
+                }
+            });
+         //   user.userSession = req.headers['cookie'];
             // save the user
             user.save(function (err) {
                 if (err)
