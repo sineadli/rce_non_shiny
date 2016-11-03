@@ -68,12 +68,7 @@ module.exports = function(passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
                 //user.userSession = JSON.stringify(req.headers['cookie']);
-                var arr = JSON.stringify(req.headers['cookie']).split(";");
-                arr.forEach(function (element) {
-                    if (element.indexOf("connect.id=")) {
-                        newUser.userSession = element.substring(13, element.length - 1);
-                    }
-                });
+                user.userSession = get_cookies(req)['connect.sid'];
                 // save the user
                 newUser.receive_update = req.body.receive_update;
                 newUser.save(function(err) {
@@ -119,15 +114,8 @@ module.exports = function(passport) {
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+            user.userSession = get_cookies(req)['connect.sid'];
             
-            //user.userSession = JSON.stringify(req.headers['cookie']);
-            var arr = JSON.stringify(req.headers['cookie']).split(";");
-            arr.forEach(function (element) {
-                if (element.indexOf("connect.id=")) {
-                    user.userSession = element.substring(13, element.length - 1);
-                }
-            });
-         //   user.userSession = req.headers['cookie'];
             // save the user
             user.save(function (err) {
                 if (err)
@@ -139,5 +127,13 @@ module.exports = function(passport) {
 
     }));
 
+};
+var get_cookies = function (req) {
+    var cookies = {};
+    req.headers && req.headers.cookie.split(';').forEach(function (cookie) {
+        var parts = cookie.match(/(.*?)=(.*)$/)
+        cookies[parts[1].trim()] = (parts[2] || '').trim();
+    });
+    return cookies;
 };
 
