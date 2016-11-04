@@ -31,12 +31,12 @@
     <% if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
+ 
 <form action="/determine_your_approach" method="post">
     <% if (user != "NOAUTHENTICATED") { %>
     <% include ../views/partials/toolHeader.html %>
-    <% } else { %>
-    <% include ../views/partials/toolheadunknown.html %>
-    <%  } %>
+    <% } %>
+   
     <input type="hidden" id="user_email" value="<%= user %>" />
     <div class="container-fluid">
         <div class="row">
@@ -71,7 +71,7 @@
                                 for ( var i = 0; i < options.length; i++ )
                                 {
                                 var selected;
-                                if (user != "NOAUTHENTICATED") { if (probAppr) { selected = ( probAppr.Prob_Appr_A== options[i] ) ? "selected" : "";}}
+                                if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_A== options[i] ) ? "selected" : "";}}
                                                                 %>
                                 <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                 }
@@ -101,7 +101,7 @@
                                 {
 
                                 var selected;
-                                if (user != "NOAUTHENTICATED"){if (probAppr) { selected = ( probAppr.Prob_Appr_B == options[i] ) ? "selected" : "";}}
+                                if (user != "NOAUTHENTICATED"){if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_B == options[i] ) ? "selected" : "";}}
                                 
                                 %><option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                 }
@@ -113,7 +113,7 @@
                                 <div>
                                     <p>Please specify:</p>
                                 </div>
-                                <% var val=''; if (user != "NOAUTHENTICATED"){ if (probAppr) {val = probAppr.Prob_Appr_B_other } }%>
+                                <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.probAppr) {val = eval.probAppr.Prob_Appr_B_other } }%>
                                 <input type="text" name='Prob_Appr_B_other' id="Prob_Appr_B_other" value=<%= val %> />
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                                 for ( var i = 0; i < options.length; i++ )
                                 {
                                 var selected;
-                                if (user != "NOAUTHENTICATED"){ if (probAppr) { selected = ( probAppr.Prob_Appr_C == options[i] ) ? "selected" : "";}}
+                                if (user != "NOAUTHENTICATED"){ if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_C == options[i] ) ? "selected" : "";}}
                                
                                 %>
                                 <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%

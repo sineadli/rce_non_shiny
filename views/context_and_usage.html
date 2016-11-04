@@ -39,9 +39,8 @@
     <form action="/context_and_usage" method="post">
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
-        <% } else { %>
-        <% include ../views/partials/toolheadunknown.html %>
-        <%  } %>
+        <% }%>
+        
         <input type="hidden" id="user_email" value="<%= user %>" />     
         <div class="container-fluid">
             <div class="row">
@@ -84,7 +83,7 @@
                                 <p>What is the purpose of this educational technology?</p>
                             </div>
                             <div class="step-action">
-                                <% var a1=''; if (user != "NOAUTHENTICATED") {if (planContext) {a1 = planContext.Plan_Context_A_1 }} %>
+                                <% var a1=''; if (user != "NOAUTHENTICATED") {if (eval.planContext) {a1 = eval.planContext.Plan_Context_A_1 }} %>
                                 <textarea name="Plan_Context_A_1" id="Plan_Context_A_1" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= a1 %></textarea>
                             </div>
 
@@ -92,7 +91,7 @@
                                 <p>What are the key components of the educational technology?</p>
                             </div>
                             <div class="step-action">
-                                <% var a2='';  if (user != "NOAUTHENTICATED") { if (planContext) {a2 = planContext.Plan_Context_A_2 }} %>
+                                <% var a2='';  if (user != "NOAUTHENTICATED") { if (eval.planContext) {a2 = eval.planContext.Plan_Context_A_2 }} %>
                                 <textarea name="Plan_Context_A_2" id="Plan_Context_A_2" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= a2 %></textarea>
                             </div>
 
@@ -101,7 +100,7 @@
                             </div>
                             <div class="step-action">
 
-                                <% var a3='';  if (user != "NOAUTHENTICATED") {if (planContext) {a3 = planContext.Plan_Context_A_3 }} %>
+                                <% var a3='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {a3 = eval.planContext.Plan_Context_A_3 }} %>
                                 <textarea name="Plan_Context_A_3" id="Plan_Context_A_3" placeholder="Ex., Twice per week for 40 minutes per session."><%= a3 %></textarea>
                             </div>
 
@@ -109,7 +108,7 @@
                                 <p>How long is the period of use being studied in this evaluation?</p>
                             </div>
                             <div class="step-action">
-                                <% var a4='';  if (user != "NOAUTHENTICATED") {if (planContext) {a4 = planContext.Plan_Context_A_4 }} %>
+                                <% var a4='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {a4 = eval.planContext.Plan_Context_A_4 }} %>
                                 <textarea name="Plan_Context_A_4" id="Plan_Context_A_4" placeholder="Ex., the first semester of the 2016-2017 school year"><%= a4 %></textarea>
                             </div>
                         </div>
@@ -168,7 +167,7 @@
                     <div id="B" class="row collapse in q-row">
                         <div class="col-xs-7">
                             <div class="step-action">
-                                <% var b='';  if (user != "NOAUTHENTICATED") {if (planContext) {b = planContext.Plan_Context_B }} %>
+                                <% var b='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {b = eval.planContext.Plan_Context_B }} %>
                                 <textarea name="Plan_Context_B" id="Plan_Context_B" rows="8" placeholder="Ex., Suburban district with 2,000 students, 25% of whom have IEPs, and with 1:1 laptops "><%= b %></textarea>
                             </div>
                         </div>
@@ -219,7 +218,7 @@
                     <div id="C" class="row collapse in q-row">
                         <div class="col-xs-7">
                             <div class="step-action">
-                                <% var c='';  if (user != "NOAUTHENTICATED") {if (planContext) {c = planContext.Plan_Context_C }} %>
+                                <% var c='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {c = eval.planContext.Plan_Context_C }} %>
                                 <textarea name="Plan_Context_C" id="Plan_Context_C" rows="8" placeholder="Ex., Students had difficulty logging into their accounts for the first 2 weeks of class. About half the teachers got frustrated and used other products for the rest of the term."><%= c %></textarea>
                             </div>
                         </div>
@@ -276,7 +275,7 @@
                         <div class="col-xs-7">
 
                             <div class="step-action">
-                                <% var d='';  if (user != "NOAUTHENTICATED") {if (planContext) {d = planContext.Plan_Context_D }} %>
+                                <% var d='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {d = eval.planContext.Plan_Context_D }} %>
                                 <textarea name="Plan_Context_D" id="Plan_Context_D" rows="8" placeholder="Ex., 75% of students used the program as recommended, meaning they completed all modules and were logged into the program for the recommended amount of time."><%= d %></textarea>
                             </div>
                         </div>

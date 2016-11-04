@@ -69,7 +69,7 @@ module.exports = function (app) {
     });
     app.get('/api/tools/:wizardPath', function (req, res) {
 
-        console.log(req.params.wizardPath);
+        //console.log(req.params.wizardPath);
         Tool.find({ wizardPath: req.params.wizardPath }, function (err, tool) {
             if (err) {
 

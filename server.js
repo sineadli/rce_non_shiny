@@ -40,7 +40,7 @@ app.engine('html', require('ejs').renderFile);
 app.use('/static', express.static(__dirname + '/public'));// safer
 //app.use('/bower_components', express.static(__dirname + '/public/bower_components'));
 // required for passport
-app.use(session({ secret: 'mathematicadashmpristhegreatest' })); // session secret
+app.use(session({ secret: 'mathematicadashmpristhegreatest' })); // session secret, an instance from express-session for storing session
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session

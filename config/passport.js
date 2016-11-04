@@ -68,7 +68,7 @@ module.exports = function(passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
                 //user.userSession = JSON.stringify(req.headers['cookie']);
-                user.userSession = get_cookies(req)['connect.sid'];
+                newUser.userSession = get_cookies(req)['connect.sid'];
                 // save the user
                 newUser.receive_update = req.body.receive_update;
                 newUser.save(function(err) {
@@ -104,6 +104,7 @@ module.exports = function(passport) {
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
+            var url = "/dashboard";
             if (err)
                 return done(err);
 
@@ -115,13 +116,13 @@ module.exports = function(passport) {
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
             user.userSession = get_cookies(req)['connect.sid'];
-            
+            if (user.last_url) url = user.last_url;
             // save the user
             user.save(function (err) {
                 if (err)
                     throw err;
                 // all is well, return successful user
-                return done(null, user);
+                return done(null, user, req.flash('redirectTo', url));  //, 
             });
         });
 

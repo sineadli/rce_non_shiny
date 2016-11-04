@@ -25,9 +25,8 @@
 
 </head>
 <body>
-
+    
     <div id="header"></div>
-<form action="/planning" method="post">
     <input type="hidden" id="user_email" value="<%= user %>" />
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
@@ -115,19 +114,19 @@
         <div class="step-nav">
            
 
-            <% if(step !== "2") {%>
+            <% if(eval.last_step !== "2") {%>
             <div class="bottom-prev pull-left">
                <a href="#" id="Prev-link" class="step-label"> </a>
             </div>
             <% } %>
-            <% if(step !== "6") { %>
+            <% if(eval.last_step !== "6") { %>
             <div class="bottom-next pull-right">
                 <a href="#" id="Next-link" class="step-label"></a>
             </div>
             <% } %>
         </div>
     </div>
-</form>
+
     <% include ../views/partials/footer.html %>
 <script type="text/javascript">
     $(document).ready(function() {

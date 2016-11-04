@@ -25,26 +25,12 @@
 
 </head>
 <body class="one-col">
-    <nav class="navbar navbar-default" role="navigation">
+    <div id="header"></div>
 
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-                <h3 class="sec-label">Ed Tech RCE Coach <span style="text-transform: none;"><em>beta</em></span></h3>
-            </a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="pull-right" id="home-access">
-
-
-            <span class="fa fa-user" style="color: #000;"></span>&nbsp;&nbsp;<a href="/login">Login</a> | <a href="/signup">Create Account</a>
-
-        </div>
-
-    </nav>
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
 </ol>
+
 <div class="container-fluid">
  
     <div class="page-header">
@@ -114,7 +100,7 @@
                     </li>
                     <li>
                         <div class="tool-name"></div>
-                        <a href="/static/pdf/02.03a Determine your approach_downloadable.pdf">
+                        <a href="/unknown/determine_your_approach">
                             Determine your approach
                         </a>
 
@@ -130,7 +116,7 @@
                 <ul>
                     <li>
                         <div class="tool-name"></div>
-                        <a href="/static/pdf/03.01 Craft your research question_downloadable.pdf">Craft your research question</a>
+                        <a href="/unknown/craft_your_research_q">Craft your research question</a>
 
                         <div class="tool-access">
 
@@ -138,7 +124,7 @@
                     </li>
                     <li>
                         <div class="tool-name"></div>
-                        <a href="/static/pdf/03.02 Think about how you will use results_downloadable.pdf">Think about how you will use the results </a>
+                        <a href="/unknown/plan_next_steps">Think about how you will use the results </a>
 
                         <div class="tool-access">
 
@@ -146,7 +132,7 @@
                     </li>
                     <li>
                         <div class="tool-name"></div>
-                        <a href="/static/pdf/03.03 Summarize Context_downloadable.pdf">
+                        <a href="/unknown/context_and_usage">
                             Summarize context
                         </a>
 
@@ -256,5 +242,13 @@
       </div>
   </div>
         <% include ../views/partials/footer.html %>
+    <script>
+        $(document).ready(function() {
+            /** Load Header **/
+            $.get("/header", function(data) {
+                $("#header").html(data);
+            });
+        })
+    </script>
 </body>
 </html>
