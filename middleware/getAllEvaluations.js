@@ -13,7 +13,7 @@ var getAllEvaluations = function (req, res, next) {
                 return next();
             } else {
 
-                if (evals) { sess.evals = evals; console.log(evals); return next(); }
+                if (evals) { sess.evals = evals;  return next(); }
                 return next();
             }
         });

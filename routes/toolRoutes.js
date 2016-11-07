@@ -4,18 +4,21 @@ var fs = require('fs');
 var async = require('async');
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
+var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var sess;
 //please note that req.session.step is for managing the active tab for wizard.html
 //the following defines the tool routes available, only four routes available currently
 module.exports = function (app, passport) {
+    app.use(isLoggedIn);
+    app.use(getCurrentEvaluation);
     //02.03 determine your approach
-    app.get('/determine_your_approach', isLoggedIn, function (req, res) {
+    app.get('/determine_your_approach',   function (req, res) {
         sess = req.session;
         sess.eval.last_step = 2;
-        sess.last_tool = "Determine Your Approach";
-        res.render('determine_your_approach.html', { user: req.user.local.email, probAppr: sess.eval.probAppr, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
+        sess.eval.last_tool = "Determine Your Approach";
+        res.render('determine_your_approach.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
-    app.post('/determine_your_approach', isLoggedIn, function (req, res) {
+    app.post('/determine_your_approach',  function (req, res) {
         sess = req.session;
         var obj = req.body, probAppr;
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
@@ -42,7 +45,7 @@ module.exports = function (app, passport) {
             function (eval, done) {
                 //eval find so update the toolsVisisted accordingly
 				eval.last_step = 2;
-                sess.last_tool = "Determine Your Approach";
+                eval.last_tool = "Determine Your Approach";
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Determine Your Approach" });
                 if (tool.length == 0) {
                     eval.toolsvisited.push(toollist);
@@ -77,7 +80,7 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
 					sess.eval = eval;
-                    console.log(eval);
+                  //  console.log(eval);
                     if (req.body.status == "started") {
                         req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/determine_your_approach');
@@ -94,7 +97,7 @@ module.exports = function (app, passport) {
         });
 	});
 	
-	app.post('/pdf_view', isLoggedIn, function (req, res) {
+	app.post('/pdf_view',  function (req, res) {
 		sess = req.session;
 		var obj = req.body;
 		var toollist = { "name": obj.tname, "status": "completed", "visited_at": new Date() };
@@ -120,7 +123,7 @@ module.exports = function (app, passport) {
 				//console.log(eval);
 				//eval find so update the toolsVisisted accordingly
 				eval.last_step = obj.step;
-				sess.last_tool = obj.tname;
+				eval.last_tool = obj.tname;
 				var tool = eval.toolsvisited.filter(function (x) { return x.name === obj.tname });
 				//console.log(tool);
 				if (tool.length == 0) {
@@ -142,7 +145,7 @@ module.exports = function (app, passport) {
 					}
 					else {
                         sess.eval = eval;
-                        console.log(eval);
+                        //console.log(eval);
                         res.send(eval);
 					}
                     
@@ -153,15 +156,14 @@ module.exports = function (app, passport) {
 		});
 	});
 
-    app.get('/craft_your_research_q', isLoggedIn, function (req, res) {
-		sess = req.session;
+    app.get('/craft_your_research_q',  function (req, res) {
+        sess = req.session;
         sess.eval.last_step = 3;
-		sess.last_tool = "Craft Your Research Question";
-        console.log("sess.eval.planQuestion");
-        res.render('craft_your_research_q.html', { user: req.user.local.email, planQuestion: sess.eval.planQuestion, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, message: req.flash('saveMessage') });
+        sess.eval.last_tool = "Craft Your Research Question";
+        res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
     //03.01 crafting a research question
-    app.post('/craft_your_research_q', isLoggedIn, function (req, res) {
+    app.post('/craft_your_research_q',  function (req, res) {
         var toollist = { "name": "Craft Your Research Question", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
@@ -188,7 +190,7 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-                sess.last_tool = "Craft Your Research Question";
+                eval.last_tool = "Craft Your Research Question";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Craft Your Research Question" });
                 if (tool.length == 0) {
@@ -242,13 +244,13 @@ module.exports = function (app, passport) {
         });
     });
     //03.02 plan next steps
-    app.get('/plan_next_steps', isLoggedIn, function (req, res) {
+    app.get('/plan_next_steps',  function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
-        sess.last_tool = "Think About How to Use Your Results";
-        res.render('plan_next_steps.html', {user: req.user.local.email, planNext: sess.eval.planNext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
+        sess.eval.last_tool = "Think About How to Use Your Result";
+        res.render('plan_next_steps.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage')  });
     });
-    app.post('/plan_next_steps', isLoggedIn, function (req, res) {
+    app.post('/plan_next_steps',  function (req, res) {
         var toollist = { "name": "Think About How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
@@ -274,7 +276,7 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-                sess.last_tool = "Think About How to Use Your Result";
+                eval.last_tool = "Think About How to Use Your Result";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Think About How to Use Your Results" });
                 if (tool.length == 0) {
@@ -283,7 +285,7 @@ module.exports = function (app, passport) {
                 else {
                     var index = eval.toolsvisited.indexOf(tool[0]);
                     if (index > -1) {
-                        if (tool[0].status == "completed") toollist = { "name": "How to Use Your Results", "status": "completed", "visited_at": new Date() };
+                        if (tool[0].status == "completed") toollist = { "name": "Think About How to Use Your Results", "status": "completed", "visited_at": new Date() };
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
@@ -331,13 +333,13 @@ module.exports = function (app, passport) {
         });
     });
     //03.03 context and usage
-    app.get('/context_and_usage', isLoggedIn, function (req, res) {
+    app.get('/context_and_usage',  function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
-        sess.last_tool = "Summarize Context";
-        res.render('context_and_usage.html', { user: req.user.local.email, planContext: sess.eval.planContext, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
+        sess.eval.last_tool = "Summarize Context";
+        res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
-    app.post('/context_and_usage', isLoggedIn, function (req, res) {
+    app.post('/context_and_usage',  function (req, res) {
         var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
@@ -363,7 +365,7 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-                sess.last_tool = "Summarize Context";
+                eval.last_tool = "Summarize Context";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Summarize Context" });
                 if (tool.length == 0) {
@@ -423,13 +425,13 @@ module.exports = function (app, passport) {
     app.get('/matching', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;
-        sess.last_tool = "Matching";
-        res.render('matching.html', { user: req.user.local.email, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage')  });
+        sess.eval.last_tool = "Matching";
+        res.render('matching.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage')  });
     });
-    app.post('/matching', isLoggedIn, function (req, res) {
+    app.post('/matching', function (req, res) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
-        sess.step = 5;
+        sess.eval.step = 5;      
         //var obj = req.body;
         var dt = new Date();
         async.waterfall([
@@ -452,7 +454,7 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
                 eval.last_step = 5;
-                sess.last_tool = "Matching";
+                eval.last_tool = "Matching";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Matching" });
                 if (tool.length == 0) {
@@ -491,10 +493,10 @@ module.exports = function (app, passport) {
     app.get('/getresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;
-        sess.last_tool = "Get Results";
-        res.render('getresult.html', { user: req.user.local.email, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
+        sess.eval.last_tool = "Get Results";
+        res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
-    app.post('/getresult', isLoggedIn, function (req, res) {
+    app.post('/getresult',  function (req, res) {
         var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 5;
@@ -520,7 +522,7 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
                 eval.last_step = 5;
-                sess.last_tool = "Get Results";
+                eval.last_tool = "Get Results";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Get Results" });
                 if (tool.length == 0) {
@@ -555,13 +557,13 @@ module.exports = function (app, passport) {
             res.redirect('/wizard');
         });
     });
-    app.get('/shareresult', isLoggedIn, function (req, res) {
+    app.get('/shareresult', function (req, res) {
         sess = req.session;
         sess.eval.last_step = 6;
-        sess.last_tool = "Share Your Results";
-        res.render('shareresult.html', { user: req.user.local.email, start_date: sess.eval.created_at, status: sess.eval.status, title: sess.eval.title, planQuestion: sess.eval.planQuestion, message: req.flash('saveMessage') });
+        sess.eval.last_tool = "Share Your Results";
+        res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
-    app.post('/shareresult', isLoggedIn, function (req, res) {
+    app.post('/shareresult',function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.last_step = 6;
@@ -587,7 +589,7 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
                 eval.last_step = 6;
-                sess.last_tool = "Share Your Results";
+                eval.last_tool = "Share Your Results";
                 //eval find so update the toolsVisisted accordingly
                 var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
                 if (tool.length == 0) {

@@ -4,31 +4,34 @@ var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var getAllEvaluations = require('../middleware/getAllEvaluations.js');
 var noCache = require('../middleware/noCache.js');
+var recordURL = require('../middleware/recordURL.js');
 
 var WizardStep = require('../models/wizardStep'),
     Tool = require('../models/tool.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
 var sess;
 module.exports = function (app, passport) {
-	app.use(noCache);
+    app.use(noCache);
+    app.use(isLoggedIn);
+    app.use(recordURL);
 
     //dashboard, require logged in and get current evaluation
    // app.use(getCurrentEvaluation);
-    app.get('/dashboard', isLoggedIn, getCurrentEvaluation,  function (req, res) {
+    app.get('/dashboard',  getCurrentEvaluation,  function (req, res) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, eval: sess.eval });
     });
 
-    app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
+    app.get('/evaluations', getAllEvaluations, function (req, res) {
         sess = req.session;
        // console.log(sess.evals)
-        res.render('evaluations.html', { user: req.user, evals: sess.evals, currentEvalid: sess.eval._id });
+        res.render('evaluations.html', { user: req.user, evals: sess.evals });
     });
 
 
-    app.get('/wizard', isLoggedIn,  function (req, res) {
+    app.get('/wizard',  getCurrentEvaluation, function (req, res) {
 		sess = req.session;
-		console.log(sess.eval);
+		//console.log(sess.eval);
 		//console.log(sess);
 		if (!sess.step) { sess.step = 1 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
@@ -39,12 +42,13 @@ module.exports = function (app, passport) {
             }
 			else {
 				//console.log(wizardSteps);
-                res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.step, last_tool: sess.last_tool });
+                
+                res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval });
             }
         });
 
     });
-    app.get('/wizard/:id', isLoggedIn, function (req, res) {
+    app.get('/wizard/:id', function (req, res) {
         sess = req.session;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
@@ -58,7 +62,7 @@ module.exports = function (app, passport) {
                 }
                 else {
                     //console.log(wizardSteps);
-                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval, step: sess.last_step, last_tool: sess.last_tool });
+                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval});
                 }
             });
         });
@@ -75,7 +79,7 @@ module.exports = function (app, passport) {
                 res.status(500).send(err);
             }
             else {
-               console.log(wizardStep);
+              // console.log(wizardStep);
                 wizardStep = wizard;
                 Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
                     if (err) {
@@ -83,7 +87,7 @@ module.exports = function (app, passport) {
                         res.status(500).send(err);
                     }
                     else {
-                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval, last_tool: sess.last_tool });
+                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval });
                     }
                 });
             }
@@ -92,7 +96,7 @@ module.exports = function (app, passport) {
 
     //this route is update evaluation object, it is called from dashboard.html and wizard.html
     //new or change title only
-    app.post('/api/eval', isLoggedIn, function (req, res) {
+    app.post('/api/eval',  function (req, res) {
         sess = req.session;
         // console.log(req.body.id);
         if (!req.body.id) {

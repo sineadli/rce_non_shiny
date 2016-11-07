@@ -7,7 +7,7 @@ var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = function (req, res, next) {
     sess = req.session;  
     if (!sess.eval) {
-        Evaluation.findOne({ userid: req.user._id }).sort({ created_at: -1 }).exec(function (err, eval) {
+        Evaluation.findOne({ _id: req.user.evalid }).exec(function (err, eval) {
             if (err) {
                 console.log(err);
                 return next();

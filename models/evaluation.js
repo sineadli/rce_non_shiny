@@ -89,7 +89,8 @@ var evaluationSchema = mongoose.Schema({
     planQuestion: PlanQuestion,
     planNext: PlanNext,
     planContext: PlanContext,
-    stepsclicked: [String]
+    stepsclicked: [String],
+    last_tool: String
 
 });
 
@@ -109,7 +110,7 @@ evaluationSchema.pre('save', function (next) {
     }
     else {
         if (this.toolsvisited.length > 0) {
-            console.log(this.toolsvisited.length);
+            //console.log(this.toolsvisited.length);
             if (this.toolsvisited.length == totalToolNumber) this.status = " 100% Completed"
             if (this.toolsvisited.length > 0) {
                 var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 7 * 100;

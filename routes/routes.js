@@ -19,6 +19,7 @@ module.exports = function(app, passport) {
         if (req.session) {
             if (req.user) {
                 req.user.userSession = '';
+                req.user.last_url = '';
                 req.user.save();
             }
             req.session.destroy(function(err) {
@@ -60,11 +61,13 @@ module.exports = function(app, passport) {
     });
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/dashboard', // redirect to the secure profile section
+       // successRedirect: redirectTo, // redirect to the secure profile section
         failureRedirect: '/login', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
-    }), function(req, res) {
-        console.log('cookie: ' + res.cookie);
+    }), function (req, res) {
+        //console.log(req.path);
+        //console.log(req.user.isInterrupted);
+        res.redirect(req.flash('redirectTo')); 
     });
 
 
@@ -97,7 +100,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/profile', isLoggedIn, function(req, res) {
-        console.log(req.body);
+       // console.log(req.body);
         req.user.profile.organiztion_type = req.body.organiztion_type;
         req.user.profile.organiztion_type_other = req.body.organiztion_type_other;
         req.user.profile.role = req.body.role;
@@ -180,7 +183,7 @@ module.exports = function(app, passport) {
                     text: 'Feedback from ' + req.body.user_email + ' viewing ' + req.body.page + '\n\n' + req.body.message
 
                 };
-                console.log("feedback");
+                //console.log("feedback");
                 try {
                     transport.sendMail(mailOptions, function(err) {
                         req.flash('info', 'Sent email with feedback from ' + req.body.user_email);

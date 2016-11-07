@@ -24,14 +24,19 @@
   </head>
 <body>
     <div id="header"></div>
+    <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
     </ol> 
     <% if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
-    <% } %>
+    <% }} %>
+ 
 <form action="/determine_your_approach" method="post">
+    <% if (user != "NOAUTHENTICATED") { %>
     <% include ../views/partials/toolHeader.html %>
+    <% } %>
+   
     <input type="hidden" id="user_email" value="<%= user %>" />
     <div class="container-fluid">
         <div class="row">
@@ -66,8 +71,8 @@
                                 for ( var i = 0; i < options.length; i++ )
                                 {
                                 var selected;
-                                if (probAppr) { selected = ( probAppr.Prob_Appr_A== options[i] ) ? "selected" : "";}
-                                %>
+                                if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_A== options[i] ) ? "selected" : "";}}
+                                                                %>
                                 <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                 }
                                 %>
@@ -88,13 +93,16 @@
                         <div class="step-action">
 
                             <select required name="Prob_Appr_B" id="Prob_Appr_B">
+
                                 <%
                                 var options = ["Select an option", "students",  "teachers", "other"];
 
                                 for ( var i = 0; i < options.length; i++ )
                                 {
+
                                 var selected;
-                                if (probAppr) { selected = ( probAppr.Prob_Appr_B == options[i] ) ? "selected" : "";}
+                                if (user != "NOAUTHENTICATED"){if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_B == options[i] ) ? "selected" : "";}}
+                                
                                 %><option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                 }
                                 %>
@@ -105,7 +113,7 @@
                                 <div>
                                     <p>Please specify:</p>
                                 </div>
-                                <% var val=''; if (probAppr) {val = probAppr.Prob_Appr_B_other } %>
+                                <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.probAppr) {val = eval.probAppr.Prob_Appr_B_other } }%>
                                 <input type="text" name='Prob_Appr_B_other' id="Prob_Appr_B_other" value=<%= val %> />
                             </div>
                         </div>
@@ -151,7 +159,8 @@
                                 for ( var i = 0; i < options.length; i++ )
                                 {
                                 var selected;
-                                if (probAppr) { selected = ( probAppr.Prob_Appr_C == options[i] ) ? "selected" : "";}
+                                if (user != "NOAUTHENTICATED"){ if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_C == options[i] ) ? "selected" : "";}}
+                               
                                 %>
                                 <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                 }
@@ -186,10 +195,12 @@
                     </div>
 
                 </div>
+                <% if (user != "NOAUTHENTICATED") { %>
                 <div class="bottom-buttons">
                     <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
                     <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
                 </div>
+                <% } %>
             </div>
         </div>
     </div>

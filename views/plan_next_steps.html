@@ -26,14 +26,18 @@
 </head>
 <body>
     <div id="header"></div>
+    <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
-    </ol> 
+    </ol>
     <% if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
-    <% } %>
+    <% }} %>
 <form action="/plan_next_steps" method="post">
-<% include ../views/partials/toolHeader.html %>
+    <% if (user != "NOAUTHENTICATED") { %>
+    <% include ../views/partials/toolHeader.html %>
+    <% } %>
+  
     <input type="hidden" id="user_email" value="<%= user %>" />
 <div class="container-fluid">
 <div class="row">
@@ -73,7 +77,9 @@
     <div data-toggle="collapse" data-target="#A">
         <h2 class="clickable">
             <i class="fa fa-caret-down" aria-hidden="false"></i>
+            <%  if (user != "NOAUTHENTICATED") { %>
             A. What is the cost of <%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>?
+            <% } %>
         </h2>
     </div>
 </div>
@@ -88,13 +94,14 @@
                     for ( var i = 0; i < options.length; i++ )
                     {
                     var selected;
-                    if (planNext) { selected = ( planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}
+                    if (user != "NOAUTHENTICATED") { if (eval.planNext) { selected = ( eval.planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}}
+                   
                     %>
                     <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                     }
                     %>
                 </select>
-                <% var a2=''; if (planNext) {a2 = planNext.Plan_Next_A_2 } %>
+                <% var a2=''; if (user != "NOAUTHENTICATED"){if (eval.planNext) {a2 = eval.planNext.Plan_Next_A_2 }} %>
                 approximately $<input type="text" style="width: 40px;" name="Plan_Next_A_2" id="Plan_Next_A_2" placeholder="20" value="<%= a2 %>"/>
                 per
                 <select required name="Plan_Next_A_3">
@@ -103,7 +110,8 @@
                     for ( var i = 0; i < options.length; i++ )
                     {
                     var selected;
-                    if (planNext) { selected = ( planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}
+                    if (user != "NOAUTHENTICATED") { if (eval.planNext) { selected = ( eval.planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}}
+                   
                     %>
                     <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                     }
@@ -174,7 +182,7 @@
             <p>The Coach will calculate the likelihood that the educational technology has an effect at least as large as the number you choose here. The units reflect whatever you are using to measure outcomes. If you are looking at student performance on a test, the units would be points. </p>
             <p>
                 I would consider any increase larger than
-                <% var b=''; if (planNext) {b = planNext.Plan_Next_B } %>
+                <% var b='';  if (user != "NOAUTHENTICATED") {if (eval.planNext) {b = eval.planNext.Plan_Next_B } } %>
                 <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= b %>" style="width: 50px"/>
                 units on the outcome a success.
             </p>
@@ -223,13 +231,13 @@
         <div class="step-action">
             <p>
                 If I learned that there was a
-                <% var c1=''; if (planNext) {c1 = planNext.Plan_Next_C_1 } %>
+                <% var c1=''; if (user != "NOAUTHENTICATED") { if (eval.planNext) {c1 = eval.planNext.Plan_Next_C_1 }} %>
                 <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= c1 %>" style="width: 50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
             </p>
         </div>
         <div class="step-subquestion">
             <p>&hellip; the educational technology did not move the needle?</p>
-            <% var c2=''; if (planNext) {c2 = planNext.Plan_Next_C_2 } %>
+            <% var c2=''; if (user != "NOAUTHENTICATED") { if (eval.planNext) {c2 = eval.planNext.Plan_Next_C_2 }} %>
             <p>
                 If I learned that there was less than a <input type="text" name="Plan_Next_C_2" id="QBD-2b" placeholder="50%" value="<%= c2 %>" style="width: 50px"/> probability that the educational technology increased the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology did not have the intended effect.
             </p>
@@ -270,21 +278,21 @@
             <p>&hellip; the evidence suggests that it is likely that A does B among C compared to D?</p>
         </div>
         <div class="step-action">
-            <% var d1=''; if (planNext) {d1 = planNext.Plan_Next_D_1 } %>
+            <% var d1=''; if (user != "NOAUTHENTICATED") { if (eval.planNext) {d1 = eval.planNext.Plan_Next_D_1 }} %>
             <textarea name="Plan_Next_D_1"><%= d1 %></textarea>
         </div>
         <div class="step-subquestion">
             <p>&hellip; the evidence suggests that it is not likely that A does B among C compared to D?</p>
         </div>
         <div class="step-action">
-            <% var d2=''; if (planNext) {d2 = planNext.Plan_Next_D_2 } %>
+            <% var d2=''; if (user != "NOAUTHENTICATED"){ if (eval.planNext) {d2 = eval.planNext.Plan_Next_D_2 }} %>
             <textarea name="Plan_Next_D_2"><%= d2 %></textarea>
         </div>
         <div class="step-subquestion">
             <p>&hellip; the results are inconclusive?</p>
         </div>
         <div class="step-action">
-            <% var d3=''; if (planNext) {d3 = planNext.Plan_Next_D_3 } %>
+            <% var d3=''; if (user != "NOAUTHENTICATED") { if (eval.planNext) {d3 = eval.planNext.Plan_Next_D_3 }} %>
             <textarea name="Plan_Next_D_3"><%= d3 %></textarea>
         </div>
     </div>
@@ -304,7 +312,9 @@
                         <div id="consider7" class="panel-collapse collapse in">
                             <p>
                                 <b>Your Research Question:</b> <br/>
+                                <% if (user != "NOAUTHENTICATED") { %>
                                 DOES <strong><span class='q1answer'><%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "A") : "A" %></span></strong> <span class='q12aanswer'><%= planQuestion ?  (planQuestion.Plan_Question_B_3 ? (planQuestion.Plan_Question_B_3 == "Select an option" ? "DO" : planQuestion.Plan_Question_B_3) : "DO") : "DO" %></span> <strong><span class='q11answer'><%= planQuestion ?  (planQuestion.Plan_Question_B_1 ? (planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : planQuestion.Plan_Question_B_1) : "B") : "B" %></span></strong> AMONG <strong><span class='q8answer'><%= planQuestion ?  (planQuestion.Plan_Question_C ? planQuestion.Plan_Question_C : "C") : "C" %></span></strong> COMPARED TO <strong><span class='qdanswer'><%= planQuestion ?  (planQuestion.Plan_Question_D ? planQuestion.Plan_Question_D : "D") : "D" %></span></strong>?
+                               <% } %>
                             </p>
                             <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you need to make</p>
                         </div>
@@ -334,10 +344,12 @@
 </div>
 </div>
 </div>
+    <% if (user != "NOAUTHENTICATED") { %>
     <div class="bottom-buttons">
         <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
         <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
     </div>
+    <% } %>
 <div>
     <input class="hidden" name="status" id="status"/>
 </div>

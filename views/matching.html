@@ -29,11 +29,17 @@
 <body>
 
     <div id="header"></div>
+    <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Analyzing Your Data</a></li>
     </ol>
+    <% if (message.length>0) { %>
+    <div class="alert alert-success"><%= message %></div>
+    <% } %>
+    <% include ../views/partials/toolHeader.html %>
+    <% } %>
     <form action="/matching" method="post">
-        <% include ../views/partials/toolHeader.html %>
+       
         <input type="hidden" id="user_email" value="<%= user %>" />
         <div class="container-fluid">
             <div class="row">
@@ -343,7 +349,7 @@
                             </div>
                         </div>
 
-                </div> <!--end class=body-section-->
+                    </div> <!--end class=body-section-->
                     <div class="bottom-buttons">
                         <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
 
@@ -352,37 +358,39 @@
                             <i class="fa fa-download"></i>
                             Download
                         </a>
-                        </div>
-                        <h4>Results</h4>
-
-                        <div id="results">
-                        </div>
-                        <div class="progress" id="progress">
-                            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                            </div>
-                        </div>
-
-                        <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-
-
-                        <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
-
-
-                        <div id="results" class="shiny-html-output shiny-bound-output"></div>
-
-
+                       
                     </div>
 
+                   
+
+                  
+                    <div class="progress" id="progress">
+                        <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+
+                    <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
+
+
+                    <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+
+
+                    <div id="results" class="shiny-html-output shiny-bound-output"></div>
+
+
+                </div>
+
             </div>
         </div>
-            <div class="bottom-buttons">
-               
-                <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
-                <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
-            </div>
-        <div>
-            <input class="hidden" name="status" id="status"/>
+   
+        <% if (user != "NOAUTHENTICATED") { %>
+        <div class="bottom-buttons">
+            <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
+            <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
+            <input class="hidden" name="status" id="status" />
         </div>
+        <% } %>
+   
            
 </form>
     <% include ../views/partials/footer.html %>
@@ -418,8 +426,8 @@
                           .attr("value", value)
                           .text(value));
                     });
-                    $('.multiselect').multiselect('destroy');
-                    $('.multiselect').multiselect();
+                   $('.multiselect').multiselect('destroy');
+										$('.multiselect').multiselect();
                     $("#match").prop("disabled", false);
                 }
             });

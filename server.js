@@ -40,7 +40,7 @@ app.engine('html', require('ejs').renderFile);
 app.use('/static', express.static(__dirname + '/public'));// safer
 //app.use('/bower_components', express.static(__dirname + '/public/bower_components'));
 // required for passport
-app.use(session({ secret: 'mathematicadashmpristhegreatest' })); // session secret
+app.use(session({ secret: 'mathematicadashmpristhegreatest' })); // session secret, an instance from express-session for storing session
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -55,6 +55,7 @@ require('./routes/wizardRoutes.js')(app, passport);
 require('./routes/toolRoutes.js')(app, passport);
 require('./routes/apiRoutes.js')(app);
 require('./routes/resetPasswordRoutes.js')(app);
+require('./routes/toolsAnonymousRoutes.js')(app);
 // launch ======================================================================
 app.listen(port);
 console.log('Listening on port ' + port);

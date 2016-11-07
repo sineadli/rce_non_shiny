@@ -40,7 +40,7 @@
 
                 <% if(evals.length>0){ for (var i=0; i < evals.length; i++){
                 var evallabel = "Recent Evaluation"
-                if (evals[i]._id == currentEvalid) evallabel = "Current Evaluation"
+                if (evals[i]._id == user.evalid) evallabel = "Current Evaluation"
                 var evaltitle = evals[i].title;
                 var status= evals[i].status;
                 var d = new Date(evals[i].created_at)
