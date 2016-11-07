@@ -13,7 +13,7 @@ $(document).ready(function() {
         caret.toggleClass('fa-caret-down');
     });
 
-   
+
 
  $(document).on('click', '.tool-view-button', function (e) {
 	 e.preventDefault();
