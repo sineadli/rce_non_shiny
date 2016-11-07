@@ -9,7 +9,7 @@ var isLoggedIn = function (req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    req.flash('loginMessage', 'Sorry, your service were interrupted by accident, please login to return where your were, thanks.')
+    req.flash('loginMessage', 'Oops, something unexpected happened. Please login to continue.')
     res.redirect('/login' );
 };
 
