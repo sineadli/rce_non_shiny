@@ -456,8 +456,48 @@
                         url: "https://52.222.20.48" + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
-                            $("#results").text(JSON.stringify(data));
-
+                            var results_by_grade = data.results_by_grade
+                     
+                          
+                            for (var key in results_by_grade) {
+                                if (results_by_grade.hasOwnProperty(key)) {
+                                    var imgid = "plot"+key                               
+                                    var grade_object = results_by_grade[key];
+                                    var bal1, bal2, bal3, info;
+                               
+                                    info = 'The data you uploaded has ' + grade_object.samples.n_full + ' observations (after removing observations missing the selected matching variables), ' + grade_object.samples.n_full_treat + ' of which are in the treatment group. The matched data set produced by the dashboard has ' + grade_object.samples.n_matched + ' observations, ' + grade_object.samples.n_matched_treat + ' of which are in the treatment group.'
+                                    
+                                    $('#results').append('<p>' + grade_object.title + '</p>')
+                                    if (grade_object.good_balance) {
+                                        bal1 = 'Congratulations! The RCE Engine was able to produce a good comparison group. The following figure shows improvement on baseline equivalence.'
+                                        bal2 = 'Your next step is to use the impact dashboard to determine whether the educational technology you are evaluating is moving the needle or not.'
+                                    }
+                                    else {
+                                        bal1 = 'The RCE Engine was not able to produce a good comparison group. The following figure shows you baseline equivalence before and after matching:'
+                                        bal2 = 'The following variables do not satisfy baseline equivalence: '
+                                        bal3 = 'This means students using the educational technology are very different to students not using it. You can contact us [this link should go to our help/contact page], to discuss other options to determine whether the educational technology is moving the needle.'
+                                    }
+                                    $('#results').append('<p>' + bal1 + '</p>')
+                                    $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + grade_object.plot + ' />' + '</div>')
+                                    $('#results').append('<p>' + info + '</p>')
+                                    $('#results').append('<p>' + bal2 + '</p>')
+                                    if (!grade_object.good_balance) {
+                                        var unbalanced = grade_object.unbalanced_vars;
+                                        $('#results').append('<ul >');
+                                        for (i = 0; i < unbalanced.length; i++)
+                                        {
+                                            $('#results').append('<li>' + unbalanced[i] + '</li>');
+                                    }
+                                        $('#results').append('</ul >');
+                                        $('#results').append('<p>' + bal3 + '</p>')
+                                    }
+                
+                                    
+                                  //  console.log(key + " -> " + JSON.stringify(samples));
+                                }
+                            }
+                           //$("#results").text(JSON.stringify(data));
+                            
                             // Put result text and plots on screen.
 
                             // Save results to database.
