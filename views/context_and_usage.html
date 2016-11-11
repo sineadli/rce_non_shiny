@@ -71,7 +71,7 @@
                         <div data-toggle="collapse" data-target="#A">
                             <h2 class="clickable">
                                 <% if (user != "NOAUTHENTICATED") { %>
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> A. What is <%= planQuestion ? (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %> and how it is being used?
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> A. What is <%= eval.planQuestion ? (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %> and how it is being used?
                                <% } %>
                             </h2>
                         </div>
@@ -266,7 +266,7 @@
                         <div data-toggle="collapse" data-target="#D">
                             <h2 class="clickable">
                                 <% if (user != "NOAUTHENTICATED") { %>
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> D. Was <%= planQuestion ? (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %> used as recommended?
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> D. Was <%= eval.planQuestion ? (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %> used as recommended?
                                <% } %>
                             </h2>
                         </div>
