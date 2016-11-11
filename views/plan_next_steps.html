@@ -78,7 +78,7 @@
         <h2 class="clickable">
             <i class="fa fa-caret-down" aria-hidden="false"></i>
             <%  if (user != "NOAUTHENTICATED") { %>
-            A. What is the cost of <%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>?
+            A. What is the cost of <%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>?
             <% } %>
         </h2>
     </div>
@@ -110,7 +110,7 @@
                     for ( var i = 0; i < options.length; i++ )
                     {
                     var selected;
-                    if (user != "NOAUTHENTICATED") { if (eval.planNext) { selected = ( eval.planNext.Plan_Next_A_1== options[i] ) ? "selected" : "";}}
+                    if (user != "NOAUTHENTICATED") { if (eval.planNext) { selected = ( eval.planNext.Plan_Next_A_3== options[i] ) ? "selected" : "";}}
                    
                     %>
                     <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
@@ -313,7 +313,7 @@
                             <p>
                                 <b>Your Research Question:</b> <br/>
                                 <% if (user != "NOAUTHENTICATED") { %>
-                                DOES <strong><span class='q1answer'><%= planQuestion ?  (planQuestion.Plan_Question_A ? planQuestion.Plan_Question_A : "A") : "A" %></span></strong> <span class='q12aanswer'><%= planQuestion ?  (planQuestion.Plan_Question_B_3 ? (planQuestion.Plan_Question_B_3 == "Select an option" ? "DO" : planQuestion.Plan_Question_B_3) : "DO") : "DO" %></span> <strong><span class='q11answer'><%= planQuestion ?  (planQuestion.Plan_Question_B_1 ? (planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : planQuestion.Plan_Question_B_1) : "B") : "B" %></span></strong> AMONG <strong><span class='q8answer'><%= planQuestion ?  (planQuestion.Plan_Question_C ? planQuestion.Plan_Question_C : "C") : "C" %></span></strong> COMPARED TO <strong><span class='qdanswer'><%= planQuestion ?  (planQuestion.Plan_Question_D ? planQuestion.Plan_Question_D : "D") : "D" %></span></strong>?
+                                DOES <strong><span class='q1answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "A") : "A" %></span></strong> <span class='q12aanswer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_B_3 ? (eval.planQuestion.Plan_Question_B_3 == "Select an option" ? "DO" : eval.planQuestion.Plan_Question_B_3) : "DO") : "DO" %></span> <strong><span class='q11answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_B_1 ? (eval.planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : eval.planQuestion.Plan_Question_B_1) : "B") : "B" %></span></strong> AMONG <strong><span class='q8answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_C ? eval.planQuestion.Plan_Question_C : "C") : "C" %></span></strong> COMPARED TO <strong><span class='qdanswer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_D ? eval.planQuestion.Plan_Question_D : "D") : "D" %></span></strong>?
                                <% } %>
                             </p>
                             <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you need to make</p>

@@ -38,6 +38,7 @@
     <% } %>
     <% include ../views/partials/toolHeader.html %>
     <% } %>
+   
     <form action="/matching" method="post">
 
     <input type="hidden" id="user_email" value="<%= user %>"/>
@@ -350,8 +351,13 @@
                                 </div>
                             </div>
                         </div>
-
+                    
                     </div> <!--end class=body-section-->
+                    <div id='loadingmessage' class="row" hidden>
+                        <div class="col-sm-5 col-sm-offset-6">
+                            <img src='/static/image/ajax-loader.gif' />
+                        </div>
+                    </div>
                     <div class="bottom-buttons">
                         <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
 
@@ -363,13 +369,6 @@
                        
                     </div>
 
-                   
-
-                  
-                    <div class="progress" id="progress">
-                        <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                        </div>
-                    </div>
 
                     <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
 
@@ -377,8 +376,10 @@
                     <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
 
 
-                    <div id="results" class="shiny-html-output shiny-bound-output"></div>
-
+                    <div id="results" class="shiny-html-output shiny-bound-output">
+                     
+                        </div>
+               
 
                 </div>
 
@@ -392,7 +393,7 @@
             <input class="hidden" name="status" id="status" />
         </div>
         <% } %>
-   
+     
            
 </form>
     <% include ../views/partials/footer.html %>
@@ -443,7 +444,8 @@
             formData.append("treat_var", JSON.stringify($("#treat_var").val()));
             formData.append("match_vars", JSON.stringify($("#match_vars").val()));
             formData.append("grade_var", JSON.stringify($("#grade_var").val()));
-           
+
+            $('#loadingmessage').show();
 
             $.ajax({
                 url: "https://52.222.20.48/ocpu/library/edtechrce/R/matching",
@@ -459,8 +461,49 @@
                         url: "https://52.222.20.48" + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
-                            $("#results").text(JSON.stringify(data));
+                            $('#loadingmessage').hide();
+                            var results_by_grade = data.results_by_grade;
+                     
+                          
+                            for (var key in results_by_grade) {
+                                if (results_by_grade.hasOwnProperty(key)) {
+                                    var imgid = "plot" + key;                              
+                                    var grade_object = results_by_grade[key];
+                                    var bal1, bal2, bal3, info, buttxt;
 
+                                    info = 'The data you uploaded has ' + grade_object.samples.n_full + ' observations (after removing observations missing the selected matching variables), ' + grade_object.samples.n_full_treat + ' of which are in the treatment group. The matched data set produced by the dashboard has ' + grade_object.samples.n_matched + ' observations, ' + grade_object.samples.n_matched_treat + ' of which are in the treatment group.';
+                                    buttxt = 'To learn more about how this dashboard works, you can review this <a href="/static/pdf/05.01a Matching Technical Appendix.pdf" target="_blank" > <u> technical appendix</u></a>.'
+                                    $('#results').append('<p>' + grade_object.title + '</p>');
+                                    if (grade_object.good_balance) {
+                                        bal1 = 'Congratulations! The RCE Engine was able to produce a good comparison group. The following figure shows improvement on baseline equivalence.';
+                                        bal2 = 'Your next step is to use the impact dashboard to determine whether the educational technology you are evaluating is moving the needle or not.';
+                                    }
+                                    else {
+                                        bal1 = 'The RCE Engine was not able to produce a good comparison group. The following figure shows you baseline equivalence before and after matching:';
+                                        bal2 = 'The following variables do not satisfy baseline equivalence: ';
+                                        bal3 = 'This means students using the educational technology are very different to students not using it. You can contact us [this link should go to our help/contact page], to discuss other options to determine whether the educational technology is moving the needle.';
+                                    }
+                                    $('#results').append('<p>' + bal1 + '</p>');
+                                    $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + grade_object.plot + ' />' + '</div>');
+                                    $('#results').append('<p>' + info + '</p>');
+                                    $('#results').append('<p>' + bal2 + '</p>');
+                                    if (!grade_object.good_balance) {
+                                        var unbalanced = grade_object.unbalanced_vars;
+                                        $('#results').append('<ul >');
+                                        for (i = 0; i < unbalanced.length; i++)
+                                        {
+                                            $('#results').append('<li>' + unbalanced[i] + '</li>');
+                                    }
+                                        $('#results').append('</ul >');
+                                        $('#results').append('<p>' + bal3 + '</p>');
+                                    }
+                                    $('#results').append('<p>' + buttxt + '</p>');
+
+                                    //  console.log(key + " -> " + JSON.stringify(samples));
+                                }
+                            }
+                           //$("#results").text(JSON.stringify(data));
+                            
                             // Put result text and plots on screen.
 
                             // Save results to database.

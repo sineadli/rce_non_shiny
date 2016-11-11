@@ -221,7 +221,11 @@
                 }),
 
                 dataType: "json",
-                contentType: "application/json"
+                contentType: "application/json",
+                success: function (data) {
+                    $('#evalTitle').append('<button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button>');
+                }
+              
             }
         );
     });
