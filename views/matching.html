@@ -39,8 +39,10 @@
     <% include ../views/partials/toolHeader.html %>
     <% } %>
     <form action="/matching" method="post">
-       
-        <input type="hidden" id="user_email" value="<%= user %>" />
+
+    <input type="hidden" id="user_email" value="<%= user %>"/>
+  
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -441,6 +443,7 @@
             formData.append("treat_var", JSON.stringify($("#treat_var").val()));
             formData.append("match_vars", JSON.stringify($("#match_vars").val()));
             formData.append("grade_var", JSON.stringify($("#grade_var").val()));
+           
 
             $.ajax({
                 url: "https://52.222.20.48/ocpu/library/edtechrce/R/matching",
