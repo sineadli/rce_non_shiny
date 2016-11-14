@@ -12,7 +12,7 @@
         </div>
         <div class="col-xs-3">
             <div class="sec-label">Status</div>
-            <% var sts = 'New'; if (eval) sts= eval.status; %>
+            <% var sts = 'New'; if (eval) sts= parseInt(eval.status) + "% Completed"; %>
             <p><%= sts %></p>
         </div>
         <div style="clear: both; line-height: 0;"></div>
