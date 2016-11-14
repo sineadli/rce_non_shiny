@@ -40,9 +40,13 @@
     <% } %>
    
     <form action="/matching" method="post">
-
-    <input type="hidden" id="user_email" value="<%= user %>"/>
-  
+        <% var Q_M_1='', Q_M_2='', Q_9=''; 
+            if (user != "NOAUTHENTICATED") { if (eval.matching) {
+                    Q_M_1 = eval.matching.Q_M_1;
+                    Q_M_2 = eval.matching.Q_M_2;
+                    Q_9 = eval.matching.Q_9;
+             }} %>
+        <input type="hidden" id="user_email" value="<%= user %>" />
 
         <div class="container-fluid">
             <div class="row">
@@ -82,7 +86,7 @@
                                 <div class="step-action">
 
 
-                                    <textarea id="Q_M_1" rows="2" placeholder="Ex. seven schools that used Everest Learning Lab in their fifth grade classrooms" class="shiny-bound-input"></textarea>
+                                    <textarea name="Q_M_1" rows="2" placeholder="Ex. seven schools that used Everest Learning Lab in their fifth grade classrooms" class="shiny-bound-input"><%= Q_M_1 %></textarea>
                                 </div>
                                 <div class="step-subquestion">
                                     <p>
@@ -91,7 +95,7 @@
                                 </div>
                                 <div class="step-action">
 
-                                    <textarea id="Q_M_2" rows="2" placeholder="Ex. five schools that did not use Everest Learning Lab" class="shiny-bound-input"></textarea>
+                                    <textarea name="Q_M_2" rows="2" placeholder="Ex. five schools that did not use Everest Learning Lab" class="shiny-bound-input"><%= Q_M_2 %></textarea>
                                 </div>
                                 <div class="step-subquestion">
                                     <p>
@@ -99,7 +103,7 @@
                                     </p>
                                 </div>
                                 <div class="step-action">
-                                    <textarea id="Q_9" rows="2" placeholder="Ex. In intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access to Nancy Tech" class="shiny-bound-input"></textarea>
+                                    <textarea name="Q_9" rows="2" placeholder="Ex. In intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access to Nancy Tech" class="shiny-bound-input"><%= Q_9 %></textarea>
                                 </div>
                             </div>
 
@@ -362,7 +366,7 @@
                         <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
 
 
-                        <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled" href="/download/downloadData?w=" target="_blank" disabled="disabled">
+                        <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled" >
                             <i class="fa fa-download"></i>
                             Download
                         </a>
@@ -456,6 +460,7 @@
                 success: function (data) {
 
                     var responsePaths = data.split("\n");
+                    console.log(responsePaths);
 
                     $.ajax({
                         url: "https://52.222.20.48" + responsePaths[0] + "/json",
@@ -497,25 +502,23 @@
                                         $('#results').append('</ul >');
                                         $('#results').append('<p>' + bal3 + '</p>');
                                     }
-                                    $('#results').append('<p>' + buttxt + '</p>');
-
-                                    //  console.log(key + " -> " + JSON.stringify(samples));
+                                    $('#results').append('<p>' + buttxt + '</p>')
+                                    
                                 }
                             }
-                           //$("#results").text(JSON.stringify(data));
-                            
-                            // Put result text and plots on screen.
 
+                        
+                            $("#downloadData")
+                             .removeClass("disabled");
+
+                            $("#downloadData")
+                              .attr("target", "_blank")
+                              .attr("href", "https://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
                             // Save results to database.
                         }
                     });
 
-                    $("#download-button, #download-link")
-                      .prop("disabled", false);
-
-                    $("#download-link")
-                      .attr("target", "_blank")
-                      .attr("href", "https://52.222.20.48" + responsePaths[9]);
+                 
                 }
             });
         });

@@ -66,6 +66,16 @@ var PlanContext = mongoose.Schema({
 
 });
 
+//05.01 matching
+var Matching = mongoose.Schema({
+    Q_M_1: { type: String },
+    Q_M_2: { type: String },
+    Q_9: { type: String },
+    Result: { type: String },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
+
 //Tools visited array
 var toollist = new mongoose.Schema({
     name: String,
@@ -89,6 +99,7 @@ var evaluationSchema = mongoose.Schema({
     planQuestion: PlanQuestion,
     planNext: PlanNext,
     planContext: PlanContext,
+    matching: Matching,
     stepsclicked: [String],
     last_tool: String
 
@@ -113,7 +124,9 @@ evaluationSchema.pre('save', function (next) {
             //console.log(this.toolsvisited.length);
             if (this.toolsvisited.length == totalToolNumber) this.status = " 100% Completed"
             if (this.toolsvisited.length > 0) {
+
                 var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 7 * 100;
+
                 this.status = per.toPrecision(2) + "% Completed";
             }
         }
