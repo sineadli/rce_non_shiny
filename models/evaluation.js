@@ -127,7 +127,7 @@ evaluationSchema.pre('save', function (next) {
 
                 var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 8 * 100;
 
-                this.status = per.toPrecision(2) + "% Completed";
+                this.status = per.toPrecision(3) + "% Completed";
             }
         }
 
