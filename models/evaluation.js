@@ -122,12 +122,13 @@ evaluationSchema.pre('save', function (next) {
     else {
         if (this.toolsvisited.length > 0) {
             //console.log(this.toolsvisited.length);
-            if (this.toolsvisited.length == totalToolNumber) this.status = " 100% Completed";
+            if (this.toolsvisited.length == totalToolNumber) this.status = " 100";
             if (this.toolsvisited.length > 0) {
 
                 var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 8 * 100;
 
-                this.status = per.toPrecision(3) + "% Completed";
+                this.status = parseInt(per) ;
+
             }
         }
 
