@@ -1,4 +1,10 @@
-﻿var express = require('express');
+﻿/******************************************************************************
+* Copyright © Mathematica Policy Research, Inc. 
+* This code cannot be copied, distributed or used without the express written permission
+* of Mathematica Policy Research, Inc. 
+*******************************************************************************/
+
+var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
@@ -13,9 +19,9 @@ var nodemailer = require('nodemailer');  //for password reset
 var crypto = require('crypto'); 
 
 var configDB = require('./config/database.js');
+var preventClickjacking = require('./middleware/preventClickjacking.js');
 
-
-
+app.disable('x-powered-by')
 // configuration ===============================================================
 mongoose.connect(configDB.url, configDB.config); // connect to our database
 
@@ -23,7 +29,7 @@ require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application, setup a whole bunch of middleware
 // the order in which you use middleware in Express matters: middleware declared earlier will get called first, and if it can handle a request, any middleware declared later will not get called
-
+app.use(preventClickjacking);
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
