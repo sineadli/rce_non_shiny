@@ -100,7 +100,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         // console.log(req.body.id);
         if (!req.body.id) {
-            var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: 'New' });
+            var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
             
             eval.save(function (err) {
                 if (err)

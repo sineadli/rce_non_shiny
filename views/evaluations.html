@@ -42,7 +42,7 @@
                 var evallabel = "Recent Evaluation"
                 if (evals[i]._id == user.evalid) evallabel = "Current Evaluation"
                 var evaltitle = evals[i].title;
-                var status= evals[i].status;
+                var status= parseInt(evals[i].status) +"% Completed" ;
                 var d = new Date(evals[i].created_at)
                 var helpcaret = "fa-caret-down";
                 var helphidden = "false"

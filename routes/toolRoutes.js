@@ -62,7 +62,7 @@ module.exports = function (app, passport) {
                 if (!eval.probAppr) {
                     probAppr = {
                         "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
-                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Apprr_C,
+                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Appr_C,
                         "created_at":dt
                     };
                 }
@@ -473,6 +473,7 @@ module.exports = function (app, passport) {
                         "Q_M_1": obj.Q_M_1,
                         "Q_M_2": obj.Q_M_2,
                         "Q_9": obj.Q_9,
+                        "Result":obj.result,
                         "created_at": dt
 
                     };
@@ -482,6 +483,7 @@ module.exports = function (app, passport) {
                         "Q_M_1": obj.Q_M_1,
                         "Q_M_2": obj.Q_M_2,
                         "Q_9": obj.Q_9,
+                        "Result": obj.result,
                         "created_at": eval.matching.created_at, "updated_at": dt
                     };
                 }
