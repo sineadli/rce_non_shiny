@@ -77,8 +77,12 @@
     <div data-toggle="collapse" data-target="#A">
         <h2 class="clickable">
             <i class="fa fa-caret-down" aria-hidden="false"></i>
+            A. What is the cost of
             <%  if (user != "NOAUTHENTICATED") { %>
-            A. What is the cost of <%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>?
+             <%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>?
+            <% } %>
+            <%  if (user == "NOAUTHENTICATED") { %>
+            the educational technology
             <% } %>
         </h2>
     </div>
@@ -275,14 +279,29 @@
 <div id="D" class="row collapse in q-row">
     <div class="col-xs-7">
         <div class="step-subquestion">
-            <p>&hellip; the evidence suggests that it is likely that A does B among C compared to D?</p>
+            <p>
+                &hellip; the evidence suggests that it is likely that
+
+                <% if (user != "NOAUTHENTICATED") { %>
+                <span class='q1answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "A") : "A" %></span>  <span class='q12aanswer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_B_3 ? (eval.planQuestion.Plan_Question_B_3 == "Select an option" ? "does" : eval.planQuestion.Plan_Question_B_3+ "s") : "does") : "does" %></span> <span class='q11answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_B_1 ? (eval.planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : eval.planQuestion.Plan_Question_B_1) : "B") : "B" %></span> among <span class='q8answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_C ? eval.planQuestion.Plan_Question_C : "C") : "C" %></span> compared to <span class='qdanswer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_D ? eval.planQuestion.Plan_Question_D : "D") : "D" %></span>?
+                <% } %>
+                <% if (user == "NOAUTHENTICATED") { %>
+                A does B among C compared to D?
+                <% } %>
+            </p>
         </div>
         <div class="step-action">
             <% var d1=''; if (user != "NOAUTHENTICATED") { if (eval.planNext) {d1 = eval.planNext.Plan_Next_D_1 }} %>
             <textarea name="Plan_Next_D_1"><%= d1 %></textarea>
         </div>
         <div class="step-subquestion">
-            <p>&hellip; the evidence suggests that it is not likely that A does B among C compared to D?</p>
+            <p>&hellip; the evidence suggests that it is not likely that 
+                <% if (user != "NOAUTHENTICATED") { %>
+                <span class='q1answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "A") : "A" %></span>  <span class='q12aanswer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_B_3 ? (eval.planQuestion.Plan_Question_B_3 == "Select an option" ? "does" : eval.planQuestion.Plan_Question_B_3+ "s") : "does") : "does" %></span> <span class='q11answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_B_1 ? (eval.planQuestion.Plan_Question_B_1 == "Select an option" ? "B" : eval.planQuestion.Plan_Question_B_1) : "B") : "B" %></span> among <span class='q8answer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_C ? eval.planQuestion.Plan_Question_C : "C") : "C" %></span> compared to <span class='qdanswer'><%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_D ? eval.planQuestion.Plan_Question_D : "D") : "D" %></span>?
+                <% } %>
+                <% if (user == "NOAUTHENTICATED") { %>
+                A does B among C compared to D?
+                <% } %></p>
         </div>
         <div class="step-action">
             <% var d2=''; if (user != "NOAUTHENTICATED"){ if (eval.planNext) {d2 = eval.planNext.Plan_Next_D_2 }} %>

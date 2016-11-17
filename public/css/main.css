@@ -229,8 +229,9 @@ h3 {
 }
 h4 {
   font-size:15px;
-  font-style:italic;
-  font-weight:300;
+  /*font-style:italic;*/
+  font-weight:600;
+    color: #444444;
 }
 label {
     color:#65614D;
@@ -247,7 +248,7 @@ h2,p.clickable {
   cursor:pointer;
 }
 h2.clickable {
-    font-size: 1.4em;
+    font-size: 1.5em;
     margin-top: 25px;
 
 }
