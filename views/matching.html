@@ -40,12 +40,15 @@
     <% } %>
    
     <form action="/matching" method="post">
-        <% var Q_M_1='', Q_M_2='', Q_9=''; 
+        <% var Q_M_1='', Q_M_2='', Q_9='', Result='', Plan_Question_A='';
             if (user != "NOAUTHENTICATED") { if (eval.matching) {
                     Q_M_1 = eval.matching.Q_M_1;
                     Q_M_2 = eval.matching.Q_M_2;
                     Q_9 = eval.matching.Q_9;
-             }} %>
+                    Result = eval.matching.Result;
+             }
+         if (eval.planQuestion) {Plan_Question_A=eval.planQuestion.Plan_Question_A;}
+        } %>
         <input type="hidden" id="user_email" value="<%= user %>" />
 
         <div class="container-fluid">
@@ -99,11 +102,13 @@
                                 </div>
                                 <div class="step-subquestion">
                                     <p>
-                                        <label for="Q_9">Who was given access to the technology?</label>
+
+                                        <label for="Q_9">Who was given access to <%= Plan_Question_A %>?</label>
+
                                     </p>
                                 </div>
                                 <div class="step-action">
-                                    <textarea name="Q_9" rows="2" placeholder="Ex. In intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access to Nancy Tech" class="shiny-bound-input"><%= Q_9 %></textarea>
+                                    <textarea name="Q_9" rows="2" placeholder="Ex. In intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access to  <%= Plan_Question_A %>" class="shiny-bound-input"><%= Q_9 %></textarea>
                                 </div>
                             </div>
 
@@ -381,7 +386,7 @@
 
 
                     <div id="results" class="shiny-html-output shiny-bound-output">
-                     
+                      
                         </div>
                
 
@@ -398,7 +403,7 @@
         </div>
         <% } %>
      
-           
+        <input  name="result" id="matching.result" value="<%= Result %>" />
 </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
@@ -460,7 +465,7 @@
                 success: function (data) {
 
                     var responsePaths = data.split("\n");
-                    console.log(responsePaths);
+                  //  console.log(responsePaths);
 
                     $.ajax({
                         url: "https://52.222.20.48" + responsePaths[0] + "/json",
@@ -469,7 +474,7 @@
                             $('#loadingmessage').hide();
                             var results_by_grade = data.results_by_grade;
                      
-                          
+                           // console.log(data);
                             for (var key in results_by_grade) {
                                 if (results_by_grade.hasOwnProperty(key)) {
                                     var imgid = "plot" + key;                              
@@ -506,8 +511,8 @@
                                     
                                 }
                             }
-
-                        
+                            $("#matching.result").val(JSON.stringify(data));
+                            
                             $("#downloadData")
                              .removeClass("disabled");
 

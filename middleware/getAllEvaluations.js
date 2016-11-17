@@ -6,7 +6,7 @@ var isLoggedIn = require('../middleware/isLoggedIn.js');
 
 var getAllEvaluations = function (req, res, next) {
     sess = req.session;
-    if (!sess.evals) {
+   
         Evaluation.find({ userid: req.user._id }).sort({ created_at: -1 }).select( "title status created_at").exec(function (err, evals) {
             if (err) {
                 console.log(err);
@@ -17,10 +17,8 @@ var getAllEvaluations = function (req, res, next) {
                 return next();
             }
         });
-    }
-    else {
-        return next();
-    }
+
+   
 
 };
 

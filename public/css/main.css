@@ -1,12 +1,17 @@
+html {
+    height: 100%;
+}
 body {
   font-family: 'Open Sans';
   max-width:1000px;
   font-size:1.4em;
   line-height:1.6em;
      margin: 0 auto;
-      height: 100%;
+      min-height: 100%;
     background-color: #FBFAF7;
     color: #000;
+    padding-bottom: 180px;
+    position: relative;
 }
 body.one-col div.row div.content {
     margin: 0px auto;
@@ -44,14 +49,20 @@ div.container-fluid {
 #main {
   min-height: 100%;
   /* equal to footer height */
-  margin-bottom: -142px; 
+  /*margin-bottom: -142px;*/ 
 }
 #main:after {
   content: "";
   display: block;
 }
 .footer, #main:after {
-  height: 142px; 
+  height: 160px; 
+}
+.footer {
+    margin-top: 55px;
+    position: absolute;
+    width: 1000px;
+    bottom: 0;
 }
 
 /* Header */
@@ -137,14 +148,13 @@ div.tool-help{
 .tool-instructions {
     font-style: italic;
 }
-.row {
-	/*margin-top:35px;*/
+body.homepage div.row {
+	margin-top:45px;
 }
-.footer {
-    margin-top: 55px;
-  
-    width: 1000px;
+body.homepage div.row.main {
+    margin-top: 0px;
 }
+
   ul.footer-list {
         list-style: none; border-left: 2px solid #ccc;
       margin-top: 20px;
@@ -267,7 +277,7 @@ div.front-header {
     padding: 25px;
 
     color: #ffffff;
-    margin-bottom: 45px;
+    margin-bottom: 10px;
    
 }
 div#home-access {
@@ -278,7 +288,7 @@ div#home-access {
 div.welcome-text, div.prev-tools {
      padding: 25px;
     background-color: #ECEBDD;
-    margin-top: 35px;
+    /*margin-top: 35px;*/
 }
 div.front-header div.front-text, div.slide-item {
     width: 70%;
@@ -289,7 +299,7 @@ div.front-header div.front-text, div.slide-item {
 }
 ul.front-list {
     margin: 10px auto;
-    width: 80%;
+    width: 90%;
     
 }
 div.front-header h1 {
@@ -316,7 +326,7 @@ div.front-header h1 {
 
 /*Home Page testimonial slider*/
 #testimonials {
-    margin-top: 35px;
+    /*margin-top: 35px;*/
 }
 #testimonials h2  {
     text-align: center;
