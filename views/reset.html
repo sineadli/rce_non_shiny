@@ -59,7 +59,7 @@
             var confirmPassword = $("#reset-confirmpassword").val();
 
             if (password && confirmPassword && password != confirmPassword) {
-                $("#mpr-reset").prop("disabled", true)
+                $("#mpr-reset").prop("disabled", true);
                 $("#checkPasswordMatch").html("Passwords do not match!");
             }
             else {
