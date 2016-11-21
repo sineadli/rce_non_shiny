@@ -1,12 +1,4 @@
-﻿<!--
-* Copyright © Mathematica Policy Research, Inc. 
-* This code is publicly available through an open-source software license. All copies of the code should 
-* acknowledge Mathematica Policy Research, Inc.  as the copyright owner. 
--->
-
-
-
-<!-- views/login.ejs -->
+﻿<!-- views/login.ejs -->
 <!doctype html>
 <html>
 <head>
@@ -67,7 +59,7 @@
             var confirmPassword = $("#reset-confirmpassword").val();
 
             if (password && confirmPassword && password != confirmPassword) {
-                $("#mpr-reset").prop("disabled", true)
+                $("#mpr-reset").prop("disabled", true);
                 $("#checkPasswordMatch").html("Passwords do not match!");
             }
             else {

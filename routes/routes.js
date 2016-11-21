@@ -1,5 +1,3 @@
-// routes/routes.js
-// load up the evaluation model
 var fs = require('fs');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var sess;
@@ -40,34 +38,38 @@ module.exports = function(app, passport) {
     });
 
 	app.get('/TermsOfUse', function (req, res) {
-
+        var user;
+        if (req.user) user = req.user
         // render the page and pass in any flash data if it exists
-        res.render('TermsOfUse.html');
+        res.render('TermsOfUse.html', { user: user });
     });
 	app.get('/PrivacyPolicy', function (req, res) {
-
+        var user;
+        if (req.user) user = req.user
         // render the page and pass in any flash data if it exists
-        res.render('PrivacyPolicy.html');
+        res.render('PrivacyPolicy.html', { user: user });
     });
 	app.get('/About', function (req, res) {
-
+        var user;
+        if (req.user) user=req.user
         // render the page and pass in any flash data if it exists
-        res.render('About.html');
+        res.render('About.html', { user: user });
     });
 	app.get('/PreviewTools', function (req, res) {
-
+        var user;
+        if (req.user) user = req.user
         // render the page and pass in any flash data if it exists
-        res.render('PreviewTools.html');
+        res.render('PreviewTools.html', { user: user });
     });
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-       // successRedirect: redirectTo, // redirect to the secure profile section
+        successRedirect: '/dashboard', // redirect to the secure profile section
         failureRedirect: '/login', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }), function (req, res) {
         //console.log(req.path);
         //console.log(req.user.isInterrupted);
-        res.redirect(req.flash('redirectTo')); 
+       // res.redirect(req.flash('redirectTo')); 
     });
 
 

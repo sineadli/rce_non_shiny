@@ -45,7 +45,8 @@ module.exports = function(passport) {
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
-            var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+            //var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+             var re = /^((?=.*[A-Z])(?=.*[a-z])(?=.*\d)|(?=.*[a-z])(?=.*\d)(?=.*[\$\%\&])|(?=.*[A-Z])(?=.*\d)(?=.*[\$\%\&])|(?=.*[A-Z])(?=.*[a-z])(?=.*[\$\%\&])).{8,}$/;
             if (!re.test(password)) {
                 return done(null, false, req.flash('signupMessage', 'Password not meet requirments!')); }
         // find a user whose email is the same as the forms email
@@ -104,7 +105,6 @@ module.exports = function(passport) {
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
-            var url = "/dashboard";
             if (err)
                 return done(err);
 
@@ -116,13 +116,14 @@ module.exports = function(passport) {
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
             user.userSession = get_cookies(req)['connect.sid'];
-            if (user.last_url) url = user.last_url;
+          //  if (user.last_url) url = user.last_url;
             // save the user
             user.save(function (err) {
                 if (err)
                     throw err;
                 // all is well, return successful user
-                return done(null, user, req.flash('redirectTo', url));  //, 
+             //   return done(null, user, req.flash('redirectTo', url));  //, 
+                return done(null, user);
             });
         });
 
