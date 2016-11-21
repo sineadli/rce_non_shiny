@@ -1,10 +1,4 @@
-﻿/******************************************************************************
-* Copyright © Mathematica Policy Research, Inc. 
-* This code cannot be copied, distributed or used without the express written permission
-* of Mathematica Policy Research, Inc. 
-*******************************************************************************/
-
-var express = require('express');
+﻿var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
