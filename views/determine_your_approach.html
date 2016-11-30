@@ -32,7 +32,7 @@
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
  
-<form action="/determine_your_approach" method="post">
+<form action="/determine_your_approach" method="post" novalidate>
     <% if (user != "NOAUTHENTICATED") { %>
     <% include ../views/partials/toolHeader.html %>
     <% } %>
@@ -49,7 +49,10 @@
                     <div class=" clearfix"></div>
                     <div class="tool-intro">
                         <p>
-                            The Ed Tech RCE Coach offers a few different approaches to answer your research question. To determine the right one we need you to answer the following questions
+                            There are many different ways to learn whether an educational technology is working. We need to learn a little bit more to determine the best approach for getting you the information you&#39;re looking for to make meaningful decisions in your school or classroom. The following questions will help the Coach determine the right approach for your situation. You can always come back and change your answers later.
+                        </p>
+                        <p>
+                            In any evaluation of effectiveness you will need to compare those using the technology to a similar group not using the technology. The goal of this tool is to identify  the best approach to identifying similar non-users for your situation. 
                         </p>
                     </div>
                 </div>
@@ -61,155 +64,456 @@
                     <div data-toggle="collapse" data-target="#A">
                         <h2 class="clickable">
                             <i class="fa fa-caret-down" aria-hidden="false"></i>
-                            A. Are you already using this technology?
+                            A. What do you hope to change by using the educational technology? Why have you or will you implement this technology? What outcomes are you interested in looking at?
                         </h2>
                     </div>
-
                 </div>
                 <div id="A" class="row  collapse in q-row">
                     <div class="col-xs-7">
+                        <!--<div class="step-subquestion">
+                            <p>What do you hope to change by using the educational technology? Why have you or will you implement this technology? What outcomes are you interested in looking at?</p>
+                        </div>-->
                         <div class="step-action">
-                            <select required name="Prob_Appr_A" id="Prob_Appr_A">
+                            <select required name="Prob_Appr_Pre1" id="Prob_Appr_Pre1">
                                 <%
-                                var options = ["Select an option", "Yes", "No"];
+                                var options = ["Select an option", "I have not identified an outcome yet", "Student academic achievement",
+                                "Student non-academic achievement","Teacher performance", "Parental engagement", "Other" ];
                                 for ( var i = 0; i < options.length; i++ )
                                 {
                                 var selected;
-                                if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_A== options[i] ) ? "selected" : "";}}
-                                                                %>
+                                if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_Pre1== options[i] ) ? "selected" : "";}}
+                                %>
                                 <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                 }
                                 %>
 
                             </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-header container">
-                    <div data-toggle="collapse" data-target="#B">
-                        <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> B. Who are the technology users?
-                        </h2>
-                    </div>
-                </div>
-                <div id="B" class="row collapse in q-row">
-                    <div class="col-xs-7">
-
-                        <div class="step-action">
-
-                            <select required name="Prob_Appr_B" id="Prob_Appr_B">
-
-                                <%
-                                var options = ["Select an option", "students",  "teachers", "other"];
-
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-
-                                var selected;
-                                if (user != "NOAUTHENTICATED"){if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_B == options[i] ) ? "selected" : "";}}
-                                
-                                %><option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                                }
-                                %>
-
-                            </select>
-
-                            <div id="other-specify" hidden="true">
+                            <div id="other-specify-pre1" hidden="true">
                                 <div>
                                     <p>Please specify:</p>
                                 </div>
-                                <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.probAppr) {val = eval.probAppr.Prob_Appr_B_other } }%>
-                                <input type="text" name='Prob_Appr_B_other' id="Prob_Appr_B_other" value=<%= val %> />
+                                <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.probAppr) {val = eval.probAppr.Prob_Appr_Pre1_Other } }%>
+                                <input type="text" name='Prob_Appr_Pre1_Other' id="Prob_Appr_Pre1_Other" value=<%= val %> />
                             </div>
                         </div>
+                        <div id="pre2" hidden>
+                            <div class="step-subquestion">
+                                <p>Have you already chosen an educational technology?</p>
+                            </div>
+                            <div class="step-action">
+                                <select required name="Prob_Appr_Pre2" id="Prob_Appr_Pre2">
+                                    <%
+                                    var options = ["Select an option", "Yes", "No" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selected;
+                                    if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_Pre2== options[i] ) ? "selected" : "";}}
+                                    %>
+                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                    }
+                                    %>
+                                </select>
+                            </div>
+                        </div>                    
                     </div>
                     <div class="col-xs-5">
                         <div class="step-to-consider">
-
-                            <div class="panel-group" id="ttc3">
+                            <div class="panel-group" id="ttc1">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">
+                                    <div class="panel-heading accordion-toggle">
                                         <h3 class="panel-title sec-label clickable">
                                             <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                            <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                            <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
                                                 Things to Consider
                                             </a>
                                         </h3>
                                     </div>
-                                    <div id="consider2" class="panel-collapse collapse in">
-                                        <p>
-                                            You should select the group that is directly engaging with the technology. In some cases this may not be the same group for which you are trying to improve outcomes. Your answer to this question should reflect who is logging in to the educational technology and completing the program. 
-                                        </p>
+                                    <div id="consider1" class="panel-collapse collapse in">
+                                        <p>Educational technologies can be used to increase student achievement, decrease absences, improve teacher professional development and more. We encourage you to meet with your team and determine what you&#39;d like to see change as a result of implementing the technology. </p>
                                     </div>
                                 </div>
-                               
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>                 
+                    <div class="notA" hidden>
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#B">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                    B. Are you already using this technology?
+                                </h2>
+                            </div>
+                        </div>
+                        <div id="B" class="row  collapse in q-row">
+
+                            <div class="col-xs-7">
+                                <div class="step-subquestion">
+                                    <p>If you&#39;re already using the technology, we&#39;ll consider options for a backward-looking evaluation. If you&#39;re allowing new users access to a technology you&#39;ve already implemented or if you&#39;re not yet using the technology, we can consider options for piloting it in a way that allows you to determine if it works. </p>
+                                </div>
+                                <div class="step-action">
+                                    <select required name="Prob_Appr_A" id="Prob_Appr_A">
+                                        <%
+                                        var options = ["Select an option", "Already using the technology", "Expanding an implemented technology", "Not currently using the technology"];
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        var selected;
+                                        if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_A== options[i] ) ? "selected" : "";}}
+                                        %>
+                                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                        }
+                                        %>
+
+                                    </select>
+                                </div>
                             </div>
 
                         </div>
-                    </div>
-                </div>
+                        <div class="notB" hidden>
+                            <div class="step-header container">
+                                <div data-toggle="collapse" data-target="#C">
+                                    <h2 class="clickable">
+                                        <i class="fa fa-caret-down" aria-hidden="false"></i> C.<span id="morr"></span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div id="C" class="row collapse in q-row">
+                                <div class="col-xs-7">
 
-                <div class="step-header container">
-                    <div data-toggle="collapse" data-target="#C">
-                        <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="false"></i> C. Are all <span class="section-c-header">subject</span> using the technology?
-                        </h2>
-                    </div>
-                </div>
-                <div id="C" class="row collapse in q-row">
-                    <div class="col-xs-7">
-                        <div class="step-action">
-                            <select required name="Prob_Appr_C" id="Prob_Appr_C">
-                                <%
-                                var options = ["Select an option", "Yes", "No"];
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                var selected;
-                                if (user != "NOAUTHENTICATED"){ if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_C == options[i] ) ? "selected" : "";}}
-                               
-                                %>
-                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                                }
-                                %>
+                                    <div class="step-action">
 
-                            </select>
+                                        <select required name="Prob_Appr_B" id="Prob_Appr_B">
+
+                                            <%
+                                            var options = ["Select an option", "students",  "teachers", "other"];
+
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+
+                                            var selected;
+                                            if (user != "NOAUTHENTICATED"){if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_B == options[i] ) ? "selected" : "";}}
+
+                                            %>
+                                            <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                            }
+                                            %>
+
+                                        </select>
+
+                                        <div id="other-specify" hidden="true">
+                                            <div>
+                                                <p>Please specify:</p>
+                                            </div>
+                                            <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.probAppr) {val = eval.probAppr.Prob_Appr_B_other } }%>
+                                            <input type="text" name='Prob_Appr_B_other' id="Prob_Appr_B_other" value=<%= val %> />
+                                        </div>
+                                    </div>
+                                    <div class="step-subquestion" id="brandom1" hidden>
+                                        <p>Can you expand the educational technology to a portion of <span class="section-c-header">subject</span> ? </p>
+                                        <p>If you are targeting a specific type of <span class="section-c-header">subject</span> (for example ELL students or Title 1 schools) answer this question as if those are the only <span class="section-c-header">subject</span> you are working with.</p>
+
+                                    </div>
+                                    <div class="step-subquestion" id="brandom2" hidden>
+                                        <p>Can you offer the educational technology to a portion of <span class="section-c-header">subject</span> ? </p>
+                                        <p>If you are targeting a specific type of <span class="section-c-header">subject</span> (for example ELL students or Title 1 schools) answer this question as if those are the only <span class="section-c-header">subject</span> you are working with.</p>
+
+                                    </div>
+                                    <div class="step-subquestion" id="bmatching" hidden>
+                                        <p class="bmatching">Are all <span class="section-c-header">subject</span> using the technology? </p>
+                                    </div>
+                                    <div class="step-action">
+                                        <select required name="Prob_Appr_C" id="Prob_Appr_C" hidden>
+                                            <%
+                                            var options = ["Select an option", "Yes", "No"];
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+                                            var selected;
+                                            if (user != "NOAUTHENTICATED"){ if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_C == options[i] ) ? "selected" : "";}}
+
+                                            %>
+                                            <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                            }
+                                            %>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <div class="step-to-consider">
+
+                                        <div class="panel-group" id="ttc3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                            Things to Consider
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="consider2" class="panel-collapse collapse in">
+                                                    <p>
+                                                        Your answer to this question should reflect who is logging in to the educational technology and using the program (in this case, teachers).
+                                                    </p>
+                                                    <p>
+                                                        To pilot an educational technology you will need some people to be early adopters while some others do not use it.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notC" hidden>
+                                <div class="step-header container">
+                                    <div data-toggle="collapse" data-target="#D">
+                                        <h2 class="clickable">
+                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                            D. Will you be asking for volunteers to pilot the [expanded] technology?
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div id="D" class="row  collapse in q-row">
+                                    <div class="col-xs-7">
+                                        <div class="step-action">
+                                            <select required name="Prob_Appr_D" id="Prob_Appr_D">
+                                                <%
+                                                var options = ["Select an option", "We will not be asking for volunteers", "We will be asking for volunteers"
+                                                ];
+                                                for ( var i = 0; i < options.length; i++ )
+                                                {
+                                                var selected;
+                                                if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_D== options[i] ) ? "selected" : "";}}
+                                                %>
+                                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                }
+                                                %>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <div class="step-to-consider">
+
+                                            <div class="panel-group" id="ttc3">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title sec-label clickable">
+                                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                            <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                                Things to Consider
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    <div id="consider2" class="panel-collapse collapse in">
+                                                        <p>
+                                                            Those who volunteer are inherently different than those who do not. For example, a technology may seem to move the needle but it could be that only highly tech savvy teachers can take advantage of it and it would be harmful for your other teachers.
+                                                        </p>
+                                                        <p>
+                                                            [add common examples of first asking for principals or teachers as volunteers]
+                                                        </p>
+                                                        <p>
+                                                            Your ability to learn whether the technology is effective will be stronger if you can choose who is given access at the individual level. If possible, you should choose who will be piloting the technology and who will continue using the existing curriculum.
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="E" hidden>
+                                    <div class="step-header container">
+                                        <div data-toggle="collapse" data-target="#E">
+                                            <h2 class="clickable">
+                                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                                E. How will you choose pilot users [for the expansion]?
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div id="E" class="row  collapse in q-row">
+                                        <div class="col-xs-7">
+                                            <div class="step-action">
+                                                <select required name="Prob_Appr_E" id="Prob_Appr_E">
+                                                    <%
+                                                    var options = ["Select an option", "I will choose randomly", "I will use a cutoff", "I will choose users based on specific criteria"
+
+                                                    ];
+                                                    for ( var i = 0; i < options.length; i++ )
+                                                    {
+                                                    var selected;
+                                                    if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_E== options[i] ) ? "selected" : "";}}
+                                                    %>
+                                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                    }
+                                                    %>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <div class="step-to-consider">
+
+                                                <div class="panel-group" id="ttc3">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title sec-label clickable">
+                                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                                    Things to Consider
+                                                                </a>
+                                                            </h3>
+                                                        </div>
+                                                        <div id="consider2" class="panel-collapse collapse in">
+                                                            <p>
+                                                                In any pilot there are going to be people who are going to test a technology first while others will have to wait &#45; a fair way to determine who gets the technology and who does not is through a random chance process (like flipping a coin), but it&#39;s not the only way.
+                                                            </p>
+                                                            <p>
+                                                                Note that you do not need to randomly select users on the individual level. You can randomly select teachers, classrooms or schools.
+                                                            </p>
+                                                            <p>
+                                                                If you use a cutoff we will be able to help you understand how the educational technology affected users near that cutoff.
+                                                            </p>
+                                                            <p>
+                                                                [add text explaining what/how they might choose based on other criteria]
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="F" hidden>
+                                    <div class="step-header container">
+                                        <div data-toggle="collapse" data-target="#F">
+                                            <h2 class="clickable">
+                                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                                E. Can you select some of the volunteers to use the technology first while others have to wait until the pilot ends?
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div id="F" class="row  collapse in q-row">
+                                        <div class="col-xs-7">
+                                            <div class="step-action">
+                                                <select required name="Prob_Appr_F" id="Prob_Appr_F">
+                                                    <%
+                                                    var options = ["Select an option", "Yes, I can choose some of the volunteers using a random process like a coin flip", "Yes, I can use a cutoff to do this", "No, I cannot do this"
+
+                                                    ];
+                                                    for ( var i = 0; i < options.length; i++ )
+                                                    {
+                                                    var selected;
+                                                    if (user != "NOAUTHENTICATED") { if (eval.probAppr) { selected = ( eval.probAppr.Prob_Appr_F== options[i] ) ? "selected" : "";}}
+                                                    %>
+                                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                    }
+                                                    %>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <div class="step-to-consider">
+
+                                                <div class="panel-group" id="ttc3">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title sec-label clickable">
+                                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                                    Things to Consider
+                                                                </a>
+                                                            </h3>
+                                                        </div>
+                                                        <div id="consider2" class="panel-collapse collapse in">
+                                                            <p>
+                                                                Those who volunteer a pilot are likely different from those who don&#39;t volunteer, in some way. This means that comparing volunteers to non-volunteers would lead to uncertain conclusions. In order to have a similar comparison group, you&#39;ll need to compare volunteers who get to use the technology to those who don&#39;t. This would mean that not everyone who volunteers would actually get to use the educational technology, or at least not get to use it right away.
+                                                            </p>
+                                                            <p>
+                                                                In any pilot there are going to be people who are going to test a technology first, while others will have to wait &#45; a fair way to determine who gets the technology and who does not is through a random chance process (like flipping a coin).
+                                                            </p>
+
+                                                            <p>[add text explaining what/how they might choose based on other criteria]</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
                         </div>
                     </div>
 
-                   
-                </div>
-                <div class="step-conclusion container">
-
-                    <div class="p1" hidden>
-                        <h2>Conclusion</h2>
-                        <p>
-                            Based on your answers, neither an experimental nor matched design is appropriate. You indicated that all <span class="section-c-header">subjects</span> are using the technology. To evaluate your technology, you need to compare a group using the technology with a group not using the technology. Please reach out to us at <a href="mailto:dTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a> and we can help you determine a research approach. In the meantime, you can still explore the site. 
-                        </p>
+                    <div class="step-conclusion container">
+                        <p id="conclusion"> </p>
+                        <p id="conclusion_sub"> </p>
+                        <div class="B" hidden>
+                            <h2>Conclusion</h2>
+                            <p>To measure a technology&#39;s effectiveness it is critical to know what you are hoping to accomplish from its use. We encourage you to talk with your colleagues about possible outcomes that you would like to improve. This could be based on your priorities or what you think the technology could reasonably achieve. In order to plan an effective evaluation, you will need to know what outcomes you&#39;re measuring. Come back to the Coach when you know what outcome you wish to target and have identified a technology to pilot. </p>
+                        </div>
+                        <div class="D" hidden>
+                            <h2>Conclusion</h2>
+                            <p>The Coach is designed to help you assess the effectiveness of a technology. This guide will help you identify a technology to achieve your goals. Once you have selected a technology come back to continue to the next step!</p>
+                        </div>
+                        <div class="L" hidden>
+                            <h2>Conclusion</h2>
+                            <p>Based on your answers, the Coach will guide you through a randomized pilot. The choice of who will pilot the technology will be determined by chance, like a coin flip. This design is the gold standard to determine if an education technology is moving the needle because it allows us to create two groups that are similar on both observed and unobserved characteristics. This means that you can be confident that any differences you see in outcomes are due to the technology and not other factors.</p>
+                        </div>
+                        <div class="M" hidden>
+                            <h2>Conclusion</h2>
+                            <p>Since you use a cutoff to determine who will use the technology, a Regression Discontinuity design (RD) would be a good approach. This design compares outcomes for individuals just above and just below the cutoff to determine whether the technology is having an effect. This works because we assume that those around the cutoff are very similar and that any differences are due to using the technology. However, your conclusions may not apply to those farther away from the cutoff.</p>
+                            <p>The Coach does not yet include tools for RD, but if you&#39;re interested in pursuing an evaluation please contact us at EdTechRCE@mathematica-mpr.com and you may be able to use beta versions of tools we are creating to handle this type of design.</p>
+                        </div>
+                        <div class="N" hidden>
+                            <h2>Conclusion</h2>
+                            <p>
+                                In order to evaluate whether the educational technology is moving the needle, you&#39;ll need to be able to compare <span class="section-c-header">subject</span> using the technology to similar <span class="section-c-header">subject</span> not using the technology. Your answers indicate that all <span class="section-c-header">subject</span> will be using the technology. This means it would not be possible to create a comparison group of non-users.
+                            </p>
+                            <p>
+                                Our guide on understanding correlations in your data may help you if you want to learn more about how an implemented technology is working. You may also be able to test options for improving implementation of the technology. Contact us at EdTechRCE@mathematica-mpr.com if you wish to discuss alternative options.
+                            </p>
+                        </div>
+                        <div class="P" hidden>
+                            <h2>Conclusion</h2>
+                            <p>
+                                Based on your answers, the Coach will guide you through a matched comparison design. Since only some <span class="section-c-header">subject</span> are using the technology, a matched comparison will allow you to compare those already using the technology to a similar group of non-users that you can create using the RCE Coach Matching Dashboard. This tool will create two groups that are similar in terms of observed characteristics for which you have data. Using this method you&#39;ll be able to compare across groups and have some confidence that the differences are due to the technology. However, it is possible that differences in outcomes could be due to differences in unobserved characteristics that also drive outcomes.
+                            </p>
+                            <p>
+                                This tool will create two groups that are similar in terms of observed characteristics for which you have data. Using this method you&#39;ll be able to compare across groups and have some confidence that the differences are due to the technology. However, it is possible that differences in outcomes could be due to differences in unobserved characteristics that also drive outcomes.
+                            </p>
+                        </div>
+                        <div class="Q" hidden>
+                            <h2>Conclusion</h2>
+                            <p>
+                                Based on your answers, the Coach will guide you through a matched comparison design. Since you are selecting your users, a matched comparison will allow you to compare those you select to a similar group of non&#45;users that you can create using the RCE Coach Matching Dashboard. For this method to work, you&#39;ll want to be sure that some similar <span class="section-c-header">subject</span> are not pilot users.
+                            </p>
+                        </div>
                     </div>
-                    <div class="p2" hidden>
-                        <h2>Conclusion</h2>
-                        <p>
-                            Based on your answers, the Coach will guide you through a <span data-toggle="tooltip" title="a research design that selects similar non-users to serve as a comparison for technology users" class='tooltip-gr'>matched comparison design</span>. You indicated that some <span class="section-c-header">subjects</span> are using the technology and others are not. To compare apples to apples, this <span data-toggle="tooltip" title="a research design that creates comparable groups through methods other than random assignment" class='tooltip-gr'>quasi-experimental design</span> will identify a <span data-toggle="tooltip" title="individuals who were not given access to the technology and whose outcomes are compared to the outcomes for technology users " class='tooltip-gr'>comparison group</span> with similar characteristics to the subjects using the technology that you want to test.
-                        </p>
+                    <% if (user != "NOAUTHENTICATED") { %>
+                    <div class="bottom-buttons">
+                        <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
+                        <button type="submit" id="complete" class="btn btn-primary btn-lg" disabled="disabled">SAVE &amp; COMPLETE</button>
                     </div>
-
-                    <div class="p3" hidden>
-                        <h2>Conclusion</h2>
-                        <p>
-                            Based on your answers, the Coach recommends that you use a <span data-toggle="tooltip" title="a preliminary experiment that by chance (for example, a coin toss) assigns some subjects (for example, students) to the group with access to technology and other subjects to the group without access to the technology" class='tooltip-gr'>randomized pilot</span> to evaluate your technology. This is the best method for determining the effectiveness of a technology that you have not yet begun using. Tools for this approach are coming soon! Please reach out to us at <a href="mailto:dTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a> and we can help you set up a study now. In the meantime, you can still explore the site.
-</p>
-                    </div>
-
+                    <% } %>
                 </div>
-                <% if (user != "NOAUTHENTICATED") { %>
-                <div class="bottom-buttons">
-                    <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
-                    <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
-                </div>
-                <% } %>
-            </div>
         </div>
     </div>
     <div>
-
         <input class="hidden" name="status" id="status"/>
     </div>
     <% include ../views/partials/footer.html %>
@@ -218,25 +522,11 @@
 <script src='/static/js/custom.js'></script>
 <script>
     $(document).ready(function () {
-        var a = $("#Prob_Appr_A").val();
-        var c = $("#Prob_Appr_C").val();
-        var b = $("#Prob_Appr_B").val();
-        var p1 = $(".p1"), p2 = $(".p2"), p3 = $(".p3");
-        if ((a === "Yes") && c === "No" && b !== "Select an option" ) {
-            p2.show(); p1.hide(); p3.hide();
-        }
-        else if (a === "No" && c === "No" && b !== "Select an option") {
-            p3.show(); p1.hide(); p2.hide();
-        }
-        else if ((a === "Yes" && c === "Yes" && b !== "Select an option") || (a === "No" && c === "Yes" && b !== "Select an Option")) {
-            p1.show(); p3.hide(); p2.hide();
-        }
-        else { p1.hide(); p2.hide(); p3.hide(); }
-
-
+       
         //init feedback_me plugin
         var fm_options = setFeedbackOptions($("#user_email").val(), "determine_your_approach");
         fm.init(fm_options);
+        setConclusion();
     });
 </script>
 </body>

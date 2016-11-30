@@ -363,8 +363,13 @@
             c = "C";
         }
         var b = $("#Plan_Question_B_1").val();
+        var b1 = $("#Plan_Question_B_2").val();
         if (b === "Select an option") {
             b = "B";
+        }
+        else
+        {
+            if (b1) { b = b + " as measured by " + b1; }
         }
         var dot = $("#Plan_Question_B_3").val();
         if (dot === "Select an option") {

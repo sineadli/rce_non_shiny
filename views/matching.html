@@ -45,7 +45,7 @@
                     Q_M_1 = eval.matching.Q_M_1;
                     Q_M_2 = eval.matching.Q_M_2;
                     Q_9 = eval.matching.Q_9;
-                    Result = eval.matching.Result;
+                    if (eval.matching.Result) Result = eval.matching.Result;
              }
          if (eval.planQuestion) {Plan_Question_A=eval.planQuestion.Plan_Question_A;}
         } %>
@@ -403,7 +403,7 @@
         </div>
         <% } %>
      
-        <input  name="result" id="matching.result" value="<%= Result %>" />
+        <input  name="result" id="mresult" value="<%= Result %>" />
 </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
@@ -474,7 +474,7 @@
                             $('#loadingmessage').hide();
                             var results_by_grade = data.results_by_grade;
                      
-                           // console.log(data);
+                        
                             for (var key in results_by_grade) {
                                 if (results_by_grade.hasOwnProperty(key)) {
                                     var imgid = "plot" + key;                              
@@ -511,7 +511,8 @@
                                     
                                 }
                             }
-                            $("#matching.result").val(JSON.stringify(data));
+             
+                            $("#mresult").val(JSON.stringify(data));
                             
                             $("#downloadData")
                              .removeClass("disabled");

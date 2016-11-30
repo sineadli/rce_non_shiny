@@ -64,7 +64,8 @@
         if (eval.planQuestion) { direction = eval.planQuestion.Plan_Question_B_3; }
         if (eval.planNext) {
         cutoff = eval.planNext.Plan_Next_B;
-        probability = eval.planNext.Plan_Next_C_1;
+        var prob = eval.planNext.Plan_Next_C_1;
+        if (prob.indexOf("%") > -1) { probability=prob.slice(0, prob.length-2);} else {probability = prob;}  
         }
         }
         %>
@@ -207,7 +208,7 @@
                                     <div class="step-action ">
 
                                         <div>
-                                            <select id="treat_var">
+                                            <select id="outcome_var">
 
                                                 <option value="">Select the outcome variable</option>
 
@@ -338,17 +339,15 @@
 
                     </div>
                     <hr>
-                    <div class="progress" id="progress">
-                        <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                        </div>
-                    </div>
 
                     <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
 
 
                     <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
 
+                    <div id="results" class="shiny-html-output shiny-bound-output">
 
+                    </div>
 
 
 
@@ -414,18 +413,29 @@
                 });
             });
 
-            $("#match").click(function () {
+            $("#go").click(function () {
 
+                console.log( "data: " +$("#chosenfile")[0].files[0]);
+                console.log( "outcome_var: " + JSON.stringify($("#outcome_var").val()));
+                console.log("treat_var: " + JSON.stringify($("#treat_var").val()));
+                console.log("control_vars: " + JSON.stringify($("#control_vars").val()));
+                console.log("cluster_var: " + JSON.stringify($("#cluster_var").val()));
+                console.log("grade_var: " + JSON.stringify($("#grade_var").val()));
+                console.log("direction: " + JSON.stringify($("#direction").val()));
+                console.log("cutoff: " + JSON.stringify($("#cutoff").val()));
+                console.log("probability: " + JSON.stringify($("#probability").val()));
                 var formData = new FormData();
-
+              
                 formData.append("data", $("#chosenfile")[0].files[0]);
-                formData.append("treat_var", JSON.stringify($("#treat_var").val()));
                 formData.append("outcome_var", JSON.stringify($("#outcome_var").val()));
+                formData.append("treat_var", JSON.stringify($("#treat_var").val()));
+                formData.append("control_vars", JSON.stringify($("#control_vars").val()))
                 formData.append("cluster_var", JSON.stringify($("#cluster_var").val()));
                 formData.append("grade_var", JSON.stringify($("#grade_var").val()));
                 formData.append("direction", JSON.stringify($("#direction").val()));
                 formData.append("cutoff", JSON.stringify($("#cutoff").val()));
                 formData.append("probability", JSON.stringify($("#probability").val()));
+
 
                 $.ajax({
                     url: "https://52.222.20.48/ocpu/library/edtechrce/R/impact",
@@ -434,7 +444,7 @@
                     contentType: false,
                     data: formData,
                     success: function (data) {
-
+                        console.log(data);
                         var responsePaths = data.split("\n");
 
                         $.ajax({

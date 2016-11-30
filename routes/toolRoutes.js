@@ -61,15 +61,19 @@ module.exports = function (app, passport) {
                 //add/update the probAppr within eval
                 if (!eval.probAppr) {
                     probAppr = {
+                        "Prob_Appr_Pre1": obj.Prob_Appr_Pre1, "Prob_Appr_Pre2": obj.Prob_Appr_Pre2,
                         "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
                         "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Appr_C,
+                        "Prob_Appr_D": obj.Prob_Appr_D, "Prob_Appr_E": obj.Prob_Appr_E, "Prob_Appr_F": obj.Prob_Appr_F,
                         "created_at":dt
                     };
                 }
                 else {
                     probAppr = {
+                        "Prob_Appr_Pre1": obj.Prob_Appr_Pre1, "Prob_Appr_Pre2": obj.Prob_Appr_Pre2,
                         "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
                         "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Appr_C,
+                        "Prob_Appr_D": obj.Prob_Appr_D, "Prob_Appr_E": obj.Prob_Appr_E, "Prob_Appr_F": obj.Prob_Appr_F,
                         "created_at": eval.probAppr.created_at, "updated_at": dt
                     };
                 }

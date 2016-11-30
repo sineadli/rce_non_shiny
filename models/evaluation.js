@@ -13,10 +13,16 @@ totalToolNumber = 7; //for completed status
 
 //02.03 determine your approach
 var ProbAppr = mongoose.Schema({
+    Prob_Appr_Pre1: { type: String },
+    Prob_Appr_Pre1_Other: { type: String },
+    Prob_Appr_Pre2: { type: String },
     Prob_Appr_A: { type: String }, //Q.A.1
-    Prob_Appr_B: { type: String },   //q8
-    Prob_Appr_B_other: { type: String },  //Q.A.2
-    Prob_Appr_C: { type: String },
+    Prob_Appr_B: { type: String },   //Q5
+    Prob_Appr_B_other: { type: String },  //Q.5.other
+    Prob_Appr_C: { type: String }, // randomizing or matching Q4
+    Prob_Appr_D: { type: String }, //asking volunteers?
+    Prob_Appr_E: { type: String }, //how to choose pilot users?
+    Prob_Appr_F: { type: String }, //
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 

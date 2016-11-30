@@ -54,7 +54,6 @@ require('./routes/toolsAnonymousRoutes.js')(app);
 require('./routes/routes.js')(app, passport); 
 require('./routes/wizardRoutes.js')(app, passport);
 require('./routes/toolRoutes.js')(app, passport);
-require('./routes/apiRoutes.js')(app);
 require('./routes/resetPasswordRoutes.js')(app);
 
 // launch ======================================================================
