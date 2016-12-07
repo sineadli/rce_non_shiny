@@ -1,9 +1,9 @@
 ﻿<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
 
@@ -65,24 +65,19 @@
 
     <form action="/getresult" method="post">
 
-        <input type="hidden" id="user_email" value="<%= user %>" />
+
         <%
-        var direction = "";
-        var cutoff = "";
-        var probability = "";
+
+        var Result="";
 
         if (user != "NOAUTHENTICATED"){
-        if (eval.planQuestion) { direction = eval.planQuestion.Plan_Question_B_3; }
-        if (eval.planNext) {
-        cutoff = eval.planNext.Plan_Next_B;
-        var prob = eval.planNext.Plan_Next_C_1;
-        if (prob.indexOf("%") > -1) { probability=prob.slice(0, prob.length-2);} else {probability = prob;}  
-        }
+
+        if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
         }
         %>
-        <input type="hidden" id="direction" value="<%= direction %>" />
-        <input type="hidden" id="cutoff" value="<%= cutoff %>" />
-        <input type="hidden" id="probability" value="<%= probability  %>" />
+        <input type="hidden" id="user_email" value="<%= user %>" />
+
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -115,8 +110,28 @@
                                     <h4>What measure did you use to test whether there was an effect?</h4>
                                 </div>
                                 <div class="step-action">
-                                    <% var b2 =''; if (user != "NOAUTHENTICATED") { if (eval.planQuestion) {b2 = eval.planQuestion.Plan_Question_B_2 }} %>
-                                    <textarea name="Plan_Question_B_2" id="Plan_Question_B_2" placeholder="Ex., midyear math assessment"><%= b2 %></textarea>
+                                    <% var b2 =''; if (user != "NOAUTHENTICATED") { if (eval.planQuestion) {Plan_Question_B_2 = eval.planQuestion.Plan_Question_B_2 }} %>
+                                    <textarea name="Plan_Question_B_2" id="Plan_Question_B_2" placeholder="Ex., midyear math assessment"><%= Plan_Question_B_2 %></textarea>
+                                </div>
+                                <div class="step-subquestion">
+                                    <h4>What is the direction of intended change?</h4>
+                                </div>
+                                <div class="step-action">
+
+                                    <select required name="Plan_Question_B_3" id="Plan_Question_B_3">
+                                        <%
+                                        var options = ["Select an option", "increase", "decrease" ];
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        var selectedD;
+                                        if (user != "NOAUTHENTICATED") {
+                                        if (eval.planQuestion) { selectedD = ( eval.planQuestion.Plan_Question_B_3== options[i] ) ? "selected" : "";}}
+                                        %>
+                                        <option value="<%=options[ i ] %>" <%=selectedD %> ><%=options[ i ] %></option><%
+                                        }
+                                        %>
+
+                                    </select>
                                 </div>
                                 <div class="step-subquestion">
                                     <h4>What would success look like?</h4>
@@ -124,8 +139,8 @@
                                 <div class="step-action">
                                     <p>
                                         I would consider any improvement larger than
-                                        <% var b='';  if (user != "NOAUTHENTICATED") {if (eval.planNext) {b = eval.planNext.Plan_Next_B } } %>
-                                        <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= b %>" style="width: 50px" />
+                                        <% var b=''; if (user != "NOAUTHENTICATED") {if (eval.planNext) {Plan_Next_B = eval.planNext.Plan_Next_B } } %>
+                                        <input type="text" name="Plan_Next_B" id="Plan_Next_B" placeholder="0" value="<%= Plan_Next_B %>" style="width: 50px" />
                                         units on the outcome a success.
                                     </p>
                                     <p>The units reflect whatever you are using to measure outcomes. If you are looking at student performance on a test, the units would be points. </p>
@@ -135,10 +150,10 @@
                                 <div class="step-subquestion">
                                     <h4>
                                         How confident do you want to be that
-                                        <%  if (user != "NOAUTHENTICATED") { %>
-                                        <%= eval.planQuestion ?  (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>
+                                        <% if (user != "NOAUTHENTICATED") { %>
+                                        <%= eval.planQuestion ? (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %>
                                         <% } %>
-                                        <%  if (user == "NOAUTHENTICATED") { %>
+                                        <% if (user == "NOAUTHENTICATED") { %>
                                         the educational technology
                                         <% } %>
                                         moved the needle?
@@ -147,8 +162,8 @@
                                 <div class="step-action">
                                     <p>
                                         If I learned that there was a
-                                        <% var c1=''; if (user != "NOAUTHENTICATED") { if (eval.planNext) {c1 = eval.planNext.Plan_Next_C_1 }} %>
-                                        <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= c1 %>" style="width: 50px" /> probability that the educational technology improved the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
+                                        <% var c1=''; if (user != "NOAUTHENTICATED") { if (eval.planNext) {Plan_Next_C_1 = eval.planNext.Plan_Next_C_1 }} %>
+                                        <input type="text" name="Plan_Next_C_1" id="Plan_Next_C_1" placeholder="75%" value="<%= Plan_Next_C_1 %>" style="width: 50px" /> probability that the educational technology improved the outcome by <span class='QBD-1'>0</span> or more, I would feel comfortable concluding that the educational technology had the intended effect.
                                     </p>
                                 </div>
 
@@ -195,7 +210,7 @@
                         <div id="A" class="row  collapse in q-row">
                             <div class="col-xs-7">
                                 <div class="step-subquestion">
-                                    <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file of containing your data.
+                                    <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file of containing your data.</h4>
 
                                 </div>
                                 <div class="step-action">
@@ -219,7 +234,7 @@
                                     <div class="step-action ">
 
                                         <div>
-                                            <select id="outcome_var">
+                                            <select class="from-upload" id="outcome_var">
 
                                                 <option value="">Select the outcome variable</option>
 
@@ -236,7 +251,7 @@
                                     <div class="step-action ">
 
                                         <div>
-                                            <select id="treat_var">
+                                            <select class="from-upload" id="treat_var">
 
                                                 <option value="">Select the treatment variable</option>
 
@@ -253,7 +268,7 @@
                                     <div class="step-action ">
 
                                         <div>
-                                            <select id="control_vars" class="multiselect" multiple="multiple">
+                                            <select id="control_vars" class="multiselect from-upload" multiple="multiple">
 
                                                 <option value="">Select the control variables</option>
 
@@ -269,7 +284,7 @@
                                     <div class="step-action ">
 
 
-                                        <select id="cluster_var" >
+                                        <select class="from-upload" id="cluster_var">
                                             <option value="Select matching variables">Select cluster variable</option>
                                         </select>
 
@@ -283,7 +298,7 @@
 
 
 
-                                        <select id="grade_var" >
+                                        <select class="from-upload" id="grade_var">
                                             <option value="Select matching variables">Select grade variable</option>
                                         </select>
 
@@ -359,7 +374,7 @@
                     <div id="results" class="shiny-html-output shiny-bound-output">
 
                     </div>
-
+                    <input name="result" id="gresult" value="<%= Result %>" />
 
 
                 </div>
@@ -388,7 +403,7 @@
             $("#chosenfile").change(function () {
 
                 var formData = new FormData();
-
+                $('#loadingmessage').show();
                 formData.append("data", $(this)[0].files[0]);
 
                 $.ajax({
@@ -398,8 +413,8 @@
                     contentType: false,
                     data: formData,
                     success: function (data) {
-
-                        $("select").empty();
+                        $('#loadingmessage').hide();
+                        $("select.from-upload").empty();
 
                         $("#grade_var")
                         .append($("<option></option>")
@@ -412,7 +427,7 @@
                         $(".before-upload").addClass("after-upload");
                         $(".after-upload").removeClass("before-upload");
                         $.each(data.colnames, function (index, value) {
-                            $("select")
+                            $("select.from-upload")
                             .append($("<option></option>")
                             .attr("value", value)
                             .text(value));
@@ -426,27 +441,19 @@
 
             $("#go").click(function () {
 
-                console.log( "data: " +$("#chosenfile")[0].files[0]);
-                console.log( "outcome_var: " + JSON.stringify($("#outcome_var").val()));
-                console.log("treat_var: " + JSON.stringify($("#treat_var").val()));
-                console.log("control_vars: " + JSON.stringify($("#control_vars").val()));
-                console.log("cluster_var: " + JSON.stringify($("#cluster_var").val()));
-                console.log("grade_var: " + JSON.stringify($("#grade_var").val()));
-                console.log("direction: " + JSON.stringify($("#direction").val()));
-                console.log("cutoff: " + JSON.stringify($("#cutoff").val()));
-                console.log("probability: " + JSON.stringify($("#probability").val()));
                 var formData = new FormData();
-              
+
                 formData.append("data", $("#chosenfile")[0].files[0]);
                 formData.append("outcome_var", JSON.stringify($("#outcome_var").val()));
                 formData.append("treat_var", JSON.stringify($("#treat_var").val()));
                 formData.append("control_vars", JSON.stringify($("#control_vars").val()))
                 formData.append("cluster_var", JSON.stringify($("#cluster_var").val()));
                 formData.append("grade_var", JSON.stringify($("#grade_var").val()));
-                formData.append("direction", JSON.stringify($("#direction").val()));
-                formData.append("cutoff", JSON.stringify($("#cutoff").val()));
-                formData.append("probability", JSON.stringify($("#probability").val()));
+                formData.append("direction", JSON.stringify($("#Plan_Question_B_3").val()));
+                formData.append("cutoff", JSON.stringify($("#Plan_Next_B").val()));
+                formData.append("probability", JSON.stringify($("#Plan_Next_C_1").val()));
 
+                $('#loadingmessage').show();
 
                 $.ajax({
                     url: "https://52.222.20.48/ocpu/library/edtechrce/R/impact",
@@ -455,33 +462,52 @@
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        console.log(data);
+ 
                         var responsePaths = data.split("\n");
 
                         $.ajax({
                             url: "https://52.222.20.48" + responsePaths[0] + "/json",
                             type: "GET",
                             success: function (data) {
-                                $("#results").text(JSON.stringify(data));
+                                $('#loadingmessage').hide();
 
-                                // Put result text and plots on screen.
 
-                                // Save results to database.
-                            }
-                        });
 
-                        $("#download-button, #download-link")
-                        .prop("disabled", false);
+                                var results_by_grade = data.results_by_grade;
+ 
+                                $('#results').append('<h2>Analysis Results: Did the technology move the needle?</h3>');
+                                for (var key in results_by_grade) {
+                                    if (results_by_grade.hasOwnProperty(key)) {
 
-                        $("#download-link")
-                        .attr("target", "_blank")
-                        .attr("href", "https://52.222.20.48" + responsePaths[9]);
+                                        var grade_object = results_by_grade[key];
+                                        $('#results').append('<h3>Grade ' + grade_object.grade + '</h3>');
+                                        if (grade_object.interpretation) {
+                                            $('#results').append('<ul>');
+                                            var text1 = grade_object.interpretation.texts[0];
+                                            var text2 = grade_object.interpretation.texts[1];
+                                            $('#results').append('<li>' + text1 + '</li><li>' + text2 + '</li>');
+                                        }
+                                        $('#results').append('</ul>');
+                                    }
+                                }
+                                   $("#gresult").val(JSON.stringify(data));
+                               // $("#gresult").val("data");
+                                $("#download-button, #download-link")
+                                            .prop("disabled", false);
+
+                                        $("#download-link")
+                                            .attr("target", "_blank")
+                                            .attr("href", "https://52.222.20.48" + responsePaths[9]);
+                                    }
+                                });
+
+
                     }
                 });
             });
         });
         //init feedback_me plugin
-        var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
+        var fm_options = setFeedbackOptions($("#user_email").val(), "getresult");
         fm.init(fm_options);
     </script>
 </body>

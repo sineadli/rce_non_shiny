@@ -487,6 +487,13 @@ module.exports = function (app, passport) {
                         "Q_M_1": obj.Q_M_1,
                         "Q_M_2": obj.Q_M_2,
                         "Q_9": obj.Q_9,
+                        "treat_var": obj.treat_var,
+                        "match_vars": obj.match_vars,
+                        "grade_var": obj.grade_var,
+                        "n_full": obj.n_full,
+                        "n_full_treat": obj.n_full_treat,
+                        "n_matched": obj.n_matched,
+                        "n_matched_treat": obj.n_matched_treat,
                         "Result":obj.result,
                         "created_at": dt
 
@@ -497,6 +504,13 @@ module.exports = function (app, passport) {
                         "Q_M_1": obj.Q_M_1,
                         "Q_M_2": obj.Q_M_2,
                         "Q_9": obj.Q_9,
+                        "treat_var": obj.treat_var,
+                        "match_vars": obj.match_vars,
+                        "grade_var": obj.grade_var,
+                        "n_full": obj.n_full,
+                        "n_full_treat": obj.n_full_treat,
+                        "n_matched": obj.n_matched,
+                        "n_matched_treat": obj.n_matched_treat,
                         "Result": obj.result,
                         "created_at": eval.matching.created_at, "updated_at": dt
                     };
@@ -531,11 +545,14 @@ module.exports = function (app, passport) {
         sess.eval.last_tool = "Get Results";
         res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
-    app.post('/getresult',  function (req, res) {
+    app.post('/getresult', function (req, res) {
+        console.log(req);
         var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
+        console.log(req);
         sess = req.session;
         sess.step = 5;
-        //var obj = req.body;
+        var obj = req.body;
+        console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -571,6 +588,27 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
+                eval.planQuestion.Plan_Question_B_2 = obj.Plan_Question_B_2;
+                eval.planQuestion.Plan_Question_B_3 = obj.Plan_Question_B_3;
+                eval.planNext.Plan_Next_B = obj.Plan_Next_B;
+                eval.planNext.Plan_Next_C_1 = obj.Plan_Next_C_1;
+                if (!eval.getresult) {
+                    getresult = {
+
+                        "Result": obj.result,
+                        "created_at": dt
+
+                    };
+                }
+                else {
+
+                    getresult = {
+
+                        "Result": obj.result,
+                        "created_at": eval.getresult.created_at, "updated_at": dt
+                    };
+                }
+                eval.getresult = getresult;
                 if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
                 eval.save(function (err) {
                     if (err) {

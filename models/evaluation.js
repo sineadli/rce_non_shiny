@@ -87,11 +87,23 @@ var Matching = mongoose.Schema({
     Q_M_1: { type: String },
     Q_M_2: { type: String },
     Q_9: { type: String },
+    treat_var: { type: String },
+    match_vars: { type: String },
+    grade_var: { type: String },
+    n_full: { type: String },
+    n_full_treat: { type: String },
+    n_matched: { type: String },
+    n_matched_treat: { type: String },
     Result: { type: String },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
-
+//05.2 get results
+var GetResult = mongoose.Schema({
+    Result: { type: String },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
 //Tools visited array
 var toollist = new mongoose.Schema({
     name: String,
@@ -116,6 +128,7 @@ var evaluationSchema = mongoose.Schema({
     planNext: PlanNext,
     planContext: PlanContext,
     matching: Matching,
+    getresult: GetResult,
     stepsclicked: [String],
     last_tool: String
 
