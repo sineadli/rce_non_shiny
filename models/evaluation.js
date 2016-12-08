@@ -104,6 +104,13 @@ var GetResult = mongoose.Schema({
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
+
+//06.1 get results
+var GetResult = mongoose.Schema({
+    Result: { type: String },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
 //Tools visited array
 var toollist = new mongoose.Schema({
     name: String,

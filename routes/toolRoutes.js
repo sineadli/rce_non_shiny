@@ -677,6 +677,7 @@ module.exports = function (app, passport) {
                     }
                 }
                 if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+                eval.brief = { "test": "testing" };
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
