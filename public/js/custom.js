@@ -44,7 +44,6 @@ $(document).ready(function() {
       
  });
 
-  
 
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
   $('#Prob_Appr_Pre1').change(function () {
@@ -260,6 +259,8 @@ function recordViewPDF(name, step, path) {
 
 };
 
+
+
 function setConclusion() {
     var strConclusion, subject;
     var pre1 = $('#Prob_Appr_Pre1').val();
@@ -295,7 +296,7 @@ function setConclusion() {
 
     }
     else {
-        strConclusion = ""
+        strConclusion = "";
         $('#Prob_Appr_Pre2').val("");
         $("#Prob_Appr_A").val("");
         $("#Prob_Appr_B").val("");

@@ -1,0 +1,429 @@
+﻿<!DOCTYPE html>
+<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+
+
+<html lang="en">
+<head>
+    <title>The Basics</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+    <script src="/static/js/jquery.feedback_me.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-86460597-1', 'auto');
+  ga('send', 'pageview');
+
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+    <% if (user != "NOAUTHENTICATED") { %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
+    </ol>
+    <% if (message.length>0) { %>
+    <div class="alert alert-success"><%= message %></div>
+    <% }} %>
+
+    <form action="/basics" method="post" novalidate>
+        <% if (user != "NOAUTHENTICATED") { %>
+        <% include ../views/partials/toolHeader.html %>
+        <% } %>
+
+        <input type="hidden" id="user_email" value="<%= user %>" />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-header">
+                        <h1 class="tool-title pull-left">The Basics</h1>
+
+                        <div class="clearfix"></div>
+                        <div class="tool-intro">
+                            <p>
+                                These first questions will help the Coach make sure you have what you need to get started and get you thinking about the goal of your Ed Tech evaluation.
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+        <div class="tool-questions">
+        <div id="Q_Have_Tech">
+            <div class="step-header container">
+                <div data-toggle="collapse" data-target="#A">
+                    <h2 class="clickable">
+                        <i class="fa fa-caret-down" aria-hidden="false"></i>
+                        Have you selected an educational technology for your evaluation?
+                    </h2>
+                </div>
+            </div>
+            <div id="A" class="row collapse in  q-row">
+                <div class="col-xs-7">
+                    <div class="step-subquestion">
+                        <p>
+                            In order to use the Ed Tech Coach you need to have educational technology to evaluate.
+                        </p>
+                    </div>
+                    <div class="step-action">
+                        <select required name="Basics_Have" id="Basics_Have">
+                            <%
+                            var options = ["Select an option", "yes", "no" ];
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            var selected;
+                            if (user != "NOAUTHENTICATED") {
+                            if (eval.basics) { selected = ( eval.basics.Basics_Have == options[i] ) ? "selected" : "";}}
+                            %>
+                            <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option><%
+                            }
+                            %>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Q_Tech_Name">
+            <div class="step-header container">
+                <div data-toggle="collapse" data-target="#B">
+                    <h2 class="clickable">
+                        <span class="fa fa-caret-down" aria-hidden="false"></span> What is the name of the educational technology you are testing?
+                    </h2>
+                </div>
+            </div>
+            <div id="B" class="row collapse in  q-row">
+                <div class="col-xs-7">
+                    <div class="step-action">
+                        <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) {a = eval.basics.Basics_Tech_Name} } %>
+                        <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= a %></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div id="Q_Who_Users">
+            <div class="step-header container">
+                <div data-toggle="collapse" data-target="#D">
+                    <h2 class="clickable">
+                        <i class="fa fa-caret-down" aria-hidden="false"></i> Who
+                        <span class="eval-tense"> are or will be </span>
+                        your technology users?
+                    </h2>
+                </div>
+            </div>
+            <div id="D" class="row collapse in q-row">
+                <div class="col-xs-7">
+                    <div class="step-action">
+                        <select required name="Basics_Users" id="Basics_Users">
+
+                            <%
+                            var options = ["Select an option", "students", "teachers", "other"];
+
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+
+                            var selected;
+                            if (user != "NOAUTHENTICATED"){if (eval.basics) { selected = ( eval.basics.Basics_Users == options[i] ) ? "selected" : "";}}
+
+                            %>
+                            <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                            }
+                            %>
+
+                        </select>
+
+                        <div id="Question_Users_Other" hidden="true">
+                            <div>
+                                <label for="Basics_User_Other">Please specify:</label>
+                            </div>
+                            <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.basics) {val = eval.basics.Basic_Users_other } }%>
+                            <input type="text" name='Basics_Users_other' id="Basics_Users_other" value=<%= val %> />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <div class="step-to-consider">
+
+                        <div class="panel-group" id="ttc4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title sec-label clickable">
+                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                        <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
+                                            Things to Consider
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div id="consider4" class="panel-collapse collapse in">
+                                    <p>
+                                        The technology users are the group that is directly engaging with the technology. In some cases this may not be the same group for which you are trying to improve outcomes (for example you may hope a learning management platform used by teachers to coordinate lessons and assignments will improve student outcomes).
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Q_Have_Outcome">
+            <div class="step-header container">
+                <div data-toggle="collapse" data-target="#E">
+                    <h2 class="clickable">
+                        <i class="fa fa-caret-down" aria-hidden="false"></i> Identify your research outcome.
+                    </h2>
+                </div>
+            </div>
+            <div id="E" class="row  collapse in  q-row">
+                <div class="col-xs-7">
+
+                    <div class="step-action">
+                        <select required name="Basics_Outcome" id="Basics_Outcome">
+                            <%
+                            var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            var selected;
+                            if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
+
+
+                            %>
+                            <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
+                            }
+                            %>
+
+                        </select>
+                        <div id="Question_Outcome_Other" hidden="true">
+                            <p>
+                                <label for="Basics_Outcome_Other">Please specify:</label>
+                                <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.basics) {val = eval.basics.Basics_Outcome_Other }} %>
+                                <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= val %>"/>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xs-5">
+                    <div class="step-to-consider">
+
+                        <div class="panel-group" id="ttc5">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title sec-label clickable">
+                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                        <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                            Things to Consider
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div id="consider5" class="panel-collapse collapse in">
+                                    <p>
+                                        An <span data-toggle="tooltip" title="knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity" class='tooltip-gr'>outcome</span> identifies what you hope to change by implementing the educational technology.
+                                        We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading accordion-toggle">
+                                    <h3 class="panel-title sec-label clickable">
+                                        <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                        <a data-toggle="collapse" data-parent="#ttc5" href="#example5">
+                                            Example
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div id="example5" class="panel-collapse collapse">
+
+                                    <ul>
+                                        <li>Student achievement</li>
+                                        <li>Chronic absenteeism</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+            <div id="Step_Conclusion">
+                <div class="step-conclusion container">
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-7">
+                        <div id="success">
+                            <h2>Conclusion</h2>
+                            <p>Great! You are now ready to begin designing your research approach.</p>
+
+                        </div>
+                        <div id="stop-no-outcome">
+                            <h2 class="stop-warning">Conclusion</h2>
+                            <p>To measure a technology&rsquo;s effectiveness it is critical to know what you are hoping to accomplish from its use. Therefore, you will need to determine what outcomes you’ll be measuring before you can continue. We encourage you to talk with your colleagues about possible outcomes you would like to improve. This could be based on your priorities or what you think the technology could reasonably achieve. Come back to the Coach when you know what outcome you wish to target. </p>
+
+                        </div>
+                        <div id="stop-no-tech">
+                            <h2 class="stop-warning">Conclusion</h2>
+                            <p>Sorry, without educational technology to evaluate you will not be able to proceed through the Coach. We have put together the guide Choose a Techology [link to 01.02ChooseATechnology.pdf] to help you make that selection. Once you’ve made your selection, please return to the coach and continue your evaluation. </p>
+
+                        </div>
+
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="step-to-consider">
+                            <div class="panel-group" id="ttc6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title sec-label clickable">
+                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                            <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
+                                                Things to Consider
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div id="consider6" class="panel-collapse collapse in">
+                                        <p>You can always come back and revise your answers here and the Coach will revisit some of these questions in other tools. We encourage you to talk with your colleagues about your research goals and make revisions if necessary.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <% if  (user != "NOAUTHENTICATED") { %>
+            <div class="bottom-buttons">
+                <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
+                <button type="submit" class="complete btn btn-primary btn-lg" disabled="disabled">SAVE &amp; COMPLETE</button>
+            </div>
+            <% } %>
+
+          
+                <input class="hidden" name="status" id="status" />
+       
+           </div>
+        </div>
+    </form>
+    <% include ../views/partials/footer.html %>
+    <script src='/static/js/custom.js'></script>
+    <script>
+    $(document).ready(function () {
+   
+        setBasicsConclusion();
+
+
+        //init feedback_me plugin
+        var fm_options = setFeedbackOptions($("#user_email").val(), "craft_your_research_q");
+        fm.init(fm_options);
+
+    });
+    /*~~~~~~~~~~~~~~~~ The Basics ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    $('#Basics_Users').change(function () {
+
+        var value = $(this).val();
+        var subject = "subjects";
+        var otherSpecify = $("#Question_Users_Other");
+        if (value === "other") otherSpecify.show();
+        else otherSpecify.hide();
+        if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
+            subject = value;
+        }
+
+        setBasicsConclusion();
+    });
+    $('#Basics_Outcome').change(function () {
+
+        var value = $(this).val();
+
+        var otherSpecify = $("#Question_Outcome_Other");
+        if (value.toLowerCase() === "other") otherSpecify.show();
+        else otherSpecify.hide();
+
+        setBasicsConclusion();
+    });
+    $('#Basics_Have').change(function () {
+        setBasicsConclusion();
+    });
+  
+    $('#Basics_Tech_Name').change(function () {
+        setBasicsConclusion();
+    });
+    $('#Basics_Using').change(function () {
+        setBasicsConclusion();
+    });
+  
+
+    function setBasicsConclusion() {
+        var haveTech = $('#Basics_Have').val();
+        var techName = $('#Basics_Tech_Name').val();
+        var whoUsers = $('#Basics_Users').val();
+        if (whoUsers.toLowerCase === "other") whoUsers = $('#Basics_Users_Other').val();
+        var haveOutcome = $('#Basics_Outcome').val();
+        if (haveOutcome.toLowerCase === "other") haveOutcome = $('#Basics_Outcome_Other').val();
+
+       
+        if (haveTech.toLowerCase() === "no") {
+         
+            $("#Q_Tech_Name").hide();
+            $("#Q_Who_Users").hide();
+            $("#Q_Have_Outcome").hide();
+            $("#Step_Conclusion").show();
+            $("#stop-no-tech").show();
+            $("#stop-no-outcome").hide();
+            $("#success").hide();
+            $("button.complete").attr("disabled", "disabled");
+
+        }
+        else if (haveOutcome.toLowerCase() === "not sure") {
+            $("#Step_Conclusion").show();
+            $("#stop-no-outcome").show();
+            $("#stop-no-tech").hide();
+            $("#success").hide();
+            $("button.complete").attr("disabled", "disabled");
+        }
+        else if (techName !== "" && whoUsers.toLowerCase !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
+            $("#Step_Conclusion").show();
+            $("#success").show();
+            $("#stop-no-tech").hide();
+            $("#stop-no-outcome").hide();
+            $("button.complete").removeAttr("disabled");
+        }
+        else {
+            $("#Q_Tech_Name").show();
+            $("#Q_Who_Users").show();
+            $("#Q_Have_Outcome").show();
+            $("#Step_Conclusion").hide();
+            $("#stop-no-tech").hide();
+            $("#stop-no-outcome").hide();
+            $("#success").hide();
+            $("button.complete").attr("disabled", "disabled");
+        }
+    }
+    </script>
+
+</body>
+</html>

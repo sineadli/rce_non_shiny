@@ -20,7 +20,105 @@ var sess;
 //the following defines the tool routes available, only four routes available currently
 module.exports = function (app, passport) {
     app.use(isLoggedIn);
-    app.use(getCurrentEvaluation);
+	app.use(getCurrentEvaluation);
+	
+	//02.03 The Basics
+	app.get('/basics', function (req, res) {
+		sess = req.session;
+		sess.eval.last_step = 2;
+		sess.eval.last_tool = "The Basics";
+		res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+	});
+	app.post('/basics', function (req, res) {
+		sess = req.session;
+		var obj = req.body, basics;
+	    var toolName = "The Basics";
+		var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
+		var dt = new Date();
+		async.waterfall([
+			function (done) {
+				if (sess.eval) {
+					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+						if (!eval) {
+							req.flash('error', 'No evaluation exists.');
+							return res.redirect('/wizard');
+						}
+						if (err) {
+							console.log(err);
+							return res.redirect('/wizard');
+						}
+						return done(err, eval);
+					});
+				}
+				else
+					res.redirect('/wizard');
+			},
+			function (eval, done) {
+				//eval find so update the toolsVisisted accordingly
+				eval.last_step = 2;
+				eval.last_tool = toolName;
+				var tool = eval.toolsvisited.filter(function (x) { return x.name === toolName });
+				if (tool.length == 0) {
+					eval.toolsvisited.push(toollist);
+				}
+				else {
+					var index = eval.toolsvisited.indexOf(tool[0]);
+					if (index > -1) {
+						if (tool[0].status == "completed") toollist = { "name": toolName, "status": "completed", "visited_at": new Date() };
+						eval.toolsvisited.splice(index, 1);
+						eval.toolsvisited.push(toollist); 
+					}
+				}
+				//add/update the probAppr within eval
+				if (!eval.basics) {
+					basics = {
+						"Basics_Have":  obj.Basics_Have,
+						"Basics_Tech_Name": obj.Basics_Tech_Name,
+						"Basics_Using": obj.Basics_Using,
+						"Basics_Users": obj.Basics_Users, 
+						"Basics_Users_Other": obj.Basics_Users_Other, 
+						"Basics_Outcome": obj.Basics_Outcome,
+						"Basics_Outcome_Other": obj.Basics_Outcome_Other,
+						"created_at": dt
+					};
+				}
+				else {
+					basics = {
+						"Basics_Have": obj.Basics_Have,
+						"Basics_Tech_Name": obj.Basics_Tech_Name,
+						"Basics_Using": obj.Basics_Using,
+						"Basics_Users": obj.Basics_Users, 
+						"Basics_Users_Other": obj.Basics_Users_Other, 
+						"Basics_Outcome": obj.Basics_Outcome,
+						"Basics_Outcome_Other": obj.Basics_Outcome_Other,
+						"created_at": eval.basics.created_at, "updated_at": dt
+					};
+				}
+				eval.basics = basics;
+				if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
+				eval.save(function (err) {
+					if (err) {
+						console.log(err); return done(err);
+					}
+					sess.eval = eval;
+					//  console.log(eval);
+					if (req.body.status == "started") {
+						req.flash('saveMessage', 'Changes Saved.');
+						return res.redirect('/basics');
+					}
+					else {
+						return res.redirect('/wizard');
+					}
+                    
+				});
+			}
+		], function (err) {
+			if (err) return next(err);
+			res.redirect('/wizard');
+		});
+	});
+	
+
     //02.03 determine your approach
     app.get('/determine_your_approach',   function (req, res) {
         sess = req.session;
@@ -71,19 +169,19 @@ module.exports = function (app, passport) {
                 //add/update the probAppr within eval
                 if (!eval.probAppr) {
                     probAppr = {
-                        "Prob_Appr_Pre1": obj.Prob_Appr_Pre1, "Prob_Appr_Pre2": obj.Prob_Appr_Pre2,
-                        "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
-                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Appr_C,
-                        "Prob_Appr_D": obj.Prob_Appr_D, "Prob_Appr_E": obj.Prob_Appr_E, "Prob_Appr_F": obj.Prob_Appr_F,
+						"Prob_Appr_Current_or_New": obj.Prob_Appr_Current_or_New, 
+						"Prob_Appr_All_Using": obj.Prob_Appr_All_Using,
+						"Prob_Appr_Can_Group": obj.Prob_Appr_Can_Group, 
+						"Prob_Appr_How_Choose": obj.Prob_Appr_How_Choose,
                         "created_at":dt
                     };
                 }
                 else {
                     probAppr = {
-                        "Prob_Appr_Pre1": obj.Prob_Appr_Pre1, "Prob_Appr_Pre2": obj.Prob_Appr_Pre2,
-                        "Prob_Appr_A": obj.Prob_Appr_A, "Prob_Appr_B": obj.Prob_Appr_B,
-                        "Prob_Appr_B_other": obj.Prob_Appr_B_other, "Prob_Appr_C": obj.Prob_Appr_C,
-                        "Prob_Appr_D": obj.Prob_Appr_D, "Prob_Appr_E": obj.Prob_Appr_E, "Prob_Appr_F": obj.Prob_Appr_F,
+						"Prob_Appr_Current_or_New": obj.Prob_Appr_Current_or_New, 
+						"Prob_Appr_All_Using": obj.Prob_Appr_All_Using,
+						"Prob_Appr_Can_Group": obj.Prob_Appr_Can_Group, 
+						"Prob_Appr_How_Choose": obj.Prob_Appr_How_Choose,
                         "created_at": eval.probAppr.created_at, "updated_at": dt
                     };
                 }
@@ -268,7 +366,8 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Think About How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
-        var obj = req.body;
+		var obj = req.body;
+        
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -492,7 +591,8 @@ module.exports = function (app, passport) {
 
                     };
                 }
-                else {
+				else {
+					
                     matching = {
                         "Q_M_1": obj.Q_M_1,
                         "Q_M_2": obj.Q_M_2,
@@ -531,11 +631,14 @@ module.exports = function (app, passport) {
         sess.eval.last_tool = "Get Results";
         res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
-    app.post('/getresult',  function (req, res) {
-        var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
+	app.post('/getresult', function (req, res) {
+		console.log(req);
+		var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
+		console.log(req);
         sess = req.session;
         sess.step = 5;
-        //var obj = req.body;
+		var obj = req.body;
+		console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -570,7 +673,28 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
-                }
+				}
+				eval.planQuestion.Plan_Question_B_2 = obj.Plan_Question_B_2;
+				eval.planQuestion.Plan_Question_B_3 = obj.Plan_Question_B_3;
+				eval.planNext.Plan_Next_B= obj.Plan_Next_B;
+				eval.planNext.Plan_Next_C_1= obj.Plan_Next_C_1;
+				if (!eval.getresult) {
+					getresult = {
+						
+						"Result": obj.result,
+						"created_at": dt
+
+					};
+				}
+				else {
+					
+					getresult = {
+						
+						"Result": obj.result,
+						"created_at": eval.getresult.created_at, "updated_at": dt
+					};
+				}
+				eval.getresult = getresult;
                 if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
                 eval.save(function (err) {
                     if (err) {

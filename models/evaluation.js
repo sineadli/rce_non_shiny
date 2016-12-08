@@ -19,20 +19,26 @@ achievement = ["Student academic achievement", "Student non-academic achievement
 direction = ["Increase", "Decrease"];
 spendresults = ["costs", "saves"];
 unitmeasured = ["student", "teacher", "school"];
-totalToolNumber = 7; //for completed status
+totalToolNumber = 8; //for completed status
 
 //02.03 determine your approach
+var Basics = mongoose.Schema({
+    Basics_Have: { type: String },
+    Basics_Tech_Name: { type: String },
+    Basics_Using: { type: String },
+    Basics_Users: { type: String }, 
+	Basics_Users_Other: { type: String },
+    Basics_Outcome: { type: String }, 
+	Basics_Outcome_Other: { type: String },    
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+
+});
 var ProbAppr = mongoose.Schema({
-    Prob_Appr_Pre1: { type: String },
-    Prob_Appr_Pre1_Other: { type: String },
-    Prob_Appr_Pre2: { type: String },
-    Prob_Appr_A: { type: String }, //Q.A.1
-    Prob_Appr_B: { type: String },   //Q5
-    Prob_Appr_B_other: { type: String },  //Q.5.other
-    Prob_Appr_C: { type: String }, // randomizing or matching Q4
-    Prob_Appr_D: { type: String }, //asking volunteers?
-    Prob_Appr_E: { type: String }, //how to choose pilot users?
-    Prob_Appr_F: { type: String }, //
+	Prob_Appr_Current_or_New: { type: String },
+    Prob_Appr_All_Using: { type: String },
+    Prob_Appr_Can_Group: { type: String },
+    Prob_Appr_How_Choose: { type: String }, 
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
@@ -91,6 +97,12 @@ var Matching = mongoose.Schema({
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
+//05.2 get results
+var GetResult = mongoose.Schema({
+    Result: { type: String },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
 
 //Tools visited array
 var toollist = new mongoose.Schema({
@@ -111,11 +123,13 @@ var evaluationSchema = mongoose.Schema({
     updated_at: Date,
     toolsvisited: [toollist],
     status: String,
+	basics: Basics,
     probAppr: ProbAppr,
     planQuestion: PlanQuestion,
     planNext: PlanNext,
     planContext: PlanContext,
     matching: Matching,
+	getresult: GetResult,
     stepsclicked: [String],
     last_tool: String
 
@@ -137,7 +151,7 @@ evaluationSchema.pre('save', function (next) {
     }
     else {
         if (this.toolsvisited.length > 0) {
-            //console.log(this.toolsvisited.length);
+            //console.tlog(this.toolsvisited.length);
             if (this.toolsvisited.length == totalToolNumber) this.status = " 100";
             if (this.toolsvisited.length > 0) {
 

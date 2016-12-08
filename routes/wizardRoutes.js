@@ -20,6 +20,19 @@ var WizardStep = require('../models/wizardStep'),
     Tool = require('../models/tool.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
 var sess;
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function(a, b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+
 module.exports = function (app, passport) {
     app.use(noCache);
     app.use(isLoggedIn);
@@ -52,7 +65,7 @@ module.exports = function (app, passport) {
             }
 			else {
 				//console.log(wizardSteps);
-                
+				
                 res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval });
             }
         });
@@ -96,7 +109,8 @@ module.exports = function (app, passport) {
 
                         res.status(500).send(err);
                     }
-                    else {
+					else {
+						tools.sort(dynamicSort("step"));
                         res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval });
                     }
                 });
@@ -151,6 +165,7 @@ module.exports = function (app, passport) {
     
 
 
+	
    
 
    

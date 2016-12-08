@@ -44,8 +44,7 @@
                     <%
                     if (status.toLowerCase()=="completed" && tools[i].type.toLowerCase() == "guide") { status = "Viewed";}
                     %>
-                    <p class="sec-label"><%= tools[i].type %></p>
-                    <h2><%= tools[i].name %> </h2>
+                    <h2 class="<%= tools[i].type %>"><%= tools[i].name %> </h2>
                     <p><%= tools[i].desc %></p>
                 </div>
                 <div class="tool-bottom">

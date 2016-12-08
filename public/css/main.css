@@ -481,6 +481,12 @@ div.dash-well div.help-sec {
     border-right: 2px #D9D7BE solid;
 
 }
+.btn-primary {
+    background-color: #006982;
+}
+    .btn-primary:hover, .btn-primary:focus {
+background-color: #333;
+    }
 div.dash-well a.btn-primary {
     font-size: 1.2em;
     padding: 8px 12px;
@@ -595,6 +601,7 @@ div.tool-div {
 
 div.tool-div.current {
     border: 2px solid #4081A8;
+    border: 2px solid #006982
      box-shadow: 3px 3px 3px #AFCBDA
 }
 div.tool-div.completed div.tool-status p span.all-caps, div.tool-div.Completed div.tool-status p span.all-caps {
@@ -669,10 +676,33 @@ div.step-conclusion {
     padding-left: 0;
 }
 
-div.step-conclusion h2 {
-    font-size: 1.8em;
+div#Step_Conclusion h2, div.step-conclusion h2 {
+    font-size: 2em;
     font-family: 'Open Sans';
-    font-weight: normal;
+    font-weight: bold;
+    background-image: url("/static/image/CompleteIcon.png");
+    background-repeat: no-repeat;
+    background-position: center left;
+    height: 50px;
+    padding-left: 55px;
+    padding-top: 5px;
+}
+div#Step_Conclusion h2.stop-warning {
+     background-image: url("/static/image/WarningIcon.png");
+}
+h2.form, h2.statistical, h2.guide {
+      background-image: url("/static/image/Form_RCE-Web-Icon.png");
+    background-repeat: no-repeat;
+    background-size: 21%;
+    background-position: top left;
+    min-height: 45px;
+    padding-left: 55px;
+}
+h2.statistical {
+    background-image: url("/static/image/StatTool_RCE-Web-Icon.png");
+}
+h2.guide {
+    background-image: url("/static/image/Guide_RCE-Web-Icon.png");
 }
 div.step-subquestion {
 	    margin: 5px 25px 0 25px;
@@ -693,6 +723,13 @@ div.step-action label {
   /*display:none;*/
     font-weight: normal;
     margin-top: 10px;
+}
+div.step-action label.radio-label {
+  /*display:none;*/
+    font-weight: 600;
+    margin-top: 10px;
+    text-transform: none;
+    color: #000;
 }
 div.step-action-long {
   width:75%;
@@ -800,6 +837,9 @@ div > select,input,textarea {
   border-style: solid;
   border-width: 1px;
  
+}
+input[type=radio] {
+    width: 5%;
 }
 div.build-profile input {
     width: 100%;
