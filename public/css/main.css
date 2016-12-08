@@ -940,3 +940,18 @@ input#file-box {
 	line-height:0;
 }
 
+
+.form-group {
+    margin-bottom: 15px;
+}
+.shiny-input-container:not(.shiny-input-container-inline) {
+    width: 300px;
+    max-width: 100%;
+}
+div.action-buttons {
+    margin-left: 70%;
+}
+.shiny-input-checkboxgroup label ~ .shiny-options-group, .shiny-input-radiogroup label ~ .shiny-options-group {
+    margin-top: -10px;
+}
+

@@ -93,6 +93,13 @@ var Matching = mongoose.Schema({
     Q_M_1: { type: String },
     Q_M_2: { type: String },
     Q_9: { type: String },
+    treat_var: { type: String },
+    match_vars: { type: String },
+    grade_var: { type: String },
+    n_full: { type: String },
+    n_full_treat: { type: String },
+    n_matched: { type: String },
+    n_matched_treat: { type: String },
     Result: { type: String },
     created_at: { type: Date, default: Date.now },
     updated_at: Date

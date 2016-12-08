@@ -335,7 +335,7 @@
                                         
                                            
                                          
-                                                <select id="match_vars" class="multiselect" multiple="multiple" >
+                                                <select id="match_vars" name="match_vars" class="multiselect" multiple="multiple" >
                                                     <option value="Select matching variables">Select matching variables</option>
                                                 </select>
                                                 
@@ -414,7 +414,11 @@
         </div>
         <% } %>
      
-        <input  name="result" id="mresult" value="<%= Result %>" />
+        <input name="n_full" id="n_full" />
+        <input name="n_full_treat" id="n_full_treat" />
+        <input name="n_matched" id="n_matched" />
+        <input name="n_matched_treat" id="n_matched_treat"  />
+        <input name="result" id="mresult"  />
 </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
@@ -476,22 +480,26 @@
                 success: function (data) {
 
                     var responsePaths = data.split("\n");
-                  //  console.log(responsePaths);
+        
 
                     $.ajax({
                         url: "https://52.222.20.48" + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
                             $('#loadingmessage').hide();
+
                             var results_by_grade = data.results_by_grade;
                      
-                        
+                            var n_full=0, n_full_treat=0, n_matched=0, n_matched_treat=0
                             for (var key in results_by_grade) {
                                 if (results_by_grade.hasOwnProperty(key)) {
                                     var imgid = "plot" + key;                              
                                     var grade_object = results_by_grade[key];
                                     var bal1, bal2, bal3, info, buttxt;
-
+                                    n_full += parseInt(grade_object.samples.n_full);
+                                    n_full_treat += parseInt(grade_object.samples.n_full_treat);
+                                    n_matched += parseInt(grade_object.samples.n_matched);
+                                    n_matched_treat += parseInt(grade_object.samples.n_matched_treat);
                                     info = 'The data you uploaded has ' + grade_object.samples.n_full + ' observations (after removing observations missing the selected matching variables), ' + grade_object.samples.n_full_treat + ' of which are in the treatment group. The matched data set produced by the dashboard has ' + grade_object.samples.n_matched + ' observations, ' + grade_object.samples.n_matched_treat + ' of which are in the treatment group.';
                                     buttxt = 'To learn more about how this dashboard works, you can review this <a href="/static/pdf/05.01a Matching Technical Appendix.pdf" target="_blank" > <u> technical appendix</u></a>.'
                                     $('#results').append('<p>' + grade_object.title + '</p>');
@@ -522,8 +530,12 @@
                                     
                                 }
                             }
-             
+                            
                             $("#mresult").val(JSON.stringify(data));
+                            $("#n_full").val(JSON.stringify(n_full));
+                            $("#n_full_treat").val(JSON.stringify(n_full_treat));
+                            $("#n_matched").val(JSON.stringify(n_matched));
+                            $("#n_matched_treat").val(JSON.stringify(n_matched_treat));
                             
                             $("#downloadData")
                              .removeClass("disabled");
