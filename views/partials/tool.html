@@ -38,7 +38,7 @@
 
         var current = eval.last_tool == tools[i].name ? "current" : "";
         var buttondivid = tools[i].name;
-        if (peeking && !firstTool || (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path)) {btnText="PEEKING"; lock="locked"}
+        if (peeking && !firstTool || (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path)) {btnText="PEEK"; lock="locked"}
         <!--if (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path ){peeking=true; lock="locked";}-->
         %>
         <div class="col-xs-3">
