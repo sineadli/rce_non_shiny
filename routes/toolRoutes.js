@@ -120,14 +120,16 @@ module.exports = function (app, passport) {
 			res.redirect('/coach');
 		});
 	});
-	
+    
+
     //02.03 determine your approach
 	app.get('/determine_your_approach', function (req, res) {
 	//	console.log("In DYA get method.");
         sess = req.session;
         sess.eval.last_step = 2;
         sess.eval.last_tool = "Determine Your Approach";
-        res.render('determine_your_approach.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+        var query = require('url').parse(req.url, true).query;
+        res.render('determine_your_approach.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query });
     });
     app.post('/determine_your_approach',  function (req, res) {
         sess = req.session;
@@ -276,7 +278,8 @@ module.exports = function (app, passport) {
 	//	console.log(sess.eval);
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Craft Your Research Question";
-        res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+        var query = require('url').parse(req.url, true).query;
+        res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query });
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q',  function (req, res) {
@@ -366,7 +369,8 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Think About How to Use Your Result";
-        res.render('plan_next_steps.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage')  });
+        var query = require('url').parse(req.url, true).query;
+        res.render('plan_next_steps.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query  });
     });
     app.post('/plan_next_steps',  function (req, res) {
         var toollist = { "name": "Think About How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
@@ -471,7 +475,8 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Summarize Context";
-        res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+        var query = require('url').parse(req.url, true).query;
+        res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query });
     });
     app.post('/context_and_usage',  function (req, res) {
         var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
@@ -560,7 +565,8 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 5;
         sess.eval.last_tool = "Matching";
-        res.render('matching.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage')  });
+        var query = require('url').parse(req.url, true).query;
+        res.render('matching.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query  });
     });
     app.post('/matching', function (req, res) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
@@ -662,14 +668,16 @@ module.exports = function (app, passport) {
 	app.get('/randomization', isLoggedIn, function (req, res) {
 		sess = req.session;
 		sess.eval.last_step = 4;
-		sess.eval.last_tool = "Randomization";
-		res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+        sess.eval.last_tool = "Randomization";
+        var query = require('url').parse(req.url, true).query;
+        res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query });
 	});
     app.get('/getresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;
         sess.eval.last_tool = "Get Results";
-        res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+        var query = require('url').parse(req.url, true).query;
+        res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query });
     });
     app.post('/getresult', function (req, res) {
         console.log(req);
@@ -760,7 +768,8 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
-        res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+        var query = require('url').parse(req.url, true).query;
+        res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query });
     });
     app.post('/shareresult',function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
