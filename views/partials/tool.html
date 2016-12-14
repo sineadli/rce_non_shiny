@@ -61,7 +61,11 @@
 
                         <% } %>
 
-                       
+                        <%  if (lock==="locked") {%>
+                        <p>
+                            Status<br /><span class="all-caps" id="status"><strong>UNAVAILABLE</strong></span><br />
+                        </p>
+                        <% } %>
 
 
                     </div>
