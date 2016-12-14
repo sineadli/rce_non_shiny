@@ -16,11 +16,12 @@ var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var sess;
-//please note that req.session.step is for managing the active tab for wizard.html
+//please note that req.session.step is for managing the active tab for coach.html
 //the following defines the tool routes available, only four routes available currently
 module.exports = function (app, passport) {
     app.use(isLoggedIn);
-	app.use(getCurrentEvaluation);
+    app.use(getCurrentEvaluation);
+  
 	
 	//02.03 The Basics
 	app.get('/basics', function (req, res) {
@@ -120,7 +121,6 @@ module.exports = function (app, passport) {
 		});
 	});
 	
-
     //02.03 determine your approach
 	app.get('/determine_your_approach', function (req, res) {
 	//	console.log("In DYA get method.");
@@ -372,8 +372,7 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Think About How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
-		var obj = req.body;
-        
+        var obj = req.body;
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -621,6 +620,7 @@ module.exports = function (app, passport) {
 
                     };
                 }
+
 				else {
 					matching = {
 						"Target_Group_Desc": obj.Target_Group_Desc,
@@ -671,15 +671,14 @@ module.exports = function (app, passport) {
         sess.eval.last_tool = "Get Results";
         res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
     });
-
-	app.post('/getresult', function (req, res) {
-		console.log(req);
-		var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
-		//console.log(req);
+    app.post('/getresult', function (req, res) {
+        console.log(req);
+        var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
+        console.log(req);
         sess = req.session;
         sess.step = 5;
-		var obj = req.body;
-		//console.log(obj);
+        var obj = req.body;
+        console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -714,29 +713,28 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
+
 				}
 				eval.planQuestion.Outcome_Measure = obj.Outcome_Measure;
 				eval.planQuestion.Outcome_Direction = obj.Outcome_Direction;
 				eval.planNext.Success_Effect_Size= obj.Success_Effect_Size;
 				eval.planNext.Pass_Probability= obj.Pass_Probability;
 				if (!eval.getresult) {
-					getresult = {
-						
-						"Result": obj.result,
-						"created_at": dt
+					getresult = {				
+                        "Result": obj.result,
+                        "created_at": dt
 
-					};
-				}
-				else {
-					
-					getresult = {
-						
-						"Result": obj.result,
-						"created_at": eval.getresult.created_at, "updated_at": dt
-					};
-				}
-				eval.getresult = getresult;
+                    };
+                }
+                else {
 
+                    getresult = {
+
+                        "Result": obj.result,
+                        "created_at": eval.getresult.created_at, "updated_at": dt
+                    };
+                }
+                eval.getresult = getresult;
                 if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
                 eval.save(function (err) {
                     if (err) {
@@ -805,6 +803,7 @@ module.exports = function (app, passport) {
                     }
                 }
                 if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+                eval.brief = { "test": "testing" };
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);

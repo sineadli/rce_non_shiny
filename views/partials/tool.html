@@ -19,8 +19,8 @@
 <div class="row">
     <div class="tool-row">
         <% for (var i=0; i< tools.length; i++) {
-        var divid = "ToolDiv-"+tools[i].order;
-        var statusdivid = "StatusDiv" + tools[i].order;
+        var divid = "ToolDiv-"+tools[i].step;
+        var statusdivid = "StatusDiv" + tools[i].step;
         var tool =[], status = "NOT STARTED", d = "", btnText = "START";
         var peeking=false, firstTool =false;
         var lock = "";
@@ -34,10 +34,12 @@
         d=new Date(tool[0].visited_at)
         if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}
         }
-        }
+        }       //tool visited
+
         var current = eval.last_tool == tools[i].name ? "current" : "";
         var buttondivid = tools[i].name;
-      //  if (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path ){peeking=true; lock="locked";} 
+        if (peeking && !firstTool || (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path)) {btnText="PEEKING"; lock="locked"}
+        <!--if (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path ){peeking=true; lock="locked";}-->
         %>
         <div class="col-xs-3">
 
@@ -59,7 +61,11 @@
 
                         <% } %>
 
-                       
+                        <%  if (lock==="locked") {%>
+                        <p>
+                            Status<br /><span class="all-caps" id="status"><strong>UNAVAILABLE</strong></span><br />
+                        </p>
+                        <% } %>
 
 
                     </div>

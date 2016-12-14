@@ -12,7 +12,7 @@
 // load up the thing we need
 var Evaluation = require('../models/evaluation.js');
 
-//please note that req.session.step is for managing the active tab for wizard.html
+//please note that req.session.step is for managing the active tab for coach.html
 //the following defines the tool routes available, only four routes available currently
 module.exports = function (app) {
 

@@ -224,7 +224,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/header', function(req, res) {
-        //console.log(req.params.wizardPath);
+        //console.log(req.params.coachStep);
         res.render('partials/header.html', { user: req.user });
     });
 

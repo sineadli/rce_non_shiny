@@ -64,8 +64,6 @@ module.exports = function (app, passport) {
                 res.status(500).send(err);
             }
 			else {
-				//console.log(coachSteps);
-				
                 res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval });
             }
         });
@@ -84,8 +82,9 @@ module.exports = function (app, passport) {
                     res.status(500).send(err);
                 }
                 else {
-                    //console.log(coachSteps);
+
                     res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval});
+
                 }
             });
         });
@@ -120,15 +119,14 @@ module.exports = function (app, passport) {
 		});
 	});
 
-
-    //this route is update evaluation object, it is called from dashboard.html and wizard.html
+    //this route is update evaluation object, it is called from dashboard.html and coach.html
     //new or change title only
     app.post('/api/eval',  function (req, res) {
         sess = req.session;
         // console.log(req.body.id);
         if (!req.body.id) {
             var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
-            
+            console.log(eval);
             eval.save(function (err) {
                 if (err)
                     console.log(err);
