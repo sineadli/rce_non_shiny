@@ -62,7 +62,7 @@ console.log(" passport loaded ");
 //require('./routes/routes.js')(app, passport, StepOne, StepTwo, StepThree, StepFour); // load our routes and pass in our app and fully configured passport
 require('./routes/toolsAnonymousRoutes.js')(app);
 require('./routes/routes.js')(app, passport); 
-require('./routes/wizardRoutes.js')(app, passport);
+require('./routes/coachRoutes.js')(app, passport);
 require('./routes/toolRoutes.js')(app, passport);
 require('./routes/resetPasswordRoutes.js')(app);
 

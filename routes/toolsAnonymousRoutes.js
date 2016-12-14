@@ -11,7 +11,7 @@
 //routes/toolAnonymousRoutes.js
 // load up the thing we need
 
-//please note that req.session.step is for managing the active tab for wizard.html
+//please note that req.session.step is for managing the active tab for coach.html
 //the following defines the tool routes available, only four routes available currently
 module.exports = function (app) {
     //02.03 determine your approach
