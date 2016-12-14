@@ -20,9 +20,9 @@ var toolSchema = mongoose.Schema({
     desc: String,
     note: String,
     type: String,
-    wizardName: String,
-    wizardPath: Number,
-    step: Number,
+    coachStep: Number,
+    order: Number,
+    evalPath: String,
     prereq: Boolean,
     path: String
 });

@@ -4,7 +4,7 @@ html {
 body {
   font-family: 'Open Sans';
   max-width:1000px;
-  font-size:1.4em;
+  font-size:1.5em;
   line-height:1.6em;
      margin: 0 auto;
       min-height: 100%;
@@ -143,10 +143,27 @@ div.tool-header {
 div.tool-help{
   width:80%;
   margin:0px auto;
-   margin-bottom: 35px;
+   /*margin-bottom: 35px;*/
 }
-.tool-instructions {
+.note {
     font-style: italic;
+    margin-top: 8px;
+    color: #286090;
+}
+.prev-answer{
+    font-style: italic;
+    margin-top: 8px;
+    font-size: .9em;
+    margin-left: 15px;
+
+}
+.prev-answer i {
+    color: #23527c;
+    padding-right: 5px;
+    font-size: 1.3em;
+}
+.prev-answer a{
+     font-style: normal;
 }
 body.homepage div.row {
 	margin-top:45px;
@@ -237,11 +254,17 @@ h3 {
   font-size: 18px;
   margin-top:5px;
 }
-h4 {
+h4, h4 label {
   font-size:15px;
   /*font-style:italic;*/
   font-weight:600;
     color: #444444;
+    color: #3F668A;
+    letter-spacing: 0px;
+    line-height: 1.2em;
+}
+h4 label {
+    text-transform: none;
 }
 label {
     color:#65614D;
@@ -690,7 +713,7 @@ div#Step_Conclusion h2, div.step-conclusion h2 {
 div#Step_Conclusion h2.stop-warning {
      background-image: url("/static/image/WarningIcon.png");
 }
-h2.form, h2.statistical, h2.guide {
+h2.form, h2.statistical, h2.guide, h2.locked {
       background-image: url("/static/image/Form_RCE-Web-Icon.png");
     background-repeat: no-repeat;
     background-size: 21%;
@@ -704,9 +727,13 @@ h2.statistical {
 h2.guide {
     background-image: url("/static/image/Guide_RCE-Web-Icon.png");
 }
+
+h2.locked {
+    background-image: url("/static/image/LockedIcon.png");
+}
 div.step-subquestion {
 	    margin: 5px 25px 0 25px;
-	font-size:1.1em;
+	font-size:1em;
 }
 div.step-subquestion p label {
     text-transform: none;
@@ -714,11 +741,22 @@ div.step-subquestion p label {
     color: #000;
 }
 div.step-action {
- margin:0 0 25px 25px;
+ margin:0 0 0px 25px;
   display:inline-block;
-  font-size:1.1em;
+  font-size:1em;
   width:100%
 }
+div.step-action hr {
+    border-color:#56ACE0;
+    border-width: 1px;
+    margin-left: 0;
+    width: 95%;
+    text-align: center;
+}
+
+
+
+
 div.step-action label {
   /*display:none;*/
     font-weight: normal;
@@ -792,6 +830,13 @@ div.step-example-box {
     font-style: italic;
     font-weight: 500;
 }
+   .before-upload {
+            display: none;
+        }
+
+        .after-upload {
+            display: block;
+        }
 
 #step-height {
 	height:45px;	
@@ -860,7 +905,9 @@ input[type=checkbox] {
     margin-left: -30px;
 
 }
-
+.dropdown-menu>.active>a {
+    background-color: #afcbda;
+}
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #999;
     font-style: italic;

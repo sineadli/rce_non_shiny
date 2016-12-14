@@ -8,7 +8,7 @@
 *   Contract No. ED-OOS-15-C-0053.
 *******************************************************************************/
 
-// routes/wizardRoutes.js
+// routes/coachRoutes.js
 // load up things we need
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
@@ -16,7 +16,7 @@ var getAllEvaluations = require('../middleware/getAllEvaluations.js');
 var noCache = require('../middleware/noCache.js');
 var recordURL = require('../middleware/recordURL.js');
 
-var WizardStep = require('../models/wizardStep'),
+var CoachStep = require('../models/coachStep'),
     Tool = require('../models/tool.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
 var sess;
@@ -52,26 +52,26 @@ module.exports = function (app, passport) {
     });
 
 
-    app.get('/wizard',  getCurrentEvaluation, function (req, res) {
+    app.get('/coach',  getCurrentEvaluation, function (req, res) {
 		sess = req.session;
 		//console.log(sess.eval);
 		//console.log(sess);
 		if (!sess.step) { sess.step = 1 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
       
-        WizardStep.find(function (err, wizardSteps) {
+        CoachStep.find(function (err, coachSteps) {
 			if (err) {
                 res.status(500).send(err);
             }
 			else {
-				//console.log(wizardSteps);
+				//console.log(coachSteps);
 				
-                res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval });
+                res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval });
             }
         });
 
     });
-    app.get('/wizard/:id', function (req, res) {
+    app.get('/coach/:id', function (req, res) {
         sess = req.session;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
@@ -79,44 +79,47 @@ module.exports = function (app, passport) {
             sess.last_tool = "none";
             req.user.evalid = eval._id;
             req.user.save();
-            WizardStep.find(function (err, wizardSteps) {
+            CoachStep.find(function (err, coachSteps) {
                 if (err) {
                     res.status(500).send(err);
                 }
                 else {
-                    //console.log(wizardSteps);
-                    res.render('wizard.html', { user: req.user.local.email, wizardSteps: wizardSteps, eval: sess.eval});
+                    //console.log(coachSteps);
+                    res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval});
                 }
             });
         });
     });
 
-    // this is for returning the partial view tool.html on the wizard.html
-    app.get('/tools/:wizardPath',  function (req, res) {
-        //console.log(req.params.wizardPath);
-        sess = req.session;
-        var wizardStep;
-      
-        WizardStep.findOne({ step: req.params.wizardPath }, function (err, wizard) {
+	// this is for returning the partial view tool.html on the coach.html
+	app.get('/tools/:coachStep', function (req, res) {
+		//console.log(req.params.coachStep);
+		sess = req.session;
+		var coachStep;
+		
+		CoachStep.findOne({ step: req.params.coachStep }, function (err, coach) {
 			if (err) {
-                res.status(500).send(err);
-            }
-            else {
-              // console.log(wizardStep);
-                wizardStep = wizard;
-                Tool.find({ wizardPath: req.params.wizardPath }, function (err, tools) {
-                    if (err) {
-
-                        res.status(500).send(err);
-                    }
+				res.status(500).send(err);
+			}
+			else {
+				// console.log(CoachStep);
+				coachStep = coach;
+				Tool.find({ coachStep: req.params.coachStep }, function (err, tools) {
+					if (err) {
+						
+						res.status(500).send(err);
+					}
 					else {
-						tools.sort(dynamicSort("step"));
-                        res.render('partials/tool.html', { wizardStep: wizardStep, tools: tools, eval:sess.eval });
-                    }
-                });
-            }
-        });
-    });
+						// if (coachStep.step === 5 && eval.evalPath !=="") { tools = tools.filter(function (x) { return x.evalPath === sess.eval.evalPath; }); console.log(tools);}
+						
+						tools.sort(dynamicSort("order"));
+						res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval });
+					}
+				});
+			}
+		});
+	});
+
 
     //this route is update evaluation object, it is called from dashboard.html and wizard.html
     //new or change title only

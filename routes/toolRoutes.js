@@ -27,11 +27,13 @@ module.exports = function (app, passport) {
 		sess = req.session;
 		sess.eval.last_step = 2;
 		sess.eval.last_tool = "The Basics";
+	//	console.log(eval.basics);
 		res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
 	});
 	app.post('/basics', function (req, res) {
 		sess = req.session;
 		var obj = req.body, basics;
+	//	console.log(obj);
 	    var toolName = "The Basics";
 		var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
 		var dt = new Date();
@@ -41,17 +43,17 @@ module.exports = function (app, passport) {
 					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
 						if (!eval) {
 							req.flash('error', 'No evaluation exists.');
-							return res.redirect('/wizard');
+							return res.redirect('/coach');
 						}
 						if (err) {
 							console.log(err);
-							return res.redirect('/wizard');
+							return res.redirect('/coach');
 						}
 						return done(err, eval);
 					});
 				}
 				else
-					res.redirect('/wizard');
+					res.redirect('/coach');
 			},
 			function (eval, done) {
 				//eval find so update the toolsVisisted accordingly
@@ -107,20 +109,21 @@ module.exports = function (app, passport) {
 						return res.redirect('/basics');
 					}
 					else {
-						return res.redirect('/wizard');
+						return res.redirect('/coach');
 					}
                     
 				});
 			}
 		], function (err) {
 			if (err) return next(err);
-			res.redirect('/wizard');
+			res.redirect('/coach');
 		});
 	});
 	
 
     //02.03 determine your approach
-    app.get('/determine_your_approach',   function (req, res) {
+	app.get('/determine_your_approach', function (req, res) {
+	//	console.log("In DYA get method.");
         sess = req.session;
         sess.eval.last_step = 2;
         sess.eval.last_tool = "Determine Your Approach";
@@ -131,24 +134,24 @@ module.exports = function (app, passport) {
         var obj = req.body, probAppr;
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
         var dt = new Date();
-        // console.log(sess.eval)
+        console.log(obj);
         async.waterfall([
             function (done) {
                 if (sess.eval) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
                             req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         if (err) {
                             console.log(err);
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         return done(err, eval);
                     });                      
                 }
                 else
-                    res.redirect('/wizard');                     
+                    res.redirect('/coach');                     
             },
             function (eval, done) {
                 //eval find so update the toolsVisisted accordingly
@@ -169,19 +172,19 @@ module.exports = function (app, passport) {
                 //add/update the probAppr within eval
                 if (!eval.probAppr) {
                     probAppr = {
-						"Prob_Appr_Current_or_New": obj.Prob_Appr_Current_or_New, 
-						"Prob_Appr_All_Using": obj.Prob_Appr_All_Using,
-						"Prob_Appr_Can_Group": obj.Prob_Appr_Can_Group, 
-						"Prob_Appr_How_Choose": obj.Prob_Appr_How_Choose,
+						"Appr_Current_or_New": obj.Appr_Current_or_New, 
+						"Appr_All_Using": obj.Appr_All_Using,
+						"Appr_Can_Group": obj.Appr_Can_Group, 
+						"Appr_How_Choose": obj.Appr_How_Choose,
                         "created_at":dt
                     };
                 }
                 else {
                     probAppr = {
-						"Prob_Appr_Current_or_New": obj.Prob_Appr_Current_or_New, 
-						"Prob_Appr_All_Using": obj.Prob_Appr_All_Using,
-						"Prob_Appr_Can_Group": obj.Prob_Appr_Can_Group, 
-						"Prob_Appr_How_Choose": obj.Prob_Appr_How_Choose,
+						"Appr_Current_or_New": obj.Appr_Current_or_New, 
+						"Appr_All_Using": obj.Appr_All_Using,
+						"Appr_Can_Group": obj.Appr_Can_Group, 
+						"Appr_How_Choose": obj.Appr_How_Choose,
                         "created_at": eval.probAppr.created_at, "updated_at": dt
                     };
                 }
@@ -198,14 +201,14 @@ module.exports = function (app, passport) {
                         return res.redirect('/determine_your_approach');
                     }
                     else {
-                        return res.redirect('/wizard');
+                        return res.redirect('/coach');
                     }
                     
                 });
             }
         ], function (err) {
             if (err) return next(err);
-            res.redirect('/wizard');
+            res.redirect('/coach');
         });
 	});
 	
@@ -268,8 +271,9 @@ module.exports = function (app, passport) {
 		});
 	});
 
-    app.get('/craft_your_research_q',  function (req, res) {
-        sess = req.session;
+	app.get('/craft_your_research_q', function (req, res) {	   
+		sess = req.session;
+	//	console.log(sess.eval);
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Craft Your Research Question";
         res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
@@ -288,17 +292,17 @@ module.exports = function (app, passport) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
                             req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         if (err) {
                             console.log(err);
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         return done(err, eval);
                     });
                 }
                 else
-                    res.redirect('/wizard');
+                    res.redirect('/coach');
             },
             function (eval, done) {
 				eval.last_step = 3;
@@ -316,22 +320,24 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
-                //add/update the planQuestion within eval
-                if (!eval.planQuestion) {
+				//add/update the planQuestion within eval
+				eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
+				eval.basics.Basics_Outcome = obj.Basics_Outcome;
+				if (!eval.planQuestion) {
+				   
                     planQuestion = {
-                        "Plan_Question_A": obj.Plan_Question_A, "Plan_Question_B_1": obj.Plan_Question_B_1,
-                        "Plan_Question_B_Other": obj.Plan_Question_B_Other, "Plan_Question_B_2": obj.Plan_Question_B_2,
-                        "Plan_Question_B_3": obj.Plan_Question_B_3, "Plan_Question_C": obj.Plan_Question_C,
-                        "Plan_Question_D": obj.Plan_Question_D, "created_at": dt
+                        "Outcome_Measure": obj.Outcome_Measure,
+						"Outcome_Direction": obj.Outcome_Direction, 
+						"Intervention_Group_Desc": obj.Intervention_Group_Desc,
+                        "Comparison_Group_Desc": obj.Comparison_Group_Desc, "created_at": dt
                     };
                 }
                 else {
                     planQuestion = {
-                        "Plan_Question_A": obj.Plan_Question_A, "Plan_Question_B_1": obj.Plan_Question_B_1,
-                        "Plan_Question_B_Other": obj.Plan_Question_B_Other, "Plan_Question_B_2": obj.Plan_Question_B_2,
-                        "Plan_Question_B_3": obj.Plan_Question_B_3, "Plan_Question_C": obj.Plan_Question_C,
-                        "Plan_Question_D": obj.Plan_Question_D,
-                        "created_at": eval.planQuestion.created_at, "updated_at": dt
+						"Outcome_Measure": obj.Outcome_Measure,
+						"Outcome_Direction": obj.Outcome_Direction, 
+						"Intervention_Group_Desc": obj.Intervention_Group_Desc,
+						"Comparison_Group_Desc": obj.Comparison_Group_Desc, "updated_at": dt
                     };
                 }
                 eval.planQuestion = planQuestion;
@@ -346,13 +352,13 @@ module.exports = function (app, passport) {
                         return res.redirect('/craft_your_research_q');
                     }
                     else {
-                        return res.redirect('/wizard');
+                        return res.redirect('/coach');
                     }
                 });
             }
         ], function (err) {
             if (err) return next(err);
-            res.redirect('/wizard');
+            res.redirect('/coach');
         });
     });
     //03.02 plan next steps
@@ -375,17 +381,17 @@ module.exports = function (app, passport) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
                             req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         if (err) {
                             console.log(err);
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         return done(err, eval);
                     });
                 }
                 else
-                    res.redirect('/wizard');
+                    res.redirect('/coach');
             },
             function (eval, done) {
 				eval.last_step = 3;
@@ -403,24 +409,40 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
-                //add/update the planQuestion within eval
-                if (!eval.planNext) {
+				//add/update the planQuestion within eval
+				eval.planQuestion.Outcome_Measure = obj.Outcome_Measure; // measure
+				eval.planQuestion.Outcome_Direction = obj.Outcome_Direction; // direction
+				if (!eval.planNext) {
                     planNext = {
-                        "Plan_Next_A_1": obj.Plan_Next_A_1, "Plan_Next_A_2": obj.Plan_Next_A_2,
-                        "Plan_Next_A_3": obj.Plan_Next_A_3, "Plan_Next_A_4": obj.Plan_Next_A_4,
-                        "Plan_Next_B": obj.Plan_Next_B, "Plan_Next_C_1": obj.Plan_Next_C_1,
-                        "Plan_Next_C_2": obj.Plan_Next_C_2, "Plan_Next_D_1": obj.Plan_Next_D_1,
-			            "Plan_Next_D_2": obj.Plan_Next_D_2, "Plan_Next_D_3": obj.Plan_Next_D_3,
+						"Tech_Cost_Saves": obj.Tech_Cost_Saves,
+						"Tech_Amount": obj.Tech_Amount,
+						"Tech_Cost_User": obj.Tech_Cost_User, 
+						"Tech_Cost_Desc": obj.Tech_Cost_Desc,
+						"Measure_Units" : obj.Measure_Units,
+						"Measure_Units_Other" : obj.Measure_Units_Other,
+						"Success_Effect_Size": obj.Success_Effect_Size, 
+						"Pass_Probability": obj.Pass_Probability,
+						"Fail_Probability": obj.Fail_Probability, 
+						"Action_Success": obj.Action_Success,
+						"Action_Fail": obj.Action_Fail,
+						"Action_Inconclusive": obj.Action_Inconclusive,
                         "created_at": dt
                     };
                 }
                 else {
                     planNext = {
-                        "Plan_Next_A_1": obj.Plan_Next_A_1, "Plan_Next_A_2": obj.Plan_Next_A_2,
-                        "Plan_Next_A_3": obj.Plan_Next_A_3, "Plan_Next_A_4": obj.Plan_Next_A_4,
-                        "Plan_Next_B": obj.Plan_Next_B, "Plan_Next_C_1": obj.Plan_Next_C_1,
-                        "Plan_Next_C_2": obj.Plan_Next_C_2, "Plan_Next_D_1": obj.Plan_Next_D_1,
-			            "Plan_Next_D_2": obj.Plan_Next_D_2, "Plan_Next_D_3": obj.Plan_Next_D_3,
+						"Tech_Cost_Saves": obj.Tech_Cost_Saves,
+						"Tech_Amount": obj.Tech_Amount,
+						"Tech_Cost_User": obj.Tech_Cost_User, 
+						"Tech_Cost_Desc": obj.Tech_Cost_Desc,
+						"Measure_Units" : obj.Measure_Units,
+						"Measure_Units_Other" : obj.Measure_Units_Other,
+						"Success_Effect_Size": obj.Success_Effect_Size, 
+						"Pass_Probability": obj.Pass_Probability,
+						"Fail_Probability": obj.Fail_Probability, 
+						"Action_Success": obj.Action_Success,
+						"Action_Fail": obj.Action_Fail,
+						"Action_Inconclusive": obj.Action_Inconclusive,
                         "created_at": eval.planNext.created_at, "updated_at": dt
                     };
                 }
@@ -436,13 +458,13 @@ module.exports = function (app, passport) {
                         return res.redirect('/plan_next_steps');
                     }
                     else {
-                        return res.redirect('/wizard');
+                        return res.redirect('/coach');
                     }
                 });
             }
         ], function (err) {
             if (err) return next(err);
-            res.redirect('/wizard');
+            res.redirect('/coach');
         });
     });
     //03.03 context and usage
@@ -464,17 +486,17 @@ module.exports = function (app, passport) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
                             req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         if (err) {
                             console.log(err);
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         return done(err, eval);
                     });
                 }
                 else
-                    res.redirect('/wizard');
+                    res.redirect('/coach');
             },
             function (eval, done) {
 				eval.last_step = 3;
@@ -526,13 +548,13 @@ module.exports = function (app, passport) {
                         return res.redirect('/context_and_usage');
                     }
                     else {
-                        return res.redirect('/wizard');
+                        return res.redirect('/coach');
                     }
                 });
             }
         ], function (err) {
             if (err) return next(err);
-            res.redirect('/wizard');
+            res.redirect('/coach');
         });
     });
     app.get('/matching', isLoggedIn, function (req, res) {
@@ -545,7 +567,8 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.step = 5;      
-        var obj = req.body;
+		var obj = req.body;
+        console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -553,17 +576,17 @@ module.exports = function (app, passport) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
                             req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         if (err) {
                             console.log(err);
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         return done(err, eval);
                     });
                 }
                 else
-                    res.redirect('/wizard');
+                    res.redirect('/coach');
             },
             function (eval, done) {
                 eval.last_step = 5;
@@ -580,15 +603,15 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.splice(index, 1);
                         eval.toolsvisited.push(toollist);
                     }
-                }
-                if (!eval.matching) {
-                    matching = {
-                        "Q_M_1": obj.Q_M_1,
-                        "Q_M_2": obj.Q_M_2,
-                        "Q_9": obj.Q_9,
-                        "treat_var": obj.treat_var,
-                        "match_vars": obj.match_vars,
-                        "grade_var": obj.grade_var,
+				}
+				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
+				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
+				if (!eval.matching) {				
+                    matching = {      
+                        "Target_Group_Desc": obj.Target_Group_Desc,
+                        "treat_var": obj.s-treat_var,
+                        "match_vars": obj.s-match_vars,
+                        "grade_var": obj.s-grade_var,
                         "n_full": obj.n_full,
                         "n_full_treat": obj.n_full_treat,
                         "n_matched": obj.n_matched,
@@ -599,19 +622,16 @@ module.exports = function (app, passport) {
                     };
                 }
 				else {
-					
-                    matching = {
-                        "Q_M_1": obj.Q_M_1,
-                        "Q_M_2": obj.Q_M_2,
-                        "Q_9": obj.Q_9,
-                        "treat_var": obj.treat_var,
-                        "match_vars": obj.match_vars,
-                        "grade_var": obj.grade_var,
-                        "n_full": obj.n_full,
-                        "n_full_treat": obj.n_full_treat,
-                        "n_matched": obj.n_matched,
-                        "n_matched_treat": obj.n_matched_treat,
-                        "Result": obj.result,
+					matching = {
+						"Target_Group_Desc": obj.Target_Group_Desc,
+						"s_treat_var": obj.s_treat_var,
+						"s_match_vars": obj.s_match_vars,
+						"s_grade_var": obj.s_grade_var,
+						"n_full": obj.n_full,
+						"n_full_treat": obj.n_full_treat,
+						"n_matched": obj.n_matched,
+						"n_matched_treat": obj.n_matched_treat,
+						"Result": obj.result,
                         "created_at": eval.matching.created_at, "updated_at": dt
                     };
                 }
@@ -630,15 +650,21 @@ module.exports = function (app, passport) {
                         return res.redirect('/matching');
                     }
                     else {
-                        return res.redirect('/wizard');
+                        return res.redirect('/coach');
                     }
                 });
             }
         ], function (err) {
             if (err) return next(err);
-            res.redirect('/wizard');
+            res.redirect('/coach');
         });
-    });
+	});
+	app.get('/randomization', isLoggedIn, function (req, res) {
+		sess = req.session;
+		sess.eval.last_step = 4;
+		sess.eval.last_tool = "Randomization";
+		res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+	});
     app.get('/getresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;
@@ -661,17 +687,17 @@ module.exports = function (app, passport) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
                             req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         if (err) {
                             console.log(err);
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         return done(err, eval);
                     });
                 }
                 else
-                    res.redirect('/wizard');
+                    res.redirect('/coach');
             },
             function (eval, done) {
                 eval.last_step = 5;
@@ -689,10 +715,10 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
 				}
-				eval.planQuestion.Plan_Question_B_2 = obj.Plan_Question_B_2;
-				eval.planQuestion.Plan_Question_B_3 = obj.Plan_Question_B_3;
-				eval.planNext.Plan_Next_B= obj.Plan_Next_B;
-				eval.planNext.Plan_Next_C_1= obj.Plan_Next_C_1;
+				eval.planQuestion.Outcome_Measure = obj.Outcome_Measure;
+				eval.planQuestion.Outcome_Direction = obj.Outcome_Direction;
+				eval.planNext.Success_Effect_Size= obj.Success_Effect_Size;
+				eval.planNext.Pass_Probability= obj.Pass_Probability;
 				if (!eval.getresult) {
 					getresult = {
 						
@@ -723,13 +749,13 @@ module.exports = function (app, passport) {
                         return res.redirect('/getresult');
                     }
                     else {
-                        return res.redirect('/wizard');
+                        return res.redirect('/coach');
                     }
                 });
             }
         ], function (err) {
             if (err) return next(err);
-            res.redirect('/wizard');
+            res.redirect('/coach');
         });
     });
     app.get('/shareresult', function (req, res) {
@@ -750,17 +776,17 @@ module.exports = function (app, passport) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
                             req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         if (err) {
                             console.log(err);
-                            return res.redirect('/wizard');
+                            return res.redirect('/coach');
                         }
                         return done(err, eval);
                     });
                 }
                 else
-                    res.redirect('/wizard');
+                    res.redirect('/coach');
             },
             function (eval, done) {
                 eval.last_step = 6;
@@ -790,13 +816,13 @@ module.exports = function (app, passport) {
                         return res.redirect('/shareresult');
                     }
                     else {
-                        return res.redirect('/wizard');
+                        return res.redirect('/coach');
                     }
                 });
             }
         ], function (err) {
             if (err) return next(err);
-            res.redirect('/wizard');
+            res.redirect('/coach');
         });
     });
 };

@@ -1,0 +1,57 @@
+﻿/* it will work better with this box-sizing, you may adapt it to your needs */
+/*html { box-sizing: border-box; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}*/
+
+.simple-tooltip-container {
+  position: relative;
+}
+ 
+.simple-tooltip-tooltip {
+  position: absolute;
+  z-index: 666;
+  top: 50%;
+  left: 50%;
+  width: 15em;
+  
+  background: #fff;
+  background: rgba (255, 255, 255, .9);
+  border: 1px solid #882525;
+  border-radius: .5em;
+  padding: 1em;
+  text-align: left;
+}
+.simple-tooltip-tooltip__title {
+  margin: 0;
+  line-height: 1;
+}
+.simple-tooltip-tooltip p {
+  font-size: 1em;
+}
+.simple-tooltip-tooltip__close {
+  float: right;
+  /** fix typo inputs **/
+  font-family: inherit;
+  font-size: 1em;
+  background: #882525;
+  color: #fff;
+  border-radius: 1em;
+}
+
+/* it can be easily adapted in media-queries for tablets/mobile */
+
+/* for this example: tablets */
+@media (max-width: 55.625em) {
+
+  .simple-tooltip-container {
+    position: static;
+	
+  }
+  .simple-tooltip-tooltip {
+    position: static;
+	width: auto;
+	margin-top: 1em;
+  }
+  
+}
