@@ -398,7 +398,7 @@
             </div>
         </div>
 
-        <% if (user != "NOAUTHENTICATED") { %>
+        <% if (user != "NOAUTHENTICATED" && !query.peeking ){ %>
         <div class="bottom-buttons">
             <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
             <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>

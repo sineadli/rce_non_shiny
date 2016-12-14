@@ -71,7 +71,7 @@
                     </div>
                     <div class="tool-view-btn">
 
-                        <% var option=""; if (tools[i].path) {option=tools[i].path;} %>
+                        <% var option=""; if (tools[i].path) {option=tools[i].path; if (lock==="locked") option=tools[i].path + "?peeking=1"} %>
                         <% if (option.indexOf(".pdf") !== -1) { %>
                         <!--<button type="button" id="viewpdf" class="btn btn-primary btn-lg" >VIEW</button>-->
                         <a id="viewpdf" class="tool-view-button btn btn-primary btn-lg" href="#">VIEW <span class="fa fa-download" aria-hidden="true"></span></a>
