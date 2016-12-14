@@ -19,7 +19,8 @@
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/main.css" />
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
@@ -40,7 +41,7 @@
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/wizard"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
+        <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
     </ol>
     <% if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
@@ -49,7 +50,26 @@
  <% if (user != "NOAUTHENTICATED") { %>
     <% include ../views/partials/toolHeader.html %>
     <% } %>
-  
+    <%
+    var Basics_Outcome ='';
+    var Basics_Outcome_Other ='';
+    var Basics_Users ='users';
+    var Basics_Users_Others ='';
+    var Basics_Tech_Name ='the educational technology';
+    if (user != "NOAUTHENTICATED")
+    {
+    if (eval.basics)
+    {
+    Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+    Basics_Outcome = eval.basics.Basics_Outcome;
+    if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+    Basics_Users_Others = eval.basics.Basics_Users_Others;
+    Basics_Users = eval.basics.Basics_Users;
+    if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+    Basics_Tech_Name = eval.basics.Basics_Tech_Name
+    }
+    }
+    %>
     <input type="hidden" id="user_email" value="<%= user %>" />
 <div class="container-fluid">
 <div class="row">
@@ -62,7 +82,7 @@
             <div class=" clearfix"></div>
             <div class="tool-intro">
                 <p>
-                    Your <span data-toggle="tooltip" title="an answerable question about a specific effect resulting from the educational technology" class='tooltip-gr'>research question</span> will drive the rest of your study. A good question has four building blocks, which we call the "A, B, C, D's". Click on sections A through D below to see examples, read a description, and build your own question, piece by piece.
+                    Your <span data-toggle="tooltip" title="an answerable question about a specific effect resulting from the educational technology" class='tooltip-gr'>research question</span> will drive the rest of your study. A good question has four building blocks, which we call the "A, B, C, D's". 
                 </p>
             </div>
         </div>
@@ -82,8 +102,8 @@
 <div class="row">
 <div class="col-xs-12">
     <div class="tool-instructions">
-        <p>Answer the 4 questions below to see an automatically generated research question.</p>
-        <p><strong>NOTE:</strong> Make sure you do not include any personally identifiable information, such as names (teachers or students) or descriptors that would reveal who your participants are.
+        <p>Answer the questions in sections A through D below to build your own question, piece by piece. Check "Things to consider" and the "Examples" if you need help answering a question.</p>
+        <p class="note"><strong>NOTE:</strong> Make sure you do not include any personally identifiable information, such as names (teachers or students) or descriptors that would reveal who your participants are.
         </p>
     </div>
 </div>
@@ -98,8 +118,17 @@
 <div id="A" class="row collapse in  q-row">
     <div class="col-xs-7">
         <div class="step-action">
-            <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.planQuestion) {a = eval.planQuestion.Plan_Question_A} } %>
-            <textarea name="Plan_Question_A" id="Plan_Question_A" placeholder="Ex., eZumi Learning"><%= a %></textarea>
+            <% var Basics_Tech_Name ='';
+            if (user != "NOAUTHENTICATED") {
+            if (eval.basics) {
+            Basics_Tech_Name = eval.basics.Basics_Tech_Name
+            } 
+            } %>
+            <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
+            <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
+            <p class="prev-answer">You answered this question previously in <a href="/basics">The Basics</a>
+            </p>
+            <% }} %>
         </div>
     </div>
 </div>
@@ -118,55 +147,62 @@
             </p>
         </div>
         <div class="step-action">
-            <select required name="Plan_Question_B_1" id="Plan_Question_B_1">
+            <select required name="Basics_Outcome" id="Basics_Outcome">
                 <%
-                var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","other" ];
+                var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
                 for ( var i = 0; i < options.length; i++ )
                 {
                 var selected;
-                if (user != "NOAUTHENTICATED"){ if (eval.planQuestion) { selected = ( eval.planQuestion.Plan_Question_B_1== options[i] ) ? "selected" : "";}}
+                if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
 
-               
+
                 %>
-                <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
+                <option value="<%=options[i] %>" <%=selected %> ><%=options[i] %></option>
+                <%
                 }
                 %>
 
             </select>
-            <div id="Question_B_Other" hidden="true">
+            <div id="Question_Outcome_Other" hidden="true">
                 <p>
-                    <label for="Plan_Question_B_Other">Please specify:</label>
-                    <% var val=''; if (user != "NOAUTHENTICATED"){ if (eval.planQuestion) {val = eval.planQuestion.Plan_Question_B_Other }} %>
-                    <input type="text" name='Plan_Question_B_Other' id="Plan_Question_B_Other" value="<%= val %>"/>
+                    <label for="Basics_Outcome_Other">Please specify:</label>
+                 
+                    <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>"/>
                 </p>
             </div>
+            <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
+            <p class="prev-answer">
+                You answered this question previously in <a href="/basics">The Basics</a>
+            </p>
+            <% }} %>
         </div>
         <div class="step-subquestion">
-            <p>What measure will you use to test whether there was an effect?</p>
+            <p>What is the direction of intended change? </p>
         </div>
         <div class="step-action">
-            <% var b2 =''; if (user != "NOAUTHENTICATED") { if (eval.planQuestion) {b2 = eval.planQuestion.Plan_Question_B_2 }} %>
-            <textarea name="Plan_Question_B_2" id="Plan_Question_B_2" placeholder="Ex., midyear math assessment"><%= b2 %></textarea>
-        </div>
-        <div class="step-subquestion">
-            <p>What is the direction of intended change?</p>
-        </div>
-        <div class="step-action">
-            <select required name="Plan_Question_B_3" id="Plan_Question_B_3">
+            <select required name="Outcome_Direction" id="Outcome_Direction">
                 <%
                 var options = ["Select an option", "increase", "decrease" ];
                 for ( var i = 0; i < options.length; i++ )
                 {
                 var selected;
                 if  (user != "NOAUTHENTICATED") {
-                if (eval.planQuestion) { selected = ( eval.planQuestion.Plan_Question_B_3== options[i] ) ? "selected" : "";}}
+                if (eval.planQuestion) { selected = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";}}
                 %>
-                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                 }
                 %>
 
             </select>
         </div>
+        <div class="step-subquestion">
+            <p>What measure will you use to test whether there was an effect?</p>
+        </div>
+        <div class="step-action">
+           
+            <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
+        </div>
+        
     </div>
 
     <div class="col-xs-5">
@@ -184,7 +220,8 @@
                     </div>
                     <div id="consider2" class="panel-collapse collapse in">
                         <p>
-                            It's important to think how you are going to measure the outcome that you want to affect.
+                            An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (e.g. engaging with the educational technology).
+                            We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
                         </p>
                     </div>
                 </div>
@@ -222,8 +259,8 @@
 <div id="C" class="row collapse in  q-row">
     <div class="col-xs-7">
         <div class="step-action">
-            <% var c =''; if  (user != "NOAUTHENTICATED") { if (eval.planQuestion) {c = eval.planQuestion.Plan_Question_C } }%>
-            <textarea name="Plan_Question_C" id="Plan_Question_C" placeholder="Ex., 5th grade English learners"><%= c %></textarea>
+        
+            <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" placeholder="Ex., 5th grade English learners"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
         </div>
     </div>
     <div class="col-xs-5">
@@ -240,7 +277,7 @@
                     </div>
                     <div id="consider3" class="panel-collapse collapse in">
                         <p>
-                            What group of individuals are you trying to affect? For example, students may be using the technology to increase their own achievement or teachers could be using the technology to increase their students' achievement. In both cases, the answer to Part C would be: students.
+                            What group of individuals are you trying to affect? For example, students may be using the technology to increase their own achievement or teachers could be using the technology to increase their students' achievement. In both cases you are hoping to see results among students.
                         </p>
                     </div>
                 </div>
@@ -276,8 +313,8 @@
     <div id="D" class="row collapse in q-row">
         <div class="col-xs-7">
             <div class="step-action">
-                <% var d =''; if  (user != "NOAUTHENTICATED") { if (eval.planQuestion) {d = eval.planQuestion.Plan_Question_D }} %>
-                <textarea name="Plan_Question_D" id="Plan_Question_D" placeholder="Ex., other 5th grade English Learners with no access to eZumi Learning"><%= d %></textarea>
+           
+                <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" placeholder="Ex., other 5th grade English Learners with no access to eZumi Learning"><%= eval.planQuestion.Comparison_Group_Desc  %></textarea>
             </div>
         </div>
         <div class="col-xs-5">
@@ -322,8 +359,7 @@
     </div>
     <div class="row">
         <div class="col-xs-7">
-
-            <em>DOES <strong><span class='q1answer'>A</span></strong> <span class='q12aanswer'>DO</span> <strong><span class='q11answer'>B</span></strong> AMONG <strong><span class='q8answer'>C</span></strong> COMPARED TO <strong><span class='qdanswer'>D</span></strong>?</em>
+            <em> DOES <strong><%= Basics_Tech_Name %></strong> <span class='change-direction'>DO</span> <strong><span class='eval-outcome'></span> <span class="effect-measure"></span></strong> AMONG <strong><span class='treatment-group'>C</span></strong> COMPARED TO <strong><span class='comparison-group'>D</span></strong>?</em>
         </div>
         <div class="col-xs-5">
             <div class="step-to-consider">
@@ -365,40 +401,47 @@
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
     <script>
-    $(document).ready(function () {
-        var a = $("#Plan_Question_A").val();
-        if (a === "") {
-            a = "A";
+        $(document).ready(function () {
+
+        var tech = $("#Basics_Tech_Name").val();
+        if (tech === "") {
+            tech = "A";
         }
-        var c = $("#Plan_Question_C").val();
-        if (c === "") {
-            c = "C";
+       
+        var outcome = $("#Basics_Outcome").val();
+        if ($("#Basics_Outcome").val().toLowerCase() === "other") {
+            outcome = $("#Basics_Outcome_Other").val();
         }
-        var b = $("#Plan_Question_B_1").val();
-        var b1 = $("#Plan_Question_B_2").val();
-        if (b === "Select an option") {
-            b = "B";
+        var measure = $("#Outcome_Measure").val();
+        if (outcome === "Select an option") {
+            outcome = "B";
         }
         else
         {
-            if (b1) { b = b + " as measured by " + b1; }
+            if (measure) { measure =  " as measured by " + measure; }
         }
-        var dot = $("#Plan_Question_B_3").val();
-        if (dot === "Select an option") {
-            dot = "DO";
+
+        var direction = $("#Outcome_Direction").val();
+        if (direction === "Select an option") {
+            direction = "DO";
         }
-        if ($("#Plan_Question_B_1").val().toLowerCase() === "other") {
-            var b = $("#Plan_Question_B_Other").val();
+     
+        var cgroup = $("#Comparison_Group_Desc").val();
+        if (cgroup === "") {
+            cgroup = "D";
         }
-        var d = $("#Plan_Question_D").val();
-        if (d === "") {
-            d = "D";
+
+        var tgroup = $("#Intervention_Group_Desc").val();
+        if (tgroup === "") {
+            tgroup = "C";
         }
-        $(".q11answer").text(b);
-        $('.q1answer').text(a);
-        $('.q12aanswer').text(dot);
-        $('.q8answer').text(c);
-        $('.qdanswer').text(d);
+
+        $(".eval-outcome").text(outcome);
+        $('.effect-measure').text(measure);
+        $('.tech-name').text(tech);
+        $('.change-direction').text(direction);
+        $('.treatment-group').text(tgroup);
+        $('.comparison-group').text(cgroup);
 
 
         //init feedback_me plugin

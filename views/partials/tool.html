@@ -1,21 +1,18 @@
 ﻿<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
-
 <!-- views/partials/tool.html -->
 
 <div class="row">
     <div class="step-row">
         <div class="col-xs-12">
-            <h1><%= wizardStep.name %></h1>
-            <p><%= wizardStep.intro %></p>
+            <h1><%= coachStep.name %></h1>
+            <p><%= coachStep.intro %></p>
         </div>
     </div>
 </div>
@@ -25,17 +22,24 @@
         var divid = "ToolDiv-"+tools[i].step;
         var statusdivid = "StatusDiv" + tools[i].step;
         var tool =[], status = "NOT STARTED", d = "", btnText = "START";
+        var peeking=false, firstTool =false;
+        var lock = "";
+        if (eval.flag == 1) { peeking =true; }
+        if (tools[i].name==="The Basics") firstTool=true;
         if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
 
         if (tool.length > 0) {
 
-                 status = tool[0].status;                 
-                 d=new Date(tool[0].visited_at)
-                 if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}
-                }
-        }       
+        status = tool[0].status;
+        d=new Date(tool[0].visited_at)
+        if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}
+        }
+        }       //tool visited
+
         var current = eval.last_tool == tools[i].name ? "current" : "";
-        var buttondivid = tools[i].name;      
+        var buttondivid = tools[i].name;
+        if (peeking && !firstTool || (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path)) {btnText="PEEKING"; lock="locked"}
+        <!--if (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path ){peeking=true; lock="locked";}-->
         %>
         <div class="col-xs-3">
 
@@ -44,8 +48,7 @@
                     <%
                     if (status.toLowerCase()=="completed" && tools[i].type.toLowerCase() == "guide") { status = "Viewed";}
                     %>
-                    <p class="sec-label"><%= tools[i].type %></p>
-                    <h2><%= tools[i].name %> </h2>
+                    <h2 class="<%= tools[i].type %> <%= lock %>"><%= tools[i].name %> </h2>
                     <p><%= tools[i].desc %></p>
                 </div>
                 <div class="tool-bottom">
@@ -57,13 +60,16 @@
                         </p>
 
                         <% } %>
-                   
+
+                       
+
+
                     </div>
                     <div class="tool-view-btn">
 
                         <% var option=""; if (tools[i].path) {option=tools[i].path;} %>
                         <% if (option.indexOf(".pdf") !== -1) { %>
-                  <!--<button type="button" id="viewpdf" class="btn btn-primary btn-lg" >VIEW</button>-->
+                        <!--<button type="button" id="viewpdf" class="btn btn-primary btn-lg" >VIEW</button>-->
                         <a id="viewpdf" class="tool-view-button btn btn-primary btn-lg" href="#">VIEW <span class="fa fa-download" aria-hidden="true"></span></a>
                         <% } else { %>
                         <a href="<%= option %>" class="tool-view-button btn btn-primary btn-lg"><%= btnText %></a>
@@ -74,25 +80,25 @@
         </div>
         <div>
             <input class="hidden" id="toolname" value="<%= tools[i].name  %>" />
-            <input class="hidden" id="toolpath" value="<%= tools[i].path  %>"/>
+            <input class="hidden" id="toolpath" value="<%= tools[i].path  %>" />
             <input class="hidden" id="toolstep" value="<%= tools[i].step  %>" />
             <input class="hidden" id="wizardpath" value="<%= tools[i].wizardPath  %>" />
         </div>
         <% } %>
 
         <div style="clear: both; line-height: 0">&nbsp;</div>
-      
-        
+
+
     </div>
 </div>
 <script>
     $("#viewpdf").click(function (e) {
-      
+
         var name = $("#toolname").val();
         var step = $("#wizardpath").val();
         var path = $("#toolpath").val();
         var currentStatus = $("#status").text();
-    
+
 
         $.ajax({
             type: "POST",
@@ -105,11 +111,11 @@
             dataType: "json",
             contentType: "application/json",
             success: function(eval, status, xhr) {
-               
+
                 if (eval.toolsvisited) {
                     tool = eval.toolsvisited.filter(function(x) { return x.name === $("#toolname").val() });
                     if (tool.length > 0) {
-                      
+
                         status = tool[0].status;
                         var usestatus = "";
                         if (status.toLowerCase() === "completed") {
@@ -127,12 +133,15 @@
 
             }
         });
-        
-            
+
+
         window.open($("#toolpath").val(), "_blank", "fullscreen=yes");
     });
-   
+
 </script>
+
+
+
 
 
 

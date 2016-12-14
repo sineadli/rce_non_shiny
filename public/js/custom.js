@@ -113,73 +113,87 @@ $(document).ready(function() {
 /*~~~~~~~~~~~~~~~~~~ craft_your_research_q.html ~~~~~~~~~~~~~~~~~~*/
 
 
-  $('#Plan_Question_B_1').change( function() {
+  $('#Basics_Outcome').change( function() {
     var value = $(this).val();
 
-    var otherSpecify = $("#Question_B_Other");
+    var otherSpecify = $("#Question_Outcome_Other");
 
     if (value.toLowerCase() === "other") otherSpecify.show();
     else otherSpecify.hide();
 
     if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
-        $(".q11answer").text(value);
+        $(".eval-outcome").text(value);
     }
     else {
-        $(".q11answer").text("B");
+        $(".eval-outcome").text("B");
     }
   });
 
-  $("#Plan_Question_B_Other").keyup( function() {
+  $("#Basics_Outcome_Other").keyup( function() {
     var value = $(this).val();
-    $(".q11answer").text(value);
+    $(".eval-outcome").text(value);
   });
 
+	/* Outcome Measure */
+  $('#Outcome_Measure').keyup(function () {
+	  var value = $(this).val();
+	  $('.effect-measure').text("as measured by " + value);
+  }); 
 
-  $('#Plan_Question_A').keyup( function() {
+
+  $('#Outcome_Direction').change( function() {
     var value = $(this).val();
-    $('.q1answer').text(value);
-  });
-
-  //$('#q11').change( function() {
-  //  var value = $(this).val();
-  //  $('.q11answer').text(value);
-  //});
-
-  $('#Plan_Question_B_3').change( function() {
-    var value = $(this).val();
-    $('.q12aanswer').text(value);
+    $('.change-direction').text(value);
   });  
 
-  $('#Plan_Question_C').keyup( function() {
+  $('#Intervention_Group_Desc').keyup( function() {
     var value = $(this).val();
-    $('.q8answer').text(value);
+    $('.treatment-group').text(value);
   });
 
-  $('#Plan_Question_D').keyup( function() {
+  $('#Comparison_Group_Desc').keyup( function() {
     var value = $(this).val();
-    $('.qdanswer').text(value);
+    $('.comparison-group').text(value);
   });    
 
+/*~~~~~~~~~~~~~~~~~~ plan_next_steps.html ~~~~~~~~~~~~~~~~~~*/
+  $('#Measure_Units').change(function () {
+	  var value = $(this).val();
 
-/*~~~~~~~~~~~~~~~~~~  plan_next_steps.html ~~~~~~~~~~~~~~~~~~*/
-  $('#dropdn-cost-saves').change( function() {
-    var value = $(this).val();
-    $('.cost-saves').text(value);
+	  var otherSpecify = $("#Question_Units_Other");
+
+	  if (value.toLowerCase() === "other") otherSpecify.show();
+	  else otherSpecify.hide();
+
+	  var munits = $("#Measure_Units").val();
+	  if (munits.toLowerCase === "other") {
+		  munits = $("#Measure_Units_Other").val();
+	  }
+	  if (munits === "" || munits.toLowerCase() === "select an option") {
+		  munits = "units";
+	  }
+	  $(".measure-units").text(munits);
+	  
   });
 
-  $('#QBD-1').change( function() {
-    var value = $(this).val();
-    $('.QBD-1').text(value);
+  $("#Measure_Units_Other").keyup(function () {
+	  var value = $(this).val();
+	  $(".measure-units").text(value);
   });
 
-  $('#QBD-2a').change( function() {
-    var value = $(this).val();
-    $('.QBD-2a').text(value);
+	 $('#Success_Effect_Size').change(function () {
+	  var value = $(this).val();
+	  $('.success-effect-size').text(value);
   });
 
-   $('#QBD-2b').change( function() {
-    var value = $(this).val();
-    $('.QBD-2b').text(value);
+	 $('#Pass_Probability').change(function () {
+	  var value = $(this).val();
+	  $('.prob-success').text(value);
+  });
+
+	 $('#Fail_Probability').change(function () {
+	  var value = $(this).val();
+	  $('.prob-failure').text(value);
   });
 
 $(document).ready(function(){

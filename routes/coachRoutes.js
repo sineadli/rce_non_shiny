@@ -64,8 +64,6 @@ module.exports = function (app, passport) {
                 res.status(500).send(err);
             }
 			else {
-				//console.log(CoachSteps);
-				
                 res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval });
             }
         });
@@ -79,46 +77,47 @@ module.exports = function (app, passport) {
             sess.last_tool = "none";
             req.user.evalid = eval._id;
             req.user.save();
-            CoachStep.find(function (err, CoachSteps) {
+            CoachStep.find(function (err, coachSteps) {
                 if (err) {
                     res.status(500).send(err);
                 }
                 else {
-                    //console.log(CoachSteps);
-                    res.render('coach.html', { user: req.user.local.email, CoachSteps: CoachSteps, eval: sess.eval});
+
+                    res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval});
+
                 }
             });
         });
     });
 
-    // this is for returning the partial view tool.html on the coach.html
-    app.get('/tools/:coachStep',  function (req, res) {
-        //console.log(req.params.coachStep);
-        sess = req.session;
-        var coachStep;
-      
-        CoachStep.findOne({ step: req.params.coachStep }, function (err, coach) {
+	// this is for returning the partial view tool.html on the coach.html
+	app.get('/tools/:coachStep', function (req, res) {
+		//console.log(req.params.coachStep);
+		sess = req.session;
+		var coachStep;
+		
+		CoachStep.findOne({ step: req.params.coachStep }, function (err, coach) {
 			if (err) {
-                res.status(500).send(err);
-            }
-            else {
-              // console.log(CoachStep);
-                coachStep = coach;
-                Tool.find({ coachStep: req.params.coachStep }, function (err, tools) {
-                    if (err) {
-
-                        res.status(500).send(err);
-                    }
-                    else {
-                       // if (coachStep.step === 5 && eval.evalPath !=="") { tools = tools.filter(function (x) { return x.evalPath === sess.eval.evalPath; }); console.log(tools);}
-                        
+				res.status(500).send(err);
+			}
+			else {
+				// console.log(CoachStep);
+				coachStep = coach;
+				Tool.find({ coachStep: req.params.coachStep }, function (err, tools) {
+					if (err) {
+						
+						res.status(500).send(err);
+					}
+					else {
+						// if (coachStep.step === 5 && eval.evalPath !=="") { tools = tools.filter(function (x) { return x.evalPath === sess.eval.evalPath; }); console.log(tools);}
+						
 						tools.sort(dynamicSort("order"));
-                        res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval:sess.eval });
-                    }
-                });
-            }
-        });
-    });
+						res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval });
+					}
+				});
+			}
+		});
+	});
 
     //this route is update evaluation object, it is called from dashboard.html and coach.html
     //new or change title only

@@ -74,7 +74,7 @@
                         </p>
                         <div>
                             <p class="text-center add-padding">
-                                <a class="text-right btn btn-primary" href="/wizard/<%= evals[i]._id %>" id="startEval">CONTINUE THIS EVALUATION</a> <br />
+                                <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval">CONTINUE THIS EVALUATION</a> <br />
                             </p>
 
                         </div>
@@ -109,7 +109,7 @@
                     dataType: "json",
                     contentType: "application/json",
                     success: function (data) {
-                        window.location = "/wizard";
+                        window.location = "/coach";
                     }
                 }).done(function (msg) {
 
