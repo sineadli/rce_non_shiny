@@ -49,7 +49,6 @@
         <% include ../views/partials/toolHeader.html %>
         <% } %>
 
-        <input type="hidden" id="user_email" value="<%= user %>" />
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -315,19 +314,10 @@
                     </div>
                 </div>
 
-            </div>
-            <% if  (user != "NOAUTHENTICATED") { %>
-            <div class="bottom-buttons">
-                <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
-                <button type="submit" class="complete btn btn-primary btn-lg" disabled="disabled">SAVE &amp; COMPLETE</button>
-            </div>
-            <% } %>
-
-          
-                <input class="hidden" name="status" id="status" />
-       
+            </div>            
            </div>
         </div>
+        <% include ../views/partials/toolButtons.html %>
     </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>

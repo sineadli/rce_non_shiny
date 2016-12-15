@@ -352,15 +352,7 @@
     </div>
 
         </div>
-    </div>
 
-<% if (user != "NOAUTHENTICATED" && !query.peeking ) { %>
-<div class="bottom-buttons">
-    <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
-    <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
-    <input class="hidden" name="status" id="status"/>
-</div>
-<% } %>
 <input type="hidden" name="s_treat_var" id="s_treat_var" />
 <input type="hidden" name="s_match_vars" id="s_match_vars" />
 <input type="hidden" name="s_grade_var" id="s_grade_var" />
@@ -369,6 +361,7 @@
 <input type="hidden" name="n_matched" id="n_matched"/>
 <input type="hidden" name="n_matched_treat" id="n_matched_treat"/>
 <input type="hidden" name="result" id="mresult"/>
+    <% include ../views/partials/toolButtons.html %>
 </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>

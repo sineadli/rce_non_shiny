@@ -29,7 +29,8 @@ module.exports = function (app, passport) {
 		sess.eval.last_step = 2;
 		sess.eval.last_tool = "The Basics";
 	//	console.log(eval.basics);
-		res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage') });
+        var query = require('url').parse(req.url, true).query;
+        res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query   });
 	});
 	app.post('/basics', function (req, res) {
 		sess = req.session;
