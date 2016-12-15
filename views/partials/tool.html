@@ -120,10 +120,10 @@
 
             dataType: "json",
             contentType: "application/json",
-            success: function(eval, status, xhr) {
+            success: function (eval, status, xhr) {
 
                 if (eval.toolsvisited) {
-                    tool = eval.toolsvisited.filter(function(x) { return x.name === $("#toolname").val() });
+                    tool = eval.toolsvisited.filter(function (x) { return x.name === $("#toolname").val() });
                     if (tool.length > 0) {
 
                         status = tool[0].status;
@@ -149,7 +149,6 @@
     });
 
 </script>
-
 
 
 

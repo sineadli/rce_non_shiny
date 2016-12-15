@@ -1,14 +1,11 @@
 ﻿<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
-
 <!-- views/login.ejs -->
 <!doctype html>
 <html>
@@ -24,11 +21,8 @@
 </head>
 <body>
     <div class="container">
-
         <div class="col-sm-6 col-sm-offset-3">
-
             <h1>Forgot password</h1>
-
             <!-- show any messages that come back after sending email -->
             <% if (info.length > 0) { %>
             <div class="message-info"><%= info %></div>
@@ -37,23 +31,17 @@
             <div class="alert alert-danger"><%= error %></div>
             <% } %>
             <!-- reset password form -->
-            <form action="/forgot"  method="post">
+            <form action="/forgot" method="post">
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" class="form-control" name="email" autofocus>
                 </div>
-                
-
                 <button type="submit" class="btn btn-warning btn-lg">Reset Password</button>
             </form>
-
             <hr>
-
             <p>Need an account? <a href="/signup">Signup</a></p>
             <p>Or go <a href="/">home</a>.</p>
-
         </div>
-
     </div>
 </body>
 </html>

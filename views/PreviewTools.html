@@ -1,14 +1,11 @@
 ﻿<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
-
 <!-- views/profile.ejs -->
 <!doctype html>
 <html>
@@ -19,242 +16,178 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.feedback_me.js"></script>
     <script src='/static/js/custom.js'></script>
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);"/>
-    <link rel="stylesheet" href="/static/css/main.css"/>
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css"/>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
     <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-86460597-1', 'auto');
-  ga('send', 'pageview');
-
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
     </script>
-
 </head>
 <body class="one-col">
     <div id="header"></div>
-
-<ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/"><span class="fa fa-caret-left"></span> Back to Home</a></li>
-</ol>
-
-<div class="container-fluid">
- 
-    <div class="page-header">
-        <h1 class="page-title">Preview Tools</h1>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-9 content">
-            <div class="dash-well">
-                <h2>Welcome to RCE for Ed Tech</h2>
-                <ul>
-                    <li>
-                       
-                        <a onclick=" window.open('/static/pdf/01.01 RCE overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">RCE: Rapid, Rigorous Evaluation</a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                       
-                        <a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Choose a technology</a>
-                        
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                        
-                        <a onclick=" window.open('/static/pdf/01.03 UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Understand types of evidence
-                        </a>
-                        
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                       
-                        <span>Start conversations with app developers&mdash;<em>Coming soon</em></span>
-                        
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                   
-                </ul>
-            </div>
-            <div class="dash-well">
-                <h2>Getting started</h2>
-                <ul>
-                    <li>
-                      
-                        <span>
-                            Description of the problem&mdash;<em>Coming soon</em></span>
-
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><span class="fa fa-caret-left"></span> Back to Home</a></li>
+    </ol>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1 class="page-title">Preview Tools</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-9 content">
+                <div class="dash-well">
+                    <h2>Welcome to RCE for Ed Tech</h2>
+                    <ul>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/01.01 RCE overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">RCE: Rapid, Rigorous Evaluation</a>
                             <div class="tool-access">
-
                             </div>
-</li>
-                    <li>
-                       
-                        <a onclick=" window.open('/static/pdf/02.02a Learn who used your technology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Learn who used your technology: Case Studies</a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                       
-                        <a href="/unknown/determine_your_approach">
-                            Determine your approach
-                        </a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
-            <div class="dash-well">
-                <h2>Planning your research</h2>
-                <ul>
-                    <li>
-                        
-                        <a href="/unknown/craft_your_research_q">Craft your research question</a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-
-                        <a href="/static/pdf/03.02 Think about how you will use results_downloadable.pdf">Think about how you will use the results </a>
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                        <div class="tool-name"></div>
-                        <a onclick=" window.open('/static/pdf/03.03 Summarize Context_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
+                        </li>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Choose a technology</a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/01.03 UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Understand types of evidence
+                            </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <span>Start conversations with app developers&mdash;<em>Coming soon</em></span>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dash-well">
+                    <h2>Getting started</h2>
+                    <ul>
+                        <li>
+                            <span>
+                                Description of the problem&mdash;<em>Coming soon</em>
+                            </span>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/02.02a Learn who used your technology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Learn who used your technology: Case Studies</a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <a href="/unknown/determine_your_approach">
+                                Determine your approach
+                            </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dash-well">
+                    <h2>Planning your research</h2>
+                    <ul>
+                        <li>
+                            <a href="/unknown/craft_your_research_q">Craft your research question</a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <a href="/static/pdf/03.02 Think about how you will use results_downloadable.pdf">Think about how you will use the results </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tool-name"></div>
+                            <a onclick=" window.open('/static/pdf/03.03 Summarize Context_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
                             Summarize context
-                        </a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                       
-                        <span>Evaluation plan&mdash;<em>Coming soon</em></span>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
-            <div class="dash-well">
-                <h2>Preparing your data
-                </h2>
-                <ul>
-                    <li>
-                        
-                        <a onclick=" window.open('/static/pdf/04.01PrepareYourDataForAnalysis.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Prepare your data for analysis</>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                       
-                        <span>Build your evaluation sample: randomization&mdash;<em>Coming soon</em>
-                        </span>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-
-
-                </ul>
-            </div>
-            <div class="dash-well">
-                <h2>
-                    Analyzing your data
-
-                </h2>
-                <ul>
-                    <li>
-                        
-                        <a a onclick=" window.open('/static/pdf/02.04 Matching overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Build your evaluation sample: matching
-                        </a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                       
-                        <a onclick=" window.open('/static/pdf/05.02a Impact Estimation Technical Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
+                            </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <span>Evaluation plan&mdash;<em>Coming soon</em></span>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dash-well">
+                    <h2>
+                        Preparing your data
+                    </h2>
+                    <ul>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/04.01PrepareYourDataForAnalysis.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Prepare your data for analysis</>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <span>
+                                Build your evaluation sample: randomization&mdash;<em>Coming soon</em>
+                            </span>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dash-well">
+                    <h2>
+                        Analyzing your data
+                    </h2>
+                    <ul>
+                        <li>
+                            <a a onclick=" window.open('/static/pdf/02.04 Matching overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Build your evaluation sample: matching
+                            </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/05.02a Impact Estimation Technical Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
                             Get results
-
-                        </a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-
-
-                </ul>
-            </div>
-            <div class="dash-well">
-                <h2>
-                    Summarizing your findings
-
-                </h2>
-                <ul>
-                    <li>                     
-                        <a onclick=" window.open('/static/pdf/06.01a Findings Brief Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
+                            </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dash-well">
+                    <h2>
+                        Summarizing your findings
+                    </h2>
+                    <ul>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/06.01a Findings Brief Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
                             Findings Brief Appendix
-
-                        </a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-                    <li>
-                        
-                        <a onclick=" window.open('/static/pdf/06.02 Example Findings Brief.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
+                            </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                        <li>
+                            <a onclick=" window.open('/static/pdf/06.02 Example Findings Brief.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
                             Example Findings Brief
-
-                        </a>
-
-                        <div class="tool-access">
-
-                        </div>
-                    </li>
-
-
-                </ul>
+                            </a>
+                            <div class="tool-access">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-      </div>
-  </div>
-        <% include ../views/partials/footer.html %>
+    </div>
+    <% include ../views/partials/footer.html %>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             /** Load Header **/
-            $.get("/header", function(data) {
+            $.get("/header", function (data) {
                 $("#header").html(data);
             });
         })

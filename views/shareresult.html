@@ -7,8 +7,6 @@
 *   Contract No. ED-OOS-15-C-0053.
 -->
 
-
-
 <html>
 <head>
     <title>Matching - Ed Tech RCE Coach</title>
@@ -33,13 +31,9 @@
 
         ga('create', 'UA-86460597-1', 'auto');
         ga('send', 'pageview');
-
     </script>
-
-
 </head>
 <body>
-
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -50,38 +44,36 @@
     <% } %>
     <% include ../views/partials/toolHeader.html %>
     <% } %>
-
     <form action="/matching" method="post">
         <% var Plan_Question_A = ' ',Plan_Question_A_1 ='',Plan_Question_A_2='',Plan_Question_A_3='',
         Plan_Question_B_1 ='', Plan_Question_B_2='', Plan_Question_B_3 ='', Plan_Question_C ='', Plan_Question_D= '',
         Prob_Appr_B=' ', Plan_Context_A_3 = '', Plan_Context_A_4 = '', Plan_Context_D='',
-         Q_9='', Q_M_1='', Q_M_2='',for_6='', results_by_grade='', match_vars='', n_full_treat= '', getresults_by_grade='',
+        Q_9='', Q_M_1='', Q_M_2='',for_6='', results_by_grade='', match_vars='', n_full_treat= '', getresults_by_grade='',
         Plan_Next_C_1 = '', Plan_Next_D_1 , Plan_Next_D_2, ED_1='' ; %>
-       
-        <% if (user != "NOAUTHENTICATED") { 
+        <% if (user != "NOAUTHENTICATED") {
         if (eval.planQuestion) {
-      Plan_Question_A =eval.planQuestion.Plan_Question_A; Plan_Question_A_1 =eval.planQuestion.Plan_Question_A_1;
-      Plan_Question_B_1 =eval.planQuestion.Plan_Question_B_1 ;
-      Plan_Question_A_2 =eval.planQuestion.Plan_Question_A_2; Plan_Question_A_3=eval.planQuestion.Plan_Question_A_3
-      Plan_Question_B_2=eval.planQuestion.Plan_Question_B_2; Plan_Question_B_3 =eval.planQuestion.Plan_Question_B_3 ;
-      Plan_Question_C=eval.planQuestion.Plan_Question_C; Plan_Question_D=eval.planQuestion.Plan_Question_D;
-       }
+        Plan_Question_A =eval.planQuestion.Plan_Question_A; Plan_Question_A_1 =eval.planQuestion.Plan_Question_A_1;
+        Plan_Question_B_1 =eval.planQuestion.Plan_Question_B_1 ;
+        Plan_Question_A_2 =eval.planQuestion.Plan_Question_A_2; Plan_Question_A_3=eval.planQuestion.Plan_Question_A_3
+        Plan_Question_B_2=eval.planQuestion.Plan_Question_B_2; Plan_Question_B_3 =eval.planQuestion.Plan_Question_B_3 ;
+        Plan_Question_C=eval.planQuestion.Plan_Question_C; Plan_Question_D=eval.planQuestion.Plan_Question_D;
+        }
         if (eval.probAppr) {
-           Prob_Appr_B=eval.probAppr.Prob_Appr_B ;
-       }
+        Prob_Appr_B=eval.probAppr.Prob_Appr_B ;
+        }
         if (eval.planContext) {
-             Plan_Context_A_3 = eval.planContext.Plan_Context_A_3;
-             Plan_Context_A_4 = eval.planContext.Plan_Context_A_4;
-             Plan_Context_D = eval.planContext.Plan_Context_D;
+        Plan_Context_A_3 = eval.planContext.Plan_Context_A_3;
+        Plan_Context_A_4 = eval.planContext.Plan_Context_A_4;
+        Plan_Context_D = eval.planContext.Plan_Context_D;
 
-         }
+        }
         if (eval.planNext) {
-          Plan_Next_C_1 =eval.planNext.Plan_Next_C_1;
-          if (Plan_Next_C_1.endsWith("%")) Plan_Next_C_1 = Plan_Next_C_1.substring(0, Plan_Next_C_1.length-1) ;
-          Plan_Next_D_1  = eval.planNext.Plan_Next_D_1 ;
-          Plan_Next_D_2  = eval.planNext.Plan_Next_D_2 ;
+        Plan_Next_C_1 =eval.planNext.Plan_Next_C_1;
+        if (Plan_Next_C_1.endsWith("%")) Plan_Next_C_1 = Plan_Next_C_1.substring(0, Plan_Next_C_1.length-1) ;
+        Plan_Next_D_1  = eval.planNext.Plan_Next_D_1 ;
+        Plan_Next_D_2  = eval.planNext.Plan_Next_D_2 ;
 
-      }   }  %>
+        }   }  %>
 
         <!--if (eval.matching) {
          for_6 = parseInt(eval.matching.n_full) - parseInt(eval.matching.n_full_treat );
@@ -93,7 +85,6 @@
            ED_1 = eval.matching.match_vars ;
          n_full_treat = eval.matching.n_full_treat;
          }-->
-
         <!--if (eval.getresult) {
 
          getresults_by_grade =JSON.parse(eval.getresult.Result).results_by_grade;
@@ -107,7 +98,7 @@
                     <div class="tool-header">
                         <h1 class="tool-title">Preview Your Findings</h1>
                         <div class="tool-intro">
-                             <p>This is your opportunity to preview your findings and, if necessary, make changes to your findings brief.</p><p>If you find that some pieces of information are missing and you wish to return to prior tools, you can use the "Back to Analyzing Your Data" link at the top of the page to return to the wizard.</p>
+                            <p>This is your opportunity to preview your findings and, if necessary, make changes to your findings brief.</p><p>If you find that some pieces of information are missing and you wish to return to prior tools, you can use the "Back to Analyzing Your Data" link at the top of the page to return to the wizard.</p>
                         </div>
 
                     </div>
@@ -124,8 +115,10 @@
                             <p></p>
                             <div class="step-action ">
                                 <h4>Question:</h4>
-                                <textarea id="summary_question" rows="2" width="85%" class="shiny-bound-input"><%= "Does "  + Plan_Question_A + " " + Plan_Question_B_3 + " " + Plan_Question_B_2 +
-            " among " + Plan_Question_C + " compared to " +Plan_Question_D + "?" %></textarea>
+                                <textarea id="summary_question" rows="2" width="85%" class="shiny-bound-input">
+                                    <%= "Does "  + Plan_Question_A + " " + Plan_Question_B_3 + " " + Plan_Question_B_2 +
+                                    " among " + Plan_Question_C + " compared to " +Plan_Question_D + "?" %>
+                                </textarea>
                                 <div id="answers_next_steps" class="shiny-html-output shiny-bound-output">
                                     <h4>Answer:</h4>
                                     <% var title='', ismove1 = 'Yes',ismove2='', text1='',text2='', nextstep=''; if (getresults_by_grade) { for (var key in getresults_by_grade ) {
@@ -140,10 +133,10 @@
                                     <textarea id="summary_answer_1_1" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= ismove1 + ", we think this intervention is" + ismove2 + " moving the needle." %></textarea>
                                     <textarea id="summary_answer_1_2" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%=  text1%></textarea>
                                     <textarea id="summary_answer_1_3" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= text2 %></textarea>
-                                    
+
                                     <h4>Next steps:</h4>
                                     <textarea id="summary_next_steps_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= nextstep %></textarea>
-                                   
+
                                     <% }}} %>
                                 </div>
                             </div>
@@ -213,21 +206,21 @@
                                             <tbody>
                                                 <tr> <th> Grade </th> <th> Characteristic </th> <th> Overall </th> <th> Intervention </th> <th> Comparison </th> <th> Difference </th>  </tr>
                                                 <% var grade, compare, diff, overall, char,intervention;
-                                                 if(match_vars) { for (var match in match_vars ) {  if (results_by_grade) {   
+                                                if(match_vars) { for (var match in match_vars ) {  if (results_by_grade) {
                                                 for (var key in results_by_grade) {
                                                 if (results_by_grade.hasOwnProperty(key)) {
 
                                                 grade = key;
                                                 char   = match_vars[match];
                                                 var match_var_means = results_by_grade[key].match_var_means;
-                                                
+
                                                 compare = match_var_means[char].comparison;
                                                 diff = match_var_means[char].difference;
                                                 overall =match_var_means[char].overall;
                                                 intervention = match_var_means[char].intervention;
-                                                 %>
+                                                %>
                                                 <tr> <td> <%= grade %> </td> <td> <%= char %> </td> <td align="right"> <%= overall %></td> <td align="right">  </td> <td align="right"> <%= compare %> </td> <td align="right"> <%= diff %> </td> </tr>
-                                              <% }}}}} %>
+                                                <% }}}}} %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -286,48 +279,48 @@ Does the program cause larger improvements among the lowest-achieving students a
                             </div>
                         </div>
 
-                    </div> 
-      
-
-                        <div id="file_type" class="form-group shiny-input-radiogroup shiny-input-container shinyjs-resettable shiny-bound-input pull-right" data-shinyjs-resettable-id="file_type" data-shinyjs-resettable-type="RadioButtons" data-shinyjs-resettable-value="PDF document" data-original-title="" title="">
-                            <label class="control-label" for="file_type"></label>
-                            <div class="shiny-options-group">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="file_type" value="PDF document" checked="checked">
-                                        <span>PDF document</span>
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="file_type" value="PDF slides">
-                                        <span>PDF slides</span>
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="file_type" value="DOCX file">
-                                        <span>DOCX file</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <a id="download_brief" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_brief?w=" target="_blank">
-                                <i class="fa fa-download"></i>
-                                Create Brief!
-                            </a>
-
-
-                            <a id="download_appendix" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_appendix?w=" target="_blank">
-                                <i class="fa fa-download"></i>
-                                Create Appendix
-                            </a>
-                        </div>
                     </div>
+
+
+                    <div id="file_type" class="form-group shiny-input-radiogroup shiny-input-container shinyjs-resettable shiny-bound-input pull-right" data-shinyjs-resettable-id="file_type" data-shinyjs-resettable-type="RadioButtons" data-shinyjs-resettable-value="PDF document" data-original-title="" title="">
+                        <label class="control-label" for="file_type"></label>
+                        <div class="shiny-options-group">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="file_type" value="PDF document" checked="checked">
+                                    <span>PDF document</span>
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="file_type" value="PDF slides">
+                                    <span>PDF slides</span>
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="file_type" value="DOCX file">
+                                    <span>DOCX file</span>
+                                </label>
+                            </div>
+                        </div>
+                        <a id="download_brief" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_brief?w=" target="_blank">
+                            <i class="fa fa-download"></i>
+                            Create Brief!
+                        </a>
+
+
+                        <a id="download_appendix" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_appendix?w=" target="_blank">
+                            <i class="fa fa-download"></i>
+                            Create Appendix
+                        </a>
+                    </div>
+                </div>
 
             </div>
         </div>
 
-        <% include ../views/partials/toolButtons.html %>       
+        <% include ../views/partials/toolButtons.html %>
     </form>
     <% include ../views/partials/footer.html %>
     <!--<script>$(document).ready(function () { setTimeout(function () { shinyBS.addTooltip('file_type', 'popover', { 'content': '<ul><li>PDF document is a file to be read like a report, and cannot be directly edited by those .</li></br><li>PDF slides are formatted for a full-screen presentation, and are not directly editable.</li></br><li>A DOCX file is similar to the PDF document option, but can be directly edited in Microsoft Word.</li></ul>', 'placement': 'left', 'trigger': 'hover', 'title': 'File Types' }) }, 500) });</script>-->

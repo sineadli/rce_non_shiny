@@ -1,13 +1,11 @@
 ﻿<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
 
 <html>
 <head>
@@ -16,7 +14,7 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -41,7 +39,7 @@
         ga('send', 'pageview');
 
     </script>
-  
+
 </head>
 <body>
 
@@ -56,386 +54,316 @@
     <% include ../views/partials/toolHeader.html %>
     <% } %>
 
-<form action="/getresult" method="post">
+    <form action="/getresult" method="post">
+        <%
+        var Result="";
 
+        if (user != "NOAUTHENTICATED"){
+        if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
+        }
+        var Basics_Users_Others = eval.basics.Basics_Users_Others;
+        var Basics_Users = eval.basics.Basics_Users;
+        var Singular_User = Basics_Users.substring(0, Basics_Users.length-1);
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
+        var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+        var Basics_Outcome = eval.basics.Basics_Outcome;
+        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+        var Measure_Units_Other = eval.planNext.Measure_Units_Other;
+        var Measure_Units = eval.planNext.Measure_Units;
+        if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
+        %>
 
-<%
-   
-    var Result="";
-
-    if (user != "NOAUTHENTICATED"){
-
-    if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
-}
-    var Basics_Users_Others = eval.basics.Basics_Users_Others;
-    var Basics_Users = eval.basics.Basics_Users;
-    var Singular_User = Basics_Users.substring(0, Basics_Users.length-1);
-    if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-    var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
-    var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-    var Basics_Outcome = eval.basics.Basics_Outcome;
-if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-
-    
-    var Measure_Units_Other = eval.planNext.Measure_Units_Other;
-    var Measure_Units = eval.planNext.Measure_Units;
-    if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
-   
-
-%>
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="tool-top">
-                    <div class="dl-guide">
-                    </div>
-                    <div class="tool-header">
-                        <h1 class="tool-title">Get Results: Find Out If the Technology Moved the Needle</h1>
-                        <div class="tool-intro">
-                            <p>
-                                <strong>Objective:</strong> In this step, you will estimate the effect of the technology. By uploading a data file and answering a few key questions, you will find an answer to the research question you crafted at the beginning of this process.
-                            </p>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-top">
+                        <div class="dl-guide">
                         </div>
+                        <div class="tool-header">
+                            <h1 class="tool-title">Get Results: Find Out If the Technology Moved the Needle</h1>
+                            <div class="tool-intro">
+                                <p>
+                                    <strong>Objective:</strong> In this step, you will estimate the effect of the technology. By uploading a data file and answering a few key questions, you will find an answer to the research question you crafted at the beginning of this process.
+                                </p>
+                            </div>
 
-                        <div class="tool-help">
-                            <p>
-                                <strong>To learn more</strong> about how this tool works, you can review the <a target="_blank" href="https://edtechrce.org/static/pdf/05.02a%20Impact%20Estimation%20Technical%20Appendix.pdf">Impact Estimation Technical Appendix.</a>
-                            </p>
-                        </div>
-
-                    </div>
-                    <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="tool-questions">
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#P">
-                    <h2 class="clickable">
-                        <i class="fa fa-caret-down" aria-hidden="false"></i> Review your previous answers.
-                    </h2>
-                </div>
-            </div>
-            <div id="P" class="row  collapse in q-row">
-                <div class="col-xs-7">
-                    <div class="step-subquestion">
-                        <h4>What measure did you use to test whether there was an effect?</h4>
-                    </div>
-                    <div class="step-action">
-
-                        <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
-
-                        <% if (user != "NOAUTHENTICATED") {%>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
-                        </p>
-                        <% } %>
-                        <hr />
-                    </div>
-                    <div class="step-subquestion">
-                        <h4>What is the direction of intended change?</h4>
-                    </div>
-                    <div class="step-action">
-
-                        <select required name="Outcome_Direction" id="Outcome_Direction">
-                            <%
-                            var options = ["Select an option", "increase", "decrease" ];
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            var selectedD;
-                            if (user != "NOAUTHENTICATED") {
-                            if (eval.planQuestion) { selectedD = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";}}
-                            %>
-                            <option value="<%=options[ i ] %>" <%=selectedD %> ><%=options[ i ] %></option><%
-                            }
-                            %>
-
-                        </select>
-                        <% if (user != "NOAUTHENTICATED") {%>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
-                        </p>
-                        <% } %>
-                        <hr />
-                    </div>
-                    <div class="step-subquestion">
-                        <h4>What would success look like?</h4>
-                    </div>
-                    <div class="step-action">
-                        <p>
-                            I would consider any <%= eval.planQuestion.Outcome_Direction %> larger than
-                            <input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
-                            <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span> a success.
-                        </p>
-
-                        <% if (user != "NOAUTHENTICATED") {%>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/plan_next_steps">Think About How You Will Use The Results</a>
-                        </p>
-                        <% } %>
-                        <hr />
-                    </div>
-
-                    <div class="step-subquestion">
-                        <h4>
-                            How confident do you want to be that
-                            <%= Basics_Tech_Name %>
-
-                            moved the needle?
-                        </h4>
-                    </div>
-                    <div class="step-action">
-                        <p>
-                            If I learned that there was a
-
-                            <input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75%" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" /> probability that <%= Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that the educational technology had the intended effect.
-                        </p>
-                        <% if (user != "NOAUTHENTICATED") {%>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/plan_next_steps">Think About How You Will Use The Results</a>
-                        </p>
-                        <% } %>
-                        <hr />
-                    </div>
-
-                </div>
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-
-                        <div class="panel-group" id="ttc11">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc11" href="#consider11">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="consider11" class="panel-collapse collapse in">
-
-                                    <p>
-                                        If you used a test of student achievement to measure the technology's effect and you are hoping to see an increase in test scores, would a one point increase, on average, be a meaningful increase? What about 5 points?
-                                        This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.
-                                    </p>
-                                    <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. What likelihood (or probability) will you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
-
-
-
-                                </div>
+                            <div class="tool-help">
+                                <p>
+                                    <strong>To learn more</strong> about how this tool works, you can review the <a target="_blank" href="https://edtechrce.org/static/pdf/05.02a%20Impact%20Estimation%20Technical%20Appendix.pdf">Impact Estimation Technical Appendix.</a>
+                                </p>
                             </div>
 
                         </div>
-
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#A">
-                    <h2 class="clickable">
-                        <i class="fa fa-caret-down" aria-hidden="false"></i> Upload your data
-                    </h2>
-
-                </div>
-            </div>
-            <div id="A" class="row  collapse in q-row">
-                <div class="col-xs-7">
-                    <div class="step-subquestion">
-                        <p>
-                            Upload a CSV file of your data. The file should have one row for each <%= Singular_User %> in your sample, and one column for each data field (for example, test scores and background characteristics). Read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> for more information.
-                        </p>
-                        <p class="note matching-path">
-                            <strong>Note:</strong> You should use the file you downloaded after creating your matched comparison groups.
-                        </p>
-                        <p class="note random-path">
-                            <strong>Note:</strong> You should have downloaded a file after randomly creating treatment and control groups. You should upload this file once it has been merged with your outcome data.
-                        </p>
-
-                    </div>
-                    <div class="step-action">
-
-
-                        <input id="chosenfile" size="1" type="file" accept=".csv">
-
-
-                        <p class="warning">
-                            Before uploading data, make sure you have removed any personally identifiable information (PII), such as names.
-                        </p>
-
-                    </div>
-                    <div id='loadingmessage' class="row" hidden>
-                        <div class="col-sm-5 col-sm-offset-6">
-                            <img src='/static/image/ajax-loader.gif' />
+            <div class="row">
+                <div class="tool-questions">
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#P">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> Review your previous answers.
+                            </h2>
                         </div>
                     </div>
-                    <div class="before-upload">
-                        <div class="step-subquestion">
-                            <h4>What is the outcome variable?</h4>
-                            <p>choose the name of the variable that measures <%= Basics_Outcome %></p>
-                        </div>
-                        <div class="step-action ">
+                    <div id="P" class="row  collapse in q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <h4>What measure did you use to test whether there was an effect?</h4>
+                            </div>
+                            <div class="step-action">
 
-                            <div>
-                                <select class="from-upload" id="outcome_var">
+                                <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
 
-                                    <option value="">Select the outcome variable</option>
+                                <% if (user != "NOAUTHENTICATED") {%>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
+                                </p>
+                                <% } %>
+                                <hr />
+                            </div>
+                            <div class="step-subquestion">
+                                <h4>What is the direction of intended change?</h4>
+                            </div>
+                            <div class="step-action">
+
+                                <select required name="Outcome_Direction" id="Outcome_Direction">
+                                    <%
+                                    var options = ["Select an option", "increase", "decrease" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selectedD;
+                                    if (user != "NOAUTHENTICATED") {
+                                    if (eval.planQuestion) { selectedD = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";}}
+                                    %>
+                                    <option value="<%=options[ i ] %>" <%=selectedD %> ><%=options[ i ] %></option><%
+                                    }
+                                    %>
 
                                 </select>
+                                <% if (user != "NOAUTHENTICATED") {%>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
+                                </p>
+                                <% } %>
+                                <hr />
+                            </div>
+                            <div class="step-subquestion">
+                                <h4>What would success look like?</h4>
+                            </div>
+                            <div class="step-action">
+                                <p>
+                                    I would consider any <%= eval.planQuestion.Outcome_Direction %> larger than
+                                    <input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
+                                    <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span> a success.
+                                </p>
 
+                                <% if (user != "NOAUTHENTICATED") {%>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/plan_next_steps">Think About How You Will Use The Results</a>
+                                </p>
+                                <% } %>
+                                <hr />
                             </div>
 
-                            <hr />
-                        </div>
+                            <div class="step-subquestion">
+                                <h4>
+                                    How confident do you want to be that
+                                    <%= Basics_Tech_Name %>
 
-                        <div class="step-subquestion">
-                            <h4>Who is using the technology?</h4>
-                            <p>Choose the name of the variable that tells us who is using <%= Basics_Tech_Name %>&mdash;the intervention versus comparison group identifier. Remember, it should equal 1 for the technology users and 0 for non-users. </p>
-                        </div>
-                        <div class="step-action ">
+                                    moved the needle?
+                                </h4>
+                            </div>
+                            <div class="step-action">
+                                <p>
+                                    If I learned that there was a
 
-                            <div>
-                                <select class="from-upload" id="treat_var">
-
-                                    <option value="">Select the treatment status variable</option>
-
-                                </select>
-
+                                    <input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75%" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" /> probability that <%= Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that the educational technology had the intended effect.
+                                </p>
+                                <% if (user != "NOAUTHENTICATED") {%>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/plan_next_steps">Think About How You Will Use The Results</a>
+                                </p>
+                                <% } %>
+                                <hr />
                             </div>
 
-                            <hr />
                         </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
 
-                        <div class="step-subquestion">
-                            <h4>Control variables, or covariates</h4>
-                            <p>Select variables, if any, we should account for while estimating impacts. If you created a matched comparison group, you should include the variables used for matching in this list. </p>
-                        </div>
-                        <div class="step-action ">
+                                <div class="panel-group" id="ttc11">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc11" href="#consider11">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider11" class="panel-collapse collapse in">
 
-                            <div>
-                                <select id="control_vars" class="multiselect from-upload" multiple="multiple">
-
-                                    <option value="">Select the control variables</option>
-
-                                </select>
-
-                            </div>
-
-                            <hr />
-                        </div>
-                        <div class="step-subquestion">
-                            <h4>If individuals are clustered, for example within classrooms or schools, select the cluster variable.</h4>
-                        </div>
-                        <div class="step-action ">
-
-
-                            <select class="from-upload" id="cluster_var">
-                                <option value="Select matching variables">Select cluster variable</option>
-                            </select>
-
-
-                            <hr />
-                        </div>
-                        <div class="step-subquestion">
-                            <h4>Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. Otherwise, select "combine all grades." </h4>
-                        </div>
-                        <div class="step-action ">
-
-
-
-                            <select class="from-upload" id="grade_var">
-                                <option value="Select matching variables">Select grade variable</option>
-                            </select>
-
-
-                            <hr />
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-
-                        <div class="panel-group" id="ttc1">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="consider1" class="panel-collapse collapse in">
-
-                                    <p>
-                                        The file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). It&rsquo;s important this file include any characteristics you want to use for matching and an indicator of who used the technology.
-
-                                        The technology indicator variable should take the value 1 to indicate the record belongs to the intervention group, and 0 for the comparison group.
-                                    </p>
-                                    <div class="before-upload">
-                                        <p>If users and non-users were chosen based on groups they belonged to rather than as individuals, we need to identify these "clusters" in order to correctly estimate the effect of the intervention. If the decision to give students a technology was made by principals, and all students in a school either get the technology or don't, then select the "School ID" variable or some other indicator of which school the student attended. Similarly, if the intervention is at the classroom level, the clusters are the classrooms. What variable, if any, should we use as a cluster indicator?</p>
-                                        <p>In some cases it is important that analysis be conducted within groups of students in the same grade. This may be important if the outcome measure is not comparable across grades. If this does not matter for your evaluation, leave this as "combine all grades" in the select menu. If you want to conduct the analysis separately by grade, please .</p>
-
+                                            <p>
+                                                If you used a test of student achievement to measure the technology's effect and you are hoping to see an increase in test scores, would a one point increase, on average, be a meaningful increase? What about 5 points?
+                                                This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.
+                                            </p>
+                                            <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. What likelihood (or probability) will you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
+                                        </div>
                                     </div>
-                                    <p>
-                                        For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
-                                    </p>
 
                                 </div>
+
                             </div>
-
                         </div>
+                    </div>
 
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#A">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> Upload your data
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="A" class="row  collapse in q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <p>
+                                    Upload a CSV file of your data. The file should have one row for each <%= Singular_User %> in your sample, and one column for each data field (for example, test scores and background characteristics). Read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> for more information.
+                                </p>
+                                <p class="note matching-path">
+                                    <strong>Note:</strong> You should use the file you downloaded after creating your matched comparison groups.
+                                </p>
+                                <p class="note random-path">
+                                    <strong>Note:</strong> You should have downloaded a file after randomly creating treatment and control groups. You should upload this file once it has been merged with your outcome data.
+                                </p>
+
+                            </div>
+                            <div class="step-action">
+                                <input id="chosenfile" size="1" type="file" accept=".csv">
+                                <p class="warning">
+                                    Before uploading data, make sure you have removed any personally identifiable information (PII), such as names.
+                                </p>
+                            </div>
+                            <div id='loadingmessage' class="row" hidden>
+                                <div class="col-sm-5 col-sm-offset-6">
+                                    <img src='/static/image/ajax-loader.gif' />
+                                </div>
+                            </div>
+                            <div class="before-upload">
+                                <div class="step-subquestion">
+                                    <h4>What is the outcome variable?</h4>
+                                    <p>choose the name of the variable that measures <%= Basics_Outcome %></p>
+                                </div>
+                                <div class="step-action ">
+                                    <div>
+                                        <select class="from-upload" id="outcome_var">
+                                            <option value="">Select the outcome variable</option>
+                                        </select>
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="step-subquestion">
+                                    <h4>Who is using the technology?</h4>
+                                    <p>Choose the name of the variable that tells us who is using <%= Basics_Tech_Name %>&mdash;the intervention versus comparison group identifier. Remember, it should equal 1 for the technology users and 0 for non-users. </p>
+                                </div>
+                                <div class="step-action ">
+                                    <div>
+                                        <select class="from-upload" id="treat_var">
+                                            <option value="">Select the treatment status variable</option>
+                                        </select>
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="step-subquestion">
+                                    <h4>Control variables, or covariates</h4>
+                                    <p>Select variables, if any, we should account for while estimating impacts. If you created a matched comparison group, you should include the variables used for matching in this list. </p>
+                                </div>
+                                <div class="step-action ">
+                                    <div>
+                                        <select id="control_vars" class="multiselect from-upload" multiple="multiple">
+                                            <option value="">Select the control variables</option>
+                                        </select>
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="step-subquestion">
+                                    <h4>If individuals are clustered, for example within classrooms or schools, select the cluster variable.</h4>
+                                </div>
+                                <div class="step-action ">
+                                    <select class="from-upload" id="cluster_var">
+                                        <option value="Select matching variables">Select cluster variable</option>
+                                    </select>
+                                    <hr />
+                                </div>
+                                <div class="step-subquestion">
+                                    <h4>Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. Otherwise, select "combine all grades." </h4>
+                                </div>
+                                <div class="step-action ">
+                                    <select class="from-upload" id="grade_var">
+                                        <option value="Select matching variables">Select grade variable</option>
+                                    </select>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc1">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider1" class="panel-collapse collapse in">
+                                            <p>
+                                                The file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). It&rsquo;s important this file include any characteristics you want to use for matching and an indicator of who used the technology.
+                                                The technology indicator variable should take the value 1 to indicate the record belongs to the intervention group, and 0 for the comparison group.
+                                            </p>
+                                            <div class="before-upload">
+                                                <p>If users and non-users were chosen based on groups they belonged to rather than as individuals, we need to identify these "clusters" in order to correctly estimate the effect of the intervention. If the decision to give students a technology was made by principals, and all students in a school either get the technology or don't, then select the "School ID" variable or some other indicator of which school the student attended. Similarly, if the intervention is at the classroom level, the clusters are the classrooms. What variable, if any, should we use as a cluster indicator?</p>
+                                                <p>In some cases it is important that analysis be conducted within groups of students in the same grade. This may be important if the outcome measure is not comparable across grades. If this does not matter for your evaluation, leave this as "combine all grades" in the select menu. If you want to conduct the analysis separately by grade, please .</p>
+                                            </div>
+                                            <p>
+                                                For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!--end class=body-section-->
+                <div class="bottom-buttons">
+                    <button id="go" type="button" class="btn btn-default action-button shiny-bound-input">Run Analysis!</button>
+                </div>
+                <hr>
+                <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
+                <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+                <div id="results" class="shiny-html-output shiny-bound-output">
+                </div>
+                <input type="hidden" name="result" id="gresult" value="<%= Result %>" />
             </div>
-
-
-
         </div>
-
-        <!--end class=body-section-->
-
-
-        <div class="bottom-buttons">
-
-            <button id="go" type="button" class="btn btn-default action-button shiny-bound-input">Run Analysis!</button>
-
-        </div>
-        <hr>
-
-        <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-
-
-        <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
-
-        <div id="results" class="shiny-html-output shiny-bound-output">
-
-        </div>
-        <input type="hidden" name="result" id="gresult" value="<%= Result %>" />
-
-    </div>
-        
-</div>
-    <% include ../views/partials/toolButtons.html %>
-</form>
+        <% include ../views/partials/toolButtons.html %>
+    </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
     <script>
         $(document).ready(function () {
             $('.multiselect').multiselect();
-
             $("#chosenfile").change(function () {
-
                 var formData = new FormData();
                 $('#loadingmessage').show();
                 formData.append("data", $(this)[0].files[0]);
-
                 $.ajax({
                     url: "https://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
                     type: "POST",
@@ -445,7 +373,6 @@ if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_
                     success: function (data) {
                         $('#loadingmessage').hide();
                         $("select.from-upload").empty();
-
                         $("#grade_var")
                         .append($("<option></option>")
                         .attr("value", "combine all grades")
@@ -481,7 +408,7 @@ if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_
                 console.log("cutoff: " + JSON.stringify($("#Success_Effect_Size").val()));
                 console.log("probability: " + JSON.stringify($("#Pass_Probability").val()));
                 var formData = new FormData();
-              
+
                 formData.append("data", $("#chosenfile")[0].files[0]);
                 formData.append("outcome_var", JSON.stringify($("#outcome_var").val()));
                 formData.append("treat_var", JSON.stringify($("#treat_var").val()));
@@ -510,7 +437,7 @@ if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_
                             success: function (data) {
                                 $('#loadingmessage').hide();
 
-                              
+
 
                                 var results_by_grade = data.results_by_grade;
 
@@ -533,14 +460,11 @@ if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_
                                // $("#gresult").val("data");
                                 $("#download-button, #download-link")
                                             .prop("disabled", false);
-
                                         $("#download-link")
                                             .attr("target", "_blank")
                                             .attr("href", "https://52.222.20.48" + responsePaths[9]);
                                     }
                                 });
-
-                      
                     }
                 });
             });

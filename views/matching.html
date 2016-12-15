@@ -1,23 +1,20 @@
-
 <!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
 
 <html>
 <head>
     <title>Matching - Ed Tech RCE Coach</title>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/main.css"/>
+    <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -26,20 +23,17 @@
     <script src="/static/js/jquery.feedback_me.js"></script>
     <script src="/static/js/bootstrap-multiselect.js"></script>
     <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         ga('create', 'UA-86460597-1', 'auto');
         ga('send', 'pageview');
-
     </script>
-
-  
 </head>
 <body>
-
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -50,333 +44,268 @@
     <% } %>
     <% include ../views/partials/toolHeader.html %>
     <% } %>
-
-<form action="/matching" method="post">
-    <%
-
-    var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-    var Basics_Outcome = eval.basics.Basics_Outcome;
-    if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-    var Basics_Users_Others = eval.basics.Basics_Users_Others;
-    var Basics_Users = eval.basics.Basics_Users;
-    if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-    var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-
-    if (eval.matching) {
-
-    if (eval.matching.Result) Result = eval.matching.Result;
-    }
-    %>
-<input type="hidden" id="user_email" value="<%= user %>"/>
-
-<div class="container-fluid">
-<div class="row">
-<div class="col-xs-12">
-    <div class="tool-top">
-        <div class="dl-guide">
-        </div>
-        <div class="tool-header">
-            <h1 class="tool-title">Build your evaluation sample</h1>
-            <div class="tool-intro">
-                <p>Compare apples to apples by creating a comparison group that is similar to the group using the technology. Upload your data, and the Coach will help you create your evaluation sample. </p>
-            </div>
-
-
-            <div class="tool-help">
-                <p>
-                    <b>Challenge:</b> You want to compare outcomes for individuals who used a technology to outcomes for those who didn&rsquo;t, but technology users may be different from non-users in important ways. For example, if all students are provided access to an optional reading technology, the ones who choose to use it may be the students who are already reading at or above grade-level. To get a good estimate of the effect of the technology, you want to compare students with similar reading levels and characteristics. See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf">Matching Overview</a> to learn more.
-                </p>
-                <p>
-                    <b>Solution:</b> You can match each technology user to a non-user who is very similar on important characteristics. By comparing outcomes for these matched groups of users and non-users, you will be able to get better information about whether or not the technology is moving the needle.
-                </p>
-
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-</div>
-    </div>
-    <div class="row">
-        <div class="tool-questions">
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#A">
-                    <h2 class="clickable">
-                        <i class="fa fa-caret-down" aria-hidden="false"></i> Describe your sample
-                    </h2>
-                </div>
-            </div>
-            <div id="A" class="row  collapse in q-row">
-                <div class="col-xs-7">
-                    <div class="step-subquestion">
-
-                        <h4> <label for="Intervention_Group_Desc">The group that used <%= Basics_Tech_Name %> (the intervention group) includes:</label></h4>
-
-                    </div>
-                    <div class="step-action">
-
-                        <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" rows="2" placeholder="Ex. 5th grade English learners who used eZumi Learning in their classrooms" class="shiny-bound-input"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
-                        <% if (user != "NOAUTHENTICATED") { %>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
-                        </p>
-                        <% } %>
-                        <hr />
-                    </div>
-                    <div class="step-subquestion">
-                        <h4>
-                            <label for="Plan_Question_D">The group that did not use <%= Basics_Tech_Name %> (the potential members of the comparison group) includes:</label>
-                        </h4>
-
-                    </div>
-                    <div class="step-action">
-
-                        <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" rows="2" placeholder="Ex. similar 5th grade English Learners with no access to eZumi Learning" class="shiny-bound-input"><%= eval.planQuestion.Comparison_Group_Desc %></textarea>
-                        <% if (user != "NOAUTHENTICATED") { %>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
-                        </p>
-                        <% } %>
-                        <hr />
-                    </div>
-                    <div class="step-subquestion">
-
-
-                        <h4>
-                            <label for="Target_Group_Desc">Was use of <%= Basics_Tech_Name %> targeted in any way? If so, what were the characteristics of the group selected to use <%= Basics_Tech_Name %>?<em>Optional</em> </label>
-
-                        </h4>
-                    </div>
-                    <div class="step-action">
-                        <textarea name="Target_Group_Desc" rows="2" placeholder="Ex. In intervention group, all 5th grade English Learners were given access to the eZumi technology." class="shiny-bound-input"><%= eval.matching.Target_Group_Desc %></textarea>
-                    </div>
-
-                </div>
-
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-
-                        <div class="panel-group" id="ttc2">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="consider2" class="panel-collapse collapse in">
-                                    <p>
-                                        This information will be included in your findings brief to help your colleagues and stakeholders understand the setting in which you tested this technology.
-                                    </p>
-                                    <p>The information about the intervention and comparison groups is from your research question. You may edit the descriptions to make corrections or provide more detail. </p>
-                                </div>
+    <form action="/matching" method="post">
+        <%
+        var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+        var Basics_Outcome = eval.basics.Basics_Outcome;
+        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+        var Basics_Users_Others = eval.basics.Basics_Users_Others;
+        var Basics_Users = eval.basics.Basics_Users;
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
+        if (eval.matching) {
+        if (eval.matching.Result) Result = eval.matching.Result;
+        }
+        %>
+        <input type="hidden" id="user_email" value="<%= user %>" />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-top">
+                        <div class="dl-guide">
+                        </div>
+                        <div class="tool-header">
+                            <h1 class="tool-title">Build your evaluation sample</h1>
+                            <div class="tool-intro">
+                                <p>Compare apples to apples by creating a comparison group that is similar to the group using the technology. Upload your data, and the Coach will help you create your evaluation sample. </p>
                             </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading accordion-toggle">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
-                                            Example
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="example2" class="panel-collapse collapse">
-
-                                    <ul>
-                                        <li>Intervention group: seven schools that used Everest Learning Lab in their fifth grade classrooms</li>
-                                        <li>Comparison group: five schools that did not use Everest Learning Lab</li>
-                                        <li>Given access: in intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access</li>
-                                    </ul>
-
-                                </div>
+                            <div class="tool-help">
+                                <p>
+                                    <b>Challenge:</b> You want to compare outcomes for individuals who used a technology to outcomes for those who didn&rsquo;t, but technology users may be different from non-users in important ways. For example, if all students are provided access to an optional reading technology, the ones who choose to use it may be the students who are already reading at or above grade-level. To get a good estimate of the effect of the technology, you want to compare students with similar reading levels and characteristics. See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf">Matching Overview</a> to learn more.
+                                </p>
+                                <p>
+                                    <b>Solution:</b> You can match each technology user to a non-user who is very similar on important characteristics. By comparing outcomes for these matched groups of users and non-users, you will be able to get better information about whether or not the technology is moving the needle.
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="tool-questions">
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#A">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> Describe your sample
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="A" class="row  collapse in q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <h4> <label for="Intervention_Group_Desc">The group that used <%= Basics_Tech_Name %> (the intervention group) includes:</label></h4>
+                            </div>
+                            <div class="step-action">
+                                <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" rows="2" placeholder="Ex. 5th grade English learners who used eZumi Learning in their classrooms" class="shiny-bound-input"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
+                                <% if (user != "NOAUTHENTICATED") { %>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
+                                </p>
+                                <% } %>
+                                <hr />
+                            </div>
+                            <div class="step-subquestion">
+                                <h4>
+                                    <label for="Plan_Question_D">The group that did not use <%= Basics_Tech_Name %> (the potential members of the comparison group) includes:</label>
+                                </h4>
+                            </div>
+                            <div class="step-action">
+                                <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" rows="2" placeholder="Ex. similar 5th grade English Learners with no access to eZumi Learning" class="shiny-bound-input"><%= eval.planQuestion.Comparison_Group_Desc %></textarea>
+                                <% if (user != "NOAUTHENTICATED") { %>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
+                                </p>
+                                <% } %>
+                                <hr />
+                            </div>
+                            <div class="step-subquestion">
+                                <h4>
+                                    <label for="Target_Group_Desc">Was use of <%= Basics_Tech_Name %> targeted in any way? If so, what were the characteristics of the group selected to use <%= Basics_Tech_Name %>?<em>Optional</em> </label>
+                                </h4>
+                            </div>
+                            <div class="step-action">
+                                <textarea name="Target_Group_Desc" rows="2" placeholder="Ex. In intervention group, all 5th grade English Learners were given access to the eZumi technology." class="shiny-bound-input"><%= eval.matching.Target_Group_Desc %></textarea>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#B">
-                    <h2 class="clickable">
-                        <i class="fa fa-caret-down" aria-hidden="false"></i> Upload your data
-                    </h2>
-                </div>
-            </div>
-            <div id="B" class="row  collapse in q-row">
-                <div class="col-xs-7">
-                    <div class="step-subquestion">
-                        <p>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
-
-                    </div>
-                    <div class="step-action">
-
-
-                        <input id="chosenfile" size="1" type="file" accept=".csv">
-
-
-                        <p class="warning">
-                            Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
-                        </p>
-                    </div>
-                    <div id='loadingmessage' class="row" hidden>
-                        <div class="col-sm-5 col-sm-offset-6">
-                            <img src='/static/image/ajax-loader.gif' />
-                        </div>
-                    </div>
-                    <div class="before-upload">
-                        <div class="step-subquestion">
-                            <h4>Who is using <%= Basics_Tech_Name %>?</h4>
-                            <p>Choose the name of the variable that identifies who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
-
-                        </div>
-                        <div class="step-action ">
-
-                            <div>
-                                <select id="treat_var" class="multiselect from-upload">
-
-                                    <option value="">Select a variable</option>
-
-                                </select>
-
-                            </div>
-
-                            <hr />
-                        </div>
-
-                        <div class="step-subquestion">
-                            <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
-                            <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the variable that indicates student grade.</p>
-                        </div>
-                        <div class="step-action ">
-
-
-                            <select id="grade_var" class="multiselect from-upload">
-                                <option value="match any grade" selected="selected">match any grade</option>
-                            </select>
-
-                            <hr />
-                        </div>
-                        <div class="step-subquestion">
-                            <h4> Which characteristics matter when matching users to similar non-users?</h4>
-                            <p>Be sure to select your pre-evaluation outcome measure (your primary matching variable) along with any other characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
-                        </div>
-                        <div class="step-action ">
-
-
-
-                            <select id="match_vars" name="match_vars" class="multiselect from-upload" multiple="multiple">
-                                <option value="Select matching variables">Select matching variables</option>
-                            </select>
-
-
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-
-                        <div class="panel-group" id="ttc3">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="consider3" class="panel-collapse collapse in">
-
-                                    <p>
-                                        Your data file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
-                                    </p>
-                                    <p>
-                                        The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
-                                    </p>
-                                    <div class="before-upload">
-                                        <p>
-                                            It is most important that users and non-users had similar levels on your outcome variable before they started using the technology. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your primary matching variable.
-                                        </p>
-                                        <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on free lunch or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc2">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider2" class="panel-collapse collapse in">
+                                            <p>
+                                                This information will be included in your findings brief to help your colleagues and stakeholders understand the setting in which you tested this technology.
+                                            </p>
+                                            <p>The information about the intervention and comparison groups is from your research question. You may edit the descriptions to make corrections or provide more detail. </p>
+                                        </div>
                                     </div>
-                                    <p>
-
-                                        Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
-                                    </p>
-
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading accordion-toggle">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
+                                                    Example
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="example2" class="panel-collapse collapse">
+                                            <ul>
+                                                <li>Intervention group: seven schools that used Everest Learning Lab in their fifth grade classrooms</li>
+                                                <li>Comparison group: five schools that did not use Everest Learning Lab</li>
+                                                <li>Given access: in intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
+                    </div>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#B">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> Upload your data
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="B" class="row  collapse in q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <p>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
+                            </div>
+                            <div class="step-action">
+                                <input id="chosenfile" size="1" type="file" accept=".csv">
+                                <p class="warning">
+                                    Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
+                                </p>
+                            </div>
+                            <div id='loadingmessage' class="row" hidden>
+                                <div class="col-sm-5 col-sm-offset-6">
+                                    <img src='/static/image/ajax-loader.gif' />
+                                </div>
+                            </div>
+                            <div class="before-upload">
+                                <div class="step-subquestion">
+                                    <h4>Who is using <%= Basics_Tech_Name %>?</h4>
+                                    <p>Choose the name of the variable that identifies who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                                </div>
+                                <div class="step-action ">
 
+                                    <div>
+                                        <select id="treat_var" class="multiselect from-upload">
+
+                                            <option value="">Select a variable</option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <hr />
+                                </div>
+
+                                <div class="step-subquestion">
+                                    <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
+                                    <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the variable that indicates student grade.</p>
+                                </div>
+                                <div class="step-action ">
+
+
+                                    <select id="grade_var" class="multiselect from-upload">
+                                        <option value="match any grade" selected="selected">match any grade</option>
+                                    </select>
+
+                                    <hr />
+                                </div>
+                                <div class="step-subquestion">
+                                    <h4> Which characteristics matter when matching users to similar non-users?</h4>
+                                    <p>Be sure to select your pre-evaluation outcome measure (your primary matching variable) along with any other characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
+                                </div>
+                                <div class="step-action ">
+                                    <select id="match_vars" name="match_vars" class="multiselect from-upload" multiple="multiple">
+                                        <option value="Select matching variables">Select matching variables</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider3" class="panel-collapse collapse in">
+                                            <p>
+                                                Your data file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                                            </p>
+                                            <p>
+                                                The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
+                                            </p>
+                                            <div class="before-upload">
+                                                <p>
+                                                    It is most important that users and non-users had similar levels on your outcome variable before they started using the technology. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your primary matching variable.
+                                                </p>
+                                                <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on free lunch or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
+                                            </div>
+                                            <p>
+                                                Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!--end class=body-section-->
+                <div class="bottom-buttons">
+                    <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
+                    <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled">
+                        <i class="fa fa-download"></i>
+                        Download
+                    </a>
+                </div>
+                <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
+                <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+                <div id="results" class="shiny-html-output shiny-bound-output">
+                </div>
+                <div id='loadingmessage2' class="row" hidden>
+                    <div class="col-sm-5 col-sm-offset-6">
+                        <img src='/static/image/ajax-loader.gif' />
                     </div>
                 </div>
             </div>
-
-
-
-
-
-        </div> <!--end class=body-section-->
-
-        <div class="bottom-buttons">
-            <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
-
-
-            <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled">
-                <i class="fa fa-download"></i>
-                Download
-            </a>
-
         </div>
-
-
-        <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-
-
-        <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
-
-
-        <div id="results" class="shiny-html-output shiny-bound-output">
-
-        </div>
-        <div id='loadingmessage2' class="row" hidden>
-            <div class="col-sm-5 col-sm-offset-6">
-                <img src='/static/image/ajax-loader.gif' />
-            </div>
-        </div>
-
-    </div>
-
-        </div>
-
-<input type="hidden" name="s_treat_var" id="s_treat_var" />
-<input type="hidden" name="s_match_vars" id="s_match_vars" />
-<input type="hidden" name="s_grade_var" id="s_grade_var" />
-<input type="hidden" name="n_full" id="n_full"/>
-<input type="hidden" name="n_full_treat" id="n_full_treat"/>
-<input type="hidden" name="n_matched" id="n_matched"/>
-<input type="hidden" name="n_matched_treat" id="n_matched_treat"/>
-<input type="hidden" name="result" id="mresult"/>
-    <% include ../views/partials/toolButtons.html %>
-</form>
+        <input type="hidden" name="s_treat_var" id="s_treat_var" />
+        <input type="hidden" name="s_match_vars" id="s_match_vars" />
+        <input type="hidden" name="s_grade_var" id="s_grade_var" />
+        <input type="hidden" name="n_full" id="n_full" />
+        <input type="hidden" name="n_full_treat" id="n_full_treat" />
+        <input type="hidden" name="n_matched" id="n_matched" />
+        <input type="hidden" name="n_matched_treat" id="n_matched_treat" />
+        <input type="hidden" name="result" id="mresult" />
+        <% include ../views/partials/toolButtons.html %>
+    </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
-<script>
+    <script>
     $(document).ready(function () {
         $('.multiselect').multiselect();
-
-
         $("#chosenfile").change(function () {
-
             var formData = new FormData();
             $('#loadingmessage').show();
-
             formData.append("data", $(this)[0].files[0]);
-
             $.ajax({
                 url: "https://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
                 type: "POST",
@@ -392,7 +321,6 @@
                       .append($("<option></option>")
                       .attr("value", "match any grade")
                       .text("match any grade"));
-
                     $.each(data.colnames, function (index, value) {
                         $("select.from-upload")
                           .append($("<option></option>")
@@ -405,23 +333,16 @@
                 }
             });
         });
-
         $("#match").click(function () {
-
             $('#loadingmessage2').show();
-
             var formData = new FormData();
-
-            
             $("#s_treat_var").val(JSON.stringify($("#treat_var").val()));
             $("#s_match_vars").val(JSON.stringify($("#match_vars").val()));
             $("#s_grade_var").val(JSON.stringify($("#grade_var").val()));
-
             formData.append("data", $("#chosenfile")[0].files[0]);
             formData.append("treat_var", JSON.stringify($("#treat_var").val()));
             formData.append("match_vars", JSON.stringify($("#match_vars").val()));
             formData.append("grade_var", JSON.stringify($("#grade_var").val()));
-
             $.ajax({
                 url: "https://52.222.20.48/ocpu/library/edtechrce/R/matching",
                 type: "POST",
@@ -429,22 +350,17 @@
                 contentType: false,
                 data: formData,
                 success: function (data) {
-
                     var responsePaths = data.split("\n");
-        
-
                     $.ajax({
                         url: "https://52.222.20.48" + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
                             $('#loadingmessage2').hide();
-
                             var results_by_grade = data.results_by_grade;
-                     
                             var n_full=0, n_full_treat=0, n_matched=0, n_matched_treat=0
                             for (var key in results_by_grade) {
                                 if (results_by_grade.hasOwnProperty(key)) {
-                                    var imgid = "plot" + key;                              
+                                    var imgid = "plot" + key;
                                     var grade_object = results_by_grade[key];
                                     var bal1, bal2, bal3, info, buttxt;
                                     n_full += parseInt(grade_object.samples.n_full);
@@ -482,13 +398,13 @@
 
                                 }
                             }
-                            
+
                             $("#mresult").val(JSON.stringify(data));
                             $("#n_full").val(JSON.stringify(n_full));
                             $("#n_full_treat").val(JSON.stringify(n_full_treat));
                             $("#n_matched").val(JSON.stringify(n_matched));
                             $("#n_matched_treat").val(JSON.stringify(n_matched_treat));
-                            
+
                             $("#downloadData")
                              .removeClass("disabled");
 
@@ -498,8 +414,6 @@
                             // Save results to database.
                         }
                     });
-
-                 
                 }
             });
         });
@@ -507,6 +421,6 @@
     //init feedback_me plugin
     var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
     fm.init(fm_options);
-</script>
+    </script>
 </body>
 </html>

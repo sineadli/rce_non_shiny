@@ -1,14 +1,11 @@
 ﻿<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
-
 <!-- views/profile.ejs -->
 <!doctype html>
 <html>
@@ -22,76 +19,70 @@
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css"/>
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
     <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-86460597-1', 'auto');
-  ga('send', 'pageview');
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
 
     </script>
-
 </head>
 <body class="dashboard">
     <% include ../views/partials/header.html %>
-<div class="container-fluid">
-    <input type="hidden" id="user_name" value="<%= user.profile.user_name %>"/>
-    <input type="hidden" id="user_email" value="<%= user.email %>" />
-    <div class="page-header">
-        <h1 class="page-title">Evaluation Dashboard</h1>
-
-    </div>
-
-    <div class="row">
-
-
-        <div class="col-sm-3">
-            <div class="dash-well">
-                <h2 class="text-center"> <%= user.profile.user_name %>
-                </h2>
-                <% var role = user.profile.role; if (role == "other") (role =user.profile.role_other ) %>
-                <p class="text-center"><%= role %></p>
-
-                <p class="text-center">
-
-                    <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
-                 
-                </p>
-                <p class="text-center">
-                    <%= user.profile.organization_name %>
-                </p>
-
-            </div>
+    <div class="container-fluid">
+        <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
+        <input type="hidden" id="user_email" value="<%= user.email %>" />
+        <div class="page-header">
+            <h1 class="page-title">Evaluation Dashboard</h1>
         </div>
-        <div class="col-sm-9">
-            <%
-            var evallabel = "Begin Evaluation"
-            var evaltitle = "Ready to test an app?";
-            var status= "New";
-            var helpcaret = "fa-caret-down";
-            var helphidden = "aria-hidden='false'"
-            var helpdetail = "in"
-            if (eval) {
-            evaltitle = eval.title; status=parseInt(eval.status) + "% Completed";
-            evallabel = "Current Evaluation";
-            helpcaret = "fa-caret-right";
-            helphidden = "aria-hidden='true'"
-            helpdetail = ""
-            if (eval.created_at)
-            {
-            startdate = eval.created_at;
-            }
-            }
-            %>
-           
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="dash-well">
+                    <h2 class="text-center">
+                        <%= user.profile.user_name %>
+                    </h2>
+                    <% var role = user.profile.role; if (role == "other") (role =user.profile.role_other ) %>
+                    <p class="text-center"><%= role %></p>
+                    <p class="text-center">
+                        <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
+                    </p>
+                    <p class="text-center">
+                        <%= user.profile.organization_name %>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <%
+                var evallabel = "Begin Evaluation"
+                var evaltitle = "Ready to test an app?";
+                var status= "New";
+                var helpcaret = "fa-caret-down";
+                var helphidden = "aria-hidden='false'"
+                var helpdetail = "in"
+                if (eval) {
+                evaltitle = eval.title; status=parseInt(eval.status) + "% Completed";
+                evallabel = "Current Evaluation";
+                helpcaret = "fa-caret-right";
+                helphidden = "aria-hidden='true'"
+                helpdetail = ""
+                if (eval.created_at)
+                {
+                startdate = eval.created_at;
+                }
+                }
+                %>
                 <div class="panel panel-default dash-well">
                     <div class="panel-heading">
-                        <h2 class="panel-title  clickable">                         
-                            <a data-toggle="collapse" data-target="#welcomeDetails" >
-                                <i class="fa <%= helpcaret %>" <%= helphidden %> ></i> Welcome</a>
+                        <h2 class="panel-title  clickable">
+                            <a data-toggle="collapse" data-target="#welcomeDetails">
+                                <i class="fa <%= helpcaret %>" <%= helphidden %> ></i> Welcome
+                            </a>
                         </h2>
                     </div>
                     <div id="welcomeDetails" class="panel-collapse collapse <%= helpdetail %>">
@@ -103,124 +94,103 @@
                             </p>
                             <div class="clearfix"></div>
                         </div>
-                            <div class="col-sm-6 help-panel help-sec">
-                                <h3 class="sec-label">Choosing a technology</h3>
-                                <p>If you are looking for a technology to implement, use this guide to help you with that process and return to the Coach once you are ready to plan a pilot of that technology. </p>
-                                <p class="pull-right"><a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
-                                </p>
-                            </div>
-                            <div class="col-sm-6 help-panel ">
-                                <h3 class="sec-label">Understanding types of evidence</h3>
-                                <p>This resource describes common types and sources of evidence. It explains how to tell if the evidence can support claims that a technology is effective.</p>
-                                <p class="pull-right">
-                                    <a onclick="window.open('/static/pdf/01.03 UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
-                                </p>
-                            </div>
-                            <div class="clearfix"></div>
-                        
+                        <div class="col-sm-6 help-panel help-sec">
+                            <h3 class="sec-label">Choosing a technology</h3>
+                            <p>If you are looking for a technology to implement, use this guide to help you with that process and return to the Coach once you are ready to plan a pilot of that technology. </p>
+                            <p class="pull-right">
+                                <a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                            </p>
+                        </div>
+                        <div class="col-sm-6 help-panel ">
+                            <h3 class="sec-label">Understanding types of evidence</h3>
+                            <p>This resource describes common types and sources of evidence. It explains how to tell if the evidence can support claims that a technology is effective.</p>
+                            <p class="pull-right">
+                                <a onclick="window.open('/static/pdf/01.03 UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                            </p>
+                        </div>
+                        <div class="clearfix"></div>
+
                     </div>
                     <div class="clearfix"></div>
-                 </div>
-               
-           
-            <div class="dash-well">
-               
-                <div class="sec-label"><%= evallabel %></div>
-
-                <h2><%= evaltitle %></h2>
-
-                <p>
-
-                <% if (eval) { %>
-                <p>
-                    <span class="sec-label">Status</span>: <%= status %>
-                </p>
-                <div>
-                    <p class="text-center add-padding">
-                        <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg">CONTINUE THIS EVALUATION</a> <br/>
-                    </p>
-
                 </div>
-                <div class="text-right" style="clear: both; margin-bottom: -19px;">
+                <div class="dash-well">
+                    <div class="sec-label"><%= evallabel %></div>
+                    <h2><%= evaltitle %></h2>
                     <p>
-                        <button type="button" class="btn-link sec-label" role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION <span class="fa fa-caret-right"></span></button><br/>
-                        <a href="/evaluations" class="sec-label">View all of your evaluations <span class="fa fa-caret-right"></span></a>
+                        <% if (eval) { %>
+                    <p>
+                        <span class="sec-label">Status</span>: <%= status %>
                     </p>
-                </div>
-                <% } %>
-
-                <% if (!eval) { %> 
-                <p>
-                    Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
-                </p>
-                <div>
-                    <p class="text-center add-padding">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">START EVALUATION</button>
+                    <div>
+                        <p class="text-center add-padding">
+                            <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg">CONTINUE THIS EVALUATION</a> <br />
+                        </p>
+                    </div>
+                    <div class="text-right" style="clear: both; margin-bottom: -19px;">
+                        <p>
+                            <button type="button" class="btn-link sec-label" role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION <span class="fa fa-caret-right"></span></button><br />
+                            <a href="/evaluations" class="sec-label">View all of your evaluations <span class="fa fa-caret-right"></span></a>
+                        </p>
+                    </div>
+                    <% } %>
+                    <% if (!eval) { %>
+                    <p>
+                        Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
                     </p>
-                </div>
-                <% } %>
-
-                <!-- Trigger the modal with a button -->
-                <!-- Modal -->
-                <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Enter a name for your evaluation</h4>
-                            </div>
-                            <div class="modal-body">
-                                <% var evalid; if (eval) {evalid = eval._id} %>
-                                <input type="hidden" id="evalid" value="<%= evalid %>"/>
-                                <input type="text" id="title"/>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
-
+                    <div>
+                        <p class="text-center add-padding">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">START EVALUATION</button>
+                        </p>
+                    </div>
+                    <% } %>
+                    <!-- Trigger the modal with a button -->
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Enter a name for your evaluation</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <% var evalid; if (eval) {evalid = eval._id} %>
+                                    <input type="hidden" id="evalid" value="<%= evalid %>" />
+                                    <input type="text" id="title" />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                    <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-  
-
-</div>
     <% include ../views/partials/footer.html %>
-<script type="text/javascript">
-    $(document).ready(function () {
-        
-        //init feedback_me plugin
-        var fm_options = setFeedbackOptions($("#user_email").val(), "dashboard");
-        fm.init(fm_options);
-
- 
-    });
-    $("#getTitle").click(function(e) {
-
-
-        var etitle = $("#title").val();
-        var url = '/api/eval';
-       
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: JSON.stringify({  "title": etitle }),
-            dataType: "json",
-            contentType: "application/json",
-            success: function(data) {
-                window.location = "/coach";
-            }
-        }).done(function(msg) {
-
-
-        });;
-    })
-</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //init feedback_me plugin
+            var fm_options = setFeedbackOptions($("#user_email").val(), "dashboard");
+            fm.init(fm_options);
+        });
+        $("#getTitle").click(function (e) {
+            var etitle = $("#title").val();
+            var url = '/api/eval';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "title": etitle }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    window.location = "/coach";
+                }
+            }).done(function (msg) {
+            });;
+        })
+    </script>
 </body>
 </html>
