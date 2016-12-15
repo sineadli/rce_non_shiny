@@ -38,8 +38,8 @@
 
         var current = eval.last_tool == tools[i].name ? "current" : "";
         var buttondivid = tools[i].name;
-        if (peeking && !firstTool || (tools[i].coachStep===5 &&  tools[i].evalPath !== eval.path)) {btnText="PEEK"; lock="locked"}
-       
+        if (peeking && !firstTool || (tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) {btnText="PEEK"; lock="locked"}
+
         %>
         <div class="col-xs-3">
 
@@ -61,16 +61,16 @@
 
                         <% } %>
 
-                        <%  if (lock==="locked") {%>
+                        <%  if (lock==="locked" && tools[i].path.indexOf(".pdf") !== -1) {%>
                         <p>
-                            Status<br/><span class="all-caps" id="status"><strong>NOT AVAILABLE</strong></span><br/>
+                            Status<br /><span class="all-caps" id="status"><strong>NOT AVAILABLE</strong></span><br />
                             <i class="fa fa-question-circle" aria-hidden="true"></i>
                         </p>
                         <% } %>
                         <%  if (lock != "locked" && tool.length <= 0 ) {%>
                         <p>
                             Status<br /><span class="all-caps" id="status"><strong>NOT STARTED</strong></span><br />
-                            
+
                         </p>
                         <% } %>
 
