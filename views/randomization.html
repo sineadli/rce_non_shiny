@@ -72,328 +72,336 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="tool-header">
-                        <h1 class="tool-title">Build your evaluation sample</h1>
-                        <div class="tool-intro">
-                            <p>Randomly select a group to pilot the technology (your intervention group). Those not selected will be your comparison group. Answer a few questions and upload your data. The Coach will create your groups and provide you with an updated dataset. You will use the updated dataset to give technology access to the correct users, and to link additional data as your pilot progresses.  </p>
+                    <div class="tool-top">
+                        <div class="dl-guide">
                         </div>
-                       
+                        <div class="tool-header">
+                            <h1 class="tool-title">Build your evaluation sample</h1>
+                            <div class="tool-intro">
+                                <p>Randomly select a group to pilot the technology (your intervention group). Those not selected will be your comparison group. Answer a few questions and upload your data. The Coach will create your groups and provide you with an updated dataset. You will use the updated dataset to give technology access to the correct users, and to link additional data as your pilot progresses. </p>
+                            </div>
+
+
+                            <div class="tool-help">
+                                <p>
+                                    <b>Challenge:</b> You want to test whether a technology is effective, but it is impossible to simultaneously observe what happens when an individual uses a technology and doesn’t use the technology.
+                                </p>
+                                <p>
+                                    <b>Solution:</b> The best test of whether or not your technology works is to randomly select some of the eligible users (a subset of the group you are interested in) to pilot the technology and others to continue classroom practice as usual. Once the groups are assigned by chance, you can be confident that you are comparing apples to apples—that the two groups are the same in every way except the technology use. Then, if you see differences in outcomes (such as student achievement scores) you can be convinced that the new technology is moving the needle. See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf">Randomization Overview</a> to learn more.
+                                </p>
+                                <p>
+                                    <b>Example:</b> If you introduce a new reading technology in all first grade classrooms, and then notice a jump in reading scores among those who used the technology, you may be tempted to attribute the reading improvements to the technology. However, you cannot assume that the technology caused the reading score increase. Many other factors could have contributed to the increases: the teachers also introduced a new decoding strategy, only the most motivated students used the technology, or students simply became developmentally ready to read.
+                                </p>
+                                <p>Let&rsquo;s get started!</p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="tool-help">
-                        <p>
-                            <b>Challenge:</b> You want to test whether a technology is effective, but it is impossible to simultaneously observe what happens when an individual uses a technology and doesn’t use the technology. 
-                        </p>
-                        <p>
-                            <b>Solution:</b> The best test of whether or not your technology works is to randomly select some of the eligible users (a subset of the group you are interested in) to pilot the technology and others to continue classroom practice as usual. Once the groups are assigned by chance, you can be confident that you are comparing apples to apples—that the two groups are the same in every way except the technology use. Then, if you see differences in outcomes (such as student achievement scores) you can be convinced that the new technology is moving the needle.  See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf">Randomization Overview</a> to learn more.
-                        </p>
-                        <p>
-                            <b>Example:</b> If you introduce a new reading technology in all first grade classrooms, and then notice a jump in reading scores among those who used the technology, you may be tempted to attribute the reading improvements to the technology. However, you cannot assume that the technology caused the reading score increase. Many other factors could have contributed to the increases: the teachers also introduced a new decoding strategy, only the most motivated students used the technology, or students simply became developmentally ready to read.
-                        </p>
-                        <p>Let&rsquo;s get started!</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="tool-questions">
+                <div class="step-header container">
+                    <div data-toggle="collapse" data-target="#A">
+                        <h2 class="clickable">
+                            <i class="fa fa-caret-down" aria-hidden="false"></i> Get ready to randomize
+                        </h2>
+                    </div>
+                </div>
+                <div id="A" class="row  collapse in q-row">
+                    <div class="col-xs-7">
+                        <div class="step-subquestion">
+
+                            <h4> <label for="Intervention_Group_Desc">Let’s confirm some details. Based on the information you have provided, your randomized pilot will: </label></h4>
+
+                        </div>
+                        <div class="step-action">
+                            <ul>
+                                <li>
+                                    Randomly select <%= Basics_Users %> to pilot test.
+                                    <% if (user != "NOAUTHENTICATED") { %>
+                                    <p class="prev-answer">
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/basics">The Basics</a>
+                                    </p>
+                                    <% } %>
+                                </li>
+                                <li>
+                                    Help you answer the following question: <br />
+                                    <% if (user != "NOAUTHENTICATED") { %>
+                                    Does <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                    <% } %>
+                                    <% if (user == "NOAUTHENTICATED") { %>
+                                    Does A do B among C compared to D?
+                                    <% } %>
+                                    <% if (user != "NOAUTHENTICATED") { %>
+                                    <p class="prev-answer">
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
+                                    </p>
+                                    <% } %>
+                                </li>
+                            </ul>
+
+                        </div>
+
                     </div>
 
-                    <div class="tool-questions">
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#A">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> Get ready to randomize
-                                </h2>
-                            </div>
+
+                </div>
+                <div class="step-header container">
+                    <div data-toggle="collapse" data-target="#B">
+                        <h2 class="clickable">
+                            <i class="fa fa-caret-down" aria-hidden="false"></i> Now the Coach needs a few more details about your plans to roll-out the technology.
+                        </h2>
+
+                    </div>
+                </div>
+                <div id="B" class="row collapse in q-row">
+                    <div class="col-xs-7">
+                        <div class="step-subquestion">
+                            <h4><label for="Individual_Group">Do you want to randomly assign <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the intervention and comparison groups?</label></h4>
                         </div>
-                        <div id="A" class="row  collapse in q-row">
-                            <div class="col-xs-7">
-                                <div class="step-subquestion">
+                        <div class="step-action">
+                            <select required name="Individual_Group" id="Individual_Group">
+                                <%
+                                var options = ["Select an option", "individuals", "groups" ];
+                                for ( var i = 0; i < options.length; i++ )
+                                {
+                                var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
 
-                                    <h4> <label for="Intervention_Group_Desc">Let’s confirm some details. Based on the information you have provided, your randomized pilot will: </label></h4>
+                                %>
+                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                }
+                                %>
 
-                                </div>
-                                <div class="step-action">
-                                    <ul>
-                                        <li>
-                                            Randomly select <%= Basics_Users %> to pilot test.
-                                            <% if (user != "NOAUTHENTICATED") { %>
-                                            <p class="prev-answer">
-                                                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/basics">The Basics</a>
-                                            </p>
-                                            <% } %>
-                                        </li>
-                                        <li>
-                                            Help you answer the following question: <br />
-                                            <% if (user != "NOAUTHENTICATED") { %>
-                                            Does <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
-                                            <% } %>
-                                            <% if (user == "NOAUTHENTICATED") { %>
-                                            Does A do B among C compared to D?
-                                            <% } %>
-                                            <% if (user != "NOAUTHENTICATED") { %>
-                                            <p class="prev-answer">
-                                                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
-                                            </p>
-                                            <% } %>
-                                        </li>
-                                    </ul>
-                                   
-                                </div>
-                              
-                            </div>
-
+                            </select>
 
                         </div>
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#B">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> Now the Coach needs a few more details about your plans to roll-out the technology.
-                                </h2>
+                        <div class="step-subquestion">
+                            <h4><label for="Cluster_Group">What groups do you want to randomly assign?</label></h4>
+                        </div>
+                        <div class="step-action">
 
+                            <select required name="Cluster_Group" id="Cluster_Group">
+                                <%
+                                var options = ["Select an option", "classes", "schools", "other" ];
+                                for ( var i = 0; i < options.length; i++ )
+                                {
+                                var selected;
+
+                                selected = ( eval.random.Cluster_Group== options[i] ) ? "selected" : "";
+
+                                %>
+                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                }
+                                %>
+
+                            </select>
+                            <div id="Question_Cluster_Other" hidden="true">
+                                <p>
+                                    <label for="Cluster_Group_Other">Please specify:</label>
+
+                                    <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>" />
+                                </p>
                             </div>
                         </div>
-                        <div id="B" class="row collapse in q-row">
-                            <div class="col-xs-7">
-                                <div class="step-subquestion">
-                                    <h4><label for="Individual_Group">Do you want to randomly assign <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the intervention and comparison groups?</label></h4>
-                                </div>
-                                <div class="step-action">
-                                    <select required name="Individual_Group" id="Individual_Group">
-                                        <%
-                                        var options = ["Select an option", "individuals", "groups" ];
-                                        for ( var i = 0; i < options.length; i++ )
-                                        {
-                                        var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
 
-                                        %>
-                                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
-                                        }
-                                        %>
-
-                                    </select>
-
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4><label for="Cluster_Group">What groups do you want to randomly assign?</label></h4>
-                                </div>
-                                <div class="step-action">
-
-                                    <select required name="Cluster_Group" id="Cluster_Group">
-                                        <%
-                                        var options = ["Select an option", "classes", "schools", "other" ];
-                                        for ( var i = 0; i < options.length; i++ )
-                                        {
-                                        var selected;
-
-                                        selected = ( eval.random.Cluster_Group== options[i] ) ? "selected" : "";
-
-                                        %>
-                                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
-                                        }
-                                        %>
-
-                                    </select>
-                                    <div id="Question_Cluster_Other" hidden="true">
-                                        <p>
-                                            <label for="Cluster_Group_Other">Please specify:</label>
-
-                                            <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xs-5">
-                                <div class="step-to-consider">
-                                    <div class="step-to-consider">
-                                        <div class="panel-group" id="ttc5">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title sec-label clickable">
-                                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                        <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
-                                                            Things to Consider
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                                <div id="consider5" class="panel-collapse collapse in">
-                                                    <p>Think about the roll-out of your technology. How many students/teachers/schools will begin to use the technology? Let’s say you have 125 second graders in five different classes. You have enough computers and software licenses for 50 students to begin using a reading program. There are two ways to assign students: you can randomly select 50 out of all 125 students (i.e. <strong>individuals</strong>) OR you can randomly select two of the five classes (i.e. <strong>groups</strong>). If neither of these options are feasible, consider starting smaller: randomly assign students within one classroom (for example, 13 students to the technology and 12 students to business-as-usual).</p>
-                                                    <p>Convenience should not be the only factor in your decision on how to assign the technology. <strong>Bigger samples are better</strong>. If you have a small sample, you are less likely to learn whether or not the technology works. (A larger sample allows you to detect smaller effects.) With only a few individuals or classes in each group, your results are likely to be inconclusive.</p>
-
-
-
-                                                </div>
-                                            </div>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="step-to-consider">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc5">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#C">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> Prepare and upload your data
-                                </h2>
-                            </div>
-                        </div>
-                        <div id="B" class="row  collapse in q-row">
-                            <div class="col-xs-7">
-                                <div class="step-subquestion">
-                                    <p>Based on the information you provided, your data file should have the following fields: </p>
-                                    <strong>Required</strong>
-                                    <ul>
-                                        <li>[Student/Teacher/Other]_ID (Anonymous ID for each technology user that will be randomly assigned)* </li>
-                                        <li>[Class/School]_ID (Anonymous ID for each group of users that will be randomly assigned)* </li>
-                                    </ul>
-                                    <strong>Strongly Recommended</strong>
-                                    <ul>
-                                        <li>
-                                            Pretest measure of [B – outcome of interest]
-                                        </li>
-                                        <li>Grade level (if there is more than one grade in the sample)</li>
-                                        <li>Background characteristics </li>
-                                    </ul>
-                                    <p>Since you are randomizing [individuals/groups], your data set must have one row for each [individual/group]. Each column should contain a different data field (for example, student_ID, gender, etc.)  For more detailed instructions on preparing your data, see this guide. You must convert the file to CSV format before uploading it. </p>
-                             
-                                        <p>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
-
-                                    </div>
-                                    <div class="step-action">
-
-
-                                        <input id="chosenfile" size="1" type="file" accept=".csv">
-
-
-                                        <p class="warning">
-                                            Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
-                                        </p>
-                                    </div>
-                                    <div id='loadingmessage' class="row" hidden>
-                                        <div class="col-sm-5 col-sm-offset-6">
-                                            <img src='/static/image/ajax-loader.gif' />
-                                        </div>
-                                    </div>
-                                    <div class="before-upload">
-                                        <div class="step-subquestion">
-                                            <h4>Who is using <%= Basics_Tech_Name %>?</h4>
-                                            <p>Choose the name of the variable that identifies who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
-
-                                        </div>
-                                        <div class="step-action ">
-
-                                            <div>
-                                                <select id="treat_var" class="multiselect from-upload">
-
-                                                    <option value="">Select a variable</option>
-
-                                                </select>
-
-                                            </div>
-
-                                            <hr />
-                                        </div>
-
-                                        <div class="step-subquestion">
-                                            <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
-                                            <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave  "match any grade" selected. Otherwise, please select the name of the variable that indicates student grade.</p>
-                                        </div>
-                                        <div class="step-action ">
-
-
-                                            <select id="grade_var" class="multiselect from-upload">
-                                                <option value="match any grade" selected="selected">match any grade</option>
-                                            </select>
-
-                                            <hr />
-                                        </div>
-                                        <div class="step-subquestion">
-                                            <h4> Which characteristics matter when matching users to similar non-users?</h4>
-                                            <p>Be sure to select your pre-evaluation outcome measure (your primary matching variable) along with any other characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
-                                        </div>
-                                        <div class="step-action ">
-
-
-
-                                            <select id="match_vars" name="match_vars" class="multiselect from-upload" multiple="multiple">
-                                                <option value="Select matching variables">Select matching variables</option>
-                                            </select>
+                                        <div id="consider5" class="panel-collapse collapse in">
+                                            <p>Think about the roll-out of your technology. How many students/teachers/schools will begin to use the technology? Let’s say you have 125 second graders in five different classes. You have enough computers and software licenses for 50 students to begin using a reading program. There are two ways to assign students: you can randomly select 50 out of all 125 students (i.e. <strong>individuals</strong>) OR you can randomly select two of the five classes (i.e. <strong>groups</strong>). If neither of these options are feasible, consider starting smaller: randomly assign students within one classroom (for example, 13 students to the technology and 12 students to business-as-usual).</p>
+                                            <p>Convenience should not be the only factor in your decision on how to assign the technology. <strong>Bigger samples are better</strong>. If you have a small sample, you are less likely to learn whether or not the technology works. (A larger sample allows you to detect smaller effects.) With only a few individuals or classes in each group, your results are likely to be inconclusive.</p>
 
 
 
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-xs-5">
-                                    <div class="step-to-consider">
-
-                                        <div class="panel-group" id="ttc3">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title sec-label clickable">
-                                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                        <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
-                                                            Things to Consider
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                                <div id="consider3" class="panel-collapse collapse in">
-
-                                                    <p>
-                                                        Your data file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
-                                                    </p>
-                                                    <p>
-                                                        The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
-                                                    </p>
-                                                    <div class="before-upload">
-                                                        <p>
-                                                            It is most important that users and non-users had similar levels on your outcome variable before they started using the technology. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your primary matching variable.
-                                                        </p>
-                                                        <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on free lunch or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
-                                                    </div>
-                                                    <p>
-
-                                                        Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
-                                                    </p>
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-header container">
+                    <div data-toggle="collapse" data-target="#C">
+                        <h2 class="clickable">
+                            <i class="fa fa-caret-down" aria-hidden="false"></i> Prepare and upload your data
+                        </h2>
+                    </div>
+                </div>
+                <div id="B" class="row  collapse in q-row">
+                    <div class="col-xs-7">
+                        <div class="step-subquestion">
+                            <p>Based on the information you provided, your data file should have the following fields: </p>
+                            <strong>Required</strong>
+                            <ul>
+                                <li>[Student/Teacher/Other]_ID (Anonymous ID for each technology user that will be randomly assigned)* </li>
+                                <li>[Class/School]_ID (Anonymous ID for each group of users that will be randomly assigned)* </li>
+                            </ul>
+                            <strong>Strongly Recommended</strong>
+                            <ul>
+                                <li>
+                                    Pretest measure of [B – outcome of interest]
+                                </li>
+                                <li>Grade level (if there is more than one grade in the sample)</li>
+                                <li>Background characteristics </li>
+                            </ul>
+                            <p>Since you are randomizing [individuals/groups], your data set must have one row for each [individual/group]. Each column should contain a different data field (for example, student_ID, gender, etc.)  For more detailed instructions on preparing your data, see this guide. You must convert the file to CSV format before uploading it. </p>
 
-
-
-
-
-                        </div> <!--end class=body-section-->
-
-                        <div class="bottom-buttons">
-                            <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
-
-
-                            <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled">
-                                <i class="fa fa-download"></i>
-                                Download
-                            </a>
+                            <p>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
 
                         </div>
+                        <div class="step-action">
 
 
-                        <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
+                            <input id="chosenfile" size="1" type="file" accept=".csv">
 
 
-                        <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
-
-
-                        <div id="results" class="shiny-html-output shiny-bound-output">
-
+                            <p class="warning">
+                                Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
+                            </p>
                         </div>
-                        <div id='loadingmessage2' class="row" hidden>
+                        <div id='loadingmessage' class="row" hidden>
                             <div class="col-sm-5 col-sm-offset-6">
                                 <img src='/static/image/ajax-loader.gif' />
                             </div>
                         </div>
+                        <div class="before-upload">
+                            <div class="step-subquestion">
+                                <h4>Who is using <%= Basics_Tech_Name %>?</h4>
+                                <p>Choose the name of the variable that identifies who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
 
+                            </div>
+                            <div class="step-action ">
+
+                                <div>
+                                    <select id="treat_var" class="multiselect from-upload">
+
+                                        <option value="">Select a variable</option>
+
+                                    </select>
+
+                                </div>
+
+                                <hr />
+                            </div>
+
+                            <div class="step-subquestion">
+                                <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
+                                <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave  "match any grade" selected. Otherwise, please select the name of the variable that indicates student grade.</p>
+                            </div>
+                            <div class="step-action ">
+
+
+                                <select id="grade_var" class="multiselect from-upload">
+                                    <option value="match any grade" selected="selected">match any grade</option>
+                                </select>
+
+                                <hr />
+                            </div>
+                            <div class="step-subquestion">
+                                <h4> Which characteristics matter when matching users to similar non-users?</h4>
+                                <p>Be sure to select your pre-evaluation outcome measure (your primary matching variable) along with any other characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
+                            </div>
+                            <div class="step-action ">
+
+
+
+                                <select id="match_vars" name="match_vars" class="multiselect from-upload" multiple="multiple">
+                                    <option value="Select matching variables">Select matching variables</option>
+                                </select>
+
+
+
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="col-xs-5">
+                        <div class="step-to-consider">
+
+                            <div class="panel-group" id="ttc3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title sec-label clickable">
+                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                            <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                                Things to Consider
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div id="consider3" class="panel-collapse collapse in">
+
+                                        <p>
+                                            Your data file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                                        </p>
+                                        <p>
+                                            The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
+                                        </p>
+                                        <div class="before-upload">
+                                            <p>
+                                                It is most important that users and non-users had similar levels on your outcome variable before they started using the technology. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your primary matching variable.
+                                            </p>
+                                            <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on free lunch or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
+                                        </div>
+                                        <p>
+
+                                            Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                                        </p>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div> <!--end class=body-section-->
+
+            <div class="bottom-buttons">
+                <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
+
+
+                <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled">
+                    <i class="fa fa-download"></i>
+                    Download
+                </a>
+
+            </div>
+
+
+            <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
+
+
+            <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+
+
+            <div id="results" class="shiny-html-output shiny-bound-output">
+
+            </div>
+            <div id='loadingmessage2' class="row" hidden>
+                <div class="col-sm-5 col-sm-offset-6">
+                    <img src='/static/image/ajax-loader.gif' />
+                </div>
+            </div>
+
+        </div>
 
             </div>
         </div>
