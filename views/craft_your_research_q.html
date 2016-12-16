@@ -51,24 +51,15 @@
     <% include ../views/partials/toolHeader.html %>
     <% } %>
     <%
-    var Basics_Outcome ='';
-    var Basics_Outcome_Other ='';
-    var Basics_Users ='users';
-    var Basics_Users_Others ='';
-    var Basics_Tech_Name ='the educational technology';
-    if (user != "NOAUTHENTICATED")
-    {
-    if (eval.basics)
-    {
-    Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-    Basics_Outcome = eval.basics.Basics_Outcome;
+
+    var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+    var Basics_Outcome = eval.basics.Basics_Outcome;
     if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-    Basics_Users_Others = eval.basics.Basics_Users_Others;
-    Basics_Users = eval.basics.Basics_Users;
+    var Basics_Users_Others = eval.basics.Basics_Users_Others;
+    var Basics_Users = eval.basics.Basics_Users;
     if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-    Basics_Tech_Name = eval.basics.Basics_Tech_Name
-    }
-    }
+    var Basics_Tech_Name = eval.basics.Basics_Tech_Name == '' ? 'the educational technology' : eval.basics.Basics_Tech_Name
+  
     %>
     <input type="hidden" id="user_email" value="<%= user %>" />
 <div class="container-fluid">

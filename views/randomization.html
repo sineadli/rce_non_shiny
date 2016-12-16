@@ -245,18 +245,18 @@
                             <p>Based on the information you provided, your data file should have the following fields: </p>
                             <strong>Required</strong>
                             <ul>
-                                <li>[Student/Teacher/Other]_ID (Anonymous ID for each technology user that will be randomly assigned)* </li>
-                                <li>[Class/School]_ID (Anonymous ID for each group of users that will be randomly assigned)* </li>
+                                <li>A unique and anonymous ID for each <span class="indiv-or-group">technology user or group of users</span> that will be randomly assigned by the Coach to your treatment or comparison groups. </li>
+                               
                             </ul>
                             <strong>Strongly Recommended</strong>
                             <ul>
                                 <li>
-                                    Pretest measure of [B – outcome of interest]
+                                    Pretest measure of <%= Basics_Outcome %>
                                 </li>
                                 <li>Grade level (if there is more than one grade in the sample)</li>
-                                <li>Background characteristics </li>
+                                <li>Characteristics of your <span class="indivs-or-groups">technology users or groups of users</span> that could affect <%= Basics_Outcome %>.</li>
                             </ul>
-                            <p>Since you are randomizing [individuals/groups], your data set must have one row for each [individual/group]. Each column should contain a different data field (for example, student_ID, gender, etc.)  For more detailed instructions on preparing your data, see this guide. You must convert the file to CSV format before uploading it. </p>
+                           
 
                             <p>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
 
@@ -268,7 +268,7 @@
 
 
                             <p class="warning">
-                                Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
+                                Before uploading data, make sure personally identifiable information (PII), such as names and descriptors that could identify your evaluation participants, has been removed.
                             </p>
                         </div>
                         <div id='loadingmessage' class="row" hidden>
@@ -278,8 +278,8 @@
                         </div>
                         <div class="before-upload">
                             <div class="step-subquestion">
-                                <h4>Who is using <%= Basics_Tech_Name %>?</h4>
-                                <p>Choose the name of the variable that identifies who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                                <h4>Select the variable that identifies each <span class="indiv-or-group">technology user or group of users</span>.</h4>
+                                <p>Choose the name of the variable that uniquely identifies each <span class="indiv-or-group">technology user or group of users </span> that the coach will randomly assign to your treatment or comparison group. </p>
 
                             </div>
                             <div class="step-action ">
@@ -297,8 +297,9 @@
                             </div>
 
                             <div class="step-subquestion">
-                                <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
-                                <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave  "match any grade" selected. Otherwise, please select the name of the variable that indicates student grade.</p>
+                                <h4>How many <span class="indivs-or-groups">technology users or groups of users</span> can you have?</h4>
+                                <p>Given your pilot test implementation plans, enter the percentage or number of potential users or groups that you expect to give access to <%= Basics_Tech_Name %></p>
+                                <p class="note">NOTE: It is not necessary to have equal numbers in your treatment (technology users) and comparison (non-users) groups. The Coach will account for any differences when analyzing your results. However, group sizes should be as similar as possible.</p>
                             </div>
                             <div class="step-action ">
 
@@ -343,7 +344,7 @@
                                     <div id="consider3" class="panel-collapse collapse in">
 
                                         <p>
-                                            Your data file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                                            Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
                                         </p>
                                         <p>
                                             The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.

@@ -35,7 +35,7 @@ totalToolNumber = 8; //for completed status
 //02.03 determine your approach
 var Basics = mongoose.Schema({
     Basics_Have: { type: String, default: '' },
-    Basics_Tech_Name: { type: String, default: 'the educational technology' }, // was Plan_Question_A
+    Basics_Tech_Name: { type: String, default: '' }, // was Plan_Question_A
     Basics_Using: { type: String, default: '' }, // was Prob_Appr_A This is not used.  Replaced by Prob_Appr_Current_or_New
     Basics_Users: { type: String, default: 'users' }, // Was Prob_Appr_B
 	Basics_Users_Other: { type: String, default: '' }, // Was Prob_Appr_B_other
@@ -59,8 +59,8 @@ var ProbAppr = mongoose.Schema({
 });
 //03.01 crafting a research question
 var PlanQuestion = mongoose.Schema({
-    Outcome_Measure: { type: String, default: 'the outcome measure' }, // was Plan_Question_B_2
-    Outcome_Direction: { type: String, default: 'improve' }, // was  Plan_Question_B_3
+    Outcome_Measure: { type: String, default: '' }, // was Plan_Question_B_2
+    Outcome_Direction: { type: String, default: '' }, // was  Plan_Question_B_3
     Intervention_Group_Desc: { type: String, default: '' }, // was  Plan_Question_C
     Comparison_Group_Desc: { type: String, default: '' }, // was Plan_Question_D
     created_at: { type: Date, default: Date.now },
