@@ -35,24 +35,24 @@ function dynamicSort(property) {
 
 module.exports = function (app, passport) {
     app.use(noCache);
-    app.use(isLoggedIn);
+    //app.use(isLoggedIn);
     app.use(recordURL);
 
     //dashboard, require logged in and get current evaluation
    // app.use(getCurrentEvaluation);
-    app.get('/dashboard',  getCurrentEvaluation,  function (req, res) {
+    app.get('/dashboard', isLoggedIn,  getCurrentEvaluation,  function (req, res) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, eval: sess.eval });
     });
 
-    app.get('/evaluations', getAllEvaluations, function (req, res) {
+    app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
         sess = req.session;
        // console.log(sess.evals)
         res.render('evaluations.html', { user: req.user, evals: sess.evals });
     });
 
 
-    app.get('/coach',  getCurrentEvaluation, function (req, res) {
+    app.get('/coach', isLoggedIn, getCurrentEvaluation, function (req, res) {
 		sess = req.session;
 		//console.log(sess.eval);
 		//console.log(sess);
@@ -69,7 +69,7 @@ module.exports = function (app, passport) {
         });
 
     });
-    app.get('/coach/:id', function (req, res) {
+    app.get('/coach/:id', isLoggedIn, function (req, res) {
         sess = req.session;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
@@ -91,7 +91,7 @@ module.exports = function (app, passport) {
     });
 
 	// this is for returning the partial view tool.html on the coach.html
-	app.get('/tools/:coachStep', function (req, res) {
+    app.get('/tools/:coachStep', isLoggedIn, function (req, res) {
 		//console.log(req.params.coachStep);
 		sess = req.session;
 		var coachStep;
@@ -121,7 +121,7 @@ module.exports = function (app, passport) {
 
     //this route is update evaluation object, it is called from dashboard.html and coach.html
     //new or change title only
-    app.post('/api/eval',  function (req, res) {
+    app.post('/api/eval', isLoggedIn, function (req, res) {
         sess = req.session;
         // console.log(req.body.id);
         if (!req.body.id) {
@@ -163,13 +163,7 @@ module.exports = function (app, passport) {
         }
 
     });
-    
-
-
-	
-   
-
-   
+       
 };
 
 

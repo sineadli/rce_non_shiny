@@ -19,12 +19,12 @@ var sess;
 //please note that req.session.step is for managing the active tab for coach.html
 //the following defines the tool routes available, only four routes available currently
 module.exports = function (app, passport) {
-    app.use(isLoggedIn);
+   // app.use(isLoggedIn);
     app.use(getCurrentEvaluation);
   
 	
 	//02.03 The Basics
-	app.get('/basics', function (req, res) {
+    app.get('/basics', isLoggedIn, function (req, res) {
 		sess = req.session;
 		sess.eval.last_step = 2;
 		sess.eval.last_tool = "The Basics";
@@ -32,7 +32,7 @@ module.exports = function (app, passport) {
         var query = require('url').parse(req.url, true).query;
         res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query   });
 	});
-	app.post('/basics', function (req, res) {
+    app.post('/basics', isLoggedIn, function (req, res) {
 		sess = req.session;
 		var obj = req.body, basics;
 	//	console.log(obj);
@@ -124,7 +124,7 @@ module.exports = function (app, passport) {
     
 
     //02.03 determine your approach
-	app.get('/determine_your_approach', function (req, res) {
+    app.get('/determine_your_approach', isLoggedIn, function (req, res) {
 	//	console.log("In DYA get method.");
         sess = req.session;
         sess.eval.last_step = 2;
@@ -132,7 +132,7 @@ module.exports = function (app, passport) {
         var query = require('url').parse(req.url, true).query;
         res.render('determine_your_approach.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
-    app.post('/determine_your_approach',  function (req, res) {
+    app.post('/determine_your_approach', isLoggedIn,  function (req, res) {
         sess = req.session;
         var obj = req.body, probAppr;
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
@@ -215,7 +215,7 @@ module.exports = function (app, passport) {
         });
 	});
 	
-	app.post('/pdf_view',  function (req, res) {
+    app.post('/pdf_view', isLoggedIn,  function (req, res) {
 		sess = req.session;
 		var obj = req.body;
 		var toollist = { "name": obj.tname, "status": "completed", "visited_at": new Date() };
@@ -274,7 +274,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/craft_your_research_q', function (req, res) {	   
+    app.get('/craft_your_research_q', isLoggedIn, function (req, res) {	   
 		sess = req.session;
 	//	console.log(sess.eval);
         sess.eval.last_step = 3;
@@ -283,7 +283,7 @@ module.exports = function (app, passport) {
         res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
     //03.01 crafting a research question
-    app.post('/craft_your_research_q',  function (req, res) {
+    app.post('/craft_your_research_q', isLoggedIn,  function (req, res) {
         var toollist = { "name": "Craft Your Research Question", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
@@ -366,14 +366,14 @@ module.exports = function (app, passport) {
         });
     });
     //03.02 plan next steps
-    app.get('/plan_next_steps',  function (req, res) {
+    app.get('/plan_next_steps', isLoggedIn,  function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Think About How to Use Your Result";
         var query = require('url').parse(req.url, true).query;
         res.render('plan_next_steps.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query  });
     });
-    app.post('/plan_next_steps',  function (req, res) {
+    app.post('/plan_next_steps', isLoggedIn, function (req, res) {
         var toollist = { "name": "Think About How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
@@ -472,14 +472,14 @@ module.exports = function (app, passport) {
         });
     });
     //03.03 context and usage
-    app.get('/context_and_usage',  function (req, res) {
+    app.get('/context_and_usage', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Summarize Context";
         var query = require('url').parse(req.url, true).query;
         res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
-    app.post('/context_and_usage',  function (req, res) {
+    app.post('/context_and_usage', isLoggedIn,  function (req, res) {
         var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
@@ -680,7 +680,7 @@ module.exports = function (app, passport) {
         var query = require('url').parse(req.url, true).query;
         res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
-    app.post('/getresult', function (req, res) {
+    app.post('/getresult', isLoggedIn, function (req, res) {
         console.log(req);
         var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
         console.log(req);
@@ -765,14 +765,14 @@ module.exports = function (app, passport) {
             res.redirect('/coach');
         });
     });
-    app.get('/shareresult', function (req, res) {
+    app.get('/shareresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
         res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
-    app.post('/shareresult',function (req, res) {
+    app.post('/shareresult', isLoggedIn,function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.last_step = 6;
