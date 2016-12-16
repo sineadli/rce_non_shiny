@@ -3,24 +3,20 @@
 <!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
-
-
 <!-- craft_your_research_q.html -->
 <html lang="en">
 <head>
     <title>how you will use the results</title>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/main.css"/>
+    <link rel="stylesheet" href="/static/css/main.css" />
 
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -47,449 +43,432 @@
     <% if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
-<form action="/plan_next_steps" method="post">
-    <% if (user != "NOAUTHENTICATED") { %>
-    <% include ../views/partials/toolHeader.html %>
-<% } %>
-    <%
-
-    Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-    Basics_Outcome = eval.basics.Basics_Outcome;
-    if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-    Basics_Users_Others = eval.basics.Basics_Users_Others;
-    Basics_Users = eval.basics.Basics_Users;
-    if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-    Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-
-    var Outcome_Direction = eval.planQuestion.Outcome_Direction;
-    var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
-
-
-    %>
-  
-    <input type="hidden" id="user_email" value="<%= user %>" />
-<div class="container-fluid">
-<div class="row">
-    <div class="col-xs-12">
-        
-            <div class="tool-top">
-                <div class="dl-guide">
-                    <a onclick=" window.open('/static/pdf/03.02 Think about how you will use results_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
-                    </div>
-
-                <div class="tool-header">
-                    <h1 class="tool-title"> Think About How You Will Use The Results</h1>
-                    <div class="tool-intro">
-                        <p>
-                            The Coach will help you think about how the answer to your research question will inform the decisions you make regarding your technology. What would success look like? How much risk are you willing to take when making a decision or a recommendation? For example, if implementing a technology across your district is very costly, you may want the technology to have a large impact to justify the expense. Moreover, you will want to be very certain that any effect observed can be attributed to using the technology. On the other hand, if the technology is free or will save money, you may just want to be confident that changing to this technology won&rsquo;t hurt outcomes and you may be willing to accept more uncertainty about the effects.
-                        </p>
-                    </div>
-                    <div class='tool-instructions'>
-                        <p>Sections A through D will help you think about these questions. Remember, you can always come back to this step and change your answers. In other words, nothing you enter here is permanent, so just fill this out as best you can.</p>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                </div>
-
-            </div>
-        </div>
-<div class="row">
-<div class="col-xs-12">
-
-
-<div class="tool-questions">
-<div class="step-header container">
-    <div data-toggle="collapse" data-target="#A">
-        <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i>
-            A. What is the cost of
-            <%= Basics_Tech_Name %>
-        </h2>
-    </div>
-</div>
-<div id="A" class="row  collapse in q-row">
-    <div class="col-xs-7">
-        <div class="step-action">
-            <p>
-                It
-                <select required id="Tech_Cost_Saves" name="Tech_Cost_Saves">
-                    <%
-                    var options = ["Select an option", "costs", "saves" ];
-                    for ( var i = 0; i < options.length; i++ )
-                    {
-                    var selected = ( eval.planNext.Tech_Cost_Saves== options[i] ) ? "selected" : "";
-
-                    %>
-                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                    }
-                    %>
-                </select>
-
-                approximately $<input type="text" style="width: 40px;" name="Tech_Amount" id="Tech_Amount" placeholder="20" value="<%= eval.planNext.Tech_Amount %>"/>
-                per
-                <select required name="Tech_Cost_User">
-                    <%
-                    var options = ["Select an option", "student", "teacher", "school" ];
-                    for ( var i = 0; i < options.length; i++ )
-                    {
-                    var selected = ( eval.planNext.Tech_Cost_User== options[i] ) ? "selected" : "";
-
-                    %>
-                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                    }
-                    %>
-
-                </select>
-                to use <%= Basics_Tech_Name %>?
-            </p>
-            <div data-toggle="collapse" data-target="#Tech_Cost_Desc">
-                <p class="clickable">
-                    If the sentence above does not fit your technology,<a> you can describe the cost in a couple of sentences instead.</a>
-                </p>
-            </div>
-            <div id="Tech_Cost_Desc" class="collapse">
-                <textarea placeholder="Type your own option here">eval.planNext.Tech_Cost_Desc</textarea>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-5">
-        <div class="step-to-consider">
-            <div class="panel-group" id="ttc4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title sec-label clickable">
-                            <span class="fa fa-caret-down" aria-hidden="false"></span>
-                            <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
-                                Things to Consider
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="consider4" class="panel-collapse collapse in">
-                        <p>
-                            The cost of a technology could simply be the cost per user. It could also be the savings realized by replacing one technology with another less expensive technology. Cost may also be measured in something other than dollars, such as teacher prep time saved.
-                        </p>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading accordion-toggle">
-                        <h3 class="panel-title sec-label clickable">
-                            <span class="fa fa-caret-right" aria-hidden="true"></span>
-                            <a data-toggle="collapse" data-parent="#ttc4" href="#example4">
-                                Example
-                            </a>
-                        </h3>
-                    </div>
-                    <div id="example4" class="panel-collapse collapse">
-                        <ul>
-                            <li>It costs approximately $20 per student to use the educational technology</li>
-                            <li>It saves approximately $1,000 per classroom to use the educational technology</li>
-                            <li>We're not sure. We believe using this tool will save teachers 20 minutes per day on prep time</li>
-                        </ul>
+    <form action="/plan_next_steps" method="post">
+        <% if (user != "NOAUTHENTICATED") { %>
+        <% include ../views/partials/toolHeader.html %>
+        <% } %>
+        <%
+        Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+        Basics_Outcome = eval.basics.Basics_Outcome;
+        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+        Basics_Users_Others = eval.basics.Basics_Users_Others;
+        Basics_Users = eval.basics.Basics_Users;
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        Basics_Tech_Name = eval.basics.Basics_Tech_Name;
+        var Outcome_Direction = eval.planQuestion.Outcome_Direction;
+        var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
+        %>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-top">
+                        <div class="dl-guide">
+                            <a onclick=" window.open('/static/pdf/03.02 Think about how you will use results_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                        </div>
+                        <div class="tool-header">
+                            <h1 class="tool-title"> Think About How You Will Use The Results</h1>
+                            <div class="tool-intro">
+                                <p>
+                                    The Coach will help you think about how the answer to your research question will inform the decisions you make regarding your technology. What would success look like? How much risk are you willing to take when making a decision or a recommendation? For example, if implementing a technology across your district is very costly, you may want the technology to have a large impact to justify the expense. Moreover, you will want to be very certain that any effect observed can be attributed to using the technology. On the other hand, if the technology is free or will save money, you may just want to be confident that changing to this technology won&rsquo;t hurt outcomes and you may be willing to accept more uncertainty about the effects.
+                                </p>
+                            </div>
+                            <div class='tool-instructions'>
+                                <p>Sections A through D will help you think about these questions. Remember, you can always come back to this step and change your answers. In other words, nothing you enter here is permanent, so just fill this out as best you can.</p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<div class="step-header container">
-    <div data-toggle="collapse" data-target="#B">
-        <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> B. What would success look like?
-        </h2>
-        <p>
-            The Coach will calculate the probability that <%= Basics_Tech_Name %> has an effect at least as large as the number you choose here. The Coach uses the units of whatever you are using to measure outcomes. This could be points on a test if you&rsquo;re trying to improve math achievement or days absent if you are trying to improve school attendance.
-        </p>
-    </div>
-</div>
-<div id="B" class="row collapse in q-row">
-    <div class="col-xs-7">
-        <div class="step-subquestion">
-            <p>What is the direction of intended change in <%= Basics_Outcome %>?</p>
-        </div>
-        <div class="step-action">
-            <select required name="Outcome_Direction" id="Outcome_Direction">
-                <%
-                var options = ["Select an option", "increase", "decrease" ];
-                for ( var i = 0; i < options.length; i++ )
-                {
-                var selected;
-
-                selected = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";
-
-                %>
-                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
-                }
-                %>
-
-            </select>
-            <% if (user != "NOAUTHENTICATED") {%>
-            <p class="prev-answer">
-                <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
-            </p>
-            <% } %>
-        </div>
-        <div class="step-subquestion">
-            <p>What measure will you use to test whether there was an effect?</p>
-        </div>
-        <div class="step-action">
-
-            <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
-            <% if (user != "NOAUTHENTICATED") { %>
-            <p class="prev-answer">
-                <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
-            </p>
-            <% } %>
-        </div>
+            <div class="row">
+                <div class="col-xs-12">
 
 
-        <div class="step-subquestion">
-            <p>
-                What is the unit that <span class="effect-measure"><%= Outcome_Measure %></span> uses to measure <%= Basics_Outcome %>?
-            </p>
-        </div>
-        <div class="step-action">
-            <select required name="Measure_Units" id="Measure_Units">
-                <%
-                var options = ["Select an option", "test score points", "days", "percentage points", "other" ];
-                for ( var i = 0; i < options.length; i++ ) {
-                var selected = (eval.planNext.Measure_Units == options[i] ) ? "selected" : "";
-
-                %>
-                <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
-                <% } %>
-
-            </select>
-            <div id="Question_Units_Other" hidden="true">
-                <p>
-                    <label for="Measure_Units_Other">Please specify:</label>
-
-                    <input type="text" name='Measure_Units_Other' id="Measure_Units_Other" value="<%= eval.planNext.Measure_Units_Other %>"/>
-                </p>
-            </div>
-        </div>
-        <div class="step-action">
-
-            <p>
-                I would consider any <span class="effect-direction"><%= Outcome_Direction %></span> larger than
-
-                <input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px"/>
-                <span class="measure-units">units</span> on <span class="effect-measure"><%= Outcome_Measure %></span> a success.
-            </p>
-        </div>
-    </div>
-    <div class="col-xs-5">
-        <div class="step-to-consider">
-            <div class="step-to-consider">
-                <div class="panel-group" id="ttc5">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title sec-label clickable">
-                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
-                                    Things to Consider
-                                </a>
-                            </h3>
+                    <div class="tool-questions">
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#A">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                    A. What is the cost of
+                                    <%= Basics_Tech_Name %>
+                                </h2>
+                            </div>
                         </div>
-                        <div id="consider5" class="panel-collapse collapse in">
-                            <ul>
-                                <li>If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
-                                <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.</li>
+                        <div id="A" class="row  collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-action">
+                                    <p>
+                                        It
+                                        <select required id="Tech_Cost_Saves" name="Tech_Cost_Saves">
+                                            <%
+                                            var options = ["Select an option", "costs", "saves" ];
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+                                            var selected = ( eval.planNext.Tech_Cost_Saves== options[i] ) ? "selected" : "";
 
+                                            %>
+                                            <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                            }
+                                            %>
+                                        </select>
 
+                                        approximately $<input type="text" style="width: 40px;" name="Tech_Amount" id="Tech_Amount" placeholder="20" value="<%= eval.planNext.Tech_Amount %>" />
+                                        per
+                                        <select required name="Tech_Cost_User">
+                                            <%
+                                            var options = ["Select an option", "student", "teacher", "school" ];
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+                                            var selected = ( eval.planNext.Tech_Cost_User== options[i] ) ? "selected" : "";
 
-                            </ul>
+                                            %>
+                                            <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                            }
+                                            %>
+
+                                        </select>
+                                        to use <%= Basics_Tech_Name %>?
+                                    </p>
+                                    <div data-toggle="collapse" data-target="#Tech_Cost_Desc">
+                                        <p class="clickable">
+                                            If the sentence above does not fit your technology,<a> you can describe the cost in a couple of sentences instead.</a>
+                                        </p>
+                                    </div>
+                                    <div id="Tech_Cost_Desc" class="collapse">
+                                        <textarea placeholder="Type your own option here">eval.planNext.Tech_Cost_Desc</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider4" class="panel-collapse collapse in">
+                                                <p>
+                                                    The cost of a technology could simply be the cost per user. It could also be the savings realized by replacing one technology with another less expensive technology. Cost may also be measured in something other than dollars, such as teacher prep time saved.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading accordion-toggle">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#example4">
+                                                        Example
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="example4" class="panel-collapse collapse">
+                                                <ul>
+                                                    <li>It costs approximately $20 per student to use the educational technology</li>
+                                                    <li>It saves approximately $1,000 per classroom to use the educational technology</li>
+                                                    <li>We're not sure. We believe using this tool will save teachers 20 minutes per day on prep time</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="step-header container">
-    <div data-toggle="collapse" data-target="#C">
-        <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> C. How confident do you want to be that&hellip;
-        </h2>
-    </div>
-</div>
-<div id="C" class="row collapse in q-row">
-    <div class="col-xs-7">
-        <div class="step-subquestion">
-            <p>&hellip; <%= Basics_Tech_Name %> moved the needle?</p>
-        </div>
-        <div class="step-action">
-            <p>
-                If I learned that there was a
-
-                <input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75%" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px"/> probability that <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> had the intended effect.
-            </p>
-        </div>
-        <div class="step-subquestion">
-            <p>&hellip; <%= Basics_Tech_Name %> did not move the needle?</p>
-
-            <p>
-                If I learned that there was less than a <input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50%" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px"/> probability that <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
-            </p>
-        </div>
-    </div>
-    <div class="col-xs-5">
-        <div class="step-to-consider">
-            <div class="step-to-consider">
-                <div class="panel-group" id="ttc6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title sec-label clickable">
-                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
-                                    Things to Consider
-                                </a>
-                            </h3>
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#B">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> B. What would success look like?
+                                </h2>
+                                <p>
+                                    The Coach will calculate the probability that <%= Basics_Tech_Name %> has an effect at least as large as the number you choose here. The Coach uses the units of whatever you are using to measure outcomes. This could be points on a test if you&rsquo;re trying to improve math achievement or days absent if you are trying to improve school attendance.
+                                </p>
+                            </div>
                         </div>
-                        <div id="consider6" class="panel-collapse collapse in">
-                            <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. Thinking forward to your results, what likelihood (or probability) would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
+                        <div id="B" class="row collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-subquestion">
+                                    <p>What is the direction of intended change in <%= Basics_Outcome %>?</p>
+                                </div>
+                                <div class="step-action">
+                                    <select required name="Outcome_Direction" id="Outcome_Direction">
+                                        <%
+                                        var options = ["Select an option", "increase", "decrease" ];
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        var selected;
+
+                                        selected = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";
+
+                                        %>
+                                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                        }
+                                        %>
+
+                                    </select>
+                                    <% if (user != "NOAUTHENTICATED") {%>
+                                    <p class="prev-answer">
+                                        <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
+                                    </p>
+                                    <% } %>
+                                </div>
+                                <div class="step-subquestion">
+                                    <p>What measure will you use to test whether there was an effect?</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
+                                    <% if (user != "NOAUTHENTICATED") { %>
+                                    <p class="prev-answer">
+                                        <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
+                                    </p>
+                                    <% } %>
+                                </div>
+
+
+                                <div class="step-subquestion">
+                                    <p>
+                                        What is the unit that <span class="effect-measure"><%= Outcome_Measure %></span> uses to measure <%= Basics_Outcome %>?
+                                    </p>
+                                </div>
+                                <div class="step-action">
+                                    <select required name="Measure_Units" id="Measure_Units">
+                                        <%
+                                        var options = ["Select an option", "test score points", "days", "percentage points", "other" ];
+                                        for ( var i = 0; i < options.length; i++ ) {
+                                        var selected = (eval.planNext.Measure_Units == options[i] ) ? "selected" : "";
+
+                                        %>
+                                        <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
+                                        <% } %>
+
+                                    </select>
+                                    <div id="Question_Units_Other" hidden="true">
+                                        <p>
+                                            <label for="Measure_Units_Other">Please specify:</label>
+
+                                            <input type="text" name='Measure_Units_Other' id="Measure_Units_Other" value="<%= eval.planNext.Measure_Units_Other %>" />
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="step-action">
+
+                                    <p>
+                                        I would consider any <span class="effect-direction"><%= Outcome_Direction %></span> larger than
+
+                                        <input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
+                                        <span class="measure-units">units</span> on <span class="effect-measure"><%= Outcome_Measure %></span> a success.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="step-to-consider">
+                                        <div class="panel-group" id="ttc5">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                        <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                            Things to Consider
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="consider5" class="panel-collapse collapse in">
+                                                    <ul>
+                                                        <li>If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
+                                                        <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.</li>
+
+
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="step-header container">
-    <div data-toggle="collapse" data-target="#D">
-        <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> D. What will you do if...
-        </h2>
-    </div>
-</div>
-<div id="D" class="row collapse in q-row">
-    <div class="col-xs-7">
-        <div class="step-subquestion">
-            <p>
-                &hellip; the evidence suggests that it is likely that
-
-
-                <% if (user != "NOAUTHENTICATED") { %>
-                <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
-                <% } %>
-                <% if (user == "NOAUTHENTICATED") { %>
-                A does B among C compared to D?
-                <% } %>
-            </p>
-        </div>
-        <div class="step-action">
-
-            <textarea name="Action_Success"><%= eval.planNext.Action_Success %></textarea>
-        </div>
-        <div class="step-subquestion">
-            <p>
-                &hellip; the evidence suggests that it is not likely that
-                <% if (user != "NOAUTHENTICATED") { %>
-                <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
-                <% } %>
-                <% if (user == "NOAUTHENTICATED") { %>
-                A does B among C compared to D?
-                <% } %>
-            </p>
-        </div>
-        <div class="step-action">
-
-            <textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
-        </div>
-        <div class="step-subquestion">
-            <p>&hellip; the results are inconclusive?</p>
-        </div>
-        <div class="step-action">
-
-            <textarea name="Plan_Next_D_3"><%= eval.planNext.Action_Inconclusive %></textarea>
-        </div>
-    </div>
-    <div class="col-xs-5">
-        <div class="step-to-consider">
-            <div class="step-to-consider">
-                <div class="panel-group" id="ttc7">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title sec-label clickable">
-                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                <a data-toggle="collapse" data-parent="#ttc7" href="#consider7">
-                                    Things to Consider
-                                </a>
-                            </h3>
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#C">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> C. How confident do you want to be that&hellip;
+                                </h2>
+                            </div>
                         </div>
-                        <div id="consider7" class="panel-collapse collapse in">
-                            <p>
-                                <b>Your Research Question:</b> <br/>
-                                <% if (user != "NOAUTHENTICATED") { %>
-                                DOES
-                                <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
-                                <% } %>
-                                <% if (user == "NOAUTHENTICATED") { %>
-                                A does B among C compared to D?
-                                <% } %>
+                        <div id="C" class="row collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-subquestion">
+                                    <p>&hellip; <%= Basics_Tech_Name %> moved the needle?</p>
+                                </div>
+                                <div class="step-action">
+                                    <p>
+                                        If I learned that there was a
 
-                            </p>
-                            <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you need to make</p>
+                                        <input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75%" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" /> probability that <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> had the intended effect.
+                                    </p>
+                                </div>
+                                <div class="step-subquestion">
+                                    <p>&hellip; <%= Basics_Tech_Name %> did not move the needle?</p>
+
+                                    <p>
+                                        If I learned that there was less than a <input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50%" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" /> probability that <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="step-to-consider">
+                                        <div class="panel-group" id="ttc6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                        <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
+                                                            Things to Consider
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="consider6" class="panel-collapse collapse in">
+                                                    <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. Thinking forward to your results, what likelihood (or probability) would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading accordion-toggle">
-                            <h3 class="panel-title sec-label clickable">
-                                <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                <a data-toggle="collapse" data-parent="#ttc7" href="#example7">
-                                    Example
-                                </a>
-                            </h3>
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#D">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> D. What will you do if...
+                                </h2>
+                            </div>
                         </div>
-                        <div id="example7" class="panel-collapse collapse">
-                            <ul>
-                                <li>Roll out eZumi to all students in grades 3-5</li>
-                                <li>Not renew our eZumi license for the next school year</li>
-                                <li>Collect more data to improve the precision of our analysis</li>
-                            </ul>
+                        <div id="D" class="row collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-subquestion">
+                                    <p>
+                                        &hellip; the evidence suggests that it is likely that
+
+
+                                        <% if (user != "NOAUTHENTICATED") { %>
+                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <% } %>
+                                        <% if (user == "NOAUTHENTICATED") { %>
+                                        A does B among C compared to D?
+                                        <% } %>
+                                    </p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Action_Success"><%= eval.planNext.Action_Success %></textarea>
+                                </div>
+                                <div class="step-subquestion">
+                                    <p>
+                                        &hellip; the evidence suggests that it is not likely that
+                                        <% if (user != "NOAUTHENTICATED") { %>
+                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <% } %>
+                                        <% if (user == "NOAUTHENTICATED") { %>
+                                        A does B among C compared to D?
+                                        <% } %>
+                                    </p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
+                                </div>
+                                <div class="step-subquestion">
+                                    <p>&hellip; the results are inconclusive?</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Plan_Next_D_3"><%= eval.planNext.Action_Inconclusive %></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="step-to-consider">
+                                        <div class="panel-group" id="ttc7">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                        <a data-toggle="collapse" data-parent="#ttc7" href="#consider7">
+                                                            Things to Consider
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="consider7" class="panel-collapse collapse in">
+                                                    <p>
+                                                        <b>Your Research Question:</b> <br />
+                                                        <% if (user != "NOAUTHENTICATED") { %>
+                                                        DOES
+                                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                                        <% } %>
+                                                        <% if (user == "NOAUTHENTICATED") { %>
+                                                        A does B among C compared to D?
+                                                        <% } %>
+
+                                                    </p>
+                                                    <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you need to make</p>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading accordion-toggle">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                        <a data-toggle="collapse" data-parent="#ttc7" href="#example7">
+                                                            Example
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="example7" class="panel-collapse collapse">
+                                                    <ul>
+                                                        <li>Roll out eZumi to all students in grades 3-5</li>
+                                                        <li>Not renew our eZumi license for the next school year</li>
+                                                        <li>Collect more data to improve the precision of our analysis</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-    <%  if (user != "NOAUTHENTICATED" && !query.peeking ) { %>
-    <div class="bottom-buttons">
-        <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
-        <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
-
-    </div>
-    <% } %>
-<div>
-    <input class="hidden" name="status" id="status"/>
-</div>
-</form>
+        <% include ../views/partials/toolButtons.html %>
+    </form>
     <% include ../views/partials/footer.html %>
-<script src='/static/js/custom.js'></script>
-<script>
+    <script src='/static/js/custom.js'></script>
+    <script>
 
-    $(document).ready(function() {
+        $(document).ready(function () {
 
-        var munits = $("#Measure_Units").val();
-        if (munits.toLowerCase === "other") {
-            munits = $("#Measure_Units_Other").val();
-        }
-        if (munits.toLowerCase() === "select an option") {
-            munits = "units";
-        }
+            var munits = $("#Measure_Units").val();
+            if (munits.toLowerCase === "other") {
+                munits = $("#Measure_Units_Other").val();
+            }
+            if (munits.toLowerCase() === "select an option") {
+                munits = "units";
+            }
 
-        $(".measure-units").text(munits);
+            $(".measure-units").text(munits);
 
-        $('.success-effect-size').text($("#Success_Effect_Size").val());
-    });
+            $('.success-effect-size').text($("#Success_Effect_Size").val());
+        });
 
-   
-    //init feedback_me plugin
-    var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
-    fm.init(fm_options);
-</script>
+
+        //init feedback_me plugin
+        var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
+        fm.init(fm_options);
+    </script>
 </body>
 </html>

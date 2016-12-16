@@ -3,15 +3,11 @@
 <!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
-
-
-
-
 <!-- craft_your_research_q.html -->
 <html lang="en">
 <head>
@@ -19,20 +15,22 @@
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/main.css" />
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
     <script src="/static/js/jquery.feedback_me.js"></script>
     <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-86460597-1', 'auto');
-  ga('send', 'pageview');
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
 
     </script>
 
@@ -46,6 +44,7 @@
     <% if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
+<<<<<<< HEAD
 <form action="/craft_your_research_q" method="post">
  <% if (user != "NOAUTHENTICATED") { %>
     <% include ../views/partials/toolHeader.html %>
@@ -75,331 +74,320 @@
             <h1 class="tool-title"> Craft your research question</h1>
 
 
-            <div class="tool-intro">
-                <p>
-                    Your <span data-toggle="tooltip" title="an answerable question about a specific effect resulting from the educational technology" class='tooltip-gr'>research question</span> will drive the rest of your study. A good question has four building blocks, which we call the "A, B, C, D's".
-                </p>
-            </div>
 
-            <div class="tool-help">
-                <div class="blue-print">
-                    <h3>
-                        The blue print: Does <b>A</b> do <b>B</b> among <b>C</b> compared to <b>D</b>?
-                    </h3>
-                </div>
-                <div class="tool-example">
-                    <p>
-                        <b>Example:</b> Does eZumi Learning increase student achievement on the benchmark assessment for math among 5th grade English Learners compared to similar students with no access to eZumi Learning?
-                    </p>
-                </div>
-            </div>
+                            <h1 class="tool-title"> Craft your research question</h1>
 
 
+                            <div class="tool-intro">
+                                <p>
+                                    Your <span data-toggle="tooltip" title="an answerable question about a specific effect resulting from the educational technology" class='tooltip-gr'>research question</span> will drive the rest of your study. A good question has four building blocks, which we call the "A, B, C, D's".
+                                </p>
+                            </div>
 
-
-            <div class="tool-instructions">
-                <p>Answer the questions in sections A through D below to build your own question, piece by piece. Check "Things to consider" and the "Examples" if you need help answering a question.</p>
-                <p class="note">
-                    <strong>NOTE:</strong> Make sure you do not include any personally identifiable information, such as names (teachers or students) or descriptors that would reveal who your participants are.
-                </p>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-    </div>
-</div>
-    </div>
-    <div class="row">
-        <div class="tool-questions">
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#A">
-                    <h2 class="clickable">
-                        <span class="fa fa-caret-down" aria-hidden="false"></span> A. What is the name of the educational technology you are testing?
-                    </h2>
-                </div>
-            </div>
-            <div id="A" class="row collapse in  q-row">
-                <div class="col-xs-7">
-                    <div class="step-action">
-                        <% var Basics_Tech_Name ='';
-                        if (user != "NOAUTHENTICATED") {
-                        if (eval.basics) {
-                        Basics_Tech_Name = eval.basics.Basics_Tech_Name
-                        }
-                        } %>
-                        <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
-                        <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
-                        </p>
-                        <% }} %>
-                    </div>
-                </div>
-            </div>
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#B">
-                    <h2 class="clickable">
-                        <i class="fa fa-caret-down" aria-hidden="false"></i> B. What is the intended effect?
-                    </h2>
-                </div>
-            </div>
-            <div id="B" class="row  collapse in  q-row">
-                <div class="col-xs-7">
-                    <div class="step-subquestion">
-                        <p>
-                            What is the <span data-toggle="tooltip" title="knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity" class='tooltip-gr'>outcome of interest</span>?
-                        </p>
-                    </div>
-                    <div class="step-action">
-                        <select required name="Basics_Outcome" id="Basics_Outcome">
-                            <%
-                            var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            var selected;
-                            if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
-
-
-                            %>
-                            <option value="<%=options[i] %>" <%=selected %> ><%=options[i] %></option>
-                            <%
-                            }
-                            %>
-
-                        </select>
-                        <div id="Question_Outcome_Other" hidden="true">
-                            <p>
-                                <label for="Basics_Outcome_Other">Please specify:</label>
-
-                                <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
-                            </p>
-                        </div>
-                        <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
-                        <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
-                        </p>
-                        <% }} %>
-                    </div>
-                    <div class="step-subquestion">
-                        <p>What is the direction of intended change? </p>
-                    </div>
-                    <div class="step-action">
-                        <select required name="Outcome_Direction" id="Outcome_Direction">
-                            <%
-                            var options = ["Select an option", "increase", "decrease" ];
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            var selected;
-                            if  (user != "NOAUTHENTICATED") {
-                            if (eval.planQuestion) { selected = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";}}
-                            %>
-                            <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
-                            }
-                            %>
-
-                        </select>
-                    </div>
-                    <div class="step-subquestion">
-                        <p>What measure will you use to test whether there was an effect?</p>
-                    </div>
-                    <div class="step-action">
-
-                        <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
-                    </div>
-
-                </div>
-
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-
-                        <div class="panel-group" id="ttc2">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
-                                            Things to Consider
-                                        </a>
+                            <div class="tool-help">
+                                <div class="blue-print">
+                                    <h3>
+                                        The blue print: Does <b>A</b> do <b>B</b> among <b>C</b> compared to <b>D</b>?
                                     </h3>
                                 </div>
-                                <div id="consider2" class="panel-collapse collapse in">
+                                <div class="tool-example">
                                     <p>
-                                        An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (e.g. engaging with the educational technology).
-                                        We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
+                                        <b>Example:</b> Does eZumi Learning increase student achievement on the benchmark assessment for math among 5th grade English Learners compared to similar students with no access to eZumi Learning?
                                     </p>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading accordion-toggle">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
-                                            Example
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="example2" class="panel-collapse collapse">
-
-                                    <ul>
-                                        <li>Increase student achievement on the mid-quarter benchmark assessment for math</li>
-                                        <li>Decrease chronic absenteeism</li>
-                                    </ul>
-
-                                </div>
+                            <div class="tool-instructions">
+                                <p>Answer the questions in sections A through D below to build your own question, piece by piece. Check "Things to consider" and the "Examples" if you need help answering a question.</p>
+                                <p class="note">
+                                    <strong>NOTE:</strong> Make sure you do not include any personally identifiable information, such as names (teachers or students) or descriptors that would reveal who your participants are.
+                                </p>
                             </div>
                         </div>
-
+                        <div class="clearfix"></div>
                     </div>
                 </div>
-
-            </div>
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#C">
-                    <h2 class="clickable">
-                        <i class="fa fa-caret-down" aria-hidden="false"></i> C. Among whom are you hoping to see results?
-                    </h2>
-                </div>
-            </div>
-            <div id="C" class="row collapse in  q-row">
-                <div class="col-xs-7">
-                    <div class="step-action">
-
-                        <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" placeholder="Ex., 5th grade English learners"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
-                    </div>
-                </div>
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-                        <div class="panel-group" id="ttc3">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="consider3" class="panel-collapse collapse in">
-                                    <p>
-                                        What group of individuals are you trying to affect? For example, students may be using the technology to increase their own achievement or teachers could be using the technology to increase their students' achievement. In both cases you are hoping to see results among students.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading accordion-toggle">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc3" href="#example3">
-                                            Example
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="example3" class="panel-collapse collapse">
-                                    <ul>
-                                        <li>6th grade students</li>
-                                        <li>5th grade English learners</li>
-                                        <li>3rd through 5th grade teachers</li>
-                                    </ul>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="step-header container">
-                <div data-toggle="collapse" data-target="#D">
-                    <h2 class="clickable">
-                        <i class="fa fa-caret-down" aria-hidden="false"></i> D. Who are you comparing them against?
-                    </h2>
-                </div>
-            </div>
-            <div id="D" class="row collapse in q-row">
-                <div class="col-xs-7">
-                    <div class="step-action">
-
-                        <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" placeholder="Ex., other 5th grade English Learners with no access to eZumi Learning"><%= eval.planQuestion.Comparison_Group_Desc  %></textarea>
-                    </div>
-                </div>
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-                        <div class="panel-group" id="ttc4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="consider4" class="panel-collapse collapse in">
-                                    <p>Are you comparing users to a group with no access to an educational technology, or with access to a different educational technology? This will determine how you interpret your findings later on and what kinds of decisions the results will empower you to make.</p>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading accordion-toggle">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc4" href="#example4">
-                                            Example
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="example4" class="panel-collapse collapse">
-                                    <ul>
-                                        <li>Similar 5th grade English Learners with no access to eZumi Learning</li>
-                                        <li>Similar 5th grade English Learners that use Wizlet Math instead of eZumi Learning</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="step-conclusion container">
-
-                <h2>Your Question</h2>
             </div>
             <div class="row">
-                <div class="col-xs-7">
-                    <em> DOES <strong><%= Basics_Tech_Name %></strong> <span class='change-direction'>DO</span> <strong><span class='eval-outcome'></span> <span class="effect-measure"></span></strong> AMONG <strong><span class='treatment-group'>C</span></strong> COMPARED TO <strong><span class='comparison-group'>D</span></strong>?</em>
-                </div>
-                <div class="col-xs-5">
-                    <div class="step-to-consider">
-                        <div class="panel-group" id="ttc5">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider5">
-                                            Things to Consider
-                                        </a>
-                                    </h3>
+                <div class="tool-questions">
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#A">
+                            <h2 class="clickable">
+                                <span class="fa fa-caret-down" aria-hidden="false"></span> A. What is the name of the educational technology you are testing?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="A" class="row collapse in  q-row">
+                        <div class="col-xs-7">
+                            <div class="step-action">
+                                <% var Basics_Tech_Name ='';
+                                if (user != "NOAUTHENTICATED") {
+                                if (eval.basics) {
+                                Basics_Tech_Name = eval.basics.Basics_Tech_Name
+                                }
+                                } %>
+                                <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
+                                <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
+                                </p>
+                                <% }} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#B">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> B. What is the intended effect?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="B" class="row  collapse in  q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <p>
+                                    What is the <span data-toggle="tooltip" title="knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity" class='tooltip-gr'>outcome of interest</span>?
+                                </p>
+                            </div>
+                            <div class="step-action">
+                                <select required name="Basics_Outcome" id="Basics_Outcome">
+                                    <%
+                                    var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selected;
+                                    if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
+
+
+                                    %>
+                                    <option value="<%=options[i] %>" <%=selected %> ><%=options[i] %></option>
+                                    <%
+                                    }
+                                    %>
+
+                                </select>
+                                <div id="Question_Outcome_Other" hidden="true">
+                                    <p>
+                                        <label for="Basics_Outcome_Other">Please specify:</label>
+
+                                        <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
+                                    </p>
                                 </div>
-                                <div id="consider5" class="panel-collapse collapse in">
-                                    <p>Look at your question. Does it makes sense? If not, you can make changes on this page until it does.</p>
-                                </div>
+                                <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
+                                </p>
+                                <% }} %>
+                            </div>
+                            <div class="step-subquestion">
+                                <p>What is the direction of intended change? </p>
+                            </div>
+                            <div class="step-action">
+                                <select required name="Outcome_Direction" id="Outcome_Direction">
+                                    <%
+                                    var options = ["Select an option", "increase", "decrease" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selected;
+                                    if  (user != "NOAUTHENTICATED") {
+                                    if (eval.planQuestion) { selected = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";}}
+                                    %>
+                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                    }
+                                    %>
+
+                                </select>
+                            </div>
+                            <div class="step-subquestion">
+                                <p>What measure will you use to test whether there was an effect?</p>
+                            </div>
+                            <div class="step-action">
+
+                                <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
                             </div>
 
                         </div>
+
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+
+                                <div class="panel-group" id="ttc2">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider2" class="panel-collapse collapse in">
+                                            <p>
+                                                An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (e.g. engaging with the educational technology).
+                                                We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading accordion-toggle">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
+                                                    Example
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="example2" class="panel-collapse collapse">
+
+                                            <ul>
+                                                <li>Increase student achievement on the mid-quarter benchmark assessment for math</li>
+                                                <li>Decrease chronic absenteeism</li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#C">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> C. Among whom are you hoping to see results?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="C" class="row collapse in  q-row">
+                        <div class="col-xs-7">
+                            <div class="step-action">
+
+                                <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" placeholder="Ex., 5th grade English learners"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider3" class="panel-collapse collapse in">
+                                            <p>
+                                                What group of individuals are you trying to affect? For example, students may be using the technology to increase their own achievement or teachers could be using the technology to increase their students' achievement. In both cases you are hoping to see results among students.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading accordion-toggle">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc3" href="#example3">
+                                                    Example
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="example3" class="panel-collapse collapse">
+                                            <ul>
+                                                <li>6th grade students</li>
+                                                <li>5th grade English learners</li>
+                                                <li>3rd through 5th grade teachers</li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#D">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> D. Who are you comparing them against?
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="D" class="row collapse in q-row">
+                        <div class="col-xs-7">
+                            <div class="step-action">
+
+                                <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" placeholder="Ex., other 5th grade English Learners with no access to eZumi Learning"><%= eval.planQuestion.Comparison_Group_Desc  %></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider4" class="panel-collapse collapse in">
+                                            <p>Are you comparing users to a group with no access to an educational technology, or with access to a different educational technology? This will determine how you interpret your findings later on and what kinds of decisions the results will empower you to make.</p>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading accordion-toggle">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc4" href="#example4">
+                                                    Example
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="example4" class="panel-collapse collapse">
+                                            <ul>
+                                                <li>Similar 5th grade English Learners with no access to eZumi Learning</li>
+                                                <li>Similar 5th grade English Learners that use Wizlet Math instead of eZumi Learning</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-conclusion container">
+
+                        <h2>Your Question</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <em> DOES <strong><%= Basics_Tech_Name %></strong> <span class='change-direction'>DO</span> <strong><span class='eval-outcome'></span> <span class="effect-measure"></span></strong> AMONG <strong><span class='treatment-group'>C</span></strong> COMPARED TO <strong><span class='comparison-group'>D</span></strong>?</em>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc5">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider5">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider5" class="panel-collapse collapse in">
+                                            <p>Look at your question. Does it makes sense? If not, you can make changes on this page until it does.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-    </div>
-    <% if  (user != "NOAUTHENTICATED" && !query.peeking ){ %>
-    <div class="bottom-buttons">
-        <button type="submit" class="btn btn-info btn-lg">SAVE CHANGES</button>
-        <button type="submit" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
-    </div>
-    <% } %>
-
-            <div>
-                <input class="hidden" name="status" id="status" />
             </div>
         </div>
-    </div>
-    </div>
-</form>
+        <% include ../views/partials/toolButtons.html %>
+    </form>
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js'></script>
     <script>
@@ -409,7 +397,7 @@
         if (tech === "") {
             tech = "A";
         }
-       
+
         var outcome = $("#Basics_Outcome").val();
         if ($("#Basics_Outcome").val().toLowerCase() === "other") {
             outcome = $("#Basics_Outcome_Other").val();
@@ -427,7 +415,7 @@
         if (direction === "Select an option") {
             direction = "DO";
         }
-     
+
         var cgroup = $("#Comparison_Group_Desc").val();
         if (cgroup === "") {
             cgroup = "D";
@@ -452,6 +440,6 @@
 
     });
     </script>
-   
+
 </body>
 </html>

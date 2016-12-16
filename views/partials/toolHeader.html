@@ -1,31 +1,28 @@
-﻿
-<!--
+﻿<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
-*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by 
-*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded 
-*   by the U.S. Department of Education’s Office of Educational Technology through 
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
 -->
 
-
-
 <div class="wizard-header-row">
-        <div class="col-xs-7">
-            <div class="sec-label">Evaluating</div>
-            <% var t = ""; if (eval) t = eval.title; %>
-            <h2 class="eval-header" id="evalTitle"><%= t %></h2>
-        </div>
-        <div class="col-xs-2">
-            <div class="sec-label">Start Date</div>
-            <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
-            <p><%= d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
-        </div>
-        <div class="col-xs-3">
-            <div class="sec-label">Status</div>
-            <% var sts = '0'; if (eval) sts= parseInt(eval.status) + "% Completed"; %>
-            <p><%= sts %></p>
-        </div>
-        <div style="clear: both; line-height: 0;"></div>
+    <div class="col-xs-7">
+        <div class="sec-label">Evaluating</div>
+        <% var t = ""; if (eval) t = eval.title; %>
+        <h2 class="eval-header" id="evalTitle"><%= t %></h2>
     </div>
+    <div class="col-xs-2">
+        <div class="sec-label">Start Date</div>
+        <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
+        <p><%= d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
+    </div>
+    <div class="col-xs-3">
+        <div class="sec-label">Status</div>
+        <% var sts = '0'; if (eval) sts= parseInt(eval.status) + "% Completed"; %>
+        <p><%= sts %></p>
+    </div>
+    <div style="clear: both; line-height: 0;"></div>
+</div>
 
