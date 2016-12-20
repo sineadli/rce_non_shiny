@@ -52,6 +52,7 @@ var Basics_Outcome = eval.basics.Basics_Outcome;
 if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
 var Basics_Users_Others = eval.basics.Basics_Users_Others;
 var Basics_Users = eval.basics.Basics_Users;
+var Singular_User = Basics_Users.substr(0,Basics_Users.length-1)
 if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
 var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
 var Outcome_Direction = eval.planQuestion.Outcome_Direction;
@@ -64,21 +65,29 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
             <div class="dl-guide">
             </div>
             <div class="tool-header">
-                <h1 class="tool-title">Build your evaluation sample</h1>
+                <h1 class="tool-title">Build your evaluation sample using random assignment</h1>
                 <div class="tool-intro">
-                    <p>Randomly select a group to pilot the technology (your intervention group). Those not selected will be your comparison group. Answer a few questions and upload your data. The Coach will create your groups and provide you with an updated dataset. You will use the updated dataset to give technology access to the correct users, and to link additional data as your pilot progresses. </p>
+                    
+               
+                   
                 </div>
                 <div class="tool-help">
+                   
                     <p>
-                        <b>Challenge:</b> You want to test whether a technology is effective, but it is impossible to simultaneously observe what happens when an individual uses a technology and doesn’t use the technology.
+                        <strong class="begin-em">Challenge:</strong> You want to test whether a technology is effective, but it is impossible to simultaneously observe what happens when an individual uses a technology and doesn’t use the technology.
                     </p>
                     <p>
-                        <b>Solution:</b> The best test of whether or not your technology works is to randomly select some of the eligible users (a subset of the group you are interested in) to pilot the technology and others to continue classroom practice as usual. Once the groups are assigned by chance, you can be confident that you are comparing apples to apples—that the two groups are the same in every way except the technology use. Then, if you see differences in outcomes (such as student achievement scores) you can be convinced that the new technology is moving the needle. See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf">Randomization Overview</a> to learn more.
+                        <strong class="begin-em">Solution:</strong> The best test of whether or not your technology works is to randomly select some of your potential users to pilot the technology (treatment group) while others continue classroom practice as usual (comparison group) and compare outcomes between the two groups. Using chance or randomization to create the groups increases the likelihood that differences in outcomes are caused by the new technology.
                     </p>
                     <p>
-                        <b>Example:</b> If you introduce a new reading technology in all first grade classrooms, and then notice a jump in reading scores among those who used the technology, you may be tempted to attribute the reading improvements to the technology. However, you cannot assume that the technology caused the reading score increase. Many other factors could have contributed to the increases: the teachers also introduced a new decoding strategy, only the most motivated students used the technology, or students simply became developmentally ready to read.
+                        <strong class="begin-em">Challenge:</strong> Even with random assignment, there is a possibility that your treatment and comparison groups will be somewhat different or unbalanced. This is more likely to happen if you have a small sample. Think about flipping a coin. If you flip a coin ten times, on average, you should get five heads and five tails. However, there is a one in one thousand chance to get all heads.
                     </p>
-                    <p>Let&rsquo;s get started!</p>
+                    <p>
+                        <strong class="begin-em">Solution:</strong> Background data about your <%= Basics_Users %>, such as pretest measures and demographic information, can be used to test the equivalence of the treatment and control groups and to ensure they are balanced on important characteristics that could impact outcomes. If desired, the Coach can identify sub-groups of participants and then randomly assign from within those sub-groups. This is called blocked random assignment or stratification.
+                    </p>
+                    <p>See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf">Randomization Overview</a> to learn more.</p>
+
+                    <p><strong class="begin-em">Let&rsquo;s get started!</strong></p>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -97,12 +106,12 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
 <div id="A" class="row  collapse in q-row">
     <div class="col-xs-7">
         <div class="step-subquestion">
-            <h4> <label for="Intervention_Group_Desc">Let’s confirm some details. Based on the information you have provided, your randomized pilot will: </label></h4>
+            <h4> Let’s confirm some details. Based on the information you have provided: </h4>
         </div>
         <div class="step-action">
             <ul>
                 <li>
-                    Randomly select <%= Basics_Users %> to pilot test.
+                    your technology users are  <%= Basics_Users %>.
                     <% if (user != "NOAUTHENTICATED") { %>
                     <p class="prev-answer">
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/basics">The Basics</a>
@@ -110,9 +119,9 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                     <% } %>
                 </li>
                 <li>
-                    Help you answer the following question: <br/>
+                    your randomized pilot will help you answer the following question: <br/>
                     <% if (user != "NOAUTHENTICATED") { %>
-                    Does <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                    Does <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
                     <% } %>
                     <% if (user == "NOAUTHENTICATED") { %>
                     Does A do B among C compared to D?
@@ -134,73 +143,131 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
         </h2>
     </div>
 </div>
-<div id="B" class="row collapse in q-row">
-    <div class="col-xs-7">
-        <div class="step-subquestion">
-            <h4><label for="Individual_Group">Do you want to randomly assign <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the intervention and comparison groups?</label></h4>
-        </div>
-        <div class="step-action">
-            <select required name="Individual_Group" id="Individual_Group">
-                <%
-                var options = ["Select an option", "individuals", "groups" ];
-                for ( var i = 0; i < options.length; i++ )
-                {
-                var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
-                %>
-                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
-                }
-                %>
-            </select>
-        </div>
-        <div class="step-subquestion">
-            <h4><label for="Cluster_Group">What groups do you want to randomly assign?</label></h4>
-        </div>
-        <div class="step-action">
-            <select required name="Cluster_Group" id="Cluster_Group">
-                <%
-                var options = ["Select an option", "classes", "schools", "other" ];
-                for ( var i = 0; i < options.length; i++ )
-                {
-                var selected;
-                selected = ( eval.random.Cluster_Group== options[i] ) ? "selected" : "";
-                %>
-                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
-                }
-                %>
-            </select>
-            <div id="Question_Cluster_Other" hidden="true">
-                <p>
-                    <label for="Cluster_Group_Other">Please specify:</label>
-                    <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>"/>
-                </p>
+    <div id="B" class="row collapse in q-row">
+        <div class="col-xs-7">
+            <div class="step-subquestion">
+                <h4><label for="Individual_Group">Do you want to randomly assign individual <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
+            </div>
+            <div class="step-action">
+                <select required name="Individual_Group" id="Individual_Group">
+                    <%
+                    var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
+                    var ovals = ["Select an option", "users" , "groups" ];
+                    for ( var i = 0; i < options.length; i++ )
+                    {
+                    var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
+                    %>
+                    <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                    }
+                    %>
+                </select>
+            </div>
+            <div id="Question_Cluster" hidden="true">
+                <div class="step-subquestion">
+                    <h4><label for="Cluster_Group">How will you group your <%= Basics_Users %>?</label></h4>
+                </div>
+                <div class="step-action">
+                    <select required name="Cluster_Group" id="Cluster_Group">
+                        <%
+                        var options = ["Select an option", "by class", "by school", "other" ];
+                        var ovals = ["Select an option", "classes", "schools", "other" ];
+                        for ( var i = 0; i < options.length; i++ )
+                        {
+                        var selected;
+                        selected = ( eval.random.Cluster_Group== ovals[i] ) ? "selected" : "";
+                        %>
+                        <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                        }
+                        %>
+                    </select>
+                    <div id="Question_Cluster_Other" hidden="true">
+                        <p>
+                            <label for="Cluster_Group_Other">Please specify:</label>
+                            <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="step-subquestion">
+                <h4><label for="#User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups">individuals or groups</span> that can be given access to the technology?</label></h4>
+
+
+            </div>
+            <div class="step-action">
+                <select name="User_Limit_Exist" id="User_Limit_Exist">
+                    <%
+                    var options = ["Select an option", "yes", "no" ];
+                    for ( var i = 0; i < options.length; i++ )
+                    {
+                    var selected;
+                    selected = ( eval.random.User_Limit_Exist== options[i] ) ? "selected" : "";
+                    %>
+                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div id="Question_User_Limits" hidden="true">
+                <div class="step-subquestion">
+
+                    <h4>What are the limits?</h4>
+                </div>
+                <div class="step-action">
+                    <p>
+
+                        No more than
+                        <input type="text" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>" />
+                        <select name="intervention_type" id="intervention_type">
+                            <%
+
+                            var options = ["Select an option", "percent of individuals or groups", "individuals or groups" ];
+                            var ovals = ["Select an option", "percentage", "number" ];
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            var selected;
+                            selected = ( eval.random.intervention_type == ovals[i] ) ? "selected" : "";
+                            %>
+                            <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
+                            <% }%>
+                        </select> can access <%= Basics_Tech_Name %>.
+
+                    </p>
+
+
+
+                </div>
+
+               
             </div>
         </div>
-    </div>
-    <div class="col-xs-5">
-        <div class="step-to-consider">
+        <div class="col-xs-5">
             <div class="step-to-consider">
-                <div class="panel-group" id="ttc5">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title sec-label clickable">
-                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
-                                    Things to Consider
-                                </a>
-                            </h3>
-                        </div>
-                        <div id="consider5" class="panel-collapse collapse in">
-                            <p>Think about the roll-out of your technology. How many students/teachers/schools will begin to use the technology? Let’s say you have 125 second graders in five different classes. You have enough computers and software licenses for 50 students to begin using a reading program. There are two ways to assign students: you can randomly select 50 out of all 125 students (i.e. <strong>individuals</strong>) OR you can randomly select two of the five classes (i.e. <strong>groups</strong>). If neither of these options are feasible, consider starting smaller: randomly assign students within one classroom (for example, 13 students to the technology and 12 students to business-as-usual).
-                            </p>
-                            <p>Convenience should not be the only factor in your decision on how to assign the technology. <strong>Bigger samples are better</strong>. If you have a small sample, you are less likely to learn whether or not the technology works. (A larger sample allows you to detect smaller effects.) With only a few individuals or classes in each group, your results are likely to be inconclusive.
-                            </p>
+                <div class="step-to-consider">
+                    <div class="panel-group" id="ttc5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title sec-label clickable">
+                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                    <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                        Things to Consider
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="consider5" class="panel-collapse collapse in">
+
+                                <p>
+                                    You do not need to randomly select <%= Basics_Users %> at the individual level. It may be more feasible to select by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
+                                </p>
+                                <p>Do you have any resource constraints (e.g. computer or software availibility, time constraints) that would impact the size of your treatment group? Treatment and comparison group sizes should be as similar as possible, but do not need to be equal.</p>
+                                <p>
+                                    Bigger is better.  With only a few individuals or groups in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples allow you to detect smaller effects.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 <div class="step-header container">
@@ -213,23 +280,13 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
 <div id="C" class="row  collapse in q-row">
     <div class="col-xs-7">
         <div class="step-subquestion">
-            <p>Based on the information you provided, your data file should have the following fields: </p>
-            <strong>Required</strong>
-            <ul>
-                <li>A unique and anonymous ID for each <span class="indiv-or-group">technology user or group of users</span> that will be randomly assigned by the Coach to your treatment or comparison groups. </li>
+          
 
-            </ul>
-            <strong>Strongly Recommended</strong>
-            <ul>
-                <li>
-                    Pretest measure of <%= Basics_Outcome %>
-                </li>
-                <li>Grade level (if there is more than one grade in the sample)</li>
-                <li>Characteristics of your <span class="indivs-or-groups">technology users or groups of users</span> that could affect <%= Basics_Outcome %>.</li>
-            </ul>
-
-
-            <p>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
+            <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
+            </h4>
+            <p>
+                Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+            </p>
 
         </div>
         <div class="step-action">
@@ -249,17 +306,17 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
         </div>
         <div class="before-upload">
             <div class="step-subquestion">
-                <h4>Select the variable that identifies each <span class="indiv-or-group">technology user or group of users</span>.</h4>
-                <p>Choose the name of the variable that uniquely identifies each <span class="indiv-or-group">technology user or group of users </span> that the coach will randomly assign to your treatment or comparison group.
-                </p>
+                <h4>Select the data field that contains the anonymous id that uniquely identifies each <span class="indiv-or-group">technology user or group of users</span>.</h4>
+                <p><em>Required</em></p>
+                
 
             </div>
             <div class="step-action ">
 
                 <div>
-                    <select id="treat_var" class="multiselect from-upload">
+                    <select id="unit_id" name="unit_id" class="multiselect from-upload nodefault">
 
-                        <option value="">Select a variable</option>
+                        <option value="">Select a data field</option>
 
                     </select>
 
@@ -267,60 +324,47 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
 
                 <hr/>
             </div>
-
             <div class="step-subquestion">
-                <h4>How many <span class="indivs-or-groups">technology users or groups of users</span> can you have?</h4>
-                <p>Given your pilot test implementation plans, enter the percentage or number of potential users or groups that you expect to give access to <%= Basics_Tech_Name %></p>
-                <p class="note">NOTE: It is not necessary to have equal numbers in your treatment (technology users) and comparison (non-users) groups. The Coach will account for any differences when analyzing your results. However, group sizes should be as similar as possible.</p>
+                <h4>Select your pretest measure data field. </h4>
+                <p><em>Recommended</em></p>
 
             </div>
-            <div class="step-action">
-                <input id="chosenfile" size="1" type="file" accept=".csv">
-                <p class="warning">
-                    Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
-                </p>
+            <div class="step-action ">
+                <select id="pretest" class="multiselect from-upload nodefault">
+                    <option value="Select a variable" selected="selected">Select a data field</option>
+                </select>
+                <hr />
             </div>
-            <div id='loadingmessage' class="row" hidden>
-                <div class="col-sm-5 col-sm-offset-6">
-                    <img src='/static/image/ajax-loader.gif'/>
-                </div>
-            </div>
-            <div class="before-upload">
+         
+            
+            
                 <div class="step-subquestion">
-                    <h4>Who is using <%= Basics_Tech_Name %>?</h4>
-                    <p>Choose the name of the variable that identifies who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                    <h4>Which data field contains your blocking characteristic or the characteristic that <strong>must</strong> be balanced across the two groups? </h4>
+                    <p>The Coach will create subgroups based on this characteristic and randomly assign from within those sub-groups to do a block random assignment.  </p>
                 </div>
                 <div class="step-action ">
                     <div>
-                        <select id="treat_var" class="multiselect from-upload">
-                            <option value="">Select a variable</option>
+                        <select id="block_id" class="multiselect from-upload">
+                            <option value="">Do not block</option>
                         </select>
                     </div>
                     <hr/>
                 </div>
+               
                 <div class="step-subquestion">
-                    <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
-                    <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the variable that indicates student grade.</p>
+                    <h4> Select the data fields for the characteristics that should be balanced between the treatment and control groups? </h4>
+                    <p>These are characteristics that would make you skeptical of your results if they were found to be unbalanced between groups. </p>
+                    <p><em>Recommended</em></p>
                 </div>
                 <div class="step-action ">
-                    <select id="grade_var" class="multiselect from-upload">
-                        <option value="match any grade" selected="selected">match any grade</option>
-                    </select>
-                    <hr/>
-                </div>
-                <div class="step-subquestion">
-                    <h4> Which characteristics matter when matching users to similar non-users?</h4>
-                    <p>Be sure to select your pre-evaluation outcome measure (your primary matching variable) along with any other characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
-                </div>
-                <div class="step-action ">
-                    <select id="match_vars" name="match_vars" class="multiselect from-upload" multiple="multiple">
-                        <option value="Select matching variables">Select matching variables</option>
+                    <select id="baseline_vars" name="baseline_vars" class="multiselect from-upload" multiple="multiple">
+                        <option value="Select matching variables">Select data fields</option>
                     </select>
                 </div>
             </div>
         </div>
 
-    </div>
+
 
     <div class="col-xs-5">
         <div class="step-to-consider">
@@ -337,28 +381,20 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                     </div>
                     <div id="consider3" class="panel-collapse collapse in">
 
-                        <p>
-                            Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
-                        </p>
-                        <p>
-                            The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
-                        </p>
-                        <div class="before-upload">
+                       
 
+                        <p>Be sure to create a key or a file that links the original names or IDs to the new anonymous IDs. You will need this key to know who was assigned to each group and to add outcome data at the end of the pilot period.</p>
+                    
+                
+                        <p>
+                            The pretest should be a recent measure of the outcome you hope to affect with the technology. For example, if you are trying to improve student math achievement, a pretest could be scores on a math test that students in both your treatment and control groups took just prior to using the technology.</p>
+
+                        <p>  Common background characteristics of students are: gender, race/ethnicity, and English learner, special education, and free/reduced price lunch status. Common background characteristics of teachers are: gender, highest level of education, and years of experience. </p>
+
+                        <p> The Coach will use the pretest measure and background characteristics to check the equivalence and balance of your the treatment and comparison groups. If you have a small sample, the Coach may need to randomize multiple times to create balanced groups.</p>
+                            
                             <p>
-                                Your data file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
-                            </p>
-                            <p>
-                                The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
-                            </p>
-                            <div class="before-upload">
-                                <p>
-                                    It is most important that users and non-users had similar levels on your outcome variable before they started using the technology. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your primary matching variable.
-                                </p>
-                                <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on free lunch or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
-                            </div>
-                            <p>
-                                Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                                Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf" target="_blank">The Radomization Overview</a> for more on which variables should be included.
                             </p>
                         </div>
                     </div>
@@ -369,7 +405,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
 </div>
 </div>
 <div class="bottom-buttons">
-    <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
+    <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Randomize!</button>
     <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled">
         <i class="fa fa-download"></i>
         Download
@@ -385,15 +421,14 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
     </div>
 </div>
 </div>
-</div>
-<input type="hidden" name="s_treat_var" id="s_treat_var"/>
-<input type="hidden" name="s_match_vars" id="s_match_vars"/>
-<input type="hidden" name="s_grade_var" id="s_grade_var"/>
-<input type="hidden" name="n_full" id="n_full"/>
-<input type="hidden" name="n_full_treat" id="n_full_treat"/>
-<input type="hidden" name="n_matched" id="n_matched"/>
-<input type="hidden" name="n_matched_treat" id="n_matched_treat"/>
-<input type="hidden" name="result" id="mresult"/>
+
+
+<input type="hidden" name="s_pretest" id="s_pretest"/>
+<input type="hidden" name="s_baseline_vars" id="s_baseline_vars"/>
+<input type="hidden" name="s_block_id" id="s_block_id"/>
+<input type="hidden" name="s_unit_id" id="s_unit_id"/>
+
+<input name="result" id="mresult"/>
 <% include ../views/partials/toolButtons.html %>
 </form>
 
@@ -404,11 +439,11 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
 
 <script src='/static/js/custom.js'></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('.multiselect').multiselect();
 
 
-            $("#chosenfile").change(function () {
+            $("#chosenfile").change(function() {
 
                 var formData = new FormData();
                 $('#loadingmessage').show();
@@ -421,21 +456,24 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                     processData: false,
                     contentType: false,
                     data: formData,
-                    success: function (data) {
+                    success: function(data) {
                         $('#loadingmessage').hide();
                         $("select.from-upload").empty();
                         $(".before-upload").addClass("after-upload");
                         $(".after-upload").removeClass("before-upload");
-                        $("#grade_var")
-                          .append($("<option></option>")
-                          .attr("value", "match any grade")
-                          .text("match any grade"));
-
-                        $.each(data.colnames, function (index, value) {
+                        $("#block_id")
+                            .append($("<option></option>")
+                                .attr("value", "Do not block")
+                                .text("Do not block"));
+                        $("select.nodefault")
+                            .append($("<option></option>")
+                                .attr("value", "None selected")
+                                .text("None selected"));
+                        $.each(data.colnames, function(index, value) {
                             $("select.from-upload")
-                              .append($("<option></option>")
-                              .attr("value", value)
-                              .text(value));
+                                .append($("<option></option>")
+                                    .attr("value", value)
+                                    .text(value));
                         });
                         $('.multiselect').multiselect('destroy');
                         $('.multiselect').multiselect();
@@ -444,24 +482,39 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                 });
             });
 
-            $("#match").click(function () {
+            $("#match").click(function() {
 
                 $('#loadingmessage2').show();
 
                 var formData = new FormData();
-
-
-                $("#s_treat_var").val(JSON.stringify($("#treat_var").val()));
-                $("#s_match_vars").val(JSON.stringify($("#match_vars").val()));
-                $("#s_grade_var").val(JSON.stringify($("#grade_var").val()));
-
+                var baseline_vars = $("#baseline_vars").val();
+                baseline_vars.push($("#pretest").val());
+                var block_id = $("#block_id").val();
+                if ($("#block_id").val().toLowerCase() === "do not block") {
+                    block_id = '';
+                };
+                var interv_type = $("#intervention_type").val();
+                var interv_quantity = $("#intervention_quantity").val();
+                if ($("#intervention_type").val().toLowerCase() === "select an option") {
+                    interv_type = 'percentage';
+                };
+                if ($("#intervention_quantity").val() === 0 ) {
+                    interv_quantity = 50;
+                };
+                $("#s_unit_id").val(JSON.stringify($("#unit_id").val()));
+                $("#s_pretest").val(JSON.stringify($("#pretest").val()));
+                $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
+                $("#s_block_id").val(JSON.stringify($("#block_id").val()));
+           
                 formData.append("data", $("#chosenfile")[0].files[0]);
-                formData.append("treat_var", JSON.stringify($("#treat_var").val()));
-                formData.append("match_vars", JSON.stringify($("#match_vars").val()));
-                formData.append("grade_var", JSON.stringify($("#grade_var").val()));
+                formData.append("unit_id", JSON.stringify($("#unit_id").val()));
+                formData.append("intervention_type", JSON.stringify(interv_type));
+                formData.append("intervention_quantity", JSON.stringify(interv_quantity));
+                if(baseline_vars !== "") formData.append("baseline_vars", JSON.stringify(baseline_vars));
+                if (block_id !== "") formData.append("block_id", JSON.stringify(block_id));
 
                 $.ajax({
-                    url: "https://52.222.20.48/ocpu/library/edtechrce/R/matching",
+                    url: "https://52.222.20.48/ocpu/library/edtechrce/R/randomize",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -477,54 +530,25 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                             success: function (data) {
                                 $('#loadingmessage2').hide();
 
-                                var results_by_grade = data.results_by_grade;
+                                var results_by_block = data.results_by_block;
 
-                                var n_full = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0
-                                for (var key in results_by_grade) {
-                                    if (results_by_grade.hasOwnProperty(key)) {
+                                var n_full = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
+                                for (var key in results_by_block) {
+                                    if (results_by_block.hasOwnProperty(key)) {
                                         var imgid = "plot" + key;
-                                        var grade_object = results_by_grade[key];
-                                        var bal1, bal2, bal3, info, buttxt;
-                                        n_full += parseInt(grade_object.samples.n_full);
-                                        n_full_treat += parseInt(grade_object.samples.n_full_treat);
-                                        n_matched += parseInt(grade_object.samples.n_matched);
-                                        n_matched_treat += parseInt(grade_object.samples.n_matched_treat);
-                                        info = 'The data you uploaded has ' + grade_object.samples.n_full + ' observations (after removing observations missing the selected matching variables), ' + grade_object.samples.n_full_treat + ' of which are in the intervention group. The matched data set produced by the dashboard has ' + grade_object.samples.n_matched + ' observations, ' + grade_object.samples.n_matched_treat + ' of which are in the intervention group.';
-                                        buttxt = 'To learn more about how this dashboard works, you can review this <a href="/static/pdf/05.01a Matching Technical Appendix.pdf" target="_blank" > <u> technical appendix</u></a>.';
+                                        var block_object = results_by_block[key];
 
-                                        $('#results').append('<div class="row"><div class="col-xs-7"><h2>Matching Results</h2><h3>' + grade_object.title + '</h3>');
-                                        if (grade_object.good_balance) {
-                                            bal1 = 'Congratulations! The RCE Engine was able to produce a good comparison group. The following figure shows improvement on baseline equivalence.';
-                                            bal2 = 'Your next step is to use the impact dashboard to determine whether the educational technology you are evaluating is moving the needle or not.';
-                                        }
-                                        else {
-                                            bal1 = 'The RCE Engine was not able to produce a good comparison group. The following figure shows you baseline equivalence before and after matching:';
-                                            bal2 = 'The following variables do not satisfy baseline equivalence: ';
-                                            bal3 = 'This means students using the educational technology are very different to students not using it. You can contact us [this link should go to our help/contact page], to discuss other options to determine whether the educational technology is moving the needle.';
-                                        }
-                                        $('#results').append('<p>' + bal1 + '</p>');
-                                        $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + grade_object.plot + ' />' + '</div>');
-                                        $('#results').append('<p>' + info + '</p>');
-                                        $('#results').append('<p>' + bal2 + '</p>');
-                                        if (!grade_object.good_balance) {
-                                            var unbalanced = grade_object.unbalanced_vars;
-                                            $('#results').append('<ul >');
-                                            for (i = 0; i < unbalanced.length; i++) {
-                                                $('#results').append('<li>' + unbalanced[i] + '</li>');
-                                            }
-                                            $('#results').append('</ul >');
-                                            $('#results').append('<p>' + bal3 + '</p>');
-                                        }
-                                        $('#results').append('<p>' + buttxt + '</p></div></div>');
+                                        $('#results').append('<div class="row"><div class="col-xs-7"><h2>Randon Assignment Results</h2><h3>' +'</h3>');
+                                       
 
                                     }
                                 }
 
                                 $("#mresult").val(JSON.stringify(data));
-                                $("#n_full").val(JSON.stringify(n_full));
-                                $("#n_full_treat").val(JSON.stringify(n_full_treat));
-                                $("#n_matched").val(JSON.stringify(n_matched));
-                                $("#n_matched_treat").val(JSON.stringify(n_matched_treat));
+                                //$("#n_full").val(JSON.stringify(n_full));
+                                //$("#n_full_treat").val(JSON.stringify(n_full_treat));
+                                //$("#n_matched").val(JSON.stringify(n_matched));
+                                //$("#n_matched_treat").val(JSON.stringify(n_matched_treat));
 
                                 $("#downloadData")
                                  .removeClass("disabled");

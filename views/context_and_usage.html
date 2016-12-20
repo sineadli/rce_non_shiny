@@ -51,275 +51,347 @@
         <% include ../views/partials/toolHeader.html %>
         <% }%>
 
+        <%
+        Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+        Basics_Outcome = eval.basics.Basics_Outcome != "" ? eval.basics.Basics_Outcome : "the outcome";
+        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+        Basics_Users_Others = eval.basics.Basics_Users_Others;
+        Basics_Users = eval.basics.Basics_Users;
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        Basics_Tech_Name = eval.basics.Basics_Tech_Name;
+        var Outcome_Direction = eval.planQuestion.Outcome_Direction;
+        var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
+        var Current_or_New = eval.probAppr.Appr_Current_or_New;
+        var Verb = Current_or_New === "Current" ? "did" : "will";
 
+
+        %>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="tool-header">
-                        <h1 class="tool-title pull-left">Summarize Context</h1>
-                        <p class="pull-right">
+                    <div class="tool-top">
+                        <div class="dl-guide">
                             <a onclick=" window.open('/static/pdf/03.03 Summarize Context_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
-                        </p>
-                        <div class="clearfix"></div>
-                        <div class="clearfix"></div>
-                        <div class="tool-intro">
-                            <p>
-                                When you share the results from your study, the information you provide on this webpage will help your colleagues understand how the educational technology is intended to be used. We’ll prompt you later in the process to reflect on how the technology was actually implemented and whether you experienced any implementation challenges. This context will help you make sense of the results and it is also important for understanding how the evaluation applies to other environments.
-                            </p>
-
                         </div>
+                        <div class="tool-header">
+                            <h1 class="tool-title ">Summarize Context</h1>
+                            <div class="tool-intro">
+                                <p>
+                                    When you share the results from your study, the information you provide on this webpage will help your colleagues understand how the educational technology is intended to be used. We&rsquo;ll prompt you later in the process to reflect on how the technology was actually implemented and whether you experienced any implementation challenges. This context will help you make sense of the results and it is also important for understanding how the evaluation applies to other environments.
+                                </p>
+
+                            </div>
+                            <div class="tool-instructions">
+                               
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="tool-instructions">
-                        <p>
-                            Answer the questions below to generate the list of important contextual features. See <a href="/static/pdf/03.03 Summarize Context_downloadable.pdf" target="_blank">Guide:  Summarize Context</a> for more information about why it&rsquo;s important to consider the context of your technology use.
-                        </p>
+                    <div class="tool-questions">
+                        <div class="step-header container">
 
-                    </div>
-                </div>
-                <div class="tool-questions">
-                    <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#A">
+                                <h2 class="clickable">
 
-                        <div data-toggle="collapse" data-target="#A">
-                            <h2 class="clickable">
-                                <% if (user != "NOAUTHENTICATED") { %>
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> A. What is <%= eval.planQuestion ? (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %> and how it is being used?
-                                <% } %>
-                            </h2>
-                        </div>
-                    </div>
-                    <div id="A" class="row collapse in q-row">
-                        <div class="col-xs-7">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> What is the evaluation period?
 
-                            <div class="step-subquestion">
-                                <p>What is the purpose of this educational technology?</p>
-                            </div>
-                            <div class="step-action">
-                                <% var a1=''; if (user != "NOAUTHENTICATED") {if (eval.planContext) {a1 = eval.planContext.Plan_Context_A_1 }} %>
-                                <textarea name="Plan_Context_A_1" id="Plan_Context_A_1" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= a1 %></textarea>
-                            </div>
-
-                            <div class="step-subquestion">
-                                <p>What are the key components of the educational technology?</p>
-                            </div>
-                            <div class="step-action">
-                                <% var a2='';  if (user != "NOAUTHENTICATED") { if (eval.planContext) {a2 = eval.planContext.Plan_Context_A_2 }} %>
-                                <textarea name="Plan_Context_A_2" id="Plan_Context_A_2" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= a2 %></textarea>
-                            </div>
-
-                            <div class="step-subquestion">
-                                <p>How often and for how long are users supposed to be using the educational technology?</p>
-                            </div>
-                            <div class="step-action">
-
-                                <% var a3='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {a3 = eval.planContext.Plan_Context_A_3 }} %>
-                                <textarea name="Plan_Context_A_3" id="Plan_Context_A_3" placeholder="Ex., Twice per week for 40 minutes per session."><%= a3 %></textarea>
-                            </div>
-
-                            <div class="step-subquestion">
-                                <p>How long is the period of use being studied in this evaluation?</p>
-                            </div>
-                            <div class="step-action">
-                                <% var a4='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {a4 = eval.planContext.Plan_Context_A_4 }} %>
-                                <textarea name="Plan_Context_A_4" id="Plan_Context_A_4" placeholder="Ex., the first semester of the 2016-2017 school year"><%= a4 %></textarea>
+                                </h2>
                             </div>
                         </div>
+                        <div id="A" class="row collapse in q-row">
+                            <div class="col-xs-7">
 
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc1">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading accordion-toggle">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider1" class="panel-collapse collapse in">
-                                            <p>To answer these questions, you may want to draw from the instructions or training provided by the product developer. </p>
-                                            <p>You can always modify this later. If you don&rsquo;t know the answer to a question, you may want to write something like &ldquo;ASK STEVE ABOUT THIS&rdquo; as a place holder.
-                                            <p>See the example to see how these responses will appear in your findings brief. Be sure not to include any Personally Identifiable Information, like student or teacher names. </p>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading accordion-toggle">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc1" href="#example1">
-                                                    Example
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="example1" class="panel-collapse collapse">
 
-                                            <ul>
-                                                <li>TrueStar Reading is software designed to improve reading achievement among under-performing students.</li>
-                                                <li>TrueStar Reading offers personalized lessons and reading content based on reading level.</li>
-                                                <li>Students were meant to use TrueStar Reading individually during class time for 90 minutes per week.</li>
-                                                <li>The evaluation period lasted fourteen weeks.</li>
-                                            </ul>
-
-                                        </div>
-                                    </div>
+                                <div class="step-action">
+                                    <label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label>
+                                    <input type="date"  name="Eval_Begin_Date" id="Eval_Begin_Date" />
+                                    <br/>
+                                    <label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label>
+                                    <input type="date"  name="Eval_End_Date" id="Eval_End_Date" />
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-                    <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#B">
-                            <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> B. What is the educational setting?
-                            </h2>
-                        </div>
-                    </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc1">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading accordion-toggle">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider1" class="panel-collapse collapse in">
+                                                <p>If you are unsure of the exact dates, you can answer these questions with your best guess. You can always come back and change the information here later on when you have more details.</p>
+                                            </div>
+                                        </div>
 
-                    <div id="B" class="row collapse in q-row">
-                        <div class="col-xs-7">
-                            <div class="step-action">
-                                <% var b='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {b = eval.planContext.Plan_Context_B }} %>
-                                <textarea name="Plan_Context_B" id="Plan_Context_B" rows="8" placeholder="Ex., Suburban district with 2,000 students, 25% of whom have IEPs, and with 1:1 laptops "><%= b %></textarea>
-                            </div>
-                        </div>
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc2">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading accordion-toggle">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider2" class="panel-collapse collapse in">
-                                            <p>Some technologies work well in some settings and not so well in others. Include features of the setting that you think might influence how well you would expect the technology to work. These might have to do with the available technology resources (e.g. computer labs, laptops for students, etc.), student population, or presence of other technology initiatives at schools.  </p>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
-                                                    Example
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="example2" class="panel-collapse collapse">
-
-                                            <p>XYZ School District is located in a rural setting where each school in the district has 400 students and class sizes of 20, on average. Each school has 1 computer lab and moderate internet connectivity.</p>
-
-                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-                    </div>
+                        <div class="step-header container">
 
-                    <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#C">
-                            <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> C. Have you experienced any implementation issues?
-                            </h2>
-                        </div>
-                    </div>
-                    <div id="C" class="row collapse in q-row">
-                        <div class="col-xs-7">
-                            <div class="step-action">
-                                <% var c='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {c = eval.planContext.Plan_Context_C }} %>
-                                <textarea name="Plan_Context_C" id="Plan_Context_C" rows="8" placeholder="Ex., Students had difficulty logging into their accounts for the first 2 weeks of class. About half the teachers got frustrated and used other products for the rest of the term."><%= c %></textarea>
+                            <div data-toggle="collapse" data-target="#B">
+                                <h2 class="clickable">
+
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> What is <%= Basics_Tech_Name %> and how it is being used?
+
+                                </h2>
                             </div>
                         </div>
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc3">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
+                        <div id="B" class="row collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-subquestion">
+                                    <p>What type of program is <%= Basics_Tech_Name %>?</p>
+                                </div>
+                                <div class="step-action">
+                                    <div class="pull-left" style="margin-right: 20px;">
+                                        <input id="Type_Curriculum" name="Type_Curriculum" type="checkbox" value="Curriculum"/><label for="Type_Curriculum">Curriculum</label> <br/>
+                                        <input id="Type_Practice" name="Type_Practice" type="checkbox" value="Practice"/><label for="Type_Practice">Practice</label> <br/>
+                                        <input id="Type_School_Structure" name="Type_School_Structure" type="checkbox" value="School Structure"/><label for="Type_School_Structure">School Structure</label> <br/>
+                                    </div>
+                                    <div class="pull-left">
+                                        <input id="Type_School-Level" name="Type_School-Level" type="checkbox" value="School-Level"/><label for="Type_School-Level">School-Level</label><br/>
+                                        <input id="Type_Teacher-Level" name="Type_Teacher-Level" type="checkbox" value="Teacher-Level"/><label for="Type_Teacher-Level">Teacher-Level</label> <br/>
+                                        <input id="Type_Policy" name="Type_Policy" type="checkbox" value="Policy"/><label for="Type_Policy">Policy</label> <br/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="step-subquestion">
+                                    <p>What is the purpose of <%= Basics_Tech_Name %>?</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Plan_Context_A_1" id="Plan_Context_A_1" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Plan_Context_A_1 %></textarea>
+                                </div>
+
+                                <div class="step-subquestion">
+                                    <p>What are the key components of the educational technology<%= Basics_Tech_Name %>?</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Plan_Context_A_2" id="Plan_Context_A_2" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= eval.planContext.Plan_Context_A_2 %></textarea>
+                                </div>
+
+                                <div class="step-subquestion">
+                                    <p>How often and for how long are users supposed to be using the educational technology?</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Plan_Context_A_3" id="Plan_Context_A_3" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Plan_Context_A_3 %></textarea>
+                                </div>
+
+                                <div class="step-subquestion">
+                                    <p>How long is the period of use being studied in this evaluation?</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <textarea name="Plan_Context_A_4" id="Plan_Context_A_4" placeholder="Ex., the first semester of the 2016-2017 school year"><%= eval.planContext.Plan_Context_A_4 %></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc1">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading accordion-toggle">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider1" class="panel-collapse collapse in">
+                                                <p>To answer these questions, you may want to draw from the instructions or training provided by the product developer. </p>
+                                                <p>You can always modify this later. If you don&rsquo;t know the answer to a question, you may want to write something like &ldquo;ASK STEVE ABOUT THIS&rdquo; as a place holder.
+                                                <p>See the example to see how these responses will appear in your findings brief. Be sure not to include any Personally Identifiable Information, like student or teacher names. </p>
+                                            </div>
                                         </div>
-                                        <div id="consider3" class="panel-collapse collapse in">
-                                            <p>
-                                                This information will be included in your findings report appendix and can be useful to others. If few people used the product as intended, you may want improve the implementation before assessing the effectiveness of the technology.
-                                            </p>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading accordion-toggle">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#example1">
+                                                        Example
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="example1" class="panel-collapse collapse">
+
+                                                <ul>
+                                                    <li>TrueStar Reading is software designed to improve reading achievement among under-performing students.</li>
+                                                    <li>TrueStar Reading offers personalized lessons and reading content based on reading level.</li>
+                                                    <li>Students were meant to use TrueStar Reading individually during class time for 90 minutes per week.</li>
+                                                    <li>The evaluation period lasted fourteen weeks.</li>
+                                                </ul>
+
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc3" href="#example3">
-                                                    Example
-                                                </a>
-                                            </h3>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#B">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> B. What is the educational setting?
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div id="B" class="row collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-action">
+                            
+                                    <textarea name="Plan_Context_B" id="Plan_Context_B" rows="8" placeholder="Ex., Suburban district with 2,000 students, 25% of whom have IEPs, and with 1:1 laptops "><%= eval.planContext.Plan_Context_B %></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc2">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading accordion-toggle">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider2" class="panel-collapse collapse in">
+                                                <p>Some technologies work well in some settings and not so well in others. Include features of the setting that you think might influence how well you would expect the technology to work. These might have to do with the available technology resources (e.g. computer labs, laptops for students, etc.), student population, or presence of other technology initiatives at schools. </p>
+                                            </div>
                                         </div>
-                                        <div id="example3" class="panel-collapse collapse">
-                                            <p>Teachers did not find the tool user-friendly and therefore often chose to use one of the many other options available to them.</p>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
+                                                        Example
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="example2" class="panel-collapse collapse">
+
+                                                <p>XYZ School District is located in a rural setting where each school in the district has 400 students and class sizes of 20, on average. Each school has 1 computer lab and moderate internet connectivity.</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#C">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> C. Have you experienced any implementation issues?
+                                </h2>
+                            </div>
+                        </div>
+                        <div id="C" class="row collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-action">
+                           
+                                    <textarea name="Plan_Context_C" id="Plan_Context_C" rows="8" placeholder="Ex., Students had difficulty logging into their accounts for the first 2 weeks of class. About half the teachers got frustrated and used other products for the rest of the term."><%= eval.planContext.Plan_Context_C %></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc3">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider3" class="panel-collapse collapse in">
+                                                <p>
+                                                    This information will be included in your findings report appendix and can be useful to others. If few people used the product as intended, you may want improve the implementation before assessing the effectiveness of the technology.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc3" href="#example3">
+                                                        Example
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="example3" class="panel-collapse collapse">
+                                                <p>Teachers did not find the tool user-friendly and therefore often chose to use one of the many other options available to them.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#D">
-                            <h2 class="clickable">
-                                <% if (user != "NOAUTHENTICATED") { %>
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> D. Was <%= eval.planQuestion ? (eval.planQuestion.Plan_Question_A ? eval.planQuestion.Plan_Question_A : "the educational technology") : "the educational technology" %> used as recommended?
-                                <% } %>
-                            </h2>
-                        </div>
-                    </div>
-                    <div id="D" class="row collapse in q-row">
-                        <div class="col-xs-7">
-                            <div class="step-action">
-                                <% var d='';  if (user != "NOAUTHENTICATED") {if (eval.planContext) {d = eval.planContext.Plan_Context_D }} %>
-                                <textarea name="Plan_Context_D" id="Plan_Context_D" rows="8" placeholder="Ex., 75% of students used the program as recommended, meaning they completed all modules and were logged into the program for the recommended amount of time."><%= d %></textarea>
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#D">
+                                <h2 class="clickable">
+                                  
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> D. Was <%= Basics_Tech_Name %> used as recommended?
+                                  
+                                </h2>
                             </div>
                         </div>
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc4">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
+                        <div id="D" class="row collapse in q-row">
+                            <div class="col-xs-7">
+                                <div class="step-action">
+                              
+                                    <textarea name="Plan_Context_D" id="Plan_Context_D" rows="8" placeholder="Ex., 75% of students used the program as recommended, meaning they completed all modules and were logged into the program for the recommended amount of time."><%= eval.planContext.Plan_Context_D %></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider4" class="panel-collapse collapse in">
+                                                <p>
+                                                    System data (also sometimes called log data) can provide information about the extent to which the technology was actually used, which may differ from intended use. You can refer to <a href="/static/pdf/03.03 Summarize Context_downloadable.pdf" target="_blank">Guide: Summarize Context</a> for more information on how to access system data.
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div id="consider4" class="panel-collapse collapse in">
-                                            <p>
-                                                System data (also sometimes called log data) can provide information about the extent to which the technology was actually used, which may differ from intended use. You can refer to <a href="/static/pdf/03.03 Summarize Context_downloadable.pdf" target="_blank">Guide: Summarize Context</a> for more information on how to access system data.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc4" href="#example4">
-                                                    Example
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="example4" class="panel-collapse collapse">
-                                            <ul>
-                                                <li>According to the vendor, students who complete all 10 modules are most likely to benefit from the education technology. 90% of students attempting the first three modules. Usage dropped dramatically for modules 4-10, with only 5% of students attempted module 10.</li>
-                                                <li>This technology is designed for teachers to assign online homework exercises that students complete at home, but many students do not have internet access at home. The technology was therefore used primarily as a source of in-class activities.</li>
-                                            </ul>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#example4">
+                                                        Example
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="example4" class="panel-collapse collapse">
+                                                <ul>
+                                                    <li>According to the vendor, students who complete all 10 modules are most likely to benefit from the education technology. 90% of students attempting the first three modules. Usage dropped dramatically for modules 4-10, with only 5% of students attempted module 10.</li>
+                                                    <li>This technology is designed for teachers to assign online homework exercises that students complete at home, but many students do not have internet access at home. The technology was therefore used primarily as a source of in-class activities.</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -329,8 +401,9 @@
                 </div>
             </div>
         </div>
-        <% include ../views/partials/toolButtons.html %>
-    </form>
+    <% include ../views/partials/toolButtons.html %>
+   
+</form>
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function () {

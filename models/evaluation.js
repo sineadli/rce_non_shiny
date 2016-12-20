@@ -107,13 +107,13 @@ var Random = mongoose.Schema({
     Individual_Group: { type: String, default: '' }, // was Q_9
 	Cluster_Group: { type: String, default: '' },
 	Cluster_Group_Other: { type: String, default: '' },
-	s_treat_var: { type: String, default: '' },
-    s_match_vars: { type: String, default: '' },
-    s_grade_var: { type: String, default: '' },
-    n_full: { type: String, default: '' },
-    n_full_treat: { type: String, default: '' },
-    n_matched: { type: String, default: '' },
-    n_matched_treat: { type: String, default: '' },
+	User_Limit_Exist: { type: String, default: '' },
+	intervention_quantity: { type: Number, default: 0 },
+	intervention_type: { type: String, default: '' },
+	s_unit_id: { type: String, default: '' },
+    s_pretest: { type: String, default: '' },
+    s_block_id: { type: String, default: '' },
+    s_baseline_vars: { type: String, default: '' },  
     Result: { type: String, default: '' },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
@@ -123,7 +123,8 @@ var Random = mongoose.Schema({
 var Matching = mongoose.Schema({
    // Q_M_1: { type: String, default: '' }, replaced by planQuestion.Intervention_Group_Desc
    // Q_M_2: { type: String, default: '' }, replaced by planQuestion.Comparison_Group_Desc
-    Target_Group_Desc: { type: String, default: '' }, // was Q_9
+	Targeted_Access: { type: String, default: '' },
+	Target_Group_Desc: { type: String, default: '' }, // was Q_9
     s_treat_var: { type: String, default: '' },
     s_match_vars: { type: String, default: '' },
     s_grade_var: { type: String, default: '' },

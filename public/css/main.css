@@ -5,7 +5,7 @@ body {
   font-family: 'Open Sans';
   max-width:1000px;
   font-size:1.5em;
-  line-height:1.6em;
+  line-height:1.5em;
      margin: 0 auto;
       min-height: 100%;
     background-color: #FBFAF7;
@@ -90,9 +90,7 @@ div.container-fluid {
     background-color: #E3E1CE;
     border-radius: 0;
 }
-h3.sec-label {
-  font-weight:bold;  
-}
+
 div.breadcrumbs, .sec-label, li.breadcrumb-item {
 	color:#56ACE0;
 	text-transform:uppercase;
@@ -227,6 +225,12 @@ hr {
   border-color:#B8B28F;
   width:100%;
 }
+.h1, .h2 {
+    line-height: 1em;
+}
+.h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3em;
+}
 h1, h2, h3 {
      color:#000000;
     font-weight: 600;
@@ -234,8 +238,11 @@ h1, h2, h3 {
 h1 {
     font-size: 36px;
 }
-h1.form-title {
-   
+h1 {
+    margin-bottom: 20px;
+}
+h3.sec-label {
+  font-weight:bold;  
 }
 h2 {
   font-size:1.55em;
@@ -257,7 +264,7 @@ h4, h4 label {
     color: #444444;
     color: #3F668A;
     letter-spacing: 0px;
-    line-height: 1.2em;
+
 }
 h4 label {
     text-transform: none;
@@ -707,6 +714,16 @@ div.tool-help{
 div.tool-questions {
 	padding:10px 0;
 }
+
+.begin-em {
+    font-size: 1.2em;
+    color: #3F668A;
+}
+h3.sec-label {
+  font-weight:bold;  
+}
+
+
 div.step {
   width:100%;
   display:inline-block;
@@ -783,6 +800,7 @@ div.step-action label {
   /*display:none;*/
     font-weight: normal;
     margin-top: 10px;
+    text-transform: none;
 }
 div.step-action label.radio-label {
   /*display:none;*/
@@ -916,7 +934,7 @@ div.build-profile input {
 
 input[type=checkbox] {
     width: 25px;
-    vertical-align: top;
+    vertical-align: baseline;
     margin-top: 10px;
 }
 .multiselect-container>li>a>label.checkbox {
@@ -931,6 +949,11 @@ input[type=checkbox] {
 .dropdown-menu>.active>a {
     background-color: #afcbda;
 }
+input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #ccc;
+    margin-right: 0.5em;
+  }
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #999;
     font-style: italic;

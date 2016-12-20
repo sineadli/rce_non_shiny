@@ -273,8 +273,110 @@ function recordViewPDF(name, step, path) {
 
 };
 
+/*~~~~~~~~~~~~~~~~~~ randomization.html ~~~~~~~~~~~~~~~~~~*/
+$('#Individual_Group').change(function () {
+	var value = $(this).val();
+
+	var clusterSpecify = $("#Question_Cluster");
+
+	if (value.toLowerCase().indexOf("group") !== -1) clusterSpecify.show();
+	else clusterSpecify.hide();
+	
+	var assign = value;
+
+	if (assign  === "select an option") {
+		assign = "individuals or groups";
+	}
+	
 
 
+	setUserLimitsSelections();
+	
+
+});
+
+$('#Cluster_Group').change(function() {
+    var value = $(this).val();
+
+    var otherSpecify = $("#Question_Cluster_Other");
+
+    if (value.toLowerCase() === "other" ) otherSpecify.show();
+    else otherSpecify.hide();
+
+	var assign = value;
+	
+
+    setUserLimitsSelections();
+
+});
+
+$('#User_Limit_Exist').change(function () {
+    var value = $(this).val();
+
+    var specifyLimits = $("#Question_User_Limits");
+
+    if (value.toLowerCase() === "yes") specifyLimits.show();
+    else specifyLimits.hide();
+
+    setUserLimitsSelections();
+
+});
+
+function setUserLimitsSelections() {
+
+	var users = $('#users').val();
+
+	var gORi = $('#Individual_Group').val();
+    var cluster = $('#Cluster_Group').val();
+  
+    if (cluster === 'classes') scluster = 'class';
+	var ocluster = $('#Cluster_Group_Other').val();
+	
+
+    var assign = users;
+	if (gORi === "groups") {
+	    assign = "groups of " + users;
+	}
+	if (cluster.toLowerCase() !== "select an option") {
+		assign = cluster;
+	}
+    if (cluster.toLowerCase() === "other" && ocluster !== '') {
+        assign = ocluster;
+    }
+
+    $(".indivs-or-groups").text(assign);
+
+	
+
+    $(".indiv-or-group").text("one of your " + assign);
+
+	$("select#Limit_Unit").empty();
+
+	$("#Limit_Unit")
+		.append($("<option></option>")
+			.attr("value", "Select an option")
+			.text("Select an option"));
+	$("#Limit_Unit")
+		.append($("<option></option>")
+			.attr("value", "percent")
+			.text("percent of " + assign));
+	$("#Limit_Unit")
+		.append($("<option></option>")
+			.attr("value", "number")
+			.text(assign));
+
+}
+  /*~~~~~~~~~~~~~~~~~~ randomization.html ~~~~~~~~~~~~~~~~~~*/
+$('#Targeted_Access').change(function () {
+    var value = $(this).val();
+
+    var specifyTarget = $("#Question_Targeted_Desc");
+
+    if (value.toLowerCase() === "yes") specifyTarget.show();
+    else specifyTarget.hide();
+
+
+});
 function setConclusion() {
     var strConclusion, subject;
     var pre1 = $('#Prob_Appr_Pre1').val();

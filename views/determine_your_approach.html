@@ -48,18 +48,11 @@
         <% } %>
         <%
 
-        var Basics_Users ='users';
-        var Basics_Tech_Name ='the educational technology';
-        if (user != "NOAUTHENTICATED")
-        {
-        if (eval.basics)
-        {
-        Basics_Users_Others = eval.basics.Basics_Users_Others;
-        Basics_Users = eval.basics.Basics_Users;
+       var  Basics_Users_Others = eval.basics.Basics_Users_Others;
+        var Basics_Users = eval.basics.Basics_Users;
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-        Basics_Tech_Name = eval.basics.Basics_Tech_Name
-        }
-        }
+        var Basics_Tech_Name = eval.basics.Basics_Tech_Name
+       
         %>
         <div class="container-fluid">
             <div class="row">
@@ -145,8 +138,7 @@
                                         var options = ["Select an option", "Yes", "No"];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
-                                        var selected;
-                                        if (user != "NOAUTHENTICATED"){ if (eval.probAppr) { selected = ( eval.probAppr.Appr_Can_Group == options[i] ) ? "selected" : "";}}
+                                        var selected = ( eval.probAppr.Appr_Can_Group == options[i] ) ? "selected" : "";
                                         %>
                                         <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                         }
@@ -231,7 +223,7 @@
                                                 From a study design point of view, the best way to determine who gets the technology (treatment group) and who does not (comparison group) is through a random chance process (like flipping a coin), but it&#39;s not the only way.
                                             </p>
                                             <p>
-                                                You do not need to randomly select users at the individual level. You can randomly select classrooms or schools. however, your ability to learn whether the technology is effective will be stronger if you can choose at the individual level.
+                                                You do not need to randomly select users at the individual level. You can randomly select classrooms or schools. However, your ability to learn whether the technology is effective will be stronger if you can choose at the individual level.
                                             </p>
                                             <p>
                                                 Do not create your groups based on who volunteers.

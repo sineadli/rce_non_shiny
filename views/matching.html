@@ -73,7 +73,7 @@
         <div class="tool-header">
             <h1 class="tool-title">Build your evaluation sample</h1>
             <div class="tool-intro">
-                <p>Compare apples to apples by creating a comparison group that is similar to the group using the technology. Upload your data, and the Coach will help you create your evaluation sample. </p>
+                <p>Compare apples to apples by creating a comparison group that is similar to the group using the technology. </p>
             </div>
 
 
@@ -137,12 +137,29 @@
 
 
                         <h4>
-                            <label for="Target_Group_Desc">Was use of <%= Basics_Tech_Name %> targeted in any way? If so, what were the characteristics of the group selected to use <%= Basics_Tech_Name %>?<em>Optional</em> </label>
+                            <label for="Target_Group_Desc">Was use of <%= Basics_Tech_Name %> targeted in any way, for example, to low performing students, or English learners? </label>
 
                         </h4>
                     </div>
                     <div class="step-action">
-                        <textarea name="Target_Group_Desc" rows="2" placeholder="Ex. In intervention group, all 5th grade English Learners were given access to the eZumi technology." class="shiny-bound-input"><%= eval.matching.Target_Group_Desc %></textarea>
+                        <select required name="Targeted_Access" id="Targeted_Access">
+                            <%
+                            var options = ["Select an option", "yes", "no" ];
+                            for ( var i = 0; i < options.length; i++ ) {
+                            var selected = (eval.matching.Targeted_Access == options[i] ) ? "selected" : "";
+
+                            %>
+                            <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
+                            <% } %>
+
+                        </select>
+                        <div id="Question_Targeted_Desc" hidden="true">
+                            <p>
+                                <label for="Target_Group_Desc">What were the characteristics of the group selected to use <%= Basics_Tech_Name %>?</label>
+                                <textarea name="Target_Group_Desc" rows="2" placeholder="Ex. In intervention group, all 5th grade English Learners were given access to the eZumi technology." class="shiny-bound-input"><%= eval.matching.Target_Group_Desc %></textarea>
+                            </p>
+                        </div>
+                        
                     </div>
 
                 </div>
@@ -180,7 +197,7 @@
                                             <ul>
                                                 <li>Intervention group: seven schools that used Everest Learning Lab in their fifth grade classrooms</li>
                                                 <li>Comparison group: five schools that did not use Everest Learning Lab</li>
-                                                <li>Given access: in intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access</li>
+                                                <li>Targeted: in intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -198,7 +215,10 @@
                     <div id="B" class="row  collapse in q-row">
                         <div class="col-xs-7">
                             <div class="step-subquestion">
-                                <p>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
+                                <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
+                                <p>
+                                    Your data file should have one row for each one of the <%= Basics_Users %> in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                                </p>
                             </div>
                             <div class="step-action">
                                 <input id="chosenfile" size="1" type="file" accept=".csv">
@@ -214,14 +234,15 @@
                             <div class="before-upload">
                                 <div class="step-subquestion">
                                     <h4>Who is using <%= Basics_Tech_Name %>?</h4>
-                                    <p>Choose the name of the variable that identifies who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                                    <p>Choose the name of the data field that distinguishes who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                                    <p><em>Required</em></p>
                                 </div>
                                 <div class="step-action ">
 
                                     <div>
-                                        <select id="treat_var" class="multiselect from-upload">
+                                        <select id="treat_var" class="multiselect from-upload nodefault">
 
-                                            <option value="">Select a variable</option>
+                                            <option value="">Select a data field</option>
 
                                         </select>
 
@@ -232,20 +253,33 @@
 
                                 <div class="step-subquestion">
                                     <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
-                                    <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the variable that indicates student grade.</p>
+                                    <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the data field that indicates student grade. </p>
                                 </div>
                                 <div class="step-action ">
 
 
-                                    <select id="grade_var" class="multiselect from-upload">
+                                    <select id="grade_var" class="multiselect from-upload nodefault">
                                         <option value="match any grade" selected="selected">match any grade</option>
                                     </select>
 
+                                    <hr/>
+                                </div>
+                                <div class="step-subquestion">
+                                    <h4>Select your pretest outcome measure. </h4>
+                                    <p><em>Required</em></p>
+
+                                </div>
+                                <div class="step-action ">
+                                    <select id="pretest" class="multiselect from-upload nodefault">
+                                        <option value="Select a variable" selected="selected">Select a data field</option>
+                                    </select>
                                     <hr />
                                 </div>
                                 <div class="step-subquestion">
-                                    <h4> Which characteristics matter when matching users to similar non-users?</h4>
-                                    <p>Be sure to select your pre-evaluation outcome measure (your primary matching variable) along with any other characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
+                                    <h4> Which characteristics matter when matching users to similar non-users? </h4>
+                                    <p>Select characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
+                                    <p><em>At least one characteristic is required, more than one is recommeded.</em>
+                                    </p>
                                 </div>
                                 <div class="step-action ">
                                     <select id="match_vars" name="match_vars" class="multiselect from-upload" multiple="multiple">
@@ -267,15 +301,13 @@
                                             </h3>
                                         </div>
                                         <div id="consider3" class="panel-collapse collapse in">
-                                            <p>
-                                                Your data file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
-                                            </p>
+                                          
                                             <p>
                                                 The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
                                             </p>
                                             <div class="before-upload">
                                                 <p>
-                                                    It is most important that users and non-users had similar levels on your outcome variable before they started using the technology. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your primary matching variable.
+                                                    It is most important that users and non-users had similar <%= Basics_Outcome %> levels before they started using <%= Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
                                                 </p>
                                                 <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on free lunch or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
                                             </div>
@@ -341,6 +373,10 @@
                       .append($("<option></option>")
                       .attr("value", "match any grade")
                       .text("match any grade"));
+                    $("select.nodefault")
+                       .append($("<option></option>")
+                       .attr("value", "None selected")
+                       .text("None selected"));
                     $.each(data.colnames, function (index, value) {
                         $("select.from-upload")
                           .append($("<option></option>")
@@ -356,12 +392,14 @@
         $("#match").click(function () {
             $('#loadingmessage2').show();
             var formData = new FormData();
+            var match_vars = $("#match_vars").val();
+            match_vars.push($("#pretest").val());
             $("#s_treat_var").val(JSON.stringify($("#treat_var").val()));
-            $("#s_match_vars").val(JSON.stringify($("#match_vars").val()));
+            $("#s_match_vars").val(JSON.stringify(match_vars));
             $("#s_grade_var").val(JSON.stringify($("#grade_var").val()));
             formData.append("data", $("#chosenfile")[0].files[0]);
             formData.append("treat_var", JSON.stringify($("#treat_var").val()));
-            formData.append("match_vars", JSON.stringify($("#match_vars").val()));
+            formData.append("match_vars", JSON.stringify(match_vars));
             formData.append("grade_var", JSON.stringify($("#grade_var").val()));
             $.ajax({
                 url: "https://52.222.20.48/ocpu/library/edtechrce/R/matching",
@@ -388,7 +426,7 @@
                                     n_matched += parseInt(grade_object.samples.n_matched);
                                     n_matched_treat += parseInt(grade_object.samples.n_matched_treat);
                                     info = 'The data you uploaded has ' + grade_object.samples.n_full + ' observations (after removing observations missing the selected matching variables), ' + grade_object.samples.n_full_treat + ' of which are in the intervention group. The matched data set produced by the dashboard has ' + grade_object.samples.n_matched + ' observations, ' + grade_object.samples.n_matched_treat + ' of which are in the intervention group.';
-                                    buttxt = 'To learn more about how this dashboard works, you can review this <a href="/static/pdf/05.01a Matching Technical Appendix.pdf" target="_blank" > <u> technical appendix</u></a>.';
+                                    buttxt = 'To learn more about how this tool works, you can review this <a href="/static/pdf/05.01a Matching Technical Appendix.pdf" target="_blank" > <u> technical appendix</u></a>.';
 
                                     $('#results').append('<div class="row"><div class="col-xs-7"><h2>Matching Results</h2><h3>' + grade_object.title + '</h3>');
                                     if (grade_object.good_balance) {

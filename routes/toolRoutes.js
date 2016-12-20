@@ -122,7 +122,15 @@ module.exports = function (app, passport) {
 		});
 	});
     
-
+	//02. Who used and how	   
+	app.get('/who_and_how.html', function (req, res) {
+		//	console.log("In DYA get method.");
+		sess = req.session;
+		sess.eval.last_step = 2;
+		sess.eval.last_tool = "Who Used Your Technology and How";
+		var query = require('url').parse(req.url, true).query;
+		res.render('who_and_how.html.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+	});
     //02.03 determine your approach
 	app.get('/determine_your_approach', function (req, res) {
 	//	console.log("In DYA get method.");
