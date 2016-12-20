@@ -104,7 +104,8 @@
             $("#mpr-login-signin").html("NEXT").prop("disabled", false);
             return false;
         });
-        $("#login-password").keyup(checkPassword);
+        $("#login-password").focusout(checkPassword);
+        $("#login-password").keyup(function () { var password = $("#login-password").val(); if (!password) $("#validatePassword").html(""); });
         $("#login-confirmpassword").keyup(checkPasswordMatch);
         $("#chkAgree").click(checkPasswordMatch);
         function checkPasswordMatch() {
@@ -114,7 +115,7 @@
 
             if (password && confirmPassword && password !== confirmPassword) {
                 $("#mpr-login-signin").prop("disabled", true);
-                $("#checkPasswordMatch").html("Passwords do not match!");
+                $("#checkPasswordMatch").html("Passwords do not match.");
             }
             else {
                 $("#checkPasswordMatch").html("");

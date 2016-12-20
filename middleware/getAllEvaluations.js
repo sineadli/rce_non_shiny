@@ -11,8 +11,6 @@
 // middleware/getAllEvaluations.js
 //load the thing we need
 var Evaluation = require('../models/evaluation');
-var isLoggedIn = require('../middleware/isLoggedIn.js');
-
 
 var getAllEvaluations = function (req, res, next) {
     sess = req.session;
