@@ -102,7 +102,6 @@
                         </div>
 
                     </div>
-                    <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
                     <div class="tool-questions">
                         <div class="step-header container">
                             <div data-toggle="collapse" data-target="#A">
@@ -115,11 +114,11 @@
                             <p></p>
                             <div class="step-action ">
                                 <h4>Question:</h4>
-                                <textarea id="summary_question" rows="2" width="85%" class="shiny-bound-input">
+                                <textarea id="summary_question" rows="2" width="85%">
                                     <%= "Does "  + Plan_Question_A + " " + Plan_Question_B_3 + " " + Plan_Question_B_2 +
                                     " among " + Plan_Question_C + " compared to " +Plan_Question_D + "?" %>
                                 </textarea>
-                                <div id="answers_next_steps" class="shiny-html-output shiny-bound-output">
+                                <div id="answers_next_steps">
                                     <h4>Answer:</h4>
                                     <% var title='', ismove1 = 'Yes',ismove2='', text1='',text2='', nextstep=''; if (getresults_by_grade) { for (var key in getresults_by_grade ) {
                                     if (getresults_by_grade.hasOwnProperty(key)) { title = getresults_by_grade[key].title;
@@ -129,13 +128,13 @@
                                     if (prob.endsWith("%")) prob = prob.substring(0, prob.length-1) ;
                                     if (prob < Plan_Next_C_1) {ismove1="No"; ismove2=" not"; nextstep= Plan_Next_D_2 } else {nextstep= Plan_Next_D_1 }
                                     %>
-                                    <textarea id="title" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= title %></textarea>
-                                    <textarea id="summary_answer_1_1" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= ismove1 + ", we think this intervention is" + ismove2 + " moving the needle." %></textarea>
-                                    <textarea id="summary_answer_1_2" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%=  text1%></textarea>
-                                    <textarea id="summary_answer_1_3" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= text2 %></textarea>
+                                    <textarea id="title" label="" rows="2" width="85%" disabled=""><%= title %></textarea>
+                                    <textarea id="summary_answer_1_1" label="" rows="2" width="85%" disabled=""><%= ismove1 + ", we think this intervention is" + ismove2 + " moving the needle." %></textarea>
+                                    <textarea id="summary_answer_1_2" label="" rows="2" width="85%" disabled=""><%=  text1%></textarea>
+                                    <textarea id="summary_answer_1_3" label="" rows="2" width="85%" disabled=""><%= text2 %></textarea>
 
                                     <h4>Next steps:</h4>
-                                    <textarea id="summary_next_steps_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= nextstep %></textarea>
+                                    <textarea id="summary_next_steps_1" label="" rows="2" width="85%"><%= nextstep %></textarea>
 
                                     <% }}} %>
                                 </div>
@@ -149,10 +148,10 @@
                         <div id="B" class="row collapse in">
                             <p></p>
                             <div class="step-action ">
-                                <textarea id="what_was_tested_1" rows="2" width="85%" class="shiny-bound-input"><%=  "This evaluation tested the effectiveness of " + Plan_Question_A  + "." %></textarea>
-                                <textarea id="what_was_tested_2" rows="2" width="85%" class="shiny-bound-input"><%= Plan_Question_A  + " is " + Plan_Question_A_1 + "." %></textarea>
-                                <textarea id="what_was_tested_3" rows="2" width="85%" class="shiny-bound-input"><%= "Key program components include " + Plan_Question_A_2 + "." %></textarea>
-                                <textarea id="what_was_tested_4" rows="2" width="85%" class="shiny-bound-input"><%= "Implementing "+ Plan_Question_A + " "  +  Plan_Question_A_1 + " $" + Plan_Question_A_2 + " per "  + Plan_Question_A_3  + "."  %></textarea>
+                                <textarea id="what_was_tested_1" rows="2" width="85%"><%=  "This evaluation tested the effectiveness of " + Plan_Question_A  + "." %></textarea>
+                                <textarea id="what_was_tested_2" rows="2" width="85%"><%= Plan_Question_A  + " is " + Plan_Question_A_1 + "." %></textarea>
+                                <textarea id="what_was_tested_3" rows="2" width="85%"><%= "Key program components include " + Plan_Question_A_2 + "." %></textarea>
+                                <textarea id="what_was_tested_4" rows="2" width="85%"><%= "Implementing "+ Plan_Question_A + " "  +  Plan_Question_A_1 + " $" + Plan_Question_A_2 + " per "  + Plan_Question_A_3  + "."  %></textarea>
                             </div>
                         </div>
 
@@ -164,22 +163,22 @@
                         <div id="C" class="row collapse in">
                             <p></p>
                             <div class="step-action ">
-                                <textarea id="evaluation_design_1" label="" rows="3" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.</textarea>
-                                <textarea id="evaluation_design_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "Similar comparison group members were identified using the following background characteristics: " +ED_1 + "." %></textarea>
-                                <textarea id="edit_labels_message" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">If the labels are unclear, you can change how you refer to any control variables here. For example, if your label is “female” you may want to change it to “gender.”</textarea>
-                                <div id="edit_covariate_labels" class="shiny-html-output shiny-bound-output">
+                                <textarea id="evaluation_design_1" label="" rows="3" width="85%" disabled="">This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.</textarea>
+                                <textarea id="evaluation_design_2" label="" rows="2" width="85%"><%= "Similar comparison group members were identified using the following background characteristics: " +ED_1 + "." %></textarea>
+                                <textarea id="edit_labels_message" label="" rows="2" width="85%" disabled="">If the labels are unclear, you can change how you refer to any control variables here. For example, if your label is “female” you may want to change it to “gender.”</textarea>
+                                <div id="edit_covariate_labels">
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <h5>Relabel <%= ED_1 %>:</h5>
                                         </div>
                                         <div class="col-sm-10">
-                                            <div class="form-group shiny-input-container">
+                                            <div class="form-group">
                                                 <label for="edit_covariate_label_1"></label>
-                                                <input id="edit_covariate_label_1" type="text" class="form-control shiny-bound-input shinyjs-resettable" value="<%= ED_1 %> " data-shinyjs-resettable-id="edit_covariate_label_1" data-shinyjs-resettable-type="Text" data-shinyjs-resettable-value="post.test">
+                                                <input id="edit_covariate_label_1" type="text" class="form-control" value="<%= ED_1 %> ">
                                             </div>
                                         </div>
                                     </div>
-                                    <button id="update_covariate_labels" type="button" class="btn btn-default action-button shiny-bound-input">Update Labels</button>
+                                    <button id="update_covariate_labels" type="button" class="btn btn-default action-button">Update Labels</button>
                                 </div>
                             </div>
                         </div>
@@ -191,15 +190,15 @@
                         <div id="D" class="row collapse in">
                             <p></p>
                             <div class="step-action ">
-                                <textarea id="setting_and_sample_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The evaluation studied " + Prob_Appr_B + "."  %></textarea>
-                                <textarea id="setting_and_sample_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The intervention group in this evaluation includes " + Q_M_1 + "." %></textarea>
-                                <textarea id="setting_and_sample_3" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The comparison group includes " +  Q_M_2 + "." %></textarea>
-                                <textarea id="setting_and_sample_4" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">The sample for this evaluation includes:</textarea>
-                                <textarea id="setting_and_sample_5" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%=  n_full_treat + " " + Prob_Appr_B + " who used " + Plan_Question_A + " in the intervention group." %></textarea>
-                                <textarea id="setting_and_sample_6" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= for_6 + " " +  Prob_Appr_B +  " who did not use the program in the comparison group." %></textarea>
-                                <textarea id="setting_and_sample_7" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">Table 1 below summarizes key characteristics of the study sample:</textarea>
-                                <div id="table1" class="shiny-html-output shiny-bound-output">
-                                    <div id="out076dae39ecc11d5b" class="shiny-html-output shiny-bound-output">
+                                <textarea id="setting_and_sample_1" label="" rows="2" width="85%"><%= "The evaluation studied " + Prob_Appr_B + "."  %></textarea>
+                                <textarea id="setting_and_sample_2" label="" rows="2" width="85%"><%= "The intervention group in this evaluation includes " + Q_M_1 + "." %></textarea>
+                                <textarea id="setting_and_sample_3" label="" rows="2" width="85%"><%= "The comparison group includes " +  Q_M_2 + "." %></textarea>
+                                <textarea id="setting_and_sample_4" label="" rows="2" width="85%" disabled="">The sample for this evaluation includes:</textarea>
+                                <textarea id="setting_and_sample_5" label="" rows="2" width="85%" disabled=""><%=  n_full_treat + " " + Prob_Appr_B + " who used " + Plan_Question_A + " in the intervention group." %></textarea>
+                                <textarea id="setting_and_sample_6" label="" rows="2" width="85%" disabled=""><%= for_6 + " " +  Prob_Appr_B +  " who did not use the program in the comparison group." %></textarea>
+                                <textarea id="setting_and_sample_7" label="" rows="2" width="85%" disabled="">Table 1 below summarizes key characteristics of the study sample:</textarea>
+                                <div id="table1">
+                                    <div id="out076dae39ecc11d5b">
                                         <!-- html table generated in R 3.3.1 by xtable 1.8-2 package -->
                                         <!-- Fri Dec  2 10:05:14 2016 -->
                                         <table class="data table table-bordered table-condensed">
@@ -237,13 +236,13 @@
                         <div id="E" class="row collapse in">
                             <p></p>
                             <div class="step-action ">
-                                <textarea id="implementation_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= Q_9 %></textarea>
-                                <textarea id="implementation_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The evaluation period lasted " +Plan_Context_A_4+"." %></textarea>
-                                <textarea id="implementation_3" label="" rows="2" width="85%" class="shiny-bound-input"><%= "During this period, " + Prob_Appr_B +  " in the intervention group were intended to use the app " + Plan_Context_A_3+"."  %></textarea>
-                                <textarea id="implementation_4" label="" rows="2" width="85%" class="shiny-bound-input"><%= "Among " +Prob_Appr_B + " in the intervention group, " + Plan_Context_D + "." %></textarea>
-                                <textarea id="implementation_5" label="" rows="2" width="85%" class="shiny-bound-input"><%= Prob_Appr_B + " in the comparison group did not have access to " + Plan_Question_A + "." %></textarea>
+                                <textarea id="implementation_1" label="" rows="2" width="85%"><%= Q_9 %></textarea>
+                                <textarea id="implementation_2" label="" rows="2" width="85%"><%= "The evaluation period lasted " +Plan_Context_A_4+"." %></textarea>
+                                <textarea id="implementation_3" label="" rows="2" width="85%"><%= "During this period, " + Prob_Appr_B +  " in the intervention group were intended to use the app " + Plan_Context_A_3+"."  %></textarea>
+                                <textarea id="implementation_4" label="" rows="2" width="85%"><%= "Among " +Prob_Appr_B + " in the intervention group, " + Plan_Context_D + "." %></textarea>
+                                <textarea id="implementation_5" label="" rows="2" width="85%"><%= Prob_Appr_B + " in the comparison group did not have access to " + Plan_Question_A + "." %></textarea>
                                 <h5>What other supports relevant to your outcome of interest did study participants receive?</h5>
-                                <textarea id="implementation_6" label="" rows="2" width="85%" class="shiny-bound-input"></textarea>
+                                <textarea id="implementation_6" label="" rows="2" width="85%"></textarea>
                             </div>
                         </div>
                         <div class="step-header container">
@@ -254,8 +253,8 @@
                         <div id="F" class="row collapse in">
                             <p></p>
                             <div class="step-action ">
-                                <textarea id="measures_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= Plan_Question_B_1 + " was measured using the " +  Plan_Question_B_2 + "." %></textarea>
-                                <textarea id="measures_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "Analysis of the impact of " +  Plan_Question_A + " controls for " + ED_1 + "."  %></textarea>
+                                <textarea id="measures_1" label="" rows="2" width="85%"><%= Plan_Question_B_1 + " was measured using the " +  Plan_Question_B_2 + "." %></textarea>
+                                <textarea id="measures_2" label="" rows="2" width="85%"><%= "Analysis of the impact of " +  Plan_Question_A + " controls for " + ED_1 + "."  %></textarea>
                             </div>
                         </div>
                         <div class="step-header container">
@@ -275,16 +274,16 @@ Does Odyssey Pathblazer Reading cause larger improvements over the course of a s
 
 Does Odyssey Pathblazer Reading cause larger (or smaller) improvements in other grades?
 
-Does the program cause larger improvements among the lowest-achieving students at baseline?" class="shiny-bound-input"></textarea>
+Does the program cause larger improvements among the lowest-achieving students at baseline?"></textarea>
                             </div>
                         </div>
 
                     </div>
 
 
-                    <div id="file_type" class="form-group shiny-input-radiogroup shiny-input-container shinyjs-resettable shiny-bound-input pull-right" data-shinyjs-resettable-id="file_type" data-shinyjs-resettable-type="RadioButtons" data-shinyjs-resettable-value="PDF document" data-original-title="" title="">
+                    <div id="file_type" class="form-group pull-right" >
                         <label class="control-label" for="file_type"></label>
-                        <div class="shiny-options-group">
+                        <div>
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="file_type" value="PDF document" checked="checked">
@@ -304,13 +303,13 @@ Does the program cause larger improvements among the lowest-achieving students a
                                 </label>
                             </div>
                         </div>
-                        <a id="download_brief" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_brief?w=" target="_blank">
+                        <a id="download_brief" class="btn btn-default" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_brief?w=" target="_blank">
                             <i class="fa fa-download"></i>
                             Create Brief!
                         </a>
 
 
-                        <a id="download_appendix" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_appendix?w=" target="_blank">
+                        <a id="download_appendix" class="btn btn-default" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_appendix?w=" target="_blank">
                             <i class="fa fa-download"></i>
                             Create Appendix
                         </a>
@@ -323,7 +322,6 @@ Does the program cause larger improvements among the lowest-achieving students a
         <% include ../views/partials/toolButtons.html %>
     </form>
     <% include ../views/partials/footer.html %>
-    <!--<script>$(document).ready(function () { setTimeout(function () { shinyBS.addTooltip('file_type', 'popover', { 'content': '<ul><li>PDF document is a file to be read like a report, and cannot be directly edited by those .</li></br><li>PDF slides are formatted for a full-screen presentation, and are not directly editable.</li></br><li>A DOCX file is similar to the PDF document option, but can be directly edited in Microsoft Word.</li></ul>', 'placement': 'left', 'trigger': 'hover', 'title': 'File Types' }) }, 500) });</script>-->
     <script src='/static/js/custom.js'></script>
 
 </body>
