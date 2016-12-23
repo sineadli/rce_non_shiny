@@ -955,13 +955,19 @@ div#upload {
   height:35px;
 }
 div > select,input,textarea {
-	width:95%;
+	width:85%;
 	padding-left:5px;
   border-radius: 5px; 
   border-color: #B8B28F;
   border-style: solid;
   border-width: 1px;
+   margin-left: 25px;
  
+}
+textarea {
+   
+  height:auto;
+
 }
 input[type=radio] {
     width: 5%;
@@ -1028,11 +1034,7 @@ p > select,textarea,input {
   border-color: #B8B28F;
   border-radius: 5px;
 }
-textarea {
-    margin-left: 25px;
-  height:auto;
-  width:85%;
-}
+
 textarea.simplebox{
   width:auto;
   height:24px;
