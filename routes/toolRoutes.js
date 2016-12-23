@@ -123,13 +123,13 @@ module.exports = function (app, passport) {
 	});
     
 	//02. Who used and how	   
-	app.get('/who_and_how.html', function (req, res) {
+	app.get('/who_and_how', function (req, res) {
 		//	console.log("In DYA get method.");
 		sess = req.session;
 		sess.eval.last_step = 2;
 		sess.eval.last_tool = "Who Used Your Technology and How";
 		var query = require('url').parse(req.url, true).query;
-		res.render('who_and_how.html.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+		res.render('who_and_how.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
 	});
     //02.03 determine your approach
     app.get('/determine_your_approach', isLoggedIn, function (req, res) {
@@ -481,7 +481,7 @@ module.exports = function (app, passport) {
     });
     //03.03 context and usage
     app.get('/context_and_usage', isLoggedIn, function (req, res) {
-        sess = req.session;
+		sess = req.session;
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Summarize Context";
         var query = require('url').parse(req.url, true).query;
@@ -528,26 +528,81 @@ module.exports = function (app, passport) {
                     }
                 }
                 //add/update the planQuestion within eval
-                if (!eval.planContext) {
+               
                     planContext = {
-                        "Plan_Context_A_1": obj.Plan_Context_A_1, "Plan_Context_A_2": obj.Plan_Context_A_2,
-                        "Plan_Context_A_3": obj.Plan_Context_A_3, "Plan_Context_A_4": obj.Plan_Context_A_4,
-                        "Plan_Context_A_5": obj.Plan_Context_A_5, "Plan_Context_A_6": obj.Plan_Context_A_6,
-                        "Plan_Context_B": obj.Plan_Context_B, "Plan_Context_C": obj.Plan_Context_C,
-                        "Plan_Context_D": obj.Plan_Context_D, "created_at": dt
+						Eval_Begin_Date: obj.Eval_Begin_Date,
+						Eval_End_Date: obj.Eval_End_Date,
+						Type_Curriculum: obj.Type_Curriculum,
+						Type_Practice: obj.Type_Practice,
+						Type_CSchool_Structure: obj.Type_CSchool_Structure,
+						Type_School_Level: obj.Type_School_Level,
+						Type_Teacher_Level: obj.Type_Teacher_Level,
+						Type_Policy: obj.Type_Policy,
+						Tech_Purpose: obj.Tech_Purpose,
+						Tech_Components: obj.Tech_Components,
+						Delivered_Individually: obj.Delivered_Individually,
+						Delivered_Small_Group: obj.Delivered_Small_Group,
+						Delivered_Whole_Class: obj.Delivered_Whole_Class,
+						Delivered_School_Wide: obj.Delivered_School_Wide,
+						Grade_PK: obj.Grade_PK,
+						Grade_K: obj.Grade_K,
+						Grade_1: obj.Grade_1,
+						Grade_2: obj.Grade_2,
+						Grade_3: obj.Grade_3,
+						Grade_4: obj.Grade_4,
+						Grade_5: obj.Grade_5,
+						Grade_6: obj.Grade_6,
+						Grade_7: obj.Grade_7,
+						Grade_8: obj.Grade_8,
+						Grade_9: obj.Grade_9,
+						Grade_10: obj.Grade_10,
+						Grade_11: obj.Grade_11,
+						Grade_12: obj.Grade_12,
+						Grade_PS: obj.Grade_PS,
+						Expected_Dosage: obj.Expected_Dosage,
+						Developer_Guidelines:obj.Developer_Guidelines,
+						ClassroomType_General: obj.ClassroomType_General,
+						ClassroomType_Inclusion: obj.ClassroomType_Inclusion,
+						Outcome_Literacy: obj.Outcome_Literacy,
+						Outcome_Mathematics: obj.Outcome_Mathematics, 
+						Outcome_Science: obj.Outcome_Science,
+						Outcome_Behavior: obj.Outcome_Behavior,
+						Outcome_Teacher_Excellence: obj.Outcome_Teacher_Excellence, 
+						Outcome_Graduation: obj.Outcome_Graduation,
+						SchoolType_Charter: obj.SchoolType_Charter,
+						SchoolType_Private: obj.SchoolType_Private, 
+						SchoolType_Parochial: obj.SchoolType_Parochial, 
+						SchoolType_Public: obj.SchoolType_Public,
+						Total_Students: obj.Total_Students,
+						Urbanicity_Rural: obj.Urbanicity_Rural,
+						Urbanicity_Suburban: obj.Urbanicity_Suburban,
+						Urbanicity_Urban: obj.Urbanicity_Urban,
+						Race_Asian: obj.Race_Asian,
+						Race_Black: obj.Race_Black,
+						Race_Native_American: obj.Race_Native_American,
+						Race_Pacific_Islander: obj.Race_Pacific_Islander,
+						Race_White: obj.Race_White,
+						Race_Other: obj.Race_Other,
+						Ethnicity_Hispanic: obj.Ethnicity_Hispanic,
+						Ethnicity_Not_Hispanic: obj.Ethnicity_Not_Hispanic,
+						Gender_Female: obj.Gender_Female,
+						Gender_Male: obj.Gender_Male,
+						FRPL_Free: obj.FRPL_Free,
+						FRPL_Reduced: obj.FRPL_Reduced,
+						English_Learners: obj.English_Learners,
+						IEP: obj.IEP,
+						Other_Notes: obj.Other_Notes, 
+						
 
-                    };
-                }
+				};
+				if (!eval.planContext) {
+				    planContext.created_at = dt;
+				}
                 else {
-                    planContext = {
-                        "Plan_Context_A_1": obj.Plan_Context_A_1, "Plan_Context_A_2": obj.Plan_Context_A_2,
-                        "Plan_Context_A_3": obj.Plan_Context_A_3, "Plan_Context_A_4": obj.Plan_Context_A_4,
-                        "Plan_Context_A_5": obj.Plan_Context_A_5, "Plan_Context_A_6": obj.Plan_Context_A_6,
-                        "Plan_Context_B": obj.Plan_Context_B, "Plan_Context_C": obj.Plan_Context_C,
-                        "Plan_Context_D": obj.Plan_Context_D,
-                        "created_at": eval.planContext.created_at, "updated_at": dt
-                    };
-                }
+					planContext.created_at = eval.planContext.created_at;
+				    planContext.updated_at = dt;
+				};
+                
                 eval.planContext = planContext;
                 if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
@@ -557,7 +612,7 @@ module.exports = function (app, passport) {
                     sess.eval = eval;
                     if (req.body.status == "started") {
 
-                        req.flash('saveMessage', 'Changes Saved.')
+                        req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/context_and_usage');
                     }
                     else {

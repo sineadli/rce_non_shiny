@@ -129,7 +129,7 @@ div.bottom-next a.sec-label {
     font-size: 1.1em;
 }
 .tooltip-gr {
-  color:#00CC66;
+  color:#e44e0d;
 }
 .all-caps {
     text-transform: uppercase;
@@ -255,9 +255,9 @@ h3 {
   color:#000000;
   letter-spacing: 1px;
   font-size: 18px;
-  margin-top:5px;
+  /*margin-top:5px;*/
 }
-h4, h4 label {
+h4, h4 label, h4 em {
   font-size:15px;
   /*font-style:italic;*/
   font-weight:600;
@@ -265,6 +265,32 @@ h4, h4 label {
     color: #3F668A;
     letter-spacing: 0px;
 
+}
+div.fixed-col-head {
+     border-bottom: 1px solid #ccc;  
+       background-color: #D6EBF8;
+       padding: 5px;
+
+}
+div.fixed-col-head h4{
+    display: block;
+    text-align: center;
+    vertical-align: bottom;
+    width: 100%;
+    height: 30px;
+
+ 
+}
+div.col-xs-4.tab-col {
+    padding: 0px;
+    margin: 0px;
+    height: auto;
+}
+div.col-xs-4.tab-col ul {
+    margin: 5px;
+    padding: 10px;
+    list-style-type:square;
+     /*list-style-image: url('sqpurple.gif');*/
 }
 h4 label {
     text-transform: none;
@@ -280,7 +306,7 @@ label.registrationFormAlert {
     text-transform: none;
     color: #800000;
 }
-h2,p.clickable {
+h2.clickable ,p.clickable {
   cursor:pointer;
 }
 h2.clickable {
@@ -624,7 +650,7 @@ div.tool-div {
 
 div.tool-div.current {
     border: 2px solid #4081A8;
-    border: 2px solid #006982
+    border: 2px solid #006982;
      box-shadow: 3px 3px 3px #AFCBDA
 }
 div.tool-div.completed div.tool-status p span.all-caps, div.tool-div.Completed div.tool-status p span.all-caps {
@@ -722,7 +748,9 @@ div.tool-questions {
 h3.sec-label {
   font-weight:bold;  
 }
-
+a.navbar-brand h3.sec-label {
+    margin-top: 0px;
+}
 
 div.step {
   width:100%;
@@ -768,7 +796,16 @@ h2.guide {
 }
 
 h2.locked {
-    background-image: url("/static/image/LockedIcon.png");
+    opacity: .5;
+}
+h2.statistical.locked {
+    background-image: url("/static/image/StatTool-Unavailable.png");
+}
+h2.form.locked {
+    background-image: url("/static/image/Form-Unavailable.png");
+}
+h2.guide.locked {
+    background-image: url("/static/image/Guide-Unavailable.png");
 }
 div.step-subquestion {
 	    margin: 5px 25px 0 25px;
@@ -839,7 +876,9 @@ div.step-to-consider h3 {
 div.step-to-consider p {
 	margin-bottom:20px;
 }
-
+div.step-to-consider li p {
+	margin-bottom:5px;
+}
 div.step-to-consider .btn {
     margin-left: 60%;
 	padding:5px;
@@ -930,7 +969,9 @@ input[type=radio] {
 div.build-profile input {
     width: 100%;
 }
-
+input[type=date] {
+    width: 50%;
+}
 
 input[type=checkbox] {
     width: 25px;
@@ -959,12 +1000,12 @@ input[type="date"]:before {
     font-style: italic;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #999
+    color: #999;
    opacity:  1;
    font-style: italic;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #999
+    color: #999;
    opacity:  1;
    font-style: italic;
 }
@@ -988,8 +1029,9 @@ p > select,textarea,input {
   border-radius: 5px;
 }
 textarea {
- 
+    margin-left: 25px;
   height:auto;
+  width:85%;
 }
 textarea.simplebox{
   width:auto;
@@ -1047,4 +1089,86 @@ div.action-buttons {
 .shiny-input-checkboxgroup label ~ .shiny-options-group, .shiny-input-radiogroup label ~ .shiny-options-group {
     margin-top: -10px;
 }
+.boxed{
+       width: 90%;
+       border:1px solid #999;
+       border-style:dotted;
+       padding: 25px;
+}
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 18px;
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+    vertical-align: top;
+}
+  
+     tr:nth-child(even){background-color: #f2f2f2}
+
+div.context-tag {
+    float: left;
+    margin-left: 5%;
+    width: 85%;
+}
+div.context-tag input[type="checkbox"] {
+    visibility: hidden;
+    width: 1px;
+}
+
+div.context-tag label {
+    cursor: pointer;
+    color: #000;
+}
+
+div.context-tag input[type="checkbox"] + label {
+    display: inline-block;
+    vertical-align: middle;
+    width: 145px;
+    height: 48px;
+    background-color: #D9D7BE;
+    text-align: center;
+    border: 2px solid #D9D7BE;
+    font-size: 1em;
+    padding-top: 9px;
+    border-radius: 5px;
+    margin-top: 1px;
+}
+    div.context-tag input[type="checkbox"] + label.tall-box {
+
+        padding-top: 0px;
+
+    }
+
+
+div.context-tag input.cus-input {
+    width: 0;
+    height: 0;
+    margin: -2px;
+    padding: 0;
+    font-size: 0;
+}
+input.per-input {
+    width: 40px;
+}
+input.num-input {
+    width: 80px;
+}
+div.context-tag input[type="checkbox"] + label.cb-small{
+        width: 45px;
+        height: 45px;
+    }
+div.context-tag input[type="checkbox"]:checked + label {
+    border: 2px solid #222;
+    background-color: #80C1E8;
+    text-align: center;
+}
+
+
+
+
 

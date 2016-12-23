@@ -55,7 +55,7 @@
         Basics_Users = eval.basics.Basics_Users;
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
         Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-        var Outcome_Direction = eval.planQuestion.Outcome_Direction;
+        var Outcome_Direction = eval.planQuestion.Outcome_Direction !== "" ? eval.planQuestion.Outcome_Direction : "improve";
         var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
         %>
         <div class="container-fluid">
@@ -356,7 +356,7 @@
 
 
                                         <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
                                         <% } %>
                                         <% if (user == "NOAUTHENTICATED") { %>
                                         A does B among C compared to D?
@@ -371,7 +371,7 @@
                                     <p>
                                         &hellip; the evidence suggests that it is not likely that
                                         <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
                                         <% } %>
                                         <% if (user == "NOAUTHENTICATED") { %>
                                         A does B among C compared to D?
@@ -408,7 +408,7 @@
                                                         <b>Your Research Question:</b> <br />
                                                         <% if (user != "NOAUTHENTICATED") { %>
                                                         DOES
-                                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
                                                         <% } %>
                                                         <% if (user == "NOAUTHENTICATED") { %>
                                                         A does B among C compared to D?

@@ -23,184 +23,181 @@ $(document).ready(function() {
         caret.toggleClass('fa-caret-down');
     });
 
-
-
- $(document).on('click', '.tool-view-button', function (e) {
-	 e.preventDefault();
-	  $("div.tool-div").removeClass("current");
-	  var href = $(this).attr("href");
-	  $(this).parent(".tool-view-btn").parent(".tool-div").addClass("current");
    
-      window.location = href;
- });
 
-  $(':button').click(function () {
-      if ($(this).html() === 'SAVE CHANGES') {
-          $('#status').val('started'); 
-      }
-      else {
-          $('#status').val('completed');
-      }
-      
- });
+        $(document).on('click', '.tool-view-button', function(e) {
+            e.preventDefault();
+            $("div.tool-div").removeClass("current");
+            var href = $(this).attr("href");
+            $(this).parent(".tool-view-btn").parent(".tool-div").addClass("current");
+
+            window.location = href;
+        });
+
+        $(':button').click(function() {
+            if ($(this).html() === 'SAVE CHANGES') {
+                $('#status').val('started');
+            } else {
+                $('#status').val('completed');
+            }
+
+        });
 
 
 /*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
-  $('#Prob_Appr_Pre1').change(function () {
-      var value = $(this).val();
-      var subject = "subjects";
-      
-      var otherSpecify = $("#other-specify-pre1");
+        $('#Prob_Appr_Pre1').change(function() {
+            var value = $(this).val();
+            var subject = "subjects";
 
-      if (value.toLowerCase() === "other") otherSpecify.show();
-      else otherSpecify.hide();
-      if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
-          subject = value;
-      }
-      
-      setConclusion();
-  });
-  $('#Prob_Appr_Pre2').change(function () {
-      setConclusion();
-  });
-    //Q.3
-  $('#Prob_Appr_A').change(function () {
-      setConclusion();    
-  });
-  $('#Prob_Appr_B').change(function () {
+            var otherSpecify = $("#other-specify-pre1");
 
-        var value = $(this).val();
-        var subject = "subjects";        
-    var otherSpecify = $("#other-specify");
-    if (value === "other") otherSpecify.show();
-    else otherSpecify.hide();
-    if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
-        subject = value;
-    }
-    if (value.toLowerCase() !== "other") {
-      
-        $(".section-c-header").text(subject);
-    }
-    else {
-        
-        $(".section-c-header").text("subjects");
+            if (value.toLowerCase() === "other") otherSpecify.show();
+            else otherSpecify.hide();
+            if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
+                subject = value;
+            }
 
-    }
-    setConclusion();
-    });
-    $('#Prob_Appr_C').change(function () {
-        setConclusion();     
-    });
-    $('#Prob_Appr_D').change(function () {
-        setConclusion();     
-    });
-    $('#Prob_Appr_E').change(function () {
-        setConclusion();
-    });
-    $('#Prob_Appr_F').change(function () {
-        setConclusion();
-    });
+            setConclusion();
+        });
+        $('#Prob_Appr_Pre2').change(function() {
+            setConclusion();
+        });
+        //Q.3
+        $('#Prob_Appr_A').change(function() {
+            setConclusion();
+        });
+        $('#Prob_Appr_B').change(function() {
+
+            var value = $(this).val();
+            var subject = "subjects";
+            var otherSpecify = $("#other-specify");
+            if (value === "other") otherSpecify.show();
+            else otherSpecify.hide();
+            if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
+                subject = value;
+            }
+            if (value.toLowerCase() !== "other") {
+
+                $(".section-c-header").text(subject);
+            } else {
+
+                $(".section-c-header").text("subjects");
+
+            }
+            setConclusion();
+        });
+        $('#Prob_Appr_C').change(function() {
+            setConclusion();
+        });
+        $('#Prob_Appr_D').change(function() {
+            setConclusion();
+        });
+        $('#Prob_Appr_E').change(function() {
+            setConclusion();
+        });
+        $('#Prob_Appr_F').change(function() {
+            setConclusion();
+        });
 
 
-  
-    $(".section-c-header").text(getSubject());
-  $("#Prob_Appr_B_other").keyup( function() {
-      var value = $(this).val();
-      $(".section-c-header").text(value);   
-  });
+        $(".section-c-header").text(getSubject());
+        $("#Prob_Appr_B_other").keyup(function() {
+            var value = $(this).val();
+            $(".section-c-header").text(value);
+        });
 
- 
+
 /*~~~~~~~~~~~~~~~~~~ craft_your_research_q.html ~~~~~~~~~~~~~~~~~~*/
 
 
-  $('#Basics_Outcome').change( function() {
-    var value = $(this).val();
+        $('#Basics_Outcome').change(function() {
+            var value = $(this).val();
 
-    var otherSpecify = $("#Question_Outcome_Other");
+            var otherSpecify = $("#Question_Outcome_Other");
 
-    if (value.toLowerCase() === "other") otherSpecify.show();
-    else otherSpecify.hide();
+            if (value.toLowerCase() === "other") otherSpecify.show();
+            else otherSpecify.hide();
 
-    if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
-        $(".eval-outcome").text(value);
-    }
-    else {
-        $(".eval-outcome").text("B");
-    }
-  });
+            if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
+                $(".eval-outcome").text(value);
+            } else {
+                $(".eval-outcome").text("B");
+            }
+        });
 
-  $("#Basics_Outcome_Other").keyup( function() {
-    var value = $(this).val();
-    $(".eval-outcome").text(value);
-  });
+        $("#Basics_Outcome_Other").keyup(function() {
+            var value = $(this).val();
+            $(".eval-outcome").text(value);
+        });
 
-	/* Outcome Measure */
-  $('#Outcome_Measure').keyup(function () {
-	  var value = $(this).val();
-	  $('.effect-measure').text("as measured by " + value);
-  }); 
+        /* Outcome Measure */
+        $('#Outcome_Measure').keyup(function() {
+            var value = $(this).val();
+            $('.effect-measure').text("as measured by " + value);
+        });
 
 
-  $('#Outcome_Direction').change( function() {
-    var value = $(this).val();
-    $('.change-direction').text(value);
-  });  
+        $('#Outcome_Direction').change(function() {
+            var value = $(this).val();
+            $('.change-direction').text(value);
+        });
 
-  $('#Intervention_Group_Desc').keyup( function() {
-    var value = $(this).val();
-    $('.treatment-group').text(value);
-  });
+        $('#Intervention_Group_Desc').keyup(function() {
+            var value = $(this).val();
+            $('.treatment-group').text(value);
+        });
 
-  $('#Comparison_Group_Desc').keyup( function() {
-    var value = $(this).val();
-    $('.comparison-group').text(value);
-  });    
+        $('#Comparison_Group_Desc').keyup(function() {
+            var value = $(this).val();
+            $('.comparison-group').text(value);
+        });
 
 /*~~~~~~~~~~~~~~~~~~ plan_next_steps.html ~~~~~~~~~~~~~~~~~~*/
-  $('#Measure_Units').change(function () {
-	  var value = $(this).val();
+        $('#Measure_Units').change(function() {
+            var value = $(this).val();
 
-	  var otherSpecify = $("#Question_Units_Other");
+            var otherSpecify = $("#Question_Units_Other");
 
-	  if (value.toLowerCase() === "other") otherSpecify.show();
-	  else otherSpecify.hide();
+            if (value.toLowerCase() === "other") otherSpecify.show();
+            else otherSpecify.hide();
 
-	  var munits = $("#Measure_Units").val();
-	  if (munits.toLowerCase === "other") {
-		  munits = $("#Measure_Units_Other").val();
-	  }
-	  if (munits === "" || munits.toLowerCase() === "select an option") {
-		  munits = "units";
-	  }
-	  $(".measure-units").text(munits);
-	  
-  });
+            var munits = $("#Measure_Units").val();
+            if (munits.toLowerCase === "other") {
+                munits = $("#Measure_Units_Other").val();
+            }
+            if (munits === "" || munits.toLowerCase() === "select an option") {
+                munits = "units";
+            }
+            $(".measure-units").text(munits);
 
-  $("#Measure_Units_Other").keyup(function () {
-	  var value = $(this).val();
-	  $(".measure-units").text(value);
-  });
+        });
 
-	 $('#Success_Effect_Size').change(function () {
-	  var value = $(this).val();
-	  $('.success-effect-size').text(value);
-  });
+        $("#Measure_Units_Other").keyup(function() {
+            var value = $(this).val();
+            $(".measure-units").text(value);
+        });
 
-	 $('#Pass_Probability').change(function () {
-	  var value = $(this).val();
-	  $('.prob-success').text(value);
-  });
+        $('#Success_Effect_Size').change(function() {
+            var value = $(this).val();
+            $('.success-effect-size').text(value);
+        });
 
-	 $('#Fail_Probability').change(function () {
-	  var value = $(this).val();
-	  $('.prob-failure').text(value);
-  });
+        $('#Pass_Probability').change(function() {
+            var value = $(this).val();
+            $('.prob-success').text(value);
+        });
 
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
+        $('#Fail_Probability').change(function() {
+            var value = $(this).val();
+            $('.prob-failure').text(value);
+        });
 
-}); //<-end document.ready
+       
+            $('[data-toggle="tooltip"]').tooltip();
+        
+
+
+   }); //<-end document.ready
 
 function setFeedbackOptions(email, page) {
 	var fm_options = {
