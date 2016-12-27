@@ -24,6 +24,9 @@ body.one-col div.row div.content {
     width: 80%;
     float: none;
 }
+ul li {
+    margin-top: 5px;
+}
 .legal .copyright {
     margin: 65px;
     font-style: italic;
@@ -119,6 +122,7 @@ body.dashboard div.page-header {
 .sec-label {
     font-size: 1em;
     color: #979762;
+    color: #71714a;
 }
 a.sec-label, button.sec-label {
     font-size: .9em;
@@ -130,7 +134,13 @@ div.bottom-next a.sec-label {
 }
 .tooltip-gr {
   color:#e44e0d;
+    color: #000;
+    text-shadow:1px 1px #fac500;
 }
+div.tool-bottom .tooltip-gr {
+    font-size: 1.3em;
+}
+
 .all-caps {
     text-transform: uppercase;
 }
@@ -266,6 +276,10 @@ h4, h4 label, h4 em {
     letter-spacing: 0px;
 
 }
+h4.list-header {
+    margin-bottom: 0px;
+    font-size: 1.1em;
+}
 div.fixed-col-head {
      border-bottom: 1px solid #ccc;  
        background-color: #D6EBF8;
@@ -365,7 +379,7 @@ div.front-header h1 {
 
 
     div.front-header p {
-        font-size: 1.1em;
+        font-size: 1.2em;
         line-height: 1.6em;
          text-align: center;
           text-shadow: 1px 1px #000;
@@ -567,13 +581,15 @@ ul.wizard-menu {
     margin: 0 0 0 3px;
     padding: 0;
     height: auto;
-    overflow: auto
+    overflow: hidden;
+        border-top: 1px solid #ccc;
 }
 ul.wizard-menu li {
-    display: table;
+    display: inline-block;
+      background:#fff;
     width: 20%;
     float: left;
-    height: 75px;
+    height: 70px;
     text-align: center;
     font-size: 1.1em;
     border-left: #ccc 1px solid;
@@ -581,26 +597,18 @@ ul.wizard-menu li {
     text-transform: uppercase;
     padding: 8px;
     cursor: pointer;
+    margin: 0;
     
 }
-a.step-label {
-     text-transform: uppercase;
-     font-size: 1.3em;
-    line-height: 2em;
-    font-weight: bold;
-     color: #4081A8;
-}
-    a.step-label span {
-        vertical-align: middle;
-    }
+
 ul.wizard-menu li:first-child {
     border-left: none;
 }
 
 ul.wizard-menu li p {
-    vertical-align: middle;
+    padding-top: 5px;
     text-align: center;
-    display: table-cell;
+ 
     color: #979762;
     height: 55px;
     font-weight: 600;
@@ -609,16 +617,28 @@ ul.wizard-menu li p {
     ul.wizard-menu li.active p {
         color: #4081A8;
     }
-    ul.wizard-menu li.active {
-         background:#fff;
-        border-bottom: #4081A8 3px solid;
-        font-weight: bold;
-        height: 75px;
-    }
+    
      ul.wizard-menu li.previous {
         
         background:#F4F2EB ;
-        height: 75px;
+        height: 70px;
+    }
+     ul.wizard-menu li.active {
+       
+        border-bottom: #4081A8 3px solid;
+        font-weight: bold;
+        height: 72px;
+         text-align: center;
+    }
+     a.step-label {
+     text-transform: uppercase;
+     font-size: 1.3em;
+    line-height: 2em;
+    font-weight: bold;
+     color: #4081A8;
+}
+    a.step-label span {
+        vertical-align: middle;
     }
 div.result {
     min-height: 500px;
@@ -767,13 +787,13 @@ div.step-conclusion {
 }
 
 div#Step_Conclusion h2, div.step-conclusion h2 {
-    font-size: 2em;
+    font-size: 1.5em;
     font-family: 'Open Sans';
-    font-weight: bold;
+    font-weight: 600;
     background-image: url("/static/image/CompleteIcon.png");
     background-repeat: no-repeat;
-    background-position: center left;
-    height: 50px;
+    background-position: top left;
+    min-height: 50px;
     padding-left: 55px;
     padding-top: 5px;
 }
@@ -822,12 +842,23 @@ div.step-action {
   font-size:1em;
   width:100%
 }
+div.col-xs-12 div.step-action {
+     width:90%
+}
 div.step-action hr {
     border-color:#56ACE0;
     border-width: 1px;
     margin-left: 0;
     width: 95%;
     text-align: center;
+}
+div.step-action p.sub-label {
+    margin-left: 50px;
+    clear: both;
+}
+em.recommendation {
+    text-transform: initial;
+ 
 }
 
 
@@ -839,6 +870,9 @@ div.step-action label {
     margin-top: 10px;
     text-transform: none;
 }
+    div.step-action label.sec-label {
+        text-transform: uppercase;
+    }
 div.step-action label.radio-label {
   /*display:none;*/
     font-weight: 600;
@@ -863,8 +897,142 @@ div.step-to-consider .panel-heading {
 }
 div.step-to-consider .panel-collapse {
 	padding:8px 20px 0px 20px;
-	background-color:#F4F2EB;
+
 }
+div#How-Group .panel-group {
+    margin-top: 20px;
+}
+div#How-Group .panel-heading {
+    padding: 2px;
+}
+div#How-Group .panel-heading input, div#How-Group .panel-heading h3 {
+    display: inline-block;
+}
+div#How-Group .panel-heading.selected {
+    outline: 2px solid #FAC500;
+}
+div#How-Group .panel-collapse {
+	padding:8px 20px 0px 20px;
+
+}
+
+
+div#How-Group .panel-collapse {
+	clear: both;
+	margin: 0 50px;
+}
+
+div#How-Group .panel-collapse label {
+  width: 200px;
+  border-radius: 3px;
+  border: 1px solid #D1D3D4
+}
+
+div#How-Group label {
+  /*width: 200px;
+  border-radius: 3px;
+  border: 1px solid #D1D3D4*/
+    margin-top: 0;
+}
+
+/*input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    margin-top: 10px;
+    margin-right: 5px;
+}*/
+/* hide input */
+div#How-Group input.radio:empty,
+div.check-list input[type=checkbox]:empty {
+	margin-left: -999px;
+    visibility:hidden;
+}
+
+/* style label */
+div#How-Group input.radio:empty ~ label,
+div.check-list input[type=checkbox]:empty ~ label {
+	position: relative;
+	float: left;
+	line-height: 2.5em;
+	text-indent: 3.25em;
+	
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+div#How-Group input.radio ~ a {
+	position: relative;
+	float: right;
+	line-height: 2.5em;
+	text-indent: .5em;
+	
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+div#How-Group input.radio:empty ~ label:before,
+div.check-list input[type=checkbox]:empty ~ label:before {
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	content: '';
+	width: 2.5em;
+	background: #D1D3D4;
+	border-radius: 3px 0 0 3px;
+}
+
+/* toggle hover */
+div#How-Group input.radio:hover:not(:checked) + label:before,
+div.check-list input[type=checkbox]:not(:checked) + label:before {
+	content:'\2714';
+	text-indent: .9em;
+	color: #C2C2C2;
+}
+
+div#How-Group input.radio:hover:not(:checked) + label,
+div.check-list input[type=checkbox]:not(:checked) + label
+ {
+	color: #333;
+    font-weight:600;
+}
+
+/* toggle on */
+div#How-Group input.radio:checked + label:before,
+div.check-list input[type=checkbox]:checked + label:before
+ {
+	content:'\2714';
+	text-indent: .9em;
+	color: #000;
+    border: none;
+	background-color: #FAC500;
+}
+
+div#How-Group input.radio:checked + label,
+div.check-list input[type=checkbox]:checked + label {
+	color: #000;
+       font-weight:600;
+    
+
+}
+
+/* radio focus */
+div#How-Group input.radio:focus + label:before,
+div.check-list input[type=checkbox]:focus + label:before {
+	box-shadow: 0 0 0 3px #999;
+}
+
+
+
+
+
 div.step-to-consider h3 {
 	text-transform:uppercase;
 	color:#8C866B;
@@ -961,13 +1129,15 @@ div > select,input,textarea {
   border-color: #B8B28F;
   border-style: solid;
   border-width: 1px;
-   margin-left: 25px;
  
 }
-textarea {
-   
+div.step-action > select,input,textarea {
+    margin-left: 5px;
   height:auto;
-
+  width:85%;
+}
+div.step-action div.step-action > select {
+    width: 75%;
 }
 input[type=radio] {
     width: 5%;
@@ -979,11 +1149,7 @@ input[type=date] {
     width: 50%;
 }
 
-input[type=checkbox] {
-    width: 25px;
-    vertical-align: baseline;
-    margin-top: 10px;
-}
+
 .multiselect-container>li>a>label.checkbox {
     text-transform: none;
 }
@@ -1093,9 +1259,13 @@ div.action-buttons {
 }
 .boxed{
        width: 90%;
-       border:1px solid #999;
-       border-style:dotted;
+       border:3px dotted #FAC500;     
        padding: 25px;
+}
+.insert-text {
+    font-style: italic;
+    color: #666;
+    font-family: Arial;
 }
 .table {
     border-collapse: collapse;
@@ -1168,6 +1338,84 @@ div.context-tag input[type="checkbox"]:checked + label {
     border: 2px solid #222;
     background-color: #80C1E8;
     text-align: center;
+}
+
+/* for carousel*/
+
+
+#annoCarousel {
+    margin:auto;
+    width:100%;
+    /*height: 80px;*/
+    margin: 30px 0 50px 0;
+}
+
+.carousel-color {
+    color: #B8B28F;
+}
+
+.carousel-indicators li {
+  background-color: #B8B28F;
+}
+
+.carousel-indicators .active {
+  background-color: #444;
+}
+
+.carousel-indicators {
+  bottom:-45px;
+}
+
+.carousel-inner {
+    text-align: center;
+}
+
+div.carousel-inner div.item.active, div.carousel-inner div.item {
+    margin:auto;
+    width: 85%;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 8px;
+    border: 4px solid #FAC500;
+    border-radius: 8px;
+ 
+}
+, div.carousel-inner div.item {
+    margin:auto;
+    width: 85%;
+    font-size: 0;
+   
+}
+.carousel-control {
+    text-align:center;
+    width:30px;
+}
+
+
+.carousel-control.left, .carousel-control.right{
+    background-image:none;
+    padding:0px;
+    margin:0px;
+} 
+
+.carousel-control.left {
+    padding-right:10px;
+}
+
+.carousel-control.right {
+    padding-left:10px;
+}
+
+.highLight {
+  
+    border: 2px solid #FAC500 !important;
+}
+.anno0, .anno1, .anno2, .anno3, .anno5, table.example th {
+    cursor: pointer;
+}
+.anno0:hover, .anno1:hover, .anno2:hover, .anno3:hover, .anno5:hover, table.example th:hover {
+    cursor: pointer;
+     border: 1px dotted #FAC500 !important;
 }
 
 

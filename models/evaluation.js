@@ -154,12 +154,29 @@ var PlanContext = mongoose.Schema({
 
 });
 
+var Prepare = mongoose.Schema({
+	Individual_Group: { type: String, default: '' }, 
+	Cluster_Group: { type: String, default: '' },
+	Cluster_Group_Other: { type: String, default: '' },
+    Check_Outcome: { type: String, default: '' },
+	Check_Sample: { type: String, default: '' }, 
+	Check_Treatment: { type: String, default: '' },
+	Check_Pretest: { type: String, default: '' },
+	Check_Background: { type: String, default: '' },
+	Check_Usage: { type: String, default: '' },
+	Check_OneSet: { type: String, default: '' },
+	Check_Numeric: { type: String, default: '' },
+	Check_Missing: { type: String, default: '' },
+	Check_Min_Max: { type: String, default: '' },
+	Check_Miss_Impact: { type: String, default: '' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
+
 var Random = mongoose.Schema({
 	// Q_M_1: { type: String, default: '' }, replaced by planQuestion.Intervention_Group_Desc
 	// Q_M_2: { type: String, default: '' }, replaced by planQuestion.Comparison_Group_Desc
-    Individual_Group: { type: String, default: '' }, // was Q_9
-	Cluster_Group: { type: String, default: '' },
-	Cluster_Group_Other: { type: String, default: '' },
+
 	User_Limit_Exist: { type: String, default: '' },
 	intervention_quantity: { type: Number, default: 0 },
 	intervention_type: { type: String, default: '' },
@@ -226,6 +243,10 @@ var evaluationSchema = mongoose.Schema({
         type: PlanContext,
         default: PlanContext
     },
+	prepare: {
+        type: Prepare,
+        default: Prepare
+    },
 	random: {
         type: Random,
         default: Random
@@ -286,27 +307,27 @@ evaluationSchema.pre('save', function (next) {
             this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
         }
     }
+
     if (this.probAppr) {
-        if (this.probAppr.Appr_Can_Group.toLowerCase() === "no" ||
-            this.probAppr.Appr_All_Using.toLowerCase() === "yes" ||
-            this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose users based on specific criteria") {
-            this.path = "path-none";  //what should we do?
-        }
-        else {
-            if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current") {
+        
+        if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current" &&
+            this.probAppr.Appr_All_Using.toLowerCase() === "no") {
                 this.path = "path-matching";  //disable random tools or hide them
             }
-            else {
-                if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose randomly") {
+		else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "random") {
 					this.path = "path-random"; //disable matching tools or hide them
                 }
-                else if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will use a cutoff") {
-					this.path = "path-regression";  //no available yet
-                }
+        else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "other") {
+            this.path = "path-matching"; //no available yet
+        } else {
+            this.path = "path-none";
+        } //what should we do?
+        
 
-            }
+            
         }
-    }
+       
+ 
     next();
 });
 

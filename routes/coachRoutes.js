@@ -95,7 +95,7 @@ module.exports = function (app, passport) {
 		//console.log(req.params.coachStep);
 		sess = req.session;
 		var coachStep;
-		
+		console.log(sess.eval.path);
 		CoachStep.findOne({ step: req.params.coachStep }, function (err, coach) {
 			if (err) {
 				res.status(500).send(err);
