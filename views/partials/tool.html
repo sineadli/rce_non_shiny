@@ -107,7 +107,9 @@
     </div>
 </div>
 <script>
-
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
     $("#viewpdf").click(function (e) {
 
         var name = $("#toolname").val();

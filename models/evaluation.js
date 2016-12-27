@@ -87,26 +87,96 @@ var PlanNext = mongoose.Schema({
 });
 //03.03 context and usage
 var PlanContext = mongoose.Schema({
-    Plan_Context_A_1: { type: String, default: ''  },
-    Plan_Context_A_2: { type: String, default: ''  },
-    Plan_Context_A_3: { type: String, default: ''  },
-    Plan_Context_A_4: { type: String, default: ''  },
-    Plan_Context_A_5: { type: String, default: ''  },
-    Plan_Context_A_6: { type: String, default: ''  },
-    Plan_Context_B: { type: String, default: '' },
-    Plan_Context_C: { type: String, default: '' },
-    Plan_Context_D: { type: String, default: '' },
+	Eval_Begin_Date: { type: Date, default: '01/01/1900' }, //was Plan_Context_A_4
+	Eval_End_Date: { type: Date, default: '01/01/1900' },  //was Plan_Context_A_4
+	Type_Curriculum: { type: String, default: '' },
+	Type_Practice: { type: String, default: '' },
+	Type_CSchool_Structure: { type: String, default: '' },
+	Type_School_Level: { type: String, default: '' },
+	Type_Teacher_Level: { type: String, default: '' },
+	Type_Policy: { type: String, default: '' },
+    Tech_Purpose: { type: String, default: ''  },
+    Tech_Components: { type: String, default: '' },
+	Delivered_Individually: { type: String, default: '' },
+	Delivered_Small_Group: { type: String, default: '' },
+	Delivered_Whole_Class: { type: String, default: '' },
+	Delivered_School_Wide: { type: String, default: '' },
+	Grade_PK: { type: String, default: '' },
+	Grade_K: { type: String, default: '' },
+	Grade_1: { type: String, default: '' },
+	Grade_2: { type: String, default: '' },
+	Grade_3: { type: String, default: '' },
+	Grade_4: { type: String, default: '' },
+	Grade_5: { type: String, default: '' },
+	Grade_6: { type: String, default: '' },
+	Grade_7: { type: String, default: '' },
+	Grade_8: { type: String, default: '' },
+	Grade_9: { type: String, default: '' },
+	Grade_10: { type: String, default: '' },
+	Grade_11: { type: String, default: '' },
+	Grade_12: { type: String, default: '' },
+	Grade_PS: { type: String, default: '' },
+    Expected_Dosage: { type: String, default: '' }, //was Plan_Context_A_3
+    Developer_Guidelines: { type: String, default: '' },
+	ClassroomType_General: { type: String, default: '' },
+	ClassroomType_Inclusion: { type: String, default: '' },
+	Outcome_Literacy: { type: String, default: '' },
+	Outcome_Mathematics: { type: String, default: '' },
+	Outcome_Science: { type: String, default: '' },
+	Outcome_Behavior: { type: String, default: '' },
+	Outcome_Teacher_Excellence: { type: String, default: '' },
+	Outcome_Graduation: { type: String, default: '' },
+	SchoolType_Charter: { type: String, default: '' },
+	SchoolType_Private: { type: String, default: '' }, 
+	SchoolType_Parochial: { type: String, default: '' }, 
+	SchoolType_Public: { type: String, default: '' },
+    Total_Students: { type: Number, default: 0 },
+	Urbanicity_Rural: { type: String, default: '' },
+	Urbanicity_Suburban: { type: String, default: '' },
+	Urbanicity_Urban: { type: String, default: '' },
+	Race_Asian: { type: Number, default: 0 },
+	Race_Black: { type: Number, default: 0 },
+	Race_Native_American: { type: Number, default: 0 },
+	Race_Pacific_Islander: { type: Number, default: 0 },
+	Race_White: { type: Number, default: 0 },
+	Race_Other: { type: Number, default: 0 },
+    Ethnicity_Hispanic: { type: Number, default: 0 },
+	Ethnicity_Not_Hispanic: { type: Number, default: 0 },
+	Gender_Female: { type: Number, default: 0 },
+	Gender_Male: { type: Number, default: 0 },
+	FRPL_Free: { type: Number, default: 0 },
+	FRPL_Reduced: { type: Number, default: 0 },
+    English_Learners: { type: Number, default: 0 },
+    IEP: { type: Number, default: 0 },
+    Other_Notes: { type: String, default: '' },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
 });
 
+var Prepare = mongoose.Schema({
+	Individual_Group: { type: String, default: '' }, 
+	Cluster_Group: { type: String, default: '' },
+	Cluster_Group_Other: { type: String, default: '' },
+    Check_Outcome: { type: String, default: '' },
+	Check_Sample: { type: String, default: '' }, 
+	Check_Treatment: { type: String, default: '' },
+	Check_Pretest: { type: String, default: '' },
+	Check_Background: { type: String, default: '' },
+	Check_Usage: { type: String, default: '' },
+	Check_OneSet: { type: String, default: '' },
+	Check_Numeric: { type: String, default: '' },
+	Check_Missing: { type: String, default: '' },
+	Check_Min_Max: { type: String, default: '' },
+	Check_Miss_Impact: { type: String, default: '' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
+
 var Random = mongoose.Schema({
 	// Q_M_1: { type: String, default: '' }, replaced by planQuestion.Intervention_Group_Desc
 	// Q_M_2: { type: String, default: '' }, replaced by planQuestion.Comparison_Group_Desc
-    Individual_Group: { type: String, default: '' }, // was Q_9
-	Cluster_Group: { type: String, default: '' },
-	Cluster_Group_Other: { type: String, default: '' },
+
 	User_Limit_Exist: { type: String, default: '' },
 	intervention_quantity: { type: Number, default: 0 },
 	intervention_type: { type: String, default: '' },
@@ -173,6 +243,10 @@ var evaluationSchema = mongoose.Schema({
         type: PlanContext,
         default: PlanContext
     },
+	prepare: {
+        type: Prepare,
+        default: Prepare
+    },
 	random: {
         type: Random,
         default: Random
@@ -208,7 +282,6 @@ evaluationSchema.pre('save', function (next) {
     this.updated_at = currentDate;
     if (!this.created_at)
         this.created_at = currentDate;
-  
     if (this.toolsvisited.length > 0) {
         if (this.toolsvisited[this.toolsvisited.length - 1].status === "completed") {
             this.flag = 0;
