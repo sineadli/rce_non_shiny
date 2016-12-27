@@ -61,6 +61,10 @@
                     padding-top: 15px;
                 }
 
+                h2.grade-header {
+                    font-size: 16px;
+                }
+
                 h3 {
                     padding-top: 10px;
                     letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
@@ -135,7 +139,7 @@
                     vertical-align: middle;
                     line-height: 50px;
                 }
-                
+
                 .editable {
                     /*text-decoration: underline;*/
                     /*
@@ -144,6 +148,24 @@
                     padding-right: 5px;
                     margin-left: 5px;
                     margin-right: 5px;*/
+                }
+
+                .data-link {
+                    color: #2e75b6;
+                }
+
+                .data-link + .tooltip > .tooltip-inner {
+                    background-color: #FFFFFF; 
+                    color: #2e75b6; 
+                    border: 1px solid #B8B28F;
+                    padding: 15px;
+                    font-size: 16px;
+                    width: 300px;
+                }
+
+                /* Tooltip on bottom */
+                .data-link + .tooltip.bottom > .tooltip-arrow {
+                    border-bottom: 5px solid #2e75b6;
                 }
                     
             </style>
@@ -223,7 +245,34 @@
                             }
 
                             var baseline_vars_wordlist = wordList(baseline_vars);
-                            var n_comparison = n_overall - n_treatment;                            
+                            var n_comparison = n_overall - n_treatment;
+                        
+                            var success_count = 0, fail_count = 0;
+                        
+                            for (grade in analysis_results_by_grade) {
+
+                                var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                                var success = (probability > pass_probability);
+
+                                if (success) {
+                                    success_count++;
+                                }
+                                else {
+                                    fail_count++;
+                                }
+                            }   
+                        
+                            var header; 
+                        
+                            if (fail_count === 0) {
+                                header = tech_name + ' is moving the needle on ' + basic_outcome;
+                            }            
+                            else if (success_count === 0) {
+                                header = tech_name + ' is not moving the needle on ' + basic_outcome;
+                            }
+                            else {
+                                header = tech_name + ' is moving the needle on ' + basic_outcome + ' for some grades, and not for others';
+                            }
                             
                         %>
                         
@@ -236,18 +285,20 @@
                             </div > 
                             
                             <div class="col-xs-11" > 
-                                <h2 > <%= tech_name + ' is' + '[needle_negate]' + ' moving the needle on ' + basic_outcome %></h2 > 
+                                <h2 > <%= header %></h2 > 
                             
                                 <h3 > Research Question</h3 > 
                                     <span class="editable">Does</span> 
-                                    <%= tech_name + ' ' + outcome_direction + ' ' + outcome_measure %>
+                                    <a class="data-link" href="/basics" data-tool-name="Basics"><%= tech_name %></a>
+                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= outcome_direction %></a>
+                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= outcome_measure %></a>
                                     <span class="editable">among</span>
-                                    <%= eval.planQuestion.Intervention_Group_Desc %>
+                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= eval.planQuestion.Intervention_Group_Desc %></a>
                                     <span class="editable">compared to</span>
-                                    <%= eval.planQuestion.Comparison_Group_Desc %>?
-                                    
-                                    <% for (grade in analysis_results_by_grade) { 
-                                
+                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= eval.planQuestion.Comparison_Group_Desc %>?</a>
+
+                                    <% for (grade in analysis_results_by_grade) {
+                                       
                                         var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
                                         var success = (probability > pass_probability);
 
@@ -258,10 +309,10 @@
 
                                         var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
                                         var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
-                                    %>
+                                        %>
 
                                         <% if (analysis_by_grade) { %>
-                                            <h2>Grade <%= grade %></h2>
+                                        <h2 class="grade-header">Grade <%= grade %></h2>
                                         <% } %>
                                         <h3> Findings</h3>
                                         <ol>
@@ -337,83 +388,80 @@
                             <div class="col-xs-11" > 
                                 <h2 > This evaluation studied <%= tech_name %>’s impact on [Elementary] <%= users %></h2 > 
                         
-                                <div class="row" > 
-                                    <div class="col-xs-3 blue-background-white-text" > 
-                                        <p > <strong > Treatment Group</strong > </p >                                 
-                                        <p > <%= capitalize(users) %> who used <%= tech_name %> </p >                                 
-                                        <p > # of <%= users %>: <%= n_treatment %> </p > 
-                                    </div > 
-                            
-                                    <div class="col-xs-3 blue-background-white-text" > 
-                                        <p > <strong > Comparison Group</strong > </p > 
-                                        <p > <%= capitalize(users) %> who did not use <%= tech_name %> </p > 
-                                        <p > # of <%= users %>: <%= n_comparison %> </p > 
-                                    </div > 
-                            
-                                    <div class="col-xs-4 white-background-blue-border" > 
-                                        <strong > Evaluation Context</strong > <br / > 
-                                        <em > School Type</em > : [Public]<br / > 
-                                        <em > District Size</em > : [1200]<br / > 
-                                        <em > Setting</em > : [Suburban]<br / >
-                                        <em > Location</em > : [Midwest]<br / > 
-                                        <strong > Overall Student Population</strong > <br / > 
-                                        <em > Non-white</em > : [XX%]<br / > 
-                                        <em > Hispanic</em > : [XX%]<br / > 
-                                        <em > Female</em > : [XX%]<br / > 
-                                        <em > Free or Reduced Price Lunch</em > : [XX%]<br / > 
-                                        <em > English Learners</em > : [XX%]<br / > 
-                                        <em > Students with IEPs</em > : [XX%]<br / >
-                                    </div > 
-                                </div > 
-                        
-                                <p > Table 1 below summarizes key characteristics of the study sample: </p > 
-                                <p > <strong > Table 1. Background Characteristics of the Evaluation Sample</strong > </p > 
-                                <table id="table1"> 
-                                    <thead > 
-                                        <tr > 
-                                            <% if (baseline_by_grade) { %>
-                                                <th>Grade</th>
-                                            <% } %>
-                                            <th > Characteristic</th > 
-                                            <th > Overall</th > 
-                                            <th > Treatment</th > 
-                                            <th > Comparison</th > 
-                                            <th > Difference</th > 
-                                        </tr > 
-                                    </thead > 
-                                    <tbody>
+                                    <div class="col-xs-3 blue-background-white-text">
+                                        <p> <strong> Treatment Group</strong> </p>
+                                        <p> Students who used readTech </p>
+                                        <p> # of students: 134 </p>
+                                    </div>
+                                    <div class="col-xs-3 blue-background-white-text">
+                                        <p> <strong> Comparison Group</strong> </p>
+                                        <p> Students who did not use readTech </p>
+                                        <p> # of students: 134 </p>
+                                    </div>
+                                    <div class="col-xs-4 white-background-blue-border">
+                                        <strong> Evaluation Context</strong> <br>
+                                        <em> School Type</em> : [Public]<br>
+                                        <em> District Size</em> : [1200]<br>
+                                        <em> Setting</em> : [Suburban]<br>
+                                        <em> Location</em> : [Midwest]<br>
+                                        <strong> Overall Student Population</strong> <br>
+                                        <em> Non-white</em> : [XX%]<br>
+                                        <em> Hispanic</em> : [XX%]<br>
+                                        <em> Female</em> : [XX%]<br>
+                                        <em> Free or Reduced Price Lunch</em> : [XX%]<br>
+                                        <em> English Learners</em> : [XX%]<br>
+                                        <em> Students with IEPs</em> : [XX%]<br>
+                                    </div>
 
-                                        <% for (grade in baseline_results_by_grade) {
-                                            var baseline_var_means = baseline_results_by_grade[grade].match_var_means;
 
-                                            for (characteristic in baseline_var_means) { %>
+                                    <p> Table 1 below summarizes key characteristics of the study sample: </p>
+                                    <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
+                                    <table id="table1">
+                                        <thead>
                                             <tr>
                                                 <% if (baseline_by_grade) { %>
-                                                <td> <%= grade %></td>
+                                                <th>Grade</th>
                                                 <% } %>
-                                                <td> <%= characteristic %></td>
-                                                <td> <%= baseline_var_means[characteristic].overall[0] %></td>
-                                                <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
-                                                <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
-                                                <td> <%= baseline_var_means[characteristic].difference[0] %></td>
+                                                <th> Characteristic</th>
+                                                <th> Overall</th>
+                                                <th> Treatment</th>
+                                                <th> Comparison</th>
+                                                <th> Difference</th>
                                             </tr>
-                                        <% }} %>
-                                    </tbody> 
-                                    <tfoot>
-                                        <tr>
-                                            <% if (baseline_by_grade) { %>
+                                        </thead>
+                                        <tbody>
+
+                                            <% for (grade in baseline_results_by_grade) {
+                                                var baseline_var_means = baseline_results_by_grade[grade].match_var_means;
+
+                                                for (characteristic in baseline_var_means) { %>
+                                                <tr>
+                                                    <% if (baseline_by_grade) { %>
+                                                    <td> <%= grade %></td>
+                                                    <% } %>
+                                                    <td> <%= characteristic %></td>
+                                                    <td> <%= baseline_var_means[characteristic].overall[0] %></td>
+                                                    <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
+                                                    <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
+                                                    <td> <%= baseline_var_means[characteristic].difference[0] %></td>
+                                                </tr>
+                                            <% }} %>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <% if (baseline_by_grade) { %>
                                                 <td></td>
-                                            <% } %>
-                                            <td> Number of <%= users %></td>
-                                            <td> <%= n_overall %></td>
-                                            <td> <%= n_treatment %></td>
-                                            <td> <%= n_comparison %></td>
-                                            <td> --</td>
-                                        </tr>
-                                    </tfoot>
-                                    
-                                </table > 
-                            </div > 
+                                                <% } %>
+                                                <td> Number of <%= users %></td>
+                                                <td> <%= n_overall %></td>
+                                                <td> <%= n_treatment %></td>
+                                                <td> <%= n_comparison %></td>
+                                                <td> --</td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+                                </div> 
                         </div > 
                         
                         <div class="row" > 
@@ -539,6 +587,14 @@
                 $("span.baseline_vars_wordlist").text(wordList(newLabels));
             });
 
+            $('.data-link').tooltip({
+                html: true,
+                title: function() {
+                    return "You entered this value on " + $(this).attr("data-tool-name") + ". If you want to change it, click to revisit the tool.";
+                },
+                placement: 'bottom'
+            });
+            
         });
     </script>
     </body > 
