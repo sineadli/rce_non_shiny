@@ -14,7 +14,7 @@ var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var getAllEvaluations = require('../middleware/getAllEvaluations.js');
 var noCache = require('../middleware/noCache.js');
-var recordURL = require('../middleware/recordURL.js');
+//var recordURL = require('../middleware/recordURL.js');
 
 var CoachStep = require('../models/coachStep'),
     Tool = require('../models/tool.js');
@@ -36,7 +36,7 @@ function dynamicSort(property) {
 module.exports = function (app, passport) {
     app.use(noCache);
     //app.use(isLoggedIn);
-    app.use(recordURL);
+   // app.use(recordURL);
 
     //dashboard, require logged in and get current evaluation
    // app.use(getCurrentEvaluation);
@@ -126,7 +126,13 @@ module.exports = function (app, passport) {
         // console.log(req.body.id);
         if (!req.body.id) {
             var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
-            console.log(eval);
+            //if (req.user.profile.user_name) {
+            //    eval.author = req.user.profile.user_name;
+            //}
+            //if (req.user.profile.organization_name) {
+            //    eval.company = req.user.profile.organization_name;
+            //}
+
             eval.save(function (err) {
                 if (err)
                     console.log(err);

@@ -316,7 +316,12 @@ $('#User_Limit_Exist').change(function () {
     var specifyLimits = $("#Question_User_Limits");
 
     if (value.toLowerCase() === "yes") specifyLimits.show();
-    else specifyLimits.hide();
+    else {
+        $("#intervention_quantity").val("");
+        $("#intervention_type").val("Select an option");
+
+        specifyLimits.hide();
+    }
 
     setUserLimitsSelections();
 
@@ -461,8 +466,8 @@ function setConclusion() {
                     $("#morr").html(" Who are the technology users be?");
                     $("#bmatching").show();
                     $("#Prob_Appr_C").show();
-                    $("#brandom1").hide();   //randomizing text 1
-                    $("#brandom2").hide();   //randomizing text 2
+                    $("#brandom1").hide();   //Random Assignment text 1
+                    $("#brandom2").hide();   //Random Assignment text 2
                     $("#Prob_Appr_D").val("");
                     $("#Prob_Appr_E").val("");
                     $("#Prob_Appr_F").val("");
@@ -484,7 +489,7 @@ function setConclusion() {
                     return;    // reach conclusion done for matching
 
                 }
-                //randomizing
+                //Random Assignment
                 else {
                     $("#morr").html(" Who will the new technology users be?");
                     $("#bmatching").hide();
@@ -588,7 +593,7 @@ function setConclusion() {
                             }
                         }
                     }
-                } //end of randomizing
+                } //end of Random Assignment
             }
             else {
                 $(".notB").hide();

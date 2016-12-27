@@ -145,7 +145,6 @@ module.exports = function (app, passport) {
         var obj = req.body, probAppr;
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
         var dt = new Date();
-        console.log(obj);
         async.waterfall([
             function (done) {
                 if (sess.eval) {
@@ -582,7 +581,6 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.step = 5;      
 		var obj = req.body;
-        console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -652,7 +650,6 @@ module.exports = function (app, passport) {
                 }
                 eval.matching = matching;
                 if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-                console.log(eval);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -680,7 +677,106 @@ module.exports = function (app, passport) {
         sess.eval.last_tool = "Randomization";
         var query = require('url').parse(req.url, true).query;
         res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
-	});
+    });
+    app.post('/randomization', function (req, res) {
+        var toollist = { "name": "Random Assignment", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.eval.step = 4;
+        var obj = req.body;
+
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+                eval.last_step = 4;
+                eval.last_tool = "Random Assignment";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Random Assignment" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": "Random Assignment", "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+
+                if (!eval.random) {
+                    Random = {
+                        "Individual_Group": obj.Individual_Group,
+                        "Cluster_Group": obj.Cluster_Group,
+                        "Cluster_Group_Other": obj.Cluster_Group_Other,
+                        "User_Limit_Exist": obj.User_Limit_Exist,
+                        "intervention_quantity": obj.intervention_quantity,
+                        "intervention_type": obj.intervention_type,
+                        "s_unit_id": obj.s_unit_id,
+                        "s_pretest": obj.s_pretest,
+                        "s_block_id": obj.s_block_id,
+                        "s_baseline_vars": obj.s_baseline_vars,
+                        "Result": obj.result,
+                        "created_at": dt
+
+                    };
+                }
+
+                else {
+                    Random = {
+                        "Individual_Group": obj.Individual_Group,
+                        "Cluster_Group": obj.Cluster_Group,
+                        "Cluster_Group_Other": obj.Cluster_Group_Other,
+                        "User_Limit_Exist": obj.User_Limit_Exist,
+                        "intervention_quantity": obj.intervention_quantity,
+                        "intervention_type": obj.intervention_type,
+                        "s_unit_id": obj.s_unit_id,
+                        "s_pretest": obj.s_pretest,
+                        "s_block_id": obj.s_block_id,
+                        "s_baseline_vars": obj.s_baseline_vars,
+                        "Result": obj.result,
+                        "created_at": eval.random.created_at, "updated_at": dt
+                    };
+                }
+                eval.random = Random;
+                if (eval.stepsclicked.indexOf(4) < 0) eval.stepsclicked.push(4);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+
+                    if (req.body.status == "started") {
+
+                        req.flash('saveMessage', 'Changes Saved.');
+                        return res.redirect('/randomization');
+                    }
+                    else {
+                        return res.redirect('/coach');
+                    }
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
     app.get('/getresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;
@@ -689,13 +785,10 @@ module.exports = function (app, passport) {
         res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
     app.post('/getresult', isLoggedIn, function (req, res) {
-        console.log(req);
         var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
-        console.log(req);
         sess = req.session;
         sess.step = 5;
         var obj = req.body;
-        console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {

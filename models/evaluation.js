@@ -11,6 +11,7 @@
 // app/models/evaluation.js
 // load the things we need
 var mongoose = require('mongoose');
+var User = require('./user');
 
 function getSingular(v) {
     if (v === 'users') v = 'members';
@@ -23,7 +24,6 @@ function useOther(v,o) {
     }
 	else return v;
 }
-console.log("In evaluation.js");
 //define enums:
 units = ["students", "schools", "teachers", "parents", "others"];
 achievement = ["Student academic achievement", "Student non-academic achievement", "Teacher performance", "other"];
@@ -188,7 +188,10 @@ var evaluationSchema = mongoose.Schema({
     stepsclicked: [String],
 	last_tool: String,
     flag: { type: String, default: 1 },
-    path: { type: String, default: "" }
+    path: { type: String, default: "" },
+    published_at: Date,
+    author: { type: String, default: "" },
+    company: { type: String, default: "" }
 
 
 });
@@ -205,56 +208,64 @@ evaluationSchema.pre('save', function (next) {
     this.updated_at = currentDate;
     if (!this.created_at)
         this.created_at = currentDate;
-    if (!this.toolsvisited) {
-        this.status = 'New';
-    }
-    else {
-        if (this.toolsvisited.length > 0) {
-            //console.log(this.toolsvisited.length);
-            if (this.toolsvisited.length == totalToolNumber) this.status = " 100";
-            if (this.toolsvisited.length > 0) {
-
-                var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 8 * 100;
-
-                this.status = parseInt(per);
-
-            }
-        }
-    }
+  
     if (this.toolsvisited.length > 0) {
         if (this.toolsvisited[this.toolsvisited.length - 1].status === "completed") {
             this.flag = 0;
-			// if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
+            // if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
         }
-    }
-    if (this.basics) {
-        if (this.basics.Basics_Have.toLowerCase() == "no" || (this.basics.Basics_Outcome && this.basics.Basics_Outcome.toLowerCase()) == "not sure") {
-            this.flag = 1;
-            this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
+        var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 8 * 100;
+        this.status = parseInt(per);
+        if (this.toolsvisited.length == totalToolNumber) this.status = " 100";
+        if (this.basics) {
+            if (this.basics.Basics_Have.toLowerCase() == "no" || (this.basics.Basics_Outcome && this.basics.Basics_Outcome.toLowerCase()) == "not sure") {
+                this.flag = 1;
+                this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
+            }
         }
-    }
-    if (this.probAppr) {
-        if (this.probAppr.Appr_Can_Group.toLowerCase() === "no" ||
-            this.probAppr.Appr_All_Using.toLowerCase() === "yes" ||
-            this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose users based on specific criteria") {
-            this.path = "path-none";  //what should we do?
-        }
-        else {
-            if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current") {
-                this.path = "path-matching";  //disable random tools or hide them
+        //path determine
+        if (this.probAppr) {
+            if (this.probAppr.Appr_Can_Group.toLowerCase() === "no" ||
+                this.probAppr.Appr_All_Using.toLowerCase() === "yes" ||
+                this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose users based on specific criteria") {
+                this.path = "path-none";  //what should we do?
             }
             else {
-                if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose randomly") {
-					this.path = "path-random"; //disable matching tools or hide them
+                if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current") {
+                    this.path = "path-matching";  //disable random tools or hide them
                 }
-                else if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will use a cutoff") {
-					this.path = "path-regression";  //no available yet
-                }
+                else {
+                    if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose randomly") {
+                        this.path = "path-random"; //disable matching tools or hide them
+                    }
+                    else if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will use a cutoff") {
+                        this.path = "path-regression";  //no available yet
+                    }
 
+                }
             }
         }
+        if (this.status === "100") {
+            console.log("publishing info");
+            if (!this.published_at) { this.published_at = currentDate; }
+            var doc = this;
+            User.findById(this.userid, function (err, user) {
+                if (err) {
+                    next(err);
+                } else if (user) {
+                    doc.author = user.profile.user_name;
+                    doc.company = user.profile.organization_name;
+                    next();
+                } else {
+                    next();
+                }
+            });
+
+        }
     }
-    next();
+    else {
+        next();
+    }
 });
 
 
