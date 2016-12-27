@@ -15,6 +15,7 @@ var isLoggedIn = require('../middleware/isLoggedIn.js');
 
 
 var getCurrentEvaluation = function (req, res, next) {
+	console.log("getting current eval");
     sess = req.session;  
     if (!sess.eval) {
         Evaluation.findOne({ _id: req.user.evalid }).exec(function (err, eval) {

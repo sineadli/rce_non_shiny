@@ -227,7 +227,6 @@ module.exports = function(app, passport) {
         //console.log(req.params.coachStep);
         res.render('partials/header.html', { user: req.user });
     });
-
-
+	
 }
 

@@ -11,6 +11,7 @@
 // app/models/evaluation.js
 // load the things we need
 var mongoose = require('mongoose');
+var User = require('./user');
 
 function getSingular(v) {
     if (v === 'users') v = 'members';
@@ -23,7 +24,6 @@ function useOther(v,o) {
     }
 	else return v;
 }
-console.log("In evaluation.js");
 //define enums:
 units = ["students", "schools", "teachers", "parents", "others"];
 achievement = ["Student academic achievement", "Student non-academic achievement", "Teacher performance", "other"];
@@ -87,26 +87,96 @@ var PlanNext = mongoose.Schema({
 });
 //03.03 context and usage
 var PlanContext = mongoose.Schema({
-    Plan_Context_A_1: { type: String, default: ''  },
-    Plan_Context_A_2: { type: String, default: ''  },
-    Plan_Context_A_3: { type: String, default: ''  },
-    Plan_Context_A_4: { type: String, default: ''  },
-    Plan_Context_A_5: { type: String, default: ''  },
-    Plan_Context_A_6: { type: String, default: ''  },
-    Plan_Context_B: { type: String, default: '' },
-    Plan_Context_C: { type: String, default: '' },
-    Plan_Context_D: { type: String, default: '' },
+	Eval_Begin_Date: { type: Date, default: '01/01/1900' }, //was Plan_Context_A_4
+	Eval_End_Date: { type: Date, default: '01/01/1900' },  //was Plan_Context_A_4
+	Type_Curriculum: { type: String, default: '' },
+	Type_Practice: { type: String, default: '' },
+	Type_CSchool_Structure: { type: String, default: '' },
+	Type_School_Level: { type: String, default: '' },
+	Type_Teacher_Level: { type: String, default: '' },
+	Type_Policy: { type: String, default: '' },
+    Tech_Purpose: { type: String, default: ''  },
+    Tech_Components: { type: String, default: '' },
+	Delivered_Individually: { type: String, default: '' },
+	Delivered_Small_Group: { type: String, default: '' },
+	Delivered_Whole_Class: { type: String, default: '' },
+	Delivered_School_Wide: { type: String, default: '' },
+	Grade_PK: { type: String, default: '' },
+	Grade_K: { type: String, default: '' },
+	Grade_1: { type: String, default: '' },
+	Grade_2: { type: String, default: '' },
+	Grade_3: { type: String, default: '' },
+	Grade_4: { type: String, default: '' },
+	Grade_5: { type: String, default: '' },
+	Grade_6: { type: String, default: '' },
+	Grade_7: { type: String, default: '' },
+	Grade_8: { type: String, default: '' },
+	Grade_9: { type: String, default: '' },
+	Grade_10: { type: String, default: '' },
+	Grade_11: { type: String, default: '' },
+	Grade_12: { type: String, default: '' },
+	Grade_PS: { type: String, default: '' },
+    Expected_Dosage: { type: String, default: '' }, //was Plan_Context_A_3
+    Developer_Guidelines: { type: String, default: '' },
+	ClassroomType_General: { type: String, default: '' },
+	ClassroomType_Inclusion: { type: String, default: '' },
+	Outcome_Literacy: { type: String, default: '' },
+	Outcome_Mathematics: { type: String, default: '' },
+	Outcome_Science: { type: String, default: '' },
+	Outcome_Behavior: { type: String, default: '' },
+	Outcome_Teacher_Excellence: { type: String, default: '' },
+	Outcome_Graduation: { type: String, default: '' },
+	SchoolType_Charter: { type: String, default: '' },
+	SchoolType_Private: { type: String, default: '' }, 
+	SchoolType_Parochial: { type: String, default: '' }, 
+	SchoolType_Public: { type: String, default: '' },
+    Total_Students: { type: Number, default: 0 },
+	Urbanicity_Rural: { type: String, default: '' },
+	Urbanicity_Suburban: { type: String, default: '' },
+	Urbanicity_Urban: { type: String, default: '' },
+	Race_Asian: { type: Number, default: 0 },
+	Race_Black: { type: Number, default: 0 },
+	Race_Native_American: { type: Number, default: 0 },
+	Race_Pacific_Islander: { type: Number, default: 0 },
+	Race_White: { type: Number, default: 0 },
+	Race_Other: { type: Number, default: 0 },
+    Ethnicity_Hispanic: { type: Number, default: 0 },
+	Ethnicity_Not_Hispanic: { type: Number, default: 0 },
+	Gender_Female: { type: Number, default: 0 },
+	Gender_Male: { type: Number, default: 0 },
+	FRPL_Free: { type: Number, default: 0 },
+	FRPL_Reduced: { type: Number, default: 0 },
+    English_Learners: { type: Number, default: 0 },
+    IEP: { type: Number, default: 0 },
+    Other_Notes: { type: String, default: '' },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
 });
 
+var Prepare = mongoose.Schema({
+	Individual_Group: { type: String, default: '' }, 
+	Cluster_Group: { type: String, default: '' },
+	Cluster_Group_Other: { type: String, default: '' },
+    Check_Outcome: { type: String, default: '' },
+	Check_Sample: { type: String, default: '' }, 
+	Check_Treatment: { type: String, default: '' },
+	Check_Pretest: { type: String, default: '' },
+	Check_Background: { type: String, default: '' },
+	Check_Usage: { type: String, default: '' },
+	Check_OneSet: { type: String, default: '' },
+	Check_Numeric: { type: String, default: '' },
+	Check_Missing: { type: String, default: '' },
+	Check_Min_Max: { type: String, default: '' },
+	Check_Miss_Impact: { type: String, default: '' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
+
 var Random = mongoose.Schema({
 	// Q_M_1: { type: String, default: '' }, replaced by planQuestion.Intervention_Group_Desc
 	// Q_M_2: { type: String, default: '' }, replaced by planQuestion.Comparison_Group_Desc
-    Individual_Group: { type: String, default: '' }, // was Q_9
-	Cluster_Group: { type: String, default: '' },
-	Cluster_Group_Other: { type: String, default: '' },
+
 	User_Limit_Exist: { type: String, default: '' },
 	intervention_quantity: { type: Number, default: 0 },
 	intervention_type: { type: String, default: '' },
@@ -173,6 +243,10 @@ var evaluationSchema = mongoose.Schema({
         type: PlanContext,
         default: PlanContext
     },
+	prepare: {
+        type: Prepare,
+        default: Prepare
+    },
 	random: {
         type: Random,
         default: Random
@@ -188,7 +262,10 @@ var evaluationSchema = mongoose.Schema({
     stepsclicked: [String],
 	last_tool: String,
     flag: { type: String, default: 1 },
-    path: { type: String, default: "" }
+    path: { type: String, default: "" },
+    published_at: Date,
+    author: { type: String, default: "" },
+    company: { type: String, default: "" }
 
 
 });
@@ -205,56 +282,65 @@ evaluationSchema.pre('save', function (next) {
     this.updated_at = currentDate;
     if (!this.created_at)
         this.created_at = currentDate;
-    if (!this.toolsvisited) {
-        this.status = 'New';
-    }
-    else {
-        if (this.toolsvisited.length > 0) {
-            //console.log(this.toolsvisited.length);
-            if (this.toolsvisited.length == totalToolNumber) this.status = " 100";
-            if (this.toolsvisited.length > 0) {
-
-                var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 8 * 100;
-
-                this.status = parseInt(per);
-
-            }
-        }
-    }
     if (this.toolsvisited.length > 0) {
+  
         if (this.toolsvisited[this.toolsvisited.length - 1].status === "completed") {
             this.flag = 0;
-			// if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
+            // if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
         }
-    }
-    if (this.basics) {
-        if (this.basics.Basics_Have.toLowerCase() == "no" || (this.basics.Basics_Outcome && this.basics.Basics_Outcome.toLowerCase()) == "not sure") {
-            this.flag = 1;
-            this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
+        var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 8 * 100;
+        this.status = parseInt(per);
+        if (this.toolsvisited.length == totalToolNumber) this.status = " 100";
+        if (this.basics) {
+            if (this.basics.Basics_Have.toLowerCase() == "no" || (this.basics.Basics_Outcome && this.basics.Basics_Outcome.toLowerCase()) == "not sure") {
+                this.flag = 1;
+                this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
+            }
         }
-    }
-    if (this.probAppr) {
-        if (this.probAppr.Appr_Can_Group.toLowerCase() === "no" ||
-            this.probAppr.Appr_All_Using.toLowerCase() === "yes" ||
-            this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose users based on specific criteria") {
-            this.path = "path-none";  //what should we do?
-        }
-        else {
-            if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current") {
-                this.path = "path-matching";  //disable random tools or hide them
+        //path determine
+        if (this.probAppr) {
+            if (this.probAppr.Appr_Can_Group.toLowerCase() === "no" ||
+                this.probAppr.Appr_All_Using.toLowerCase() === "yes" ||
+                this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose users based on specific criteria") {
+                this.path = "path-none";  //what should we do?
             }
             else {
-                if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose randomly") {
-					this.path = "path-random"; //disable matching tools or hide them
+                if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current") {
+                    this.path = "path-matching";  //disable random tools or hide them
                 }
-                else if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will use a cutoff") {
-					this.path = "path-regression";  //no available yet
-                }
+                else {
+                    if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose randomly") {
+                        this.path = "path-random"; //disable matching tools or hide them
+                    }
+                    else if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will use a cutoff") {
+                        this.path = "path-regression";  //no available yet
+                    }
 
+                }
             }
         }
+        if (this.status === "12") {
+            if (!this.published_at) { this.published_at = currentDate; }
+            var doc = this;
+            User.findById(this.userid, function (err, user) {
+                if (err) {
+                    next(err);
+                } else if (user) {
+                    doc.author = user.profile.user_name;
+                    doc.company = user.profile.organization_name;
+                    next();
+                } else {
+                    next();
+                }
+            });
+        }
+        else {
+            next();
+        }
     }
-    next();
+    else {
+        next();
+    }
 });
 
 

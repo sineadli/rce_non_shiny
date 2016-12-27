@@ -39,7 +39,8 @@
 
         var current = eval.last_tool == tools[i].name ? "current" : "";
         var buttondivid = tools[i].name;
-        if (peeking && !firstTool || (tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) {btnText="PEEK"; lock="locked"; }
+   
+        if (peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) {btnText="PEEK"; lock="locked"; }
         if (tools[i].coachStep===4  ) {tooltip="Need to finish 'Determine Your Approach' first"; if ( tools[i].evalPath  &&  eval.path && tools[i].evalPath !== eval.path){tooltip="This tool is not available for the chosen " + eval.path;}}
         %>
         <div class="col-xs-3">
@@ -106,7 +107,9 @@
     </div>
 </div>
 <script>
-
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
     $("#viewpdf").click(function (e) {
 
         var name = $("#toolname").val();
