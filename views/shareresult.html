@@ -310,7 +310,7 @@
                                     <h3> Next steps</h3>
                                     
                                     <span class="tooltip-gr" data-tool-name="Plan Next Steps">
-                                        <a class="data-link" href="/plan_next_steps?return=getresult"> <%= sentence(next_steps); %></a>
+                                        <a class="data-link" href="/plan_next_steps?return=shareresult"> <%= sentence(next_steps); %></a>
                                     </span>
 
                                 <% } %>
@@ -361,33 +361,33 @@
                                 
                                 <%= capitalize(tech_name) %> is
                                 <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                    <a class="data-link" href="/context_and_usage?return=getresult"> <%= context.Tech_Purpose %></a>
+                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Tech_Purpose %></a>
                                 </span><br / >
                                 <div class="white-background-blue-border">
                                     <strong> The Basics of <%= tech_name %></strong> <br / >
                                     <em> Program Type</em> : 
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=getresult"> <%= sentence(wordList(program_types).toLowerCase()) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= sentence(wordList(program_types).toLowerCase()) %></a>
                                     </span><br / >
                                     <em> Key Components</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=getresult"> <%= sentence(context.Tech_Components) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= sentence(context.Tech_Components) %></a>
                                     </span><br / >
                                     <em> Delivery Type</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= sentence(wordList(delivery_types).toLowerCase()) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= sentence(wordList(delivery_types).toLowerCase()) %></a>
                                     </span><br / >
                                     <em> Used in</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= capitalize(wordList(grades_used)) %> grade <%= wordList(classroom_types).toLowerCase() %> classrooms.</a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= capitalize(wordList(grades_used)) %> grade <%= wordList(classroom_types).toLowerCase() %> classrooms.</a>
                                     </span><br / >
                                     <em> Target Outcomes</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= sentence(wordList(outcome_types).toLowerCase(0)) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= sentence(wordList(outcome_types).toLowerCase(0)) %></a>
                                     </span><br / >
                                     <em> <%= capitalize(plan_next.Tech_Cost_Saves) %></em> : 
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/plan_next_steps?return=getresult">$<%= plan_next.Tech_Amount %> per <%= plan_next.Tech_Cost_User %></a>
+                                        <a class="data-link" href="/plan_next_steps?return=shareresult">$<%= plan_next.Tech_Amount %> per <%= plan_next.Tech_Cost_User %></a>
                                     </span><br / >   
                                 </div> 
                             </div > 
@@ -466,44 +466,44 @@
                                         <strong> Evaluation Context</strong> <br>
                                         <em> School Type</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"> <%= school_type %></a>
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"> <%= school_type %></a>
                                             </span> <br>
                                         <em> District Size</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"> <%= context.Total_Students %></a>
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Total_Students %></a>
                                             </span><br>
                                         <em> Setting</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"> <%= urbanicity %></a>
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"> <%= urbanicity %></a>
                                             </span><br>
                                         <em> Location</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult">[Midwest]</a>
+                                                <a class="data-link" href="/context_and_usage?return=shareresult">[Midwest]</a>
                                             </span><br>
                                         <strong> Overall Student Population</strong> <br>
                                         <em> Non-white</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= non_white %></a>%
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= non_white %></a>%
                                             </span><br>
                                         <em> Hispanic</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.Ethnicity_Hispanic %></a>%
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Ethnicity_Hispanic %></a>%
                                             </span><br>
                                         <em> Female</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.Gender_Female %></a>%
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Gender_Female %></a>%
                                             </span><br>
                                         <em> Free or Reduced Price Lunch</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.FRPL_Reduced + context.FRPL_Free %></a>%
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.FRPL_Reduced + context.FRPL_Free %></a>%
                                             </span><br>
                                         <em> English Learners</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.English_Learners %></a>%
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.English_Learners %></a>%
                                             </span><br>
                                         <em> Students with IEPs</em> : 
                                             <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.IEP %></a>%
+                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.IEP %></a>%
                                             </span><br>
                                     </div>
 
@@ -566,7 +566,7 @@
                                 <h2 > The evaluation period lasted <%= eval.planContext.Plan_Context_A_4 %>.</h2 > 
                                 <p > During this period, <%= users %> in the intervention group were intended to use the technology 
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= context.Expected_Dosage %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Expected_Dosage %></a>
                                     </span>. [Students in the comparison group did not have access to ReadTech.] </p > 
                                 <p > <strong > Challenges/Limitations:</strong > <%= eval.planContext.Plan_Context_C %>. <%= eval.planContext.Plan_Context_D %> </p > 
                                 <p > [Other contextual factors or supports being provided to students may have contributed to results.] [Other factors include: [open response from summarize context]] </p > 
@@ -579,11 +579,11 @@
                         
                             <div class="col-xs-11" > 
                                 <h2 ><span class="tooltip-gr" data-tool-name="Basics">
-                                        <a href="/basic?return=getresult"><%= capitalize(basic_outcome) %> </a>
+                                        <a href="/basic?return=shareresult"><%= capitalize(basic_outcome) %> </a>
                                      </span>
                                     was measured using 
                                      <span class="tooltip-gr" data-tool-name="Craft Your Research Question">
-                                          <a href="/craft_your_research_q?return=getresult"><%= outcome_measure %>.</a>
+                                          <a href="/craft_your_research_q?return=shareresult"><%= outcome_measure %>.</a>
                                      </span>
                                 </h2 > 
                                 <p > Analysis of <%= tech_name %> controls for: <span class="baseline_vars_wordlist"><%= baseline_vars_wordlist %>.</span>
