@@ -150,22 +150,8 @@
                     margin-right: 5px;*/
                 }
 
-                .data-link {
-                    color: #2e75b6;
-                }
-
-                .data-link + .tooltip > .tooltip-inner {
-                    background-color: #FFFFFF; 
-                    color: #2e75b6; 
-                    border: 1px solid #B8B28F;
-                    padding: 15px;
-                    font-size: 16px;
-                    width: 300px;
-                }
-
-                /* Tooltip on bottom */
-                .data-link + .tooltip.bottom > .tooltip-arrow {
-                    border-bottom: 5px solid #2e75b6;
+                a.data-link {
+                    color: #000000;
                 }
                     
             </style>
@@ -182,11 +168,25 @@
                                 return x[0].toUpperCase() + x.substring(1);
                             }
 
+                            var sentence = function(x) {
+                                // Capitalize first letter
+                                var out = capitalize(x);
+                                // If it doesn't end with punctuation, add a period.
+                                return out.replace(/([^.?!])$/, "$1."); 
+                            }
+
                             var wordList = function(x) {
                                 var out;
 
-                                if (x.length === 1) {
-                                    out = x;
+                                x = x.filter( function(x) { return x !== '' })
+
+                                x = unique(x);
+
+                                if (x.length === 0) {
+                                    out = '';
+                                }
+                                else if (x.length === 1) {
+                                    out = x[0];
                                 }
                                 else if (x.length === 2) {
                                     out = x[0] + ' and ' + x[1];
@@ -222,7 +222,9 @@
 
                             var analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
 
-                            var pass_probability = stripPercent(eval.planNext.Pass_Probability);
+                            var plan_next = eval.planNext;
+
+                            var pass_probability = stripPercent(plan_next.Pass_Probability);
                         
                             var n_overall = 0, n_treatment = 0;
 
@@ -247,7 +249,7 @@
                             var baseline_vars_wordlist = wordList(baseline_vars);
                             var n_comparison = n_overall - n_treatment;
                         
-                            var success_count = 0, fail_count = 0;
+                            var success_count = 0, failure_count = 0;
                         
                             for (grade in analysis_results_by_grade) {
 
@@ -258,26 +260,17 @@
                                     success_count++;
                                 }
                                 else {
-                                    fail_count++;
+                                    failure_count++;
                                 }
                             }   
                         
-                            var header; 
-                        
-                            if (fail_count === 0) {
-                                header = tech_name + ' is moving the needle on ' + basic_outcome;
-                            }            
-                            else if (success_count === 0) {
-                                header = tech_name + ' is not moving the needle on ' + basic_outcome;
-                            }
-                            else {
-                                header = tech_name + ' is moving the needle on ' + basic_outcome + ' for some grades, and not for others';
-                            }
-                            
+                            var needle_negate = (success_count === 0) ? ' not' : '';
+                            var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
+
+                            var header = capitalize(tech_name) + ' is' + needle_negate + ' moving the needle on ' + basic_outcome + grade_qualifier;
                         %>
                         
-                        <img src="/static/image/brief_header.png" / > 
-                        <h1 class="tool-title" > [ReadTech] Findings Brief</h1 > 
+                        <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
                         <hr / > 
                         
                         <div class="row" > 
@@ -288,42 +281,39 @@
                                 <h2 > <%= header %></h2 > 
                             
                                 <h3 > Research Question</h3 > 
-                                    <span class="editable">Does</span> 
-                                    <a class="data-link" href="/basics" data-tool-name="Basics"><%= tech_name %></a>
-                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= outcome_direction %></a>
-                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= outcome_measure %></a>
-                                    <span class="editable">among</span>
-                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= eval.planQuestion.Intervention_Group_Desc %></a>
-                                    <span class="editable">compared to</span>
-                                    <a class="data-link" href="/craft_your_research_q" data-tool-name="Craft Your Research Question"><%= eval.planQuestion.Comparison_Group_Desc %>?</a>
+                                    Does <%= tech_name %> <%= outcome_direction %> <%= outcome_measure %> among <%= eval.planQuestion.Intervention_Group_Desc %>
+                                    compared to <%= eval.planQuestion.Comparison_Group_Desc %>?
 
                                     <% for (grade in analysis_results_by_grade) {
-                                       
-                                        var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                                        var success = (probability > pass_probability);
 
-                                        var needle_decision = (success) ? 'Yes' : 'No';
-                                        var needle_negate = (success) ? '' : ' not';
+                                    var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                                    var success = (probability > pass_probability);
 
-                                        var next_steps = (success) ? eval.planNext.Action_Success : eval.planNext.Action_Fail;
+                                    var needle_decision = (success) ? 'Yes' : 'No';
+                                    var needle_negate = (success) ? '' : ' not';
 
-                                        var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
-                                        var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
-                                        %>
+                                    var next_steps = (success) ? plan_next.Action_Success : plan_next.Action_Fail;
 
-                                        <% if (analysis_by_grade) { %>
+                                    var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
+                                    var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
+                                    %>
+
+                                    <% if (analysis_by_grade) { %>
                                         <h2 class="grade-header">Grade <%= grade %></h2>
-                                        <% } %>
-                                        <h3> Findings</h3>
-                                        <ol>
-                                            <li> <%= needle_decision + ', we think ' + tech_name + ' is' + needle_negate + ' moving the needle.' %></li>
-                                            <li> <%= interpretation_1 %></li>
-                                            <li> <%= interpretation_2 %></li>
-                                        </ol>
-                                        <h3> Next steps</h3>
-                                        <%= next_steps %>
-
                                     <% } %>
+                                    <h3> Findings</h3>
+                                    <ol>
+                                        <li> <%= needle_decision + ', we think ' + tech_name + ' is' + needle_negate + ' moving the needle.' %></li>
+                                        <li> <%= interpretation_1 %></li>
+                                        <li> <%= interpretation_2 %></li>
+                                    </ol>
+                                    <h3> Next steps</h3>
+                                    
+                                    <span class="tooltip-gr" data-tool-name="Plan Next Steps">
+                                        <a class="data-link" href="/plan_next_steps?return=getresult"> <%= sentence(next_steps); %></a>
+                                    </span>
+
+                                <% } %>
                             </div > 
                         </div > 
                         <div class="row" > 
@@ -332,17 +322,74 @@
                         
                             <div class="col-xs-11" > 
                                 <h2 > This evaluation tested the effectiveness of <%= tech_name %></h2 > 
-                                <%= tech_name + ' is [an individualized learning software that targets ' + users + '’ needs in both reading and mathematics].' %>
-                            
-                                <div class="white-background-blue-border" > 
-                                    <strong > The Basics of <%= tech_name %></strong > <br / > 
-                                    <em > Program Type</em > : [Supplement]<br / > 
-                                    <em > Key Components</em > : [It is adaptive with on-grade-level instruction, practice, and diagnostics at a sub-skill level.]<br / > 
-                                    <em > Delivery Type</em > : [Individual]<br / > 
-                                    <em > Used in</em > : [1st, 2nd, 3rd, 4th and 5th Grade] [general classrooms]<br / > 
-                                    <em > Target Outcomes</em > : [Comprehension, Reading Fluency, Reading Achievement]<br / > 
-                                    <em > Cost</em > : [$10 per student] 
-                                </div > 
+                                <%
+                                    var context = eval.planContext;
+
+                                    var grade_map = {
+                                        "PK" : "Pre-Kindergarten",
+                                        "K"  : "Kindergarten",
+                                        "1"  : "1st",
+                                        "2"  : "2nd",
+                                        "3"  : "3rd",
+                                        "4"  : "4th",
+                                        "5"  : "5th",
+                                        "6"  : "6th",
+                                        "7"  : "7th",
+                                        "8"  : "8th",
+                                        "9"  : "9th",
+                                        "10" : "10th",
+                                        "11" : "11th",
+                                        "12" : "12th",
+                                        "PS" : "Post-secondary"
+                                    }
+                                        
+                                    var grades_used = [];
+                                    
+                                    for (grade in grade_map) {
+
+                                        if (context['Grade_' + grade] === grade) {
+                                            grades_used.push(grade_map[grade]);
+                                        }
+                                    }
+                                    var program_types = [context.Type_Policy, context.Type_Teacher_Level, context.Type_School_Level, context.Type_CSchool_Structure, context.Type_Practice, context.Type_Curriculum];
+
+                                    var delivery_types = [context.Delivered_School_Wide, context.Delivered_Whole_Class, context.Delivered_Small_Group, context.Delivered_Individually];
+
+                                    var classroom_types = [context.ClassroomType_Inclusion, context.ClassroomType_General];
+                                    var outcome_types = [context.Outcome_Graduation, context.Outcome_Teacher_Excellence, context.Outcome_Behavior, context.Outcome_Science, context.Outcome_Mathematics, context.Outcome_Literacy];
+                                %>
+                                
+                                <%= capitalize(tech_name) %> is
+                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                    <a class="data-link" href="/context_and_usage?return=getresult"> <%= context.Tech_Purpose %></a>
+                                </span><br / >
+                                <div class="white-background-blue-border">
+                                    <strong> The Basics of <%= tech_name %></strong> <br / >
+                                    <em> Program Type</em> : 
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=getresult"> <%= sentence(wordList(program_types).toLowerCase()) %></a>
+                                    </span><br / >
+                                    <em> Key Components</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=getresult"> <%= sentence(context.Tech_Components) %></a>
+                                    </span><br / >
+                                    <em> Delivery Type</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= sentence(wordList(delivery_types).toLowerCase()) %></a>
+                                    </span><br / >
+                                    <em> Used in</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= capitalize(wordList(grades_used)) %> grade <%= wordList(classroom_types).toLowerCase() %> classrooms.</a>
+                                    </span><br / >
+                                    <em> Target Outcomes</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= sentence(wordList(outcome_types).toLowerCase(0)) %></a>
+                                    </span><br / >
+                                    <em> <%= capitalize(plan_next.Tech_Cost_Saves) %></em> : 
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/plan_next_steps?return=getresult">$<%= plan_next.Tech_Amount %> per <%= plan_next.Tech_Cost_User %></a>
+                                    </span><br / >   
+                                </div> 
                             </div > 
                         </div > 
                 
@@ -351,9 +398,19 @@
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > <%= tech_name %> was tested using a [randomized] pilot</h2 > 
+                                <% 
+                                    var pilot_type = (path === 'path-matching') ? 'matched' : 'randomized';
+                                %>
+                                <h2 > <%= capitalize(tech_name) %> was tested using a <%= pilot_type %> pilot</h2 > 
                                 <ul > 
-                                    <li > This evaluation used a randomized pilot. The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if ReadTech was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.</li > 
+                                    <li >  
+                                        <% if (pilot_type === 'randomized') { %>
+                                            This evaluation used a randomized pilot.The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if ReadTech was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
+                                        <% } 
+                                            else if (pilot_type === 'matched') { %>
+                                            This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.
+                                        <% } %>
+                                    </li>
                                     <li > [Groups of students were assigned based on classroom.]</li > 
                                     <li > Baseline equivalence (or similarity across treatment and comparison) was tested using: <span class="baseline_vars_wordlist">
                                         <%= baseline_vars_wordlist %></span> characteristics.</li > 
@@ -374,7 +431,7 @@
                                     <% } %>                                
                                     <div class="row">
                                         <div class="col-xs-4">
-                                            <button class="btn btn-primary" id="relabel-baseline-vars">Re-label</button>
+                                            <button class="btn btn-info" id="relabel-baseline-vars">Re-label</button>
                                         </div>
                                     </div>
                                 <% } %>
@@ -399,18 +456,55 @@
                                         <p> # of students: 134 </p>
                                     </div>
                                     <div class="col-xs-4 white-background-blue-border">
+
+                                        <% 
+                                            var school_type = wordList([context.SchoolType_Charter, context.SchoolType_Private, context.SchoolType_Parochial, context.SchoolType_Public]);
+                                            var urbanicity = wordList([context.Urbanicity_Urban, context.Urbanicity_Suburban, context.Urbanicity_Rural]);
+
+                                            var non_white = 100 - context.Race_White;
+                                        %>
                                         <strong> Evaluation Context</strong> <br>
-                                        <em> School Type</em> : [Public]<br>
-                                        <em> District Size</em> : [1200]<br>
-                                        <em> Setting</em> : [Suburban]<br>
-                                        <em> Location</em> : [Midwest]<br>
+                                        <em> School Type</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"> <%= school_type %></a>
+                                            </span> <br>
+                                        <em> District Size</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"> <%= context.Total_Students %></a>
+                                            </span><br>
+                                        <em> Setting</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"> <%= urbanicity %></a>
+                                            </span><br>
+                                        <em> Location</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult">[Midwest]</a>
+                                            </span><br>
                                         <strong> Overall Student Population</strong> <br>
-                                        <em> Non-white</em> : [XX%]<br>
-                                        <em> Hispanic</em> : [XX%]<br>
-                                        <em> Female</em> : [XX%]<br>
-                                        <em> Free or Reduced Price Lunch</em> : [XX%]<br>
-                                        <em> English Learners</em> : [XX%]<br>
-                                        <em> Students with IEPs</em> : [XX%]<br>
+                                        <em> Non-white</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= non_white %></a>%
+                                            </span><br>
+                                        <em> Hispanic</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.Ethnicity_Hispanic %></a>%
+                                            </span><br>
+                                        <em> Female</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.Gender_Female %></a>%
+                                            </span><br>
+                                        <em> Free or Reduced Price Lunch</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.FRPL_Reduced + context.FRPL_Free %></a>%
+                                            </span><br>
+                                        <em> English Learners</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.English_Learners %></a>%
+                                            </span><br>
+                                        <em> Students with IEPs</em> : 
+                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                <a class="data-link" href="/context_and_usage?return=getresult"><%= context.IEP %></a>%
+                                            </span><br>
                                     </div>
 
 
@@ -470,7 +564,10 @@
                         
                             <div class="col-xs-11" > 
                                 <h2 > The evaluation period lasted <%= eval.planContext.Plan_Context_A_4 %>.</h2 > 
-                                <p > During this period, <%= users %> in the intervention group were intended to use the technology <%= eval.planContext.Plan_Context_A_3 %>. [Students in the comparison group did not have access to ReadTech.] </p > 
+                                <p > During this period, <%= users %> in the intervention group were intended to use the technology 
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=getresult"><%= context.Expected_Dosage %></a>
+                                    </span>. [Students in the comparison group did not have access to ReadTech.] </p > 
                                 <p > <strong > Challenges/Limitations:</strong > <%= eval.planContext.Plan_Context_C %>. <%= eval.planContext.Plan_Context_D %> </p > 
                                 <p > [Other contextual factors or supports being provided to students may have contributed to results.] [Other factors include: [open response from summarize context]] </p > 
                             </div > 
@@ -481,7 +578,14 @@
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > Academic achievement was measured using the benchmark reading assessment.</h2 > 
+                                <h2 ><span class="tooltip-gr" data-tool-name="Basics">
+                                        <a href="/basic?return=getresult"><%= capitalize(basic_outcome) %> </a>
+                                     </span>
+                                    was measured using 
+                                     <span class="tooltip-gr" data-tool-name="Craft Your Research Question">
+                                          <a href="/craft_your_research_q?return=getresult"><%= outcome_measure %>.</a>
+                                     </span>
+                                </h2 > 
                                 <p > Analysis of <%= tech_name %> controls for: <span class="baseline_vars_wordlist"><%= baseline_vars_wordlist %>.</span>
                                     <% if (analysis_by_grade) { %>
                                         Analysis was also conducted by grade.
@@ -587,12 +691,10 @@
                 $("span.baseline_vars_wordlist").text(wordList(newLabels));
             });
 
-            $('.data-link').tooltip({
-                html: true,
-                title: function() {
-                    return "You entered this value on " + $(this).attr("data-tool-name") + ". If you want to change it, click to revisit the tool.";
-                },
-                placement: 'bottom'
+            $('.tooltip-gr').tooltip({
+                title: function () {
+                    return "You previously entered this value on " + $(this).attr('data-tool-name') + ". Click to visit the tool and revise your answer.";
+                }
             });
             
         });
