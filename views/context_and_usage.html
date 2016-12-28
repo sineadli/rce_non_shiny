@@ -157,42 +157,43 @@
                             <div class="step-subquestion">
                                 <h4>
                                     What type of program is <%= Basics_Tech_Name %>? 
-                                </h4><p><em>Select all that apply.</em></p>
+                                </h4>
                             </div>
-                            <div class="step-action context-tag">
-                                <%
+                        <div class="step-action context-tag">
+                            <p><em>Select all that apply.</em></p>
+                            <%
 
-                                var options= ["Curriculum","Practice","School structure","Teacher level","Policy"];
-                                var selected =[eval.planContext.Type_Curriculum,
-                                eval.planContext.Type_Practice,
-                                eval.planContext.Type_School_Structure,
-                                eval.planContext.Type_Teacher_Level,
-                                eval.planContext.Type_Policy]
-                                var names =["Type_Curriculum","Type_Practice","Type_School_Structure","Type_Teacher_Level","Type_Policy"]
+                            var options= ["Curriculum","Practice","School structure","Teacher level","Policy"];
+                            var selected =[eval.planContext.Type_Curriculum,
+                            eval.planContext.Type_Practice,
+                            eval.planContext.Type_School_Structure,
+                            eval.planContext.Type_Teacher_Level,
+                            eval.planContext.Type_Policy]
+                            var names =["Type_Curriculum","Type_Practice","Type_School_Structure","Type_Teacher_Level","Type_Policy"]
 
-                                var checked = "unchecked";
+                            var checked = "unchecked";
 
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                var cbid = names[i];
-                                var cbvalue = options[i];
-                                var brk = "";
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            checked = ( selected[i] == options[i] ) ? "checked" : "";
+                            var cbid = names[i];
+                            var cbvalue = options[i];
+                            var brk = "";
 
-                                %>
+                            %>
 
-                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                                <label for="<%= cbid %>">
-                                    <%= cbvalue %>
+                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
+                            <label for="<%= cbid %>">
+                                <%= cbvalue %>
 
-                                </label>
-                                <%
-                                }
-                                %>
+                            </label>
+                            <%
+                            }
+                            %>
 
 
 
-                            </div>
+                        </div>
 
                       
                             <div class="clearfix"></div>
@@ -238,125 +239,128 @@
 
 
                                 <div class="step-subquestion">
-                                    <h4>How <%= Verb2 %> <%= Basics_Tech_Name %> <span data-toggle="tooltip" title="Individually means that students work independently with the technology or one-on-one with a teacher, parent, or other service provider. Small group means students work with the technology in small groups of two or more students. Whole class means the technology is delivered to an entire class a majority of the time. With a whole school method, the technology is provided school-wide, not as an individual classroom approach." class='tooltip-gr'>delivered</span> to <%= Basics_Users %> for your evaluation?</h4><p><em>Select all that apply.</em></p>
+                                    <h4>How <%= Verb2 %> <%= Basics_Tech_Name %> <span data-toggle="tooltip" title="Individually means that students work independently with the technology or one-on-one with a teacher, parent, or other service provider. Small group means students work with the technology in small groups of two or more students. Whole class means the technology is delivered to an entire class a majority of the time. With a whole school method, the technology is provided school-wide, not as an individual classroom approach." class='tooltip-gr'>delivered</span> to <%= Basics_Users %> for your evaluation?</h4>
                                 </div>
-                                <div class="step-action context-tag">
-                                    <%
-                                    var breaks = [4,9];
-                                    var options= ["Individually","In small groups","To whole classes","School wide"];
-                                    var selected =[eval.planContext.Delivered_Individually,
-                                    eval.planContext.Delivered_Small_Group,
-                                    eval.planContext.Delivered_Whole_Class,
-                                    eval.planContext.Delivered_School_Wide]
-                                    var names =["Delivered_Individually","Delivered_Small_Group","Delivered_Whole_Class","Delivered_School_Wide"]
-                                   
-                                    var checked = "unchecked";
+                        <div class="step-action context-tag">
+                            <p><em>Select all that apply.</em></p>
+                            <%
+                            var breaks = [4,9];
+                            var options= ["Individually","In small groups","To whole classes","School wide"];
+                            var selected =[eval.planContext.Delivered_Individually,
+                            eval.planContext.Delivered_Small_Group,
+                            eval.planContext.Delivered_Whole_Class,
+                            eval.planContext.Delivered_School_Wide]
+                            var names =["Delivered_Individually","Delivered_Small_Group","Delivered_Whole_Class","Delivered_School_Wide"]
 
-                                    for ( var i = 0; i < options.length; i++ )
-                                    {
-                                    checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                    var cbid = names[i];
-                                    var cbvalue = options[i];
-                                    var brk = "";
-                                    for ( var j = 0; j < breaks.length; j++ )
-                                    {
-                                    if (i==1) brk = "<br />" ;
-                                    }
-                                    %>
+                            var checked = "unchecked";
 
-                                    <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                                    <label  for="<%= cbid %>">
-                                        <%= cbvalue %>
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            checked = ( selected[i] == options[i] ) ? "checked" : "";
+                            var cbid = names[i];
+                            var cbvalue = options[i];
+                            var brk = "";
+                            for ( var j = 0; j < breaks.length; j++ )
+                            {
+                            if (i==1) brk = "<br/>" ;
+                            }
+                            %>
 
-                                    </label><%- brk %>
-                                    <%
-                                    }
-                                    %>
+                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
+                            <label for="<%= cbid %>">
+                                <%= cbvalue %>
 
-                                </div>
+                            </label><%- brk %>
+                            <%
+                            }
+                            %>
+
+                        </div>
                                 <div class="clearfix"></div>
                                 <div class="step-subquestion">
                                     <h4>With what grade level(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used for your evaluation?</h4><p><em>Select all that apply.</em></p>
                                 </div>
-                                <div class="step-action context-tag">
-                                    <%
-                                    var breaks = [4,9];
-                                    var options= ["PK", "K", "1", "2","3","4","5","6","7","8","9","10","11","12","PS"];
-                                    var selected =[eval.planContext.Grade_PK,
-                                    eval.planContext.Grade_K,
-                                    eval.planContext.Grade_1,
-                                    eval.planContext.Grade_2,
-                                    eval.planContext.Grade_3,
-                                    eval.planContext.Grade_4,
-                                    eval.planContext.Grade_5,
-                                    eval.planContext.Grade_6,
-                                    eval.planContext.Grade_7,
-                                    eval.planContext.Grade_8,
-                                    eval.planContext.Grade_9,
-                                    eval.planContext.Grade_10,
-                                    eval.planContext.Grade_11,
-                                    eval.planContext.Grade_12,
-                                    eval.planContext.Grade_PS,
+                        <div class="step-action context-tag">
+                            <p><em>Select all that apply.</em></p>
+                            <%
+                            var breaks = [4,9];
+                            var options= ["PK", "K", "1", "2","3","4","5","6","7","8","9","10","11","12","PS"];
+                            var selected =[eval.planContext.Grade_PK,
+                            eval.planContext.Grade_K,
+                            eval.planContext.Grade_1,
+                            eval.planContext.Grade_2,
+                            eval.planContext.Grade_3,
+                            eval.planContext.Grade_4,
+                            eval.planContext.Grade_5,
+                            eval.planContext.Grade_6,
+                            eval.planContext.Grade_7,
+                            eval.planContext.Grade_8,
+                            eval.planContext.Grade_9,
+                            eval.planContext.Grade_10,
+                            eval.planContext.Grade_11,
+                            eval.planContext.Grade_12,
+                            eval.planContext.Grade_PS,
 
-                                    ];
-                                    var names =["Grade_PK", "Grade_K", "Grade_1","Grade_2","Grade_3","Grade_4","Grade_5", "Grade_6","Grade_7","Grade_8","Grade_9","Grade_10","Grade_11","Grade_12","Grade_PS"
-                                    ];
+                            ];
+                            var names =["Grade_PK", "Grade_K", "Grade_1","Grade_2","Grade_3","Grade_4","Grade_5", "Grade_6","Grade_7","Grade_8","Grade_9","Grade_10","Grade_11","Grade_12","Grade_PS"
+                            ];
 
-                                    var checked = "unchecked";
+                            var checked = "unchecked";
 
-                                    for ( var i = 0; i < options.length; i++ )
-                                    {
-                                    checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                    var cbid = names[i];
-                                    var cbvalue = options[i];
-                                    var brk = "";
-                                    for ( var j = 0; j < breaks.length; j++ )
-                                    {
-                                    if (i==breaks[j]) brk = "<br />" ;
-                                    }
-                                    %>
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            checked = ( selected[i] == options[i] ) ? "checked" : "";
+                            var cbid = names[i];
+                            var cbvalue = options[i];
+                            var brk = "";
+                            for ( var j = 0; j < breaks.length; j++ )
+                            {
+                            if (i==breaks[j]) brk = "<br/>" ;
+                            }
+                            %>
 
-                                    <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                                    <label class="cb-small" for="<%= cbid %>">
-                                        <%= cbvalue %>
+                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
+                            <label class="cb-small" for="<%= cbid %>">
+                                <%= cbvalue %>
 
-                                    </label><%- brk %>
-                                    <%
-                                    }
-                                    %>
-                                </div>
+                            </label><%- brk %>
+                            <%
+                            }
+                            %>
+                        </div>
                                 <div class="clearfix"></div>
 
 
                                 <div class="step-subquestion">
-                                    <h4>For your evaluation, in what type(s) of classroom(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used? </h4><p><em>Select all that apply.</em></p>
+                                    <h4>For your evaluation, in what type(s) of classroom(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used? </h4>
                                 </div>
-                                <div class="step-action context-tag">
-                                    <%
-                                    var options= ["General", "Inclusion"];
-                                    var selected =[eval.planContext.ClassroomType_General,
-                                    eval.planContext.ClassroomType_Inclusion
-                                    ];
-                                    var names =["ClassroomType_General", "ClassroomType_Inclusion"];
+                        <div class="step-action context-tag">
+                            <p><em>Select all that apply.</em></p>
+                            <%
+                            var options= ["General", "Inclusion"];
+                            var selected =[eval.planContext.ClassroomType_General,
+                            eval.planContext.ClassroomType_Inclusion
+                            ];
+                            var names =["ClassroomType_General", "ClassroomType_Inclusion"];
 
-                                    var checked = "unchecked";
+                            var checked = "unchecked";
 
-                                    for ( var i = 0; i < options.length; i++ )
-                                    {
-                                    checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                    var cbid = names[i];
-                                    var cbvalue = options[i];
-                                    %>
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            checked = ( selected[i] == options[i] ) ? "checked" : "";
+                            var cbid = names[i];
+                            var cbvalue = options[i];
+                            %>
 
-                                    <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
-                                    <label for="<%= cbid %>">
-                                        <%= cbvalue %>
+                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
+                            <label for="<%= cbid %>">
+                                <%= cbvalue %>
 
-                                    </label>
-                                    <%
-                                    }
-                                    %>
-                                </div>
+                            </label>
+                            <%
+                            }
+                            %>
+                        </div>
                                 <div class="clearfix"></div>
 
                             <div class="step-subquestion">
@@ -394,41 +398,42 @@
                             </div>
 
                             <div class="step-subquestion">
-                                <h4>You indicated your evaluation would be measuring <span class="eval-outcome"><%= Basics_Outcome %></span> outcomes. More specifically, in which of the following outcome areas will you be looking for differences between users and non-users of <%= Basics_Tech_Name %>? </h4><p><em>Select all that apply.</em></p>
+                                <h4>You indicated your evaluation would be measuring <span class="eval-outcome"><%= Basics_Outcome %></span> outcomes. More specifically, in which of the following outcome areas will you be looking for differences between users and non-users of <%= Basics_Tech_Name %>? </h4>
                             </div>
-                            <div class="step-action context-tag">
-                                <%
-                                var taller=[4,5]
-                                var options= ["Literacy", "Mathematics", "Science","Behavior","Teacher Excellence", "Path to Graduation"];
-                                var tips = ["Reading, writing, language development","","","Behavior, emotional/internal behavior, external behavior, knowledge, attitudes and values, social-emotional development, social outcomes","Teacher retention at the school, teacher retention in the profession, teacher retention in the school district","Access and enrollment, attainment, Completing school, credit accumulation and persistence, progress in developmental education, progressing in school, staying in school"  ]
-                                var selected =[eval.planContext.Outcome_Literacy,
-                                eval.planContext.Outcome_Mathematics, eval.planContext.Outcome_Science ,eval.planContext.Outcome_Behavior ,eval.planContext.Outcome_Teacher_Excellence,eval.planContext.Outcome_Graduation];
-                                var names =["Outcome_Literacy", "Outcome_Mathematics", "Outcome_Science","Outcome_Behavior","Outcome_Teacher_Excellence", "Outcome_Graduation"];
+                        <div class="step-action context-tag">
+                            <p><em>Select all that apply.</em></p>
+                            <%
+                            var taller=[4,5]
+                            var options= ["Literacy", "Mathematics", "Science","Behavior","Teacher Excellence", "Path to Graduation"];
+                            var tips = ["Reading, writing, language development","","","Behavior, emotional/internal behavior, external behavior, knowledge, attitudes and values, social-emotional development, social outcomes","Teacher retention at the school, teacher retention in the profession, teacher retention in the school district","Access and enrollment, attainment, Completing school, credit accumulation and persistence, progress in developmental education, progressing in school, staying in school" ]
+                            var selected =[eval.planContext.Outcome_Literacy,
+                            eval.planContext.Outcome_Mathematics, eval.planContext.Outcome_Science ,eval.planContext.Outcome_Behavior ,eval.planContext.Outcome_Teacher_Excellence,eval.planContext.Outcome_Graduation];
+                            var names =["Outcome_Literacy", "Outcome_Mathematics", "Outcome_Science","Outcome_Behavior","Outcome_Teacher_Excellence", "Outcome_Graduation"];
 
-                                var checked = "unchecked";
-                               
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                var cbid = names[i];
-                                var cbvalue = options[i];
-                                var tallclass="";
-                                var addtip = tips[i] != "" ? "<span data-toggle='tooltip' title='" + tips[i] + "' class='tooltip-gr'><i class='fa fa-question-circle'></i></span>" :  "" ;
-                                    for ( var j=0; j < taller.length; j++ )
-                                {
-                                if (i==taller[j]) tallclass= "class='tall-box'" ;
-                                }
-                                %>
+                            var checked = "unchecked";
 
-                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                                <label for="<%= cbid %>" <%- tallclass %>>
-                                    <%= cbvalue %> <%- addtip %>
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            checked = ( selected[i] == options[i] ) ? "checked" : "";
+                            var cbid = names[i];
+                            var cbvalue = options[i];
+                            var tallclass="";
+                            var addtip = tips[i] != "" ? "<span data-toggle='tooltip' title='" + tips[i] + "' class='tooltip-gr'><i class='fa fa-question-circle'></i></span>" : "" ;
+                            for ( var j=0; j < taller.length; j++ )
+                            {
+                            if (i==taller[j]) tallclass= "class='tall-box'" ;
+                            }
+                            %>
 
-                                </label>
-                                <%
-                                }
-                                %>
-                            </div>
+                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
+                            <label for="<%= cbid %>" <%- tallclass %>>
+                            <%= cbvalue %> <%- addtip %>
+
+                            </label>
+                            <%
+                            }
+                            %>
+                        </div>
                             <div class="clearfix"></div>
 
                         </div>
@@ -479,7 +484,7 @@
                         <div class="step-header container">
                             <div data-toggle="collapse" data-target="#C">
                                 <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> B. What is the educational setting?
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> What is the educational setting?
                                 </h2>
                                 <p>We want to collect some information about your evaluation and its participants. As we gather results from many evaluations, we&rsquo;ll use this information to sort and filter similar studies from similar settings, so that we can help you learn from other users and help other users learn from your experience. Answer as many of the questions as you can.</p>
                             </div>
@@ -487,42 +492,46 @@
 
                         <div id="C" class="row collapse in q-row">
                             <div class="col-xs-7">
+
+                            <div class="step-subquestion">
                                 <h3>Tell us about your school district.</h3>
-                                <div class="step-subquestion">
-                                    <h4>What type(s) of school(s) are involved in the evaluation? </h4>
-                                    <p><em>Select all that apply.</em></p>
-                                </div>
+                                <h4>What type(s) of school(s) are involved in the evaluation? </h4>
+                                
+                            </div>
 
 
-                                <div class="step-action context-tag">
-                                    <%
-                                    var options= ["Charter", "Private", "Parochial", "Public"];
-                                    var breaks = 1;
-                                    var selected =[eval.planContext.SchoolType_Charter,
-                                    eval.planContext.SchoolType_Private, eval.planContext.SchoolType_Parochial, eval.planContext.SchoolType_Public
-                                    ];
-                                    var names =["SchoolType_Charter", "SchoolType_Private", "SchoolType_Parochial", "SchoolType_Public"];
+                            <div class="step-action context-tag">
+                                <p>
+                                    <em>Select all that apply.</em>
+                                </p>
+                                <%
+                                var options= ["Charter", "Private", "Parochial", "Public"];
+                                var breaks = 1;
+                                var selected =[eval.planContext.SchoolType_Charter,
+                                eval.planContext.SchoolType_Private, eval.planContext.SchoolType_Parochial, eval.planContext.SchoolType_Public
+                                ];
+                                var names =["SchoolType_Charter", "SchoolType_Private", "SchoolType_Parochial", "SchoolType_Public"];
 
-                                    var checked = "unchecked";
+                                var checked = "unchecked";
 
-                                    for ( var i = 0; i < options.length; i++ )
-                                    {
-                                    checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                    var cbid = names[i];
-                                    var cbvalue = options[i];
-                                    var brk = "";
-                                    if(i == breaks) brk="<br/>";
-                                    %>
+                                for ( var i = 0; i < options.length; i++ )
+                                {
+                                checked = ( selected[i] == options[i] ) ? "checked" : "";
+                                var cbid = names[i];
+                                var cbvalue = options[i];
+                                var brk = "";
+                                if(i == breaks) brk="<br/>";
+                                %>
 
-                                    <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
-                                    <label for="<%= cbid %>">
-                                        <%= cbvalue %>
+                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
+                                <label for="<%= cbid %>">
+                                    <%= cbvalue %>
 
-                                    </label><%- brk %> 
-                                    <%
-                                    }
-                                    %>
-                                </div>
+                                </label><%- brk %>
+                                <%
+                                }
+                                %>
+                            </div>
                                 <div class="clearfix"></div>
                                 <div class="step-subquestion">
                                     <h4>
@@ -539,42 +548,46 @@
                                 </div>
 
 
-                                <div class="step-action context-tag">
-                                    <%
-                                    var options= ["Rural", "Suburban", "Urban"];
-                                    var selected =[eval.planContext.Urbanicity_Rural,
-                                    eval.planContext.Urbanicity_Suburban, eval.planContext.Urbanicity_Urban
-                                    ];
-                                    var names =["Urbanicity_Rural", "Urbanicity_Suburban", "Urbanicity_Urban"];
+                            <div class="step-action context-tag">
+                                <p>
+                                    <em>Select all that apply.</em>
+                                </p>
+                                <%
+                                var options= ["Rural", "Suburban", "Urban"];
+                                var selected =[eval.planContext.Urbanicity_Rural,
+                                eval.planContext.Urbanicity_Suburban, eval.planContext.Urbanicity_Urban
+                                ];
+                                var names =["Urbanicity_Rural", "Urbanicity_Suburban", "Urbanicity_Urban"];
 
-                                    var checked = "unchecked";
+                                var checked = "unchecked";
 
-                                    for ( var i = 0; i < options.length; i++ )
-                                    {
-                                    checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                    var cbid = names[i];
-                                    var cbvalue = options[i];
-                                    %>
+                                for ( var i = 0; i < options.length; i++ )
+                                {
+                                checked = ( selected[i] == options[i] ) ? "checked" : "";
+                                var cbid = names[i];
+                                var cbvalue = options[i];
+                                %>
 
-                                    <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" />
-                                    <label for="<%= cbid %>">
-                                        <%= cbvalue %>
+                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>"/>
+                                <label for="<%= cbid %>">
+                                    <%= cbvalue %>
 
-                                    </label>
-                                    <%
-                                    }
-                                    %>
-                                </div>
+                                </label>
+                                <%
+                                }
+                                %>
+                            </div>
                                 <div class="clearfix"></div>
 
+
+
+
+                            <div class="step-subquestion">
                                 <h3 class="clickable">
                                     Tell us about the students envolved in your evaluation.
                                 </h3>
-
-
-                                <div class="step-subquestion">
-                                    <h4>What is the racial composition of the students envolved in your evaluation?</h4>
-                                </div>
+                                <h4>What is the racial composition of the students envolved in your evaluation?</h4>
+                            </div>
                                 <div class="step-action context-tag">
                                     <div class="col-xs-6">
                                         <%
@@ -729,8 +742,10 @@
                                     </h4>
                                 </div>
                                 <div class="step-action">
-                                </div>
-                                <textarea name="Other_Notes" id="Other_Notes" rows="8" placeholder="Ex., Students had difficulty logging into their accounts for the first 2 weeks of class. About half the teachers got frustrated and used other products for the rest of the term."><%= eval.planContext.Other_Notes %></textarea>
+
+                                    <textarea name="Other_Notes" id="Other_Notes" rows="8" placeholder="Ex., Students had difficulty logging into their accounts for the first 2 weeks of class. About half the teachers got frustrated and used other products for the rest of the term."><%= eval.planContext.Other_Notes %></textarea>
+                            </div>
+
                             </div>
 
 
