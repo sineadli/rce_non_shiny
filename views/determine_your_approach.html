@@ -183,12 +183,13 @@
                     <div class="step-subquestion">
                         <p>The method you choose below, will impact how confident you can be that your technology is causing the outcomes you observe and how applicable your findings are to a broader population of <%= Basics_Users %>.</p>
 
-                        <p> Do not compare volunteers to non-volunteers, because those that volunteer are inherently different from those that do not. If you must ask for volunteers, you should select users and non-users from your pool of volunteers.</p>
+
 
                         <p class="note"> Note: Across all of these methods, you do not need to create or compare groups at the individual level. If there are logistical barriers to working with individuals, you can create groups at higher levels, such as classrooms or schools. However, at higher levels you will need more study participants in order to be confident in your results</p>
+                        <p class="note"> Do not compare volunteers to non-volunteers, because those that volunteer are inherently different from those that do not. If you must ask for volunteers, you should select users and non-users from your pool of volunteers.</p>
                     </div>
                     <div class="step-action">
-
+                        <p><em>Select one.</em></p>
                         <div class="panel-group" id="Grouping_options">
                             <div class="panel panel-default">
                                 <% var checked = ( eval.probAppr.Appr_How_Choose == "random" ) ? "checked" : "";
@@ -206,7 +207,7 @@
 
                                     </label>
 
-                                    <a data-toggle="collapse" data-parent="#Grouping_options" href="#randon-1">Description, advantages, &amp; disadvantages<i class="fa fa-caret-down" aria-hidden="false"></i> </a>
+                                    <a data-toggle="collapse" href="#randon-1">Description, advantages, &amp; disadvantages<i class="fa fa-caret-down" aria-hidden="false"></i> </a>
                                     <div class="clearfix"></div>
                                 </div>
 
@@ -219,7 +220,7 @@
                                     <ul>
                                         <li><strong>Recommended method</strong>. Resulting treatment and comparison groups will, on average, be similar in both observable and unobservable characteristics, giving you the most confidence that any differences in outcomes between the groups are due to using <%= Basics_Tech_Name %>. </li>
                                         <li>A fair way to decide who gets to use a technology first, because everyone has the same chance of being chosen.</li>
-                                        <li>Allows for findings that are relevant for the overall population you are working with (i.e. everyone in the hat)</li>
+                                        <li>Allows for findings that are relevant for the overall population you are working with (i.e. everyone in the hat).</li>
                                     </ul>
                                     <h4 class="list-header">Disadvantages:</h4>
                                     <ul>
@@ -233,37 +234,37 @@
 
                                 %>
                                 <div class="panel-heading for-how-group <%= selected %>">
-                                    <div class="panel-heading accordion-toggle for-how-group">
 
 
 
-                                        <input type="radio" id="Choose-Cutoff" name="Appr_How_Choose" class="radio" value="cutoff" <%= checked %>/>
-                                        <label class="panel-title  clickable" for="Choose-Cutoff">
-                                            Cutoff:
 
-                                        </label>
-                                        <a data-toggle="collapse" data-parent="#Grouping_options" href="#cutoff-2">
-                                            Description, advantages, &amp; disadvantages<i class="fa fa-caret-right" aria-hidden="true"></i>
-                                        </a>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div id="cutoff-2" class="panel-collapse collapse">
-                                        <p>Using a cutoff means selecting who uses the technology based on where <%= Basics_Users %> fall in relation to an existing threshold. For example, students just below the &ldquo;low score&rdquo; threshold are assigned to use <%= Basics_Tech_Name %>. We assume that students right around a cutoff are very similar. Therefore, you can compare those just below the cutoff to those just above it. </p>
-                                        <h4 class="list-header">Advantages:</h4>
-                                        <ul>
-                                            <li>Allows for the mechanism of assignment to be based more on a specific measure than on chance. </li>
+                                    <input type="radio" id="Choose-Cutoff" name="Appr_How_Choose" class="radio" value="cutoff" <%= checked %>/>
+                                    <label class="panel-title  clickable" for="Choose-Cutoff">
+                                        Cutoff:
 
-                                        </ul>
-                                        <h4 class="list-header">Disadvantages:</h4>
-                                        <ul>
-                                            <li>Findings only apply to <%= Basics_Users %> near the cutoff, not to the whole population</li>
-                                            <li>May be less fair than random assignment. With this method, scoring 1 point below the cutoff gives you a 100% chance of using <%= Basics_Tech_Name %>, while scoring 1 point above the cutoff means you have a 0% chance of using <%= Basics_Tech_Name %>, even though both groups of <%= Basics_Users %> may be equally in need of it.</li>
-                                            <li>Not currently supported by the RCE Coach, but will be coming soon! <a href="mailto:EdTechRCE@mathematica-mpr.com">Contact us</a> if you&rsquo;d like to discuss testing this new method. </li>
-                                        </ul>
+                                    </label>
+                                    <a data-toggle="collapse" href="#cutoff-2">
+                                        Description, advantages, &amp; disadvantages<i class="fa fa-caret-right" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div id="cutoff-2" class="panel-collapse collapse">
+                                    <p>Using a cutoff means selecting who uses the technology based on where <%= Basics_Users %> fall in relation to an existing threshold. For example, students just below the &ldquo;low score&rdquo; threshold are assigned to use <%= Basics_Tech_Name %>. We assume that students right around a cutoff are very similar. Therefore, you can compare those just below the cutoff to those just above it. </p>
+                                    <h4 class="list-header">Advantages:</h4>
+                                    <ul>
+                                        <li>Allows for the mechanism of assignment to be based more on a specific measure than on chance. </li>
 
-                                    </div>
+                                    </ul>
+                                    <h4 class="list-header">Disadvantages:</h4>
+                                    <ul>
+                                        <li>Findings only apply to <%= Basics_Users %> near the cutoff, not to the whole population.</li>
+                                        <li>May be less fair than random assignment. With this method, scoring 1 point below the cutoff gives you a 100% chance of using <%= Basics_Tech_Name %>, while scoring 1 point above the cutoff means you have a 0% chance of using <%= Basics_Tech_Name %>, even though both groups of <%= Basics_Users %> may be equally in need of it.</li>
+                                        <li>Not currently supported by the RCE Coach, but will be coming soon! <a href="mailto:EdTechRCE@mathematica-mpr.com">Contact us</a> if you&rsquo;d like to discuss testing this new method. </li>
+                                    </ul>
+
                                 </div>
 
+                            </div>
                                 <div class="panel panel-default">
                                     <% var checked= ( eval.probAppr.Appr_How_Choose == "other" ) ? "checked" : "";
                                     var selected = ( eval.probAppr.Appr_How_Choose == "other" ) ? "selected" : "";
@@ -279,7 +280,7 @@
 
                                         </label>
 
-                                        <a data-toggle="collapse" data-parent="#Grouping_options" href="#other-3">
+                                        <a data-toggle="collapse"  href="#other-3">
                                             Description, advantages, &amp; disadvantages<i class="fa fa-caret-right" aria-hidden="true"></i>
 
                                         </a>
@@ -302,7 +303,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+                           
 
                         </div>
 
@@ -400,30 +401,31 @@
     <script>
     $(document).ready(function () {
 
-    setBasicsConclusion();
+        setApproachConclusion();
 
-    /*~~~~~~~~~~~~~~~~ The Basics ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  
 
     $('#Appr_Current_or_New').change(function () {
 
     setBasicsConclusion();
     });
     $('#Appr_Can_Group').change(function () {
-    setBasicsConclusion();
+        setApproachConclusion();
     });
 
     $('#Appr_All_Using').change(function () {
-    setBasicsConclusion();
+        setApproachConclusion();
     });
     $("input[type=radio][name=Appr_How_Choose]").change(function () {
         $("div.for-how-group").removeClass("selected");
         $(this).parent("div.for-how-group").addClass("selected");
+        $('#Grouping_options  .panel-collapse.in').collapse('toggle');
         
-    setBasicsConclusion();
+        setApproachConclusion();
     });
 
 
-    function setBasicsConclusion() {
+    function setApproachConclusion() {
     var currentNew = $('#Appr_Current_or_New').val();
     var allUsing = $('#Appr_All_Using').val();
     var canGroup = $('#Appr_Can_Group').val();
