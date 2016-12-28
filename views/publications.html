@@ -1,0 +1,142 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>All Evaluations - Ed Tech RCE Coach</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.feedback_me.js"></script>
+    <script src='/static/js/custom.js'></script>
+    <script src='/static/js/jquery.tablesorter.js'></script>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+</head>
+<body class="one-col">
+    <% include ../views/partials/header.html %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+    </ol>
+    <div class="container-fluid">
+        <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
+        <input type="hidden" id="user_email" value="<%= user.email %>" />
+        <div class="page-header">
+            <h1 class="page-title">All Publications</h1>
+        </div>
+          
+            <div class="row">
+                <div class="col-sm-9 content">
+                    <% if(publishlists.length>0){ %>
+                    <table id="myTable" cellspacing="1"  class="tablesorter">
+                        <thead>
+                            <tr>
+                                <th>Date Published</th>
+                                <th>Name Of Technology</th>
+                                <th>Author</th>
+                                <th>Company</th>
+                                <th>Outcome Areas</th>
+                                <th>Grades Examined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% var date_published, tech_name, author, company, outcomes, grades;
+                            for (var i=0; i < publishlists.length; i++){
+                            d = new Date(publishlists[i].published_at);
+                            tech_name = publishlists[i].basics.Basics_Tech_Name;
+                            author = publishlists[i].author;
+                            company = publishlists[i].company;
+                            outcomes = publishlists[i].planContext.Outcome_Literacy + ", " +
+                            publishlists[i].planContext.Outcome_Mathematics + ", "  +
+                            publishlists[i].planContext.Outcome_Science + ", "  +
+                            publishlists[i].planContext.Outcome_Behavior+ ", "  +
+                            publishlists[i].planContext.Outcome_Teacher_Excellence + ", "  +
+                            publishlists[i].planContext.Outcome_Graduation  ;
+                            grades = publishlists[i].planContext.Grade_PK + ", " +
+                            publishlists[i].planContext.Grade_K + ", " +
+                            publishlists[i].planContext.Grade_1+ ", " +
+                            publishlists[i].planContext.Grade_2+ ", " +
+                            publishlists[i].planContext.Grade_3 + ", " +
+                            publishlists[i].planContext.Grade_4 + ", " +
+                            publishlists[i].planContext.Grade_5 + ", " +
+                            publishlists[i].planContext.Grade_6+ ", " +
+                            publishlists[i].planContext.Grade_7 + ", " +
+                            publishlists[i].planContext.Grade_8 + ", " +
+                            publishlists[i].planContext.Grade_9 + ", " +
+                            publishlists[i].planContext.Grade_10 + ", " +
+                            publishlists[i].planContext.Grade_11+ ", " +
+                            publishlists[i].planContext.Grade_12+ ", " +
+                            publishlists[i].planContext.Grade_PS;     %>
+                            <tr>
+                                <td><%=  d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear()  %></td>
+                                <td><%= tech_name %></td>
+                                <td><%= author %></td>
+                                <td><%= company %></td>
+                                <td><%= outcomes %></td>
+                                <td><%= grades %></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    <%} else { %>
+                    <p>No publication found.</p>
+                    <% } %>
+               </div>
+                  
+                </div>
+
+    
+        
+    </div>
+    <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#myTable").tablesorter({
+                // pass the headers argument and assing a object 
+                headers: {
+                    // assign the secound column (we start counting zero) 
+                    4: {
+                        // disable it by setting the property sorter to false 
+                        sorter: false
+                    },
+                    // assign the third column (we start counting zero) 
+                    2: {
+                        // disable it by setting the property sorter to false 
+                        5: false
+                    }
+                }
+            });
+            //set up some minimal options for the feedback_me plugin
+            //init feedback_me plugin
+
+            var fm_options = setFeedbackOptions($("#user_email").val(), "evaluations");
+            fm.init(fm_options);
+
+        });
+
+    </script>
+</body>
+</html>

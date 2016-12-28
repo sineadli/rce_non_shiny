@@ -309,17 +309,17 @@ evaluationSchema.pre('save', function (next) {
                     this.path = "path-matching";  //disable random tools or hide them
                 }
                 else {
-                    if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose randomly") {
+                    if (this.probAppr.Appr_How_Choose.toLowerCase() === "random") {
                         this.path = "path-random"; //disable matching tools or hide them
                     }
-                    else if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will use a cutoff") {
+                    else if (this.probAppr.Appr_How_Choose.toLowerCase() === "cutoff") {
                         this.path = "path-regression";  //no available yet
                     }
 
                 }
             }
         }
-        if (this.status === "12") {
+        if (this.status === "100") {
             if (!this.published_at) { this.published_at = currentDate; }
             var doc = this;
             User.findById(this.userid, function (err, user) {

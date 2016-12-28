@@ -13,6 +13,7 @@
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var getAllEvaluations = require('../middleware/getAllEvaluations.js');
+var getAllPublications = require('../middleware/getAllPublications.js');
 var noCache = require('../middleware/noCache.js');
 
 var CoachStep = require('../models/coachStep'),
@@ -48,6 +49,11 @@ module.exports = function (app, passport) {
         res.render('evaluations.html', { user: req.user, evals: sess.evals });
     });
 
+    app.get('/publications', isLoggedIn, getAllPublications, function (req, res) {
+        sess = req.session;
+         console.log(sess.publishlists)
+         res.render('publications.html', { user: req.user, publishlists: sess.publishlists });
+    });
 
     app.get('/coach', isLoggedIn, getCurrentEvaluation, function (req, res) {
 		sess = req.session;

@@ -33,88 +33,88 @@ module.exports = function (app, passport) {
         res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query   });
 	});
     app.post('/basics', isLoggedIn, function (req, res) {
-		sess = req.session;
-		var obj = req.body, basics;
-	//	console.log(obj);
-	    var toolName = "The Basics";
-		var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
-		var dt = new Date();
-		async.waterfall([
-			function (done) {
-				if (sess.eval) {
-					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-						if (!eval) {
-							req.flash('error', 'No evaluation exists.');
-							return res.redirect('/coach');
-						}
-						if (err) {
-							console.log(err);
-							return res.redirect('/coach');
-						}
-						return done(err, eval);
-					});
-				}
-				else
-					res.redirect('/coach');
-			},
-			function (eval, done) {
-				//eval find so update the toolsVisisted accordingly
-				eval.last_step = 2;
-				eval.last_tool = toolName;
-				var tool = eval.toolsvisited.filter(function (x) { return x.name === toolName });
-				if (tool.length == 0) {
-					eval.toolsvisited.push(toollist);
-				}
-				else {
-					var index = eval.toolsvisited.indexOf(tool[0]);
-					if (index > -1) {
-						if (tool[0].status == "completed") toollist = { "name": toolName, "status": "completed", "visited_at": new Date() };
-						eval.toolsvisited.splice(index, 1);
-						eval.toolsvisited.push(toollist); 
-					}
-				}
-				//add/update the probAppr within eval
-				basics = {
-					"Basics_Have": obj.Basics_Have,
-					"Basics_Tech_Name": obj.Basics_Tech_Name,
-					"Basics_Using": obj.Basics_Using,
-					"Basics_Users": obj.Basics_Users, 
-					"Basics_Users_Other": obj.Basics_Users_Other, 
-					"Basics_Outcome": obj.Basics_Outcome,
-					"Basics_Outcome_Other": obj.Basics_Outcome_Other
-				};
-				if (!eval.basics) {
-				    eval.basics.created_at = dt;
-					
-				}
-				else {
-					eval.basics.created_at = eval.basics.created_at;
-				    eval.basics.updated_at = dt;
-				};
-				
-				eval.basics = basics;
-				if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
-				eval.save(function (err) {
-					if (err) {
-						console.log(err); return done(err);
-					}
-					sess.eval = eval;
-					//  console.log(eval);
-					if (req.body.status === "started") {
-						req.flash('saveMessage', 'Changes Saved.');
-						return res.redirect('/basics');
-					}
-					else {
-						return res.redirect('/coach');
-					}
-                    
-				});
-			}
-		], function (err) {
-			if (err) return next(err);
-			res.redirect('/coach');
-		});
-	});
+        sess = req.session;
+        var obj = req.body, basics;
+        //	console.log(obj);
+        var toolName = "The Basics";
+        var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+                //eval find so update the toolsVisisted accordingly
+                eval.last_step = 2;
+                eval.last_tool = toolName;
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === toolName });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": toolName, "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                //add/update the probAppr within eval
+                basics = {
+                    "Basics_Have": obj.Basics_Have,
+                    "Basics_Tech_Name": obj.Basics_Tech_Name,
+                    "Basics_Using": obj.Basics_Using,
+                    "Basics_Users": obj.Basics_Users,
+                    "Basics_Users_Other": obj.Basics_Users_Other,
+                    "Basics_Outcome": obj.Basics_Outcome,
+                    "Basics_Outcome_Other": obj.Basics_Outcome_Other
+                };
+                if (!eval.basics) {
+                    eval.basics.created_at = dt;
+
+                }
+                else {
+                    eval.basics.created_at = eval.basics.created_at;
+                    eval.basics.updated_at = dt;
+                };
+
+                eval.basics = basics;
+                if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    //  console.log(eval);
+                    if (req.body.status === "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                        return res.redirect('/basics');
+                    }
+                    else {
+                        return res.redirect('/coach');
+                    }
+
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
     
 	//02. Who used and how	   
 	app.get('/who_and_how', function (req, res) {
@@ -1008,7 +1008,7 @@ module.exports = function (app, passport) {
 			res.redirect('/coach');
 		});
 	});
->>>>>>> a9decd5713fd43003310eda32e1e66677012f8bb
+
     app.get('/getresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;
