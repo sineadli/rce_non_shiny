@@ -299,25 +299,17 @@ evaluationSchema.pre('save', function (next) {
         }
         //path determine
         if (this.probAppr) {
-            if (this.probAppr.Appr_Can_Group.toLowerCase() === "no" ||
-                this.probAppr.Appr_All_Using.toLowerCase() === "yes" ||
-                this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose users based on specific criteria") {
-                this.path = "path-none";  //what should we do?
-            }
-            else {
-                if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current") {
-                    this.path = "path-matching";  //disable random tools or hide them
-                }
-                else {
-                    if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose randomly") {
-                        this.path = "path-random"; //disable matching tools or hide them
-                    }
-                    else if (this.probAppr.Appr_How_Choose.toLowerCase() === "i will use a cutoff") {
-                        this.path = "path-regression";  //no available yet
-                    }
 
-                }
-            }
+            if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current" &&
+                this.probAppr.Appr_All_Using.toLowerCase() === "no") {
+                this.path = "path-matching"; //disable random tools or hide them
+            } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "random") {
+                this.path = "path-random"; //disable matching tools or hide them
+            } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "other") {
+                this.path = "path-matching"; //no available yet
+            } else {
+                this.path = "path-none";
+            } //what should we do?
         }
         if (this.status === "12") {
             if (!this.published_at) { this.published_at = currentDate; }
