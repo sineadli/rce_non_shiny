@@ -4,7 +4,7 @@ html {
 body {
   font-family: 'Open Sans';
   max-width:1000px;
-  font-size:1.5em;
+  font-size:1.6em;
   line-height:1.5em;
      margin: 0 auto;
       min-height: 100%;
@@ -153,6 +153,7 @@ div.tool-header {
     font-style: italic;
     margin-top: 8px;
     color: #286090;
+        margin: 15px 25px;
 }
 .prev-answer{
     font-style: italic;
@@ -268,7 +269,7 @@ h3 {
   /*margin-top:5px;*/
 }
 h4, h4 label, h4 em {
-  font-size:15px;
+  font-size:1em;
   /*font-style:italic;*/
   font-weight:600;
     color: #444444;
@@ -842,6 +843,10 @@ div.step-action {
   font-size:1em;
   width:100%
 }
+    div.step-action em {
+        font-size: 1.05em;
+         
+    }
 div.col-xs-12 div.step-action {
      width:90%
 }
@@ -919,7 +924,7 @@ div#How-Group .panel-collapse {
 
 div#How-Group .panel-collapse {
 	clear: both;
-	margin: 0 50px;
+	    margin: 10px 15px 15px;
 }
 
 div#How-Group .panel-collapse label {
@@ -987,14 +992,15 @@ div.check-list input[type=checkbox]:empty ~ label:before {
 	width: 2.5em;
 	background: #D1D3D4;
 	border-radius: 3px 0 0 3px;
+    color: #ffffff;
 }
 
 /* toggle hover */
-div#How-Group input.radio:hover:not(:checked) + label:before,
+div#How-Group input.radio:not(:checked) + label:before,
 div.check-list input[type=checkbox]:not(:checked) + label:before {
 	content:'\2714';
 	text-indent: .9em;
-	color: #C2C2C2;
+	color: #bbb;
 }
 
 div#How-Group input.radio:hover:not(:checked) + label,
@@ -1300,7 +1306,7 @@ div.context-tag label {
 div.context-tag input[type="checkbox"] + label {
     display: inline-block;
     vertical-align: middle;
-    width: 145px;
+    width: 155px;
     height: 48px;
     background-color: #D9D7BE;
     text-align: center;
@@ -1336,7 +1342,7 @@ div.context-tag input[type="checkbox"] + label.cb-small{
     }
 div.context-tag input[type="checkbox"]:checked + label {
     border: 2px solid #222;
-    background-color: #80C1E8;
+    background-color: #FAC500;
     text-align: center;
 }
 
