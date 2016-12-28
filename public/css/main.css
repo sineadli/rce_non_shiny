@@ -1000,7 +1000,7 @@ div#How-Group input.radio:not(:checked) + label:before,
 div.check-list input[type=checkbox]:not(:checked) + label:before {
 	content:'\2714';
 	text-indent: .9em;
-	color: #999;
+	color: #bbb;
 }
 
 div#How-Group input.radio:hover:not(:checked) + label,

@@ -1008,7 +1008,7 @@ module.exports = function (app, passport) {
 			res.redirect('/coach');
 		});
 	});
->>>>>>> a9decd5713fd43003310eda32e1e66677012f8bb
+
     app.get('/getresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;

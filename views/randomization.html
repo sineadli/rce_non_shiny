@@ -147,57 +147,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/basics">The Basics</a>
                     </p>
                     <% } %>
-<<<<<<< HEAD
-                </li>
-                <li>
-                    your randomized pilot will help you answer the following question: <br/>
-                    <% if (user != "NOAUTHENTICATED") { %>
-                    Does <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
-                    <% } %>
-                    <% if (user == "NOAUTHENTICATED") { %>
-                    Does A do B among C compared to D?
-                    <% } %>
-                    <% if (user != "NOAUTHENTICATED") { %>
-                    <p class="prev-answer">
-                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
-                    </p>
-                    <% } %>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="step-header container">
-    <div data-toggle="collapse" data-target="#B">
-        <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> Now the Coach needs a few more details about your plans to roll-out the technology.
-        </h2>
-    </div>
-</div>
-    <div id="B" class="row collapse in q-row">
-        <div class="col-xs-7">
-            <div class="step-subquestion">
-                <h4><label for="Individual_Group">Do you want to randomly assign individual <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
-            </div>
-            <div class="step-action">
-                <select required name="Individual_Group" id="Individual_Group">
-                    <%
-                    var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
-                    var ovals = ["Select an option", "users" , "groups" ];
-                    for ( var i = 0; i < options.length; i++ )
-                    {
-                    var selected = ( eval.random.Individual_Group== ovals[i] ) ? "selected" : "";
-                    %>
-                    <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
-                    }
-                    %>
-                </select>
-            </div>
-            <div id="Question_Cluster" hidden="true">
-=======
-                </div>
-
->>>>>>> a9decd5713fd43003310eda32e1e66677012f8bb
+                 </div>
                 <div class="step-subquestion">
                     <h4><label for="Individual_Group">Do you want to randomly assign individual <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
                 </div>
@@ -247,7 +197,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                     </div>
                     <% if (user != "NOAUTHENTICATED") { %>
                     <p class="prev-answer">
-                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/prepare_data">Prepare Your Data for Analysis</a>
+                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/prepare_data_randomization">Prepare Your Data for Randomization</a>
                     </p>
                     <% } %>
                 </div>
@@ -269,54 +219,41 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                         <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option>
                         <% } %>
                     </select>
+                    <div id="Question_User_Limits" hidden="true">
+                        <div class="step-subquestion">
+
+                            <h4>What are the limits?</h4>
+                        </div>
+                        <div class="step-action">
+                            <p>
+
+                                No more than
+                                <input type="text" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>" />
+                                <select name="intervention_type" id="intervention_type">
+                                    <%
+
+                                    var options = ["Select an option", "percent of individuals or groups", "individuals or groups" ];
+                                    var ovals = ["Select an option", "percentage", "number" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selected = ( eval.random.intervention_type == ovals[i] ) ? "selected" : "";
+                                    %>
+                                    <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
+                                    <% }%>
+                                </select> can access <%= Basics_Tech_Name %>.
+
+                            </p>
+
+
+
+                        </div>
+
+
+
+                    </div>  
                 </div>
-                <div id="Question_User_Limits" hidden="true">
-                    <div class="step-subquestion">
+                          
 
-                        <h4>What are the limits?</h4>
-                    </div>
-                    <div class="step-action">
-                        <p>
-
-                            No more than
-                            <input type="text" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>"/>
-                            <select name="intervention_type" id="intervention_type">
-                                <%
-
-                                var options = ["Select an option", "percent of individuals or groups", "individuals or groups" ];
-                                var ovals = ["Select an option", "percentage", "number" ];
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                var selected = ( eval.random.intervention_type == ovals[i] ) ? "selected" : "";
-                                %>
-                                <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
-                                <% }%>
-                            </select> can access <%= Basics_Tech_Name %>.
-
-                        </p>
-
-
-
-                    </div>
-
-
-<<<<<<< HEAD
-                </div>             
-=======
-                </div>
-                <% if (user != "NOAUTHENTICATED") { %>
-                <!--<div class="step-subquestion">
-                    Your randomized pilot will help you answer the following question: <br />
-
-                    Does <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= eval.planQuestion.Outcome_Direction  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
-
-                    <p class="prev-answer">
-                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/craft_your_research_q">Craft Your Research Question</a>
-                    </p>
-
-                </div>-->
-                <% } %>
->>>>>>> a9decd5713fd43003310eda32e1e66677012f8bb
             </div>
             <div class="col-xs-5">
                 <div class="step-to-consider">
@@ -358,7 +295,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#C">
         <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> Prepare and upload your data
+            <i class="fa fa-caret-down" aria-hidden="false"></i> Upload your data
         </h2>
     </div>
 </div>
@@ -370,7 +307,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
             <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
             </h4>
             <p>
-                Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForRandomization.pdf">Prepare Your Data for Randomization</a>.
             </p>
 
         </div>
@@ -454,20 +391,13 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                         </h3>
                     </div>
                     <div id="consider3" class="panel-collapse collapse in">
-<<<<<<< HEAD
-                        <p>Be sure to create a key or a file that links the original names or IDs to the new anonymous IDs. You will need this key to know who was assigned to each group and to add outcome data at the end of the pilot period.</p>               
-                        <p>
-                            The pretest should be a recent measure of the outcome you hope to affect with the technology. For example, if you are trying to improve student math achievement, a pretest could be scores on a math test that students in both your treatment and control groups took just prior to using the technology.</p>
-                        <p>  Common background characteristics of students are: gender, race/ethnicity, and English learner, special education, and free/reduced price lunch status. Common background characteristics of teachers are: gender, highest level of education, and years of experience. </p>
-                        <p> The Coach will use the pretest measure and background characteristics to check the equivalence and balance of your the treatment and comparison groups. If you have a small sample, the Coach may need to randomize multiple times to create balanced groups.</p>                            
-=======
 
-                       
 
                         <p>Be sure to create a key or a file that links the original names or IDs to the new anonymous IDs. You will need this key to know who was assigned to each group and to add outcome data at the end of the pilot period.</p>
+                        <p> If available, the Coach will use the pretest measure and background characteristics to check the equivalence or balance of the treatment and comparison groups. If you have a small sample, the Coach may need to randomize multiple times to create balanced groups.</p>
                     
                 
->>>>>>> a9decd5713fd43003310eda32e1e66677012f8bb
+
                             <p>
                                 Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf" target="_blank">The Radomization Overview</a> for more on which variables should be included.
                             </p>
