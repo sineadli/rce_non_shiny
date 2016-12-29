@@ -48,7 +48,7 @@
         <% include ../views/partials/toolHeader.html %>
     <% } %>
 
-    <form action="/shareresult" method="post">
+    <form action="" method="post">
         
         <style>
             /* Specific to share results */
@@ -789,6 +789,79 @@
                                 <p class="visible-print-block" id="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
                             </div > 
                         </div >
+
+                        <!-- Modal -->
+                        <div id="download-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label>Download</label>
+                                                <p>You are able to select from the following options to export your findings brief! We suggest exporting this brief and reviewing it with others before you complete your evaluation where we'll publish it so others can see.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <label>Findings Brief</label><br />
+                                                <input type="radio" name="brief_type" value="PDF document" checked> PDF document<br>
+                                                <input type="radio" name="brief_type" value="PDF slides" checked> PDF slides<br>
+                                                <input type="radio" name="brief_type" value="DOCX file" checked> DOCX file<br>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label>Technical Appendix</label><br />
+                                                <input type="radio" name="brief_type" value="PDF document" checked> PDF document<br>
+                                                <input type="radio" name="brief_type" value="PDF slides" checked> PDF slides<br>
+                                                <input type="radio" name="brief_type" value="DOCX file" checked> DOCX file<br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                        <button type="submit" id="button-download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div id="complete-evaluation-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label>Complete Evaluation</label>
+                                                <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-1">
+                                                <input type="checkbox" name="publish_selection" value="yes" checked />
+                                            </div>
+                                            <div class="col-xs-5">
+                                                Yes, you may publish my findings brief and technical appendix
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <input type="checkbox" name="publish_selection" value="no" checked />
+                                            </div>
+                                            <div class="col-xs-5">
+                                                No, I do not want anything published
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                        <button type="submit" id="button-publish" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -866,6 +939,14 @@
                 var id = $(this).attr('id');
                 var val = $(this).val();
                 $('#print-' + id).text(val);
+            });
+
+            // Since we have multiple buttons that can take actions, set the form action on button click.
+            $('button[type=submit]').click(function () {
+                var action = $(this).attr('data-action');
+                $('form').attr('action', action);
+                console.log('changed action to ', action);
+                $('form').submit();
             });
             
         });

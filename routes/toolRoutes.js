@@ -1199,5 +1199,180 @@ module.exports = function (app, passport) {
             res.redirect('/coach');
         });
     });
+
+    app.post('/download', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.eval.last_step = 6;
+        var obj = req.body;
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+                eval.last_step = 6;
+                eval.last_tool = "Share Your Results";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status === "completed") toollist = { "name": "Share Your Results", "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+
+                // Turn relabel inputs into an array rather than 
+                var relabel_index = 0;
+                var relabels = [];
+
+                while (obj['relabel-baseline-var-' + relabel_index]) {
+                    relabels.push(obj['relabel-baseline-var-' + relabel_index]);
+                    delete obj['relabel-baseline-var-' + relabel_index]
+                    relabel_index++;
+                }
+
+                var shareresult = obj;
+                shareresult.baseline_var_relabels = relabels;
+
+                if (!eval.shareresult) {
+                    shareresult.created_at = dt;
+                }
+                else {
+                    shareresult.updated_at = dt;
+                };
+
+                eval.shareresult = shareresult;
+                res.setHeader('Content-disposition', 'attachment; filename=theDocument.txt');
+                res.setHeader('Content-type', 'text/plain');
+                res.charset = 'UTF-8';
+                res.write("Hello, world");
+                res.end();
+
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    if (req.body.status == "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                        //return res.redirect('/shareresult');
+                    }
+                    else {
+                        //return res.redirect('/coach');
+                    }
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
+
+    app.post('/publish', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.eval.last_step = 6;
+        var obj = req.body;
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+                eval.last_step = 6;
+                eval.last_tool = "Share Your Results";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status === "completed") toollist = { "name": "Share Your Results", "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+
+                // Turn relabel inputs into an array rather than 
+                var relabel_index = 0;
+                var relabels = [];
+
+                while (obj['relabel-baseline-var-' + relabel_index]) {
+                    relabels.push(obj['relabel-baseline-var-' + relabel_index]);
+                    delete obj['relabel-baseline-var-' + relabel_index]
+                    relabel_index++;
+                }
+
+                var shareresult = obj;
+                shareresult.baseline_var_relabels = relabels;
+
+                if (!eval.shareresult) {
+                    shareresult.created_at = dt;
+                }
+                else {
+                    shareresult.updated_at = dt;
+                };
+
+                eval.shareresult = shareresult;
+
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    if (req.body.status == "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                        return res.redirect('/shareresult');
+                    }
+                    else {
+                        return res.redirect('/coach');
+                    }
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
 };
 
