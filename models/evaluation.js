@@ -24,6 +24,11 @@ function useOther(v,o) {
     }
 	else return v;
 }
+function stripPercent(x) {
+	return parseInt(x.replace(/%/g, ''));
+}
+
+
 //define enums:
 units = ["students", "schools", "teachers", "parents", "others"];
 achievement = ["Student academic achievement", "Student non-academic achievement", "Teacher performance", "other"];
@@ -134,6 +139,7 @@ var PlanContext = mongoose.Schema({
 	Urbanicity_Rural: { type: String, default: '' },
 	Urbanicity_Suburban: { type: String, default: '' },
 	Urbanicity_Urban: { type: String, default: '' },
+	District_State: { type: String, default: '' },
 	Race_Asian: { type: Number, default: 0 },
 	Race_Black: { type: Number, default: 0 },
 	Race_Native_American: { type: Number, default: 0 },
@@ -169,6 +175,22 @@ var Prepare = mongoose.Schema({
 	Check_Missing: { type: String, default: '' },
 	Check_Min_Max: { type: String, default: '' },
 	Check_Miss_Impact: { type: String, default: '' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
+
+var Milestone = mongoose.Schema({
+    Order: { type: Number, default: 0 },
+    Milestone_Name: { type: String, default: '' },
+    Eval_Begin_Date: { type: Date, default: '01/01/1900' },
+    Assigned_To: { type: String, default: '' },
+    Status: { type: String, default: '' },
+    Notes: { type: String, default: '' }
+});
+
+var EvalPlan = mongoose.Schema({
+	Person_Responsible_IGroup: { type: String, default: '' },
+	
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
@@ -246,6 +268,10 @@ var evaluationSchema = mongoose.Schema({
 	prepare: {
         type: Prepare,
         default: Prepare
+    },
+	evalPlan: {
+        type: EvalPlan,
+        default: EvalPlan
     },
 	random: {
         type: Random,

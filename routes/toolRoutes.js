@@ -563,7 +563,8 @@ module.exports = function (app, passport) {
 						Total_Students: obj.Total_Students,
 						Urbanicity_Rural: obj.Urbanicity_Rural,
 						Urbanicity_Suburban: obj.Urbanicity_Suburban,
-						Urbanicity_Urban: obj.Urbanicity_Urban,
+					Urbanicity_Urban: obj.Urbanicity_Urban,
+						District_State: obj.District_State,
 						Race_Asian: obj.Race_Asian,
 						Race_Black: obj.Race_Black,
 						Race_Native_American: obj.Race_Native_American,
@@ -717,6 +718,17 @@ module.exports = function (app, passport) {
 			res.redirect('/coach');
 		});
 	});
+	
+	//02. Prepare data	   
+	app.get('/evaluation_plan', function (req, res) {
+		sess = req.session;
+	    console.log(sess.eval.planNext);
+		sess.eval.last_step = 3;
+		sess.eval.last_tool = "Evaluation Plan";
+		var query = require('url').parse(req.url, true).query;
+		res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+	});
+
     app.get('/matching', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 4;
