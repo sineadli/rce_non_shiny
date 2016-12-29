@@ -1113,7 +1113,7 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
     app.post('/shareresult', isLoggedIn,function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };

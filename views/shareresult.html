@@ -165,13 +165,19 @@
 
                 }
 
-                .breadcrumb, .bottom-buttons, .footer {
-                    display: none;
+                #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
+                    max-height: 1px;
+                    padding: 0px;
+                    margin: 0px;
                 }
 
                 /* Bootstrap shows link URLs in print, this removes them */
                 a[href]:after {
                     content: none !important;
+                }
+
+                .row, table {
+                    page-break-inside: avoid;
                 }
             }
                     
@@ -327,12 +333,42 @@
                         
                         <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
                         <hr / > 
+
+                        <div class="row">
+                            <div class="col-xs-1 circle hidden-print">
+                            </div>
+
+                            <div class="col-xs-11">
+                                <% 
+                                    var user_name = user.profile.user_name || '';
+                                    var organization_name = user.profile.organization_name || '';
+                                %>
+
+                                <h2 class="hidden-print"> Profile Information</h2>
+                                <strong class="hidden-print"> What is your full name?</strong>
+                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
+                                <br class="hidden-print" / >
+                                <span class="tooltip-gr" data-tool-name="your profile">
+                                    <a class="data-link" href="/setting?return=shareresult"> <%= user_name %></a>
+                                </span>
+                                <br class="hidden-print" />
+                                <br />
+                                <strong class="hidden-print">What is the name of your organization?</strong>
+                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
+                                <br class="hidden-print"/>
+                                <span class="tooltip-gr" data-tool-name="your profile">
+                                    <a class="data-link" href="/setting?return=shareresult"> <%= organization_name %></a>
+                                </span><br / >
+
+                            </div>
+                        </div>
+
                         <div class="row" > 
                             <div class="col-xs-1 circle" > 
                             </div > 
                             
                             <div class="col-xs-11" > 
-                                <h2 > <%= header %></h2 > 
+                                <h2 > <%= header %></h2 >
                             
                                 <h3 > Research Question</h3 > 
 
@@ -521,7 +557,7 @@
                                                 var baseline_var = baseline_vars[index]; %>
                                         
                                                 <div class="row">
-                                                    <div class="col-xs-2">
+                                                    <div class="col-xs-3">
                                                         Re-label <%= baseline_var %>:
                                                     </div>
                                                     <div class="col-xs-4">
@@ -587,7 +623,7 @@
                                                 </span><br>
                                             <em> Location</em> : 
                                                 <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                    <a class="data-link" href="/context_and_usage?return=shareresult">[Midwest]</a>
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.District_State %></a>
                                                 </span><br>
                                             <strong> Overall Student Population</strong> <br>
                                             <em> Non-white</em> : 
@@ -787,6 +823,9 @@
         }
         
         $(document).ready(function () {
+
+            $('#header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer').addClass('hidden-print');
+
             $("#relabel-baseline-vars").click(function (e) {
                 // Prevent form submission
                 e.preventDefault();
