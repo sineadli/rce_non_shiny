@@ -235,6 +235,14 @@ var GetResult = mongoose.Schema({
     updated_at: Date
 });
 
+var ShareResult = new mongoose.Schema({
+    challenges_limitations: { type: String, default: '' },
+    conclusions_next_steps: { type: String, default: '' },
+    baseline_var_relabels: [String],
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+})
+
 //Tools visited array
 var toollist = new mongoose.Schema({
     name: String,
@@ -284,6 +292,10 @@ var evaluationSchema = mongoose.Schema({
     getresult: {
         type: GetResult,
         default: GetResult
+    },
+    shareresult: {
+        type: ShareResult,
+        default: ShareResult
     },
     stepsclicked: [String],
 	last_tool: String,
