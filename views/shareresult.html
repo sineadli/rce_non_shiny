@@ -162,7 +162,7 @@
                 }
 
                 .tooltip-gr {
-
+                    text-shadow: none;
                 }
 
                 #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
@@ -332,36 +332,31 @@
                         %>
                         
                         <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
+                        <%
+                        var user_name = user.profile.user_name || '< Click to add name to profile >';
+                        var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
+                        %>
+
+                        <br / >
+                        <span class="tooltip-gr" data-tool-name="your profile">
+                            <a class="data-link" href="/setting?return=shareresult"> <%= user_name %></a>
+                        </span>
+                        <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. ">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                        <br />
+                        <span class="tooltip-gr" data-tool-name="your profile">
+                            <a class="data-link" href="/setting?return=shareresult"> <%= organization_name %></a>
+                        </span>
+                        <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. ">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                        <br />
+                        <span>
+                            <%= new Date().toLocaleDateString() %>
+                        </span>
+                        <br / >
                         <hr / > 
-
-                        <div class="row">
-                            <div class="col-xs-1 circle hidden-print">
-                            </div>
-
-                            <div class="col-xs-11">
-                                <% 
-                                    var user_name = user.profile.user_name || '< Click to add name to profile >';
-                                    var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
-                                %>
-
-                                <h2 class="hidden-print"> Profile Information</h2>
-                                <strong class="hidden-print"> What is your full name?</strong>
-                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
-                                <br class="hidden-print" / >
-                                <span class="tooltip-gr" data-tool-name="your profile">
-                                    <a class="data-link" href="/setting?return=shareresult"> <%= user_name %></a>
-                                </span>
-                                <br class="hidden-print" />
-                                <br />
-                                <strong class="hidden-print">What is the name of your organization?</strong>
-                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
-                                <br class="hidden-print"/>
-                                <span class="tooltip-gr" data-tool-name="your profile">
-                                    <a class="data-link" href="/setting?return=shareresult"> <%= organization_name %></a>
-                                </span><br / >
-
-                            </div>
-                        </div>
 
                         <div class="row" > 
                             <div class="col-xs-1 circle" > 
@@ -747,7 +742,7 @@
                                         <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Expected_Dosage + '.' %></a>
                                     </span> Students in the comparison group did not have access to <%= tech_name %>. </p >
                                 <p > 
-                                    <label > Challenges/Limitations:</label > 
+                                    <label class="hidden-print"> Challenges/Limitations:</label > 
                                     <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
                                     <p class="visible-print-block" id="print-challenges-limitations"><%= challenges_limitations %></p>
                                 <p>
@@ -797,32 +792,34 @@
                             <div class="modal-dialog">
                                 <!-- Modal content-->
                                 <div class="modal-content">
-                                    <div class="modal-body">
+                                    <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Download</h4>
+                                    </div>
+                                    <div class="modal-body">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label>Download</label>
                                                 <p>You are able to select from the following options to export your findings brief! We suggest exporting this brief and reviewing it with others before you complete your evaluation where we'll publish it so others can see.</p>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xs-6">
                                                 <label>Findings Brief</label><br />
-                                                <input type="radio" name="brief_type" value="PDF document" checked> PDF document<br>
-                                                <input type="radio" name="brief_type" value="PDF slides" disabled> PDF slides<br>
-                                                <input type="radio" name="brief_type" value="DOCX file" disabled> DOCX file<br>
+                                                <input type="radio" name="download_type" value="brief_pdf" checked> PDF document<br>
+                                                <input type="radio" name="download_type" value="brief_slides" disabled> PDF slides<br>
+                                                <input type="radio" name="download_type" value="brief_docx" disabled> DOCX file<br>
                                             </div>
                                             <div class="col-xs-6">
                                                 <label>Technical Appendix</label><br />
-                                                <input type="radio" name="brief_appendix_type" value="PDF document" checked> PDF document<br>
-                                                <input type="radio" name="brief_appendix_type" value="PDF slides" disabled> PDF slides<br>
-                                                <input type="radio" name="brief_appendix_type" value="DOCX file" disabled> DOCX file<br>
+                                                <input type="radio" name="download_type" value="appendix_pdf" disabled> PDF document<br>
+                                                <input type="radio" name="download_type" value="appendix_slides" disabled> PDF slides<br>
+                                                <input type="radio" name="download_type" value="appendix_docx" disabled> DOCX file<br>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                        <button type="submit" id="button-download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                        <button type="submit" id="button-download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
                                     </div>
                                 </div>
                             </div>
@@ -833,32 +830,21 @@
                             <div class="modal-dialog">
                                 <!-- Modal content-->
                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Complete Evaluation</h4>
+                                    </div>
                                     <div class="modal-body">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label>Complete Evaluation</label>
                                                 <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-1">
-                                                <input type="checkbox" name="publish_selection" value="yes" checked />
-                                            </div>
-                                            <div class="col-xs-5">
-                                                Yes, you may publish my findings brief and technical appendix
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <input type="checkbox" name="publish_selection" value="no" />
-                                            </div>
-                                            <div class="col-xs-5">
-                                                No, I do not want anything published
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                        <button type="submit" id="button-publish" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT PUBLISH</button>
+                                        <button type="submit" id="button-publish" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
                                     </div>
                                 </div>
                             </div>
@@ -947,12 +933,12 @@
             $('button[type=submit]').click(function () {
                 var action = $(this).attr('data-action');
                 $('form').attr('action', action);
-
                 $('#document_html').val($('html')[0].outerHTML);
                 $('form').submit();
             });
             
         });
+
     </script>
     </body > 
 </html >

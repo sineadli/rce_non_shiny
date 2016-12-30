@@ -13,6 +13,7 @@
 var fs = require('fs');
 var async = require('async');
 var juice = require('juice');
+var request = require('request');
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
@@ -1287,10 +1288,11 @@ module.exports = function (app, passport) {
                 // Need to generate document file here
                 console.log('generate document');
                 //var filename = 'node-google.pdf';
-                var html_css_inline = juice(obj.document_html);
-                fs.writeFile('test-output.html', html_css_inline, 'utf8');
 
-                callback(null, 'test-output.html');
+                //var html_css_inline = juice(obj.document_html);
+                fs.writeFile('test-output.html', obj.document_html, 'utf8', function () {
+                    callback(null, 'test-output.html');
+                });
             },
             function (filename, callback) {
                 // Now download the document
@@ -1299,7 +1301,7 @@ module.exports = function (app, passport) {
                 res.setHeader('Content-type', 'application/pdf');
                 var filestream = fs.createReadStream('node-google.pdf');*/
 
-                res.setHeader('Content-disposition', 'attachment; filename=brief.html');
+                res.setHeader('Content-disposition', 'attachment; filename=test-output.html');
                 res.setHeader('Content-type', 'text/html');
                 var filestream = fs.createReadStream(filename);
 
