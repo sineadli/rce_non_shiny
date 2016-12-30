@@ -340,13 +340,13 @@
 
                             <div class="col-xs-11">
                                 <% 
-                                    var user_name = user.profile.user_name || '';
-                                    var organization_name = user.profile.organization_name || '';
+                                    var user_name = user.profile.user_name || '< Click to add name to profile >';
+                                    var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
                                 %>
 
                                 <h2 class="hidden-print"> Profile Information</h2>
                                 <strong class="hidden-print"> What is your full name?</strong>
-                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
+                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
                                 <br class="hidden-print" / >
                                 <span class="tooltip-gr" data-tool-name="your profile">
                                     <a class="data-link" href="/setting?return=shareresult"> <%= user_name %></a>
@@ -354,7 +354,7 @@
                                 <br class="hidden-print" />
                                 <br />
                                 <strong class="hidden-print">What is the name of your organization?</strong>
-                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
+                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
                                 <br class="hidden-print"/>
                                 <span class="tooltip-gr" data-tool-name="your profile">
                                     <a class="data-link" href="/setting?return=shareresult"> <%= organization_name %></a>
@@ -807,14 +807,14 @@
                                             <div class="col-xs-6">
                                                 <label>Findings Brief</label><br />
                                                 <input type="radio" name="brief_type" value="PDF document" checked> PDF document<br>
-                                                <input type="radio" name="brief_type" value="PDF slides" checked> PDF slides<br>
-                                                <input type="radio" name="brief_type" value="DOCX file" checked> DOCX file<br>
+                                                <input type="radio" name="brief_type" value="PDF slides" disabled> PDF slides<br>
+                                                <input type="radio" name="brief_type" value="DOCX file" disabled> DOCX file<br>
                                             </div>
                                             <div class="col-xs-6">
                                                 <label>Technical Appendix</label><br />
-                                                <input type="radio" name="brief_type" value="PDF document" checked> PDF document<br>
-                                                <input type="radio" name="brief_type" value="PDF slides" checked> PDF slides<br>
-                                                <input type="radio" name="brief_type" value="DOCX file" checked> DOCX file<br>
+                                                <input type="radio" name="brief_appendix_type" value="PDF document" checked> PDF document<br>
+                                                <input type="radio" name="brief_appendix_type" value="PDF slides" disabled> PDF slides<br>
+                                                <input type="radio" name="brief_appendix_type" value="DOCX file" disabled> DOCX file<br>
                                             </div>
                                         </div>
                                     </div>
@@ -847,7 +847,7 @@
                                                 Yes, you may publish my findings brief and technical appendix
                                             </div>
                                             <div class="col-xs-1">
-                                                <input type="checkbox" name="publish_selection" value="no" checked />
+                                                <input type="checkbox" name="publish_selection" value="no" />
                                             </div>
                                             <div class="col-xs-5">
                                                 No, I do not want anything published
