@@ -12,6 +12,7 @@
 // load up the thing we need
 var fs = require('fs');
 var async = require('async');
+var juice = require('juice');
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
@@ -1115,13 +1116,13 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
     app.post('/shareresult', isLoggedIn,function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.last_step = 6;
-        //var obj = req.body;
+        var obj = req.body;
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -1158,14 +1159,236 @@ module.exports = function (app, passport) {
                     }
                 }
                 if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
-                eval.brief = { "test": "testing" };
+
+                // Turn relabel inputs into an array rather than 
+                var relabel_index = 0;
+                var relabels = [];
+
+                while (obj['relabel-baseline-var-' + relabel_index]) {
+                    relabels.push(obj['relabel-baseline-var-' + relabel_index]);
+                    delete obj['relabel-baseline-var-' + relabel_index] 
+                    relabel_index++;
+                }
+
+                var shareresult = obj;
+                shareresult.baseline_var_relabels = relabels;
+
+                if (!eval.shareresult) {
+                    shareresult.created_at = dt;
+                }
+                else {
+                    shareresult.updated_at = dt;
+                };
+
+                eval.shareresult = shareresult;
+
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                        return res.redirect('/shareresult');
+                    }
+                    else {
+                        return res.redirect('/coach');
+                    }
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
 
+    app.post('/download', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.eval.last_step = 6;
+        var obj = req.body;
+
+        var dt = new Date();
+        async.waterfall([
+            function (callback) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        callback(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, callback) {
+                eval.last_step = 6;
+                eval.last_tool = "Share Your Results";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status === "completed") toollist = { "name": "Share Your Results", "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+
+                // Turn relabel inputs into an array rather than 
+                var relabel_index = 0;
+                var relabels = [];
+
+                while (obj['relabel-baseline-var-' + relabel_index]) {
+                    relabels.push(obj['relabel-baseline-var-' + relabel_index]);
+                    delete obj['relabel-baseline-var-' + relabel_index]
+                    relabel_index++;
+                }
+
+                var shareresult = obj;
+                shareresult.baseline_var_relabels = relabels;
+
+                if (!eval.shareresult) {
+                    shareresult.created_at = dt;
+                }
+                else {
+                    shareresult.updated_at = dt;
+                };
+
+                eval.shareresult = shareresult;
+
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    if (req.body.status == "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                    }
+                    else {
+                    }
+                });
+
+                callback(null, eval);
+            },
+            function (eval, callback) {
+                // Need to generate document file here
+                console.log('generate document');
+                //var filename = 'node-google.pdf';
+                var html_css_inline = juice(obj.document_html);
+                fs.writeFile('test-output.html', html_css_inline, 'utf8');
+
+                callback(null, 'test-output.html');
+            },
+            function (filename, callback) {
+                // Now download the document
+                console.log('download document');
+                /*res.setHeader('Content-disposition', 'attachment; filename=brief.pdf');
+                res.setHeader('Content-type', 'application/pdf');
+                var filestream = fs.createReadStream('node-google.pdf');*/
+
+                res.setHeader('Content-disposition', 'attachment; filename=brief.html');
+                res.setHeader('Content-type', 'text/html');
+                var filestream = fs.createReadStream(filename);
+
+                filestream.pipe(res);
+
+                callback(null, filename);
+            },
+            function (filename, callback) {
+                // Delete the file
+                console.log('delete document');
+                //fs.unlink(filename);
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
+
+    app.post('/publish', isLoggedIn, function (req, res) {
+        var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        sess.eval.last_step = 6;
+        var obj = req.body;
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+                eval.last_step = 6;
+                eval.last_tool = "Share Your Results";
+                //eval find so update the toolsVisisted accordingly
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status === "completed") toollist = { "name": "Share Your Results", "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+
+                // Turn relabel inputs into an array rather than 
+                var relabel_index = 0;
+                var relabels = [];
+
+                while (obj['relabel-baseline-var-' + relabel_index]) {
+                    relabels.push(obj['relabel-baseline-var-' + relabel_index]);
+                    delete obj['relabel-baseline-var-' + relabel_index]
+                    relabel_index++;
+                }
+
+                var shareresult = obj;
+                shareresult.baseline_var_relabels = relabels;
+
+                if (!eval.shareresult) {
+                    shareresult.created_at = dt;
+                }
+                else {
+                    shareresult.updated_at = dt;
+                };
+
+                eval.shareresult = shareresult;
+
+                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    if (req.body.status == "started") {
                         req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/shareresult');
                     }

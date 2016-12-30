@@ -21,8 +21,6 @@
     <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
     <script src="/static/js/jquery.feedback_me.js"></script>
     <!--<script src="/static/js/bootstrap-multiselect.js"></script>-->
-    <!--<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>-->
     <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
@@ -50,111 +48,140 @@
         <% include ../views/partials/toolHeader.html %>
     <% } %>
 
-    <form action="/matching" method="post">
+    <form action="" method="post">
         
-        <div id="brief-results">
-            <style>
-                /* Specific to share results */
+        <style>
+            /* Specific to share results */
 
-                h2 {
-                    color: #4f81bd;
-                    padding-top: 15px;
-                }
+            h2 {
+                color: #4f81bd;
+                padding-top: 15px;
+            }
 
-                h2.grade-header {
-                    font-size: 16px;
-                }
+            h2.grade-header {
+                font-size: 16px;
+            }
 
-                h3 {
-                    padding-top: 10px;
-                    letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
-                }
+            h3 {
+                padding-top: 10px;
+                letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
+            }
 
-                li {
-                    margin-bottom: 10px;
-                    font-size: 16px;
-                }
+            li {
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
 
-                p {
-                    font-size: 16px;
-                }
+            p {
+                font-size: 16px;
+            }
 
-                .row {
-                    padding-top: 15px;
-                }
+            .row {
+                padding-top: 15px;
+            }
 
-                img {
-                    max-width: 100%;
-                    padding-bottom: 20px;
-                }
+            img {
+                max-width: 100%;
+                padding-bottom: 20px;
+            }
 
-                .white-background-blue-border {
-                    border: 3px #2e75b6 solid;
-                    border-radius: 25px;
-                    font-size: 16px;
-                    line-height: 1.5em;
-                    padding: 25px;
-                    margin: 15px;
-                    max-width: 85%;
-                }
+            .white-background-blue-border {
+                border: 3px #2e75b6 solid;
+                border-radius: 25px;
+                font-size: 16px;
+                line-height: 1.5em;
+                padding: 25px;
+                margin: 15px;
+                max-width: 85%;
+            }
 
-                .blue-background-white-text {
-                    background-color: #2e75b6;
-                    border: 3px #2e75b6 solid;
-                    border-radius: 25px;
-                    color: #fff;
-                    font-size: 20px;
-                    margin: 15px;
-                    min-height: 150px;
-                    padding: 20px;
-                    text-align: center;
-                }
+            .blue-background-white-text {
+                background-color: #2e75b6 !important;
+                border: 3px #2e75b6 solid;
+                border-radius: 25px;
+                color: #fff;
+                font-size: 20px;
+                margin: 15px;
+                min-height: 150px;
+                padding: 20px;
+                text-align: center;
+            }
 
-                #table1 {
-                    width: 100%;
-                }
+            #table1 {
+                width: 100%;
+            }
 
-                #table1 td, #table1 th {
-                    font-size: 20px;
-                    text-align: center;
-                }
+            #table1 td, #table1 th {
+                font-size: 20px;
+                text-align: center;
+            }
 
-                #table1 thead tr {
-                    border-bottom: 1px #000 solid;
-                }
+            #table1 thead tr {
+                border-bottom: 1px #000 solid;
+            }
 
-                #table1 tfoot tr {
-                    border-top: 1px #000 solid;
-                }
+            #table1 tfoot tr {
+                border-top: 1px #000 solid;
+            }
 
-                .circle {
-                    width: 50px;
-                    height: 50px;
-                    margin-top: 10px;
-                    -webkit-border-radius: 25px;
-                    -moz-border-radius: 25px;
-                    border-radius: 25px;
-                    background-color: #4f81bd;
-                    text-align: center;
-                    vertical-align: middle;
-                    line-height: 50px;
-                }
+            .circle {
+                width: 50px;
+                height: 50px;
+                margin-top: 10px;
+                -webkit-border-radius: 25px;
+                -moz-border-radius: 25px;
+                border-radius: 25px;
+                background-color: #4f81bd;
+                text-align: center;
+                vertical-align: middle;
+                line-height: 50px;
+            }
 
-                .editable {
-                    /*text-decoration: underline;*/
-                    /*
-                    background-color: #ddd;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    margin-left: 5px;
-                    margin-right: 5px;*/
+            @media screen {
+                [contenteditable=true] {
+                    text-decoration: underline;
                 }
 
                 a.data-link {
                     color: #000000;
                 }
+            }
+                
+            @media print {
+
+                body {
+                    -webkit-print-color-adjust: exact;
+                }
+
+                a {
+                    color: #000000;
+                }
+
+                h2 a {
+                    color: #4f81bd;
+                }
+
+                .tooltip-gr {
+
+                }
+
+                #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
+                    max-height: 1px;
+                    padding: 0px;
+                    margin: 0px;
+                }
+
+                /* Bootstrap shows link URLs in print, this removes them */
+                a[href]:after {
+                    content: none !important;
+                }
+
+                .row, table {
+                    page-break-inside: avoid;
+                }
+            }
                     
-            </style>
+        </style>
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" > 
@@ -209,14 +236,16 @@
 
                                 return x;
                             }
-
+               
                             var tech_name = eval.basics.Basics_Tech_Name;
                             var basic_outcome = eval.basics.Basics_Outcome;
+
                             var users = eval.basics.Basics_Users;
+                            if (users === 'other') users = eval.basics.Basic_Users_other;
 
                             var outcome_direction = eval.planQuestion.Outcome_Direction;
                             var outcome_measure = eval.planQuestion.Outcome_Measure;
-
+                            
                             var analysis_results = JSON.parse(eval.getresult.Result);
                             var analysis_results_by_grade = analysis_results.results_by_grade;
 
@@ -226,12 +255,12 @@
 
                             var pass_probability = stripPercent(plan_next.Pass_Probability);
                         
-                            var n_overall = 0, n_treatment = 0;
+                            var n_overall = 0, n_treatment = 0, n_full_overall = 0, n_full_treatment = 0;
 
                             var path = eval.path;
 
                             var baseline_by_grade, baseline_results_by_grade, baseline_vars;
-                            
+                        
                             if (path === 'path-matching') {
                                 var match_results = JSON.parse(eval.matching.Result);
                                 baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
@@ -239,14 +268,32 @@
 
                                 for (grade in match_results.results_by_grade) {
                                     var samples = match_results.results_by_grade[grade].samples;
+
+                                    n_full_overall += samples.n_full[0];
+                                    n_full_treatment += samples.n_full_treat[0];
+
                                     n_overall += samples.n_matched[0];
                                     n_treatment += samples.n_matched_treat[0];
+                                    
                                 }
 
-                                baseline_vars = JSON.parse(eval.matching.s_match_vars);
+                                baseline_vars = match_results.match_vars;
                             }
+                            else if (path === 'path-randomization') {
+                                var results = JSON.parse(eval.random.Result);
+                                baseline_by_grade = Object.keys(results.results_by_grade).length > 1;
+                                baseline_results_by_grade = results.results_by_grade;
 
-                            var baseline_vars_wordlist = wordList(baseline_vars);
+                                for (grade in match_results.results_by_grade) {
+                                    var samples = results.results_by_grade[grade].samples;
+                                    n_overall += samples.n_full[0];
+                                    n_treatment += samples.n_treat[0];
+                                }
+
+                                baseline_vars = results.match_vars;
+                            }
+               
+                            
                             var n_comparison = n_overall - n_treatment;
                         
                             var success_count = 0, failure_count = 0;
@@ -268,21 +315,66 @@
                             var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
 
                             var header = capitalize(tech_name) + ' is' + needle_negate + ' moving the needle on ' + basic_outcome + grade_qualifier;
+
+                            if (eval.shareresult) {
+                                var shareresult = eval.shareresult;
+                                var conclusions_next_steps = shareresult.conclusions_next_steps || '';
+                                var challenges_limitations = shareresult.challenges_limitations || '';
+                                var baseline_vars_relabel = shareresult.baseline_var_relabels || baseline_vars;
+                            }
+                            else {
+                                var challenges_limitations = '';
+                                var conclusions_next_steps = '';
+                                var baseline_vars_relabel = baseline_vars;
+                            }
+
+                            var baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
                         %>
                         
                         <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
                         <hr / > 
-                        
+
+                        <div class="row">
+                            <div class="col-xs-1 circle hidden-print">
+                            </div>
+
+                            <div class="col-xs-11">
+                                <% 
+                                    var user_name = user.profile.user_name || '< Click to add name to profile >';
+                                    var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
+                                %>
+
+                                <h2 class="hidden-print"> Profile Information</h2>
+                                <strong class="hidden-print"> What is your full name?</strong>
+                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
+                                <br class="hidden-print" / >
+                                <span class="tooltip-gr" data-tool-name="your profile">
+                                    <a class="data-link" href="/setting?return=shareresult"> <%= user_name %></a>
+                                </span>
+                                <br class="hidden-print" />
+                                <br />
+                                <strong class="hidden-print">What is the name of your organization?</strong>
+                                <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. "><i class="fa fa-question-circle"></i></span>
+                                <br class="hidden-print"/>
+                                <span class="tooltip-gr" data-tool-name="your profile">
+                                    <a class="data-link" href="/setting?return=shareresult"> <%= organization_name %></a>
+                                </span><br / >
+
+                            </div>
+                        </div>
+
                         <div class="row" > 
                             <div class="col-xs-1 circle" > 
                             </div > 
                             
                             <div class="col-xs-11" > 
-                                <h2 > <%= header %></h2 > 
+                                <h2 > <%= header %></h2 >
                             
                                 <h3 > Research Question</h3 > 
-                                    Does <%= tech_name %> <%= outcome_direction %> <%= outcome_measure %> among <%= eval.planQuestion.Intervention_Group_Desc %>
-                                    compared to <%= eval.planQuestion.Comparison_Group_Desc %>?
+
+                                    Does <%= tech_name %> <%= outcome_direction %> <%= outcome_measure %> among
+                                    <%= eval.planQuestion.Intervention_Group_Desc %>
+                                    <%= eval.planQuestion.Comparison_Group_Desc %>?
 
                                     <% for (grade in analysis_results_by_grade) {
 
@@ -325,6 +417,9 @@
                                 <%
                                     var context = eval.planContext;
 
+                                    // Use an array for the loop since it has predictable ordering
+                                    var grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
+
                                     var grade_map = {
                                         "PK" : "Pre-Kindergarten",
                                         "K"  : "Kindergarten",
@@ -343,12 +438,27 @@
                                         "PS" : "Post-secondary"
                                     }
                                         
-                                    var grades_used = [];
-                                    
-                                    for (grade in grade_map) {
+                                    var grades_used = [], grade_streak = 0, start_grade = '', end_grade = '';
 
+                                    for (grade_index in grades) {
+                                        var grade = grades[grade_index];
+                   
                                         if (context['Grade_' + grade] === grade) {
-                                            grades_used.push(grade_map[grade]);
+                                            grade_streak++;
+
+                                            if (grade_streak === 1) start_grade = grade_map[grade];
+                                            else end_grade = grade_map[grade];
+                                        }
+                                        else {
+
+                                            if (grade_streak === 1) {
+                                                grades_used.push(start_grade);
+                                            }
+                                            else if (grade_streak > 1) {
+                                                grades_used.push(start_grade + '-' + end_grade);
+                                            }
+
+                                            grade_streak = 0;
                                         }
                                     }
                                     var program_types = [context.Type_Policy, context.Type_Teacher_Level, context.Type_School_Level, context.Type_CSchool_Structure, context.Type_Practice, context.Type_Curriculum];
@@ -411,27 +521,54 @@
                                             This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.
                                         <% } %>
                                     </li>
-                                    <li > [Groups of students were assigned based on classroom.]</li > 
-                                    <li > Baseline equivalence (or similarity across treatment and comparison) was tested using: <span class="baseline_vars_wordlist">
-                                        <%= baseline_vars_wordlist %></span> characteristics.</li > 
+                                    <li > 
+                                        <%  var assignment;
+
+                                            if (path === 'path-matching') {
+                                                
+                                                var suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
+                                                assignment = users + ' were matched ' + suffix;
+
+                                            }
+                                            else if (path === 'path-randomize') {
+                                                
+                                                if (eval.random.Individual_Group === 'groups') {
+                                                    prefix = 'Groups of ' 
+                                                    group = eval.random.Cluster_Group;
+                                                    if (group === 'other') group = eval.random.Cluster_Group_Other;
+                                                } else {
+                                                    prefix = '';
+                                                    group = 'random values';
+                                                }
+                                                
+                                                assignment = prefix + users + ' were assigned based on ' + group ;
+                                            }
+                                        %>
+
+                                        <%= sentence(assignment) %>
+                                    </li > 
+                                    <li > Baseline equivalence (or similarity across treatment and comparison) was tested using: <span class="baseline-vars-wordlist">
+                                        <%= baseline_vars_relabel_wordlist %></span> characteristics.</li > 
                                 </ul > 
                                 <% if (baseline_vars && baseline_vars.length > 0) { %>
-                                    <h3>Re-label baseline variables (optional):</h3>
-                                    <% for (index in baseline_vars) { 
-                                            var baseline_var = baseline_vars[index]; %>
+                                    <div class="hidden-print">
+                                        <h3>Re-label baseline variables (optional):</h3>
+                                        <% for (index in baseline_vars) { 
+                                                var baseline_var = baseline_vars[index]; %>
                                         
-                                            <div class="row">
-                                                <div class="col-xs-2">
-                                                    Re-label <%= baseline_var %>:
-                                                </div>
-                                                <div class="col-xs-4">
-                                                    <input type="text" class="relabel-baseline-var" value="<%= baseline_var %>" data-reset="<%= baseline_var %>"/>
-                                                </div>
-                                            </div>                                            
-                                    <% } %>                                
-                                    <div class="row">
-                                        <div class="col-xs-4">
-                                            <button class="btn btn-info" id="relabel-baseline-vars">Re-label</button>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        Re-label <%= baseline_var %>:
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <input type="text" name="relabel-baseline-var-<%- index %>" class="relabel-baseline-var" value="<%= baseline_vars_relabel[index] %>" data-reset="<%= baseline_var %>"/>
+                                                    </div>
+                                                </div>                                            
+                                        <% } %>                                
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <button type="button" class="btn btn-info" id="relabel-baseline-vars">Re-label</button>
+                                            </div>
                                         </div>
                                     </div>
                                 <% } %>
@@ -443,68 +580,78 @@
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > This evaluation studied <%= tech_name %>’s impact on [Elementary] <%= users %></h2 > 
-                        
-                                    <div class="col-xs-3 blue-background-white-text">
-                                        <p> <strong> Treatment Group</strong> </p>
-                                        <p> Students who used readTech </p>
-                                        <p> # of students: 134 </p>
-                                    </div>
-                                    <div class="col-xs-3 blue-background-white-text">
-                                        <p> <strong> Comparison Group</strong> </p>
-                                        <p> Students who did not use readTech </p>
-                                        <p> # of students: 134 </p>
-                                    </div>
-                                    <div class="col-xs-4 white-background-blue-border">
+                                <h2 > This evaluation studied <%= tech_name %>’s impact on <%= wordList(grades_used) %> <%= users %></h2>
 
-                                        <% 
-                                            var school_type = wordList([context.SchoolType_Charter, context.SchoolType_Private, context.SchoolType_Parochial, context.SchoolType_Public]);
-                                            var urbanicity = wordList([context.Urbanicity_Urban, context.Urbanicity_Suburban, context.Urbanicity_Rural]);
+                                    <% if (path === 'path-matching') { %>
+                                        <p>
+                                            The original dataset included <%= n_full_treatment %> students who used <%= tech_name %> and 
+                                            <%= n_full_overall - n_full_treatment %> students who did not use <%= tech_name %>. 
+                                            The final evaluation dataset included:
+                                        </p>
+                                    <% } %>
+                                
+                                    <div class="row">
+                                        <div class="col-xs-3 blue-background-white-text">
+                                            <p> <strong> Treatment Group</strong> </p>
+                                            <p> Students who used readTech </p>
+                                            <p> # of students: 134 </p>
+                                        </div>
+                                        <div class="col-xs-3 blue-background-white-text">
+                                            <p> <strong> Comparison Group</strong> </p>
+                                            <p> Students who did not use readTech </p>
+                                            <p> # of students: 134 </p>
+                                        </div>
+                                        <div class="col-xs-4 white-background-blue-border">
 
-                                            var non_white = 100 - context.Race_White;
-                                        %>
-                                        <strong> Evaluation Context</strong> <br>
-                                        <em> School Type</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"> <%= school_type %></a>
-                                            </span> <br>
-                                        <em> District Size</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Total_Students %></a>
-                                            </span><br>
-                                        <em> Setting</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"> <%= urbanicity %></a>
-                                            </span><br>
-                                        <em> Location</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult">[Midwest]</a>
-                                            </span><br>
-                                        <strong> Overall Student Population</strong> <br>
-                                        <em> Non-white</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= non_white %></a>%
-                                            </span><br>
-                                        <em> Hispanic</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Ethnicity_Hispanic %></a>%
-                                            </span><br>
-                                        <em> Female</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Gender_Female %></a>%
-                                            </span><br>
-                                        <em> Free or Reduced Price Lunch</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.FRPL_Reduced + context.FRPL_Free %></a>%
-                                            </span><br>
-                                        <em> English Learners</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.English_Learners %></a>%
-                                            </span><br>
-                                        <em> Students with IEPs</em> : 
-                                            <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                                <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.IEP %></a>%
-                                            </span><br>
+                                            <% 
+                                                var school_types = [context.SchoolType_Charter, context.SchoolType_Private, context.SchoolType_Parochial, context.SchoolType_Public];
+                                                var urbanicity = [context.Urbanicity_Urban, context.Urbanicity_Suburban, context.Urbanicity_Rural];
+                                                var non_white = 100 - context.Race_White;
+                                            %>
+                                            <strong> Evaluation Context</strong> <br>
+                                            <em> School Type</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= wordList(school_types) %></a>
+                                                </span> <br>
+                                            <em> District Size</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Total_Students %></a>
+                                                </span><br>
+                                            <em> Setting</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= wordList(urbanicity) %></a>
+                                                </span><br>
+                                            <em> Location</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.District_State %></a>
+                                                </span><br>
+                                            <strong> Overall Student Population</strong> <br>
+                                            <em> Non-white</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= non_white %></a>%
+                                                </span><br>
+                                            <em> Hispanic</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Ethnicity_Hispanic %></a>%
+                                                </span><br>
+                                            <em> Female</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Gender_Female %></a>%
+                                                </span><br>
+                                            <!--
+                                            <em> Free or Reduced Price Lunch</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.FRPL_Reduced + context.FRPL_Free %></a>%
+                                                </span><br>-->
+                                            <em> English Learners</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.English_Learners %></a>%
+                                                </span><br>
+                                            <em> Students with IEPs</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.IEP %></a>%
+                                                </span><br>
+                                        </div>
                                     </div>
 
 
@@ -521,25 +668,29 @@
                                                 <th> Treatment</th>
                                                 <th> Comparison</th>
                                                 <th> Difference</th>
+                                                <th> Effect Size</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
                                             <% for (grade in baseline_results_by_grade) {
-                                                var baseline_var_means = baseline_results_by_grade[grade].match_var_means;
+                                                var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+                                                var characteristics = Object.keys(baseline_var_means);
 
-                                                for (characteristic in baseline_var_means) { %>
-                                                <tr>
-                                                    <% if (baseline_by_grade) { %>
-                                                    <td> <%= grade %></td>
-                                                    <% } %>
-                                                    <td> <%= characteristic %></td>
-                                                    <td> <%= baseline_var_means[characteristic].overall[0] %></td>
-                                                    <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
-                                                    <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
-                                                    <td> <%= baseline_var_means[characteristic].difference[0] %></td>
-                                                </tr>
-                                            <% }} %>
+                                                for (index in characteristics) { 
+                                                    var characteristic = characteristics[index]; %>
+                                                    <tr>
+                                                        <% if (baseline_by_grade) { %>
+                                                            <td> <%= grade %></td>
+                                                        <% } %>
+                                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                                        <td> <%= baseline_var_means[characteristic].overall[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].difference[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].effect_size[0] %></td>
+                                                    </tr>
+                                                <% }} %>
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -550,6 +701,7 @@
                                                 <td> <%= n_overall %></td>
                                                 <td> <%= n_treatment %></td>
                                                 <td> <%= n_comparison %></td>
+                                                <td> --</td>
                                                 <td> --</td>
                                             </tr>
                                         </tfoot>
@@ -563,13 +715,47 @@
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > The evaluation period lasted <%= eval.planContext.Plan_Context_A_4 %>.</h2 > 
+                                <% 
+                                    /* We have begin and end datetimes, rather than a plain-English duration. The following 
+                                        estimates the duration to the nearest day, and then converts that to the most appropriate 
+                                        count of days, weeks, months, or years */
+                                    var begin_date = new Date(context.Eval_Begin_Date);
+                                    var end_date = new Date(context.Eval_End_Date);
+                                    var duration_days = Math.ceil((end_date - begin_date) / 86400000);
+                                    var duration = '';
+
+                                    if (duration_days < 7) {
+                                        duration = duration_days.toString() + ' days';        
+                                    }
+                                    else if (duration_days < 84) {
+                                        duration = (Math.ceil(duration_days / 7)).toString() + ' weeks';
+                                    }
+                                    else if (duration_days < 365) {
+                                        duration = (Math.ceil(duration_days / 30)).toString() + ' months';
+                                    }
+                                    else {
+                                        duration = (Math.ceil(duration_days / 365)).toString() + ' years';
+                                    }
+                                %>
+                                <h2 > The evaluation period lasted
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a href="/context_and_usage?return=shareresult"><%= duration %>.</a>
+                                    </span>
+                                </h2 > 
                                 <p > During this period, <%= users %> in the intervention group were intended to use the technology 
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Expected_Dosage %></a>
-                                    </span>. [Students in the comparison group did not have access to ReadTech.] </p > 
-                                <p > <strong > Challenges/Limitations:</strong > <%= eval.planContext.Plan_Context_C %>. <%= eval.planContext.Plan_Context_D %> </p > 
-                                <p > [Other contextual factors or supports being provided to students may have contributed to results.] [Other factors include: [open response from summarize context]] </p > 
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Expected_Dosage + '.' %></a>
+                                    </span> Students in the comparison group did not have access to <%= tech_name %>. </p >
+                                <p > 
+                                    <label > Challenges/Limitations:</label > 
+                                    <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
+                                    <p class="visible-print-block" id="print-challenges-limitations"><%= challenges_limitations %></p>
+                                <p>
+                                    Other contextual factors or supports being provided to students may have contributed to results. Other factors include:
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Other_Notes %></a>
+                                    </span>
+                                </p> 
                             </div > 
                         </div > 
                         
@@ -586,7 +772,7 @@
                                           <a href="/craft_your_research_q?return=shareresult"><%= outcome_measure %>.</a>
                                      </span>
                                 </h2 > 
-                                <p > Analysis of <%= tech_name %> controls for: <span class="baseline_vars_wordlist"><%= baseline_vars_wordlist %>.</span>
+                                <p > Analysis of <%= tech_name %> controls for: <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %>.</span>
                                     <% if (analysis_by_grade) { %>
                                         Analysis was also conducted by grade.
                                     <% } %> </p > 
@@ -599,56 +785,121 @@
 
                             <div class="col-xs-11" > 
                                 <h2 > Conclusions and Next Steps</h2 > 
-                                <p > [Based on the results I will expand use of <%= tech_name %> to all 4th grade students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations.] 
-                                </p > 
+                                <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- tech_name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
+                                <p class="visible-print-block" id="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
                             </div > 
                         </div >
+
+                        <input type="hidden" name="document_html" id="document_html"/>
+
+                        <!-- Modal -->
+                        <div id="download-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label>Download</label>
+                                                <p>You are able to select from the following options to export your findings brief! We suggest exporting this brief and reviewing it with others before you complete your evaluation where we'll publish it so others can see.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <label>Findings Brief</label><br />
+                                                <input type="radio" name="brief_type" value="PDF document" checked> PDF document<br>
+                                                <input type="radio" name="brief_type" value="PDF slides" disabled> PDF slides<br>
+                                                <input type="radio" name="brief_type" value="DOCX file" disabled> DOCX file<br>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label>Technical Appendix</label><br />
+                                                <input type="radio" name="brief_appendix_type" value="PDF document" checked> PDF document<br>
+                                                <input type="radio" name="brief_appendix_type" value="PDF slides" disabled> PDF slides<br>
+                                                <input type="radio" name="brief_appendix_type" value="DOCX file" disabled> DOCX file<br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                        <button type="submit" id="button-download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div id="complete-evaluation-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label>Complete Evaluation</label>
+                                                <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-1">
+                                                <input type="checkbox" name="publish_selection" value="yes" checked />
+                                            </div>
+                                            <div class="col-xs-5">
+                                                Yes, you may publish my findings brief and technical appendix
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <input type="checkbox" name="publish_selection" value="no" />
+                                            </div>
+                                            <div class="col-xs-5">
+                                                No, I do not want anything published
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                        <button type="submit" id="button-publish" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
                 
-        <% include ../views/partials/toolButtons.html %>
+        <% include ../views/partials/shareresultButtons.html %>
     </form > 
     
     <% include ../views/partials/footer.html %>
     <script src='/static/js/custom.js' ></script > 
     <script>
+        // Function to convert array into word list (e.g. ["word1", "word2", "word3"] -> "word1, word2, and word3")
+        var wordList = function (x) {
+            var out;
+
+            x = x.filter(function (x) { return x !== '' })
+
+            if (x.length === 0) {
+                out = '';
+            }
+            else if (x.length === 1) {
+                out = x[0];
+            }
+            else if (x.length === 2) {
+                out = x[0] + ' and ' + x[1];
+            }
+            else {
+                out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+            }
+
+            return out;
+        }
         
         $(document).ready(function () {
-            $('#brief-results').on('click', 'span.editable', function () {
-                var width = $(this).width();
-                var reset = $(this).text();
-                var str = '<form class="edit-form" style="display: inline;">' + '<input type="text" class="editing" data-reset="' + reset + '" style="width: ' + (width * 2) + 'px;" value="' + $(this).text() + '"></form>';
-                $(this).replaceWith(str);
-            })
-            .on('keydown', 'input.editing', function() {
-                var width = $(this).width();
-                var minWidth = 9 * $(this).val().length
-                if (width < minWidth) {
-                    $(this).width(minWidth);
-                }
-            })
-            .on('blur', 'input.editing', function () {
-                var val = $(this).val();
-                
-                if (val === '') {
-                    val = $(this).attr('data-reset');
-                }
-                
-                $(this).parent('form.edit-form').replaceWith('<span class="editable">' + val + '</span>');
-            })
-            .on('submit', 'form.edit-form', function (e) {
-                e.preventDefault();
-                var edit = $(this).children('input.editing');
-                var val = $(edit).val();
 
-                if (val === '') {
-                    val = $(edit).attr('data-reset');
-                }
-
-                $(this).replaceWith('<span class="editable">' + val + '</span>');
-            });
+            $('#header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer').addClass('hidden-print');
 
             $("#relabel-baseline-vars").click(function (e) {
                 // Prevent form submission
@@ -657,7 +908,7 @@
                 var newLabels = [];
 
                 // Get value of all relabel inputs. For any blanks, revert to previous value.
-                $('.relabel-baseline-var').each( function() {
+                $('.relabel-baseline-var').each( function(index) {
                     var val = $(this).val();
 
                     if (val === '') {
@@ -667,34 +918,38 @@
                     else {
                         $(this).attr('data-reset', val);
                     }
+
+                    // Update characteristic names in table 1
+                    $('span.table1-relabel-baseline-var-' + index).text(val);
+                    
                     newLabels.push(val);
                 });
 
-                // Function to convert array into word list (e.g. ["word1", "word2", "word3"] -> "word1, word2, and word3")
-                var wordList = function (x) {
-                    var out;
-
-                    if (x.length === 1) {
-                        out = x;
-                    }
-                    else if (x.length === 2) {
-                        out = x[0] + ' and ' + x[1];
-                    }
-                    else {
-                        out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
-                    }
-
-                    return out;
-                }
-
                 // Replace baseline var wordlists with new labels.
-                $("span.baseline_vars_wordlist").text(wordList(newLabels));
+                $("span.baseline-vars-wordlist").text(wordList(newLabels));
             });
 
+            // Add tooltips.
             $('.tooltip-gr').tooltip({
                 title: function () {
                     return "You previously entered this value on " + $(this).attr('data-tool-name') + ". Click to visit the tool and revise your answer.";
                 }
+            });
+
+            // On textarea change on screen, update the p that will contain the text in the printed version.
+            $('textarea').change(function () {
+                var id = $(this).attr('id');
+                var val = $(this).val();
+                $('#print-' + id).text(val);
+            });
+
+            // Since we have multiple buttons that can take actions, set the form action on button click.
+            $('button[type=submit]').click(function () {
+                var action = $(this).attr('data-action');
+                $('form').attr('action', action);
+
+                $('#document_html').val($('html')[0].outerHTML);
+                $('form').submit();
             });
             
         });
