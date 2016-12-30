@@ -790,6 +790,8 @@
                             </div > 
                         </div >
 
+                        <input type="hidden" name="document_html" id="document_html"/>
+
                         <!-- Modal -->
                         <div id="download-modal" class="modal fade" role="dialog">
                             <div class="modal-dialog">
@@ -945,7 +947,8 @@
             $('button[type=submit]').click(function () {
                 var action = $(this).attr('data-action');
                 $('form').attr('action', action);
-                console.log('changed action to ', action);
+
+                $('#document_html').val($('html')[0].outerHTML);
                 $('form').submit();
             });
             
