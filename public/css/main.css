@@ -326,7 +326,7 @@ h2.clickable ,p.clickable {
 }
 h2.clickable {
     font-size: 1.5em;
-    margin: 20px 0 25px 0;
+    margin: 20px 0 5px 0;
 
 }
 div.header-section {
@@ -893,6 +893,9 @@ div.q-row {
     border-bottom: solid 2px #E0DDDD;
     padding: 0px 0px 25px 0px;
 
+}
+div.step-to-consider {
+    margin-top: 5px;
 }
 div.step-to-consider .panel-group .panel, div.step-to-consider .panel-heading {
 	background-color:#F4F2EB;

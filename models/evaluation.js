@@ -35,6 +35,7 @@ achievement = ["Student academic achievement", "Student non-academic achievement
 direction = ["Increase", "Decrease"];
 spendresults = ["costs", "saves"];
 unitmeasured = ["student", "teacher", "school"];
+
 totalToolNumber = 8; //for completed status
 
 //02.03 determine your approach
@@ -182,15 +183,16 @@ var Prepare = mongoose.Schema({
 var Milestone = mongoose.Schema({
     Order: { type: Number, default: 0 },
     Milestone_Name: { type: String, default: '' },
-    Eval_Begin_Date: { type: Date, default: '01/01/1900' },
+    Complete_Date: { type: Date, default: '01/01/1900' },
     Assigned_To: { type: String, default: '' },
     Status: { type: String, default: '' },
-    Notes: { type: String, default: '' }
+    Notes: { type: String, default: '' },
+	Hide: { type: String, default: '' }
 });
 
 var EvalPlan = mongoose.Schema({
 	Person_Responsible_IGroup: { type: String, default: '' },
-	
+	Milestones: [Milestone],
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
@@ -293,7 +295,6 @@ var evaluationSchema = mongoose.Schema({
     author: { type: String, default: "" },
     company: { type: String, default: "" }
 
-
 });
 
 
@@ -363,4 +364,5 @@ evaluationSchema.pre('save', function (next) {
 
 
 // create the model for users and expose it to our app
+
 module.exports = mongoose.model('Evaluation', evaluationSchema);

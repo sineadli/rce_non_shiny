@@ -696,7 +696,7 @@ module.exports = function (app, passport) {
 				
 				eval.prepare = prepare;
 				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-				console.log(eval);
+				//console.log(eval);
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -718,13 +718,15 @@ module.exports = function (app, passport) {
 			res.redirect('/coach');
 		});
 	});
-	
+
 	//02. Prepare data	   
 	app.get('/evaluation_plan', function (req, res) {
 		sess = req.session;
-	    console.log(sess.eval.planNext);
+
 		sess.eval.last_step = 3;
 		sess.eval.last_tool = "Evaluation Plan";
+		console.log("In eval plan get");
+		console.log(sess.eval.evalPlan.Milestones);
 		var query = require('url').parse(req.url, true).query;
 		res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
 	});

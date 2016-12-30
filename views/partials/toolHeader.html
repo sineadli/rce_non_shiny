@@ -15,8 +15,9 @@
     </div>
     <div class="col-xs-2">
         <div class="sec-label">Start Date</div>
-        <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
-        <p><%= d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear()  %></p>
+        <% var d = new Date(); if(eval) {d= new Date(eval.created_at)}
+         var fd =  (d.getMonth()+1)+"/"+d.getDate()+"/"+d.getFullYear() %>
+        <p><%= fd  %></p>
     </div>
     <div class="col-xs-3">
         <div class="sec-label">Status</div>

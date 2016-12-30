@@ -357,6 +357,7 @@ function recordViewPDF(name, step, path) {
 /*~~~~~~~~~~~~~~~~~~ randomization.html ~~~~~~~~~~~~~~~~~~*/
 $('#Individual_Group').change(function () {
 	var value = $(this).val();
+	var cluster = $('#Cluster_Group').val("Select an option");
 
 	var clusterSpecify = $("#Question_Cluster");
 
@@ -420,7 +421,7 @@ function setUserLimitsSelections() {
     if (cluster === 'classes') {
         scluster = 'class';
     }
-	if (cluster === 'other') {
+	else if (cluster === 'other') {
 	    scluster = 'groups';
 	}else scluster = cluster.substr(0, cluster.length - 1);
 

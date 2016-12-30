@@ -75,7 +75,7 @@
                 <div class="col-xs-12">
                     <div class="tool-top">
                         <div class="dl-guide">
-                            <a onclick=" window.open('/static/pdf/03.03 Summarize Context_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <a onclick="window.open('/static/pdf/03.03 Summarize Context_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
                             <h1 class="tool-title ">Summarize Context</h1>
@@ -109,16 +109,33 @@
                         </div>
                         <div id="A" class="row collapse in q-row">
                             <div class="col-xs-7">
+                                <%
 
+                                function dateformat(v){
+                                function pad(n) {
+                                   return n < 10 ? "0" +n : n
+                                }
+                                d=new Date(v);
+                                dash="-"
+                                colon=":"
+                                return d.getFullYear()+dash+
+                                pad(d.getMonth()+1)+dash+
+                                pad(d.getDate())
+                                                            
+                                                             }
+                                                             var bd=dateformat(eval.planContext.Eval_Begin_Date);
+                                                             var ed=dateformat(eval.planContext.Eval_End_Date);
+                                                             %>
+                                    
 
-                                <div class="step-action">
-                                    <label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label>
-                                    <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= Eval_Begin_Date %>" />
-                                    <br />
-                                    <label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label>
-                                    <input type="date" name="Eval_End_Date" id="Eval_End_Date" value="<%= Eval_End_Date %>" />
-                                </div>
-                            </div>
+                                    <div class="step-action">
+                                        <label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label>
+                                        <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= bd %>" />
+                                        <br />
+                                        <label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label>
+                                        <input type="date" name="Eval_End_Date" id="Eval_End_Date" value="<%= ed %>" />
+                                    </div>
+</div>
 
                             <div class="col-xs-5">
                                 <div class="step-to-consider">

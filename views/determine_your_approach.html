@@ -52,8 +52,9 @@
         var Basics_Users = eval.basics.Basics_Users ? eval.basics.Basics_Users : "users";
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
         var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
-       
-        %>
+
+    %>
+        <input type="hidden" id="Basics_Users" value="<%= Basics_Users %>" />
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -89,7 +90,7 @@
                 </div>
             </div>
             <div id="D" class="row  collapse in q-row">
-                <div class="col-xs-7">
+                <div class="col-xs-6">
                     <div class="step-subquestion" id="Expanding">
                         <p class="all-using">Will you be conducting this evaluation with current users of <%= Basics_Tech_Name %> or do you plan to conduct this evaluation with new users (as part of either an expansion or new implementation of <%= Basics_Tech_Name %>)?</p>
                     </div>
@@ -147,7 +148,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-5">
+                <div class="col-xs-6">
                     <div class="step-to-consider">
                         <div class="panel-group" id="ttc4">
                             <div class="panel panel-default">
@@ -162,6 +163,7 @@
                                 <div id="consider4" class="panel-collapse collapse in">
                                     <p>If you are targeting a specific type of <%= Basics_Users %> (for example ELL students or Title 1 schools) answer this question just for those <%= Basics_Users %>.</p>
                                     <p> The more similar the two groups are at the start of the evaluation, the more confident you can be at the end of the evaluation that the measured differences found can be attributed to using the technology.</p>
+                                    <p> Do not compare volunteers to non-volunteers, because those that volunteer are inherently different from those that do not. If you must ask for volunteers, you should select users and non-users from your pool of volunteers.</p>
                                 </div>
                             </div>
                         </div>
@@ -183,13 +185,12 @@
                     <div class="step-subquestion">
                         <p>The method you choose below, will impact how confident you can be that your technology is causing the outcomes you observe and how applicable your findings are to a broader population of <%= Basics_Users %>.</p>
 
-
-
                         <p class="note"> Note: Across all of these methods, you do not need to create or compare groups at the individual level. If there are logistical barriers to working with individuals, you can create groups at higher levels, such as classrooms or schools. However, at higher levels you will need more study participants in order to be confident in your results</p>
-                        <p class="note"> Do not compare volunteers to non-volunteers, because those that volunteer are inherently different from those that do not. If you must ask for volunteers, you should select users and non-users from your pool of volunteers.</p>
+                        
                     </div>
                     <div class="step-action">
-                        <p><em>Select one.</em></p>
+                        <p><em>Select one.</em>
+                        </p>
                         <div class="panel-group" id="Grouping_options">
                             <div class="panel panel-default">
                                 <% var checked = ( eval.probAppr.Appr_How_Choose == "random" ) ? "checked" : "";
@@ -213,14 +214,14 @@
 
                                 <div id="randon-1" class="panel-collapse collapse in">
                                     <p>
-                                        You can think of random assignment as putting the names of your <%= Basics_Users %> in a hat and randomly picking out some of the names. If you put in 10 names and selected 5, those you picked out would get to pilot (or try) the technology, while those whose names weren&rsquo;t selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups.
+                                        You can think of random assignment as putting the names of your <%= Basics_Users %> in a hat and randomly picking some of the names. If you put in 10 names and selected 5, those you picked would get to pilot (or try) the technology, while those not selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups.
                                     </p>
 
                                     <h4 class="list-header">Advantages:</h4>
                                     <ul>
-                                        <li><strong>Recommended method</strong>. Resulting treatment and comparison groups will, on average, be similar in both observable and unobservable characteristics, giving you the most confidence that any differences in outcomes between the groups are due to using <%= Basics_Tech_Name %>. </li>
-                                        <li>A fair way to decide who gets to use a technology first, because everyone has the same chance of being chosen.</li>
-                                        <li>Allows for findings that are relevant for the overall population you are working with (i.e. everyone in the hat).</li>
+                                        <li>Resulting treatment and comparison groups will, on average, be similar in both observable and unobservable characteristics, giving you the most confidence that any differences in outcomes between the groups are due to using <%= Basics_Tech_Name %>. </li>
+                                        <li>A fair way to decide who first gets to use a technology, because everyone has the same chance of being chosen.</li>
+                                        <li>Findings are relevant for the overall population you are working with (i.e. everyone in the hat).</li>
                                     </ul>
                                     <h4 class="list-header">Disadvantages:</h4>
                                     <ul>
@@ -265,45 +266,45 @@
                                 </div>
 
                             </div>
-                                <div class="panel panel-default">
-                                    <% var checked= ( eval.probAppr.Appr_How_Choose == "other" ) ? "checked" : "";
-                                    var selected = ( eval.probAppr.Appr_How_Choose == "other" ) ? "selected" : "";
+                            <div class="panel panel-default">
+                                <% var checked= ( eval.probAppr.Appr_How_Choose == "other" ) ? "checked" : "";
+                                var selected = ( eval.probAppr.Appr_How_Choose == "other" ) ? "selected" : "";
 
-                                    %>
-                                    <div class="panel-heading for-how-group <%= selected %>">
+                                %>
+                                <div class="panel-heading for-how-group <%= selected %>">
 
 
 
-                                        <input type="radio" id="Choose-Other" name="Appr_How_Choose" class="radio" value="other" <%= checked %>/>
-                                        <label class="panel-title  clickable" for="Choose-Other">
-                                            Other Approach
+                                    <input type="radio" id="Choose-Other" name="Appr_How_Choose" class="radio" value="other" <%= checked %>/>
+                                    <label class="panel-title  clickable" for="Choose-Other">
+                                        Other Approach
 
-                                        </label>
+                                    </label>
 
-                                        <a data-toggle="collapse"  href="#other-3">
-                                            Description, advantages, &amp; disadvantages<i class="fa fa-caret-right" aria-hidden="true"></i>
+                                    <a data-toggle="collapse" href="#other-3">
+                                        Description, advantages, &amp; disadvantages<i class="fa fa-caret-right" aria-hidden="true"></i>
 
-                                        </a>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div id="other-3" class="panel-collapse collapse">
-                                        <p>Assignment to the treatment and control groups is done in a non-random way based on specific criteria. For example, the classrooms assigned to the pilot or treatment group are those with access to computers, or the schools that will pilot the technology are chosen based on a competition or application process. </p>
-                                        <h4 class="list-header">Advantages:</h4>
-                                        <ul>
-                                            <li>May align better with how you&rsquo;ve assigned technology use in the past.</li>
-                                            <li>May be logistically easier, particularly if you are selecting based on who has easier access to computers or the Internet. </li>
-                                        </ul>
-                                        <h4 class="list-header">Disadvantages:</h4>
-                                        <ul>
-                                            <li>May not be considered fair to stakeholders. The group that meets the criteria may already have advantages over other <%= Basics_Users %>. </li>
-                                            <li>May not align with need. Those who need <%= Basics_Tech_Name %> more or would gain more from using it may be less likely to be given access than if random assignment was used.</li>
-                                            <li>It&rsquo;s not always possible to create a good comparison group. If the Coach fails to create similar groups of users and non-users, you will not be able to determine if the educational technology is moving the needle. It&rsquo;s possible that groups appear similar, but unobserved differences, not included in the your data, are driving outcomes. </li>
-
-                                        </ul>
-
-                                    </div>
+                                    </a>
+                                    <div class="clearfix"></div>
                                 </div>
-                           
+                                <div id="other-3" class="panel-collapse collapse">
+                                    <p>Assignment to the treatment and control groups is done in a non-random way based on specific criteria. For example, the classrooms assigned to the pilot or treatment group are those with access to computers, or the schools that will pilot the technology are chosen based on a competition or application process. </p>
+                                    <h4 class="list-header">Advantages:</h4>
+                                    <ul>
+                                        <li>May align better with how you&rsquo;ve assigned technology use in the past.</li>
+                                        <li>May be logistically easier, particularly if you are selecting based on who has easier access to computers or the Internet. </li>
+                                    </ul>
+                                    <h4 class="list-header">Disadvantages:</h4>
+                                    <ul>
+                                        <li>May not be considered fair to stakeholders. The group that meets the criteria may already have advantages over other <%= Basics_Users %>. </li>
+                                        <li>May not align with need. Those who need <%= Basics_Tech_Name %> more or would gain more from using it may be less likely to be given access than if random assignment was used.</li>
+                                        <li>It&rsquo;s not always possible to create a good comparison group. If the Coach fails to create similar groups of users and non-users, you will not be able to determine if the educational technology is moving the needle. It&rsquo;s possible that groups appear similar, but unobserved differences, not included in the your data, are driving outcomes. </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+
 
                         </div>
 
@@ -313,31 +314,119 @@
                     </div>
 
                 </div>
+
+                <div id="How-Assign">
+
+                    <div class="col-xs-6">
+
+                        <div class="step-subquestion">
+                            <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
+                        </div>
+                        <div class="step-action">
+                            <select required name="Individual_Group" id="Individual_Group">
+                                <%
+                                var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
+                                var ovals = ["Select an option", "users" , "groups" ];
+                                for ( var i = 0; i < options.length; i++ )
+                                {
+                                var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
+                                %>
+                                <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                }
+                                %>
+                            </select>
+
+                            <div id="Question_Cluster" hidden="true">
+                                <div class="step-subquestion">
+                                    <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= Basics_Users %></span>?</label></h4>
+                                </div>
+                                <div class="step-action">
+                                    <select required name="Cluster_Group" id="Cluster_Group">
+                                        <%
+                                        var options = ["Select an option", "by class", "by school", "other" ];
+                                        var ovals = ["Select an option", "classes", "schools", "other" ];
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        var selected;
+                                        selected = ( eval.random.Cluster_Group== ovals[i] ) ? "selected" : "";
+                                        %>
+                                        <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                        }
+                                        %>
+                                    </select>
+                                    <div id="Question_Cluster_Other" hidden="true">
+                                        <p>
+                                            <label for="Cluster_Group_Other">Please specify:</label>
+                                            <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <div class="step-to-consider">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc5">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider5" class="panel-collapse collapse in">
+                                            
+                                            <p>
+                                                It may be more feasible to randomly assign <%Basics_Users %> by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
+                                            </p>
+                                            <p>
+                                                Bigger is better. With only a few <span class="indivs-or-groups"><%= Basics_Users %></span> in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples allow you to detect smaller effects.
+                                            </p>
+                                            <p>Remember, you can always come back and revise your answers here and the Coach will revisit some of these questions in other tools.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            
             </div>
 
 
 
         </div>
 
-        </div>
-        </div>
+            
+                
+                </div>
+            </div>
             </div>
         <div class="row">
             <div class="col-xs-12">
                 <div id="Step_Conclusion" class="container">
 
-                    <div class="col-xs-7">
+                    <div class="col-xs-6">
 
 
+                        
                         <div id="Con_Random">
 
                             <h2>Based on your answers, the Coach will guide you through a randomized pilot.</h2>
-                            <p>The Coach will use the Random Assignment tool to select <%= Basics_Users %> to be in your treatment and comparison groups and use the pretest and background characteristics data you provide to check that the groups are balanced or equivalent.</p>
-                            
+                            <p>The Coach will use the Random Assignment tool to select <span class="indivs-or-groups"><%= Basics_Users %></span> to be in your treatment and comparison groups.</p>
+
                         </div>
                         <div id="Con_Cutoff">
                            
-                            <h2>Since you will use a cutoff to determine who will use the technology, a Regression Discontinuity design (RD) is the suggested approach.</h2> 
+                            <h2>Since you will use a cutoff to determine who will use the technology, a regression discontinuity design (RD) is the suggested approach.</h2> 
                             <p>
                                 The Coach does not yet include tools for RD, but if you&#39;re interested in pursuing an evaluation please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a> and you may be able to use beta versions of tools we are creating to handle this type of design.
                             </p>
@@ -366,7 +455,7 @@
 
                         </div>
                     </div>
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         <div class="step-to-consider">
                             <div class="panel-group" id="ttc6">
                                 <div class="panel panel-default">
@@ -379,7 +468,7 @@
                                         </h3>
                                     </div>
                                     <div id="consider6" class="panel-collapse collapse in">
-                                        <p>You can always come back and revise your answers here and the Coach will revisit some of these questions in other tools. We encourage you to talk with your colleagues about your research goals and make revisions if necessary.</p>
+                                        <p>You can always come back and revise your answers. We encourage you to talk with your colleagues about your research goals and make revisions if necessary.</p>
                                     </div>
                                 </div>
 
@@ -416,6 +505,13 @@
     $('#Appr_All_Using').change(function () {
         setApproachConclusion();
     });
+
+    $('#Individual_Group').change(function () {
+        setApproachConclusion();
+    });
+    $('#Cluster_Group').change(function () {
+        setApproachConclusion();
+    });
     $("input[type=radio][name=Appr_How_Choose]").change(function () {
         $("div.for-how-group").removeClass("selected");
         $(this).parent("div.for-how-group").addClass("selected");
@@ -443,6 +539,7 @@
             $("#All-Using").show();
             $("#New_Users").hide();
             $("#How-Group").hide();
+            $("#How-Assign").hide();
             $("#Step_Conclusion").hide();
         }
         else if (currentNew.toLowerCase() === "new" && (canGroup.toLowerCase() === "select an option" || canGroup.toLowerCase() === "yes") &&
@@ -450,6 +547,7 @@
             $("#All-Using").hide();
             $("#New_Users").show();
             $("#How-Group").show();
+            $("#How-Assign").hide();
             $("#Step_Conclusion").hide();
         }
         else if (currentNew.toLowerCase() === "new" && canGroup.toLowerCase() === "no") {
@@ -467,7 +565,8 @@
         else if (currentNew.toLowerCase() === "current"  && allUsing.toLowerCase() === "yes") {
 
             $("#New_Users").hide();
-        $("#How-Group").hide();
+            $("#How-Group").hide();
+            $("#How-Assign").hide();
         $("#All-Using").show();
         $("#Step_Conclusion").show();
         $("#Con_Matched_Current").hide();
@@ -482,6 +581,7 @@
 
             $("#New_Users").hide();
             $("#How-Group").hide();
+            $("#How-Assign").hide();
             $("#All-Using").show();
 
             $("#Step_Conclusion").show();
@@ -493,7 +593,14 @@
             $("button.complete").removeAttr("disabled");
 
         }
-        else if (currentNew.toLowerCase() === "new" && chooseRandom.toLowerCase() !== "") {
+        
+        else if (currentNew.toLowerCase() === "new" &&
+            chooseRandom.toLowerCase() !== ""  && 
+           ($('#Individual_Group').val() === "users"  ||
+            ( $('#Individual_Group').val() === "groups" &&
+           $('#Cluster_Group').val() !== "Select an option")) )
+            {
+            $("#How-Assign").show();
             $("#Step_Conclusion").show();
             $("#All-Using").hide();
         $("#Con_Matched_Current").hide();
@@ -503,9 +610,23 @@
         $("#Con_NoGroups").hide();
         $("#Con_Matched_Selected").hide();
         $("button.complete").removeAttr("disabled");
-    }
+        }
+        else if (currentNew.toLowerCase() === "new" &&
+        chooseRandom.toLowerCase() !== "" ) {
+            $("#How-Assign").show();
+            $("#Step_Conclusion").hide();
+            $("#All-Using").hide();
+            $("#Con_Matched_Current").hide();
+            $("#Con_Random_individuals").show();
+            $("#Con_Cutoff").hide();
+            $("#Con_Criteria").hide();
+            $("#Con_NoGroups").hide();
+            $("#Con_Matched_Selected").hide();
+            $("button.complete").removeAttr("disabled");
+        }
         else if (currentNew.toLowerCase() === "new" && chooseCutoff.toLowerCase() !== "") {
             $("#Step_Conclusion").show();
+            $("#How-Assign").hide();
             $("#All-Using").hide();
         $("#Con_Matched_Current").hide();
         $("#Con_Random").hide();
@@ -518,6 +639,7 @@
         else if (currentNew.toLowerCase() === "new" && chooseCriteria.toLowerCase() !== "") {
             $("#Step_Conclusion").show();
             $("#All-Using").hide();
+            $("#How-Assign").hide();
         $("#Con_Matched_Current").hide();
         $("#Con_Random").hide();
         $("#Con_Cutoff").hide();
@@ -527,7 +649,8 @@
 
 
     } else {
-        $("#Can-Group").show();
+            $("#Can-Group").show();
+            $("#How-Assign").hide();
         $("#All-Using").show();
         $("#New_Users").show();
         $("#How-Group").hide();
