@@ -24,12 +24,18 @@ function useOther(v,o) {
     }
 	else return v;
 }
+function stripPercent(x) {
+	return parseInt(x.replace(/%/g, ''));
+}
+
+
 //define enums:
 units = ["students", "schools", "teachers", "parents", "others"];
 achievement = ["Student academic achievement", "Student non-academic achievement", "Teacher performance", "other"];
 direction = ["Increase", "Decrease"];
 spendresults = ["costs", "saves"];
 unitmeasured = ["student", "teacher", "school"];
+
 totalToolNumber = 8; //for completed status
 
 //02.03 determine your approach
@@ -115,6 +121,7 @@ var PlanContext = mongoose.Schema({
 	Urbanicity_Rural: { type: String, default: '' },
 	Urbanicity_Suburban: { type: String, default: '' },
 	Urbanicity_Urban: { type: String, default: '' },
+	District_State: { type: String, default: '' },
 	Race_Asian: { type: Number, default: 0 },
 	Race_Black: { type: Number, default: 0 },
 	Race_Native_American: { type: Number, default: 0 },
@@ -150,6 +157,23 @@ var Prepare = mongoose.Schema({
 	Check_Missing: { type: String, default: '' },
 	Check_Min_Max: { type: String, default: '' },
 	Check_Miss_Impact: { type: String, default: '' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
+
+var Milestone = mongoose.Schema({
+    Order: { type: Number, default: 0 },
+    Milestone_Name: { type: String, default: '' },
+    Complete_Date: { type: Date, default: '01/01/1900' },
+    Assigned_To: { type: String, default: '' },
+    Status: { type: String, default: '' },
+    Notes: { type: String, default: '' },
+	Hide: { type: String, default: '' }
+});
+
+var EvalPlan = mongoose.Schema({
+	Person_Responsible_IGroup: { type: String, default: '' },
+	Milestones: [Milestone],
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
@@ -194,6 +218,14 @@ var GetResult = mongoose.Schema({
     updated_at: Date
 });
 
+var ShareResult = new mongoose.Schema({
+    challenges_limitations: { type: String, default: '' },
+    conclusions_next_steps: { type: String, default: '' },
+    baseline_var_relabels: [String],
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+})
+
 //Tools visited array
 var toollist = new mongoose.Schema({
     name: String,
@@ -228,6 +260,10 @@ var evaluationSchema = mongoose.Schema({
         type: Prepare,
         default: Prepare
     },
+	evalPlan: {
+        type: EvalPlan,
+        default: EvalPlan
+    },
 	random: {
         type: Random,
         default: Random
@@ -240,6 +276,10 @@ var evaluationSchema = mongoose.Schema({
         type: GetResult,
         default: GetResult
     },
+    shareresult: {
+        type: ShareResult,
+        default: ShareResult
+    },
     stepsclicked: [String],
 	last_tool: String,
     flag: { type: String, default: 1 },
@@ -247,7 +287,6 @@ var evaluationSchema = mongoose.Schema({
     published_at: Date,
     author: { type: String, default: "" },
     company: { type: String, default: "" }
-
 
 });
 
@@ -278,27 +317,18 @@ evaluationSchema.pre('save', function (next) {
                 this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
             }
         }
-        //path determine
         if (this.probAppr) {
-            if (this.probAppr.Appr_Can_Group.toLowerCase() === "no" ||
-                this.probAppr.Appr_All_Using.toLowerCase() === "yes" ||
-                this.probAppr.Appr_How_Choose.toLowerCase() === "i will choose users based on specific criteria") {
-                this.path = "path-none";  //what should we do?
-            }
-            else {
-                if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current") {
-                    this.path = "path-matching";  //disable random tools or hide them
-                }
-                else {
-                    if (this.probAppr.Appr_How_Choose.toLowerCase() === "random") {
-                        this.path = "path-random"; //disable matching tools or hide them
-                    }
-                    else if (this.probAppr.Appr_How_Choose.toLowerCase() === "cutoff") {
-                        this.path = "path-regression";  //no available yet
-                    }
 
-                }
-            }
+            if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current" &&
+                this.probAppr.Appr_All_Using.toLowerCase() === "no") {
+                this.path = "path-matching"; //disable random tools or hide them
+            } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "random") {
+                this.path = "path-random"; //disable matching tools or hide them
+            } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "other") {
+                this.path = "path-matching"; //no available yet
+            } else {
+                this.path = "path-none";
+            } //what should we do?
         }
         if (this.status === "100") {
             if (!this.published_at) { this.published_at = currentDate; }
@@ -326,4 +356,5 @@ evaluationSchema.pre('save', function (next) {
 
 
 // create the model for users and expose it to our app
+
 module.exports = mongoose.model('Evaluation', evaluationSchema);

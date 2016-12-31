@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Matching - Ed Tech RCE Coach</title>
+    <title>Share Your Results - Ed Tech RCE Coach</title>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/main.css" />
@@ -20,7 +20,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
     <script src="/static/js/jquery.feedback_me.js"></script>
-    <script src="/static/js/bootstrap-multiselect.js"></script>
+    <!--<script src="/static/js/bootstrap-multiselect.js"></script>-->
     <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
@@ -32,299 +32,914 @@
         ga('create', 'UA-86460597-1', 'auto');
         ga('send', 'pageview');
     </script>
+
+    
 </head>
 <body>
+
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Summarizing Your Findings</a></li>
-    </ol>
-    <% if (message.length>0) { %>
-    <div class="alert alert-success"><%= message %></div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Summarizing Your Findings</a></li>
+        </ol>
+        <% if (message.length>0) { %>
+        <div class="alert alert-success"><%= message %></div>
+        <% } %>
+        <% include ../views/partials/toolHeader.html %>
     <% } %>
-    <% include ../views/partials/toolHeader.html %>
-    <% } %>
-    <form action="/matching" method="post">
-        <% var Plan_Question_A = ' ',Plan_Question_A_1 ='',Plan_Question_A_2='',Plan_Question_A_3='',
-        Plan_Question_B_1 ='', Plan_Question_B_2='', Plan_Question_B_3 ='', Plan_Question_C ='', Plan_Question_D= '',
-        Prob_Appr_B=' ', Plan_Context_A_3 = '', Plan_Context_A_4 = '', Plan_Context_D='',
-        Q_9='', Q_M_1='', Q_M_2='',for_6='', results_by_grade='', match_vars='', n_full_treat= '', getresults_by_grade='',
-        Plan_Next_C_1 = '', Plan_Next_D_1 , Plan_Next_D_2, ED_1='' ; %>
-        <% if (user != "NOAUTHENTICATED") {
-        if (eval.planQuestion) {
-        Plan_Question_A =eval.planQuestion.Plan_Question_A; Plan_Question_A_1 =eval.planQuestion.Plan_Question_A_1;
-        Plan_Question_B_1 =eval.planQuestion.Plan_Question_B_1 ;
-        Plan_Question_A_2 =eval.planQuestion.Plan_Question_A_2; Plan_Question_A_3=eval.planQuestion.Plan_Question_A_3
-        Plan_Question_B_2=eval.planQuestion.Plan_Question_B_2; Plan_Question_B_3 =eval.planQuestion.Plan_Question_B_3 ;
-        Plan_Question_C=eval.planQuestion.Plan_Question_C; Plan_Question_D=eval.planQuestion.Plan_Question_D;
-        }
-        if (eval.probAppr) {
-        Prob_Appr_B=eval.probAppr.Prob_Appr_B ;
-        }
-        if (eval.planContext) {
-        Plan_Context_A_3 = eval.planContext.Plan_Context_A_3;
-        Plan_Context_A_4 = eval.planContext.Plan_Context_A_4;
-        Plan_Context_D = eval.planContext.Plan_Context_D;
 
-        }
-        if (eval.planNext) {
-        Plan_Next_C_1 =eval.planNext.Plan_Next_C_1;
-        if (Plan_Next_C_1.endsWith("%")) Plan_Next_C_1 = Plan_Next_C_1.substring(0, Plan_Next_C_1.length-1) ;
-        Plan_Next_D_1  = eval.planNext.Plan_Next_D_1 ;
-        Plan_Next_D_2  = eval.planNext.Plan_Next_D_2 ;
+    <form action="" method="post">
+        
+        <style>
+            /* Specific to share results */
 
-        }   }  %>
+            h2 {
+                color: #4f81bd;
+                padding-top: 15px;
+            }
 
-        <!--if (eval.matching) {
-         for_6 = parseInt(eval.matching.n_full) - parseInt(eval.matching.n_full_treat );
-         results_by_grade =JSON.parse(eval.matching.Result).results_by_grade;
-          match_vars = JSON.parse(eval.matching.Result).match_vars
-         Q_9  = eval.matching.Q_9;
-         Q_M_1 = eval.matching.Q_M_1;
-         Q_M_2=eval.matching.Q_M_2;
-           ED_1 = eval.matching.match_vars ;
-         n_full_treat = eval.matching.n_full_treat;
-         }-->
-        <!--if (eval.getresult) {
+            h2.grade-header {
+                font-size: 16px;
+            }
 
-         getresults_by_grade =JSON.parse(eval.getresult.Result).results_by_grade;
-         }-->
+            h3 {
+                padding-top: 10px;
+                letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
+            }
 
+            li {
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
 
+            p {
+                font-size: 16px;
+            }
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="tool-header">
-                        <h1 class="tool-title">Preview Your Findings</h1>
-                        <div class="tool-intro">
-                            <p>This is your opportunity to preview your findings and, if necessary, make changes to your findings brief.</p><p>If you find that some pieces of information are missing and you wish to return to prior tools, you can use the "Back to Analyzing Your Data" link at the top of the page to return to the wizard.</p>
-                        </div>
+            .row {
+                padding-top: 15px;
+            }
 
-                    </div>
-                    <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-                    <div class="tool-questions">
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#A">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> Summary
-                                </h2>
-                            </div>
-                        </div>
-                        <div id="A" class="row collapse in">
-                            <p></p>
-                            <div class="step-action ">
-                                <h4>Question:</h4>
-                                <textarea id="summary_question" rows="2" width="85%" class="shiny-bound-input">
-                                    <%= "Does "  + Plan_Question_A + " " + Plan_Question_B_3 + " " + Plan_Question_B_2 +
-                                    " among " + Plan_Question_C + " compared to " +Plan_Question_D + "?" %>
-                                </textarea>
-                                <div id="answers_next_steps" class="shiny-html-output shiny-bound-output">
-                                    <h4>Answer:</h4>
-                                    <% var title='', ismove1 = 'Yes',ismove2='', text1='',text2='', nextstep=''; if (getresults_by_grade) { for (var key in getresults_by_grade ) {
-                                    if (getresults_by_grade.hasOwnProperty(key)) { title = getresults_by_grade[key].title;
-                                    text1 = getresults_by_grade[key].interpretation.texts[0];
-                                    text2 = getresults_by_grade[key].interpretation.texts[1];
-                                    var prob = getresults_by_grade[key].interpretation.probability[0];
-                                    if (prob.endsWith("%")) prob = prob.substring(0, prob.length-1) ;
-                                    if (prob < Plan_Next_C_1) {ismove1="No"; ismove2=" not"; nextstep= Plan_Next_D_2 } else {nextstep= Plan_Next_D_1 }
+            img {
+                max-width: 100%;
+                padding-bottom: 20px;
+            }
+
+            .white-background-blue-border {
+                border: 3px #2e75b6 solid;
+                border-radius: 25px;
+                font-size: 16px;
+                line-height: 1.5em;
+                padding: 25px;
+                margin: 15px;
+                max-width: 85%;
+            }
+
+            .blue-background-white-text {
+                background-color: #2e75b6 !important;
+                border: 3px #2e75b6 solid;
+                border-radius: 25px;
+                color: #fff;
+                font-size: 20px;
+                margin: 15px;
+                min-height: 150px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            #table1 {
+                width: 100%;
+            }
+
+            #table1 td, #table1 th {
+                font-size: 20px;
+                text-align: center;
+            }
+
+            #table1 thead tr {
+                border-bottom: 1px #000 solid;
+            }
+
+            #table1 tfoot tr {
+                border-top: 1px #000 solid;
+            }
+
+            .circle {
+                width: 50px;
+                height: 50px;
+                margin-top: 10px;
+                -webkit-border-radius: 25px;
+                -moz-border-radius: 25px;
+                border-radius: 25px;
+                background-color: #4f81bd;
+                text-align: center;
+                vertical-align: middle;
+                line-height: 50px;
+            }
+
+            @media screen {
+                [contenteditable=true] {
+                    text-decoration: underline;
+                }
+
+                a.data-link {
+                    color: #000000;
+                }
+            }
+                
+            @media print {
+
+                body {
+                    -webkit-print-color-adjust: exact;
+                }
+
+                a {
+                    color: #000000;
+                }
+
+                h2 a {
+                    color: #4f81bd;
+                }
+
+                .tooltip-gr {
+                    text-shadow: none;
+                }
+
+                #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
+                    max-height: 1px;
+                    padding: 0px;
+                    margin: 0px;
+                }
+
+                /* Bootstrap shows link URLs in print, this removes them */
+                a[href]:after {
+                    content: none !important;
+                }
+
+                .row, table {
+                    page-break-inside: avoid;
+                }
+            }
+                    
+        </style>
+            <div class="container-fluid" > 
+                <div class="row" > 
+                    <div class="col-xs-12" > 
+  
+                        <% 
+                            var stripPercent = function(x) {
+                                return parseInt(x.replace(/%/g, ''));
+                            }
+
+                            var capitalize = function(x) {
+                                return x[0].toUpperCase() + x.substring(1);
+                            }
+
+                            var sentence = function(x) {
+                                // Capitalize first letter
+                                var out = capitalize(x);
+                                // If it doesn't end with punctuation, add a period.
+                                return out.replace(/([^.?!])$/, "$1."); 
+                            }
+
+                            var wordList = function(x) {
+                                var out;
+
+                                x = x.filter( function(x) { return x !== '' })
+
+                                x = unique(x);
+
+                                if (x.length === 0) {
+                                    out = '';
+                                }
+                                else if (x.length === 1) {
+                                    out = x[0];
+                                }
+                                else if (x.length === 2) {
+                                    out = x[0] + ' and ' + x[1];
+                                }
+                                else {
+                                    out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+                                }   
+                        
+                                return out;                                            
+                            }
+
+                            var unique = function(x) {
+                                   
+                                for (var i = 0; i < x.length; i++) {
+                                    if (x.indexOf(x[i]) < i) {
+                                        x.splice(i, 1);
+                                        i--;
+                                    }
+                                }
+
+                                return x;
+                            }
+               
+                            var tech_name = eval.basics.Basics_Tech_Name;
+                            var basic_outcome = eval.basics.Basics_Outcome;
+
+                            var users = eval.basics.Basics_Users;
+                            if (users === 'other') users = eval.basics.Basic_Users_other;
+
+                            var outcome_direction = eval.planQuestion.Outcome_Direction;
+                            var outcome_measure = eval.planQuestion.Outcome_Measure;
+                            
+                            var analysis_results = JSON.parse(eval.getresult.Result);
+                            var analysis_results_by_grade = analysis_results.results_by_grade;
+
+                            var analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
+
+                            var plan_next = eval.planNext;
+
+                            var pass_probability = stripPercent(plan_next.Pass_Probability);
+                        
+                            var n_overall = 0, n_treatment = 0, n_full_overall = 0, n_full_treatment = 0;
+
+                            var path = eval.path;
+
+                            var baseline_by_grade, baseline_results_by_grade, baseline_vars;
+                        
+                            if (path === 'path-matching') {
+                                var match_results = JSON.parse(eval.matching.Result);
+                                baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
+                                baseline_results_by_grade = match_results.results_by_grade;
+
+                                for (grade in match_results.results_by_grade) {
+                                    var samples = match_results.results_by_grade[grade].samples;
+
+                                    n_full_overall += samples.n_full[0];
+                                    n_full_treatment += samples.n_full_treat[0];
+
+                                    n_overall += samples.n_matched[0];
+                                    n_treatment += samples.n_matched_treat[0];
+                                    
+                                }
+
+                                baseline_vars = match_results.match_vars;
+                            }
+                            else if (path === 'path-randomization') {
+                                var results = JSON.parse(eval.random.Result);
+                                baseline_by_grade = Object.keys(results.results_by_grade).length > 1;
+                                baseline_results_by_grade = results.results_by_grade;
+
+                                for (grade in match_results.results_by_grade) {
+                                    var samples = results.results_by_grade[grade].samples;
+                                    n_overall += samples.n_full[0];
+                                    n_treatment += samples.n_treat[0];
+                                }
+
+                                baseline_vars = results.match_vars;
+                            }
+               
+                            
+                            var n_comparison = n_overall - n_treatment;
+                        
+                            var success_count = 0, failure_count = 0;
+                        
+                            for (grade in analysis_results_by_grade) {
+
+                                var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                                var success = (probability > pass_probability);
+
+                                if (success) {
+                                    success_count++;
+                                }
+                                else {
+                                    failure_count++;
+                                }
+                            }   
+                        
+                            var needle_negate = (success_count === 0) ? ' not' : '';
+                            var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
+
+                            var header = capitalize(tech_name) + ' is' + needle_negate + ' moving the needle on ' + basic_outcome + grade_qualifier;
+
+                            if (eval.shareresult) {
+                                var shareresult = eval.shareresult;
+                                var conclusions_next_steps = shareresult.conclusions_next_steps || '';
+                                var challenges_limitations = shareresult.challenges_limitations || '';
+                                var baseline_vars_relabel = shareresult.baseline_var_relabels || baseline_vars;
+                            }
+                            else {
+                                var challenges_limitations = '';
+                                var conclusions_next_steps = '';
+                                var baseline_vars_relabel = baseline_vars;
+                            }
+
+                            var baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
+                        %>
+                        
+                        <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
+                        <%
+                        var user_name = user.profile.user_name || '< Click to add name to profile >';
+                        var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
+                        %>
+
+                        <br / >
+                        <span class="tooltip-gr" data-tool-name="your profile">
+                            <a class="data-link" href="/setting?return=shareresult"> <%= user_name %></a>
+                        </span>
+                        <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. ">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                        <br />
+                        <span class="tooltip-gr" data-tool-name="your profile">
+                            <a class="data-link" href="/setting?return=shareresult"> <%= organization_name %></a>
+                        </span>
+                        <span data-toggle="tooltip" title="" class="tooltip-gr hidden-print" data-original-title="This information is not required to edit and save changes, but is required to publish this document. ">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                        <br />
+                        <span>
+                            <%= new Date().toLocaleDateString() %>
+                        </span>
+                        <br / >
+                        <hr / > 
+
+                        <div class="row" > 
+                            <div class="col-xs-1 circle" > 
+                            </div > 
+                            
+                            <div class="col-xs-11" > 
+                                <h2 > <%= header %></h2 >
+                            
+                                <h3 > Research Question</h3 > 
+
+                                    Does <%= tech_name %> <%= outcome_direction %> <%= outcome_measure %> among
+                                    <%= eval.planQuestion.Intervention_Group_Desc %>
+                                    <%= eval.planQuestion.Comparison_Group_Desc %>?
+
+                                    <% for (grade in analysis_results_by_grade) {
+
+                                    var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                                    var success = (probability > pass_probability);
+
+                                    var needle_decision = (success) ? 'Yes' : 'No';
+                                    var needle_negate = (success) ? '' : ' not';
+
+                                    var next_steps = (success) ? plan_next.Action_Success : plan_next.Action_Fail;
+
+                                    var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
+                                    var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
                                     %>
-                                    <textarea id="title" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= title %></textarea>
-                                    <textarea id="summary_answer_1_1" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= ismove1 + ", we think this intervention is" + ismove2 + " moving the needle." %></textarea>
-                                    <textarea id="summary_answer_1_2" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%=  text1%></textarea>
-                                    <textarea id="summary_answer_1_3" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= text2 %></textarea>
 
-                                    <h4>Next steps:</h4>
-                                    <textarea id="summary_next_steps_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= nextstep %></textarea>
+                                    <% if (analysis_by_grade) { %>
+                                        <h2 class="grade-header">Grade <%= grade %></h2>
+                                    <% } %>
+                                    <h3> Findings</h3>
+                                    <ol>
+                                        <li> <%= needle_decision + ', we think ' + tech_name + ' is' + needle_negate + ' moving the needle.' %></li>
+                                        <li> <%= interpretation_1 %></li>
+                                        <li> <%= interpretation_2 %></li>
+                                    </ol>
+                                    <h3> Next steps</h3>
+                                    
+                                    <span class="tooltip-gr" data-tool-name="Plan Next Steps">
+                                        <a class="data-link" href="/plan_next_steps?return=shareresult"> <%= sentence(next_steps); %></a>
+                                    </span>
 
-                                    <% }}} %>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#B">
-                                <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="true"></i> What Was Tested</h2>
-                            </div>
-                        </div>
-                        <div id="B" class="row collapse in">
-                            <p></p>
-                            <div class="step-action ">
-                                <textarea id="what_was_tested_1" rows="2" width="85%" class="shiny-bound-input"><%=  "This evaluation tested the effectiveness of " + Plan_Question_A  + "." %></textarea>
-                                <textarea id="what_was_tested_2" rows="2" width="85%" class="shiny-bound-input"><%= Plan_Question_A  + " is " + Plan_Question_A_1 + "." %></textarea>
-                                <textarea id="what_was_tested_3" rows="2" width="85%" class="shiny-bound-input"><%= "Key program components include " + Plan_Question_A_2 + "." %></textarea>
-                                <textarea id="what_was_tested_4" rows="2" width="85%" class="shiny-bound-input"><%= "Implementing "+ Plan_Question_A + " "  +  Plan_Question_A_1 + " $" + Plan_Question_A_2 + " per "  + Plan_Question_A_3  + "."  %></textarea>
-                            </div>
-                        </div>
+                                <% } %>
+                            </div > 
+                        </div > 
+                        <div class="row" > 
+                            <div class="col-xs-1 circle" > 
+                            </div > 
+                        
+                            <div class="col-xs-11" > 
+                                <h2 > This evaluation tested the effectiveness of <%= tech_name %></h2 > 
+                                <%
+                                    var context = eval.planContext;
 
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#C">
-                                <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="true"></i> Evaluation Design</h2>
-                            </div>
-                        </div>
-                        <div id="C" class="row collapse in">
-                            <p></p>
-                            <div class="step-action ">
-                                <textarea id="evaluation_design_1" label="" rows="3" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.</textarea>
-                                <textarea id="evaluation_design_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "Similar comparison group members were identified using the following background characteristics: " +ED_1 + "." %></textarea>
-                                <textarea id="edit_labels_message" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">If the labels are unclear, you can change how you refer to any control variables here. For example, if your label is “female” you may want to change it to “gender.”</textarea>
-                                <div id="edit_covariate_labels" class="shiny-html-output shiny-bound-output">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <h5>Relabel <%= ED_1 %>:</h5>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <div class="form-group shiny-input-container">
-                                                <label for="edit_covariate_label_1"></label>
-                                                <input id="edit_covariate_label_1" type="text" class="form-control shiny-bound-input shinyjs-resettable" value="<%= ED_1 %> " data-shinyjs-resettable-id="edit_covariate_label_1" data-shinyjs-resettable-type="Text" data-shinyjs-resettable-value="post.test">
+                                    // Use an array for the loop since it has predictable ordering
+                                    var grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
+
+                                    var grade_map = {
+                                        "PK" : "Pre-Kindergarten",
+                                        "K"  : "Kindergarten",
+                                        "1"  : "1st",
+                                        "2"  : "2nd",
+                                        "3"  : "3rd",
+                                        "4"  : "4th",
+                                        "5"  : "5th",
+                                        "6"  : "6th",
+                                        "7"  : "7th",
+                                        "8"  : "8th",
+                                        "9"  : "9th",
+                                        "10" : "10th",
+                                        "11" : "11th",
+                                        "12" : "12th",
+                                        "PS" : "Post-secondary"
+                                    }
+                                        
+                                    var grades_used = [], grade_streak = 0, start_grade = '', end_grade = '';
+
+                                    for (grade_index in grades) {
+                                        var grade = grades[grade_index];
+                   
+                                        if (context['Grade_' + grade] === grade) {
+                                            grade_streak++;
+
+                                            if (grade_streak === 1) start_grade = grade_map[grade];
+                                            else end_grade = grade_map[grade];
+                                        }
+                                        else {
+
+                                            if (grade_streak === 1) {
+                                                grades_used.push(start_grade);
+                                            }
+                                            else if (grade_streak > 1) {
+                                                grades_used.push(start_grade + '-' + end_grade);
+                                            }
+
+                                            grade_streak = 0;
+                                        }
+                                    }
+                                    var program_types = [context.Type_Policy, context.Type_Teacher_Level, context.Type_School_Level, context.Type_CSchool_Structure, context.Type_Practice, context.Type_Curriculum];
+
+                                    var delivery_types = [context.Delivered_School_Wide, context.Delivered_Whole_Class, context.Delivered_Small_Group, context.Delivered_Individually];
+
+                                    var classroom_types = [context.ClassroomType_Inclusion, context.ClassroomType_General];
+                                    var outcome_types = [context.Outcome_Graduation, context.Outcome_Teacher_Excellence, context.Outcome_Behavior, context.Outcome_Science, context.Outcome_Mathematics, context.Outcome_Literacy];
+                                %>
+                                
+                                <%= capitalize(tech_name) %> is
+                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Tech_Purpose %></a>
+                                </span><br / >
+                                <div class="white-background-blue-border">
+                                    <strong> The Basics of <%= tech_name %></strong> <br / >
+                                    <em> Program Type</em> : 
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= sentence(wordList(program_types).toLowerCase()) %></a>
+                                    </span><br / >
+                                    <em> Key Components</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= sentence(context.Tech_Components) %></a>
+                                    </span><br / >
+                                    <em> Delivery Type</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= sentence(wordList(delivery_types).toLowerCase()) %></a>
+                                    </span><br / >
+                                    <em> Used in</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= capitalize(wordList(grades_used)) %> grade <%= wordList(classroom_types).toLowerCase() %> classrooms.</a>
+                                    </span><br / >
+                                    <em> Target Outcomes</em> :
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= sentence(wordList(outcome_types).toLowerCase(0)) %></a>
+                                    </span><br / >
+                                    <em> <%= capitalize(plan_next.Tech_Cost_Saves) %></em> : 
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/plan_next_steps?return=shareresult">$<%= plan_next.Tech_Amount %> per <%= plan_next.Tech_Cost_User %></a>
+                                    </span><br / >   
+                                </div> 
+                            </div > 
+                        </div > 
+                
+                        <div class="row" > 
+                            <div class="col-xs-1 circle" > 
+                            </div > 
+                        
+                            <div class="col-xs-11" > 
+                                <% 
+                                    var pilot_type = (path === 'path-matching') ? 'matched' : 'randomized';
+                                %>
+                                <h2 > <%= capitalize(tech_name) %> was tested using a <%= pilot_type %> pilot</h2 > 
+                                <ul > 
+                                    <li >  
+                                        <% if (pilot_type === 'randomized') { %>
+                                            This evaluation used a randomized pilot.The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if ReadTech was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
+                                        <% } 
+                                            else if (pilot_type === 'matched') { %>
+                                            This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.
+                                        <% } %>
+                                    </li>
+                                    <li > 
+                                        <%  var assignment;
+
+                                            if (path === 'path-matching') {
+                                                
+                                                var suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
+                                                assignment = users + ' were matched ' + suffix;
+
+                                            }
+                                            else if (path === 'path-randomize') {
+                                                
+                                                if (eval.random.Individual_Group === 'groups') {
+                                                    prefix = 'Groups of ' 
+                                                    group = eval.random.Cluster_Group;
+                                                    if (group === 'other') group = eval.random.Cluster_Group_Other;
+                                                } else {
+                                                    prefix = '';
+                                                    group = 'random values';
+                                                }
+                                                
+                                                assignment = prefix + users + ' were assigned based on ' + group ;
+                                            }
+                                        %>
+
+                                        <%= sentence(assignment) %>
+                                    </li > 
+                                    <li > Baseline equivalence (or similarity across treatment and comparison) was tested using: <span class="baseline-vars-wordlist">
+                                        <%= baseline_vars_relabel_wordlist %></span> characteristics.</li > 
+                                </ul > 
+                                <% if (baseline_vars && baseline_vars.length > 0) { %>
+                                    <div class="hidden-print">
+                                        <h3>Re-label baseline variables (optional):</h3>
+                                        <% for (index in baseline_vars) { 
+                                                var baseline_var = baseline_vars[index]; %>
+                                        
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        Re-label <%= baseline_var %>:
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <input type="text" name="relabel-baseline-var-<%- index %>" class="relabel-baseline-var" value="<%= baseline_vars_relabel[index] %>" data-reset="<%= baseline_var %>"/>
+                                                    </div>
+                                                </div>                                            
+                                        <% } %>                                
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <button type="button" class="btn btn-info" id="relabel-baseline-vars">Re-label</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <button id="update_covariate_labels" type="button" class="btn btn-default action-button shiny-bound-input">Update Labels</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#D">
-                                <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="true"></i> Setting and Sample</h2>
-                            </div>
-                        </div>
-                        <div id="D" class="row collapse in">
-                            <p></p>
-                            <div class="step-action ">
-                                <textarea id="setting_and_sample_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The evaluation studied " + Prob_Appr_B + "."  %></textarea>
-                                <textarea id="setting_and_sample_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The intervention group in this evaluation includes " + Q_M_1 + "." %></textarea>
-                                <textarea id="setting_and_sample_3" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The comparison group includes " +  Q_M_2 + "." %></textarea>
-                                <textarea id="setting_and_sample_4" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">The sample for this evaluation includes:</textarea>
-                                <textarea id="setting_and_sample_5" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%=  n_full_treat + " " + Prob_Appr_B + " who used " + Plan_Question_A + " in the intervention group." %></textarea>
-                                <textarea id="setting_and_sample_6" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled=""><%= for_6 + " " +  Prob_Appr_B +  " who did not use the program in the comparison group." %></textarea>
-                                <textarea id="setting_and_sample_7" label="" rows="2" width="85%" class="shinyjs-disabled shiny-bound-input disabled" disabled="">Table 1 below summarizes key characteristics of the study sample:</textarea>
-                                <div id="table1" class="shiny-html-output shiny-bound-output">
-                                    <div id="out076dae39ecc11d5b" class="shiny-html-output shiny-bound-output">
-                                        <!-- html table generated in R 3.3.1 by xtable 1.8-2 package -->
-                                        <!-- Fri Dec  2 10:05:14 2016 -->
-                                        <table class="data table table-bordered table-condensed">
-                                            <tbody>
-                                                <tr> <th> Grade </th> <th> Characteristic </th> <th> Overall </th> <th> Intervention </th> <th> Comparison </th> <th> Difference </th>  </tr>
-                                                <% var grade, compare, diff, overall, char,intervention;
-                                                if(match_vars) { for (var match in match_vars ) {  if (results_by_grade) {
-                                                for (var key in results_by_grade) {
-                                                if (results_by_grade.hasOwnProperty(key)) {
+                                <% } %>
+                            </div > 
+                        </div > 
+                    
+                        <div class="row" > 
+                            <div class="col-xs-1 circle" > 
+                            </div > 
+                        
+                            <div class="col-xs-11" > 
+                                <h2 > This evaluation studied <%= tech_name %>’s impact on <%= wordList(grades_used) %> <%= users %></h2>
 
-                                                grade = key;
-                                                char   = match_vars[match];
-                                                var match_var_means = results_by_grade[key].match_var_means;
+                                    <% if (path === 'path-matching') { %>
+                                        <p>
+                                            The original dataset included <%= n_full_treatment %> students who used <%= tech_name %> and 
+                                            <%= n_full_overall - n_full_treatment %> students who did not use <%= tech_name %>. 
+                                            The final evaluation dataset included:
+                                        </p>
+                                    <% } %>
+                                
+                                    <div class="row">
+                                        <div class="col-xs-3 blue-background-white-text">
+                                            <p> <strong> Treatment Group</strong> </p>
+                                            <p> Students who used readTech </p>
+                                            <p> # of students: 134 </p>
+                                        </div>
+                                        <div class="col-xs-3 blue-background-white-text">
+                                            <p> <strong> Comparison Group</strong> </p>
+                                            <p> Students who did not use readTech </p>
+                                            <p> # of students: 134 </p>
+                                        </div>
+                                        <div class="col-xs-4 white-background-blue-border">
 
-                                                compare = match_var_means[char].comparison;
-                                                diff = match_var_means[char].difference;
-                                                overall =match_var_means[char].overall;
-                                                intervention = match_var_means[char].intervention;
-                                                %>
-                                                <tr> <td> <%= grade %> </td> <td> <%= char %> </td> <td align="right"> <%= overall %></td> <td align="right">  </td> <td align="right"> <%= compare %> </td> <td align="right"> <%= diff %> </td> </tr>
-                                                <% }}}}} %>
-                                            </tbody>
-                                        </table>
+                                            <% 
+                                                var school_types = [context.SchoolType_Charter, context.SchoolType_Private, context.SchoolType_Parochial, context.SchoolType_Public];
+                                                var urbanicity = [context.Urbanicity_Urban, context.Urbanicity_Suburban, context.Urbanicity_Rural];
+                                                var non_white = 100 - context.Race_White;
+                                            %>
+                                            <strong> Evaluation Context</strong> <br>
+                                            <em> School Type</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= wordList(school_types) %></a>
+                                                </span> <br>
+                                            <em> District Size</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Total_Students %></a>
+                                                </span><br>
+                                            <em> Setting</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= wordList(urbanicity) %></a>
+                                                </span><br>
+                                            <em> Location</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.District_State %></a>
+                                                </span><br>
+                                            <strong> Overall Student Population</strong> <br>
+                                            <em> Non-white</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= non_white %></a>%
+                                                </span><br>
+                                            <em> Hispanic</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Ethnicity_Hispanic %></a>%
+                                                </span><br>
+                                            <em> Female</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Gender_Female %></a>%
+                                                </span><br>
+                                            <!--
+                                            <em> Free or Reduced Price Lunch</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.FRPL_Reduced + context.FRPL_Free %></a>%
+                                                </span><br>-->
+                                            <em> English Learners</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.English_Learners %></a>%
+                                                </span><br>
+                                            <em> Students with IEPs</em> : 
+                                                <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                                    <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.IEP %></a>%
+                                                </span><br>
+                                        </div>
+                                    </div>
+
+
+                                    <p> Table 1 below summarizes key characteristics of the study sample: </p>
+                                    <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
+                                    <table id="table1">
+                                        <thead>
+                                            <tr>
+                                                <% if (baseline_by_grade) { %>
+                                                <th>Grade</th>
+                                                <% } %>
+                                                <th> Characteristic</th>
+                                                <th> Overall</th>
+                                                <th> Treatment</th>
+                                                <th> Comparison</th>
+                                                <th> Difference</th>
+                                                <th> Effect Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <% for (grade in baseline_results_by_grade) {
+                                                var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+                                                var characteristics = Object.keys(baseline_var_means);
+
+                                                for (index in characteristics) { 
+                                                    var characteristic = characteristics[index]; %>
+                                                    <tr>
+                                                        <% if (baseline_by_grade) { %>
+                                                            <td> <%= grade %></td>
+                                                        <% } %>
+                                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                                        <td> <%= baseline_var_means[characteristic].overall[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].difference[0] %></td>
+                                                        <td> <%= baseline_var_means[characteristic].effect_size[0] %></td>
+                                                    </tr>
+                                                <% }} %>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <% if (baseline_by_grade) { %>
+                                                <td></td>
+                                                <% } %>
+                                                <td> Number of <%= users %></td>
+                                                <td> <%= n_overall %></td>
+                                                <td> <%= n_treatment %></td>
+                                                <td> <%= n_comparison %></td>
+                                                <td> --</td>
+                                                <td> --</td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+                                </div> 
+                        </div > 
+                        
+                        <div class="row" > 
+                            <div class="col-xs-1 circle" > 
+                            </div > 
+                        
+                            <div class="col-xs-11" > 
+                                <% 
+                                    /* We have begin and end datetimes, rather than a plain-English duration. The following 
+                                        estimates the duration to the nearest day, and then converts that to the most appropriate 
+                                        count of days, weeks, months, or years */
+                                    var begin_date = new Date(context.Eval_Begin_Date);
+                                    var end_date = new Date(context.Eval_End_Date);
+                                    var duration_days = Math.ceil((end_date - begin_date) / 86400000);
+                                    var duration = '';
+
+                                    if (duration_days < 7) {
+                                        duration = duration_days.toString() + ' days';        
+                                    }
+                                    else if (duration_days < 84) {
+                                        duration = (Math.ceil(duration_days / 7)).toString() + ' weeks';
+                                    }
+                                    else if (duration_days < 365) {
+                                        duration = (Math.ceil(duration_days / 30)).toString() + ' months';
+                                    }
+                                    else {
+                                        duration = (Math.ceil(duration_days / 365)).toString() + ' years';
+                                    }
+                                %>
+                                <h2 > The evaluation period lasted
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a href="/context_and_usage?return=shareresult"><%= duration %>.</a>
+                                    </span>
+                                </h2 > 
+                                <p > During this period, <%= users %> in the intervention group were intended to use the technology 
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Expected_Dosage + '.' %></a>
+                                    </span> Students in the comparison group did not have access to <%= tech_name %>. </p >
+                                <p > 
+                                    <label class="hidden-print"> Challenges/Limitations:</label > 
+                                    <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
+                                    <p class="visible-print-block" id="print-challenges-limitations"><%= challenges_limitations %></p>
+                                <p>
+                                    Other contextual factors or supports being provided to students may have contributed to results. Other factors include:
+                                    <span class="tooltip-gr" data-tool-name="Context and Usage">
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= context.Other_Notes %></a>
+                                    </span>
+                                </p> 
+                            </div > 
+                        </div > 
+                        
+                        <div class="row" > 
+                            <div class="col-xs-1 circle" > 
+                            </div > 
+                        
+                            <div class="col-xs-11" > 
+                                <h2 ><span class="tooltip-gr" data-tool-name="Basics">
+                                        <a href="/basic?return=shareresult"><%= capitalize(basic_outcome) %> </a>
+                                     </span>
+                                    was measured using 
+                                     <span class="tooltip-gr" data-tool-name="Craft Your Research Question">
+                                          <a href="/craft_your_research_q?return=shareresult"><%= outcome_measure %>.</a>
+                                     </span>
+                                </h2 > 
+                                <p > Analysis of <%= tech_name %> controls for: <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %>.</span>
+                                    <% if (analysis_by_grade) { %>
+                                        Analysis was also conducted by grade.
+                                    <% } %> </p > 
+                            </div > 
+                        </div > 
+
+                        <div class="row" > 
+                            <div class="col-xs-1 circle" > 
+                            </div > 
+
+                            <div class="col-xs-11" > 
+                                <h2 > Conclusions and Next Steps</h2 > 
+                                <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- tech_name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
+                                <p class="visible-print-block" id="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
+                            </div > 
+                        </div >
+
+                        <input type="hidden" name="document_html" id="document_html"/>
+
+                        <!-- Modal -->
+                        <div id="download-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Download</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <p>You are able to select from the following options to export your findings brief! We suggest exporting this brief and reviewing it with others before you complete your evaluation where we'll publish it so others can see.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <label>Findings Brief</label><br />
+                                                <input type="radio" name="download_type" value="brief_pdf" checked> PDF document<br>
+                                                <input type="radio" name="download_type" value="brief_slides" disabled> PDF slides<br>
+                                                <input type="radio" name="download_type" value="brief_docx" disabled> DOCX file<br>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label>Technical Appendix</label><br />
+                                                <input type="radio" name="download_type" value="appendix_pdf" disabled> PDF document<br>
+                                                <input type="radio" name="download_type" value="appendix_slides" disabled> PDF slides<br>
+                                                <input type="radio" name="download_type" value="appendix_docx" disabled> DOCX file<br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                        <button type="submit" id="button-download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#E">
-                                <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="true"></i> Implementation</h2>
-                            </div>
-                        </div>
-                        <div id="E" class="row collapse in">
-                            <p></p>
-                            <div class="step-action ">
-                                <textarea id="implementation_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= Q_9 %></textarea>
-                                <textarea id="implementation_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "The evaluation period lasted " +Plan_Context_A_4+"." %></textarea>
-                                <textarea id="implementation_3" label="" rows="2" width="85%" class="shiny-bound-input"><%= "During this period, " + Prob_Appr_B +  " in the intervention group were intended to use the app " + Plan_Context_A_3+"."  %></textarea>
-                                <textarea id="implementation_4" label="" rows="2" width="85%" class="shiny-bound-input"><%= "Among " +Prob_Appr_B + " in the intervention group, " + Plan_Context_D + "." %></textarea>
-                                <textarea id="implementation_5" label="" rows="2" width="85%" class="shiny-bound-input"><%= Prob_Appr_B + " in the comparison group did not have access to " + Plan_Question_A + "." %></textarea>
-                                <h5>What other supports relevant to your outcome of interest did study participants receive?</h5>
-                                <textarea id="implementation_6" label="" rows="2" width="85%" class="shiny-bound-input"></textarea>
-                            </div>
-                        </div>
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#F">
-                                <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="true"></i> Measures</h2>
-                            </div>
-                        </div>
-                        <div id="F" class="row collapse in">
-                            <p></p>
-                            <div class="step-action ">
-                                <textarea id="measures_1" label="" rows="2" width="85%" class="shiny-bound-input"><%= Plan_Question_B_1 + " was measured using the " +  Plan_Question_B_2 + "." %></textarea>
-                                <textarea id="measures_2" label="" rows="2" width="85%" class="shiny-bound-input"><%= "Analysis of the impact of " +  Plan_Question_A + " controls for " + ED_1 + "."  %></textarea>
-                            </div>
-                        </div>
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#G">
-                                <h2 class="clickable"><i class="fa fa-caret-down" aria-hidden="true"></i> Conclusions and Next Steps</h2>
-                            </div>
-                        </div>
-                        <div id="G" class="row collapse in">
-                            <p></p>
-                            <div class="step-action ">
-                                <h5>How would you summarize your conclusions from this study and do you have any follow-up questions for further research?</h5>
-                                <textarea id="conclusions_1" label="" rows="12" width="85%" placeholder="EXAMPLE: Based on the findings of this evaluation, we conclude that Odyssey Pathblazer Reading has a positive, statistically significant impact on 5th grade students' achievement as measured by the K-PREP reading test. The size of the impact would be equivalent to an average student gaining 6 percentile points on this test.
-
-Areas for further research based on these findings include the following follow-up questions:
-
-Does Odyssey Pathblazer Reading cause larger improvements over the course of a school year if more students use it the intended amount of 80 minutes per week?
-
-Does Odyssey Pathblazer Reading cause larger (or smaller) improvements in other grades?
-
-Does the program cause larger improvements among the lowest-achieving students at baseline?" class="shiny-bound-input"></textarea>
+                        <!-- Modal -->
+                        <div id="complete-evaluation-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Complete Evaluation</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT PUBLISH</button>
+                                        <button type="submit" id="button-publish" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                    </div>
-
-
-                    <div id="file_type" class="form-group shiny-input-radiogroup shiny-input-container shinyjs-resettable shiny-bound-input pull-right" data-shinyjs-resettable-id="file_type" data-shinyjs-resettable-type="RadioButtons" data-shinyjs-resettable-value="PDF document" data-original-title="" title="">
-                        <label class="control-label" for="file_type"></label>
-                        <div class="shiny-options-group">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="file_type" value="PDF document" checked="checked">
-                                    <span>PDF document</span>
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="file_type" value="PDF slides">
-                                    <span>PDF slides</span>
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="file_type" value="DOCX file">
-                                    <span>DOCX file</span>
-                                </label>
-                            </div>
-                        </div>
-                        <a id="download_brief" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_brief?w=" target="_blank">
-                            <i class="fa fa-download"></i>
-                            Create Brief!
-                        </a>
-
-
-                        <a id="download_appendix" class="btn btn-default shiny-download-link  shiny-bound-output" href="session/de08e292d615474351a34fd9cf09a5ad/download/download_appendix?w=" target="_blank">
-                            <i class="fa fa-download"></i>
-                            Create Appendix
-                        </a>
                     </div>
                 </div>
-
             </div>
         </div>
-
-        <% include ../views/partials/toolButtons.html %>
-    </form>
+                
+        <% include ../views/partials/shareresultButtons.html %>
+    </form > 
+    
     <% include ../views/partials/footer.html %>
-    <!--<script>$(document).ready(function () { setTimeout(function () { shinyBS.addTooltip('file_type', 'popover', { 'content': '<ul><li>PDF document is a file to be read like a report, and cannot be directly edited by those .</li></br><li>PDF slides are formatted for a full-screen presentation, and are not directly editable.</li></br><li>A DOCX file is similar to the PDF document option, but can be directly edited in Microsoft Word.</li></ul>', 'placement': 'left', 'trigger': 'hover', 'title': 'File Types' }) }, 500) });</script>-->
-    <script src='/static/js/custom.js'></script>
+    <script src='/static/js/custom.js' ></script > 
+    <script>
+        // Function to convert array into word list (e.g. ["word1", "word2", "word3"] -> "word1, word2, and word3")
+        var wordList = function (x) {
+            var out;
 
-</body>
-</html>
+            x = x.filter(function (x) { return x !== '' })
+
+            if (x.length === 0) {
+                out = '';
+            }
+            else if (x.length === 1) {
+                out = x[0];
+            }
+            else if (x.length === 2) {
+                out = x[0] + ' and ' + x[1];
+            }
+            else {
+                out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+            }
+
+            return out;
+        }
+        
+        $(document).ready(function () {
+
+            $('#header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer').addClass('hidden-print');
+
+            $("#relabel-baseline-vars").click(function (e) {
+                // Prevent form submission
+                e.preventDefault();
+
+                var newLabels = [];
+
+                // Get value of all relabel inputs. For any blanks, revert to previous value.
+                $('.relabel-baseline-var').each( function(index) {
+                    var val = $(this).val();
+
+                    if (val === '') {
+                        val = $(this).attr('data-reset');
+                        $(this).val(val);
+                    }
+                    else {
+                        $(this).attr('data-reset', val);
+                    }
+
+                    // Update characteristic names in table 1
+                    $('span.table1-relabel-baseline-var-' + index).text(val);
+                    
+                    newLabels.push(val);
+                });
+
+                // Replace baseline var wordlists with new labels.
+                $("span.baseline-vars-wordlist").text(wordList(newLabels));
+            });
+
+            // Add tooltips.
+            $('.tooltip-gr').tooltip({
+                title: function () {
+                    return "You previously entered this value on " + $(this).attr('data-tool-name') + ". Click to visit the tool and revise your answer.";
+                }
+            });
+
+            // On textarea change on screen, update the p that will contain the text in the printed version.
+            $('textarea').change(function () {
+                var id = $(this).attr('id');
+                var val = $(this).val();
+                $('#print-' + id).text(val);
+            });
+
+            // Since we have multiple buttons that can take actions, set the form action on button click.
+            $('button[type=submit]').click(function () {
+                var action = $(this).attr('data-action');
+                $('form').attr('action', action);
+                $('#document_html').val($('html')[0].outerHTML);
+                $('form').submit();
+            });
+            
+        });
+
+    </script>
+    </body > 
+</html >
+            

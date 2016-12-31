@@ -75,7 +75,7 @@
                 <div class="col-xs-12">
                     <div class="tool-top">
                         <div class="dl-guide">
-                            <a onclick=" window.open('/static/pdf/03.03 Summarize Context_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <a onclick="window.open('/static/pdf/03.03 Summarize Context_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
                             <h1 class="tool-title ">Summarize Context</h1>
@@ -109,16 +109,33 @@
                         </div>
                         <div id="A" class="row collapse in q-row">
                             <div class="col-xs-7">
+                                <%
 
+                                function dateformat(v){
+                                function pad(n) {
+                                   return n < 10 ? "0" +n : n
+                                }
+                                d=new Date(v);
+                                dash="-"
+                                colon=":"
+                                return d.getFullYear()+dash+
+                                pad(d.getMonth()+1)+dash+
+                                pad(d.getDate())
+                                                            
+                                                             }
+                                                             var bd=dateformat(eval.planContext.Eval_Begin_Date);
+                                                             var ed=dateformat(eval.planContext.Eval_End_Date);
+                                                             %>
+                                    
 
-                                <div class="step-action">
-                                    <label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label>
-                                    <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= Eval_Begin_Date %>" />
-                                    <br />
-                                    <label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label>
-                                    <input type="date" name="Eval_End_Date" id="Eval_End_Date" value="<%= Eval_End_Date %>" />
-                                </div>
-                            </div>
+                                    <div class="step-action">
+                                        <label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label>
+                                        <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= bd %>" />
+                                        <br />
+                                        <label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label>
+                                        <input type="date" name="Eval_End_Date" id="Eval_End_Date" value="<%= ed %>" />
+                                    </div>
+</div>
 
                             <div class="col-xs-5">
                                 <div class="step-to-consider">
@@ -551,7 +568,7 @@
                                 var cbvalue = options[i];
                                 %>
 
-                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>"/>
+                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>"  <%- checked %> />
                                 <label for="<%= cbid %>">
                                     <%= cbvalue %>
 
@@ -561,7 +578,30 @@
                                 %>
                             </div>
                                 <div class="clearfix"></div>
+                                <div class="step-subquestion">
+                                    <h4>Where is your school district located? </h4>
+                                </div>
 
+
+                                <div class="step-action context-tag">
+                                  
+                                    <select required name="District_State" id="District_State">
+                                        <%
+                                        var values = ["", 'AK','AL','AR','AZ','CA','CO','CT','DC','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'];
+                                        var options = ["Select a state",'Alaska','Alabama','Arkansas','Arizona','California','Colorado','Connecticut','District of Columbia','Delaware','Florida','Georgia','Hawaii','Iowa','Idaho','Illinois','Indiana','Kansas','Kentucky','Louisiana','Massachusetts','Maryland','Maine','Michigan','Minnesota','Missouri','Mississippi','Montana','North Carolina','North Dakota','Nebraska','New Hampshire','New Jersey','New Mexico','Nevada','New York','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Virginia','Vermont','Washington','Wisconsin','West Virginia','Wyoming']
+
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                     
+                                        var selected = ( eval.planContext.District_State == values[i] ) ? "selected" : "";
+
+                                        %>
+                                        <option value="<%=values[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                        }
+                                        %>
+
+                                    </select>
+                                </div>
 
 
 
