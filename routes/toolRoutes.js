@@ -12,8 +12,8 @@
 // load up the thing we need
 var fs = require('fs');
 var async = require('async');
-var juice = require('juice');
-var request = require('request');
+//var juice = require('juice');
+//var request = require('request');
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
