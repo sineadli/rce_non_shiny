@@ -106,32 +106,13 @@ var PlanContext = mongoose.Schema({
 	Delivered_Individually: { type: String, default: '' },
 	Delivered_Small_Group: { type: String, default: '' },
 	Delivered_Whole_Class: { type: String, default: '' },
-	Delivered_School_Wide: { type: String, default: '' },
-	Grade_PK: { type: String, default: '' },
-	Grade_K: { type: String, default: '' },
-	Grade_1: { type: String, default: '' },
-	Grade_2: { type: String, default: '' },
-	Grade_3: { type: String, default: '' },
-	Grade_4: { type: String, default: '' },
-	Grade_5: { type: String, default: '' },
-	Grade_6: { type: String, default: '' },
-	Grade_7: { type: String, default: '' },
-	Grade_8: { type: String, default: '' },
-	Grade_9: { type: String, default: '' },
-	Grade_10: { type: String, default: '' },
-	Grade_11: { type: String, default: '' },
-	Grade_12: { type: String, default: '' },
-	Grade_PS: { type: String, default: '' },
+    Delivered_School_Wide: { type: String, default: '' },
+    Grades: [{ type: String }],
     Expected_Dosage: { type: String, default: '' }, //was Plan_Context_A_3
     Developer_Guidelines: { type: String, default: '' },
 	ClassroomType_General: { type: String, default: '' },
 	ClassroomType_Inclusion: { type: String, default: '' },
-	Outcome_Literacy: { type: String, default: '' },
-	Outcome_Mathematics: { type: String, default: '' },
-	Outcome_Science: { type: String, default: '' },
-	Outcome_Behavior: { type: String, default: '' },
-	Outcome_Teacher_Excellence: { type: String, default: '' },
-	Outcome_Graduation: { type: String, default: '' },
+    Outcomes: [{ type: String }],
 	SchoolType_Charter: { type: String, default: '' },
 	SchoolType_Private: { type: String, default: '' }, 
 	SchoolType_Parochial: { type: String, default: '' }, 
@@ -336,7 +317,6 @@ evaluationSchema.pre('save', function (next) {
                 this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
             }
         }
-        //path determine
         if (this.probAppr) {
 
             if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current" &&
@@ -350,7 +330,7 @@ evaluationSchema.pre('save', function (next) {
                 this.path = "path-none";
             } //what should we do?
         }
-        if (this.status === "12") {
+        if (this.status === "100") {
             if (!this.published_at) { this.published_at = currentDate; }
             var doc = this;
             User.findById(this.userid, function (err, user) {

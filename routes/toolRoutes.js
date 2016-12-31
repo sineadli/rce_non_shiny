@@ -13,6 +13,9 @@
 var fs = require('fs');
 var async = require('async');
 //var juice = require('juice');
+
+//var request = require('request');
+
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
@@ -34,88 +37,88 @@ module.exports = function (app, passport) {
         res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query   });
 	});
     app.post('/basics', isLoggedIn, function (req, res) {
-		sess = req.session;
-		var obj = req.body, basics;
-	//	console.log(obj);
-	    var toolName = "The Basics";
-		var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
-		var dt = new Date();
-		async.waterfall([
-			function (done) {
-				if (sess.eval) {
-					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-						if (!eval) {
-							req.flash('error', 'No evaluation exists.');
-							return res.redirect('/coach');
-						}
-						if (err) {
-							console.log(err);
-							return res.redirect('/coach');
-						}
-						return done(err, eval);
-					});
-				}
-				else
-					res.redirect('/coach');
-			},
-			function (eval, done) {
-				//eval find so update the toolsVisisted accordingly
-				eval.last_step = 2;
-				eval.last_tool = toolName;
-				var tool = eval.toolsvisited.filter(function (x) { return x.name === toolName });
-				if (tool.length == 0) {
-					eval.toolsvisited.push(toollist);
-				}
-				else {
-					var index = eval.toolsvisited.indexOf(tool[0]);
-					if (index > -1) {
-						if (tool[0].status == "completed") toollist = { "name": toolName, "status": "completed", "visited_at": new Date() };
-						eval.toolsvisited.splice(index, 1);
-						eval.toolsvisited.push(toollist); 
-					}
-				}
-				//add/update the probAppr within eval
-				basics = {
-					"Basics_Have": obj.Basics_Have,
-					"Basics_Tech_Name": obj.Basics_Tech_Name,
-					"Basics_Using": obj.Basics_Using,
-					"Basics_Users": obj.Basics_Users, 
-					"Basics_Users_Other": obj.Basics_Users_Other, 
-					"Basics_Outcome": obj.Basics_Outcome,
-					"Basics_Outcome_Other": obj.Basics_Outcome_Other
-				};
-				if (!eval.basics) {
-				    eval.basics.created_at = dt;
-					
-				}
-				else {
-					eval.basics.created_at = eval.basics.created_at;
-				    eval.basics.updated_at = dt;
-				};
-				
-				eval.basics = basics;
-				if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
-				eval.save(function (err) {
-					if (err) {
-						console.log(err); return done(err);
-					}
-					sess.eval = eval;
-					//  console.log(eval);
-					if (req.body.status === "started") {
-						req.flash('saveMessage', 'Changes Saved.');
-						return res.redirect('/basics');
-					}
-					else {
-						return res.redirect('/coach');
-					}
-                    
-				});
-			}
-		], function (err) {
-			if (err) return next(err);
-			res.redirect('/coach');
-		});
-	});
+        sess = req.session;
+        var obj = req.body, basics;
+        //	console.log(obj);
+        var toolName = "The Basics";
+        var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+                //eval find so update the toolsVisisted accordingly
+                eval.last_step = 2;
+                eval.last_tool = toolName;
+                var tool = eval.toolsvisited.filter(function (x) { return x.name === toolName });
+                if (tool.length == 0) {
+                    eval.toolsvisited.push(toollist);
+                }
+                else {
+                    var index = eval.toolsvisited.indexOf(tool[0]);
+                    if (index > -1) {
+                        if (tool[0].status == "completed") toollist = { "name": toolName, "status": "completed", "visited_at": new Date() };
+                        eval.toolsvisited.splice(index, 1);
+                        eval.toolsvisited.push(toollist);
+                    }
+                }
+                //add/update the probAppr within eval
+                basics = {
+                    "Basics_Have": obj.Basics_Have,
+                    "Basics_Tech_Name": obj.Basics_Tech_Name,
+                    "Basics_Using": obj.Basics_Using,
+                    "Basics_Users": obj.Basics_Users,
+                    "Basics_Users_Other": obj.Basics_Users_Other,
+                    "Basics_Outcome": obj.Basics_Outcome,
+                    "Basics_Outcome_Other": obj.Basics_Outcome_Other
+                };
+                if (!eval.basics) {
+                    eval.basics.created_at = dt;
+
+                }
+                else {
+                    eval.basics.created_at = eval.basics.created_at;
+                    eval.basics.updated_at = dt;
+                };
+
+                eval.basics = basics;
+                if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    //  console.log(eval);
+                    if (req.body.status === "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                        return res.redirect('/basics');
+                    }
+                    else {
+                        return res.redirect('/coach');
+                    }
+
+                });
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
     
 	//02. Who used and how	   
 	app.get('/who_and_how', function (req, res) {
@@ -518,7 +521,30 @@ module.exports = function (app, passport) {
                     }
                 }
                 //add/update the planQuestion within eval
-               
+                var grades = [], outcomes = [];
+     
+                if (obj.Grade_PK) grades.push(obj.Grade_PK);
+                if (obj.Grade_K) grades.push(obj.Grade_K);
+                if (obj.Grade_1) grades.push(obj.Grade_1);
+                if (obj.Grade_2) grades.push(obj.Grade_2);
+                if (obj.Grade_3) grades.push(obj.Grade_3);
+                if (obj.Grade_4) grades.push(obj.Grade_4);
+                if (obj.Grade_5) grades.push(obj.Grade_5);
+                if (obj.Grade_6) grades.push(obj.Grade_6);
+                if (obj.Grade_7) grades.push(obj.Grade_7);
+                if (obj.Grade_8) grades.push(obj.Grade_8);
+                if (obj.Grade_9) grades.push(obj.Grade_9);
+                if (obj.Grade_10) grades.push(obj.Grade_10);
+                if (obj.Grade_11) grades.push(obj.Grade_11);
+                if (obj.Grade_12) grades.push(obj.Grade_12);
+                if (obj.Grade_PS) grades.push(obj.Grade_PS);
+
+                if (obj.Outcome_Literacy) outcomes.push(obj.Outcome_Literacy);
+                if (obj.Outcome_Mathematics) outcomes.push(obj.Outcome_Mathematics);
+                if (obj.Outcome_Science) outcomes.push(obj.Outcome_Science);
+                if (obj.Outcome_Behavior) outcomes.push(obj.Outcome_Behavior);
+                if (obj.Outcome_Teacher_Excellence) outcomes.push(obj.Outcome_Teacher_Excellence);
+                if (obj.Outcome_Graduation) outcomes.push(obj.Outcome_Graduation);
 					var planContext = {
 						Eval_Begin_Date: obj.Eval_Begin_Date,
 						Eval_End_Date: obj.Eval_End_Date,
@@ -534,31 +560,12 @@ module.exports = function (app, passport) {
 						Delivered_Small_Group: obj.Delivered_Small_Group,
 						Delivered_Whole_Class: obj.Delivered_Whole_Class,
 						Delivered_School_Wide: obj.Delivered_School_Wide,
-						Grade_PK: obj.Grade_PK,
-						Grade_K: obj.Grade_K,
-						Grade_1: obj.Grade_1,
-						Grade_2: obj.Grade_2,
-						Grade_3: obj.Grade_3,
-						Grade_4: obj.Grade_4,
-						Grade_5: obj.Grade_5,
-						Grade_6: obj.Grade_6,
-						Grade_7: obj.Grade_7,
-						Grade_8: obj.Grade_8,
-						Grade_9: obj.Grade_9,
-						Grade_10: obj.Grade_10,
-						Grade_11: obj.Grade_11,
-						Grade_12: obj.Grade_12,
-						Grade_PS: obj.Grade_PS,
+						Grades: grades,
 						Expected_Dosage: obj.Expected_Dosage,
 						Developer_Guidelines:obj.Developer_Guidelines,
 						ClassroomType_General: obj.ClassroomType_General,
 						ClassroomType_Inclusion: obj.ClassroomType_Inclusion,
-						Outcome_Literacy: obj.Outcome_Literacy,
-						Outcome_Mathematics: obj.Outcome_Mathematics, 
-						Outcome_Science: obj.Outcome_Science,
-						Outcome_Behavior: obj.Outcome_Behavior,
-						Outcome_Teacher_Excellence: obj.Outcome_Teacher_Excellence, 
-						Outcome_Graduation: obj.Outcome_Graduation,
+						Outcomes: outcomes,
 						SchoolType_Charter: obj.SchoolType_Charter,
 						SchoolType_Private: obj.SchoolType_Private, 
 						SchoolType_Parochial: obj.SchoolType_Parochial, 
@@ -585,7 +592,8 @@ module.exports = function (app, passport) {
 						Other_Notes: obj.Other_Notes, 
 						
 
-				};
+                };
+                    console.log(planContext);
 				if (!eval.planContext) {
 				    planContext.created_at = dt;
 				}
@@ -1289,10 +1297,11 @@ module.exports = function (app, passport) {
                 // Need to generate document file here
                 console.log('generate document');
                 //var filename = 'node-google.pdf';
-                var html_css_inline = juice(obj.document_html);
-                fs.writeFile('test-output.html', html_css_inline, 'utf8');
 
-                callback(null, 'test-output.html');
+                //var html_css_inline = juice(obj.document_html);
+                fs.writeFile('test-output.html', obj.document_html, 'utf8', function () {
+                    callback(null, 'test-output.html');
+                });
             },
             function (filename, callback) {
                 // Now download the document
@@ -1301,7 +1310,7 @@ module.exports = function (app, passport) {
                 res.setHeader('Content-type', 'application/pdf');
                 var filestream = fs.createReadStream('node-google.pdf');*/
 
-                res.setHeader('Content-disposition', 'attachment; filename=brief.html');
+                res.setHeader('Content-disposition', 'attachment; filename=test-output.html');
                 res.setHeader('Content-type', 'text/html');
                 var filestream = fs.createReadStream(filename);
 
@@ -1402,6 +1411,15 @@ module.exports = function (app, passport) {
         ], function (err) {
             if (err) return next(err);
             res.redirect('/coach');
+        });
+    });
+
+    app.get('/shareresult/:id', isLoggedIn, function (req, res) {
+        sess = req.session;
+        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+            sess.eval = eval;        
+            var query = require('url').parse(req.url, true).query;
+            res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
         });
     });
 };

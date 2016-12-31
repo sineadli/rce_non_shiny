@@ -1,0 +1,187 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>All Publications - Ed Tech RCE Coach</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.feedback_me.js"></script>
+    <script src='/static/js/custom.js'></script>
+    <script src='/static/js/jquery.tablesorter.js'></script>
+    <script src='/static/js/jquery.tablesorter.widgets.js'></script>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+    <link rel="stylesheet" href="/static/css/theme.default.min.css" />
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+<style>
+ div.r_i {
+    padding: 20px 10px 10px 10px;
+    line-height: 1.4em;
+    clear: right;
+}
+div.r_t {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+div.r_a, div.r_c, div.r_d, div.r_g, div.r_oc,div.r_t  {
+    margin-bottom: 5px;
+}
+        div.r_d {
+                color: #274;
+            border-bottom:1px solid #e7e7e7;
+        }
+div.r_f, div#r_colR div.r_f {
+    padding: 9px 10px 4px 10px;
+    clear: left;
+    float: left;
+    width: 100px;
+    margin: 5px 0 3px 10px;
+    font-size: .9em;
+}
+div#fbar {   
+    width: 54%;
+    font-size: 1em;
+    line-height: .9em;
+    margin-left:10px;
+}
+
+#fbar  input[type=submit] {
+    float: right;
+    width: 20%;
+    position: relative;
+    color: #fff;
+    height: 30px;
+    font-weight: bold;
+    background-color: #006982;
+    margin-right:17px;
+}
+#fbar input[type=text] {
+    width: 75%;
+    height: 30px;
+
+}
+div#sbar {   
+    float: right;
+    clear:right;
+    width: 45%;
+    font-size: 1em;
+    line-height: .9em;
+    text-align:right;
+}
+#sbar > select {
+    float: right;
+    clear: right;
+    margin-right:15px;
+    width: 60%;
+    height: 30px;
+}
+
+</style>
+</head>
+<body class="one-col">
+    <% include ../views/partials/header.html %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+    </ol>
+    <div class="container-fluid">
+        <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
+        <input type="hidden" id="user_email" value="<%= user.email %>" />
+        <% if(obj) {%>
+        <input type="hidden" id="obj_search" value="<%= obj.search %>" />
+        <input type="hidden" id="obj_sort" value="<%= obj.sort %>" />
+        <%}%>
+        <div class="page-header">
+            <h1 class="page-title">All Publications</h1>
+            <div class="row">
+                
+                <form id="s" >
+                    <div id="sbar">
+                        <label for="s"> Sort by: </label>
+                        <select name="sort" id="s" onchange="this.form.submit();">
+                            <% var options = ["Publication Date (Newest First)", "Publication Date (Oldest First)","Tech Name (A-Z)","Tech Name (Z-A)" ];
+                            var values = ["-published_at", "published_at","basics.Basics_Tech_Name","-basics.Basics_Tech_Name" ];
+                            for ( var i = 0; i < options.length; i++ )
+                            {
+                            var selected;
+                            
+                            { if (obj.sort) { selected = ( obj.sort== values[i] ) ? "selected" : "";}}
+
+
+                            %>
+                            <option value="<%=values[i] %>" <%=selected %> ><%=options[i] %></option>
+
+                            <% } %>
+                        </select>
+                    </div>
+                    <div id="fbar">
+                        <div>
+                            <input id="f" type="text" name="search" value="<%= obj.search %>" placeholder="Search technology, outcome, grade, author or organization">
+                            <input type="submit" value="SEARCH" id="btnSearch">
+                        </div>
+                    </div>
+                </form>
+            </div>       
+        </div>
+        <div id="result">
+            <% include ../views/partials/publishlists.html %>
+        </div>
+              
+        
+      
+    </div>
+    <% include ../views/partials/footer.html %>  
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //set up some minimal options for the feedback_me plugin
+            //init feedback_me plugin
+            var search = $("#obj_search").val();
+            
+            var fm_options = setFeedbackOptions($("#user_email").val(), "evaluations");
+            fm.init(fm_options);
+
+           
+        });
+        //$('#s').change(function (e) {
+
+            
+        //    var search = $('#f').val();
+
+        //    $this = $(e.target);
+        //    var sort = $this.val()
+        //    var url = "/publishlists" + "?sort=" + sort + "&search=" + search;
+        //    alert(url);
+        //    console.log(url);
+        //    $.get(url, function (data) {
+        //        $("#result").html("");
+        //      //  $("#result").html(data);
+        //    });
+
+        //});
+        
+
+   
+    </script>
+</body>
+</html>

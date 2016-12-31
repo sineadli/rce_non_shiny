@@ -295,30 +295,14 @@
                         </div>
                                 <div class="clearfix"></div>
                                 <div class="step-subquestion">
-                                    <h4>With what grade level(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used for your evaluation?</h4><p><em>Select all that apply.</em></p>
+                                    <h4>With what grade level(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used for your evaluation?</h4>
                                 </div>
                         <div class="step-action context-tag">
                             <p><em>Select all that apply.</em></p>
                             <%
                             var breaks = [4,9];
                             var options= ["PK", "K", "1", "2","3","4","5","6","7","8","9","10","11","12","PS"];
-                            var selected =[eval.planContext.Grade_PK,
-                            eval.planContext.Grade_K,
-                            eval.planContext.Grade_1,
-                            eval.planContext.Grade_2,
-                            eval.planContext.Grade_3,
-                            eval.planContext.Grade_4,
-                            eval.planContext.Grade_5,
-                            eval.planContext.Grade_6,
-                            eval.planContext.Grade_7,
-                            eval.planContext.Grade_8,
-                            eval.planContext.Grade_9,
-                            eval.planContext.Grade_10,
-                            eval.planContext.Grade_11,
-                            eval.planContext.Grade_12,
-                            eval.planContext.Grade_PS,
-
-                            ];
+                            var selected =eval.planContext.Grades;
                             var names =["Grade_PK", "Grade_K", "Grade_1","Grade_2","Grade_3","Grade_4","Grade_5", "Grade_6","Grade_7","Grade_8","Grade_9","Grade_10","Grade_11","Grade_12","Grade_PS"
                             ];
 
@@ -326,7 +310,7 @@
 
                             for ( var i = 0; i < options.length; i++ )
                             {
-                            checked = ( selected[i] == options[i] ) ? "checked" : "";
+                            checked = selected.includes(options[i]) ? "checked" : "";
                             var cbid = names[i];
                             var cbvalue = options[i];
                             var brk = "";
@@ -423,15 +407,14 @@
                             var taller=[4,5]
                             var options= ["Literacy", "Mathematics", "Science","Behavior","Teacher Excellence", "Path to Graduation"];
                             var tips = ["Reading, writing, language development","","","Behavior, emotional/internal behavior, external behavior, knowledge, attitudes and values, social-emotional development, social outcomes","Teacher retention at the school, teacher retention in the profession, teacher retention in the school district","Access and enrollment, attainment, Completing school, credit accumulation and persistence, progress in developmental education, progressing in school, staying in school" ]
-                            var selected =[eval.planContext.Outcome_Literacy,
-                            eval.planContext.Outcome_Mathematics, eval.planContext.Outcome_Science ,eval.planContext.Outcome_Behavior ,eval.planContext.Outcome_Teacher_Excellence,eval.planContext.Outcome_Graduation];
+                            var selected =eval.planContext.Outcomes;
                             var names =["Outcome_Literacy", "Outcome_Mathematics", "Outcome_Science","Outcome_Behavior","Outcome_Teacher_Excellence", "Outcome_Graduation"];
 
                             var checked = "unchecked";
 
                             for ( var i = 0; i < options.length; i++ )
                             {
-                            checked = ( selected[i] == options[i] ) ? "checked" : "";
+                            checked = selected.includes(options[i]) ? "checked" : "";
                             var cbid = names[i];
                             var cbvalue = options[i];
                             var tallclass="";
