@@ -12,7 +12,7 @@
 // load up the thing we need
 var fs = require('fs');
 var async = require('async');
-var juice = require('juice');
+//var juice = require('juice');
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
@@ -175,7 +175,9 @@ module.exports = function (app, passport) {
                     }
                 }
                 //add/update the probAppr within eval
-                
+				eval.prepare_random.Individual_Group = obj.Individual_Group;
+				eval.prepare_random.Cluster_Group = obj.Cluster_Group;
+                eval.prepare_random.Cluster_Group_Other = obj.Cluster_Group_Other;
                 var probAppr = {
 						"Appr_Current_or_New": obj.Appr_Current_or_New, 
 						"Appr_All_Using": obj.Appr_All_Using,
