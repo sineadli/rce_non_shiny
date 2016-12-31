@@ -11,22 +11,59 @@
 // middleware/getAllEvaluations.js
 //load the thing we need
 var Evaluation = require('../models/evaluation');
+var dynamicSort = require('./dynamicSort');
 
 var getAllPublications = function (req, res, next) {
+    var sort = "-published_at";
+    var search = "";
+    var query = require('url').parse(req.url, true).query;
+    if (query.search) search = query.search;
+    if (query.sort) sort = query.sort;
+    //console.log(query.search);
+   // console.log(query.sort);
     sess = req.session;
-    Evaluation.find({ status: '100' }).sort({ published_at: -1 }).select("userid basics planContext published_at author company").exec(function (err, evals) {
-        if (err) {
-            console.log(err);
-            return next();
-        } else {
+    if (!search ) {
+        Evaluation.find({ status: '100' }).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            if (err) {
+                console.log(err);
+                return next();
+            } else {
 
-            if (evals) {              
-               sess.publishlists = evals;
+                if (evals) {
+                   
+                    evals.sort(dynamicSort(sort));
+                    sess.publishlists = evals;
+                    return next();
+                }
                 return next();
             }
-            return next();
-        }
-    });
+        });
+
+    }
+    else {
+
+        Evaluation.find({$and:
+        [{ status: '100' }, {
+            $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
+                { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
+            }]
+        }).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            if (err) {
+                console.log(err);
+                return next();
+            } else {
+
+                if (evals) {
+                    
+                    evals.sort(dynamicSort(sort));
+                    sess.publishlists = evals;
+                    return next();
+                }
+                return next();
+            }
+        });
+
+    }
 
 
 

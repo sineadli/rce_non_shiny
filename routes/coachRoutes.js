@@ -51,9 +51,13 @@ module.exports = function (app, passport) {
 
     app.get('/publications', isLoggedIn, getAllPublications, function (req, res) {
         sess = req.session;
-         console.log(sess.publishlists)
-         res.render('publications.html', { user: req.user, publishlists: sess.publishlists });
+        query = require('url').parse(req.url, true).query;
+        console.log("hiiii   ");
+        console.log(query);
+           
+        res.render('publications.html', { user: req.user, publishlists: sess.publishlists, obj: query });
     });
+    
 
     app.get('/coach', isLoggedIn, getCurrentEvaluation, function (req, res) {
 		sess = req.session;
