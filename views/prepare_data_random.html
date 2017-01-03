@@ -12,7 +12,7 @@
 
 <html lang="en">
 <head>
-    <title>Prepare Your Data for Analysis</title>
+    <title>Prepare for Random Assignment</title>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <!-- <link rel="stylesheet" href="".../main.css" />-->
@@ -48,7 +48,7 @@
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
 
-    <form action="/prepare_data" method="post" novalidate>
+    <form action="/prepare_data_random" method="post" novalidate>
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
         <% } %>
@@ -77,11 +77,11 @@
                         </div>
 
                         <div class="tool-header">
-                            <h1 class="tool-title "> Prepare Your Data for Analysis </h1>
+                            <h1 class="tool-title "> Prepare for Random Assignment </h1>
 
                             <div class="tool-intro">
                                 <p>
-                                    To answer a your research question you will need data from multiple sources. This tool will guide you through collecting, formatting, and checking the data you need to complete your evaluation. It provides a series of checklists to help you determine if your data is ready for use by the Coach.
+                                    To randomly assign your <%= Basics_Users %> to treatment and comparison groups you will need data from multiple sources. This tool will guide you through collecting, formatting, and checking the data you will need. It provides a series of checklists to help you determine if your data is ready for randomization.
 
                                 </p>
                             </div>
@@ -93,6 +93,137 @@
 
             <div class="row">
                 <div class="tool-questions">
+
+                    <% if (path === "path-random") { %>
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#B">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> First let's review some details about your plans to roll-out <%= Basics_Tech_Name %>.
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="B" class="row collapse in q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <h4>
+                                    <label for="Basics_Users">
+                                        Who is using <%= Basics_Tech_Name %>?
+                                    </label>
+                                </h4>
+                            </div>
+                            <div class="step-action">
+                                <select required name="Basics_Users" id="Basics_Users">
+
+                                    <%
+                                    var options = ["Select an option", "students", "teachers", "other"];
+
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+
+                                    var selected = ( eval.basics.Basics_Users == options[i] ) ? "selected" : "";
+
+                                    %>
+                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option>
+                                    <%
+                                    }
+                                    %>
+
+                                </select>
+
+                                <div id="Question_Users_Other" hidden="true">
+                                    <div>
+                                        <label for="Basics_User_Other">Please specify:</label>
+                                    </div>
+
+                                    <input type="text" name='Basics_Users_other' id="Basics_Users_other" value="<%= eval.basics.Basic_Users_other %>" />
+                                </div>
+
+                                <% if (user != "NOAUTHENTICATED") { %>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/basics">The Basics</a>
+                                </p>
+                                <% } %>
+                            </div>
+                            <div class="step-subquestion">
+                                <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
+                            </div>
+                            <div class="step-action">
+                                <select required name="PrepareRandom[Individual_Group]" id="Individual_Group">
+                                    <%
+                                    var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
+                                    var ovals = ["Select an option", "users" , "groups" ];
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
+                                    %>
+                                    <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                    }
+                                    %>
+                                </select>
+                            </div>
+                            <div id="Question_Cluster" hidden="true">
+                                <div class="step-subquestion">
+                                    <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= Basics_Users %></span>?</label></h4>
+                                </div>
+                                <div class="step-action">
+                                    <select required name="PrepareRandom[Cluster_Group]" id="Cluster_Group">
+                                        <%
+                                        var options = ["Select an option", "by class", "by school", "other" ];
+                                        var ovals = ["Select an option", "classes", "schools", "other" ];
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        var selected;
+                                        selected = ( eval.random.Cluster_Group== ovals[i] ) ? "selected" : "";
+                                        %>
+                                        <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                        }
+                                        %>
+                                    </select>
+                                    <div id="Question_Cluster_Other" hidden="true">
+                                        <p>
+                                            <label for="Cluster_Group_Other">Please specify:</label>
+                                            <input type="text" name='PrepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>" />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <% if (user != "NOAUTHENTICATED") { %>
+                            <p class="prev-answer">
+                                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/determine_your_approach">Determine Your Approach</a>
+                            </p>
+                            <% } %>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc5">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider5" class="panel-collapse collapse in">
+
+                                                <p>
+                                                    You do not need to randomly select <span class="tech_users"><%= Basics_Users %></span> at the individual level. It may be more feasible to select by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
+                                                </p>
+
+                                                <p>
+                                                    Bigger is better. With only a few individuals or groups in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples allow you to detect smaller effects.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
 
 
                     <div class="step-header container">
@@ -107,58 +238,29 @@
                         <div class="col-xs-12">
                             <div class="step-subquestion">
                                 <p>
-                                    There are multiple types of data you will use to build your treatment and control groups and to run your analysis. 
+                                    There are multiple types of data you will use to build your treatment and control groups and to run your analysis.
                                 </p>
                             </div>
 
                             <div class="step-action check-list">
-                               
+                                
 
 
-                                <% 
-                                var checked = ( eval.prepare.Check_Treatment == "Treatment_Checked" ) ? "checked" : "";
+                               <%
+                                var checked = ( eval.prepare.Check_Sample == "Sample_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Treatment" name="Prepare[Check_Treatment]" value="Treatment_Checked" <%- checked %>/><label class="sec-label" for="Check_Treatment">
-                                    Treatment Status&mdash;<em class="recommendation">Required</em>
+                                <input type="checkbox" id="Check_Sample" name="PrepareRandom[Check_Sample]" value="Sample_Checked" <%- checked %>/><label class="sec-label" for="Check_Sample">
+                                    List of <span class="tech_users"><%= Basics_Users %></span>&mdash;<em class="recommendation">Required</em>
                                 </label><br />
 
                                 <p class="sub-label">
-                                    Data that indicates which <span class="tech_users"><%= Basics_Users %></span> were given access to <%= Basics_Tech_Name %> and which were not. Valid values are 1 (had access), or 0 (no access).
+                                    You indicated that you will be randomly assigning <span class="assign-level"><%= Basics_Users %></span> to the treatment and control groups. This means you will need to compile a list of <span class="compile"><%= Basics_Users %> Include a unique identifier for each one of your <span class="tech_users"><%= Basics_Users %></span>. Also include associated identifiers for groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classrooms or schools)</span>.
                                 </p>
 
-                               
+                              
 
 
 
-                                <% if (path === "path-random") {
-                               
-                                %>
-
-
-                                <p class="sub-label">
-                                    This variable is in the dataset that you downloaded from the Coach
-                                    after your technology users and your comparison group were randomly selected.
-
-                                </p>
-                                <p class="note">You must use the original file with the original treatment status variable, even if
-someone in your comparison group found a way to use the technology. The Coach will
-calculate the effect of being randomly assigned to use the technology on your outcome of
-interest. If you move participants from one group to another after randomization, your
-groups may be unbalanced, and you will not be able to make reliable conclusions about the
-technology&rsquo;s effect. </p>
-
-                                <% } %>
-
-
-                                <%
-                                var checked = ( eval.prepare.Check_Outcome == "Outcome_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Outcome" name="Prepare[Check_Outcome]" value="Outcome_Checked" <%- checked %>/><label class="sec-label" for="Check_Outcome">
-                                    Outcome data&mdash;<em class="recommendation">Required</em>
-                                </label><br />
-
-
-                                <p class="sub-label"> Data on <%= Basics_Outcome %> as measured by <%= Outcome_Measure %> that you will use to determine the effect of <%= Basics_Tech_Name %>. </p>
 
                                 <%
                                 var required = "Recommended";
@@ -170,58 +272,34 @@ technology&rsquo;s effect. </p>
 
                                 var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Pretest" name="Prepare[Check_Pretest]" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
+                                <input type="checkbox" id="Check_Pretest" name="PrepareRandom[Check_Pretest]" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
                                     Pretest data&mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
                                 <p class="sub-label"> This is a measure of <%= Basics_Outcome %> just prior to the introduction of <%= Basics_Tech_Name %> (such as an assessment from the beginning of the school year). <%- ptpathnote %></p>
+                                <p class='sub-label'><span class='group-pretest-prep-note'></span></p>
 
                                 <%
                                 var required = "Recommended";
                                 var bcpathnote ="If you include background characteristics in your dataset, the Coach will check that your treatment and comparison groups are well balanced on these characteristics.";
 
-                                if (path === "path-matching") {
-
-                                bcpathnote = "Background traits are particularly important for matched comparison evaluations because you can use them to make sure your treatment and comparison groups are well matched (balanced).";
-                                }
+                               
 
                                 var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Background" name="Prepare[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
-                                    Background Characteristics &mdash;<em class="recommendation"><%= required %></em>
+                                <input type="checkbox" id="Check_Background" name="PrepareRandom[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
+                                    Background Characteristics&mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
                                 <p class="sub-label">
                                     Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, Individualized Education Plan (IEP) status, English Learner (EL) status, and socioeconomic status (SES). Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and control groups.
                                 </p>
-                                <p class="note">It is preferable to measure all background characteristics before the introduction of <%= Basics_Tech_Name %>. Because some background characteristics, like English learner status, can change over time and even change as a result of using a technology (e.g., the introduction of a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
+                                <p class="sub-label">It is preferable to measure all background characteristics before the introduction of <%= Basics_Tech_Name %>. Because some background characteristics, like English learner status, can change over time and even change as a result of using a technology (e.g., the introduction of a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
                                 <p class="sub-label"> <%- bcpathnote %></p>
                                 <p class='sub-label'><span class='group-data-prep-note'></span></p>
 
 
-                                <%
-                                var required = "Recommended";
-                                var upathnote ="Collecting and referring to usage data throughout your evaluation will help you determine if " + Basics_Tech_Name + " is being implemented and used as expected, making it possible for you to correct any issues as they arise.";
-
-                                if (path === "path-matching") {
-
-                                upathnote = "Usage information can be used to assign <span class='tech_users'>"+ Basics_Users +" </span> to treatment and control groups.";
-                                }
-
-                                var checked = ( eval.prepare.Check_Usage == "Usage_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Usage" name="Prepare[Check_Usage]" value="Usage_Checked" <%- checked %> /><label class="sec-label" for="Check_Usage">
-                                    Usage Data &mdash;<em class="recommendation"><%= required %></em>
-                                </label><br />
-
-                                <p class="sub-label">
-                                    Includes data on how often <%= Basics_Tech_Name %> was used, patterns of usage over time, and how <span class="tech_users"><%= Basics_Users %></span> scored on assessments. This information will help you interpret your evaluation findings.
-                                </p>
-                                <p class="sub-label"> <%- upathnote %></p>
-                                <p class="sub-label">
-                                    Please see <a href="/who_and_how">Who used your technology and how</a> for more information.
-                                </p>
-
+                           
 
                             </div>
 
@@ -512,19 +590,20 @@ technology&rsquo;s effect. </p>
 
                             </div>
                             <div class="step-subquestion">
-                            
+
                             </div>
 
                             <div class="step-action check-list">
                                 <%
                                 var checked = ( eval.prepare.Check_OneSet == "OneSet_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_OneSet" name="Check_OneSet" value="OneSet_Checked" <%- checked %>/><label class="sec-label" for="Check_OneSet">
+                                <input type="checkbox" id="Check_OneSet" name="PrepareRandom[Check_OneSet]" value="OneSet_Checked" <%- checked %>/><label class="sec-label" for="Check_OneSet">
                                     I have one dataset containing all my data.
                                 </label><br />
 
 
-                                <p class="sub-label">You will need to merge your existing datasets into one complete dataset. Your data set should have one row for each one of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
+                                <p class="sub-label">
+                                    You will need to merge your existing datasets into one complete dataset. Your data set should have one row for each one of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
                                 </p><p class="note">If you are using Excel to manage your data you can do this using a VLOOKUP function. </p>
 
                             </div>
@@ -533,7 +612,7 @@ technology&rsquo;s effect. </p>
                                 <%
                                 var checked = ( eval.prepare.Check_Numeric == "Numeric_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Numeric" name="Check_Numeric" value="Numeric_Checked" <%- checked %>/><label class="sec-label" for="Check_Numeric">
+                                <input type="checkbox" id="Check_Numeric" name="PrepareRandom[Check_Numeric]" value="Numeric_Checked" <%- checked %>/><label class="sec-label" for="Check_Numeric">
                                     All categorical variables have been converted to dummy numeric variables.
                                 </label><br />
 
@@ -550,7 +629,7 @@ technology&rsquo;s effect. </p>
                                 <%
                                 var checked = ( eval.prepare.Check_Missing == "Missing_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Missing" name="Check_Missing" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
+                                <input type="checkbox" id="Check_Missing" name="PrepareRandom[Check_Missing]" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
                                     All missing data is consistently coded as &ldquo;NA&rdquo;.
                                 </label><br />
 
@@ -593,7 +672,7 @@ technology&rsquo;s effect. </p>
                                 <%
                                 var checked = ( eval.prepare.Check_Min_Max == "Min_Max_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Min_Max" name="Check_Min_Max" value="Min_Max_Checked" <%- checked %>/><label class="sec-label" for="Check_Min_Max">
+                                <input type="checkbox" id="Check_Min_Max" name="PrepareRandom[Check_Min_Max]" value="Min_Max_Checked" <%- checked %>/><label class="sec-label" for="Check_Min_Max">
                                     Check the minimum and maximum values of variables.
                                 </label><br />
 
@@ -605,7 +684,7 @@ technology&rsquo;s effect. </p>
                                 <%
                                 var checked = ( eval.prepare.Check_Miss_Impact == "Miss_Impact_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Miss_Impact" name="Check_Miss_Impact" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
+                                <input type="checkbox" id="Check_Miss_Impact" name="PrepareRandom[Check_Miss_Impact]" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
                                     Consider the impact of missing data
                                 </label><br />
 
@@ -619,12 +698,12 @@ technology&rsquo;s effect. </p>
                     </div>
                 </div>
             </div>
-      
-        <div>
-            <input class="hidden" name="status" id="status" />
-        </div>
 
-        <% include ../views/partials/toolButtons.html %>
+            <div>
+                <input class="hidden" name="status" id="status" />
+            </div>
+
+            <% include ../views/partials/toolButtons.html %>
         </div>
     </form>
 
@@ -632,6 +711,7 @@ technology&rsquo;s effect. </p>
     <script>
         $(document).ready(function () {
             //init feedback_me plugin
+            setUserLimitsSelections();
             var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
             fm.init(fm_options);
         })

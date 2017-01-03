@@ -8,6 +8,8 @@
 *   Contract No. ED-OOS-15-C-0053.
 *******************************************************************************/
 
+
+
 /*~~~~~~~~~~~~~~~~~~ ALL ~~~~~~~~~~~~~~~~~~*/
 $(document).ready(function() {
     /** Load Header **/
@@ -50,7 +52,9 @@ $(document).ready(function() {
 		$("button#Save").html("Save and Return to " + ToolName);
 	
 	}
-	
+	function capitalize(x) {
+		return x[0].toUpperCase() + x.substring(1);
+	}
 
     $(".capitalize-one").each(function() {
         var x = $(this).text();
@@ -58,9 +62,7 @@ $(document).ready(function() {
         $(this).text(capitalize(x));
     });
 
-	function capitalize(x) {
-		return x[0].toUpperCase() + x.substring(1);
-	}
+	
 
         $(document).on('click', '.tool-view-button', function(e) {
             e.preventDefault();
@@ -69,17 +71,24 @@ $(document).ready(function() {
             $(this).parent(".tool-view-btn").parent(".tool-div").addClass("current");
 
             window.location = href;
+	});
+
+		$(".redirect-link").click(function (e) {
+            e.preventDefault();
+            var returnpath = this.pathname.substr(1) + this.search;
+            $("#returnpath").val(returnpath);
+            $("#status").val("started");
+            $("form").submit();
+
         });
 
-        $(':button').click(function () {
-            var buttonclicked = $(this).html();
-            if (buttonclicked.indexOf("Complete") > -1) {
-                $('#status').val('completed');
-            } else {
-                $('#status').val('started');
-            }
-
-        });
+        $('button#Complete').click(function () {
+            $('#status').val('completed');
+		});
+		$('button#Save').click(function () {
+            $('#status').val('started');
+		});
+         
 		/*~~~~~~~~~~~~~~~~ The Basics ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 		$('#Basics_Users').change(function () {
 
@@ -106,6 +115,9 @@ $(document).ready(function() {
 			setBasicsConclusion();
 		});
 		$('#Basics_Have').change(function () {
+			$("#Q_Tech_Name").show();
+			$("#Q_Who_Users").show();
+			$("#Q_Have_Outcome").show();
 			setBasicsConclusion();
 		});
 
@@ -117,52 +129,7 @@ $(document).ready(function() {
 		});
 
 
-		function setBasicsConclusion() {
-			var haveTech = $('#Basics_Have').val();
-			var techName = $('#Basics_Tech_Name').val();
-			var whoUsers = $('#Basics_Users').val();
-			if (whoUsers.toLowerCase === "other") whoUsers = $('#Basics_Users_Other').val();
-			var haveOutcome = $('#Basics_Outcome').val();
-			if (haveOutcome.toLowerCase === "other") haveOutcome = $('#Basics_Outcome_Other').val();
-
-
-			if (haveTech.toLowerCase() === "no") {
-
-				$("#Q_Tech_Name").hide();
-				$("#Q_Who_Users").hide();
-				$("#Q_Have_Outcome").hide();
-				$("#Step_Conclusion").show();
-				$("#stop-no-tech").show();
-				$("#stop-no-outcome").hide();
-				$("#success").hide();
-				$("button.complete").attr("disabled", "disabled");
-
-			}
-			else if (haveOutcome.toLowerCase() === "not sure") {
-				$("#Step_Conclusion").show();
-				$("#stop-no-outcome").show();
-				$("#stop-no-tech").hide();
-				$("#success").hide();
-				$("button.complete").attr("disabled", "disabled");
-			}
-			else if (techName !== "" && whoUsers.toLowerCase !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
-				$("#Step_Conclusion").show();
-				$("#success").show();
-				$("#stop-no-tech").hide();
-				$("#stop-no-outcome").hide();
-				$("button.complete").removeAttr("disabled");
-			}
-			else {
-				$("#Q_Tech_Name").show();
-				$("#Q_Who_Users").show();
-				$("#Q_Have_Outcome").show();
-				$("#Step_Conclusion").hide();
-				$("#stop-no-tech").hide();
-				$("#stop-no-outcome").hide();
-				$("#success").hide();
-				$("button.complete").attr("disabled", "disabled");
-			}
-		}
+		
 
 
 
@@ -435,12 +402,18 @@ function setUserLimitsSelections() {
 
 	var ocluster = $('#Cluster_Group_Other').val();
     var datanote = "";
-
+	var pretestnote = "";
+	var assignlevel = users;
     var assign = users;
+    var compile = " all " + users + " who could potentially use the technology. Your list or dataset will need to include a unique and anonymous id for each one of your " + users;
 	if (gORi === "groups") {
-	    assign = "groups of " + users;
+		compile = " all " + users + " who could potentially use the technology or a list of all " + cluster + ". If your list or dataset will be at the individual level, it must include a unique and anonymous id for each one of your " + users + " and a " + scluster + " indicator. If your data set will be at the " + scluster + " level, then it just needs a " + scluster + " indicator";
+		assign = "groups of " + users;
+		assignlevel = users + " by " + scluster;
 	    datanote = "You indicated you will randomly assign " + users + " by "
-	        + scluster + ".  A " + scluster + "'s background characteristic value should be the average value for all " + users + " in the " + scluster + ".";
+			+ scluster + ".  A " + scluster + "'s background characteristic value should be the average value for all " + users + " in the " + scluster + ".";
+		pretestnote = "You indicated you will randomly assign " + users + " by "
+			+ scluster + ".  A " + scluster + "'s pretest value should be the average value for all " + users + " in the " + scluster + ".";
 	}
 	if (cluster.toLowerCase() !== "select an option") {
 		assign = cluster;
@@ -450,8 +423,11 @@ function setUserLimitsSelections() {
     }
 
     $(".indivs-or-groups").text(assign);
+    $(".assign-level").text(assignlevel);
+	$(".compile").text(compile);
 	$(".tech_users").text(users);
 	$(".group-data-prep-note").text(datanote);
+	$(".group-pretest-prep-note").text(pretestnote);
 
 	
 
@@ -484,280 +460,56 @@ $('#Targeted_Access').change(function () {
 
 
 });
-function setConclusion() {
-    var strConclusion, subject;
-    var pre1 = $('#Prob_Appr_Pre1').val();
-    var pre2 = $('#Prob_Appr_Pre2').val();
-    var a = $("#Prob_Appr_A").val();
-    var b = $("#Prob_Appr_B").val();
-    var c = $("#Prob_Appr_C").val();
-    var d = $("#Prob_Appr_D").val();
-    var e = $("#Prob_Appr_E").val();
-    var f = $("#Prob_Appr_F").val();
-    $("#conclusion").html("");
-    $("#conclusion_sub").html("");
- 
-    if (pre1.toLowerCase() === "i have not identified an outcome yet") {
-        //block B
-        strConclusion = "To measure a technology&#39;s effectiveness it is critical to know what you are hoping to accomplish from its use. We encourage you to talk with your colleagues about possible outcomes that you would like to improve. This could be based on your priorities or what you think the technology could reasonably achieve. In order to plan an effective evaluation, you will need to know what outcomes you&#39;re measuring. Come back to the Coach when you know what outcome you wish to target and have identified a technology to pilot. ";
-        $('#Prob_Appr_Pre2').val("");
-        $("#Prob_Appr_A").val("");
-        $("#Prob_Appr_B").val("");
-        $("#Prob_Appr_C").val("");
-        $("#Prob_Appr_D").val("");
-        $("#Prob_Appr_E").val("");
-        $("#Prob_Appr_F").val("");
-        $("#pre2").hide();
-        $(".notA").hide();
-        $("#conclusion").html(strConclusion);
-        $("#complete").removeAttr("disabled");     
-        return;     // reach conclusion
-    }
-    else if (pre1.toLowerCase() !== "select an option") {
-        strConclusion = "";
-        $("#pre2").show();
 
-    }
-    else {
-        strConclusion = "";
-        $('#Prob_Appr_Pre2').val("");
-        $("#Prob_Appr_A").val("");
-        $("#Prob_Appr_B").val("");
-        $("#Prob_Appr_C").val("");
-        $("#Prob_Appr_D").val("");
-        $("#Prob_Appr_E").val("");
-        $("#Prob_Appr_F").val("");
-        $("#pre2").hide();
-        $(".notA").hide();
-        $("#conclusion").html("");
-        $("#complete").attr("disabled", "disabled");
-        return;   //haven't select anything
-    }
-    $("#conclusion").html("");
-    $("#complete").attr("disabled", "disabled");
-    if (pre2) {
-        if (pre2.toLowerCase() === "no") {
-            //block D
-            strConclusion = "The Coach is designed to help you assess the effectiveness of a technology. This guide will help you identify a technology to achieve your goals. Once you have selected a technology come back to continue to the next step!";
-            $("#Prob_Appr_A").val("");
-            $("#Prob_Appr_B").val("");
-            $("#Prob_Appr_C").val("");
-            $("#Prob_Appr_D").val("");
-            $("#Prob_Appr_E").val("");
-            $("#Prob_Appr_F").val("");
-            $(".notA").hide();
-            $("#conclusion").html(strConclusion);
-            $("#complete").removeAttr("disabled");  
-            return; // reach conclusion
-        }
-        else if (pre2.toLowerCase() === "yes") {
-            var subConclusion = "";
-            strConclusion = "";
-            $(".notB").hide();
-            $(".notA").show();
-            if (!a || a.toLowerCase() === "select an option") {
-                $("#complete").attr("disabled", "disabled");
-                $(".notB").hide();
-                return;   //return to continue
-            }
-            if (a && a !== "select an option") {
-                $(".notB").show();
-                //matching
-                if (a.toLowerCase() === "already using the technology") {
-                    $(".notC").hide();
-                    $("#morr").html(" Who are the technology users be?");
-                    $("#bmatching").show();
-                    $("#Prob_Appr_C").show();
-                    $("#brandom1").hide();   //Random Assignment text 1
-                    $("#brandom2").hide();   //Random Assignment text 2
-                    $("#Prob_Appr_D").val("");
-                    $("#Prob_Appr_E").val("");
-                    $("#Prob_Appr_F").val("");
-                    // block P
-                    //check c
-                    if (c.toLowerCase() === "no") {
-                        strConclusion = "Based on your answers, the Coach will guide you through a matched comparison design. Since only some " + getSubject() + " are using the technology, a matched comparison will allow you to compare those already using the technology to a similar group of non-users that you can create using the RCE Coach Matching Dashboard. This tool will create two groups that are similar in terms of observed characteristics for which you have data. Using this method you&#39;ll be able to compare across groups and have some confidence that the differences are due to the technology. However, it is possible that differences in outcomes could be due to differences in unobserved characteristics that also drive outcomes.";
-                        subConclusion = "This tool will create two groups that are similar in terms of observed characteristics for which you have data.Using this method you&#39; ll be able to compare across groups and have some confidence that the differences are due to the technology.However, it is possible that differences in outcomes could be due to differences in unobserved characteristics that also drive outcomes. ";
-
-                    }
-                    // block N
-                    else if (c.toLowerCase() === "yes") {
-                        strConclusion = "In order to evaluate whether the educational technology is moving the needle, you&#39;ll need to be able to compare " + getSubject() + " using the technology to similar " + getSubject() + " not using the technology. Your answers indicate that all " + getSubject() + " will be using the technology. This means it would not be possible to create a comparison group of non-users. ";
-                        subConclusion = "Our guide on understanding correlations in your data may help you if you want to learn more about how an implemented technology is working. You may also be able to test options for improving implementation of the technology. Contact us at EdTechRCE@mathematica-mpr.com if you wish to discuss alternative options.";
-                    }
-                    $("#conclusion").html(strConclusion);
-                    $("#conclusion_sub").html(subConclusion);
-                    $("#complete").removeAttr("disabled");
-                    return;    // reach conclusion done for matching
-
-                }
-                //Random Assignment
-                else {
-                    $("#morr").html(" Who will the new technology users be?");
-                    $("#bmatching").hide();
-                    $("#Prob_Appr_C").hide();
-                    if (a.toLowerCase() === "expanding an implemented technology") {
-                        $("#brandom1").show();
-                        $("#Prob_Appr_C").show();
-                        $("#brandom2").hide();
-                    }
-                    else {
-                        $("#brandom2").show();
-                        $("#Prob_Appr_C").show();
-                        $("#brandom1").hide();
-                    }
-                    //N
-                    if (c.toLowerCase() === "no") {
-                        $(".notC").hide();
-                        strConclusion = "In order to evaluate whether the educational technology is moving the needle, you&#39;ll need to be able to compare " + getSubject() + " using the technology to similar " + getSubject() + " not using the technology. Your answers indicate that all " + getSubject() + " will be using the technology. This means it would not be possible to create a comparison group of non-users. ";
-                        subConclusion = "Our guide on understanding correlations in your data may help you if you want to learn more about how an implemented technology is working. You may also be able to test options for improving implementation of the technology. Contact us at EdTechRCE@mathematica-mpr.com if you wish to discuss alternative options.";
-                        $("#conclusion").html(strConclusion);
-                        $("#conclusion_sub").html(subConclusion);
-                        $("#complete").removeAttr("disabled");
-                        return;
-                        // $(".N").show(); $(".notC").hide(); $(".P").hide();
-                    }
-                    else {
-                        $("#conclusion").html("");
-                        $("#conclusion_sub").html("");
-                        $("#complete").attr("disabled", "disabled");
-                        $(".notC").show();
-                        if (!d || d.toLowerCase() === "select an option") {
-                            $("#Prob_Appr_E").val("");
-                            $("#Prob_Appr_F").val("");
-                            $(".E").hide();
-                            $(".F").hide();
-                            return;
-                        }
-                        else {
-                            if (d.toLowerCase() === "we will not be asking for volunteers") {
-                                $(".E").show();
-                                $(".F").hide();
-                                $("#Prob_Appr_F").val("");
-                                if (!e || e.toLowerCase() === "select an option") {
-                                    return;
-                                }
-                                else {
-                                    if (e.toLowerCase() === "i will choose randomly") {
-                                        //L
-                                        strConclusion = "Based on your answers, the Coach will guide you through a randomized pilot. The choice of who will pilot the technology will be determined by chance, like a coin flip. This design is the gold standard to determine if an education technology is moving the needle because it allows us to create two groups that are similar on both observed and unobserved characteristics. This means that you can be confident that any differences you see in outcomes are due to the technology and not other factors.";
-                                        subConclusion = "";
-                                    }
-                                    else if (e.toLowerCase() === "i will use a cutoff") {
-                                        //M
-                                        strConclusion = "Since you use a cutoff to determine who will use the technology, a Regression Discontinuity design (RD) would be a good approach. This design compares outcomes for individuals just above and just below the cutoff to determine whether the technology is having an effect. This works because we assume that those around the cutoff are very similar and that any differences are due to using the technology. However, your conclusions may not apply to those farther away from the cutoff.";
-                                        subConclusion = "The Coach does not yet include tools for RD, but if you&#39;re interested in pursuing an evaluation please contact us at EdTechRCE@mathematica-mpr.com and you may be able to use beta versions of tools we are creating to handle this type of design.";
-                                    }
-                                    else {
-                                        //Q
-                                        strConclusion = "Based on your answers, the Coach will guide you through a matched comparison design. Since you are selecting your users, a matched comparison will allow you to compare those you select to a similar group of non&#45;users that you can create using the RCE Coach Matching Dashboard. For this method to work, you&#39;ll want to be sure that some similar " + getSubject() + " are not pilot users. ";
-                                        subConclusion = "";
-
-                                    }
-                                    $("#conclusion").html(strConclusion);
-                                    $("#conclusion_sub").html(subConclusion);
-                                    $("#complete").removeAttr("disabled");
-                                    return;
-                                }
-                            }
-                            else {
-                                $(".F").show();
-                                $(".E").hide();
-                                $("#Prob_Appr_E").val("");
-  
-                                if (!f || f.toLowerCase() === "select an option") {
-                                    return;
-                                }
-                                else {
-                                    
-                                    if (f.toLowerCase() === "yes, i can choose some of the volunteers using a random process like a coin flip") {
-                                        //L
-                                        strConclusion = "Based on your answers, the Coach will guide you through a randomized pilot. The choice of who will pilot the technology will be determined by chance, like a coin flip. This design is the gold standard to determine if an education technology is moving the needle because it allows us to create two groups that are similar on both observed and unobserved characteristics. This means that you can be confident that any differences you see in outcomes are due to the technology and not other factors.";
-                                        subConclusion = "";
-                                    }
-                                    else if (f.toLowerCase() === "yes, i can use a cutoff to do this") {
-                                        //M
-                                        strConclusion = "Since you use a cutoff to determine who will use the technology, a Regression Discontinuity design (RD) would be a good approach. This design compares outcomes for individuals just above and just below the cutoff to determine whether the technology is having an effect. This works because we assume that those around the cutoff are very similar and that any differences are due to using the technology. However, your conclusions may not apply to those farther away from the cutoff.";
-                                        subConclusion = "The Coach does not yet include tools for RD, but if you&#39;re interested in pursuing an evaluation please contact us at EdTechRCE@mathematica-mpr.com and you may be able to use beta versions of tools we are creating to handle this type of design.";
-                                    }
-                                    else {
-                                        //Q
-                                        strConclusion = "Based on your answers, the Coach will guide you through a matched comparison design. Since you are selecting your users, a matched comparison will allow you to compare those you select to a similar group of non&#45;users that you can create using the RCE Coach Matching Dashboard. For this method to work, you&#39;ll want to be sure that some similar " + getSubject() + " are not pilot users. ";
-                                        subConclusion = "";
-
-                                    }
-                                    $("#conclusion").html(strConclusion);
-                                    $("#conclusion_sub").html(subConclusion);
-                                    $("#complete").removeAttr("disabled");
-                                    
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                } //end of Random Assignment
-            }
-            else {
-                $(".notB").hide();
-                return;
-            }
-
-        }
-        else {
-            strConclusion = "";
-            $("#Prob_Appr_A").val("");
-            $("#Prob_Appr_B").val("");
-            $("#Prob_Appr_C").val("");
-            $(".notA").hide();
-        }
-    }
-
-};
-
-function getSubject() {
-    var subject = "subjects";
-    var value = $("#Prob_Appr_B").val();
-    if (value) {
-        if (value == "other") {
-            $("#other-specify").show();
-            subject = $("#Prob_Appr_B_other").val();
-        }
-
-        if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
-            subject = value;
-        }
-    }
-
-    return subject;
-};
+function setBasicsConclusion() {
+	var haveTech = $('#Basics_Have').val();
+	var techName = $('#Basics_Tech_Name').val();
+	var whoUsers = $('#Basics_Users').val();
+	if (whoUsers.toLowerCase === "other") whoUsers = $('#Basics_Users_Other').val();
+	var haveOutcome = $('#Basics_Outcome').val();
+	if (haveOutcome.toLowerCase === "other") haveOutcome = $('#Basics_Outcome_Other').val();
 
 
+	if (haveTech.toLowerCase() === "no") {
 
-function AChanged() {
-    var a = $(this).val();
- 
-    if (a.toLowerCase() !== "select an option") {
+		$("#Q_Tech_Name").hide();
+		$("#Q_Who_Users").hide();
+		$("#Q_Have_Outcome").hide();
+		$("#Step_Conclusion").show();
+		$("#stop-no-tech").show();
+		$("#stop-no-outcome").hide();
+		$("#success").hide();
+		$("button.complete").attr("disabled", "disabled");
 
-        if (a.toLowerCase() === "already using the technology") {
-            $("#morr").html("Who are the technology users?");
-            $("#bmatching").show();
-            $("#brandom1").hide();
-            $("#brandom2").hide();
-        }
-        else {
-            $("#morr").html("Who will the new technology users be?");
-            $("#bmatching").hide();
-            if (a.toLowerCase() === "expanding an implemented technology") {
-                $("#brandom1").show();
-                $("#brandom2").hide();
-            }
-            else {
-                $("#brandom2").show();
-                $("#brandom1").hide();
-            }
-        }
-        $(".notB").show();
-    }
-
+	}
+	else if (haveOutcome.toLowerCase() === "not sure") {
+		$("#Step_Conclusion").show();
+		$("#stop-no-outcome").show();
+		$("#stop-no-tech").hide();
+		$("#success").hide();
+		$("button.complete").attr("disabled", "disabled");
+	}
+	else if (techName !== "" && whoUsers.toLowerCase !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
+		$("#Step_Conclusion").show();
+		$("#success").show();
+		$("#stop-no-tech").hide();
+		$("#stop-no-outcome").hide();
+		$("button.complete").removeAttr("disabled");
+	}
+	else {
+		$("#Q_Tech_Name").show();
+		$("#Q_Who_Users").show();
+		$("#Q_Have_Outcome").show();
+		$("#Step_Conclusion").hide();
+		$("#stop-no-tech").hide();
+		$("#stop-no-outcome").hide();
+		$("#success").hide();
+		$("button.complete").attr("disabled", "disabled");
+	}
 }
+
+
+
+
+
 
