@@ -351,7 +351,7 @@ evaluationSchema.pre('save', function (next) {
                 this.path = "path-none";
             } //what should we do?
         }
-        if (this.status === "12") {
+        if (this.status === "100") {
             if (!this.published_at) { this.published_at = currentDate; }
             var doc = this;
             User.findById(this.userid, function (err, user) {
