@@ -347,9 +347,7 @@ evaluationSchema.pre('save', function (next) {
                 this.path = "path-random"; //disable matching tools or hide them
             } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "other") {
                 this.path = "path-matching"; //no available yet
-            } else {
-                this.path = "path-none";
-            } //what should we do?
+            }//what should we do?
         }
         if (this.status === "100") {
             if (!this.published_at) { this.published_at = currentDate; }
