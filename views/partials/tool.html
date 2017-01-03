@@ -49,6 +49,18 @@
                   objTool.path = tools[i].path + "?peeking=1"
                  toolindropdown.push( objTool) ;
                 continue;}}
+        if (tools[i].coachStep===6) {
+        var toolsDepends = eval.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "summarize context" || x.name.toLowerCase() === "get results")})
+        if(!eval.path) {tooltip="Need to finish 'Determine Your Approach' first";btnText="PEEK"; lock="locked"; }
+        else {
+        if (!toolsDepends || toolsDepends.length < 2 ) {
+        tooltip="Need to finish 'Summarize Context' and 'Get Results'";btnText="PEEK"; lock="locked";
+        }
+
+        }
+     
+  
+        }
         %>
         <div class="col-xs-3">
 
@@ -111,8 +123,8 @@
 
 
         <% if (toolindropdown.length > 1) { console.log(toolindropdown);%>
-        <div class="col-xs-4 pull-right">
-            <p><strong>Tools not available for this path:</strong></p>
+        <div class="col-xs-3 pull-right">
+            <p><strong>Tools un-available for chosen path:</strong></p>
             <select id="toolsnotavailable">
                 <option value="">View un-available tools</option>
                 <% for ( var i = 1; i < toolindropdown.length; i++ )
