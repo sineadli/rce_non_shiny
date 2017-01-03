@@ -23,7 +23,44 @@ $(document).ready(function() {
         caret.toggleClass('fa-caret-down');
     });
 
+	var urlParams = new URLSearchParams(window.location.search);
+
    
+	if (urlParams.has('return')) {
+	    var ToolName = "";
+		var returnpath = urlParams.get('return');
+		$("#returnpath").val(returnpath); 
+		switch (returnpath) {
+			case "evaluation_plan":
+			    ToolName = "Evaluation Plan";
+				break;
+			case "shareresult":
+			    ToolName = "Share Your Results";
+				break;
+			case "plan_next_steps":
+				ToolName = "How You Will Use Results";
+				break;
+			case "context_and_usage":
+				ToolName = "Summarize Context";
+				break;
+			default:
+				ToolName = "";
+		}
+		$("button#Complete").hide();
+		$("button#Save").html("Save and Return to " + ToolName);
+	
+	}
+	
+
+    $(".capitalize-one").each(function() {
+        var x = $(this).text();
+        ;
+        $(this).text(capitalize(x));
+    });
+
+	function capitalize(x) {
+		return x[0].toUpperCase() + x.substring(1);
+	}
 
         $(document).on('click', '.tool-view-button', function(e) {
             e.preventDefault();
@@ -34,11 +71,12 @@ $(document).ready(function() {
             window.location = href;
         });
 
-        $(':button').click(function() {
-            if ($(this).html() === 'SAVE CHANGES') {
-                $('#status').val('started');
-            } else {
+        $(':button').click(function () {
+            var buttonclicked = $(this).html();
+            if (buttonclicked.indexOf("Complete") > -1) {
                 $('#status').val('completed');
+            } else {
+                $('#status').val('started');
             }
 
         });
@@ -126,67 +164,7 @@ $(document).ready(function() {
 			}
 		}
 
-/*~~~~~~~~~~~~~~~~~~ determine_your_approach.html ~~~~~~~~~~~~~~~~~~*/
-        $('#Prob_Appr_Pre1').change(function() {
-            var value = $(this).val();
-            var subject = "subjects";
 
-            var otherSpecify = $("#other-specify-pre1");
-
-            if (value.toLowerCase() === "other") otherSpecify.show();
-            else otherSpecify.hide();
-            if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
-                subject = value;
-            }
-
-            setConclusion();
-        });
-        $('#Prob_Appr_Pre2').change(function() {
-            setConclusion();
-        });
-        //Q.3
-        $('#Prob_Appr_A').change(function() {
-            setConclusion();
-        });
-        $('#Prob_Appr_B').change(function() {
-
-            var value = $(this).val();
-            var subject = "subjects";
-            var otherSpecify = $("#other-specify");
-            if (value === "other") otherSpecify.show();
-            else otherSpecify.hide();
-            if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
-                subject = value;
-            }
-            if (value.toLowerCase() !== "other") {
-
-                $(".section-c-header").text(subject);
-            } else {
-
-                $(".section-c-header").text("subjects");
-
-            }
-            setConclusion();
-        });
-        $('#Prob_Appr_C').change(function() {
-            setConclusion();
-        });
-        $('#Prob_Appr_D').change(function() {
-            setConclusion();
-        });
-        $('#Prob_Appr_E').change(function() {
-            setConclusion();
-        });
-        $('#Prob_Appr_F').change(function() {
-            setConclusion();
-        });
-
-
-        $(".section-c-header").text(getSubject());
-        $("#Prob_Appr_B_other").keyup(function() {
-            var value = $(this).val();
-            $(".section-c-header").text(value);
-        });
 
 
 /*~~~~~~~~~~~~~~~~~~ craft_your_research_q.html ~~~~~~~~~~~~~~~~~~*/
@@ -276,10 +254,40 @@ $(document).ready(function() {
             $('.prob-failure').text(value);
         });
 
-       
-            $('[data-toggle="tooltip"]').tooltip();
-        
+ /*~~~~~~~~~~~~~~~~~~ evaluation_plan.html ~~~~~~~~~~~~~~~~~~*/
+        $("input[type=checkbox]:checked.hide-row").each(function () {
+			$(this).parent("label").parent("td").parent("tr").addClass("hide-row");
+			;
+		});
+			$("input[type=checkbox].hide-row").change(function () {
+				if (this.checked) {
+				    var thisrow = $(this).parent("label").parent("td").parent("tr");
+					thisrow.addClass("hide-row").fadeOut();
+					thisrow.appendTo('#timeline');
+				    var i = 1;
+					$('td.index input').each(function (i) {
+						$(this).val(i + 1);
+					});
+					
+				} else {
+			        $(this).parent("label").parent("td").parent("tr").removeClass("hide-row");}
+			});
 
+			$("#Unhide-row").click(function () {
+			    $("input[type=checkbox].hide-row").each(function() {
+					$(this).attr('checked', false);
+			    });
+			    $("tr.hide-row").each(function() {
+					$(this).removeClass("hide-row").fadeIn();
+
+			    });
+			});
+
+
+			
+
+
+            $('[data-toggle="tooltip"]').tooltip();
 
    }); //<-end document.ready
 
@@ -723,13 +731,15 @@ function getSubject() {
     return subject;
 };
 
+
+
 function AChanged() {
     var a = $(this).val();
  
     if (a.toLowerCase() !== "select an option") {
 
         if (a.toLowerCase() === "already using the technology") {
-            $("#morr").html("Who are the technology users be?");
+            $("#morr").html("Who are the technology users?");
             $("#bmatching").show();
             $("#brandom1").hide();
             $("#brandom2").hide();

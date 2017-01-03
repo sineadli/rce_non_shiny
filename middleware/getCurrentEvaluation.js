@@ -26,13 +26,14 @@ var getCurrentEvaluation = function (req, res, next) {
             } else {
 
                 if (eval) {
-					console.log(eval.toolsvisited);
+                 //   console.log("In get current eval if eval");
+	
 					if (eval.evalPlan.Milestones.length == 0) {
 						// create the 12 default milestones
 						for (var i = 0; i < 12; i++) {
 							var m = ({
 								Order:
-								0,
+								i+1,
 								Milestone_Name:
 								'',
 								Complete_Date:

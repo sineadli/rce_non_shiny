@@ -13,17 +13,52 @@
 var fs = require('fs');
 var async = require('async');
 //var juice = require('juice');
+
 //var request = require('request');
+
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var sess;
 //please note that req.session.step is for managing the active tab for coach.html
 //the following defines the tool routes available, only four routes available currently
+
+
+
 module.exports = function (app, passport) {
    // app.use(isLoggedIn);
     app.use(getCurrentEvaluation);
-  
+	
+	
+	function dynamicSort(property) {
+		var sortOrder = 1;
+		if (property[0] === "-") {
+			sortOrder = -1;
+			property = property.substr(1);
+		}
+		return function (a, b) {
+			var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+			return result * sortOrder;
+		}
+	}
+	
+	
+	function updateLastTool(eval, toollist) {
+		var tool = eval.toolsvisited.filter(function (x) { return x.name === toollist.name });
+	    console.log(tool);
+		if (tool.length == 0) {
+			eval.toolsvisited.push(toollist);
+		}
+		else {
+			var index = eval.toolsvisited.indexOf(tool[0]);
+			if (index > -1) {
+				if (tool[0].status == "completed") toollist = { "name": toollist.name, "status": "completed", "visited_at": new Date() };
+				eval.toolsvisited.splice(index, 1);
+				eval.toolsvisited.push(toollist);
+			}
+		}
+		if (eval.stepsclicked.indexOf(eval.last_step) < 0) eval.stepsclicked.push(eval.last_step);
+	} 
 	
 	//02.03 The Basics
     app.get('/basics', isLoggedIn, function (req, res) {
@@ -36,8 +71,8 @@ module.exports = function (app, passport) {
 	});
     app.post('/basics', isLoggedIn, function (req, res) {
         sess = req.session;
-        var obj = req.body, basics;
-        //	console.log(obj);
+		var obj = req.body;
+		
         var toolName = "The Basics";
         var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
         var dt = new Date();
@@ -63,28 +98,10 @@ module.exports = function (app, passport) {
                 //eval find so update the toolsVisisted accordingly
                 eval.last_step = 2;
                 eval.last_tool = toolName;
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === toolName });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status == "completed") toollist = { "name": toolName, "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
-                //add/update the probAppr within eval
-                basics = {
-                    "Basics_Have": obj.Basics_Have,
-                    "Basics_Tech_Name": obj.Basics_Tech_Name,
-                    "Basics_Using": obj.Basics_Using,
-                    "Basics_Users": obj.Basics_Users,
-                    "Basics_Users_Other": obj.Basics_Users_Other,
-                    "Basics_Outcome": obj.Basics_Outcome,
-                    "Basics_Outcome_Other": obj.Basics_Outcome_Other
-                };
+                updateLastTool(eval, toollist);
+				//add/update the probAppr within eval
+				var basics = obj.Basics;
+               
                 if (!eval.basics) {
                     eval.basics.created_at = dt;
 
@@ -138,7 +155,9 @@ module.exports = function (app, passport) {
     });
     app.post('/determine_your_approach', isLoggedIn,  function (req, res) {
         sess = req.session;
-        var obj = req.body, probAppr;
+		var obj = req.body;
+		var returnpath = obj.returnpath;		
+	//	console.log(obj);
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
         var dt = new Date();
         async.waterfall([
@@ -175,8 +194,14 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
                 }
-                //add/update the probAppr within eval
-                
+				//add/update the probAppr within eval
+               
+                    eval.prepareRandom.Individual_Group = obj.Individual_Group;
+				
+                    eval.prepareRandom.Cluster_Group = obj.Cluster_Group;
+				
+                    eval.prepareRandom.Cluster_Group_Other = obj.Cluster_Group_Other;
+              
                 var probAppr = {
 						"Appr_Current_or_New": obj.Appr_Current_or_New, 
 						"Appr_All_Using": obj.Appr_All_Using,
@@ -376,7 +401,10 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Think About How to Use Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
-        var obj = req.body;
+		var obj = req.body;
+		var returnpath = obj.returnpath;
+        if (returnpath === '') returnpath = "plan_next_steps";
+	//	console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -444,9 +472,9 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    if (req.body.status == "started") {
-                        req.flash('saveMessage', 'Changes Saved.')
-                        return res.redirect('/plan_next_steps');
+                    if (req.body.status === "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
@@ -480,7 +508,9 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
-        var obj = req.body;
+		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "context_and_usage";
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -503,20 +533,10 @@ module.exports = function (app, passport) {
             function (eval, done) {
 				eval.last_step = 3;
                 eval.last_tool = "Summarize Context";
-                //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Summarize Context" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) { 
-                        if (tool[0].status == "completed") toollist = { "name": "Summarize Context", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
-                //add/update the planQuestion within eval
+                updateLastTool(eval, toollist);
+				
+				
+				//add/update the planQuestion within eval
                 var grades = [], outcomes = [];
      
                 if (obj.Grade_PK) grades.push(obj.Grade_PK);
@@ -608,7 +628,7 @@ module.exports = function (app, passport) {
                     if (req.body.status == "started") {
 
                         req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/context_and_usage');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
@@ -635,7 +655,8 @@ module.exports = function (app, passport) {
 		sess = req.session;
 		sess.eval.step = 4;
 		var obj = req.body;
-		console.log(obj);
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "prepare_data";
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
@@ -713,7 +734,7 @@ module.exports = function (app, passport) {
 					if (req.body.status == "started") {
 						
 						req.flash('saveMessage', 'Changes Saved.');
-						return res.redirect('/prepare_data');
+						return res.redirect('/'+returnpath);
 					}
 					else {
 						return res.redirect('/coach');
@@ -732,10 +753,84 @@ module.exports = function (app, passport) {
 
 		sess.eval.last_step = 3;
 		sess.eval.last_tool = "Evaluation Plan";
-		console.log("In eval plan get");
-		console.log(sess.eval.evalPlan.Milestones);
+		sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
+		
 		var query = require('url').parse(req.url, true).query;
 		res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+	});
+	
+	
+	
+	app.post('/evaluation_plan', function (req, res) {
+		var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
+		sess = req.session;
+		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "evaluation_plan";
+	    console.log("Saving eval plan");
+	//    console.log(obj.EvalPlan.Milestones);
+		var dt = new Date();
+		async.waterfall([
+			function (done) {
+				if (sess.eval) {
+					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+						if (!eval) {
+							req.flash('error', 'No evaluation exists.');
+							return res.redirect('/coach');
+						}
+						if (err) {
+							console.log(err);
+							return res.redirect('/coach');
+						}
+						return done(err, eval);
+					});
+				}
+				else
+					res.redirect('/coach');
+			},
+			function (eval, done) {
+				eval.last_step = 3;
+				eval.last_tool = toollist.name;
+				//eval find so update the toolsVisited accordingly
+			    updateLastTool(eval, toollist);
+
+				eval.planContext.Tech_Purpose = obj.Tech_Purpose;
+				eval.planContext.Tech_Components = obj.Tech_Components;
+				eval.planContext.Expected_Dosage = obj.Expected_Dosage;
+			    eval.planNext.Action_Success = obj.Action_Success;
+			    eval.planNext.Action_Fail = obj.Action_Fail;
+			    eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
+			    var evalPlan = obj.EvalPlan;
+
+				if (!eval.evalPlan) {
+					eval.evalPlan.created_at = dt;
+					eval.evalPlan.updated_at = dt;
+				}
+				else {
+					eval.evalPlan.updated_at = dt;
+				};
+				
+				eval.evalPlan = evalPlan;
+
+
+				eval.save(function (err) {
+					if (err) {
+						console.log(err); return done(err);
+					}
+					sess.eval = eval;					
+					if (req.body.status === "started") {						
+						req.flash('saveMessage', 'Changes Saved.');
+						return res.redirect('/'+returnpath);
+					}
+					else {
+						return res.redirect('/coach');
+					}
+				});
+			}
+		], function (err) {
+			if (err) return next(err);
+			res.redirect('/coach');
+		});
 	});
 
     app.get('/matching', isLoggedIn, function (req, res) {
@@ -748,7 +843,7 @@ module.exports = function (app, passport) {
     app.post('/matching', function (req, res) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
-        sess.eval.step = 4;      
+       // sess.eval.step = 4;      
 		var obj = req.body;
         var dt = new Date();
         async.waterfall([
@@ -785,9 +880,9 @@ module.exports = function (app, passport) {
                         eval.toolsvisited.push(toollist);
                     }
 				}
-				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
-				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
-							
+				//eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
+				//eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
+				eval.planContext.Tech_Purpose = obj.Tech_Purpose; eval.planContext.Tech_Components = obj.Tech_Components;		
                  var matching = {      
                         "Target_Group_Desc": obj.Target_Group_Desc,
                         "treat_var": obj.s_treat_var,

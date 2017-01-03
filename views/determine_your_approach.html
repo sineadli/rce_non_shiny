@@ -63,7 +63,7 @@
                             <a onclick="window.open('/static/pdf/02.03a Determine your approach_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
-                            <h1 class="tool-title "> Determine Your Approach</h1>
+                            <h1 class="tool-title ">Determine Your Approach</h1>
                             <div class="clearfix"></div>
                             <div class="tool-intro">
                                 <p>
@@ -323,7 +323,7 @@
                             <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
                         </div>
                         <div class="step-action">
-                            <select required name="Individual_Group" id="Individual_Group">
+                            <select name="Individual_Group" id="Individual_Group">
                                 <%
                                 var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
                                 var ovals = ["Select an option", "users" , "groups" ];
@@ -341,7 +341,7 @@
                                     <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= Basics_Users %></span>?</label></h4>
                                 </div>
                                 <div class="step-action">
-                                    <select required name="Cluster_Group" id="Cluster_Group">
+                                    <select  name="Cluster_Group" id="Cluster_Group">
                                         <%
                                         var options = ["Select an option", "by class", "by school", "other" ];
                                         var ovals = ["Select an option", "classes", "schools", "other" ];

@@ -94,7 +94,7 @@ var PlanNext = mongoose.Schema({
 //03.03 context and usage
 var PlanContext = mongoose.Schema({
 	Eval_Begin_Date: { type: Date, default: '01/01/1900' }, //was Plan_Context_A_4
-	Eval_End_Date: { type: Date, default: '01/01/1900' },  //was Plan_Context_A_4
+	Eval_End_Date: { type: Date, default: '' },  //was Plan_Context_A_4
 	Type_Curriculum: { type: String, default: '' },
 	Type_Practice: { type: String, default: '' },
 	Type_CSchool_Structure: { type: String, default: '' },
@@ -106,13 +106,14 @@ var PlanContext = mongoose.Schema({
 	Delivered_Individually: { type: String, default: '' },
 	Delivered_Small_Group: { type: String, default: '' },
 	Delivered_Whole_Class: { type: String, default: '' },
-    Delivered_School_Wide: { type: String, default: '' },
-    Grades: [{ type: String }],
+	Delivered_School_Wide: { type: String, default: '' },
+	Grades:[{ type: String, default: '' }],
     Expected_Dosage: { type: String, default: '' }, //was Plan_Context_A_3
     Developer_Guidelines: { type: String, default: '' },
 	ClassroomType_General: { type: String, default: '' },
 	ClassroomType_Inclusion: { type: String, default: '' },
-    Outcomes: [{ type: String }],
+	Outcomes: [{ type: String, default: '' }],
+	
 	SchoolType_Charter: { type: String, default: '' },
 	SchoolType_Private: { type: String, default: '' }, 
 	SchoolType_Parochial: { type: String, default: '' }, 
@@ -141,11 +142,26 @@ var PlanContext = mongoose.Schema({
     updated_at: Date
 
 });
-
-var Prepare = mongoose.Schema({
-	Individual_Group: { type: String, default: '' }, 
+var PrepareRandom = mongoose.Schema({
+	Individual_Group: { type: String, default: '' },
 	Cluster_Group: { type: String, default: '' },
 	Cluster_Group_Other: { type: String, default: '' },
+
+	Check_Sample: { type: String, default: '' },
+	
+	Check_Pretest: { type: String, default: '' },
+	Check_Background: { type: String, default: '' },
+	
+	Check_OneSet: { type: String, default: '' },
+	Check_Numeric: { type: String, default: '' },
+	Check_Missing: { type: String, default: '' },
+	Check_Min_Max: { type: String, default: '' },
+	Check_Miss_Impact: { type: String, default: '' },
+    created_at: { type: Date, default: Date.now },
+    updated_at: Date
+});
+var Prepare = mongoose.Schema({
+	
     Check_Outcome: { type: String, default: '' },
 	Check_Sample: { type: String, default: '' }, 
 	Check_Treatment: { type: String, default: '' },
@@ -164,7 +180,7 @@ var Prepare = mongoose.Schema({
 var Milestone = mongoose.Schema({
     Order: { type: Number, default: 0 },
     Milestone_Name: { type: String, default: '' },
-    Complete_Date: { type: Date, default: '01/01/1900' },
+    Complete_Date: { type: Date, default: '' },
     Assigned_To: { type: String, default: '' },
     Status: { type: String, default: '' },
     Notes: { type: String, default: '' },
@@ -172,7 +188,7 @@ var Milestone = mongoose.Schema({
 });
 
 var EvalPlan = mongoose.Schema({
-	Person_Responsible_IGroup: { type: String, default: '' },
+	Evaluation_Why: { type: String, default: '' },
 	Milestones: [Milestone],
     created_at: { type: Date, default: Date.now },
     updated_at: Date
@@ -260,6 +276,10 @@ var evaluationSchema = mongoose.Schema({
         type: Prepare,
         default: Prepare
     },
+	prepareRandom: {
+        type: PrepareRandom,
+        default: PrepareRandom
+    },
 	evalPlan: {
         type: EvalPlan,
         default: EvalPlan
@@ -317,6 +337,7 @@ evaluationSchema.pre('save', function (next) {
                 this.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "the basics" })[0].status = "started";
             }
         }
+        //path determine
         if (this.probAppr) {
 
             if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current" &&
@@ -330,7 +351,7 @@ evaluationSchema.pre('save', function (next) {
                 this.path = "path-none";
             } //what should we do?
         }
-        if (this.status === "100") {
+        if (this.status === "12") {
             if (!this.published_at) { this.published_at = currentDate; }
             var doc = this;
             User.findById(this.userid, function (err, user) {

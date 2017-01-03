@@ -53,11 +53,14 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-12">
+            <div class="col-xs-12">
+                <div class="tool-top">
+                    <div class="dl-guide">
+                    </div>
                     <div class="tool-header">
-                        <h1 class="tool-title pull-left">The Basics</h1>
+                        <h1 class="tool-title">The Basics</h1>
 
-                        <div class="clearfix"></div>
+
                         <div class="tool-intro">
                             <p>
                                 These first questions will help the Coach make sure you have what you need to get started and get you thinking about the goal of your Ed Tech evaluation.
@@ -65,260 +68,263 @@
 
                         </div>
                     </div>
+                    <div class="clearfix"></div>
                 </div>
+              
             </div>
-            <div class="row">
-                <div class="tool-questions">
-                    <div id="Q_Have_Tech">
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#A">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
-                                    Have you selected an educational technology for your evaluation?
-                                </h2>
-                            </div>
-                        </div>
-                        <div id="A" class="row collapse in  q-row">
-                            <div class="col-xs-7">
-                                <div class="step-subquestion">
-                                    <p>
-                                        In order to use the Ed Tech Coach you need to have educational technology to evaluate.
-                                    </p>
-                                </div>
-                                <div class="step-action">
-                                    <select required name="Basics_Have" id="Basics_Have">
-                                        <%
-                                        var options = ["Select an option", "yes", "no" ];
-                                        for ( var i = 0; i < options.length; i++ )
-                                        {
-                                        var selected;
-                                        if (user != "NOAUTHENTICATED") {
-                                        if (eval.basics) { selected = ( eval.basics.Basics_Have == options[i] ) ? "selected" : "";}}
-                                        %>
-                                        <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option><%
-                                        }
-                                        %>
-
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="Q_Tech_Name">
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#B">
-                                <h2 class="clickable">
-                                    <span class="fa fa-caret-down" aria-hidden="false"></span> What is the name of the educational technology you are testing?
-                                </h2>
-                            </div>
-                        </div>
-                        <div id="B" class="row collapse in  q-row">
-                            <div class="col-xs-7">
-                                <div class="step-action">
-
-                                    <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="Q_Have_Outcome">
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#E">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> What is the outcome you hope to change by using the technology?
-                                </h2>
-                            </div>
-                        </div>
-                        <div id="E" class="row  collapse in  q-row">
-                            <div class="col-xs-7">
-
-                                <div class="step-action">
-                                    <select required name="Basics_Outcome" id="Basics_Outcome">
-                                        <%
-                                        var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
-                                        for ( var i = 0; i < options.length; i++ )
-                                        {
-                                        var selected;
-                                        if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
-
-
-                                        %>
-                                        <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
-                                        }
-                                        %>
-
-                                    </select>
-                                    <div id="Question_Outcome_Other" hidden="true">
-                                        <p>
-                                            <label for="Basics_Outcome_Other">Please specify:</label>
-
-                                            <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-xs-5">
-                                <div class="step-to-consider">
-
-                                    <div class="panel-group" id="ttc5">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title sec-label clickable">
-                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                    <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
-                                                        Things to Consider
-                                                    </a>
-                                                </h3>
-                                            </div>
-                                            <div id="consider5" class="panel-collapse collapse in">
-                                                <p>
-                                                    An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (e.g. engaging with the educational technology).
-                                                    We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading accordion-toggle">
-                                                <h3 class="panel-title sec-label clickable">
-                                                    <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                    <a data-toggle="collapse" data-parent="#ttc5" href="#example5">
-                                                        Example
-                                                    </a>
-                                                </h3>
-                                            </div>
-                                            <div id="example5" class="panel-collapse collapse">
-
-                                                <ul>
-                                                    <li>Student achievement</li>
-                                                    <li>Chronic absenteeism</li>
-                                                </ul>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="Q_Who_Users">
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#D">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> Who
-                                    <span class="eval-tense"> are or will be </span>
-                                    your technology users?
-                                </h2>
-                            </div>
-                        </div>
-                        <div id="D" class="row collapse in q-row">
-                            <div class="col-xs-7">
-                                <div class="step-action">
-                                    <select required name="Basics_Users" id="Basics_Users">
-
-                                        <%
-                                        var options = ["Select an option", "students", "teachers", "other"];
-
-                                        for ( var i = 0; i < options.length; i++ )
-                                        {
-
-                                        var selected;
-                                        if (user != "NOAUTHENTICATED"){if (eval.basics) { selected = ( eval.basics.Basics_Users == options[i] ) ? "selected" : "";}}
-
-                                        %>
-                                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
-                                        }
-                                        %>
-
-                                    </select>
-
-                                    <div id="Question_Users_Other" hidden="true">
-                                        <div>
-                                            <label for="Basics_User_Other">Please specify:</label>
-                                        </div>
-
-                                        <input type="text" name='Basics_Users_other' id="Basics_Users_other" value="<%= eval.basics.Basic_Users_other %>" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-5">
-                                <div class="step-to-consider">
-
-                                    <div class="panel-group" id="ttc4">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title sec-label clickable">
-                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
-                                                        Things to Consider
-                                                    </a>
-                                                </h3>
-                                            </div>
-                                            <div id="consider4" class="panel-collapse collapse in">
-                                                <p>
-                                                    The technology users are the group that is directly engaging with the technology. In some cases this may not be the same group for which you are trying to improve outcomes (for example you may hope a learning management platform used by teachers to coordinate lessons and assignments will improve student outcomes).
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-                <div id="Step_Conclusion">
-                    <div class="step-conclusion container">
-
-                    </div>
                     <div class="row">
-                        <div class="col-xs-7">
-                            <div id="success">
-                                <h2>Conclusion</h2>
-                                <p>Great! You are now ready to begin designing your research approach.</p>
+                        <div class="tool-questions">
+                            <div id="Q_Have_Tech">
+                                <div class="step-header container">
+                                    <div data-toggle="collapse" data-target="#A">
+                                        <h2 class="clickable">
+                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                            Have you selected an educational technology for your evaluation?
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div id="A" class="row collapse in  q-row">
+                                    <div class="col-xs-10">
+                                        <div class="step-subquestion">
+                                            <p>
+                                                In order to use the Ed Tech Coach you need to have educational technology to evaluate.
+                                            </p>
+                                        </div>
+                                        <div class="step-action">
+                                            <select required name="Basics[Basics_Have]" id="Basics_Have">
+                                                <%
+                                                var options = ["Select an option", "yes", "no" ];
+                                                for ( var i = 0; i < options.length; i++ )
+                                                {
+                                                var selected;
+                                                if (user != "NOAUTHENTICATED") {
+                                                if (eval.basics) { selected = ( eval.basics.Basics_Have == options[i] ) ? "selected" : "";}}
+                                                %>
+                                                <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option><%
+                                                }
+                                                %>
 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="stop-no-outcome">
-                                <h2 class="stop-warning">Conclusion</h2>
-                                <p>To measure a technology&rsquo;s effectiveness it is critical to know what you are hoping to accomplish from its use. Therefore, you will need to determine what outcomes you’ll be measuring before you can continue. We encourage you to talk with your colleagues about possible outcomes you would like to improve. This could be based on your priorities or what you think the technology could reasonably achieve. Come back to the Coach when you know what outcome you wish to target. </p>
+                            <div id="Q_Tech_Name">
+                                <div class="step-header container">
+                                    <div data-toggle="collapse" data-target="#B">
+                                        <h2 class="clickable">
+                                            <span class="fa fa-caret-down" aria-hidden="false"></span> What is the name of the educational technology you are testing?
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div id="B" class="row collapse in  q-row">
+                                    <div class="col-xs-10">
+                                        <div class="step-action">
 
+                                            <textarea name="Basics[Basics_Tech_Name]" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="stop-no-tech">
-                                <h2 class="stop-warning">Conclusion</h2>
-                                <p>Sorry, without educational technology to evaluate you will not be able to proceed through the Coach. We have put together the guide Choose a Techology [link to 01.02ChooseATechnology.pdf] to help you make that selection. Once you’ve made your selection, please return to the coach and continue your evaluation. </p>
+                            <div id="Q_Have_Outcome">
+                                <div class="step-header container">
+                                    <div data-toggle="collapse" data-target="#E">
+                                        <h2 class="clickable">
+                                            <i class="fa fa-caret-down" aria-hidden="false"></i> What is the outcome you hope to change by using the technology?
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div id="E" class="row  collapse in  q-row">
+                                    <div class="col-xs-7">
 
+                                        <div class="step-action">
+                                            <select required name="Basics[Basics_Outcome]" id="Basics_Outcome">
+                                                <%
+                                                var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
+                                                for ( var i = 0; i < options.length; i++ )
+                                                {
+                                                var selected;
+                                                if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
+
+
+                                                %>
+                                                <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                }
+                                                %>
+
+                                            </select>
+                                            <div id="Question_Outcome_Other" hidden="true">
+                                                <p>
+                                                    <label for="Basics_Outcome_Other">Please specify:</label>
+
+                                                    <input type="text" name='Basics[Basics_Outcome_Other]' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xs-5">
+                                        <div class="step-to-consider">
+
+                                            <div class="panel-group" id="ttc5">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title sec-label clickable">
+                                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                            <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                                Things to Consider
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    <div id="consider5" class="panel-collapse collapse in">
+                                                        <p>
+                                                            An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (e.g. engaging with the educational technology).
+                                                            We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading accordion-toggle">
+                                                        <h3 class="panel-title sec-label clickable">
+                                                            <span class="fa fa-caret-right" aria-hidden="true"></span>
+                                                            <a data-toggle="collapse" data-parent="#ttc5" href="#example5">
+                                                                Example
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    <div id="example5" class="panel-collapse collapse">
+
+                                                        <ul>
+                                                            <li>Student achievement</li>
+                                                            <li>Chronic absenteeism</li>
+                                                        </ul>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="Q_Who_Users">
+                                <div class="step-header container">
+                                    <div data-toggle="collapse" data-target="#D">
+                                        <h2 class="clickable">
+                                            <i class="fa fa-caret-down" aria-hidden="false"></i> Who
+                                            <span class="eval-tense"> are or will be </span>
+                                            your technology users?
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div id="D" class="row collapse in q-row">
+                                    <div class="col-xs-7">
+                                        <div class="step-action">
+                                            <select required name="Basics[Basics_Users]" id="Basics_Users">
+
+                                                <%
+                                                var options = ["Select an option", "students", "teachers", "other"];
+
+                                                for ( var i = 0; i < options.length; i++ )
+                                                {
+
+                                                var selected;
+                                                if (user != "NOAUTHENTICATED"){if (eval.basics) { selected = ( eval.basics.Basics_Users == options[i] ) ? "selected" : "";}}
+
+                                                %>
+                                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                }
+                                                %>
+
+                                            </select>
+
+                                            <div id="Question_Users_Other" hidden="true">
+                                                <div>
+                                                    <label for="Basics[Basics_User_Other]">Please specify:</label>
+                                                </div>
+
+                                                <input type="text" name='Basics_Users_other' id="Basics_Users_other" value="<%= eval.basics.Basic_Users_other %>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <div class="step-to-consider">
+
+                                            <div class="panel-group" id="ttc4">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title sec-label clickable">
+                                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                            <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
+                                                                Things to Consider
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    <div id="consider4" class="panel-collapse collapse in">
+                                                        <p>
+                                                            The technology users are the group that is directly engaging with the technology. In some cases this may not be the same group for which you are trying to improve outcomes (for example you may hope a learning management platform used by teachers to coordinate lessons and assignments will improve student outcomes).
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc6">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider6" class="panel-collapse collapse in">
-                                            <p>You can always come back and revise your answers here and the Coach will revisit some of these questions in other tools. We encourage you to talk with your colleagues about your research goals and make revisions if necessary.</p>
-                                        </div>
+                        <div id="Step_Conclusion">
+                            <div class="step-conclusion container">
+
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <div id="success">
+                                        <h2>Conclusion</h2>
+                                        <p>Great! You are now ready to begin designing your research approach.</p>
+
+                                    </div>
+                                    <div id="stop-no-outcome">
+                                        <h2 class="stop-warning">Conclusion</h2>
+                                        <p>To measure a technology&rsquo;s effectiveness it is critical to know what you are hoping to accomplish from its use. Therefore, you will need to determine what outcomes you’ll be measuring before you can continue. We encourage you to talk with your colleagues about possible outcomes you would like to improve. This could be based on your priorities or what you think the technology could reasonably achieve. Come back to the Coach when you know what outcome you wish to target. </p>
+
+                                    </div>
+                                    <div id="stop-no-tech">
+                                        <h2 class="stop-warning">Conclusion</h2>
+                                        <p>Sorry, without educational technology to evaluate you will not be able to proceed through the Coach. We have put together the guide Choose a Techology [link to 01.02ChooseATechnology.pdf] to help you make that selection. Once you’ve made your selection, please return to the coach and continue your evaluation. </p>
+
                                     </div>
 
                                 </div>
+                                <div class="col-xs-5">
+                                    <div class="step-to-consider">
+                                        <div class="panel-group" id="ttc6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                        <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
+                                                            Things to Consider
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="consider6" class="panel-collapse collapse in">
+                                                    <p>You can always come back and revise your answers here and the Coach will revisit some of these questions in other tools. We encourage you to talk with your colleagues about your research goals and make revisions if necessary.</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-
                 </div>
-            </div>
-        </div>
         <% include ../views/partials/toolButtons.html %>
     </form>
     <% include ../views/partials/footer.html %>

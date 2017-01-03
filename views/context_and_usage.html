@@ -55,18 +55,24 @@
         Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
         Basics_Outcome = eval.basics.Basics_Outcome != "" ? eval.basics.Basics_Outcome : "the outcome";
         if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+
         Basics_Users_Others = eval.basics.Basics_Users_Others;
         Basics_Users =  eval.basics.Basics_Users != "" ? eval.basics.Basics_Users : "users";
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-        Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-        var Outcome_Direction = eval.planQuestion.Outcome_Direction;
+
+        var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
+        if(Basics_Tech_Name === ''){ Basics_Tech_Name = "the educational technology"; }
+
+        var Outcome_Direction = eval.planQuestion.Outcome_Direction !== "" ? eval.planQuestion.Outcome_Direction : "improve";
+
         var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
+
         var Current_or_New = eval.probAppr.Appr_Current_or_New;
-    var Verb = Current_or_New === "Current" ? "did" : "will";
-    var Verb2 = Current_or_New === "Current" ? "is" : "was";
-    var Eval_Begin_Date = eval.planContext.Eval_Begin_Date != "01/01/1900" ? eval.planContext.Eval_Begin_Date : "";
+        var Verb = Current_or_New === "Current" ? "did" : "will";
+        var Verb2 = Current_or_New === "Current" ? "is" : "was";
+        var Eval_Begin_Date = eval.planContext.Eval_Begin_Date != "01/01/1900" ? eval.planContext.Eval_Begin_Date : "";
         var Eval_End_Date = eval.planContext.Eval_End_Date != "01/01/1900" ? eval.planContext.Eval_End_Date : "";
-        
+
 
 
         %>
@@ -80,15 +86,15 @@
                         <div class="tool-header">
                             <h1 class="tool-title ">Summarize Context</h1>
                             <div class="tool-intro">
-                                <p>
-                                    When you share the results from your study, the information you provide on this webpage will help your colleagues understand how the educational technology is intended to be used. We&rsquo;ll prompt you later in the process to reflect on how the technology was actually implemented and whether you experienced any implementation challenges. This context will help you make sense of the results and it is also important for understanding how the evaluation applies to other environments.
-                                </p>
+
+                                <p>We want to collect some information about your evaluation and its participants. This context will help you make sense of your results and it is also important for understanding how your results apply to other environments. As we gather results from many evaluations, we&rsquo;ll use this information to sort and filter similar studies from similar settings, so that we can help you learn from other users and help other users learn from your experience.</p>
+
+
+                                <p>Some of the questions below may not apply to your specific evaluation. Answer as many of the questions as you can.</p>
 
                             </div>
-                            <div class="tool-instructions">
+                            <div class="tool-instructions"></div>
 
-
-                            </div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -113,7 +119,7 @@
 
                                 function dateformat(v){
                                 function pad(n) {
-                                   return n < 10 ? "0" +n : n
+                                return n < 10 ? "0" +n : n
                                 }
                                 d=new Date(v);
                                 dash="-"
@@ -121,21 +127,21 @@
                                 return d.getFullYear()+dash+
                                 pad(d.getMonth()+1)+dash+
                                 pad(d.getDate())
-                                                            
-                                                             }
-                                                             var bd=dateformat(eval.planContext.Eval_Begin_Date);
-                                                             var ed=dateformat(eval.planContext.Eval_End_Date);
-                                                             %>
-                                    
 
-                                    <div class="step-action">
-                                        <label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label>
-                                        <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= bd %>" />
-                                        <br />
-                                        <label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label>
-                                        <input type="date" name="Eval_End_Date" id="Eval_End_Date" value="<%= ed %>" />
-                                    </div>
-</div>
+                                }
+                                var bd=dateformat(eval.planContext.Eval_Begin_Date);
+                                var ed=dateformat(eval.planContext.Eval_End_Date);
+                                %>
+
+
+                                <div class="step-action">
+                                    <h4><label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label></h4><br />
+                                    <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= bd %>" />
+                                    <br />
+                                    <h4><label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label></h4>
+                                    <input type="date" name="Eval_End_Date" id="Eval_End_Date" value="<%= ed %>" />
+                                </div>
+                            </div>
 
                             <div class="col-xs-5">
                                 <div class="step-to-consider">
@@ -143,8 +149,8 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading accordion-toggle">
                                                 <h3 class="panel-title sec-label clickable">
-                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                    
+                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#consider1"><i class="fa fa-caret-down" aria-hidden="false"></i>
                                                         Things to Consider
                                                     </a>
                                                 </h3>
@@ -164,62 +170,62 @@
                             <div data-toggle="collapse" data-target="#B">
                                 <h2 class="clickable">
 
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> What is <%= Basics_Tech_Name %> and how it is being used in your evaluation?
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> What is <%= Basics_Tech_Name %>?
 
                                 </h2>
                             </div>
                         </div>
                         <div id="B" class="row collapse in q-row">
-                        <div class="col-xs-7">
-                            <div class="step-subquestion">
-                                <h4>
-                                    What type of program is <%= Basics_Tech_Name %>? 
-                                </h4>
-                            </div>
-                        <div class="step-action context-tag">
-                            <p><em>Select all that apply.</em></p>
-                            <%
+                            <div class="col-xs-7">
+                                <div class="step-subquestion">
+                                    <h4>
+                                        What type of program is <%= Basics_Tech_Name %>?
+                                    </h4>
+                                </div>
+                                <div class="step-action context-tag">
+                                    <p><em>Select all that apply.</em></p>
+                                    <%
 
-                            var options= ["Curriculum","Practice","School structure","Teacher level","Policy"];
-                            var selected =[eval.planContext.Type_Curriculum,
-                            eval.planContext.Type_Practice,
-                            eval.planContext.Type_School_Structure,
-                            eval.planContext.Type_Teacher_Level,
-                            eval.planContext.Type_Policy]
-                            var names =["Type_Curriculum","Type_Practice","Type_School_Structure","Type_Teacher_Level","Type_Policy"]
+                                    var options= ["Curriculum","Practice","School structure","Teacher level","Policy"];
+                                    var selected =[eval.planContext.Type_Curriculum,
+                                    eval.planContext.Type_Practice,
+                                    eval.planContext.Type_School_Structure,
+                                    eval.planContext.Type_Teacher_Level,
+                                    eval.planContext.Type_Policy]
+                                    var names =["Type_Curriculum","Type_Practice","Type_School_Structure","Type_Teacher_Level","Type_Policy"]
 
-                            var checked = "unchecked";
+                                    var checked = "unchecked";
 
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            checked = ( selected[i] == options[i] ) ? "checked" : "";
-                            var cbid = names[i];
-                            var cbvalue = options[i];
-                            var brk = "";
+                                    for ( var i = 0; i < options.length; i++ )
+                                    {
+                                    checked = ( selected[i] == options[i] ) ? "checked" : "";
+                                    var cbid = names[i];
+                                    var cbvalue = options[i];
+                                    var brk = "";
 
-                            %>
+                                    %>
 
-                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                            <label for="<%= cbid %>">
-                                <%= cbvalue %>
+                                    <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
+                                    <label for="<%= cbid %>">
+                                        <%= cbvalue %>
 
-                            </label>
-                            <%
-                            }
-                            %>
+                                    </label>
+                                    <%
+                                    }
+                                    %>
 
 
 
-                        </div>
+                                </div>
 
-                      
-                            <div class="clearfix"></div>
+
+                                <div class="clearfix"></div>
                                 <div class="step-subquestion">
                                     <h4>What is the purpose of <%= Basics_Tech_Name %>?</h4>
                                 </div>
                                 <div class="step-action">
 
-                                    <textarea name="Tech_Purpose" id="Tech_Purpose" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Tech_Purpose %></textarea>
+                                    <p><em class="capitalize-one"><%= Basics_Tech_Name %> is&hellip;</em>                      <textarea style="display:inline-block;" name="Tech_Purpose" id="Tech_Purpose" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Tech_Purpose %></textarea></p>
                                 </div>
 
                                 <div class="step-subquestion">
@@ -227,7 +233,7 @@
                                 </div>
                                 <div class="step-action">
 
-                                    <textarea name="Tech_Components" id="Tech_Components" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= eval.planContext.Tech_Components %></textarea>
+                                    <p><em>Key components include&hellip; </em>                   <textarea name="Tech_Components" style="display:inline-block;" ="Tech_Components" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= eval.planContext.Tech_Components %></textarea> </p>
                                 </div>
 
 
@@ -235,16 +241,6 @@
 
 
 
-                                <div class="step-subquestion">
-                                    <h4>How often and for how long are <%= Basics_Users %> supposed to be using <%= Basics_Tech_Name %> for your evaluation?</h4>
-                                    <p>
-                                        This should reflect how you <em>plan for or expect</em> <%= Basics_Tech_Name %> to be used. You will have an opportunity to document and explain any implementation issues or deviations from this plan later on in your evaluation.
-                                    </p>
-                                </div>
-                                <div class="step-action">
-
-                                    <textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea>
-                                </div>
 
                                 <div class="step-subquestion">
                                     <h4>What guidelines, if any, does the developer provide regarding how <%= Basics_Tech_Name %> should be used or implemented:</h4>
@@ -253,224 +249,41 @@
 
                                     <textarea name="Developer_Guidelines" id="Developer_Guidelines" placeholder="Ex., the developer recommends students spend 90 minutes per week using eZumi Learning."><%= eval.planContext.Developer_Guidelines %></textarea>
                                 </div>
-
-
-                                <div class="step-subquestion">
-                                    <h4>How <%= Verb2 %> <%= Basics_Tech_Name %> <span data-toggle="tooltip" title="Individually means that students work independently with the technology or one-on-one with a teacher, parent, or other service provider. Small group means students work with the technology in small groups of two or more students. Whole class means the technology is delivered to an entire class a majority of the time. With a whole school method, the technology is provided school-wide, not as an individual classroom approach." class='tooltip-gr'>delivered</span> to <%= Basics_Users %> for your evaluation?</h4>
-                                </div>
-                        <div class="step-action context-tag">
-                            <p><em>Select all that apply.</em></p>
-                            <%
-                            var breaks = [4,9];
-                            var options= ["Individually","In small groups","To whole classes","School wide"];
-                            var selected =[eval.planContext.Delivered_Individually,
-                            eval.planContext.Delivered_Small_Group,
-                            eval.planContext.Delivered_Whole_Class,
-                            eval.planContext.Delivered_School_Wide]
-                            var names =["Delivered_Individually","Delivered_Small_Group","Delivered_Whole_Class","Delivered_School_Wide"]
-
-                            var checked = "unchecked";
-
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            checked = ( selected[i] == options[i] ) ? "checked" : "";
-                            var cbid = names[i];
-                            var cbvalue = options[i];
-                            var brk = "";
-                            for ( var j = 0; j < breaks.length; j++ )
-                            {
-                            if (i==1) brk = "<br/>" ;
-                            }
-                            %>
-
-                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                            <label for="<%= cbid %>">
-                                <%= cbvalue %>
-
-                            </label><%- brk %>
-                            <%
-                            }
-                            %>
-
-                        </div>
-                                <div class="clearfix"></div>
-                                <div class="step-subquestion">
-                                    <h4>With what grade level(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used for your evaluation?</h4>
-                                </div>
-                        <div class="step-action context-tag">
-                            <p><em>Select all that apply.</em></p>
-                            <%
-                            var breaks = [4,9];
-                            var options= ["PK", "K", "1", "2","3","4","5","6","7","8","9","10","11","12","PS"];
-                            var selected =eval.planContext.Grades;
-                            var names =["Grade_PK", "Grade_K", "Grade_1","Grade_2","Grade_3","Grade_4","Grade_5", "Grade_6","Grade_7","Grade_8","Grade_9","Grade_10","Grade_11","Grade_12","Grade_PS"
-                            ];
-
-                            var checked = "unchecked";
-
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            checked = selected.includes(options[i]) ? "checked" : "";
-                            var cbid = names[i];
-                            var cbvalue = options[i];
-                            var brk = "";
-                            for ( var j = 0; j < breaks.length; j++ )
-                            {
-                            if (i==breaks[j]) brk = "<br/>" ;
-                            }
-                            %>
-
-                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                            <label class="cb-small" for="<%= cbid %>">
-                                <%= cbvalue %>
-
-                            </label><%- brk %>
-                            <%
-                            }
-                            %>
-                        </div>
-                                <div class="clearfix"></div>
-
-
-                                <div class="step-subquestion">
-                                    <h4>For your evaluation, in what type(s) of classroom(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used? </h4>
-                                </div>
-                        <div class="step-action context-tag">
-                            <p><em>Select all that apply.</em></p>
-                            <%
-                            var options= ["General", "Inclusion"];
-                            var selected =[eval.planContext.ClassroomType_General,
-                            eval.planContext.ClassroomType_Inclusion
-                            ];
-                            var names =["ClassroomType_General", "ClassroomType_Inclusion"];
-
-                            var checked = "unchecked";
-
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            checked = ( selected[i] == options[i] ) ? "checked" : "";
-                            var cbid = names[i];
-                            var cbvalue = options[i];
-                            %>
-
-                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
-                            <label for="<%= cbid %>">
-                                <%= cbvalue %>
-
-                            </label>
-                            <%
-                            }
-                            %>
-                        </div>
-                                <div class="clearfix"></div>
-
-                            <div class="step-subquestion">
-                                <h4>What is the outcome you hope to change by using <%= Basics_Tech_Name %>? </h4>
                             </div>
-
-                        <div class="step-action">
-                                <select required name="Basics_Outcome" id="Basics_Outcome">
-                                    <%
-                                    var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
-                                    for ( var i = 0; i < options.length; i++ )
-                                    {
-                                    var selected;
-                                    if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
-
-
-                                    %>
-                                    <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
-                                    }
-                                    %>
-
-                                </select>
-                            <div id="Question_Outcome_Other" hidden="true">
-                                <p>
-                                    <label for="Basics_Outcome_Other">Please specify:</label>
-
-                                    <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>"/>
-                                </p>
-                            </div>
-                            <% if (user != "NOAUTHENTICATED") {%>
-                            <p class="prev-answer">
-                                <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
-                            </p>
-                            <% } %>
-                            </div>
-
-                            <div class="step-subquestion">
-                                <h4>You indicated your evaluation would be measuring <span class="eval-outcome"><%= Basics_Outcome %></span> outcomes. More specifically, in which of the following outcome areas will you be looking for differences between users and non-users of <%= Basics_Tech_Name %>? </h4>
-                            </div>
-                        <div class="step-action context-tag">
-                            <p><em>Select all that apply.</em></p>
-                            <%
-                            var taller=[4,5]
-                            var options= ["Literacy", "Mathematics", "Science","Behavior","Teacher Excellence", "Path to Graduation"];
-                            var tips = ["Reading, writing, language development","","","Behavior, emotional/internal behavior, external behavior, knowledge, attitudes and values, social-emotional development, social outcomes","Teacher retention at the school, teacher retention in the profession, teacher retention in the school district","Access and enrollment, attainment, Completing school, credit accumulation and persistence, progress in developmental education, progressing in school, staying in school" ]
-                            var selected =eval.planContext.Outcomes;
-                            var names =["Outcome_Literacy", "Outcome_Mathematics", "Outcome_Science","Outcome_Behavior","Outcome_Teacher_Excellence", "Outcome_Graduation"];
-
-                            var checked = "unchecked";
-
-                            for ( var i = 0; i < options.length; i++ )
-                            {
-                            checked = selected.includes(options[i]) ? "checked" : "";
-                            var cbid = names[i];
-                            var cbvalue = options[i];
-                            var tallclass="";
-                            var addtip = tips[i] != "" ? "<span data-toggle='tooltip' title='" + tips[i] + "' class='tooltip-gr'><i class='fa fa-question-circle'></i></span>" : "" ;
-                            for ( var j=0; j < taller.length; j++ )
-                            {
-                            if (i==taller[j]) tallclass= "class='tall-box'" ;
-                            }
-                            %>
-
-                            <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
-                            <label for="<%= cbid %>" <%- tallclass %>>
-                            <%= cbvalue %> <%- addtip %>
-
-                            </label>
-                            <%
-                            }
-                            %>
-                        </div>
-                            <div class="clearfix"></div>
-
-                        </div>
-                 
-                        <div class="col-xs-5">
+                            <div class="col-xs-5">
                                 <div class="step-to-consider">
-                                    <div class="panel-group" id="ttc1">
+                                    <div class="panel-group" id="ttc2">
                                         <div class="panel panel-default">
                                             <div class="panel-heading accordion-toggle">
                                                 <h3 class="panel-title sec-label clickable">
-                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                    
+                                                    <a data-toggle="collapse" data-parent="#ttc2" href="#consider2"><i class="fa fa-caret-down" aria-hidden="false"></i>
                                                         Things to Consider
                                                     </a>
                                                 </h3>
                                             </div>
-                                            <div id="consider1" class="panel-collapse collapse in">
+                                            <div id="consider2" class="panel-collapse  in">
                                                 <p>To answer these questions, you may want to draw from the instructions or training provided by the product developer. </p>
-                                                <p>You can always modify this later. If you don&rsquo;t know the answer to a question, you may want to write something like &ldquo;ASK STEVE ABOUT THIS&rdquo; as a place holder.
-                                                <p>See the example to see how these responses will appear in your findings brief. Be sure not to include any Personally Identifiable Information, like student or teacher names. </p>
+                                                <p>You can always modify this later. If you don&rsquo;t know the answer to a question, you may want to write something like &ldquo;ASK STEVE ABOUT THIS&rdquo; as a place holder.</p>
+                                             
+                                              
                                             </div>
                                         </div>
                                         <div class="panel panel-default">
                                             <div class="panel-heading accordion-toggle">
                                                 <h3 class="panel-title sec-label clickable">
-                                                    <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#example1">
+                                                    
+                                                    <a data-toggle="collapse" data-parent="#ttc2" href="#example2"><i class="fa fa-caret-right" aria-hidden="true"></i>
                                                         Example
                                                     </a>
                                                 </h3>
                                             </div>
-                                            <div id="example1" class="panel-collapse collapse">
+                                            <div id="example2" class="panel-collapse ">
 
                                                 <ul>
                                                     <li>TrueStar Reading is software designed to improve reading achievement among under-performing students.</li>
                                                     <li>TrueStar Reading offers personalized lessons and reading content based on reading level.</li>
-                                                    <li>Students were meant to use TrueStar Reading individually during class time for 90 minutes per week.</li>
+                                                   
                                                     <li>The developer recommends using TrueStar reading for at least 1 hour per week for at least 16 weeks.</li>
                                                 </ul>
 
@@ -481,136 +294,408 @@
 
                             </div>
                         </div>
-                        <div class="step-header container">
-                            <div data-toggle="collapse" data-target="#C">
-                                <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> What is the educational setting?
-                                </h2>
-                                <p>We want to collect some information about your evaluation and its participants. As we gather results from many evaluations, we&rsquo;ll use this information to sort and filter similar studies from similar settings, so that we can help you learn from other users and help other users learn from your experience. Answer as many of the questions as you can.</p>
-                            </div>
-                        </div>
 
-                        <div id="C" class="row collapse in q-row">
-                            <div class="col-xs-7">
+                            <div class="step-header container">
 
-                            <div class="step-subquestion">
-                                <h3>Tell us about your school district.</h3>
-                                <h4>What type(s) of school(s) are involved in the evaluation? </h4>
-                                
-                            </div>
+                                <div data-toggle="collapse" data-target="#F">
+                                    <h2 class="clickable">
 
+                                        <i class="fa fa-caret-down" aria-hidden="false"></i> How is <%= Basics_Tech_Name %> being used in your evaluation?
 
-                            <div class="step-action context-tag">
-                                <p>
-                                    <em>Select all that apply.</em>
-                                </p>
-                                <%
-                                var options= ["Charter", "Private", "Parochial", "Public"];
-                                var breaks = 1;
-                                var selected =[eval.planContext.SchoolType_Charter,
-                                eval.planContext.SchoolType_Private, eval.planContext.SchoolType_Parochial, eval.planContext.SchoolType_Public
-                                ];
-                                var names =["SchoolType_Charter", "SchoolType_Private", "SchoolType_Parochial", "SchoolType_Public"];
-
-                                var checked = "unchecked";
-
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                var cbid = names[i];
-                                var cbvalue = options[i];
-                                var brk = "";
-                                if(i == breaks) brk="<br/>";
-                                %>
-
-                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
-                                <label for="<%= cbid %>">
-                                    <%= cbvalue %>
-
-                                </label><%- brk %>
-                                <%
-                                }
-                                %>
-                            </div>
-                                <div class="clearfix"></div>
-                                <div class="step-subquestion">
-                                    <h4>
-                                        <label for="Total_Students">Approximately how many students are there in the district? </label>
-                                    </h4>
+                                    </h2>
                                 </div>
-
-
-                                <div class="step-action">
-                                    <input type="text" name='Total_Students' id="Total_Students" value="<%= eval.planContext.Total_Students %>" class="num-input"/>
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4>What is the geographical setting of your school district? </h4>
-                                </div>
-
-
-                            <div class="step-action context-tag">
-                                <p>
-                                    <em>Select all that apply.</em>
-                                </p>
-                                <%
-                                var options= ["Rural", "Suburban", "Urban"];
-                                var selected =[eval.planContext.Urbanicity_Rural,
-                                eval.planContext.Urbanicity_Suburban, eval.planContext.Urbanicity_Urban
-                                ];
-                                var names =["Urbanicity_Rural", "Urbanicity_Suburban", "Urbanicity_Urban"];
-
-                                var checked = "unchecked";
-
-                                for ( var i = 0; i < options.length; i++ )
-                                {
-                                checked = ( selected[i] == options[i] ) ? "checked" : "";
-                                var cbid = names[i];
-                                var cbvalue = options[i];
-                                %>
-
-                                <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>"  <%- checked %> />
-                                <label for="<%= cbid %>">
-                                    <%= cbvalue %>
-
-                                </label>
-                                <%
-                                }
-                                %>
                             </div>
-                                <div class="clearfix"></div>
-                                <div class="step-subquestion">
-                                    <h4>Where is your school district located? </h4>
-                                </div>
+                            <div id="F" class="row collapse in q-row">
+                                <div class="col-xs-7">
+
+                                    <div class="step-subquestion">
+                                        <h4>How often and for how long are <%= Basics_Users %> supposed to be using <%= Basics_Tech_Name %> for your evaluation?</h4>
+                                        <p>
+                                            This should reflect how you <em>plan for or expect</em> <%= Basics_Tech_Name %> to be used. 
+                                        </p>
+                                    </div>
+                                    <div class="step-action">
+
+                                        <p><em class="capitalize-one"><%= Basics_Users %> are using <%= Basics_Tech_Name %>&hellip;</em>
+                                        </p> <textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea>
+                                        <hr/>
+                                    </div>
 
 
-                                <div class="step-action context-tag">
-                                  
-                                    <select required name="District_State" id="District_State">
+                                    <div class="step-subquestion">
+                                        <h4>How <%= Verb2 %> <%= Basics_Tech_Name %> <span data-toggle="tooltip" title="Individually means that students work independently with the technology or one-on-one with a teacher, parent, or other service provider. Small group means students work with the technology in small groups of two or more students. Whole class means the technology is delivered to an entire class a majority of the time. With a whole school method, the technology is provided school-wide, not as an individual classroom approach." class='tooltip-gr'>delivered</span> to <%= Basics_Users %> for your evaluation?</h4>
+                                    </div>
+                                    <div class="step-action context-tag">
+                                        <p><em>Select all that apply.</em></p>
                                         <%
-                                        var values = ["", 'AK','AL','AR','AZ','CA','CO','CT','DC','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'];
-                                        var options = ["Select a state",'Alaska','Alabama','Arkansas','Arizona','California','Colorado','Connecticut','District of Columbia','Delaware','Florida','Georgia','Hawaii','Iowa','Idaho','Illinois','Indiana','Kansas','Kentucky','Louisiana','Massachusetts','Maryland','Maine','Michigan','Minnesota','Missouri','Mississippi','Montana','North Carolina','North Dakota','Nebraska','New Hampshire','New Jersey','New Mexico','Nevada','New York','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Virginia','Vermont','Washington','Wisconsin','West Virginia','Wyoming']
+                                        var breaks = [4,9];
+                                        var options= ["Individually","In small groups","To whole classes","School wide"];
+                                        var selected =[eval.planContext.Delivered_Individually,
+                                        eval.planContext.Delivered_Small_Group,
+                                        eval.planContext.Delivered_Whole_Class,
+                                        eval.planContext.Delivered_School_Wide]
+                                        var names =["Delivered_Individually","Delivered_Small_Group","Delivered_Whole_Class","Delivered_School_Wide"]
+
+                                        var checked = "unchecked";
 
                                         for ( var i = 0; i < options.length; i++ )
                                         {
-                                     
-                                        var selected = ( eval.planContext.District_State == values[i] ) ? "selected" : "";
-
-                                        %>
-                                        <option value="<%=values[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                        checked = ( selected[i] == options[i] ) ? "checked" : "";
+                                        var cbid = names[i];
+                                        var cbvalue = options[i];
+                                        var brk = "";
+                                        for ( var j = 0; j < breaks.length; j++ )
+                                        {
+                                        if (i==1) brk = "<br />" ;
                                         }
                                         %>
 
-                                    </select>
+                                        <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
+                                        <label for="<%= cbid %>">
+                                            <%= cbvalue %>
+
+                                        </label><%- brk %>
+                                        <%
+                                        }
+                                        %>
+                                        <hr />
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="step-subquestion">
+                                        <h4>With what grade level(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used for your evaluation?</h4>
+                                    </div>
+                                    <div class="step-action context-tag">
+                                        <p><em>Select all that apply.</em></p>
+                                        <%
+                                        var breaks = [4,9];
+                                        var options= ["PK", "K", "1", "2","3","4","5","6","7","8","9","10","11","12","PS"];
+                                        var selected =eval.planContext.Grades;
+                                        var names =["Grade_PK", "Grade_K", "Grade_1","Grade_2","Grade_3","Grade_4","Grade_5", "Grade_6","Grade_7","Grade_8","Grade_9","Grade_10","Grade_11","Grade_12","Grade_PS"
+                                        ];
+                                        
+
+                                        var checked = "unchecked";
+
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        checked = selected.includes(options[i]) ? "checked" : "";
+                                        var cbid = names[i];
+                                        var cbvalue = options[i];
+                                        var brk = "";
+                                        for ( var j = 0; j < breaks.length; j++ )
+                                        {
+                                        if (i==breaks[j]) brk = "<br />" ;
+                                        }
+                                        %>
+
+                                        <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
+                                        <label class="cb-small" for="<%= cbid %>">
+                                            <%= cbvalue %>
+
+                                        </label><%- brk %>
+                                        <%
+                                        }
+                                        %>
+                                        <hr />
+                                    </div>
+                                    <div class="clearfix"></div>
+
+
+                                    <div class="step-subquestion">
+                                        <h4>For your evaluation, in what type(s) of classroom(s) <%= Verb2 %> <%= Basics_Tech_Name %> being used? </h4>
+                                    </div>
+                                    <div class="step-action context-tag">
+                                        <p><em>Select all that apply.</em></p>
+                                        <%
+                                        var options= ["General", "Inclusion"];
+                                        var selected =[eval.planContext.ClassroomType_General,
+                                        eval.planContext.ClassroomType_Inclusion
+                                        ];
+                                        var names =["ClassroomType_General", "ClassroomType_Inclusion"];
+
+                                        var checked = "unchecked";
+
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        checked = ( selected[i] == options[i] ) ? "checked" : "";
+                                        var cbid = names[i];
+                                        var cbvalue = options[i];
+                                        %>
+
+                                        <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
+                                        <label for="<%= cbid %>">
+                                            <%= cbvalue %>
+
+                                        </label>
+                                        <%
+                                        }
+                                        %>
+                                        <hr />
+                                    </div>
+                                    <div class="clearfix"></div>
+
+                                    <div class="step-subquestion">
+                                        <h4>What is the outcome you hope to change by using <%= Basics_Tech_Name %>? </h4>
+                                    </div>
+
+                                    <div class="step-action">
+                                        <select required name="Basics_Outcome" id="Basics_Outcome">
+                                            <%
+                                            var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+                                            var selected;
+                                            if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
+
+
+                                            %>
+                                            <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                            }
+                                            %>
+
+                                        </select>
+                                        <div id="Question_Outcome_Other" hidden="true">
+                                            <p>
+                                                <label for="Basics_Outcome_Other">Please specify:</label>
+
+                                                <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
+                                            </p>
+                                        </div>
+                                        <% if (user != "NOAUTHENTICATED") {%>
+                                        <p class="prev-answer">
+                                            <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
+                                        </p>
+                                        <% } %>
+                                        <hr />
+                                    </div>
+
+                                    <div class="step-subquestion">
+                                        <h4>You indicated your evaluation would be measuring <span class="eval-outcome"><%= Basics_Outcome %></span> outcomes. More specifically, in which of the following outcome areas will you be looking for differences between users and non-users of <%= Basics_Tech_Name %>? </h4>
+                                    </div>
+                                    <div class="step-action context-tag">
+                                        <p><em>Select all that apply.</em></p>
+                                        <%
+                                        var taller=[4,5]
+                                        var options= ["Literacy", "Mathematics", "Science","Behavior","Teacher Excellence", "Path to Graduation"];
+                                        var tips = ["Reading, writing, language development","","","Behavior, emotional/internal behavior, external behavior, knowledge, attitudes and values, social-emotional development, social outcomes","Teacher retention at the school, teacher retention in the profession, teacher retention in the school district","Access and enrollment, attainment, Completing school, credit accumulation and persistence, progress in developmental education, progressing in school, staying in school" ]
+                                        var selected =eval.planContext.Outcomes;
+                                        var names =["Outcome_Literacy", "Outcome_Mathematics", "Outcome_Science","Outcome_Behavior","Outcome_Teacher_Excellence", "Outcome_Graduation"];
+
+                                        var checked = "unchecked";
+
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        checked = selected.includes(options[i]) ? "checked" : "";
+                                        var cbid = names[i];
+                                        var cbvalue = options[i];
+                                        var tallclass="";
+                                        var addtip = tips[i] != "" ? "<span data-toggle='tooltip' title='" + tips[i] + "' class='tooltip-gr'><i class='fa fa-question-circle'></i></span>" : "" ;
+                                        for ( var j=0; j < taller.length; j++ )
+                                        {
+                                        if (i==taller[j]) tallclass= "class='tall-box'" ;
+                                        }
+                                        %>
+
+                                        <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
+                                        <label for="<%= cbid %>" <%- tallclass %>>
+                            <%= cbvalue %> <%- addtip %>
+
+                            </label>
+                                        <%
+                                        }
+                                        %>
+                                        
+                                    </div>
+                                    <div class="clearfix"></div>
+
                                 </div>
 
+                                <div class="col-xs-5">
+                                    <div class="step-to-consider">
+                                        <div class="panel-group" id="ttc3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading accordion-toggle">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        
+                                                        <a data-toggle="collapse" data-parent="#ttc3" href="#consider3"><i class="fa fa-caret-down" aria-hidden="false"></i>
+                                                            Things to Consider
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="consider3" class="panel-collapse collapse in">
+                                                    <p>Your answers here should reflect how you plan to implement <%= Basics_Tech_Name %>.
+                                                        You will have an opportunity to document and explain any implementation issues or deviations from this plan later on in your evaluation.
+                                                    </p>
+                                                    
+                                                    <p>You can always modify your answers here later. If a question does not apply to your evaluation, you can skip it.</p>
+                                                    <p>Be sure not to include any personally identifiable information (PII), like student or teacher names. </p>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading accordion-toggle">
+                                                    <h3 class="panel-title sec-label clickable">
+                                                        
+                                                        <a data-toggle="collapse" data-parent="#ttc3" href="#example3"><i class="fa fa-caret-right" aria-hidden="true"></i>
+                                                            Example
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="example3" class="panel-collapse collapse">
 
+                                                    <ul>
+                                                        
+                                                        <li>Students were meant to use TrueStar Reading individually during class time for 90 minutes per week.</li>
+                                                        
+                                                    </ul>
 
-                            <div class="step-subquestion">
-                                <h3 class="clickable">
-                                    Tell us about the students envolved in your evaluation.
-                                </h3>
-                                <h4>What is the racial composition of the students envolved in your evaluation?</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
+        
+                                    <div class="step-header container">
+                                <div data-toggle="collapse" data-target="#C">
+                                    <h2 class="clickable">
+                                        <i class="fa fa-caret-down" aria-hidden="false"></i>Tell us about your school district.
+                                    </h2>
+
+                                </div>
+                            </div>
+
+                            <div id="C" class="row collapse in q-row">
+                                <div class="col-xs-10">
+
+                                    <div class="step-subquestion">
+
+                                        <h4>What type(s) of school(s) are involved in the evaluation? </h4>
+
+                                    </div>
+
+
+                                    <div class="step-action context-tag">
+                                        <p>
+                                            <em>Select all that apply.</em>
+                                        </p>
+                                        <%
+                                        var options= ["Charter", "Private", "Parochial", "Public"];
+                                        var breaks = 1;
+                                        var selected =[eval.planContext.SchoolType_Charter,
+                                        eval.planContext.SchoolType_Private, eval.planContext.SchoolType_Parochial, eval.planContext.SchoolType_Public
+                                        ];
+                                        var names =["SchoolType_Charter", "SchoolType_Private", "SchoolType_Parochial", "SchoolType_Public"];
+
+                                        var checked = "unchecked";
+
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        checked = ( selected[i] == options[i] ) ? "checked" : "";
+                                        var cbid = names[i];
+                                        var cbvalue = options[i];
+                                        var brk = "";
+                                        if(i == breaks) brk="<br />";
+                                        %>
+
+                                        <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
+                                        <label for="<%= cbid %>">
+                                            <%= cbvalue %>
+
+                                        </label><%- brk %>
+                                        <%
+                                        }
+                                        %>
+                                        <hr/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="step-subquestion">
+                                        <h4>
+                                            <label for="Total_Students">Approximately how many students are there in the district? </label>
+                                        </h4>
+                                    </div>
+
+
+                                    <div class="step-action context-tag">
+                                        <input type="text" name='Total_Students' id="Total_Students" value="<%= eval.planContext.Total_Students %>" class="num-input"/>
+                                        <hr />
+                                    </div>
+                                    <div class="step-subquestion">
+                                        <h4>What is the geographical setting of your school district? </h4>
+                                    </div>
+
+
+                                    <div class="step-action context-tag">
+                                        <p>
+                                            <em>Select all that apply.</em>
+                                        </p>
+                                        <%
+                                        var options= ["Rural", "Suburban", "Urban"];
+                                        var selected =[eval.planContext.Urbanicity_Rural,
+                                        eval.planContext.Urbanicity_Suburban, eval.planContext.Urbanicity_Urban
+                                        ];
+                                        var names =["Urbanicity_Rural", "Urbanicity_Suburban", "Urbanicity_Urban"];
+
+                                        var checked = "unchecked";
+
+                                        for ( var i = 0; i < options.length; i++ )
+                                        {
+                                        checked = ( selected[i] == options[i] ) ? "checked" : "";
+                                        var cbid = names[i];
+                                        var cbvalue = options[i];
+                                        %>
+
+                                        <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
+                                        <label for="<%= cbid %>">
+                                            <%= cbvalue %>
+
+                                        </label>
+                                        <%
+                                        }
+                                        %>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="step-subquestion">
+                                        <h4>Where is your school district located? </h4>
+                                    </div>
+
+
+                                    <div class="step-action context-tag">
+
+                                        <select required name="District_State" id="District_State">
+                                            <%
+                                            var values = ["", 'AK','AL','AR','AZ','CA','CO','CT','DC','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'];
+                                            var options = ["Select a state",'Alaska','Alabama','Arkansas','Arizona','California','Colorado','Connecticut','District of Columbia','Delaware','Florida','Georgia','Hawaii','Iowa','Idaho','Illinois','Indiana','Kansas','Kentucky','Louisiana','Massachusetts','Maryland','Maine','Michigan','Minnesota','Missouri','Mississippi','Montana','North Carolina','North Dakota','Nebraska','New Hampshire','New Jersey','New Mexico','Nevada','New York','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Virginia','Vermont','Washington','Wisconsin','West Virginia','Wyoming']
+
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+
+                                            var selected = ( eval.planContext.District_State == values[i] ) ? "selected" : "";
+
+                                            %>
+                                            <option value="<%=values[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                            }
+                                            %>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#D">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>Tell us about the students in your district.
+                                </h2>
+
+                            </div>
+                        </div>
+
+                        <div id="D" class="row collapse in q-row">
+                            <div class="col-xs-12">
+                                <div class="step-subquestion">
+                                    <h4>What is the racial composition of the students in your district?</h4>
+                                </div>
                                 <div class="step-action context-tag">
                                     <div class="col-xs-6">
                                         <%
@@ -631,8 +716,9 @@
                                         var cbid = names[i];
                                         var cbvalue = values[i];
                                         if(i === 2) {
-                                             midbreak = "</div><div class='col-xs-6'>";
+                                        midbreak = "</div><div class='col-xs-6'>";
                                         }
+
                                         %>
 
                                         <input type="text" id="<%= cbid %>" name="<%= cbid %>" class="per-input" value="<%= cbvalue %>" />%&nbsp;<label for="<%= cbid %>">
@@ -648,7 +734,7 @@
 
 
                                 <div class="step-subquestion">
-                                    <h4>What is the ethnic composition of the students envolved in your evaluation?</h4>
+                                    <h4>What is the ethnic composition of the students in your district?</h4>
                                 </div>
                                 <div class="step-action context-tag">
                                     <%
@@ -658,11 +744,11 @@
                                     ];
                                     var names =["Ethnicity_Hispanic", "Ethnicity_Not_Hispanic"];
 
-                                    
+
 
                                     for ( var i = 0; i < labels.length; i++ )
                                     {
-                                 
+
                                     var cbid = names[i];
                                     var cbvalue = values[i];
                                     var cblabel = labels[i];
@@ -679,7 +765,7 @@
                                 <div class="clearfix"></div>
 
                                 <div class="step-subquestion">
-                                    <h4>What is the gender composition of your students envolved in your evaluation?</h4>
+                                    <h4>What is the gender composition of your students in your district?</h4>
                                 </div>
                                 <div class="step-action context-tag">
                                     <%
@@ -689,11 +775,9 @@
                                     ];
                                     var names =["Gender_Female", "Gender_Male"];
 
-                                 
-
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    
+
                                     var cbid = names[i];
                                     var cbvalue = values[i];
                                     var cblabel = labels[i];
@@ -711,7 +795,7 @@
 
 
                                 <div class="step-subquestion">
-                                    <h4>How many students envolved in your evaluation receive free or reduced price lunch?</h4>
+                                    <h4>How many students in your district receive free or reduced price lunch?</h4>
                                 </div>
                                 <div class="step-action context-tag">
                                     <%
@@ -721,11 +805,11 @@
                                     ];
                                     var names =["FRPL_Free", "FRPL_Reduced"];
 
-                                 
+
 
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                   
+
                                     var cbid = names[i];
                                     var cbvalue = values[i];
                                     var cblabel = labels[i];
@@ -734,7 +818,7 @@
                                     <input type="text" id="<%= cbid %>" name="<%= cbid %>" class="per-input" value="<%= cbvalue %>" />%&nbsp;<label for="<%= cbid %>">
                                         <%= cblabel %>
 
-                                    </label><br/>
+                                    </label><br />
                                     <%
                                     }
                                     %>
@@ -743,7 +827,7 @@
 
 
                                 <div class="step-subquestion">
-                                    <h4>How many students envolved in your evaluation are English Learners? </h4>
+                                    <h4>How many students in your district are English Learners? </h4>
                                 </div>
                                 <div class="step-action">
 
@@ -752,13 +836,31 @@
                                 </div>
 
                                 <div class="step-subquestion">
-                                    <h4>How many students envolved in your evaluation have Individualized Education Programs (IEPs)? </h4>
+                                    <h4>How many students in your district have Individualized Education Programs (IEPs)? </h4>
                                 </div>
                                 <div class="step-action">
 
                                     <input type="text" id="IEP" name="IEP" class="per-input" value="<%= eval.planContext.IEP %>" />%&nbsp;<label for="IEP">Students with IEPs</label>
 
                                 </div>
+
+                            
+                            </div>
+                        </div>
+
+                        <div class="step-header container">
+                            <div data-toggle="collapse" data-target="#E">
+                                <h2 class="clickable">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>Tell us about any other contextual considerations.
+                                </h2>
+
+                            </div>
+                        </div>
+
+                        <div id="E" class="row collapse in q-row">
+                            <div class="col-xs-7">
+
+
                                 <div class="step-subquestion">
                                     <h4>
                                         Are there any other contextual notes or are there other initiatives in your school(s) that are important when considering how <%= Basics_Tech_Name %> is used?
@@ -767,7 +869,7 @@
                                 <div class="step-action">
 
                                     <textarea name="Other_Notes" id="Other_Notes" rows="8" placeholder="Ex., Students had difficulty logging into their accounts for the first 2 weeks of class. About half the teachers got frustrated and used other products for the rest of the term."><%= eval.planContext.Other_Notes %></textarea>
-                            </div>
+                                </div>
 
                             </div>
 
@@ -788,21 +890,21 @@
                                                 <p>Some technologies work well in some settings and not so well in others. Include any additional features of the setting that you think might influence how well you would expect the technology to work. These might have to do with the available technology resources (e.g. computer labs, laptops for students, etc.), or the presence of other technology initiatives at schools. </p>
                                             </div>
                                         </div>
-                                      
+
                                     </div>
 
                                 </div>
                             </div>
                         </div>
 
-                    </div>
+                        </div>
 
                 </div>
             </div>
         </div>
-    <% include ../views/partials/toolButtons.html %>
-  
-</form>
+        <% include ../views/partials/toolButtons.html %>
+
+    </form>
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function () {
@@ -823,7 +925,7 @@
                 $(this).closest("label").toggleClass("onClass", this.checked);
             });
 
-           
+
 
 
 
