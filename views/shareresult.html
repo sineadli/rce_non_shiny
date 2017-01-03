@@ -137,16 +137,6 @@
                 line-height: 50px;
             }
 
-            @media screen {
-                [contenteditable=true] {
-                    text-decoration: underline;
-                }
-
-                a.data-link {
-                    color: #000000;
-                }
-            }
-                
             @media print {
 
                 body {
@@ -155,14 +145,6 @@
 
                 a {
                     color: #000000;
-                }
-
-                h2 a {
-                    color: #4f81bd;
-                }
-
-                .tooltip-gr {
-                    text-shadow: none;
                 }
 
                 #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
@@ -880,13 +862,6 @@
 
                 // Replace baseline var wordlists with new labels.
                 $("span.baseline-vars-wordlist").text(wordList(newLabels));
-            });
-
-            // Add tooltips.
-            $('.tooltip-gr').tooltip({
-                title: function () {
-                    return "You previously entered this value on " + $(this).attr('data-tool-name') + ". Click to visit the tool and revise your answer.";
-                }
             });
 
             // On textarea change on screen, update the p that will contain the text in the printed version.
