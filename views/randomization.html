@@ -515,10 +515,10 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                 //};
                 var interv_type = $("#intervention_type").val();
                 var interv_quantity = $("#intervention_quantity").val();
-                if ($("#intervention_type").val().toLowerCase() === "select an option") {
+                if (interv_type.toLowerCase() === "select an option") {
                     interv_type = 'percentage';
                 };
-                if ($("#intervention_quantity").val() === 0 ) {
+                if (interv_quantity === "0" || interv_quantity==="") {
                     interv_quantity = 50;
                 };
                 $("#s_unit_id").val(JSON.stringify($("#unit_id").val()));
@@ -527,9 +527,9 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                 //$("#s_block_id").val(JSON.stringify($("#block_id").val()));
            
                 //console.log( $("#chosenfile")[0].files[0]);
-                //console.log("unit_id: " + JSON.stringify($("#unit_id").val()));
-                //console.log("intervention_type: " +JSON.stringify( interv_type));
-                //console.log("intervention_quantity: " + JSON.stringify(interv_quantity));
+                console.log("unit_id: " + JSON.stringify($("#unit_id").val()));
+                console.log("intervention_type: " +JSON.stringify( interv_type));
+                console.log("intervention_quantity: " + JSON.stringify(interv_quantity));
                 //if (baseline_vars) console.log("baseline_vars: " + JSON.stringify(baseline_vars));
                 //if (block_id) console.log("block_id: " + JSON.stringify(block_id));
 
@@ -568,7 +568,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                     if (results_by_block.hasOwnProperty(key)) {
                                         var imgid = "plot" + key;
                                         var title = "";
-                                        if (block_id) {title=block_id + " = " +  key; }
+                                       // if (block_id) {title=block_id + " = " +  key; }
                                         var block_object = results_by_block[key];
                                         if (block_object.samples) {
                                             n_full_com = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
