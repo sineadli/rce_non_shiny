@@ -615,11 +615,14 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                 }
                                 $("#mresult").val(JSON.stringify(data));
                                 
-                                $("#downloadData")
-                                 .removeClass("disabled");
-                                $("#downloadData")
-                                  .attr("target", "_blank")
-                                  .attr("href", "https://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
+                                if (data.randomize_success[0]) {
+                                    $("#downloadData")
+                              .removeClass("disabled");
+                                    $("#downloadData")
+                                      .attr("target", "_blank")
+                                      .attr("href", "https://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
+                                }
+                             
                                 // Save results to database.
                             }
                         });
