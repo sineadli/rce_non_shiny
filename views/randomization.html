@@ -508,10 +508,11 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                 var pretest = $("#pretest").val()
                 var baseline_vars = $("#baseline_vars").val();
                 if (baseline_vars && pretest !== "None selected") baseline_vars.push($("#pretest").val());
-                var block_id = $("#block_id").val();
-                if ($("#block_id").val().toLowerCase() === "do not block") {
-                    block_id = '';
-                };
+                //var block_id = $("#block_id").val();
+                //alert(block_id);
+                //if ($("#block_id").val().toLowerCase() === "do not block") {
+                //    block_id = '';
+                //};
                 var interv_type = $("#intervention_type").val();
                 var interv_quantity = $("#intervention_quantity").val();
                 if ($("#intervention_type").val().toLowerCase() === "select an option") {
@@ -523,7 +524,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                 $("#s_unit_id").val(JSON.stringify($("#unit_id").val()));
                 $("#s_pretest").val(JSON.stringify($("#pretest").val()));
                 $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
-                $("#s_block_id").val(JSON.stringify($("#block_id").val()));
+                //$("#s_block_id").val(JSON.stringify($("#block_id").val()));
            
                 //console.log( $("#chosenfile")[0].files[0]);
                 //console.log("unit_id: " + JSON.stringify($("#unit_id").val()));
@@ -537,7 +538,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                 formData.append("intervention_type", JSON.stringify(interv_type));
                 formData.append("intervention_quantity", JSON.stringify(interv_quantity));
                 if(baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
-                if (block_id) formData.append("block_id", JSON.stringify(block_id));
+               // if (block_id) formData.append("block_id", JSON.stringify(block_id));
          
                 $.ajax({
                     url: "https://52.222.20.48/ocpu/library/edtechrce/R/randomize",
