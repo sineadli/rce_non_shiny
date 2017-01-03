@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<html lang="en">
+<head>
+    <title>Working with Ed Tech Providers</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="".../main.css" />-->
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+    <script src="/static/js/jquery.feedback_me.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+    <% if (user != "NOAUTHENTICATED") { %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
+    </ol>
+    <% if (message.length>0) { %>
+    <div class="alert alert-success"><%= message %></div>
+    <% }} %>
+
+    <form action="/working_with_provider" method="post" novalidate>
+        <% if (user != "NOAUTHENTICATED") { %>
+        <% include ../views/partials/toolHeader.html %>
+        <% } %>
+
+        <%
+        var Basics_Users_Others = eval.basics.Basics_Users_Others;
+        var Basics_Users = eval.basics.Basics_Users;
+        if (Basics_Users === "") {Basics_Users = "users";}
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        var Basics_Tech_Name = eval.basics.Basics_Tech_Name
+
+        %>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-top">
+                        <div class="dl-guide">
+
+                        </div>
+
+                        <div class="tool-header">
+                            <h1 class="tool-title "> Working with your Ed Tech Provider </h1>
+
+                            <div class="tool-intro">
+                                <p>
+                                    Working with your educational technology provider can be crucial for getting the information you need for a successful evaluation. Providers can be useful at multiple stages throughout the process, from helping you understand best practices for implementation to getting you the usage data you need to understand who is using your technology and how. This tool will help you start a productive conversation with your provider.
+
+                                </p>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="tool-questions">
+
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#D">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> Why work with providers?
+                            </h2>
+                        </div>
+
+                    </div>
+                    <div id="D" class="row  collapse in q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+
+                                Working with educational technology providers is a good way to: <br />
+                                <ul>
+                                    <li>Learn about the education technology product </li>
+                                    <li>Learn how the product is being used in the school / district </li>
+                                    <li>Learn about embedded assessments within the educational technology product </li>
+                                    <li>Determine what data reports are available </li>
+                                    <li>Identify appropriate external outcomes to be measured for your evaluation </li>
+
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+                                <div class="panel-group" id="ttc4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                                <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider4" class="panel-collapse collapse in">
+                                            Consider inviting the following staff members to participate in this conversation:<br />
+                                            <ul>
+                                                <li>Curriculum coordinator</li>
+                                                <li>Data analyst</li>
+                                                <li>Procurement staff member</li>
+                                                <li>IT staff member</li>
+                                                <li>Instructional staff member</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#E">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> How to get the most out of your conversation
+                            </h2>
+                        </div>
+
+                    </div>
+                    <div id="E" class="row  collapse in q-row">
+                        <div class="col-xs-12">
+                            <div class="step-subquestion">
+                                <p> The tools provided here will help you set up and structure your conversations with educational technology providers.</p>
+                                <ul>
+                                    <li>
+                                        <p>
+                                            <b>Guide to Usage Data:</b> Understanding the basics of usage data will be important for knowing what questions to ask. Reviewing this guide will help you to determine which questions to ask up front so you can get what you need from your provider early on.
+                                        </p>
+                                    </li>
+
+                                    <li>
+                                        <p>
+                                            <b>Sample Discussion Guide:</b> This document can help to organize your initial conversation with developers. Edit it to fit your needs, or tick off the topics you want to be sure to cover.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p> <b>Sample Email Message:</b> You can use the following as a template for contacting providers via email to set up a meeting. Make sure to change the unique fields and add any specific questions you have for your provider.</p>
+
+
+
+
+
+                                        <div class="boxed">
+                                            <p>
+                                                Dear <span class="insert-text">[Ed tech provider contact]</span>,<br />
+                                            </p>
+                                            <p><span class="insert-text">[Name of school/district]</span> is planning to conduct an evaluation of <span class="insert-text">[name of product]</span> use in our schools. As part of the planning for this evaluation, we would like to set up an introductory phone call between your company and district staff who are participating in the evaluation. The purpose of this call is to <span class="insert-text">[discuss how we can obtain usage data needed for the evaluation]</span>. It would be ideal to include people at <span class="insert-text">[company]</span> who are familiar with the implementation in our district and with the product's data reporting capabilities.</p>
+                                            <p>If you are not the right person at <span class="insert-text">[name of company]</span>, please forward this message to whomever you think would be best placed to speak with us about these topics. Also, kindly suggest some times that would work on your end for a phone call. We expect this will take about 60 minutes.</p>
+                                            <p>Thank you in advance for your cooperation!</p>
+                                            <p>
+                                                Regards,<br /><br /><span class="insert-text">[name, title and contact info]</span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <% include ../views/partials/toolButtons.html %>
+    </form>
+    <% include ../views/partials/footer.html %>
+</body>
+</html>

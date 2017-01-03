@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+
+
+<html lang="en">
+<head>
+    <title>The Basics</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+    <script src="/static/js/jquery.feedback_me.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+    <% if (user != "NOAUTHENTICATED") { %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
+    </ol>
+    <% if (message.length>0) { %>
+    <div class="alert alert-success"><%= message %></div>
+    <% }} %>
+
+    <form action="/who_and_how" method="post" novalidate>
+        <% if (user != "NOAUTHENTICATED") { %>
+        <% include ../views/partials/toolHeader.html %>
+        <% } %>
+        <%
+
+        var  Basics_Users_Others = eval.basics.Basics_Users_Others;
+        var Basics_Users = eval.basics.Basics_Users;
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        var Basics_Tech_Name = eval.basics.Basics_Tech_Name
+        if (Basics_Tech_Name === "") { Basics_Tech_Name = "your educational technology"; }
+
+        %>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="tool-top">
+                        <div class="dl-guide">
+                            <a onclick="window.open('/static/pdf/02.03a Determine your approach_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                        </div>
+                        <div class="tool-header">
+                            <h1 class="tool-title">Who Used Your Technology and How?</h1>
+
+
+                            <div class="tool-intro">
+                                <p>
+                                    Usage data (also called system or log data) is used to find out <b>who</b> is using education technology and <b>how</b>. This information can shed light on why a product is or isn’t having the desired effect. Download our in-depth guide for step-by-step instructions of making the most of your usage data.
+
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="tool-questions">
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#A">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                Why you should use usage data
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="A" class="row collapse in  q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <p>
+                                    Usage data can help you answer several questions about your educational technology.
+                                    If you’ve already implemented <%= Basics_Tech_Name %> you can examine how users are currently interacting with it before you even begin your evaluation.
+                                    If you are implementing <%= Basics_Tech_Name %> with new users, referring to usage data throughout your evaluation will help you make sure the technology is being implemented as expected, making it possible for you to correct any issues as they arise.
+                                </p>
+
+
+                                <h3>
+                                    Is the technology being used as expected?
+                                </h3>
+
+                                <p>If usage is very low, the technology may be unlikely to have an impact, and you may want to explore possible factors explaining patterns of use. </p>
+
+                                <table style="border: 1px solid black; border-collapse: collapse; width: 579px;">
+                                    <caption>Table 1. Basic usage data by student</caption>
+                                    <tr>
+                                        <td>
+                                            Student ID
+                                        </td>
+                                        <td>
+                                            Class ID
+                                        </td>
+                                        <td>
+                                            Total # of Sessions
+                                        </td>
+                                        <td>
+                                            Total # of Minutes
+                                        </td>
+                                        <td>
+                                            Average Minutes per Session
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12345
+                                        </td>
+                                        <td>
+                                            123
+                                        </td>
+                                        <td>
+                                            10
+                                        </td>
+                                        <td>
+                                            125
+                                        </td>
+                                        <td>
+                                            12.5
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12346
+                                        </td>
+                                        <td>
+                                            123
+                                        </td>
+                                        <td>
+                                            10
+                                        </td>
+                                        <td>
+                                            130
+                                        </td>
+                                        <td>
+                                            13.0
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12347
+                                        </td>
+                                        <td>
+                                            123
+                                        </td>
+                                        <td>
+                                            14
+                                        </td>
+                                        <td>
+                                            245
+                                        </td>
+                                        <td>
+                                            17.5
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12348
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            10
+                                        </td>
+                                        <td>
+                                            10.0
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12349
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            2
+                                        </td>
+                                        <td>
+                                            17
+                                        </td>
+                                        <td>
+                                            8.5
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12350
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            NA
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12351
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            7
+                                        </td>
+                                        <td>
+                                            7.0
+                                        </td>
+                                    </tr>
+                                </table>
+                                <h3>Who are the users?</h3>
+
+                                <p>If you&rsquo;ve already implemented your technology, usage data can give you a concrete sense of which individuals used the technology – this can be useful to define the sample of users – and non-users to compare them with – for your analysis.</p>
+
+
+
+                                <p>Usage data show that class 123 would be in the treatment group and class 450 would be in the control group</p>
+
+
+                                <table style="border: 1px solid black; border-collapse: collapse; width: 579px;">
+                                    <caption>Table 2. Basic usage data by student, version 2</caption>
+                                    <tr>
+                                        <td>
+
+                                            Student ID
+                                        </td>
+                                        <td>
+                                            Class ID
+                                        </td>
+                                        <td>
+                                            Total # of Sessions
+                                        </td>
+                                        <td>
+                                            Total # of Minutes
+                                        </td>
+                                        <td>
+                                            Average Minutes per Session
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12345
+                                        </td>
+                                        <td>
+                                            123
+                                        </td>
+                                        <td>
+                                            10
+                                        </td>
+                                        <td>
+                                            125
+                                        </td>
+                                        <td>
+                                            12.5
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12346
+                                        </td>
+                                        <td>
+                                            123
+                                        </td>
+                                        <td>
+                                            10
+                                        </td>
+                                        <td>
+                                            130
+                                        </td>
+                                        <td>
+                                            13.0
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12347
+                                        </td>
+                                        <td>
+                                            123
+                                        </td>
+                                        <td>
+                                            14
+                                        </td>
+                                        <td>
+                                            245
+                                        </td>
+                                        <td>
+                                            17.5
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12348
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12349
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12350
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            12351
+                                        </td>
+                                        <td>
+                                            450
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+
+
+                                <h3>
+                                    How is the technology being used?
+                                </h3>
+
+
+                                <p>How do users engage with the product (how much do they use the technology, patterns of usage over time, how they score on assessments embedded within the technology)? If you see patterns of low usage at specific points in time or within specific units of content, this may help identify factors that promote or prevent usage. Detailed information about usage can also help you understand your study’s main findings about the impact of the technology. </p>
+                                <p>
+                                    <strong>Chart 1. Number of students attempting and completing modules</strong>
+                                </p>
+                                <p>
+                                    <img src="/static/image/Chart1.png" alt="NumberOfStudents attempting modules" width="480" height="288">
+                                </p>
+                                <p>
+                                    Shows that student engagement with the system dropped rapidly after the first 2 modules
+                                </p>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#F">
+                            <h2 class="clickable">
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> How to obtain usage data
+                            </h2>
+                        </div>
+                    </div>
+                    <div id="F" class="row collapse in  q-row">
+                        <div class="col-xs-7">
+                            <div class="step-subquestion">
+                                <p>Some products enable you to download usage data reports directly from their websites. For other products, or if the report isn&rsquo;t what you need, you may need to contact the vendor. </p>
+
+                                <h3>Examples of data you might want to get:</h3>
+                                <div class="col-xs-12">
+
+                                    <div class="col-xs-4 tab-col">
+                                        <div class="fixed-col-head">
+                                            <h4>Usage by individual</h4>
+                                        </div>
+                                        <ul>
+                                            <li>Student unique ID</li>
+                                            <li>Class / instructor ID</li>
+                                            <li>Duration of usage</li>
+                                            <li>Number of sessions</li>
+                                            <li>Average score on assessments</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-4 tab-col">
+                                        <div class="fixed-col-head">
+                                            <h4 >Usage by course topic</h4>
+                                        </div>
+                                            <ul>
+                                                <li>Topic(s) covered in each module</li>
+                                                <li>Attempted modules (which modules a student started)</li>
+                                                <li>Completed modules</li>
+                                                <li>Scores on assessments for each module</li>
+                                            </ul>
+                                        </div>
+                                    <div class="col-xs-4 tab-col">
+                                        <div class="fixed-col-head">
+                                            <h4 >Usage over time</h4>
+                                        </div>
+                                            <ul>
+                                                <li>Duration of use by month</li>
+                                                <li>Number of sessions by month</li>
+                                                <li>Modules completed by month</li>
+                                            </ul>
+                                        </div>
+
+                                 
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <h3> Tips for getting useful usage data:</h3>
+                                <ul>
+                                    <li>Think about whether you want data for individual users, or grouped by class, teacher or school. </li>
+                                    <li>If you are evaluating impact on students, make sure usage data include unique student IDs that can be matched with administrative records.</li>
+                                    <li>Ask for the report to have one row per student (as opposed to multiple rows per student).</li>
+                                    <li>Ask for formats that allow data to be manipulated, such as Microsoft Excel or CSV files, not PDFs.</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="step-to-consider">
+
+                                <div class="panel-group" id="ttc5">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title sec-label clickable">
+                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                    Things to Consider
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="consider5" class="panel-collapse collapse in">
+
+                                            <p>Make sure your data does not reveal any personally identifiable information (i.e. information that would identify specific individuals) where it is not necessary.</p>
+                                            <h4>Some things to look for:</h4>
+                                            <ul>
+                                                <li>
+                                                    <p>Do some students or classes have little or no usage? </p>
+                                                <li>
+                                                    <p> How does actual usage compare to what the vendor says should happen?</p>
+                                                    <p>If the vendor says students should spend at least 90 minutes per week using the education technology, check to see how actual average weekly usage compares to this target.</p>
+                                                </li>
+                                                <li>
+                                                    <p>Are there signs that students are &ldquo;gaming the system&rdquo;?</p>
+                                                    <p>If students make repeated attempts at assessments without spending time in instructional content, they may be trying to click their way through rather than learning the material.</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+    <% include ../views/partials/footer.html %>
+    <script src='/static/js/custom.js'></script>
+
+
+</body>
+</html>

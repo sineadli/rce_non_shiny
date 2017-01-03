@@ -18,7 +18,7 @@
 </div>
 <div class="row">
     <div class="tool-row">
-        <% for (var i=0; i< tools.length; i++) {
+        <% var toolindropdown=[{}]; for (var i=0; i< tools.length; i++) {
         var divid = "ToolDiv-"+tools[i].step;
         var statusdivid = "StatusDiv" + tools[i].step;
         var tool =[], status = "NOT STARTED", d = "", btnText = "START";
@@ -41,7 +41,26 @@
         var buttondivid = tools[i].name;
    
         if (peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) {btnText="PEEK"; lock="locked"; }
-        if (tools[i].coachStep===4  ) {tooltip="Need to finish 'Determine Your Approach' first"; if ( tools[i].evalPath  &&  eval.path && tools[i].evalPath !== eval.path){tooltip="This tool is not available for the chosen " + eval.path;}}
+        if (tools[i].coachStep===4  ) {tooltip="Need to finish 'Determine Your Approach' first"; 
+            if ( tools[i].evalPath  &&  eval.path && tools[i].evalPath !== eval.path)
+                {tooltip="This tool is not available for the chosen " + eval.path; 
+                  var objTool ={};
+                  objTool.name = tools[i].name;
+                  objTool.path = tools[i].path + "?peeking=1"
+                 toolindropdown.push( objTool) ;
+                continue;}}
+        if (tools[i].coachStep===6) {
+        var toolsDepends = eval.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "summarize context" || x.name.toLowerCase() === "get results")})
+        if(!eval.path) {tooltip="Need to finish 'Determine Your Approach' first";btnText="PEEK"; lock="locked"; }
+        else {
+        if (!toolsDepends || toolsDepends.length < 2 ) {
+        tooltip="Need to finish 'Summarize Context' and 'Get Results'";btnText="PEEK"; lock="locked";
+        }
+
+        }
+     
+  
+        }
         %>
         <div class="col-xs-3">
 
@@ -93,6 +112,7 @@
                 </div>
             </div>
         </div>
+        
         <div>
             <input class="hidden" id="toolname" value="<%= tools[i].name  %>" />
             <input class="hidden" id="toolpath" value="<%= tools[i].path  %>" />
@@ -101,9 +121,24 @@
         </div>
         <% } %>
 
+
+        <% if (toolindropdown.length > 1) { console.log(toolindropdown);%>
+        <div class="col-xs-3 pull-right">
+            <p><strong>Tools un-available for chosen path:</strong></p>
+            <select id="toolsnotavailable">
+                <option value="">View un-available tools</option>
+                <% for ( var i = 1; i < toolindropdown.length; i++ )
+                {
+                %>
+                <option value="<%=toolindropdown[i].path %>"><%=toolindropdown[i].name %></option>
+                <%
+                }
+                %>
+            </select>
+        </div>
+        <%}%>
         <div style="clear: both; line-height: 0">&nbsp;</div>
-
-
+      
     </div>
 </div>
 <script>
@@ -155,7 +190,9 @@
 
         window.open($("#toolpath").val(), "_blank", "fullscreen=yes");
     });
-
+    $("#toolsnotavailable").change(function () {
+        window.open("/matching?peeking=1");
+    });
 </script>
 
 

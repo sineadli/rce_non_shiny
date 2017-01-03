@@ -52,7 +52,7 @@ module.exports = function (app, passport) {
 		else {
 			var index = eval.toolsvisited.indexOf(tool[0]);
 			if (index > -1) {
-				if (tool[0].status == "completed") toollist = { "name": toollist.name, "status": "completed", "visited_at": new Date() };
+				if (tool[0].status === "completed") toollist = { "name": toollist.name, "status": "completed", "visited_at": new Date() };
 				eval.toolsvisited.splice(index, 1);
 				eval.toolsvisited.push(toollist);
 			}
@@ -72,7 +72,8 @@ module.exports = function (app, passport) {
     app.post('/basics', isLoggedIn, function (req, res) {
         sess = req.session;
 		var obj = req.body;
-		
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "basics";
         var toolName = "The Basics";
         var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
         var dt = new Date();
@@ -121,7 +122,7 @@ module.exports = function (app, passport) {
                     //  console.log(eval);
                     if (req.body.status === "started") {
                         req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/basics');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
@@ -157,7 +158,8 @@ module.exports = function (app, passport) {
         sess = req.session;
 		var obj = req.body;
 		var returnpath = obj.returnpath;		
-	//	console.log(obj);
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "determine_your_approach";
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
         var dt = new Date();
         async.waterfall([
@@ -182,18 +184,7 @@ module.exports = function (app, passport) {
                 //eval find so update the toolsVisisted accordingly
 				eval.last_step = 2;
                 eval.last_tool = "Determine Your Approach";
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Determine Your Approach" });
-                if (tool.length === 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status === "completed") toollist = { "name": "Determine Your Approach", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
+				updateLastTool(eval, toollist);
 				//add/update the probAppr within eval
                
                     eval.prepareRandom.Individual_Group = obj.Individual_Group;
@@ -226,7 +217,7 @@ module.exports = function (app, passport) {
                   //  console.log(eval);
                     if (req.body.status == "started") {
                         req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/determine_your_approach');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
@@ -267,19 +258,7 @@ module.exports = function (app, passport) {
 				//eval find so update the toolsVisisted accordingly
 				eval.last_step = obj.step;
 				eval.last_tool = obj.tname;
-				var tool = eval.toolsvisited.filter(function (x) { return x.name === obj.tname });
-				//console.log(tool);
-				if (tool.length == 0) {
-					eval.toolsvisited.push(toollist);
-				}
-				else {
-					var index = eval.toolsvisited.indexOf(tool[0]);
-					if (index > -1) {
-						if (tool[0].status == "completed") toollist = { "name": obj.tname, "status": "completed", "visited_at": new Date() };
-						eval.toolsvisited.splice(index, 1);
-						eval.toolsvisited.push(toollist);
-					}
-				}
+				updateLastTool(eval, toollist);
 				
 				if (eval.stepsclicked.indexOf(obj.step) < 0) eval.stepsclicked.push(obj.step);
 				eval.save(function (err) {
@@ -312,7 +291,9 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Craft Your Research Question", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 3;
-        var obj = req.body;
+		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "craft_your_research_q";
         var dt = new Date();
         if (!obj.evalid) { obj.evalid = sess.eval._id; }
         async.waterfall([
@@ -337,23 +318,13 @@ module.exports = function (app, passport) {
 				eval.last_step = 3;
                 eval.last_tool = "Craft Your Research Question";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Craft Your Research Question" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status == "completed") toollist = { "name": "Craft Your Research Question", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
+				updateLastTool(eval, toollist);
+				
+				
 				//add/update the planQuestion within eval
 				eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
 				eval.basics.Basics_Outcome = obj.Basics_Outcome;
-				
-				   
+
                 var planQuestion = {
                         "Outcome_Measure": obj.Outcome_Measure,
 						"Outcome_Direction": obj.Outcome_Direction, 
@@ -377,7 +348,7 @@ module.exports = function (app, passport) {
                     sess.eval = eval;
                     if (req.body.status == "started") {
                         req.flash('saveMessage', 'Changes Saved.')
-                        return res.redirect('/craft_your_research_q');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
@@ -428,18 +399,8 @@ module.exports = function (app, passport) {
 				eval.last_step = 3;
                 eval.last_tool = "Think About How to Use Your Result";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Think About How to Use Your Results" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status == "completed") toollist = { "name": "Think About How to Use Your Results", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
+				updateLastTool(eval, toollist);
+
 				//add/update the planQuestion within eval
 				eval.planQuestion.Outcome_Measure = obj.Outcome_Measure; // measure
 				eval.planQuestion.Outcome_Direction = obj.Outcome_Direction; // direction
@@ -642,6 +603,86 @@ module.exports = function (app, passport) {
 	});
 	
 	//02. Prepare data	   
+	app.get('/prepare_data_random', function (req, res) {
+		//	console.log("In DYA get method.");
+		sess = req.session;
+		sess.eval.last_step = 4;
+		sess.eval.last_tool = "Prepare for Random Assignment";
+		var query = require('url').parse(req.url, true).query;
+		res.render('prepare_data_random.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+	});
+	app.post('/prepare_data_random', function (req, res) {
+		var toollist = { "name": "Prepare for Random Assignment", "status": req.body.status, "visited_at": new Date() };
+		sess = req.session;
+		sess.eval.step = 4;
+		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "prepare_data_random";
+		var dt = new Date();
+		async.waterfall([
+			function (done) {
+				if (sess.eval) {
+					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+						if (!eval) {
+							req.flash('error', 'No evaluation exists.');
+							return res.redirect('/coach');
+						}
+						if (err) {
+							console.log(err);
+							return res.redirect('/coach');
+						}
+						return done(err, eval);
+					});
+				}
+				else
+					res.redirect('/coach');
+			},
+			function (eval, done) {
+				eval.last_step = 4;
+				eval.last_tool = "Prepare Your Data for Analysis";
+				//eval find so update the toolsVisisted accordingly
+				updateLastTool(eval, toollist);
+				
+				
+				eval.basics.Basics_Users = obj.Basics_Users;
+				eval.basics.Basics_Users_Others = obj.Basics_Users_Others;
+
+			    var prepareRandom = obj.PrepareRandom;
+					
+				if (!eval.prepare) {
+					eval.prepare.created_at = dt;
+				}
+
+				else {
+					eval.prepare.updated_at = dt;
+				};
+				
+				eval.prepare = prepare;
+				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
+				//console.log(eval);
+				eval.save(function (err) {
+					if (err) {
+						console.log(err); return done(err);
+					}
+					sess.eval = eval;
+					
+					if (req.body.status === "started") {
+						
+						req.flash('saveMessage', 'Changes Saved.');
+						return res.redirect('/' + returnpath);
+					}
+					else {
+						return res.redirect('/coach');
+					}
+				});
+			}
+		], function (err) {
+			if (err) return next(err);
+			res.redirect('/coach');
+		});
+	});
+	
+	//02. Prepare data	   
 	app.get('/prepare_data', function (req, res) {
 		//	console.log("In DYA get method.");
 		sess = req.session;
@@ -680,27 +721,15 @@ module.exports = function (app, passport) {
 				eval.last_step = 4;
 				eval.last_tool = "Prepare Your Data for Analysis";
 				//eval find so update the toolsVisisted accordingly
-				var tool = eval.toolsvisited.filter(function (x) { return x.name === eval.last_tool });
-				if (tool.length == 0) {
-					eval.toolsvisited.push(toollist);
-				}
-				else {
-					var index = eval.toolsvisited.indexOf(tool[0]);
-					if (index > -1) {
-						if (tool[0].status == "completed") toollist = { "name": eval.last_tool, "status": "completed", "visited_at": new Date() };
-						eval.toolsvisited.splice(index, 1);
-						eval.toolsvisited.push(toollist);
-					}
-				}
+				updateLastTool(eval, toollist);
+				
+
 			    if (obj.Basics_Users != null) {
 			        eval.basics.Basics_Users = obj.Basics_Users;
 			    }
 
-
 			    var prepare = {
-					"Individual_Group": obj.Individual_Group,
-					"Cluster_Group": obj.Cluster_Group,
-					"Cluster_Group_Other": obj.Cluster_Group_Other,
+				
 					"Check_Outcome": obj.Check_Outcome,
 					"Check_Sample": obj.Check_Sample,
 					"Check_Treatment": obj.Check_Treatment,
@@ -731,7 +760,7 @@ module.exports = function (app, passport) {
 					}
 					sess.eval = eval;
 					
-					if (req.body.status == "started") {
+					if (req.body.status === "started") {
 						
 						req.flash('saveMessage', 'Changes Saved.');
 						return res.redirect('/'+returnpath);
@@ -747,7 +776,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	//02. Prepare data	   
+	//02. Evaluation Plan   
 	app.get('/evaluation_plan', function (req, res) {
 		sess = req.session;
 
@@ -767,7 +796,7 @@ module.exports = function (app, passport) {
 		var obj = req.body;
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "evaluation_plan";
-	    console.log("Saving eval plan");
+	 //   console.log("Saving eval plan");
 	//    console.log(obj.EvalPlan.Milestones);
 		var dt = new Date();
 		async.waterfall([
@@ -842,9 +871,10 @@ module.exports = function (app, passport) {
     });
     app.post('/matching', function (req, res) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
-        sess = req.session;
-       // sess.eval.step = 4;      
+        sess = req.session;    
 		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "matching";
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -868,18 +898,8 @@ module.exports = function (app, passport) {
                 eval.last_step = 4;
                 eval.last_tool = "Matching";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Matching" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status == "completed") toollist = { "name": "Matching", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-				}
+				updateLastTool(eval, toollist);
+
 				//eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
 				//eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
 				eval.planContext.Tech_Purpose = obj.Tech_Purpose; eval.planContext.Tech_Components = obj.Tech_Components;		
@@ -914,7 +934,7 @@ module.exports = function (app, passport) {
                     if (req.body.status == "started") {
 
                         req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/matching');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
@@ -933,111 +953,15 @@ module.exports = function (app, passport) {
         var query = require('url').parse(req.url, true).query;
         res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
-    app.post('/randomization', function (req, res) {
-        var toollist = { "name": "Random Assignment", "status": req.body.status, "visited_at": new Date() };
-        sess = req.session;
-        sess.eval.step = 4;
-        var obj = req.body;
-
-        var dt = new Date();
-        async.waterfall([
-            function (done) {
-                if (sess.eval) {
-                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-                        if (!eval) {
-                            req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/coach');
-                        }
-                        if (err) {
-                            console.log(err);
-                            return res.redirect('/coach');
-                        }
-                        return done(err, eval);
-                    });
-                }
-                else
-                    res.redirect('/coach');
-            },
-            function (eval, done) {
-                eval.last_step = 4;
-                eval.last_tool = "Random Assignment";
-                //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Random Assignment" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status == "completed") toollist = { "name": "Random Assignment", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
-
-                if (!eval.random) {
-                    Random = {
-                        "Individual_Group": obj.Individual_Group,
-                        "Cluster_Group": obj.Cluster_Group,
-                        "Cluster_Group_Other": obj.Cluster_Group_Other,
-                        "User_Limit_Exist": obj.User_Limit_Exist,
-                        "intervention_quantity": obj.intervention_quantity,
-                        "intervention_type": obj.intervention_type,
-                        "s_unit_id": obj.s_unit_id,
-                        "s_pretest": obj.s_pretest,
-                        "s_block_id": obj.s_block_id,
-                        "s_baseline_vars": obj.s_baseline_vars,
-                        "Result": obj.result,
-                        "created_at": dt
-
-                    };
-                }
-
-                else {
-                    Random = {
-                        "Individual_Group": obj.Individual_Group,
-                        "Cluster_Group": obj.Cluster_Group,
-                        "Cluster_Group_Other": obj.Cluster_Group_Other,
-                        "User_Limit_Exist": obj.User_Limit_Exist,
-                        "intervention_quantity": obj.intervention_quantity,
-                        "intervention_type": obj.intervention_type,
-                        "s_unit_id": obj.s_unit_id,
-                        "s_pretest": obj.s_pretest,
-                        "s_block_id": obj.s_block_id,
-                        "s_baseline_vars": obj.s_baseline_vars,
-                        "Result": obj.result,
-                        "created_at": eval.random.created_at, "updated_at": dt
-                    };
-                }
-                eval.random = Random;
-                if (eval.stepsclicked.indexOf(4) < 0) eval.stepsclicked.push(4);
-                eval.save(function (err) {
-                    if (err) {
-                        console.log(err); return done(err);
-                    }
-                    sess.eval = eval;
-
-                    if (req.body.status == "started") {
-
-                        req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/randomization');
-                    }
-                    else {
-                        return res.redirect('/coach');
-                    }
-                });
-            }
-        ], function (err) {
-            if (err) return next(err);
-            res.redirect('/coach');
-        });
-    });
+ 
 
 	app.post('/randomization', function (req, res) {
 		var toollist = { "name": "Randomization", "status": req.body.status, "visited_at": new Date() };
 		sess = req.session;
 		sess.eval.step = 4;
 		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "randomization";
 		console.log(obj);
 		var dt = new Date();
 		async.waterfall([
@@ -1062,18 +986,8 @@ module.exports = function (app, passport) {
 				eval.last_step = 4;
 				eval.last_tool = "Randomization";
 				//eval find so update the toolsVisisted accordingly
-				var tool = eval.toolsvisited.filter(function (x) { return x.name === eval.last_tool });
-				if (tool.length == 0) {
-					eval.toolsvisited.push(toollist);
-				}
-				else {
-					var index = eval.toolsvisited.indexOf(tool[0]);
-					if (index > -1) {
-						if (tool[0].status == "completed") toollist = { "name": eval.last_tool, "status": "completed", "visited_at": new Date() };
-						eval.toolsvisited.splice(index, 1);
-						eval.toolsvisited.push(toollist);
-					}
-				}
+				updateLastTool(eval, toollist);
+
 				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
 				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
 
@@ -1101,8 +1015,7 @@ module.exports = function (app, passport) {
 				};
 				
 				eval.random = random;
-				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-				console.log(eval);
+			
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -1112,7 +1025,7 @@ module.exports = function (app, passport) {
 					if (req.body.status == "started") {
 						
 						req.flash('saveMessage', 'Changes Saved.');
-						return res.redirect('/randomization');
+						return res.redirect('/' + returnpath);
 					}
 					else {
 						return res.redirect('/coach');
@@ -1136,7 +1049,9 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.step = 5;
-        var obj = req.body;
+		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "getresult";
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -1160,26 +1075,15 @@ module.exports = function (app, passport) {
                 eval.last_step = 5;
                 eval.last_tool = "Get Results";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Get Results" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status == "completed") toollist = { "name": "Get Results", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
+				updateLastTool(eval, toollist);
 
-				}
 				eval.planQuestion.Outcome_Measure = obj.Outcome_Measure;
 				eval.planQuestion.Outcome_Direction = obj.Outcome_Direction;
 				eval.planNext.Success_Effect_Size= obj.Success_Effect_Size;
 				eval.planNext.Pass_Probability= obj.Pass_Probability;
 				
 					var getresult = {				
-                        "Result": obj.result,
+                        "Result": obj.result
                        
 
 				};
@@ -1200,7 +1104,7 @@ module.exports = function (app, passport) {
                     if (req.body.status === "started") {
 
                         req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/getresult');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
@@ -1223,7 +1127,9 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.last_step = 6;
-        var obj = req.body;
+		var obj = req.body;
+		var returnpath = obj.returnpath;
+		if (returnpath === '') returnpath = "shareresult";
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -1247,19 +1153,7 @@ module.exports = function (app, passport) {
                 eval.last_step = 6;
                 eval.last_tool = "Share Your Results";
                 //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status === "completed") toollist = { "name": "Share Your Results", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
-                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+				updateLastTool(eval, toollist);
 
                 // Turn relabel inputs into an array rather than 
                 var relabel_index = 0;
@@ -1283,7 +1177,7 @@ module.exports = function (app, passport) {
 
                 eval.shareresult = shareresult;
 
-                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
+               
                 eval.save(function (err) {
                     if (err) {
                         console.log(err); return done(err);
@@ -1291,7 +1185,7 @@ module.exports = function (app, passport) {
                     sess.eval = eval;
                     if (req.body.status == "started") {
                         req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/shareresult');
+                        return res.redirect('/' + returnpath);
                     }
                     else {
                         return res.redirect('/coach');
