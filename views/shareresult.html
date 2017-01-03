@@ -195,11 +195,13 @@
                                 return x[0].toUpperCase() + x.substring(1);
                             }
 
+                            var punctuate = function(x) {
+                                return x.replace(/([^.?!])$/, "$1.")
+                            }
+
                             var sentence = function(x) {
-                                // Capitalize first letter
-                                var out = capitalize(x);
-                                // If it doesn't end with punctuation, add a period.
-                                return out.replace(/([^.?!])$/, "$1."); 
+                                // Capitalize first letter and if it doesn't end with punctuation, add a period.
+                                return capitalize(punctuate(x));
                             }
 
                             var wordList = function(x) {
@@ -466,21 +468,21 @@
                                 
                                 <%= capitalize(tech_name) %> is
                                 <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Tech_Purpose %></a>
+                                    <a class="data-link" href="/context_and_usage?return=shareresult"> <%= punctuate(context.Tech_Purpose) %></a>
                                 </span><br / >
                                 <div class="white-background-blue-border">
                                     <strong> The Basics of <%= tech_name %></strong> <br / >
                                     <em> Program Type</em> : 
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= sentence(wordList(program_types).toLowerCase()) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= wordList(program_types).toLowerCase() %></a>
                                     </span><br / >
                                     <em> Key Components</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= sentence(context.Tech_Components) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"> <%= context.Tech_Components %></a>
                                     </span><br / >
                                     <em> Delivery Type</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= sentence(wordList(delivery_types).toLowerCase()) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= wordList(delivery_types).toLowerCase() %></a>
                                     </span><br / >
                                     <em> Used in</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
@@ -488,7 +490,7 @@
                                     </span><br / >
                                     <em> Target Outcomes</em> :
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
-                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= sentence(wordList(outcome_types).toLowerCase(0)) %></a>
+                                        <a class="data-link" href="/context_and_usage?return=shareresult"><%= wordList(outcome_types).toLowerCase(0) %></a>
                                     </span><br / >
                                     <em> <%= capitalize(plan_next.Tech_Cost_Saves) %></em> : 
                                     <span class="tooltip-gr" data-tool-name="Context and Usage">
