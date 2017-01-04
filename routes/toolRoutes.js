@@ -615,6 +615,9 @@ module.exports = function (app, passport) {
 		var toollist = { "name": "Prepare for Random Assignment", "status": req.body.status, "visited_at": new Date() };
 		sess.eval.step = 4;
 		var obj = req.body;
+		console.log("post prepare_data_radom");
+
+		console.log(toollist);
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "prepare_data_random";
 		var dt = new Date();
@@ -648,17 +651,17 @@ module.exports = function (app, passport) {
 
 			    var prepareRandom = obj.PrepareRandom;
 					
-				if (!eval.prepare) {
-					eval.prepare.created_at = dt;
+				if (!eval.prepareRandom) {
+					eval.prepareRandom.created_at = dt;
 				}
 
 				else {
-					eval.prepare.updated_at = dt;
+					eval.prepareRandom.updated_at = dt;
 				};
 				
-				eval.prepare = prepare;
-				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-				//console.log(eval);
+				eval.prepareRandom = prepareRandom;
+				console.log(returnpath);
+				console.log(eval);
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -668,6 +671,7 @@ module.exports = function (app, passport) {
 					if (req.body.status === "started") {
 						
 						req.flash('saveMessage', 'Changes Saved.');
+					   
 						return res.redirect('/' + returnpath);
 					}
 					else {
@@ -727,21 +731,8 @@ module.exports = function (app, passport) {
 			        eval.basics.Basics_Users = obj.Basics_Users;
 			    }
 
-			    var prepare = {
+			    var prepare = obj.Prepare;
 				
-					"Check_Outcome": obj.Check_Outcome,
-					"Check_Sample": obj.Check_Sample,
-					"Check_Treatment": obj.Check_Treatment,
-					"Check_Pretest": obj.Check_Pretest,
-					"Check_Background": obj.Check_Background,
-					"Check_Usage": obj.Check_Usage,
-					"Check_Check_OneSet": obj.Check_OneSet,
-					"Check_Numeric": obj.Check_Numeric,
-					"Check_Missing": obj.Check_Missing,
-					"Check_Min_Max": obj.Check_Min_Max,
-					"Check_Miss_Impact": obj.Check_Miss_Impact
-
-				};
 				if (!eval.prepare) {
 					eval.prepare.created_at = dt;
 				}
@@ -791,11 +782,12 @@ module.exports = function (app, passport) {
 	
 	app.post('/evaluation_plan', function (req, res) {
 		var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
+		
 		sess = req.session;
 		var obj = req.body;
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "evaluation_plan";
-	 //   console.log("Saving eval plan");
+	
 	//    console.log(obj.EvalPlan.Milestones);
 		var dt = new Date();
 		async.waterfall([

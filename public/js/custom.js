@@ -447,7 +447,7 @@ function setUserLimitsSelections() {
 			.text("Select an option"));
 	$("#intervention_type")
 		.append($("<option></option>")
-			.attr("value", "percent")
+			.attr("value", "percentage")
 			.text("percent of " + assign));
 	$("#intervention_type")
 		.append($("<option></option>")
