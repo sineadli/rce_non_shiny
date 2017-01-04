@@ -112,7 +112,7 @@
                                 </h4>
                             </div>
                             <div class="step-action">
-                                <select required name="Basics_Users" id="Basics_Users">
+                                <select  name="Basics_Users" id="Basics_Users">
 
                                     <%
                                     var options = ["Select an option", "students", "teachers", "other"];
@@ -148,7 +148,7 @@
                                 <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
                             </div>
                             <div class="step-action">
-                                <select required name="PrepareRandom[Individual_Group]" id="Individual_Group">
+                                <select  name="PrepareRandom[Individual_Group]" id="Individual_Group">
                                     <%
                                     var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
                                     var ovals = ["Select an option", "users" , "groups" ];
@@ -166,7 +166,7 @@
                                     <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= Basics_Users %></span>?</label></h4>
                                 </div>
                                 <div class="step-action">
-                                    <select required name="PrepareRandom[Cluster_Group]" id="Cluster_Group">
+                                    <select  name="PrepareRandom[Cluster_Group]" id="Cluster_Group">
                                         <%
                                         var options = ["Select an option", "by class", "by school", "other" ];
                                         var ovals = ["Select an option", "classes", "schools", "other" ];
@@ -685,7 +685,7 @@
                                 var checked = ( eval.prepareRandom.Check_Miss_Impact == "Miss_Impact_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Miss_Impact" name="PrepareRandom[Check_Miss_Impact]" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
-                                    Consider the impact of missing data
+                                    Consider the impact of missing data.
                                 </label><br />
 
 
