@@ -167,14 +167,20 @@
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" > 
-  
                         <% 
+console.log('checkpoint 0');
                             var stripPercent = function(x) {
                                 return parseInt(x.replace(/%/g, ''));
                             }
 
                             var capitalize = function(x) {
-                                return x[0].toUpperCase() + x.substring(1);
+                                if (x.length === 0) {
+                                    var out = '';
+                                }
+                                else {
+                                    var out = x.toString()[0].toUpperCase() + x.toString().substring(1);
+                                }
+                                return out;
                             }
 
                             var punctuate = function(x) {
@@ -189,22 +195,27 @@
                             var wordList = function(x) {
                                 var out;
 
-                                x = x.filter( function(x) { return x !== '' })
-
-                                x = unique(x);
-
-                                if (x.length === 0) {
+                                if (x === undefined) {
                                     out = '';
                                 }
-                                else if (x.length === 1) {
-                                    out = x[0];
-                                }
-                                else if (x.length === 2) {
-                                    out = x[0] + ' and ' + x[1];
-                                }
                                 else {
-                                    out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
-                                }   
+                                    x = x.filter( function(x) { return x !== '' && x !== undefined })
+
+                                    x = unique(x);
+
+                                    if (x.length === 0) {
+                                        out = '';
+                                    }
+                                    else if (x.length === 1) {
+                                        out = x[0];
+                                    }
+                                    else if (x.length === 2) {
+                                        out = x[0] + ' and ' + x[1];
+                                    }
+                                    else {
+                                        out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+                                    }   
+                                }
                         
                                 return out;                                            
                             }
@@ -220,116 +231,306 @@
 
                                 return x;
                             }
-               
-                            var tech_name = eval.basics.Basics_Tech_Name;
-                            var basic_outcome = eval.basics.Basics_Outcome;
 
-                            var users = eval.basics.Basics_Users;
-                            if (users === 'other') users = eval.basics.Basic_Users_other;
-
-                            var outcome_direction = eval.planQuestion.Outcome_Direction;
-                            var outcome_measure = eval.planQuestion.Outcome_Measure;
+                            // Initialize default values in case tools are missing
                             
-                            var analysis_results = JSON.parse(eval.getresult.Result);
-                            var analysis_results_by_grade = analysis_results.results_by_grade;
+                            // basics
+                            var tech_name = '[technology name]';
+                            var basic_outcome = '[outcome of interest]';
+                            var users = '[users]';
 
-                            var analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
+                            // planQuestion
+                            var outcome_direction = '[outcome direction]';
+                            var outcome_measure = '[outcome_measure]';
 
-                            var plan_next = eval.planNext;
+                            var intervention_group = 'the intervention group';
+                            var comparison_group = 'the comparison group';
 
-                            var pass_probability = stripPercent(plan_next.Pass_Probability);
+                            var n_overall = 0,
+                                n_treatment = 0,
+                                n_full_overall = 0,
+                                n_full_treatment = 0;
+
+                            var baseline_by_grade = false;
+                            var baseline_vars = [];
+
+                            // planNext 
+                            var pass_probability = '[probability]',
+                                tech_cost_saves = '[saves/costs]',
+                                tech_amount = '[amount]',
+                                tech_cost_user = '[user]';
+
+                            // planContext
+                            var program_types = [],
+                                delivery_types = [],
+                                classroom_types = [],
+                                outcome_types = [],
+                                grades_used = [],
+                                tech_purpose = '[purpose of technology]',
+                                tech_components = '[technology components]',
+                                school_types = [],
+                                urbanicity = [],
+                                non_white = '',
+                                total_students = '',
+                                district_state = '',
+                                frpl = NaN,
+                                ethnicity_hispanic = '',
+                                gender_female = '',
+                                english_learners = '',
+                                iep = '';
+                                duration = '[duration]',
+                                expected_dosage = '[expected dosage]',
+                                other_notes = '[other notes]';
+console.log('checkpoint 0.1');
+                            // shareresult
+                            var challenges_limitations = '',
+                                conclusions_next_steps = '',
+                                baseline_vars_relabel = baseline_vars;
+
+                            // Replace default values where possible
+                            if (eval.basics) {
+                                tech_name = eval.basics.Basics_Tech_Name || tech_name;
+                                basic_outcome = eval.basics.Basics_Outcome || basic_outcome;
+
+                                users = eval.basics.Basics_Users || users;
+                                if (users === 'other') users = eval.basics.Basic_Users_other;
+                            }
+
+                            if (eval.planQuestion) {
+                                outcome_direction = eval.planQuestion.Outcome_Direction || outcome_direction;
+                                outcome_measure = eval.planQuestion.Outcome_Measure || outcome_measure;
+
+                                intervention_group = eval.planQuestion.Intervention_Group_Desc || intervention_group;
+                                comparison_group = eval.planQuestion.Comparison_Group_Desc || comparison_group;
+                            }
+
+                            var header = 'Analysis results not found';
+                            var pilot_type = '[pilot type]';
+
+                            if (eval.getresult) {
+                                try {
+                                    var analysis_results = JSON.parse(eval.getresult.Result);
+                                    var analysis_results_by_grade = analysis_results.results_by_grade;
+                                    var analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
                         
-                            var n_overall = 0, n_treatment = 0, n_full_overall = 0, n_full_treatment = 0;
+                                    var success_count = 0, failure_count = 0;
 
-                            var path = eval.path;
+                                    for (grade in analysis_results_by_grade) {
 
-                            var baseline_by_grade, baseline_results_by_grade, baseline_vars;
-                        
-                            if (path === 'path-matching') {
-                                var match_results = JSON.parse(eval.matching.Result);
-                                baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
-                                baseline_results_by_grade = match_results.results_by_grade;
+                                        var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                                        var success = (probability > pass_probability);
 
-                                for (grade in match_results.results_by_grade) {
-                                    var samples = match_results.results_by_grade[grade].samples;
+                                        if (success) {
+                                            success_count++;
+                                        }
+                                        else {
+                                            failure_count++;
+                                        }
+                                    }
 
-                                    n_full_overall += samples.n_full[0];
-                                    n_full_treatment += samples.n_full_treat[0];
+                                    var needle_negate = (success_count === 0) ? ' not' : '';
+                                    var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
 
-                                    n_overall += samples.n_matched[0];
-                                    n_treatment += samples.n_matched_treat[0];
-                                    
+                                    var header = capitalize(tech_name) + ' is' + needle_negate + ' moving the needle on ' + basic_outcome + grade_qualifier;
+                                } catch (e) {
+                                    var header = 'Problem found in analysis results.';
+                                }
+                            }
+                            
+                            if (eval.planNext) {
+                                var plan_next = eval.planNext;
+                                pass_probability = stripPercent(plan_next.Pass_Probability) || pass_probability;
+
+                                tech_cost_saves = plan_next.Tech_Cost_Saves || tech_cost_saves;
+                                tech_amount = plan_next.Tech_Amount || tech_amount;
+                                tech_cost_user = plan_next.Tech_Cost_User || tech_cost_user;
+                            }    
+
+                            if (eval.planContext) {
+                                var context = eval.planContext;
+
+                                // Use an array for the loop since it has predictable ordering
+                                var grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
+
+                                var grade_map = {
+                                    "PK" : "Pre-Kindergarten",
+                                    "K"  : "Kindergarten",
+                                    "1"  : "1st",
+                                    "2"  : "2nd",
+                                    "3"  : "3rd",
+                                    "4"  : "4th",
+                                    "5"  : "5th",
+                                    "6"  : "6th",
+                                    "7"  : "7th",
+                                    "8"  : "8th",
+                                    "9"  : "9th",
+                                    "10" : "10th",
+                                    "11" : "11th",
+                                    "12" : "12th",
+                                    "PS" : "Post-secondary"
                                 }
 
-                                baseline_vars = match_results.match_vars;
-                            }
-                            else if (path === 'path-randomization') {
-                                var results = JSON.parse(eval.random.Result);
-                                baseline_by_grade = Object.keys(results.results_by_grade).length > 1;
-                                baseline_results_by_grade = results.results_by_grade;
+                                var grades_used = [], grade_streak = 0, start_grade = '', end_grade = '';
 
-                                for (grade in match_results.results_by_grade) {
-                                    var samples = results.results_by_grade[grade].samples;
-                                    n_overall += samples.n_full[0];
-                                    n_treatment += samples.n_treat[0];
+                                for (grade_index in grades) {
+                                    var grade = grades[grade_index];
+
+                                    if (context.Grades.some( function(x) { return x === grade } )) {
+                                        grade_streak++;
+
+                                        if (grade_streak === 1) start_grade = grade_map[grade];
+                                        else end_grade = grade_map[grade];
+                                    }
+                                    else {
+
+                                        if (grade_streak === 1) {
+                                            grades_used.push(start_grade);
+                                        }
+                                        else if (grade_streak > 1) {
+                                            grades_used.push(start_grade + '-' + end_grade);
+                                        }
+
+                                        grade_streak = 0;
+                                    }
                                 }
 
-                                baseline_vars = results.match_vars;
-                            }
-               
-                            
-                            var n_comparison = n_overall - n_treatment;
-                        
-                            var success_count = 0, failure_count = 0;
-                        
-                            for (grade in analysis_results_by_grade) {
+                                program_types = [context.Type_Policy, context.Type_Teacher_Level, context.Type_School_Level, context.Type_CSchool_Structure, context.Type_Practice, context.Type_Curriculum];
+                                delivery_types = [context.Delivered_School_Wide, context.Delivered_Whole_Class, context.Delivered_Small_Group, context.Delivered_Individually];
+                                classroom_types = [context.ClassroomType_Inclusion, context.ClassroomType_General];
+                                outcome_types = context.Outcomes;
 
-                                var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                                var success = (probability > pass_probability);
+                                tech_purpose = context.Tech_Purpose || tech_purpose;
+                                tech_components = context.Tech_Components || tech_components;
 
-                                if (success) {
-                                    success_count++;
+                                school_types = [context.SchoolType_Charter, context.SchoolType_Private, context.SchoolType_Parochial, context.SchoolType_Public];
+                                urbanicity = [context.Urbanicity_Urban, context.Urbanicity_Suburban, context.Urbanicity_Rural];
+                                non_white = 100 - context.Race_White || non_white;
+
+                                total_students = context.Total_Students || total_students;
+                                district_state = context.District_State || district_state;
+                                ethnicity_hispanic = context.Ethnicity_Hispanic || ethnicity_hispanic;
+                                frpl = context.FRPL_Reduced + context.FRPL_Free || frpl;
+                                gender_female = context.Gender_Female || gender_female;
+                                english_learners = context.English_Learners || english_learners;
+                                iep = context.IEP;
+
+
+                                /* We have begin and end datetimes, rather than a plain-English duration. The following
+                                estimates the duration to the nearest day, and then converts that to the most appropriate
+                                count of days, weeks, months, or years */
+                                var begin_date = new Date(context.Eval_Begin_Date);
+                                var end_date = new Date(context.Eval_End_Date);
+                                var duration_days = Math.ceil((end_date - begin_date) / 86400000);
+
+                                if (duration_days < 7) {
+                                    duration = duration_days.toString() + ' days';
+                                }
+                                else if (duration_days < 84) {
+                                    duration = (Math.ceil(duration_days / 7)).toString() + ' weeks';
+                                }
+                                else if (duration_days < 365) {
+                                    duration = (Math.ceil(duration_days / 30)).toString() + ' months';
                                 }
                                 else {
-                                    failure_count++;
+                                    duration = (Math.ceil(duration_days / 365)).toString() + ' years';
                                 }
-                            }   
+
+                                expected_dosage = context.Expected_Dosage || expected_dosage;
+
+                                other_notes = context.Other_Notes || other_notes;
+                            }
+                          
+                            if (eval.path) {
+                                var path = eval.path;
+
+                                if (path === 'path-matching') {
+                                    pilot_type = 'matched';
+
+                                    var match_results = JSON.parse(eval.matching.Result);
+                                    var baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
+                                    var baseline_results_by_grade = match_results.results_by_grade;
+
+                                    for (grade in match_results.results_by_grade) {
+                                        var samples = match_results.results_by_grade[grade].samples;
+
+                                        n_full_overall += samples.n_full[0];
+                                        n_full_treatment += samples.n_full_treat[0];
+
+                                        n_overall += samples.n_matched[0];
+                                        n_treatment += samples.n_matched_treat[0];
+
+                                    }
+
+                                    baseline_vars = match_results.match_vars;
+                                }
+                                else if (path === 'path-random') {
+console.log('checkpoint 0.2');
+                                    pilot_type = 'randomized';
+
+                                    var results = JSON.parse(eval.random.Result);
+console.log('checkpoint 0.3');
+                                    baseline_by_grade = Object.keys(results.results_by_block).length > 1;
+                                    baseline_results_by_grade = results.results_by_block;
+console.log('checkpoint 0.4');
+                                    for (grade in baseline_results_by_grade) {
+                                        var samples = baseline_results_by_grade[grade].samples;
+                                        n_overall += samples.n_full[0];
+                                        n_treatment += samples.n_treat[0];
+                                    }
+
+                                    baseline_vars = results.baseline_vars;
+                                }
+                            }
+                          
+                            var assignment = '[Users were assigned to treatment and comparison groups.]';
+
+                            if (pilot_type === 'matched') {
+
+                                var suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
+                                assignment = users + ' were matched ' + suffix;
+
+                            }
+                            else if (pilot_type === 'randomized') {
+                                var prefix = '',
+                                group = 'random values';
+
+                                if (eval.random) {
+                                    if (eval.random.Individual_Group === 'groups') {
+                                        prefix = 'Groups of '
+                                        group = eval.random.Cluster_Group || 'groups';
+                                        if (group === 'other') group = eval.random.Cluster_Group_Other || group;
+                                    }
+                                }
+                                assignment = prefix + users + ' were assigned based on ' + group ;
+                            }
+
+                            var n_comparison = n_overall - n_treatment;
                         
-                            var needle_negate = (success_count === 0) ? ' not' : '';
-                            var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
-
-                            var header = capitalize(tech_name) + ' is' + needle_negate + ' moving the needle on ' + basic_outcome + grade_qualifier;
-
                             if (eval.shareresult) {
                                 var shareresult = eval.shareresult;
-                                var conclusions_next_steps = shareresult.conclusions_next_steps || '';
-                                var challenges_limitations = shareresult.challenges_limitations || '';
-                                var baseline_vars_relabel = shareresult.baseline_var_relabels || baseline_vars;
-                            }
-                            else {
-                                var challenges_limitations = '';
-                                var conclusions_next_steps = '';
-                                var baseline_vars_relabel = baseline_vars;
+                                var conclusions_next_steps = shareresult.conclusions_next_steps || conclusions_next_steps;
+                                var challenges_limitations = shareresult.challenges_limitations || challenges_limitations;
+                                var baseline_vars_relabel = shareresult.baseline_var_relabels || baseline_vars_relabel;
                             }
 
                             var baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
+console.log('checkpoint 1');
                         %>
                         
                         <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
-                        <%
-                        var user_name = user.profile.user_name || '< Click to add name to profile >';
-                        var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
+                        
+                        <% if (user != "NOAUTHENTICATED") {
+
+                            var user_name = user.profile.user_name || '< Click to add name to profile >';
+                            var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
                         %>
-
-                        <br / >
-                        <%= user_name %><br />
-                        <%= organization_name %><br />
-                        <%= new Date().toLocaleDateString() %>
-
-                        <% if (user != "NOAUTHENTICATED") {%>
-                            <p class="prev-answer">
+                            <br / >
+                            <%= user_name %><br />
+                            <%= organization_name %><br />
+                            <%= new Date().toLocaleDateString() %>
+                            <p class="prev-answer hidden-print">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
+                                <a href="/setting?return=shareresult">Profile</a>
                             </p>
                         <% } %>
 
@@ -338,50 +539,61 @@
                         <div class="row" > 
                             <div class="col-xs-1 circle" > 
                             </div > 
-                            
+           
                             <div class="col-xs-11" > 
                                 <h2 > <%= header %></h2 >
                             
                                 <h3 > Research Question</h3 > 
 
                                     Does <%= tech_name %> <%= outcome_direction %> <%= outcome_measure %> among
-                                    <%= eval.planQuestion.Intervention_Group_Desc %>
-                                    <%= eval.planQuestion.Comparison_Group_Desc %>?
+                                    <%= intervention_group %>
+                                    compared to
+                                    <%= comparison_group %>?
 
                                     <% for (grade in analysis_results_by_grade) {
 
-                                    var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                                    var success = (probability > pass_probability);
+                                        try {
+                                            var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                                            var success = (probability > pass_probability);
 
-                                    var needle_decision = (success) ? 'Yes' : 'No';
-                                    var needle_negate = (success) ? '' : ' not';
+                                            var needle_decision = (success) ? 'Yes' : 'No';
+                                            var needle_negate = (success) ? '' : ' not';
 
-                                    var next_steps = (success) ? plan_next.Action_Success : plan_next.Action_Fail;
+                                            var next_steps = (success) ? plan_next.Action_Success : plan_next.Action_Fail;
 
-                                    var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
-                                    var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
+                                            var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
+                                            var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
+                                            
+                                            var results_clean = true;
+                                        } catch (e) {
+                                            var results_clean = false;
+                                        }
                                     %>
 
                                     <% if (analysis_by_grade) { %>
                                         <h2 class="grade-header">Grade <%= grade %></h2>
                                     <% } %>
                                     <h3> Findings</h3>
-                                    <ol>
-                                        <li> <%= needle_decision + ', we think ' + tech_name + ' is' + needle_negate + ' moving the needle.' %></li>
-                                        <li> <%= interpretation_1 %></li>
-                                        <li> <%= interpretation_2 %></li>
-                                    </ol>
-                                    <h3> Next steps</h3>
+
+                                    <% if (results_clean) { %>
+                                        <ol>
+                                            <li> <%= needle_decision + ', we think ' + tech_name + ' is' + needle_negate + ' moving the needle.' %></li>
+                                            <li> <%= interpretation_1 %></li>
+                                            <li> <%= interpretation_2 %></li>
+                                        </ol>
+                                        <h3> Next steps</h3>
                                     
-                                    <%= sentence(next_steps); %>
+                                        <%= sentence(next_steps); %>
 
-                                    <% if (user != "NOAUTHENTICATED") {%>
-                                        <p class="prev-answer">
-                                            <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
-                                        </p>
+                                        <% if (user != "NOAUTHENTICATED") {%>
+                                            <p class="prev-answer hidden-print">
+                                                <i class="fa fa-hand-o-right"></i> Where did I answer this?
+                                                <a href="/plan_next_steps">Plan Next Steps</a>
+                                            </p>
+                                        <% } %>
+                                    <% } else { %>
+                                        Problem detected in analysis results. Try re-running the analysis tool.
                                     <% } %>
-
                                 <% } %>
                             </div > 
                         </div > 
@@ -391,81 +603,28 @@
                         
                             <div class="col-xs-11" > 
                                 <h2 > This evaluation tested the effectiveness of <%= tech_name %></h2 > 
-                                <%
-                                    var context = eval.planContext;
-
-                                    // Use an array for the loop since it has predictable ordering
-                                    var grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
-
-                                    var grade_map = {
-                                        "PK" : "Pre-Kindergarten",
-                                        "K"  : "Kindergarten",
-                                        "1"  : "1st",
-                                        "2"  : "2nd",
-                                        "3"  : "3rd",
-                                        "4"  : "4th",
-                                        "5"  : "5th",
-                                        "6"  : "6th",
-                                        "7"  : "7th",
-                                        "8"  : "8th",
-                                        "9"  : "9th",
-                                        "10" : "10th",
-                                        "11" : "11th",
-                                        "12" : "12th",
-                                        "PS" : "Post-secondary"
-                                    }
-                                        
-                                    var grades_used = [], grade_streak = 0, start_grade = '', end_grade = '';
-
-                                    for (grade_index in grades) {
-                                        var grade = grades[grade_index];
-                   
-                                        if (context['Grade_' + grade] === grade) {
-                                            grade_streak++;
-
-                                            if (grade_streak === 1) start_grade = grade_map[grade];
-                                            else end_grade = grade_map[grade];
-                                        }
-                                        else {
-
-                                            if (grade_streak === 1) {
-                                                grades_used.push(start_grade);
-                                            }
-                                            else if (grade_streak > 1) {
-                                                grades_used.push(start_grade + '-' + end_grade);
-                                            }
-
-                                            grade_streak = 0;
-                                        }
-                                    }
-                                    var program_types = [context.Type_Policy, context.Type_Teacher_Level, context.Type_School_Level, context.Type_CSchool_Structure, context.Type_Practice, context.Type_Curriculum];
-
-                                    var delivery_types = [context.Delivered_School_Wide, context.Delivered_Whole_Class, context.Delivered_Small_Group, context.Delivered_Individually];
-
-                                    var classroom_types = [context.ClassroomType_Inclusion, context.ClassroomType_General];
-                                    var outcome_types = [context.Outcome_Graduation, context.Outcome_Teacher_Excellence, context.Outcome_Behavior, context.Outcome_Science, context.Outcome_Mathematics, context.Outcome_Literacy];
-                                %>
                                 
                                 <%= capitalize(tech_name) %> is
-                                <%= punctuate(context.Tech_Purpose) %>
+                                <%= punctuate(tech_purpose) %>
+                                
                                 <div class="white-background-blue-border">
                                     <strong> The Basics of <%= tech_name %></strong> <br / >
                                     <em> Program Type</em> : <%= wordList(program_types).toLowerCase() %><br / >
-                                    <em> Key Components</em> : <%= context.Tech_Components %><br / >
+                                    <em> Key Components</em> : <%= tech_components %><br / >
                                     <em> Delivery Type</em> : <%= wordList(delivery_types).toLowerCase() %><br / >
-                                    <em> Used in</em> : <%= capitalize(wordList(grades_used)) %> grade <%= wordList(classroom_types).toLowerCase() %> classrooms.<br / >
-                                    <em> Target Outcomes</em> : <%= wordList(outcome_types).toLowerCase(0) %><br / >
+                                    <em> Used in</em> : <%= capitalize(wordList(grades_used)) %> grade <%= wordList(classroom_types).toLowerCase() %> classrooms<br / >
+                                    <em> Target Outcomes</em> : <%= wordList(outcome_types).toLowerCase() %><br / >
                                     <% if (user != "NOAUTHENTICATED") {%>
-                                        <p class="prev-answer">
+                                        <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                            <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                            <a href="/context_and_usage?return=shareresult">Context and Usage</a>
                                         </p>
                                     <% } %>
-                                    <em> <%= capitalize(plan_next.Tech_Cost_Saves) %></em> : $<%= plan_next.Tech_Amount %> per <%= plan_next.Tech_Cost_User %><br / >   
+                                    <em> <%= capitalize(tech_cost_saves) %></em> : $<%= tech_amount %> per <%= tech_cost_user %><br / >   
                                     <% if (user != "NOAUTHENTICATED") {%>
-                                        <p class="prev-answer">
+                                        <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                                            <a href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
                                         </p>
                                     <% } %>
                                 </div>
@@ -478,43 +637,18 @@
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <% 
-                                    var pilot_type = (path === 'path-matching') ? 'matched' : 'randomized';
-                                %>
                                 <h2 > <%= capitalize(tech_name) %> was tested using a <%= pilot_type %> pilot</h2 > 
                                 <ul > 
                                     <li >  
                                         <% if (pilot_type === 'randomized') { %>
                                             This evaluation used a randomized pilot.The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if ReadTech was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
-                                        <% } 
-                                            else if (pilot_type === 'matched') { %>
+                                        <% } else if (pilot_type === 'matched') { %>
                                             This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.
+                                        <% } else { %>
+                                            Problem found related to pilot type. No description available.
                                         <% } %>
                                     </li>
                                     <li > 
-                                        <%  var assignment;
-
-                                            if (path === 'path-matching') {
-                                                
-                                                var suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
-                                                assignment = users + ' were matched ' + suffix;
-
-                                            }
-                                            else if (path === 'path-randomize') {
-                                                
-                                                if (eval.random.Individual_Group === 'groups') {
-                                                    prefix = 'Groups of ' 
-                                                    group = eval.random.Cluster_Group;
-                                                    if (group === 'other') group = eval.random.Cluster_Group_Other;
-                                                } else {
-                                                    prefix = '';
-                                                    group = 'random values';
-                                                }
-                                                
-                                                assignment = prefix + users + ' were assigned based on ' + group ;
-                                            }
-                                        %>
-
                                         <%= sentence(assignment) %>
                                     </li > 
                                     <li > Baseline equivalence (or similarity across treatment and comparison) was tested using: <span class="baseline-vars-wordlist">
@@ -552,7 +686,7 @@
                             <div class="col-xs-11" > 
                                 <h2 > This evaluation studied <%= tech_name %>’s impact on <%= wordList(grades_used) %> <%= users %></h2>
 
-                                    <% if (path === 'path-matching') { %>
+                                    <% if (pilot_type === 'matched') { %>
                                         <p>
                                             The original dataset included <%= n_full_treatment %> students who used <%= tech_name %> and 
                                             <%= n_full_overall - n_full_treatment %> students who did not use <%= tech_name %>. 
@@ -564,94 +698,90 @@
                                         <div class="col-xs-3 blue-background-white-text">
                                             <p> <strong> Treatment Group</strong> </p>
                                             <p> Students who used readTech </p>
-                                            <p> # of students: 134 </p>
+                                            <p> # of students: <%= n_treatment %></p>
                                         </div>
                                         <div class="col-xs-3 blue-background-white-text">
                                             <p> <strong> Comparison Group</strong> </p>
                                             <p> Students who did not use readTech </p>
-                                            <p> # of students: 134 </p>
+                                            <p> # of students: <%= n_comparison %></p>
                                         </div>
                                         <div class="col-xs-4 white-background-blue-border">
 
-                                            <% 
-                                                var school_types = [context.SchoolType_Charter, context.SchoolType_Private, context.SchoolType_Parochial, context.SchoolType_Public];
-                                                var urbanicity = [context.Urbanicity_Urban, context.Urbanicity_Suburban, context.Urbanicity_Rural];
-                                                var non_white = 100 - context.Race_White;
-                                            %>
                                             <strong> Evaluation Context</strong> <br>
                                             <em> School Type</em> : <%= wordList(school_types) %><br>
-                                            <em> District Size</em> : <%= context.Total_Students %><br>
+                                            <em> District Size</em> : <%= total_students %><br>
                                             <em> Setting</em> : <%= wordList(urbanicity) %><br>
-                                            <em> Location</em> : <%= context.District_State %><br>
+                                            <em> Location</em> : <%= district_state %><br>
                                             <strong> Overall Student Population</strong> <br>
                                             <em> Non-white</em> : <%= non_white %>%<br>
-                                            <em> Hispanic</em> : <%= context.Ethnicity_Hispanic %>%<br>
-                                            <em> Female</em> : <%= context.Gender_Female %>%<br>
-                                            <!--<em> Free or Reduced Price Lunch</em> : <%= context.FRPL_Reduced + context.FRPL_Free %>%<br>-->
-                                            <em> English Learners</em> : <%= context.English_Learners %>%<br>
-                                            <em> Students with IEPs</em> : <%= context.IEP %>%<br>
+                                            <em> Hispanic</em> : <%= ethnicity_hispanic %>%<br>
+                                            <em> Female</em> : <%= gender_female %>%<br>
+                                            <!--<em> Free or Reduced Price Lunch</em> : <%= frpl %>%<br>-->
+                                            <em> English Learners</em> : <%= english_learners %>%<br>
+                                            <em> Students with IEPs</em> : <%= iep %>%<br>
                                             <% if (user != "NOAUTHENTICATED") {%>
-                                                <p class="prev-answer">
+                                                <p class="prev-answer hidden-print">
                                                     <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                                    <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                                    <a href="/context_and_usage?return=shareresult">Context and Usage</a>
                                                 </p>
                                             <% } %>
                                         </div>
                                     </div>
 
+                                    <% if (baseline_results_by_grade) { %>
+                                        <p> Table 1 below summarizes key characteristics of the study sample: </p>
+                                        <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
+                                        <table id="table1">
+                                            <thead>
+                                                <tr>
+                                                    <% if (baseline_by_grade) { %>
+                                                        <th>Grade</th>
+                                                    <% } %>
+                                                    <th> Characteristic</th>
+                                                    <th> Overall</th>
+                                                    <th> Treatment</th>
+                                                    <th> Comparison</th>
+                                                    <th> Difference</th>
+                                                    <th> Effect Size</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-                                    <p> Table 1 below summarizes key characteristics of the study sample: </p>
-                                    <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
-                                    <table id="table1">
-                                        <thead>
-                                            <tr>
-                                                <% if (baseline_by_grade) { %>
-                                                    <th>Grade</th>
-                                                <% } %>
-                                                <th> Characteristic</th>
-                                                <th> Overall</th>
-                                                <th> Treatment</th>
-                                                <th> Comparison</th>
-                                                <th> Difference</th>
-                                                <th> Effect Size</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                                <% for (grade in baseline_results_by_grade) {
+                                                    var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+                                                    var characteristics = Object.keys(baseline_var_means);
 
-                                            <% for (grade in baseline_results_by_grade) {
-                                                var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
-                                                var characteristics = Object.keys(baseline_var_means);
+                                                    for (index in characteristics) { 
+                                                        var characteristic = characteristics[index]; %>
+                                                        <tr>
+                                                            <% if (baseline_by_grade) { %>
+                                                                <td> <%= grade %></td>
+                                                            <% } %>
+                                                            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                                            <td> <%= baseline_var_means[characteristic].overall[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].difference[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].effect_size[0] %></td>
+                                                        </tr>
+                                                    <% }} %>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <% if (baseline_by_grade) { %>
+                                                    <td></td>
+                                                    <% } %>
+                                                    <td> Number of <%= users %></td>
+                                                    <td> <%= n_overall %></td>
+                                                    <td> <%= n_treatment %></td>
+                                                    <td> <%= n_comparison %></td>
+                                                    <td> --</td>
+                                                    <td> --</td>
+                                                </tr>
+                                            </tfoot>
 
-                                                for (index in characteristics) { 
-                                                    var characteristic = characteristics[index]; %>
-                                                    <tr>
-                                                        <% if (baseline_by_grade) { %>
-                                                            <td> <%= grade %></td>
-                                                        <% } %>
-                                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                                        <td> <%= baseline_var_means[characteristic].overall[0] %></td>
-                                                        <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
-                                                        <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
-                                                        <td> <%= baseline_var_means[characteristic].difference[0] %></td>
-                                                        <td> <%= baseline_var_means[characteristic].effect_size[0] %></td>
-                                                    </tr>
-                                                <% }} %>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <% if (baseline_by_grade) { %>
-                                                <td></td>
-                                                <% } %>
-                                                <td> Number of <%= users %></td>
-                                                <td> <%= n_overall %></td>
-                                                <td> <%= n_treatment %></td>
-                                                <td> <%= n_comparison %></td>
-                                                <td> --</td>
-                                                <td> --</td>
-                                            </tr>
-                                        </tfoot>
-
-                                    </table>
+                                        </table>
+                                    <% } %>
                                 </div> 
                         </div > 
                         
@@ -660,31 +790,10 @@
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <% 
-                                    /* We have begin and end datetimes, rather than a plain-English duration. The following 
-                                        estimates the duration to the nearest day, and then converts that to the most appropriate 
-                                        count of days, weeks, months, or years */
-                                    var begin_date = new Date(context.Eval_Begin_Date);
-                                    var end_date = new Date(context.Eval_End_Date);
-                                    var duration_days = Math.ceil((end_date - begin_date) / 86400000);
-                                    var duration = '';
-
-                                    if (duration_days < 7) {
-                                        duration = duration_days.toString() + ' days';        
-                                    }
-                                    else if (duration_days < 84) {
-                                        duration = (Math.ceil(duration_days / 7)).toString() + ' weeks';
-                                    }
-                                    else if (duration_days < 365) {
-                                        duration = (Math.ceil(duration_days / 30)).toString() + ' months';
-                                    }
-                                    else {
-                                        duration = (Math.ceil(duration_days / 365)).toString() + ' years';
-                                    }
-                                %>
+                                
                                 <h2 > The evaluation period lasted <%= duration %>.</h2 > 
                                 <p > During this period, <%= users %> in the intervention group were intended to use the technology 
-                                    <%= punctuate(context.Expected_Dosage) %>
+                                    <%= punctuate(expected_dosage) %>
                                     Students in the comparison group did not have access to <%= tech_name %>. </p >
                                 <p > 
                                     <label class="hidden-print"> Challenges/Limitations:</label > 
@@ -692,12 +801,12 @@
                                     <p class="visible-print-block" id="print-challenges-limitations"><%= challenges_limitations %></p>
                                 <p>
                                     Other contextual factors or supports being provided to students may have contributed to results. Other factors include:
-                                    <%= context.Other_Notes %>
+                                    <%= other_notes %>
                                 </p> 
                                 <% if (user != "NOAUTHENTICATED") {%>
-                                    <p class="prev-answer">
+                                    <p class="prev-answer hidden-print">
                                         <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                        <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                        <a href="/context_and_usage?return=shareresult">Context and Usage</a>
                                     </p>
                                 <% } %>
                             </div > 
@@ -715,9 +824,9 @@
                                     <% } %> </p > 
 
                                 <% if (user != "NOAUTHENTICATED") {%>
-                                    <p class="prev-answer">
+                                    <p class="prev-answer hidden-print">
                                         <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                        <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
+                                        <a href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
                                     </p>
                                 <% } %>
                             </div > 
@@ -814,19 +923,24 @@
         var wordList = function (x) {
             var out;
 
-            x = x.filter(function (x) { return x !== '' })
-
-            if (x.length === 0) {
+            if (x === undefined) {
                 out = '';
             }
-            else if (x.length === 1) {
-                out = x[0];
-            }
-            else if (x.length === 2) {
-                out = x[0] + ' and ' + x[1];
-            }
             else {
-                out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+                x = x.filter(function (x) { return x !== '' && x !== undefined })
+
+                if (x.length === 0) {
+                    out = '';
+                }
+                else if (x.length === 1) {
+                    out = x[0];
+                }
+                else if (x.length === 2) {
+                    out = x[0] + ' and ' + x[1];
+                }
+                else {
+                    out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+                }
             }
 
             return out;
