@@ -330,7 +330,7 @@ evaluationSchema.pre('save', function (next) {
         var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 10 * 100;
         this.status = parseInt(per);
   
-        if (this.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "share your results" && x.status.toLowerCase() === "completed") })) { this.status = " 100"; }
+       
         if (this.basics) {
             if (this.basics.Basics_Have.toLowerCase() == "no" || (this.basics.Basics_Outcome && this.basics.Basics_Outcome.toLowerCase()) == "not sure") {
                 this.flag = 1;
@@ -372,8 +372,10 @@ evaluationSchema.pre('save', function (next) {
 
 				this.evalPlan.Milestones.push(m);
 			}
-		}
-        if (this.status === "100") {
+        }
+    
+        if (this.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "share your results" && x.status.toLowerCase() === "completed") })) {
+            this.status = "100";
             if (!this.published_at) { this.published_at = currentDate; }
             var doc = this;
             User.findById(this.userid, function (err, user) {
