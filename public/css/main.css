@@ -1173,7 +1173,8 @@ input[type=date] {
 .multiselect-container>li>a>label>input[type=checkbox]  
  {
     margin-top: 3px;
-    margin-left: -30px;
+    margin-left: -90px;
+
 
 }
 .dropdown-menu>.active>a {
