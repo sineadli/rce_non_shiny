@@ -95,7 +95,7 @@
                         <p class="all-using">Will you be conducting this evaluation with current users of <%= Basics_Tech_Name %> or do you plan to conduct this evaluation with new users (as part of either an expansion or new implementation of <%= Basics_Tech_Name %>)?</p>
                     </div>
                     <div class="step-action">
-                        <select required name="Appr_Current_or_New" id="Appr_Current_or_New">
+                        <select  name="Appr_Current_or_New" id="Appr_Current_or_New">
                             <%
                             var options = ["Select an option", "Current", "New"];
                             for ( var i = 0; i < options.length; i++ )
@@ -114,7 +114,7 @@
                             <p class="all-using">Are all <%= Basics_Users %> currently using <%= Basics_Tech_Name %>? </p>
                         </div>
                         <div class="step-action">
-                            <select required name="Appr_All_Using" id="Appr_All_Using">
+                            <select  name="Appr_All_Using" id="Appr_All_Using">
                                 <%
                                 var options = ["Select an option", "Yes", "No"];
                                 for ( var i = 0; i < options.length; i++ )
@@ -134,7 +134,7 @@
                             <p> Can you offer <%= Basics_Tech_Name %> to just a portion of new users, leaving you with a similar group of <%= Basics_Users %> who have never used <%= Basics_Tech_Name %>? </p>
                         </div>
                         <div class="step-action">
-                            <select required name="Appr_Can_Group" id="Appr_Can_Group">
+                            <select name="Appr_Can_Group" id="Appr_Can_Group">
                                 <%
                                 var options = ["Select an option", "Yes", "No"];
                                 for ( var i = 0; i < options.length; i++ )

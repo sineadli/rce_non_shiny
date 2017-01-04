@@ -129,13 +129,13 @@
                                 pad(d.getDate())
 
                                 }
-                                var bd=dateformat(eval.planContext.Eval_Begin_Date);
-                                var ed=dateformat(eval.planContext.Eval_End_Date);
+                                var bd=dateformat(Eval_Begin_Date);
+                                var ed=dateformat(Eval_End_Date);
                                 %>
 
 
                                 <div class="step-action">
-                                    <h4><label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label></h4><br />
+                                    <h4><label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label></h4>
                                     <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= bd %>" />
                                     <br />
                                     <h4><label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label></h4>
