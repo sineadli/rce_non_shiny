@@ -58,7 +58,8 @@
         var stripPercent = function(x) {
         return parseInt(x.replace(/%/g, ''));
         }
-
+    console.log("In Eval Plan");
+        console.log(eval);
         var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
         var Basics_Outcome = eval.basics.Basics_Outcome;
         if (eval.basics.Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
@@ -84,8 +85,8 @@
         if (Intervention_Group === '') { Intervention_Group = "the intervention group";}
 
         var Random_Level = "Basics_Users";
-        if (eval.prepare.Individual_Group.toLowerCase() == "groups"){
-        var cluster = eval.prepare.Cluster_Group == "other" ? eval.prepare.Cluster_Group_Other : eval.prepare.Cluster_Group;
+        if (eval.prepareRandom.Individual_Group.toLowerCase() == "groups"){
+        var cluster = eval.prepareRandom.Cluster_Group == "other" ? eval.prepareRandom.Cluster_Group_Other : eval.prepareRandom.Cluster_Group;
         Random_Level = (cluster == "") ? "groups of " + Basics_Users : cluster;
         }
         Random_Level = Random_Level.charAt(0).toUpperCase() + Random_Level.slice(1);
@@ -386,7 +387,9 @@
                                             </thead>
                                             <tbody>
                                             <%
-                                                var ev = eval.evalPlan;
+                                                console.log("Print milestones");
+                                                console.log(eval.evalPlan.Milestones[0]);
+                                            var ev = eval.evalPlan;
                                             var dates=[];
                                                 function dateformat(v){
                                                 function pad(n) {
@@ -402,8 +405,8 @@
                                             }
 
                                                
-                                            var bd=dateformat(eval.planContext.Eval_Begin_Date);
-                                                var ed=dateformat(eval.planContext.Eval_End_Date);
+                                            var bd=eval.planContext.Eval_Begin_Date ? dateformat(eval.planContext.Eval_Begin_Date) : "";
+                                                var ed= eval.planContext.Eval_End_Date ? dateformat(eval.planContext.Eval_End_Date) : "";
                                             
                                                 for (var k = 0; k < 12; k++) {
                                                 if (!ev.Milestones[k].Complete_Date || ev.Milestones[k].Complete_Date == '' )

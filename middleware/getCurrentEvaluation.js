@@ -16,8 +16,7 @@ var isLoggedIn = require('../middleware/isLoggedIn.js');
 
 var getCurrentEvaluation = function (req, res, next) {
 	console.log("getting current eval");
-    sess = req.session; 
-	//console.log(sess); 
+    sess = req.session;
     if (!sess.eval) {
         Evaluation.findOne({ _id: req.user.evalid }).exec(function (err, eval) {
             if (err) {
@@ -28,29 +27,7 @@ var getCurrentEvaluation = function (req, res, next) {
                 if (eval) {
                  //   console.log("In get current eval if eval");
 	
-					if (eval.evalPlan.Milestones.length == 0) {
-						// create the 12 default milestones
-						for (var i = 0; i < 12; i++) {
-							var m = ({
-								Order:
-								i+1,
-								Milestone_Name:
-								'',
-								Complete_Date:
-								'',
-								Assigned_To:
-								'',
-								Status:
-								'',
-								Notes:
-								'',
-								Hide:
-								''
-							});
-							
-							eval.evalPlan.Milestones.push(m);
-						}
-					}
+					
                     sess.eval = eval;
                     req.user.evalid = eval._id;
                     req.user.save();

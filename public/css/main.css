@@ -134,8 +134,8 @@ div.bottom-next a.sec-label {
 }
 .tooltip-gr {
   color:#e44e0d;
-    color: #000;
-    text-shadow:1px 1px #fac500;
+    /*color: #000;
+    text-shadow:1px 1px #fac500;*/
 }
 div.tool-bottom .tooltip-gr {
     font-size: 1.3em;
