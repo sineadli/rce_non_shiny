@@ -613,9 +613,11 @@ module.exports = function (app, passport) {
 	});
 	app.post('/prepare_data_random', function (req, res) {
 		var toollist = { "name": "Prepare for Random Assignment", "status": req.body.status, "visited_at": new Date() };
-		sess = req.session;
 		sess.eval.step = 4;
 		var obj = req.body;
+		console.log("post prepare_data_radom");
+
+		console.log(toollist);
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "prepare_data_random";
 		var dt = new Date();
@@ -649,17 +651,17 @@ module.exports = function (app, passport) {
 
 			    var prepareRandom = obj.PrepareRandom;
 					
-				if (!eval.prepare) {
-					eval.prepare.created_at = dt;
+				if (!eval.prepareRandom) {
+					eval.prepareRandom.created_at = dt;
 				}
 
 				else {
-					eval.prepare.updated_at = dt;
+					eval.prepareRandom.updated_at = dt;
 				};
 				
-				eval.prepare = prepare;
-				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-				//console.log(eval);
+				eval.prepareRandom = prepareRandom;
+				console.log(returnpath);
+				console.log(eval);
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -669,6 +671,7 @@ module.exports = function (app, passport) {
 					if (req.body.status === "started") {
 						
 						req.flash('saveMessage', 'Changes Saved.');
+					   
 						return res.redirect('/' + returnpath);
 					}
 					else {
@@ -792,11 +795,12 @@ module.exports = function (app, passport) {
 	
 	app.post('/evaluation_plan', function (req, res) {
 		var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
+		
 		sess = req.session;
 		var obj = req.body;
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "evaluation_plan";
-	 //   console.log("Saving eval plan");
+	
 	//    console.log(obj.EvalPlan.Milestones);
 		var dt = new Date();
 		async.waterfall([
@@ -991,9 +995,9 @@ module.exports = function (app, passport) {
 				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
 				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
 
-			    eval.prepare.Individual_Group = obj.Individual_Group;
-			    eval.prepare.Cluster_Group = obj.Cluster_Group;
-			    eval.prepare.Cluster_Group_Other = obj.Cluster_Group_Other;
+			    eval.prepareRandom.Individual_Group = obj.Individual_Group;
+			    eval.prepareRandom.Cluster_Group = obj.Cluster_Group;
+			    eval.prepareRandom.Cluster_Group_Other = obj.Cluster_Group_Other;
 				var random = {
 					"User_Limit_Exist": obj.User_Limit_Exist,
 					"intervention_quantity": obj.intervention_quantity,

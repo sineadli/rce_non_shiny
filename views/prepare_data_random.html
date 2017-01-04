@@ -154,7 +154,7 @@
                                     var ovals = ["Select an option", "users" , "groups" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
+                                    var selected = ( eval.prepareRandom.Individual_Group== ovals[i] ) ? "selected" : "";
                                     %>
                                     <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                     }
@@ -173,7 +173,7 @@
                                         for ( var i = 0; i < options.length; i++ )
                                         {
                                         var selected;
-                                        selected = ( eval.random.Cluster_Group== ovals[i] ) ? "selected" : "";
+                                        selected = ( eval.prepareRandom.Cluster_Group== ovals[i] ) ? "selected" : "";
                                         %>
                                         <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                         }
@@ -182,7 +182,7 @@
                                     <div id="Question_Cluster_Other" hidden="true">
                                         <p>
                                             <label for="Cluster_Group_Other">Please specify:</label>
-                                            <input type="text" name='PrepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>" />
+                                            <input type="text" name='PrepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
                                         </p>
                                     </div>
                                 </div>
@@ -247,7 +247,7 @@
 
 
                                <%
-                                var checked = ( eval.prepare.Check_Sample == "Sample_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_Sample == "Sample_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Sample" name="PrepareRandom[Check_Sample]" value="Sample_Checked" <%- checked %>/><label class="sec-label" for="Check_Sample">
                                     List of <span class="tech_users"><%= Basics_Users %></span>&mdash;<em class="recommendation">Required</em>
@@ -270,7 +270,7 @@
                                 ptpathnote = "Pre-test data are necessary to create similar groups";
                                 }
 
-                                var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Pretest" name="PrepareRandom[Check_Pretest]" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
                                     Pretest data&mdash;<em class="recommendation"><%= required %></em>
@@ -285,7 +285,7 @@
 
                                
 
-                                var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_Background == "Background_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Background" name="PrepareRandom[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
                                     Background Characteristics&mdash;<em class="recommendation"><%= required %></em>
@@ -595,7 +595,7 @@
 
                             <div class="step-action check-list">
                                 <%
-                                var checked = ( eval.prepare.Check_OneSet == "OneSet_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_OneSet == "OneSet_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_OneSet" name="PrepareRandom[Check_OneSet]" value="OneSet_Checked" <%- checked %>/><label class="sec-label" for="Check_OneSet">
                                     I have one dataset containing all my data.
@@ -610,7 +610,7 @@
 
                             <div class="step-action check-list">
                                 <%
-                                var checked = ( eval.prepare.Check_Numeric == "Numeric_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_Numeric == "Numeric_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Numeric" name="PrepareRandom[Check_Numeric]" value="Numeric_Checked" <%- checked %>/><label class="sec-label" for="Check_Numeric">
                                     All categorical variables have been converted to dummy numeric variables.
@@ -627,7 +627,7 @@
 
                             <div class="step-action check-list">
                                 <%
-                                var checked = ( eval.prepare.Check_Missing == "Missing_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_Missing == "Missing_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Missing" name="PrepareRandom[Check_Missing]" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
                                     All missing data is consistently coded as &ldquo;NA&rdquo;.
@@ -670,7 +670,7 @@
 
                             <div class="step-action check-list">
                                 <%
-                                var checked = ( eval.prepare.Check_Min_Max == "Min_Max_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_Min_Max == "Min_Max_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Min_Max" name="PrepareRandom[Check_Min_Max]" value="Min_Max_Checked" <%- checked %>/><label class="sec-label" for="Check_Min_Max">
                                     Check the minimum and maximum values of variables.
@@ -682,7 +682,7 @@
                             </div>
                             <div class="step-action check-list">
                                 <%
-                                var checked = ( eval.prepare.Check_Miss_Impact == "Miss_Impact_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepareRandom.Check_Miss_Impact == "Miss_Impact_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Miss_Impact" name="PrepareRandom[Check_Miss_Impact]" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
                                     Consider the impact of missing data

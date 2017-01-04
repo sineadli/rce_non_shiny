@@ -374,11 +374,17 @@
                                         ];
                                         
 
-                                        var checked = "unchecked";
+                                        
 
                                         for ( var i = 0; i < options.length; i++ )
                                         {
-                                        checked = selected.includes(options[i]) ? "checked" : "";
+                                        var checked = "unchecked";
+                                        for (var k= 0; k < selected.length; k++ )
+                                        {
+                                            if(selected[k] == options[i]) checked = "checked";
+                                        }
+
+                                        
                                         var cbid = names[i];
                                         var cbvalue = options[i];
                                         var brk = "";
@@ -481,11 +487,15 @@
                                         var selected =eval.planContext.Outcomes;
                                         var names =["Outcome_Literacy", "Outcome_Mathematics", "Outcome_Science","Outcome_Behavior","Outcome_Teacher_Excellence", "Outcome_Graduation"];
 
-                                        var checked = "unchecked";
+                                        
 
                                         for ( var i = 0; i < options.length; i++ )
                                         {
-                                        checked = selected.includes(options[i]) ? "checked" : "";
+                                        var checked = "unchecked";
+                                        for (var k= 0; k < selected.length; k++ )
+                                        {
+                                        if(selected[k] == options[i]) checked = "checked";
+                                        }
                                         var cbid = names[i];
                                         var cbvalue = options[i];
                                         var tallclass="";

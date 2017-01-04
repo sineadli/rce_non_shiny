@@ -123,8 +123,24 @@
 
 
         <% if (toolindropdown.length > 1) { console.log(toolindropdown);%>
+        <%
+        var note = 'Based on your answers in Determine Your Approach the Coach is guiding you through ';
+
+        var approach ='a randomized pilot. '
+        var note2 = 'These tools are not used for this approach.'
+        if(eval.path == "path-matching"){
+        approach = 'an evaluation using a matched comparison design. ';
+        }
+        %>
         <div class="col-xs-3 pull-right">
-            <p><strong>Tools un-available for chosen path:</strong></p>
+            <h3>
+                Tools for other approaches
+                <span data-toggle="tooltip" title="<%- note + approach + note2 %>" class='tooltip-gr'>
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </span></h3>
+            
+
+
             <select id="toolsnotavailable">
                 <option value="">View un-available tools</option>
                 <% for ( var i = 1; i < toolindropdown.length; i++ )
