@@ -731,21 +731,8 @@ module.exports = function (app, passport) {
 			        eval.basics.Basics_Users = obj.Basics_Users;
 			    }
 
-			    var prepare = {
+			    var prepare = obj.Prepare;
 				
-					"Check_Outcome": obj.Check_Outcome,
-					"Check_Sample": obj.Check_Sample,
-					"Check_Treatment": obj.Check_Treatment,
-					"Check_Pretest": obj.Check_Pretest,
-					"Check_Background": obj.Check_Background,
-					"Check_Usage": obj.Check_Usage,
-					"Check_Check_OneSet": obj.Check_OneSet,
-					"Check_Numeric": obj.Check_Numeric,
-					"Check_Missing": obj.Check_Missing,
-					"Check_Min_Max": obj.Check_Min_Max,
-					"Check_Miss_Impact": obj.Check_Miss_Impact
-
-				};
 				if (!eval.prepare) {
 					eval.prepare.created_at = dt;
 				}
