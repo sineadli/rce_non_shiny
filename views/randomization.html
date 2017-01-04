@@ -152,13 +152,13 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                     <h4><label for="Individual_Group">Do you want to randomly assign individual <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
                 </div>
                 <div class="step-action">
-                    <select required name="Individual_Group" id="Individual_Group">
+                    <select  name="Individual_Group" id="Individual_Group">
                         <%
                         var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
                         var ovals = ["Select an option", "users" , "groups" ];
                         for ( var i = 0; i < options.length; i++ )
                         {
-                        var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
+                        var selected = ( eval.prepareRandom.Individual_Group== ovals[i] ) ? "selected" : "";
                         %>
                         <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
                         <%
@@ -171,14 +171,14 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                             <h4><label for="Cluster_Group">How will you group your <%= Basics_Users %>?</label></h4>
                         </div>
                         <div class="step-action">
-                            <select required name="Cluster_Group" id="Cluster_Group">
+                            <select  name="Cluster_Group" id="Cluster_Group">
                                 <%
                                 var options = ["Select an option", "by class", "by school", "other" ];
                                 var ovals = ["Select an option", "classes", "schools", "other" ];
                                 for ( var i = 0; i < options.length; i++ )
                                 {
                                 var selected;
-                                selected = ( eval.random.Cluster_Group== ovals[i] ) ? "selected" : "";
+                                selected = ( eval.prepareRandom.Cluster_Group== ovals[i] ) ? "selected" : "";
                                 %>
                                 <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                 }
@@ -188,7 +188,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                             <div id="Question_Cluster_Other" hidden="true">
                                 <p>
                                     <label for="Cluster_Group_Other">Please specify:</label>
-                                    <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>" />
+                                    <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
                                 </p>
                             </div>
 

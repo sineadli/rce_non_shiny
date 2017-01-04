@@ -154,7 +154,7 @@
                                     var ovals = ["Select an option", "users" , "groups" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected = ( eval.random.Individual_Group== options[i] ) ? "selected" : "";
+                                    var selected = ( eval.prepareRandom.Individual_Group== ovals[i] ) ? "selected" : "";
                                     %>
                                     <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                     }
@@ -173,7 +173,7 @@
                                         for ( var i = 0; i < options.length; i++ )
                                         {
                                         var selected;
-                                        selected = ( eval.random.Cluster_Group== ovals[i] ) ? "selected" : "";
+                                        selected = ( eval.prepareRandom.Cluster_Group== ovals[i] ) ? "selected" : "";
                                         %>
                                         <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                         }
@@ -182,7 +182,7 @@
                                     <div id="Question_Cluster_Other" hidden="true">
                                         <p>
                                             <label for="Cluster_Group_Other">Please specify:</label>
-                                            <input type="text" name='PrepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.random.Cluster_Group_Other %>" />
+                                            <input type="text" name='PrepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
                                         </p>
                                     </div>
                                 </div>

@@ -407,6 +407,7 @@ function setUserLimitsSelections() {
     var assign = users;
     var compile = " all " + users + " who could potentially use the technology. Your list or dataset will need to include a unique and anonymous id for each one of your " + users;
 	if (gORi === "groups") {
+		$('#Question_Cluster').show();
 		compile = " all " + users + " who could potentially use the technology or a list of all " + cluster + ". If your list or dataset will be at the individual level, it must include a unique and anonymous id for each one of your " + users + " and a " + scluster + " indicator. If your data set will be at the " + scluster + " level, then it just needs a " + scluster + " indicator";
 		assign = "groups of " + users;
 		assignlevel = users + " by " + scluster;
@@ -418,10 +419,15 @@ function setUserLimitsSelections() {
 	if (cluster.toLowerCase() !== "select an option") {
 		assign = cluster;
 	}
+	if (cluster.toLowerCase() === "other") {
+		$('#Question_Cluster_Other').show();
+
+	}
     if (cluster.toLowerCase() === "other" && ocluster !== '') {
         assign = ocluster;
     }
-
+	
+	
     $(".indivs-or-groups").text(assign);
     $(".assign-level").text(assignlevel);
 	$(".compile").text(compile);
