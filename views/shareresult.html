@@ -530,7 +530,7 @@ console.log('checkpoint 1');
                             <%= new Date().toLocaleDateString() %>
                             <p class="prev-answer hidden-print">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                <a href="/setting?return=shareresult">Profile</a>
+                                <a href="/setting">Profile</a>
                             </p>
                         <% } %>
 
@@ -877,7 +877,7 @@ console.log('checkpoint 1');
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                        <button type="submit" id="button-download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
+                                        <button type="submit" id="Download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
                                     </div>
                                 </div>
                             </div>
@@ -902,7 +902,7 @@ console.log('checkpoint 1');
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT PUBLISH</button>
-                                        <button type="submit" id="button-publish" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
+                                        <button type="submit" id="Complete" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
                                     </div>
                                 </div>
                             </div>
@@ -989,7 +989,6 @@ console.log('checkpoint 1');
             $('button[type=submit]').click(function () {
                 var action = $(this).attr('data-action');
                 $('form').attr('action', action);
-                $('#document_html').val($('html')[0].outerHTML);
                 $('form').submit();
             });
             
