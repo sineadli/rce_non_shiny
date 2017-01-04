@@ -9,10 +9,11 @@
 
 <input type="hidden" id="user_email" value="<%= user %>" />
 <input class="hidden" name="status" id="status" />
+<input class="hidden" name="returnpath" id="returnpath" />
   <%  if (user != "NOAUTHENTICATED" && !query.peeking ) { %>
 <div class="bottom-buttons">
-    <button type="submit" id="button-save-changes" data-action="/shareresult" class="btn btn-info btn-lg">SAVE CHANGES</button>
-    <button type="button" class="btn btn-info btn-lg" role="link" data-toggle="modal" data-target="#download-modal">DOWNLOAD </button>
-    <button type="button" class="btn btn-primary btn-lg" role="link" data-toggle="modal" data-target="#complete-evaluation-modal">COMPLETE EVALUATION </button>
+    <button type="submit" id="Save" data-action="/shareresult" class="btn btn-info btn-lg">SAVE CHANGES</button>
+    <button type="button" id="open-download-modal" class="btn btn-info btn-lg" role="link" data-toggle="modal" data-target="#download-modal">DOWNLOAD </button>
+    <button type="button" id="open-complete-evaluation-modal" class="btn btn-primary btn-lg" role="link" data-toggle="modal" data-target="#complete-evaluation-modal">COMPLETE EVALUATION </button>
 </div>
         <% } %>

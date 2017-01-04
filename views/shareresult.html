@@ -530,7 +530,7 @@ console.log('checkpoint 1');
                             <%= new Date().toLocaleDateString() %>
                             <p class="prev-answer hidden-print">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                <a href="/setting?return=shareresult">Profile</a>
+                                <a class="redirect-link" href="/setting">Profile</a>
                             </p>
                         <% } %>
 
@@ -588,7 +588,7 @@ console.log('checkpoint 1');
                                         <% if (user != "NOAUTHENTICATED") {%>
                                             <p class="prev-answer hidden-print">
                                                 <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                                <a href="/plan_next_steps">Plan Next Steps</a>
+                                                <a class="redirect-link" href="/plan_next_steps">Plan Next Steps</a>
                                             </p>
                                         <% } %>
                                     <% } else { %>
@@ -617,14 +617,14 @@ console.log('checkpoint 1');
                                     <% if (user != "NOAUTHENTICATED") {%>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                            <a href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                            <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
                                         </p>
                                     <% } %>
                                     <em> <%= capitalize(tech_cost_saves) %></em> : $<%= tech_amount %> per <%= tech_cost_user %><br / >   
                                     <% if (user != "NOAUTHENTICATED") {%>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                            <a href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                                            <a class="redirect-link" href="/plan_next_steps">Plan Next Steps</a>
                                         </p>
                                     <% } %>
                                 </div>
@@ -722,7 +722,7 @@ console.log('checkpoint 1');
                                             <% if (user != "NOAUTHENTICATED") {%>
                                                 <p class="prev-answer hidden-print">
                                                     <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                                    <a href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                                    <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
                                                 </p>
                                             <% } %>
                                         </div>
@@ -806,7 +806,7 @@ console.log('checkpoint 1');
                                 <% if (user != "NOAUTHENTICATED") {%>
                                     <p class="prev-answer hidden-print">
                                         <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                        <a href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                        <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
                                     </p>
                                 <% } %>
                             </div > 
@@ -826,7 +826,7 @@ console.log('checkpoint 1');
                                 <% if (user != "NOAUTHENTICATED") {%>
                                     <p class="prev-answer hidden-print">
                                         <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                        <a href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
+                                        <a class="redirect-link" href="/craft_your_research_q">Craft Your Research Question</a>
                                     </p>
                                 <% } %>
                             </div > 
@@ -877,7 +877,7 @@ console.log('checkpoint 1');
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                        <button type="submit" id="button-download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
+                                        <button type="submit" id="Download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
                                     </div>
                                 </div>
                             </div>
@@ -902,7 +902,7 @@ console.log('checkpoint 1');
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT PUBLISH</button>
-                                        <button type="submit" id="button-publish" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
+                                        <button type="submit" id="Complete" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
                                     </div>
                                 </div>
                             </div>
@@ -989,7 +989,6 @@ console.log('checkpoint 1');
             $('button[type=submit]').click(function () {
                 var action = $(this).attr('data-action');
                 $('form').attr('action', action);
-                $('#document_html').val($('html')[0].outerHTML);
                 $('form').submit();
             });
             
