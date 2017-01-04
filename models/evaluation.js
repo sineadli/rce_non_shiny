@@ -36,7 +36,7 @@ direction = ["Increase", "Decrease"];
 spendresults = ["costs", "saves"];
 unitmeasured = ["student", "teacher", "school"];
 
-totalToolNumber = 8; //for completed status
+totalToolNumber = 11; //for completed status
 
 //02.03 determine your approach
 var Basics = mongoose.Schema({
