@@ -520,9 +520,8 @@ console.log('checkpoint 1');
                         <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
                         
                         <% if (user != "NOAUTHENTICATED") {
-
-                            var user_name = user.profile.user_name || '< Click to add name to profile >';
-                            var organization_name = user.profile.organization_name || '< Click to add organization name to profile >';
+                            var user_name = user.profile.user_name || '< No name found in profile >';
+                            var organization_name = user.profile.organization_name || '< No organization name found in profile >';
                         %>
                             <br / >
                             <%= user_name %><br />
