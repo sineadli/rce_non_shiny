@@ -557,9 +557,9 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                 var error = data.error_message[0];
                                 if (error) { $('#diagnostic_error').append('<div class="row"><div class="col-xs-10"><h2>' + error + '</h2></div></div>'); $('#results').empty(); return; }
                                  $('#diagnostic_error').remove();
-                                var rSuccess = "Randomization success!"
+                                var rSuccess = "Randomization success!";
                                 var balance, baseline_vars;
-                                if (!data.randomize_success[0]) { rSuccess = "Some blocks did not have good balance after randomization, please review the by-block output below to find out which ones. " }
+                                if (!data.randomize_success[0]) { rSuccess = "Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. " }
                                 var results_by_block = data.results_by_block;
                                 var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
                                 $('#results').append('<div class="row"><div class="col-xs-10"><h2>Randon Assignment Results</h2></div></div>');
