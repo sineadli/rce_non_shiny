@@ -34,14 +34,17 @@
         ga('send', 'pageview');
     </script>
     <style>
-        table, th, td {
+        th {
+            background-color: #D9D7BE;
+        }
+         table, th, td {
              border-collapse: collapse;
              text-align: left;
-            padding: 15px;
-             border-bottom: 1px solid #ddd;
-            background-color: #ddd;
-            }
-            tr:nth-child(even) {background-color: #f2f2f2}
+             padding: 15px;
+             border: 1px solid #BAB38F;
+            
+         }
+        tr:nth-child(even) {background-color: #ECEBDD}
     </style>
 </head>
 <body>
@@ -197,7 +200,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                     </div>
                     <% if (user != "NOAUTHENTICATED") { %>
                     <p class="prev-answer">
-                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/prepare_data_randomization">Prepare Your Data for Randomization</a>
+                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/prepare_data_randomization">Prepare for Random Assignment</a>
                     </p>
                     <% } %>
                 </div>
@@ -273,7 +276,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                     <p>
                                         You do not need to randomly select <%= Basics_Users %> at the individual level. It may be more feasible to select by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
                                     </p>
-                                    <p>Do you have any resource constraints (e.g. computer or software availibility, time constraints) that would impact the size of your treatment group? Treatment and comparison group sizes should be as similar as possible, but do not need to be equal.</p>
+                                    <p>Do you have any resource constraints (e.g. computer or software availibility, or time constraints) that would impact the size of your treatment group? Treatment and comparison group sizes should be as similar as possible, but do not need to be equal.</p>
                                     <p>
                                         Bigger is better.  With only a few individuals or groups in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples allow you to detect smaller effects.
                                     </p>
@@ -581,7 +584,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                         if (title) $('#results').append('<div class="row"><div class="col-xs-7"><span>' + title + ' </div></span></div>');
                                         $('#results').append('<div class="row"><div class="col-xs-7"><span>Treament group size:  ' + n_full_treat + ' </div></span></div>');
                                         $('#results').append('<div class="row"><div class="col-xs-7"><span>Comparision group size:  ' + n_full_com + ' </div></span></div>');
-                                        $('#results').append('<div class="row"><div class="col-xs-7"><span>Balance:  ' + balance + ' </div></span></div>');
+                                        $('#results').append('<div class="row"><div class="col-xs-7"><span>Balanced:  ' + balance + ' </div></span></div>');
                                     
                                         if (block_object.plot) { $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + block_object.plot + ' />' + '</div>'); }
                                         if (block_object.baseline_var_means) {

@@ -267,7 +267,7 @@
                                 var ptpathnote ="Pretest information will be used to check the equivalence of the treatment and control groups at the start of your evaluation."
                                 if (path === "path-matching") {
                                 required = "Required";
-                                ptpathnote = "Pre-test data are necessary to create similar groups";
+                                ptpathnote = "Pre-test data are necessary to create similar groups.";
                                 }
 
                                 var checked = ( eval.prepareRandom.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
@@ -292,7 +292,7 @@
                                 </label><br />
 
                                 <p class="sub-label">
-                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, Individualized Education Plan (IEP) status, English Learner (EL) status, and socioeconomic status (SES). Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and control groups.
+                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, Individualized Education Plan (IEP) status, English learner (EL) status, and socioeconomic status (SES). Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and control groups.
                                 </p>
                                 <p class="sub-label">It is preferable to measure all background characteristics before the introduction of <%= Basics_Tech_Name %>. Because some background characteristics, like English learner status, can change over time and even change as a result of using a technology (e.g., the introduction of a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
                                 <p class="sub-label"> <%- bcpathnote %></p>
