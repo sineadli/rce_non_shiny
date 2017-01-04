@@ -97,7 +97,7 @@ var PlanContext = mongoose.Schema({
 	Eval_End_Date: { type: Date, default: '' },  //was Plan_Context_A_4
 	Type_Curriculum: { type: String, default: '' },
 	Type_Practice: { type: String, default: '' },
-	Type_CSchool_Structure: { type: String, default: '' },
+	Type_School_Structure: { type: String, default: '' },
 	Type_School_Level: { type: String, default: '' },
 	Type_Teacher_Level: { type: String, default: '' },
 	Type_Policy: { type: String, default: '' },

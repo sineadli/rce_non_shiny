@@ -456,6 +456,56 @@ module.exports = function (app, passport) {
 		var query = require('url').parse(req.url, true).query;
 		res.render('working_with_provider.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
 	});
+	
+	app.post('/working_with_provider', isLoggedIn, function (req, res) {
+		var toollist = { "name": "Working with Ed Tech Providers", "status": 'completed', "visited_at": new Date() };
+		sess = req.session;
+		sess.step = 3;
+		console.log("In saving working with providers");
+		
+		var dt = new Date();
+		async.waterfall([
+			function (done) {
+				if (sess.eval) {
+					console.log("Yes eval in saving working with providers");
+					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+						if (!eval) {
+							req.flash('error', 'No evaluation exists.');
+							return res.redirect('/coach');
+						}
+						if (err) {
+							console.log(err);
+							return res.redirect('/coach');
+						}
+						return done(err, eval);
+					});
+				}
+				else
+					res.redirect('/coach');
+			},
+			function (eval, done) {
+				console.log("Eval found in saving working with providers");
+				eval.last_step = 3;
+				eval.last_tool = "Working with Ed Tech Providers";
+				//eval find so update the toolsVisisted accordingly
+				updateLastTool(eval, toollist);
+				eval.save(function (err) {
+					if (err) {
+						console.log(err); return done(err);
+					}
+					sess.eval = eval;
+					
+						return res.redirect('/coach');
+					
+				});
+						
+					
+			}
+		], function (err) {
+			if (err) return next(err);
+			res.redirect('/coach');
+		});
+	});
 
     //03.03 context and usage
     app.get('/context_and_usage', isLoggedIn, function (req, res) {
@@ -527,7 +577,7 @@ module.exports = function (app, passport) {
 						Eval_End_Date: obj.Eval_End_Date,
 						Type_Curriculum: obj.Type_Curriculum,
 						Type_Practice: obj.Type_Practice,
-						Type_CSchool_Structure: obj.Type_CSchool_Structure,
+						Type_School_Structure: obj.Type_School_Structure,
 						Type_School_Level: obj.Type_School_Level,
 						Type_Teacher_Level: obj.Type_Teacher_Level,
 						Type_Policy: obj.Type_Policy,
