@@ -284,8 +284,7 @@ console.log('checkpoint 0');
 console.log('checkpoint 0.1');
                             // shareresult
                             var challenges_limitations = '',
-                                conclusions_next_steps = '',
-                                baseline_vars_relabel = baseline_vars;
+                                conclusions_next_steps = '';
 
                             // Replace default values where possible
                             if (eval.basics) {
@@ -481,6 +480,8 @@ console.log('checkpoint 0.4');
                                     baseline_vars = results.baseline_vars;
                                 }
                             }
+
+                            var baseline_vars_relabel = baseline_vars;
                           
                             var assignment = '[Users were assigned to treatment and comparison groups.]';
 
@@ -727,7 +728,7 @@ console.log('checkpoint 1');
                                         </div>
                                     </div>
 
-                                    <% if (baseline_results_by_grade) { %>
+                                    <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
                                         <p> Table 1 below summarizes key characteristics of the study sample: </p>
                                         <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
                                         <table id="table1">
