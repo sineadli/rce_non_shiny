@@ -473,7 +473,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                 formData.append("data", $(this)[0].files[0]);
             
                 $.ajax({
-                    url: "https://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
+                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -544,7 +544,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                // if (block_id) formData.append("block_id", JSON.stringify(block_id));
          
                 $.ajax({
-                    url: "https://52.222.20.48/ocpu/library/edtechrce/R/randomize",
+                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/randomize",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -552,7 +552,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                     success: function (data) {
                         var responsePaths = data.split("\n");
                         $.ajax({
-                            url: "https://52.222.20.48" + responsePaths[0] + "/json",
+                            url: "http://52.222.20.48" + responsePaths[0] + "/json",
                             type: "GET",
                             success: function (data) {
                                 $('#loadingmessage2').hide();
@@ -581,7 +581,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                         }
                                        
                                         if (block_object.good_balance[0])
-                                        { balance = block_object.good_balance[0] ===1? "Yes" : "No"; }
+                                        { balance = block_object.good_balance[0] === true ? "Yes" : "No"; }
                                         else
                                         { balance = "N/A (no baseline variables specified)" }
                                        
@@ -629,7 +629,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                         .removeClass("disabled");
                                     $("#downloadData")
                                       .attr("target", "_blank")
-                                      .attr("href", "https://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
+                                      .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
                                 }
                              
                                 // Save results to database.
