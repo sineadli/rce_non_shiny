@@ -558,14 +558,16 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                 $('#loadingmessage2').hide();
                                 console.log(data);
                                 var error = data.error_message[0];
-                                if (error) { $('#diagnostic_error').append('<div class="row"><div class="col-xs-10"><h2>' + error + '</h2></div></div>'); $('#results').empty(); return; }
-                                 $('#diagnostic_error').remove();
+                                $('#results').html("");
+                                if (error) { $('#results').append('<div class="row"><div class="col-xs-10"><h2>' + error + '</h2></div></div>');  return; }
+                               //  $('#diagnostic_error').remove();
                                 var rSuccess = "Randomization success!";
                                 var balance, baseline_vars;
                                 if (!data.randomize_success[0]) { rSuccess = "Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. " }
                                 var results_by_block = data.results_by_block;
                                 var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
-                                $('#results').append('<div class="row"><div class="col-xs-10"><h2>Randon Assignment Results</h2></div></div>');
+                                
+                                $('#results').append('<div class="row"><div class="col-xs-10"><h2>Random Assignment Results</h2></div></div>');
                                 $('#results').append('<div class="row"><div class="col-xs-10"><h3>' + rSuccess + '</h3></div></div>');
                                 for (var key in results_by_block) {
                                     if (results_by_block.hasOwnProperty(key)) {
@@ -577,12 +579,15 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                             n_full_com = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
                                             n_full_treat = block_object.samples.n_treat[0];
                                         }
-                                      
-                                        if (block_object.good_balance) { balance = block_object.good_balance[0] ? "Yes" : "No"; }
+                                       
+                                        if (block_object.good_balance[0])
+                                        { balance = block_object.good_balance[0] ===1? "Yes" : "No"; }
+                                        else
+                                        { balance = "N/A (no baseline variables specified)" }
                                        
                                         //show block name if block specified
                                         if (title) $('#results').append('<div class="row"><div class="col-xs-7"><span>' + title + ' </div></span></div>');
-                                        $('#results').append('<div class="row"><div class="col-xs-7"><span>Treament group size:  ' + n_full_treat + ' </div></span></div>');
+                                        $('#results').append('<div class="row"><div class="col-xs-7"><span>Treatment group size:  ' + n_full_treat + ' </div></span></div>');
                                         $('#results').append('<div class="row"><div class="col-xs-7"><span>Comparision group size:  ' + n_full_com + ' </div></span></div>');
                                         $('#results').append('<div class="row"><div class="col-xs-7"><span>Balanced:  ' + balance + ' </div></span></div>');
                                     
@@ -603,7 +608,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                                     row.insertCell(1).innerHTML = "<span>" + baseline_vars[bvar].intervention[0] + "</span>";
                                                     row.insertCell(2).innerHTML = "<span>" + baseline_vars[bvar].comparison[0]+ "</span>";
                                                     row.insertCell(3).innerHTML = "<span>" + baseline_vars[bvar].difference[0] + "</span>";
-                                                   
+                                                    row.insertCell(4).innerHTML = "<span>" + balance+ "</span>";
                                                 }
                                             }
                                             var header = x.createTHead();
@@ -612,6 +617,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                             row.insertCell(1).innerHTML = "<span>Treatment</span>";
                                             row.insertCell(2).innerHTML = "<span>Comparison</span>";
                                             row.insertCell(3).innerHTML = "<span>Difference</span>";
+                                            row.insertCell(4).innerHTML = "<span>Balance</span>";
                                             
                                         }
                                     }
