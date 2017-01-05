@@ -1164,6 +1164,17 @@ module.exports = function (app, passport) {
         var query = require('url').parse(req.url, true).query;
         res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query });
     });
+    app.get('/shareresult/:id', isLoggedIn, function (req, res) {
+        sess = req.session;
+        sess.eval.last_step = 6;
+        sess.eval.last_tool = "Share Your Results";
+        var query = require('url').parse(req.url, true).query;
+        console.log(query);
+        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+            sess.publishlists  = eval;
+            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query });
+        });
+    });
     app.post('/shareresult', isLoggedIn,function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
