@@ -1251,18 +1251,16 @@ module.exports = function (app, passport) {
     });
 
     app.post('/download', isLoggedIn, function (req, res) {
-        console.log('download 0');
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.last_step = 6;
-        console.log('download 1');
         var obj = req.body;
-        console.log('download 2');
-
         var dt = new Date();
+
+        var download_type = obj.download_type;
+
         async.waterfall([
             function (callback) {
-                console.log('download 3');
 
                 if (sess.eval) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
@@ -1281,8 +1279,6 @@ module.exports = function (app, passport) {
                     res.redirect('/coach');
             },
             function (eval, callback) {
-                console.log('download 4');
-
                 eval.last_step = 6;
                 eval.last_tool = "Share Your Results";
                 //eval find so update the toolsVisisted accordingly
@@ -1338,11 +1334,13 @@ module.exports = function (app, passport) {
                 callback(null, eval);
             },
             function (eval, callback) {
-                console.log('download 5');
 
                 // Need to generate document file here
                 var query = require('url').parse(req.url, true).query;
-                res.render('shareresult-download.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+
+                console.log('rendering ', 'download_' + download_type + '.html');
+
+                /*res.render('download_' + download_type + '.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
                     function (err, html) {
                         console.log(err);
                         res.setHeader('Content-disposition', 'attachment; filename=brief.html');
@@ -1350,7 +1348,7 @@ module.exports = function (app, passport) {
 
                         res.write(html);
                         res.send();
-                    });
+                    });*/
 
                 //console.log('generate document');
                 //var filename = 'node-google.pdf';
