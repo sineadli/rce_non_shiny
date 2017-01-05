@@ -515,7 +515,10 @@ console.log('checkpoint 0.2');
                                 var shareresult = eval.shareresult;
                                 var conclusions_next_steps = shareresult.conclusions_next_steps || conclusions_next_steps;
                                 var challenges_limitations = shareresult.challenges_limitations || challenges_limitations;
-                                var baseline_vars_relabel = shareresult.baseline_var_relabels || baseline_vars_relabel;
+                                
+                                if (shareresult.baseline_var_relabels.length > 0) {
+                                    baseline_vars_relabel = shareresult.baseline_var_relabels;
+                                }
                             }
 
                             var baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
