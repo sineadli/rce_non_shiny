@@ -12440,7 +12440,7 @@ console.log('checkpoint 1');
 
                                 <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
                                     <p>
-                                        <em><strong>Table 1.</strong> Background Characteristics of Students in the Evaluation Sample</em>
+                                        <em><strong>Table 1.</strong> Background Characteristics of <%= capitalize(users) %> in the Evaluation Sample</em>
                                     </p>
                                     <table id="table1">
                                         <thead>
@@ -12449,7 +12449,7 @@ console.log('checkpoint 1');
                                                 <th>Grade</th>
                                                 <% } %>
                                                 <th> Characteristic</th>
-                                                <th> Overall</th>
+                                                <th> Full Sample</th>
                                                 <th> Treatment</th>
                                                 <th> Comparison</th>
                                                 <th> Difference</th>
@@ -12497,7 +12497,7 @@ console.log('checkpoint 1');
                                 <% } %>
 
                                 <em>Table 1 above summarizes key characteristics of your sample. 
-                                If any of the characteristics have a large value in the “Difference" column, those are characteristics in which differences between users and non-users remain after matching. 
+                                If any of the characteristics have a large value in the "Difference" column, those are characteristics in which differences between users and non-users remain after matching. 
                                 Differences at baseline on important measures (like a baseline test) mean you should interpret the differences in outcomes with caution – 
                                 they may be caused in part by pre-existing differences between users and non-users. 
                                 You can also check this by comparing the effect size to the values indicated in Table 2. 
