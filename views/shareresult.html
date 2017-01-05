@@ -444,40 +444,44 @@ console.log('checkpoint 0.1');
 
                                 if (path === 'path-matching') {
                                     pilot_type = 'matched';
+                                    
+                                    try {
+                                        var match_results = JSON.parse(eval.matching.Result);
+                                        var baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
+                                        var baseline_results_by_grade = match_results.results_by_grade;
 
-                                    var match_results = JSON.parse(eval.matching.Result);
-                                    var baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
-                                    var baseline_results_by_grade = match_results.results_by_grade;
+                                        for (grade in match_results.results_by_grade) {
+                                            var samples = match_results.results_by_grade[grade].samples;
 
-                                    for (grade in match_results.results_by_grade) {
-                                        var samples = match_results.results_by_grade[grade].samples;
+                                            n_full_overall += samples.n_full[0];
+                                            n_full_treatment += samples.n_full_treat[0];
 
-                                        n_full_overall += samples.n_full[0];
-                                        n_full_treatment += samples.n_full_treat[0];
-
-                                        n_overall += samples.n_matched[0];
-                                        n_treatment += samples.n_matched_treat[0];
-
+                                            n_overall += samples.n_matched[0];
+                                            n_treatment += samples.n_matched_treat[0];
+                                        }
+                                        baseline_vars = match_results.match_vars;   
+                                    } catch(e) {
+                                        
                                     }
-
-                                    baseline_vars = match_results.match_vars;
                                 }
                                 else if (path === 'path-random') {
 console.log('checkpoint 0.2');
                                     pilot_type = 'randomized';
 
-                                    var results = JSON.parse(eval.random.Result);
-console.log('checkpoint 0.3');
-                                    baseline_by_grade = Object.keys(results.results_by_block).length > 1;
-                                    baseline_results_by_grade = results.results_by_block;
-console.log('checkpoint 0.4');
-                                    for (grade in baseline_results_by_grade) {
-                                        var samples = baseline_results_by_grade[grade].samples;
-                                        n_overall += samples.n_full[0];
-                                        n_treatment += samples.n_treat[0];
-                                    }
+                                    try {
+                                        var results = JSON.parse(eval.random.Result);
+                                        baseline_by_grade = Object.keys(results.results_by_block).length > 1;
+                                        baseline_results_by_grade = results.results_by_block;
+                                        
+                                        for (grade in baseline_results_by_grade) {
+                                            var samples = baseline_results_by_grade[grade].samples;
+                                            n_overall += samples.n_full[0];
+                                            n_treatment += samples.n_treat[0];
+                                        }
 
-                                    baseline_vars = results.baseline_vars;
+                                        baseline_vars = results.baseline_vars;
+                                    } catch(e) {
+                                    }
                                 }
                             }
 

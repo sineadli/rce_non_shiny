@@ -997,12 +997,12 @@ module.exports = function (app, passport) {
  
 
 	app.post('/randomization', function (req, res) {
-		var toollist = { "name": "Randomization", "status": req.body.status, "visited_at": new Date() };
+        var toollist = { "name": "Random Assignment", "status": req.body.status, "visited_at": new Date() };
 		sess = req.session;
 		sess.eval.step = 4;
 		var obj = req.body;
 		var returnpath = obj.returnpath;
-		if (returnpath === '') returnpath = "randomization";
+        if (returnpath === '') returnpath = "Random Assignment";
 		console.log(obj);
 		var dt = new Date();
 		async.waterfall([
@@ -1025,7 +1025,7 @@ module.exports = function (app, passport) {
 			},
 			function (eval, done) {
 				eval.last_step = 4;
-				eval.last_tool = "Randomization";
+                eval.last_tool = "Random Assignment";
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
 
@@ -1163,6 +1163,17 @@ module.exports = function (app, passport) {
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
         res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+    });
+    app.get('/shareresult/:id', isLoggedIn, function (req, res) {
+        sess = req.session;
+        sess.eval.last_step = 6;
+        sess.eval.last_tool = "Share Your Results";
+        var query = require('url').parse(req.url, true).query;
+        console.log(query);
+        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+            sess.publishlists  = eval;
+            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query });
+        });
     });
     app.post('/shareresult', isLoggedIn,function (req, res) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
