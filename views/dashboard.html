@@ -56,11 +56,14 @@
                         <%= user.profile.organization_name %>
                     </p>
                 </div>
-                <div class="dash-well">
+                <div class="dash-well sidebar-left">
                     <div class="row">
-                        <ul><li><button type="button" class="btn-link sec-label" style="text-align: left;"role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION </button></li>
+                        <ul class="wizard-menu">
+                            <li class="wizard-item">
+                               <button type="button" class="btn-link sec-label" role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION </button></li>
 
-                            <li><a href="/publications" class="sec-label">View Published Evaluations </a></li>
+                            <li class="wizard-item">
+                                <button role="link" data-target="/publications" class="btn-link sec-label">View Published Evaluations </button></li>
                         </ul>
                        
                     </div>
@@ -71,13 +74,17 @@
                 var evallabel = "Begin Evaluation"
                 var evaltitle = "Ready to test an app?";
                 var status= "New";
+                var statuslength = 0;
                 var helpcaret = "fa-caret-down";
                 var helphidden = "aria-hidden='false'"
                 var helpdetail = "in"
                 var eval = evals.filter(function (x) { return x._id.equals(user.evalid)});
                 if (eval.length>0) {
- 
-                evaltitle = eval[0].title; status=parseInt(eval[0].status) + "% Completed";
+                var EvalButtonText = eval[0].status == 100 ? "Edit" : "Continue";
+                evaltitle = eval[0].title;
+                status=parseInt(eval[0].status) + "% Completed";
+                statuslength = eval[0].status > 0 ? (200*(eval[0].status/100)) : 0;
+                var statusstyle = eval[0].status == 100 ? "completed" : "";
                 evallabel = "Current Evaluation";
                 helpcaret = "fa-caret-right";
                 helphidden = "aria-hidden='true'"
@@ -101,7 +108,7 @@
                             <h3 class="sec-label">What does it take to conduct a rapid cycle evaluation? </h3>
                             <p>Read the basics on using the Ed Tech Rapid Cycle Evaluation Coach to conduct your own RCE. This overview shows the steps that you’ll need to complete and the tools that will help you through the process. </p>
                             <p class="pull-right">
-                                <a onclick=" window.open('/static/pdf/RCTE One-Page Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                <a onclick=" window.open('/static/pdf/RCTE One-Page Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
                             </p>
                             <div class="clearfix"></div>
                         </div>
@@ -109,14 +116,14 @@
                             <h3 class="sec-label">Choosing a technology</h3>
                             <p>If you are looking for a technology to implement, use this guide to help you with that process and return to the Coach once you are ready to plan a pilot of that technology. </p>
                             <p class="pull-right">
-                                <a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                <a onclick=" window.open('/static/pdf/01.02ChooseATechnology.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
                             </p>
                         </div>
                         <div class="col-sm-6 help-panel ">
                             <h3 class="sec-label">Understanding types of evidence</h3>
                             <p>This resource describes common types and sources of evidence. It explains how to tell if the evidence can support claims that a technology is effective.</p>
                             <p class="pull-right">
-                                <a onclick="window.open('/static/pdf/01.03 UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                <a onclick=" window.open('/static/pdf/01.03 UnderstandTypesofEvidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
                             </p>
                         </div>
                         <div class="clearfix"></div>
@@ -124,81 +131,97 @@
                     </div>
                     <div class="clearfix"></div>
                 </div>
-                <div class="dash-well">
-                    <div class="sec-label"><%= evallabel %></div>
-                    <h2><%= evaltitle %></h2>
-                    <p>
-                        <% if (eval.length>0) { %>
-                    <p>
-                        <span class="sec-label">Status</span>: <%= status %>
-                    </p>
-                    <p>
-                        <span class="sec-label">Start Date</span>:<%= startdate.getMonth() + 1 + '/' + startdate.getDate() + '/' + startdate.getFullYear() %>
-                    </p>
-                    <div>
-                        <p class="text-center add-padding">
-                            <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg">CONTINUE THIS EVALUATION</a> <br />
+                <h2>Your Evaluations</h2>
+                <div class="dash-well eval-div current <%= statusstyle %>">
+                    <div style="float: left; width: 75%;">
+
+                        <h3><%= evaltitle %></h3>
+                        <div class="sec-label current"><%= evallabel %></div>
+                        <div class="indentleft10">
+                            <p>
+                                <span class="sec-label">Started</span>: <%= startdate.getMonth() + 1 + '/' + startdate.getDate() + '/' + startdate.getFullYear() %>
+                            </p>
+
+                            <% if (eval.length>0) { %>
+
+                            <span class="sec-label">Status</span>: <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;">&nbsp;</div></div> <%= status %>
+                        </div>
+                        
+                        </div>
+                        <div style="float: right; width: 20%;">
+                           
+                                <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg">CONTINUE</a> <br />
+                           
+                        </div>
+                        <div class="clearfix"></div>
+                        <% } %>
+                        <% if (eval.length===0) { %>
+                        <p>
+                            Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
                         </p>
-                    </div>                 
-                    <% } %>
-                    <% if (eval.length===0) { %>
-                    <p>
-                        Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
-                    </p>
-                    <div>
-                        <p class="text-center add-padding">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">START EVALUATION</button>
-                        </p>
-                    </div>
-                    <% } %>
-                    <!-- Trigger the modal with a button -->
-                    <!-- Modal -->
-                    <div id="myModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Enter a name for your evaluation</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <% var evalid; if (eval) {evalid = eval._id} %>
-                                    <input type="hidden" id="evalid" value="<%= evalid %>" />
-                                    <input type="text" id="title" />
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                    <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                        <div>
+                            <p class="text-center add-padding">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">START EVALUATION</button>
+                            </p>
+                        </div>
+                        <% } %>
+                        <!-- Trigger the modal with a button -->
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Enter a name for your evaluation</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <% var evalid; if (eval) {evalid = eval._id} %>
+                                        <input type="hidden" id="evalid" value="<%= evalid %>" />
+                                        <input type="text" id="title" />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                        <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <%  if(evals.length>0){ for (var i=0; i < evals.length; i++){
                 if (evals[i]._id.equals(user.evalid) ){continue;}
-                var evallabel = "Recent Evaluation";
-
+          
                 var evaltitle = evals[i].title;
-                var status= parseInt(evals[i].status) +"% Completed" ;
+                var status=parseInt(evals[i].status) + "% Completed";
+                var statuslength = evals[i].status > 0 ? (200*(evals[i].status/100))  : 0;
+                var statusstyle = evals[i].status == 100 ? "completed" : "";
+                var EvalButtonText = evals[i].status == 100 ? "Edit" : "Continue";
                 var d = new Date(evals[i].created_at)
                 var helpcaret = "fa-caret-down";
                 var helphidden = "false"
                 var helpdetail = "in" %>
-                <div class="dash-well">
-                    <div class="sec-label"><%= evallabel %></div>
-                    <h2><%= evaltitle %></h2>
-                    <p>
-                        <span class="sec-label">Status</span>: <%= status %>
-                    </p>
-                    <p>
-                        <span class="sec-label">Start Date</span>:<%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
-                    </p>
-                    <div>
-                        <p class="text-center add-padding">
-                            <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval">CONTINUE THIS EVALUATION</a> <br />
+                <div class="dash-well eval-div <%= statusstyle %>">
+                    <div style="float: left; width: 75%;">
+                        <h3><%= evaltitle %></h3>
+                        <p>
+                            <span class="sec-label evaldate">Started</span>: <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
                         </p>
+                   
+                            <span class="sec-label">Status</span>: <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;">&nbsp;</div></div> <%= status %>
+                        
+
+                      
                     </div>
-                </div>
+                   
+                        <div style="float: right; width: 20%;">
+                           
+                                <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a>
+                        
+                        </div>
+
+                   
+                    <div class="clearfix"></div>
+                    </div>
                 <%}} %>
             </div>
         </div>
