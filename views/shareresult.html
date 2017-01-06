@@ -167,7 +167,6 @@
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" > 
-<%= JSON.stringify(eval.basics) %>
                         <% 
 console.log('checkpoint 0');
                             var stripPercent = function(x) {
@@ -326,20 +325,20 @@ console.log('checkpoint 0.1');
                                 try {
                                     var basics          = eval.basics;
                                     Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
-                                    if (!basics.Basics_Tech_Name)   data_issues.basics.push("Technology name is blank or undefined.");
+                                    if (!basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
 
                                     if (!basics.Basics_Outcome) {
                                         data_issues.basics.push("Outcome is blank or undefined.");
-                                    } else if (basics.Basics_Outcome === 'Select an option') {
-                                        data_issues.basics.push("Outcome was not specified.");
+                                    } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
+                                        data_issues.basics.push("Outcome is not specified.");
                                     } else {
                                         Basics_Outcome = basics.Basics_Outcome || Basics_Outcome;
                                     }
                                     
                                     if (!basics.Basics_Users) {
                                         data_issues.basics.push("User description is blank or undefined.");
-                                    } else if (basics.Basics_Outcome === 'Select an option') {
-                                        data_issues.basics.push("User description was not specified.");
+                                    } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
+                                        data_issues.basics.push("User description is not specified.");
                                     } else {
                                         Basics_Users = basics.Basics_Users || Basics_Users;
                                     }
@@ -362,16 +361,21 @@ console.log('checkpoint 0.1');
                                 try {
                                     var planQuestion    = eval.planQuestion;
                                     
-                                    Outcome_Direction   = planQuestion.Outcome_Direction || Outcome_Direction;
-                                    if (!planQuestion.Outcome_Direction)       data_issues.planQuestion.push("Outcome direction is blank or undefined.");
+                                    if (!planQuestion.Outcome_Direction) {
+                                        data_issues.planQuestion.push("Outcome direction is blank or undefined.");
+                                    } else if (planQuestion.Outcome_Direction.toLowerCase() === 'select an option') {
+                                        data_issues.planQuestion.push("Outcome direction is not specified.");
+                                    } else {
+                                        Outcome_Direction = planQuestion.Outcome_Direction || Outcome_Direction;
+                                    }
                                     
-                                    Outcome_Measure     = planQuestion.Outcome_Measure || Outcome_Measure;
-                                    if (!planQuestion.Outcome_Measure)         data_issues.planQuestion.push("Outcome measure is blank or undefined.");
+                                    Outcome_Measure = planQuestion.Outcome_Measure || Outcome_Measure;
+                                    if (!planQuestion.Outcome_Measure) data_issues.planQuestion.push("Outcome measure is blank or undefined.");
 
                                     Intervention_Group_Desc = planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
                                     if (!planQuestion.Intervention_Group_Desc) data_issues.planQuestion.push("Intervention group description is blank or undefined.");
 
-                                    Comparison_Group_Desc   = planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
+                                    Comparison_Group_Desc = planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
                                     if (!planQuestion.Comparison_Group_Desc)   data_issues.planQuestion.push("Comparison group description is blank or undefined.");
                          
                                 } catch (e) {
