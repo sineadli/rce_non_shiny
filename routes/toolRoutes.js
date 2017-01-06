@@ -694,10 +694,12 @@ module.exports = function (app, passport) {
 				eval.last_tool = "Prepare Your Data for Analysis";
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
-				
+			    console.log(obj);
 				
 				eval.basics.Basics_Users = obj.Basics_Users;
 				eval.basics.Basics_Users_Others = obj.Basics_Users_Others;
+				eval.prepare.Check_Pretest = obj.Check_Pretest;
+				eval.prepare.Check_Background = obj.Check_Background;
 
 			    var prepareRandom = obj.PrepareRandom;
 					

@@ -124,6 +124,35 @@ body.dashboard div.page-header {
     color: #979762;
     color: #71714a;
 }
+.indentleft10 {
+    margin-left: 10px;
+}
+div.eval-div .sec-label {
+    font-size: .8em;
+}
+div.eval-div .sec-label.current {
+    font-size: .85em;
+    color: #006982;
+    font-weight: 600;
+}
+div.eval-div h3 {
+    font-size: 1.5em;
+    margin: 0 0 5px 0;
+}
+div.eval-div p {
+
+    margin: 0px 0px;
+}
+.outer-status-bar {
+    width: 200px;
+    height: 20px;
+    display: inline-block;
+    outline: 1px solid #222;
+}
+.status-bar {
+    background-color: #fac500;
+    height: 20px;
+}
 a.sec-label, button.sec-label {
     font-size: .9em;
     color: #4081A8;
@@ -265,10 +294,13 @@ h3.sec-label {
 }
 h2 {
   font-size:1.55em;
-    font-size: 24px;
+    font-size: 1.8em;
   font-weight:600;
   margin-top: 5px;
     margin-bottom: 15px;
+}
+div.tool-title h2 {
+    font-size: 1.55em;
 }
 h3 {
   color:#000000;
@@ -566,7 +598,10 @@ div.dash-well a.btn-primary {
     font-size: 1.2em;
     padding: 8px 12px;
 }
-
+div.dash-well.eval-div a.btn-primary {
+    width: 125px;
+    text-transform: capitalize;
+}
 /* Wizard Landing page */
 div.wizard-header-row {
    border: 1px solid #BAB38F;
@@ -609,12 +644,25 @@ ul.wizard-menu li {
     margin: 0;
     
 }
+div.sidebar-left ul.wizard-menu li {
+    width: 92%;
+    border: none;
+}
 
 ul.wizard-menu li:first-child {
     border-left: none;
 }
-
-ul.wizard-menu li p {
+div.dash-well.sidebar-left {
+    padding: 0;
+}
+div.dash-well.sidebar-left ul.wizard-menu{
+    margin: 0 0 0 20px;
+    border: none;
+}
+div.sidebar-left ul.wizard-menu li:first-child{
+    border-bottom: #ccc 1px solid;
+}
+ul.wizard-menu li p, div.dash-well.sidebar-left ul.wizard-menu li button {
     padding-top: 5px;
     text-align: center;
  
@@ -632,13 +680,20 @@ ul.wizard-menu li p {
         background:#F4F2EB ;
         height: 70px;
     }
-     ul.wizard-menu li.active {
-       
+     ul.wizard-menu li.active, ul.wizard-menu li:hover,  ul.wizard-menu li:focus {   
         border-bottom: #4081A8 3px solid;
-        font-weight: bold;
+        font-weight: 600;
         height: 72px;
          text-align: center;
     }
+      div.dash-well.sidebar-left ul.wizard-menu li.active, div.dash-well.sidebar-left ul.wizard-menu li:hover, div.dash-well.sidebar-left ul.wizard-menu li:focus {   
+        color: #4081A8;
+          height: 70px;
+         border-bottom: #4081A8 2px solid;
+    }
+div.dash-well.sidebar-left ul.wizard-menu li.active button, div.dash-well.sidebar-left ul.wizard-menu li:hover button, div.dash-well.sidebar-left ul.wizard-menu li:focus button {
+    color: #4081A8;
+}
      a.step-label {
      text-transform: uppercase;
      font-size: 1.3em;
@@ -677,7 +732,7 @@ div.tool-div {
     background-color: #ffffff;
 }
 
-div.tool-div.current {
+div.tool-div.current, div.eval-div.current {
     border: 2px solid #4081A8;
     border: 2px solid #006982;
      box-shadow: 3px 3px 3px #AFCBDA
@@ -694,7 +749,7 @@ div.tool-div div.tool-bottom {
 }
 
 
-    div.tool-div.Completed, div.tool-div.completed {
+    div.tool-div.Completed, div.tool-div.completed, div.eval-div.completed  {
         background-color: #ECEBDD;
     }
 
@@ -1463,7 +1518,7 @@ div.carousel-inner div.item.active, div.carousel-inner div.item {
 
 .highLight {
   
-    border: 2px solid #FAC500 !important;
+    border: 3px solid #FAC500 !important;
 }
 .anno0, .anno1, .anno2, .anno3, .anno5, table.example th {
     cursor: pointer;
