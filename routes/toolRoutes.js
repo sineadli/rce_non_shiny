@@ -1166,8 +1166,6 @@ module.exports = function (app, passport) {
     });
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
         sess = req.session;
-        sess.eval.last_step = 6;
-        sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
         console.log(query);
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
