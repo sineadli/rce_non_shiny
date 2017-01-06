@@ -245,20 +245,14 @@ console.log('checkpoint 0');
                                 Outcome_Measure         = '[outcome measure]',
                                 Intervention_Group_Desc = '[the intervention group]',
                                 Comparison_Group_Desc   = '[the comparison group]';
-
-                            var n_overall = 0,
-                                n_treatment = 0,
-                                n_full_overall = 0,
-                                n_full_treatment = 0;
-
-                            var baseline_by_grade = false;
-                            var baseline_vars = [];
-
+                                
                             // planNext 
-                            var pass_probability = '[probability]',
-                                tech_cost_saves = '[saves/costs]',
-                                tech_amount = '[amount]',
-                                tech_cost_user = '[user]';
+                            var Pass_Probability    = '[probability]',
+                                Tech_Cost_Saves     = '[saves/costs]',
+                                Tech_Amount         = '[amount]',
+                                Tech_Cost_User      = '[user]',
+                                Action_Success      = '[next step if moving the needle]',
+                                Action_Fail         = '[next step if not moving the needle]';
 
                             // planContext
                             var program_types = [],
@@ -282,6 +276,16 @@ console.log('checkpoint 0');
                                 expected_dosage = '[expected dosage]',
                                 other_notes = '[other notes]';
 console.log('checkpoint 0.1');
+
+
+                        var n_overall = 0,
+                        n_treatment = 0,
+                        n_full_overall = 0,
+                        n_full_treatment = 0;
+
+                        var baseline_by_grade = false;
+                        var baseline_vars = [];
+
                             // shareresult
                             var challenges_limitations = '',
                                 conclusions_next_steps = '';
@@ -317,15 +321,16 @@ console.log('checkpoint 0.1');
                             // Replace default values where possible
                             if (eval.basics) {
                                 try {
-                                    Basics_Tech_Name = eval.basics.Basics_Tech_Name || Basics_Tech_Name;
-                                    Basics_Outcome = eval.basics.Basics_Outcome || Basics_Outcome;
+                                    var basics          = eval.basics;
+                                    Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
+                                    Basics_Outcome      = basics.Basics_Outcome || Basics_Outcome;
 
-                                    Basics_Users = eval.basics.Basics_Users || Basics_Users;
-                                    if (Basics_Users === 'other') Basics_Users = eval.basics.Basic_Users_other || Basics_Users_Other;
+                                    Basics_Users        = basics.Basics_Users || Basics_Users;
+                                    if (Basics_Users === 'other') Basics_Users = basics.Basic_Users_other || Basics_Users_Other;
 
-                                    if (!eval.basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
-                                    if (!eval.basics.Basics_Outcome) data_issues.basics.push("Outcome is blank or undefined.");
-                                    if (!eval.basics.Basics_Users) data_issues.basics.push("User description is blank or undefined.");
+                                    if (!basics.Basics_Tech_Name)   data_issues.basics.push("Technology name is blank or undefined.");
+                                    if (!basics.Basics_Outcome)     data_issues.basics.push("Outcome is blank or undefined.");
+                                    if (!basics.Basics_Users)       data_issues.basics.push("User description is blank or undefined.");
 
                                 } catch (e) {
                                     data_issues.basics.push("Missing or invalid data.");
@@ -338,16 +343,17 @@ console.log('checkpoint 0.1');
 
                             if (eval.planQuestion) {
                                 try {
-                                    Outcome_Direction   = eval.planQuestion.Outcome_Direction || Outcome_Direction;
-                                    Outcome_Measure     = eval.planQuestion.Outcome_Measure || Outcome_Measure;
+                                    var planQuestion    = eval.planQuestion;
+                                    Outcome_Direction   = planQuestion.Outcome_Direction || Outcome_Direction;
+                                    Outcome_Measure     = planQuestion.Outcome_Measure || Outcome_Measure;
 
-                                    Intervention_Group_Desc = eval.planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
-                                    Comparison_Group_Desc   = eval.planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
+                                    Intervention_Group_Desc = planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
+                                    Comparison_Group_Desc   = planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
 
-                                    if (!eval.planQuestion.Outcome_Direction)       data_issues.planQuestion.push("Outcome direction is blank or undefined.");
-                                    if (!eval.planQuestion.Outcome_Measure)         data_issues.planQuestion.push("Outcome measure is blank or undefined.");
-                                    if (!eval.planQuestion.Intervention_Group_Desc) data_issues.planQuestion.push("Intervention group description is blank or undefined.");
-                                    if (!eval.planQuestion.Comparison_Group_Desc)   data_issues.planQuestion.push("Comparison group description is blank or undefined.");
+                                    if (!planQuestion.Outcome_Direction)       data_issues.planQuestion.push("Outcome direction is blank or undefined.");
+                                    if (!planQuestion.Outcome_Measure)         data_issues.planQuestion.push("Outcome measure is blank or undefined.");
+                                    if (!planQuestion.Intervention_Group_Desc) data_issues.planQuestion.push("Intervention group description is blank or undefined.");
+                                    if (!planQuestion.Comparison_Group_Desc)   data_issues.planQuestion.push("Comparison group description is blank or undefined.");
                          
                                 } catch (e) {
                                     data_issues.planQuestion.push("Missing or invalid data.")
@@ -355,6 +361,33 @@ console.log('checkpoint 0.1');
 
                             } else {
                                 data.issues.planQuestion.push("No data found for this tool for this evaluation.")
+                            }
+
+                            if (eval.planNext) {
+                                try {
+                                    var planNext        = eval.planNext;
+                                    Pass_Probability    = stripPercent(planNext.Pass_Probability) || Pass_Probability;
+
+                                    Tech_Cost_Saves     = planNext.Tech_Cost_Saves || Tech_Cost_Saves;
+                                    Tech_Amount         = planNext.Tech_Amount || Tech_Amount;
+                                    Tech_Cost_User      = planNext.Tech_Cost_User || Tech_Cost_User;
+
+                                    Action_Success      = planNext.Action_Success || Action_Success;
+                                    Action_Fail         = planNext.Action_Fail || Action_Fail;
+
+                                    if (!planNext.Pass_Probability) data_issues.planNext.push("Desired probability of moving the needle is blank or undefined.");
+                                    if (!planNext.Tech_Cost_Saves)  data_issues.planNext.push("Whether technology costs/saves is blank or undefined.");
+                                    if (!planNext.Tech_Amount)      data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
+                                    if (!planNext.Tech_Cost_User)   data_issues.planNext.push("Technology user type is blank or undefined.");
+                                    if (!planNext.Action_Success)   data_issues.planNext.push("Next step for moving the needle is blank or undefined.");
+                                    if (!planNext.Action_Fail)      data_issues.planNext.push("Next step for not moving the needle is blank or undefined.");
+
+                                } catch (e) {
+                                    data_issues.planNext.push("Missing or invalid data.");
+                                }
+
+                            } else {
+                                data_issues.planNext.push("No data found for this tool for this evaluation.");
                             }
 
                             var header = 'Analysis results not found';
@@ -373,7 +406,7 @@ console.log('checkpoint 0.1');
                                     for (grade in analysis_results_by_grade) {
 
                                         var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                                        var success = (probability > pass_probability);
+                                        var success = (probability > Pass_Probability);
 
                                         if (success) {
                                             success_count++;
@@ -396,21 +429,7 @@ console.log('checkpoint 0.1');
                             }
                             
                             
-                            if (eval.planNext) {
-                                try {
-                                    var plan_next = eval.planNext;
-                                    pass_probability = stripPercent(plan_next.Pass_Probability) || pass_probability;
-
-                                    tech_cost_saves = plan_next.Tech_Cost_Saves || tech_cost_saves;
-                                    tech_amount = plan_next.Tech_Amount || tech_amount;
-                                    tech_cost_user = plan_next.Tech_Cost_User || tech_cost_user;
-
-                                } catch (e) {
-                                    data_issues.planNext.push("Missing or invalid data.");
-                                }
-                            } else {
-                                data_issues.planNext.push("No data found for this tool for this evaluation.");
-                            }
+                            
 
                             if (eval.planContext) {
                                 var context = eval.planContext;
@@ -628,12 +647,12 @@ console.log('checkpoint 1');
 
                                         try {
                                             var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                                            var success = (probability > pass_probability);
+                                            var success = (probability > Pass_Probability);
 
                                             var needle_decision = (success) ? 'Yes' : 'No';
                                             var needle_negate = (success) ? '' : ' not';
 
-                                            var next_steps = (success) ? plan_next.Action_Success : plan_next.Action_Fail;
+                                            var next_steps = (success) ? Action_Success : Action_Fail;
 
                                             var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
                                             var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
@@ -694,7 +713,7 @@ console.log('checkpoint 1');
                                             <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
                                         </p>
                                     <% } %>
-                                    <em> <%= capitalize(tech_cost_saves) %></em> : $<%= tech_amount %> per <%= tech_cost_user %><br / >   
+                                    <em> <%= capitalize(Tech_Cost_Saves) %></em> : $<%= Tech_Amount %> per <%= Tech_Cost_User %><br / >   
                                     <% if (user != "NOAUTHENTICATED") {%>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer this?
@@ -845,7 +864,7 @@ console.log('checkpoint 1');
                                                     <% if (baseline_by_grade) { %>
                                                     <td></td>
                                                     <% } %>
-                                                    <td> Number of <%= users %></td>
+                                                    <td> Number of <%= Basics_Users %></td>
                                                     <td> <%= n_overall %></td>
                                                     <td> <%= n_treatment %></td>
                                                     <td> <%= n_comparison %></td>
