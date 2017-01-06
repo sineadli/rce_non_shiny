@@ -36,7 +36,6 @@
     
 </head>
 <body>
-
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
         if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
@@ -287,21 +286,75 @@ console.log('checkpoint 0.1');
                             var challenges_limitations = '',
                                 conclusions_next_steps = '';
 
-                            // Replace default values where possible
-                            if (eval.basics) {
-                                tech_name = eval.basics.Basics_Tech_Name || tech_name;
-                                basic_outcome = eval.basics.Basics_Outcome || basic_outcome;
+                            
 
-                                users = eval.basics.Basics_Users || users;
-                                if (users === 'other') users = eval.basics.Basic_Users_other;
+                            var tool_routes = {
+                                basics          : '/basics',
+                                planQuestion    : '/craft_your_research_q',
+                                planNext        : '/plan_next_steps',
+                                planContext     : '/context_and_usage',
+                                random          : '/randomization',
+                                matching        : '/matching',
+                                getresult       : '/getresult'
                             }
 
-                            if (eval.planQuestion) {
-                                outcome_direction = eval.planQuestion.Outcome_Direction || outcome_direction;
-                                outcome_measure = eval.planQuestion.Outcome_Measure || outcome_measure;
+                            var tool_names = {
+                                basics          : 'Basics',
+                                planQuestion    : 'Craft Your Research Question',
+                                planNext        : 'Think About How to Use Your Results',
+                                planContext     : 'Summarize Context',
+                                random          : 'Random Assignment',
+                                matching        : 'Matching',
+                                getresult       : 'Get Results'
+                            }
 
-                                intervention_group = eval.planQuestion.Intervention_Group_Desc || intervention_group;
-                                comparison_group = eval.planQuestion.Comparison_Group_Desc || comparison_group;
+                            data_issues = {};
+
+                            for (tool in tool_names) {
+                                data_issues[tool] = [];
+                            }
+
+                            // Replace default values where possible
+                            if (eval.basics) {
+                                try {
+                                    tech_name = eval.basics.Basics_Tech_Name || tech_name;
+                                    basic_outcome = eval.basics.Basics_Outcome || basic_outcome;
+
+                                    users = eval.basics.Basics_Users || users;
+                                    if (users === 'other') users = eval.basics.Basic_Users_other;
+
+                                    if (tech_name       === '') data_issues.basics.push("Technology name is blank.");
+                                    if (basic_outcome   === '') data_issues.basics.push("Outcome is blank.");
+                                    if (users           === '') data_issues.basics.push("User description is blank.");
+
+                                } catch (e) {
+                                    data_issues.basics.push("Missing or invalid data.");
+                                }
+
+                            } else {
+                                data.issues.basics.push("No data found for this tool for this evaluation.")
+                            }
+
+
+                            if (eval.planQuestion) {
+                                try {
+                                    outcome_direction = eval.planQuestion.Outcome_Direction || outcome_direction;
+                                    outcome_measure = eval.planQuestion.Outcome_Measure || outcome_measure;
+
+                                    intervention_group = eval.planQuestion.Intervention_Group_Desc || intervention_group;
+                                    comparison_group = eval.planQuestion.Comparison_Group_Desc || comparison_group;
+
+                                    if (outcome_direction  === '')  data_issues.planQuestion.push("Outcome direction is blank.");
+                                    if (outcome_measure    === '')  data_issues.planQuestion.push("Outcome measure is blank.");
+                                    if (intervention_group === '')  data_issues.planQuestion.push("Intervention group description is blank.");
+                                    if (comparison_group   === '')  data_issues.planQuestion.push("Comparison group description is blank.");
+                         
+                                } catch (e) {
+                                    data_issues.planQuestion.push("Missing or invalid data.")
+                                }
+
+                            } else {
+                                data.issues.planQuestion.push("No data found for this tool for this evaluation.")
                             }
 
                             var header = 'Analysis results not found';
@@ -309,6 +362,8 @@ console.log('checkpoint 0.1');
 
                             if (eval.getresult) {
                                 try {
+                                    if (eval.getresult.Result === '') data_issues.getresult.push("Analysis incomplete.");
+
                                     var analysis_results = JSON.parse(eval.getresult.Result);
                                     var analysis_results_by_grade = analysis_results.results_by_grade;
                                     var analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
@@ -332,19 +387,30 @@ console.log('checkpoint 0.1');
                                     var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
 
                                     var header = capitalize(tech_name) + ' is' + needle_negate + ' moving the needle on ' + basic_outcome + grade_qualifier;
+
                                 } catch (e) {
-                                    var header = 'Problem found in analysis results.';
+                                    data_issues.getresult.push("Missing or invalid data.");
                                 }
+                            } else {
+                                data_issues.getresult.push("No data found for this tool for this evaluation.");
                             }
                             
+                            
                             if (eval.planNext) {
-                                var plan_next = eval.planNext;
-                                pass_probability = stripPercent(plan_next.Pass_Probability) || pass_probability;
+                                try {
+                                    var plan_next = eval.planNext;
+                                    pass_probability = stripPercent(plan_next.Pass_Probability) || pass_probability;
 
-                                tech_cost_saves = plan_next.Tech_Cost_Saves || tech_cost_saves;
-                                tech_amount = plan_next.Tech_Amount || tech_amount;
-                                tech_cost_user = plan_next.Tech_Cost_User || tech_cost_user;
-                            }    
+                                    tech_cost_saves = plan_next.Tech_Cost_Saves || tech_cost_saves;
+                                    tech_amount = plan_next.Tech_Amount || tech_amount;
+                                    tech_cost_user = plan_next.Tech_Cost_User || tech_cost_user;
+
+                                } catch (e) {
+                                    data_issues.planNext.push("Missing or invalid data.");
+                                }
+                            } else {
+                                data_issues.planNext.push("No data found for this tool for this evaluation.");
+                            }
 
                             if (eval.planContext) {
                                 var context = eval.planContext;
@@ -851,7 +917,57 @@ console.log('checkpoint 1');
                             </div > 
                         </div >
 
-                        <input type="hidden" name="document_html" id="document_html"/>
+                        <!-- Modal -->
+                        <div id="data-issues-modal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Data Issues Found</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <p>The following issues were found in your evaluation data that will prevent creating a full findings brief.</p>
+                                                <p>Please return to and complete the appropriate tools. Until then, this brief will use placeholder values for all missing or invalid data.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+
+                                                <% for (tool in data_issues) {
+                                                    var issues = data_issues[tool];
+                                                    
+                                                    if (issues.length > 0) {
+                                                        var tool_name = tool_names[tool];
+                                                        var tool_route = tool_routes[tool]; %> 
+
+                                                        <h4><%= tool_name %></h4>
+                                                        <ul>
+                                                            <% for (index in issues) { %>
+                                                                <li><%= issues[index] %></li>
+                                                            <% } %>
+                                                        </ul>
+
+                                                        <% if (user != "NOAUTHENTICATED") {%>
+                                                            <p class="prev-answer hidden-print">
+                                                                <i class="fa fa-hand-o-right"></i> Where can I address this?
+                                                                <a class="redirect-link" href="<%- tool_route %>"><%= tool_name %></a>
+                                                            </p>
+                                                        <% } 
+                                                    }
+                                                } %>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Modal -->
                         <div id="download-modal" class="modal fade" role="dialog">
@@ -999,6 +1115,8 @@ console.log('checkpoint 1');
                 $('form').attr('action', action);
                 $('form').submit();
             });
+
+            $('#data-issues-modal').modal('show');
             
         });
 
