@@ -235,16 +235,16 @@ console.log('checkpoint 0');
                             // Initialize default values in case tools are missing
                             
                             // basics
-                            var tech_name = '[technology name]';
-                            var basic_outcome = '[outcome of interest]';
-                            var users = '[users]';
+                            var Basics_Tech_Name = '[technology name]',
+                                Basics_Outcome   = '[outcome of interest]',
+                                Basics_Users     = '[users]',
+                                Basics_Users_Other = '[users]'
 
                             // planQuestion
-                            var outcome_direction = '[outcome direction]';
-                            var outcome_measure = '[outcome_measure]';
-
-                            var intervention_group = 'the intervention group';
-                            var comparison_group = 'the comparison group';
+                            var Outcome_Direction       = '[outcome direction]',
+                                Outcome_Measure         = '[outcome measure]',
+                                Intervention_Group_Desc = '[the intervention group]',
+                                Comparison_Group_Desc   = '[the comparison group]';
 
                             var n_overall = 0,
                                 n_treatment = 0,
@@ -317,15 +317,15 @@ console.log('checkpoint 0.1');
                             // Replace default values where possible
                             if (eval.basics) {
                                 try {
-                                    tech_name = eval.basics.Basics_Tech_Name || tech_name;
-                                    basic_outcome = eval.basics.Basics_Outcome || basic_outcome;
+                                    Basics_Tech_Name = eval.basics.Basics_Tech_Name || Basics_Tech_Name;
+                                    Basics_Outcome = eval.basics.Basics_Outcome || Basics_Outcome;
 
-                                    users = eval.basics.Basics_Users || users;
-                                    if (users === 'other') users = eval.basics.Basic_Users_other;
+                                    Basics_Users = eval.basics.Basics_Users || Basics_Users;
+                                    if (Basics_Users === 'other') Basics_Users = eval.basics.Basic_Users_other || Basics_Users_Other;
 
-                                    if (tech_name       === '') data_issues.basics.push("Technology name is blank.");
-                                    if (basic_outcome   === '') data_issues.basics.push("Outcome is blank.");
-                                    if (users           === '') data_issues.basics.push("User description is blank.");
+                                    if (!eval.basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
+                                    if (!eval.basics.Basics_Outcome) data_issues.basics.push("Outcome is blank or undefined.");
+                                    if (!eval.basics.Basics_Users) data_issues.basics.push("User description is blank or undefined.");
 
                                 } catch (e) {
                                     data_issues.basics.push("Missing or invalid data.");
@@ -338,16 +338,16 @@ console.log('checkpoint 0.1');
 
                             if (eval.planQuestion) {
                                 try {
-                                    outcome_direction = eval.planQuestion.Outcome_Direction || outcome_direction;
-                                    outcome_measure = eval.planQuestion.Outcome_Measure || outcome_measure;
+                                    Outcome_Direction   = eval.planQuestion.Outcome_Direction || Outcome_Direction;
+                                    Outcome_Measure     = eval.planQuestion.Outcome_Measure || Outcome_Measure;
 
-                                    intervention_group = eval.planQuestion.Intervention_Group_Desc || intervention_group;
-                                    comparison_group = eval.planQuestion.Comparison_Group_Desc || comparison_group;
+                                    Intervention_Group_Desc = eval.planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
+                                    Comparison_Group_Desc   = eval.planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
 
-                                    if (outcome_direction  === '')  data_issues.planQuestion.push("Outcome direction is blank.");
-                                    if (outcome_measure    === '')  data_issues.planQuestion.push("Outcome measure is blank.");
-                                    if (intervention_group === '')  data_issues.planQuestion.push("Intervention group description is blank.");
-                                    if (comparison_group   === '')  data_issues.planQuestion.push("Comparison group description is blank.");
+                                    if (!eval.planQuestion.Outcome_Direction)       data_issues.planQuestion.push("Outcome direction is blank or undefined.");
+                                    if (!eval.planQuestion.Outcome_Measure)         data_issues.planQuestion.push("Outcome measure is blank or undefined.");
+                                    if (!eval.planQuestion.Intervention_Group_Desc) data_issues.planQuestion.push("Intervention group description is blank or undefined.");
+                                    if (!eval.planQuestion.Comparison_Group_Desc)   data_issues.planQuestion.push("Comparison group description is blank or undefined.");
                          
                                 } catch (e) {
                                     data_issues.planQuestion.push("Missing or invalid data.")
@@ -386,7 +386,7 @@ console.log('checkpoint 0.1');
                                     var needle_negate = (success_count === 0) ? ' not' : '';
                                     var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
 
-                                    var header = capitalize(tech_name) + ' is' + needle_negate + ' moving the needle on ' + basic_outcome + grade_qualifier;
+                                    var header = capitalize(Basics_Tech_Name) + ' is' + needle_negate + ' moving the needle on ' + Basics_Outcome + grade_qualifier;
 
                                 } catch (e) {
                                     data_issues.getresult.push("Missing or invalid data.");
@@ -559,7 +559,7 @@ console.log('checkpoint 0.2');
                             if (pilot_type === 'matched') {
 
                                 var suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
-                                assignment = users + ' were matched ' + suffix;
+                                assignment = Basics_Users + ' were matched ' + suffix;
 
                             }
                             else if (pilot_type === 'randomized') {
@@ -573,7 +573,7 @@ console.log('checkpoint 0.2');
                                         if (group === 'other') group = eval.random.Cluster_Group_Other || group;
                                     }
                                 }
-                                assignment = prefix + users + ' were assigned based on ' + group ;
+                                assignment = prefix + Basics_Users + ' were assigned based on ' + group ;
                             }
 
                             var n_comparison = n_overall - n_treatment;
@@ -592,7 +592,7 @@ console.log('checkpoint 0.2');
 console.log('checkpoint 1');
                         %>
                         
-                        <h1 class="tool-title" > <%= capitalize(tech_name) %> Findings Brief</h1 > 
+                        <h1 class="tool-title" > <%= capitalize(Basics_Tech_Name) %> Findings Brief</h1 > 
                         
                         <% if (user != "NOAUTHENTICATED") {
                             var user_name = user.profile.user_name || '< No name found in profile >';
@@ -619,10 +619,10 @@ console.log('checkpoint 1');
                             
                                 <h3 > Research Question</h3 > 
 
-                                    Does <%= tech_name %> <%= outcome_direction %> <%= outcome_measure %> among
-                                    <%= intervention_group %>
+                                    Does <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Outcome_Measure %> among
+                                    <%= Intervention_Group_Desc %>
                                     compared to
-                                    <%= comparison_group %>?
+                                    <%= Comparison_Group_Desc %>?
 
                                     <% for (grade in analysis_results_by_grade) {
 
@@ -651,7 +651,7 @@ console.log('checkpoint 1');
 
                                     <% if (results_clean) { %>
                                         <ol>
-                                            <li> <%= needle_decision + ', we think ' + tech_name + ' is' + needle_negate + ' moving the needle.' %></li>
+                                            <li> <%= needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.' %></li>
                                             <li> <%= interpretation_1 %></li>
                                             <li> <%= interpretation_2 %></li>
                                         </ol>
@@ -676,13 +676,13 @@ console.log('checkpoint 1');
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > This evaluation tested the effectiveness of <%= tech_name %></h2 > 
+                                <h2 > This evaluation tested the effectiveness of <%= Basics_Tech_Name %></h2 > 
                                 
-                                <%= capitalize(tech_name) %> is
+                                <%= capitalize(Basics_Tech_Name) %> is
                                 <%= punctuate(tech_purpose) %>
                                 
                                 <div class="white-background-blue-border">
-                                    <strong> The Basics of <%= tech_name %></strong> <br / >
+                                    <strong> The Basics of <%= Basics_Tech_Name %></strong> <br / >
                                     <em> Program Type</em> : <%= wordList(program_types).toLowerCase() %><br / >
                                     <em> Key Components</em> : <%= tech_components %><br / >
                                     <em> Delivery Type</em> : <%= wordList(delivery_types).toLowerCase() %><br / >
@@ -711,7 +711,7 @@ console.log('checkpoint 1');
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > <%= capitalize(tech_name) %> was tested using a <%= pilot_type %> pilot</h2 > 
+                                <h2 > <%= capitalize(Basics_Tech_Name) %> was tested using a <%= pilot_type %> pilot</h2 > 
                                 <ul > 
                                     <li >  
                                         <% if (pilot_type === 'randomized') { %>
@@ -758,12 +758,12 @@ console.log('checkpoint 1');
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > This evaluation studied <%= tech_name %>'s impact on <%= wordList(grades_used) %> <%= users %></h2>
+                                <h2 > This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= Basics_Users %></h2>
 
                                     <% if (pilot_type === 'matched') { %>
                                         <p>
-                                            The original dataset included <%= n_full_treatment %> students who used <%= tech_name %> and 
-                                            <%= n_full_overall - n_full_treatment %> students who did not use <%= tech_name %>. 
+                                            The original dataset included <%= n_full_treatment %> students who used <%= Basics_Tech_Name %> and 
+                                            <%= n_full_overall - n_full_treatment %> students who did not use <%= Basics_Tech_Name %>. 
                                             The final evaluation dataset included:
                                         </p>
                                     <% } %>
@@ -866,9 +866,9 @@ console.log('checkpoint 1');
                             <div class="col-xs-11" > 
                                 
                                 <h2 > The evaluation period lasted <%= duration %>.</h2 > 
-                                <p > During this period, <%= users %> in the intervention group were intended to use the technology 
+                                <p > During this period, <%= Basics_Users %> in the intervention group were intended to use the technology 
                                     <%= punctuate(expected_dosage) %>
-                                    Students in the comparison group did not have access to <%= tech_name %>. </p >
+                                    Students in the comparison group did not have access to <%= Basics_Tech_Name %>. </p >
                                 <p > 
                                     <label class="hidden-print"> Challenges/Limitations:</label > 
                                     <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
@@ -891,8 +891,8 @@ console.log('checkpoint 1');
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 ><%= sentence(basic_outcome + ' was measured using ' + outcome_measure) %></h2 > 
-                                <p > Analysis of <%= tech_name %> controls for: <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %>.</span>
+                                <h2 ><%= sentence(Basics_Outcome + ' was measured using ' + Outcome_Measure) %></h2 > 
+                                <p > Analysis of <%= Basics_Tech_Name %> controls for: <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %>.</span>
                                     <% if (analysis_by_grade) { %>
                                         Analysis was also conducted by grade.
                                     <% } %> </p > 
@@ -912,7 +912,7 @@ console.log('checkpoint 1');
 
                             <div class="col-xs-11" > 
                                 <h2 > Conclusions and Next Steps</h2 > 
-                                <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- tech_name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
+                                <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
                                 <p class="visible-print-block" id="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
                             </div > 
                         </div >
