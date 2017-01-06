@@ -393,15 +393,25 @@ console.log('checkpoint 0.1');
                                     Pass_Probability    = stripPercent(planNext.Pass_Probability) || Pass_Probability;
                                     if (!planNext.Pass_Probability) data_issues.planNext.push("Desired probability of moving the needle is blank or undefined.");
                         
-                                    Tech_Cost_Saves     = planNext.Tech_Cost_Saves || Tech_Cost_Saves;
-                                    if (!planNext.Tech_Cost_Saves)  data_issues.planNext.push("Whether technology costs/saves is blank or undefined.");
-                        
+                                    if (!planNext.Tech_Cost_Saves) {
+                                        data_issues.planNext.push("Whether technology costs/saves is blank or undefined.");
+                                    } else if (planNext.Tech_Cost_Saves.toLowerCase() === 'select an option') {
+                                        data_issues.planNext.push("Whether technology costs/saves is not specified.");
+                                    } else {
+                                        Tech_Cost_Saves = planNext.Tech_Cost_Saves || Tech_Cost_Saves;
+                                    }
+                                
+                                    if (!planNext.Tech_Amount) data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
                                     Tech_Amount         = planNext.Tech_Amount || Tech_Amount;
-                                    if (!planNext.Tech_Amount)      data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
-                                    
-                                    Tech_Cost_User      = planNext.Tech_Cost_User || Tech_Cost_User;
-                                    if (!planNext.Tech_Cost_User)   data_issues.planNext.push("Technology user type is blank or undefined.");
 
+                                    if (!planNext.Tech_Cost_User) {
+                                        data_issues.planNext.push("Technology user type is blank or undefined.");
+                                    } else if (planNext.Tech_Cost_User.toLowerCase() === 'select an option') {
+                                        data_issues.planNext.push("Technology user type is not specified.");
+                                    } else {
+                                        Tech_Cost_User      = planNext.Tech_Cost_User || Tech_Cost_User;
+                                    }
+                                    
                                     Action_Success      = planNext.Action_Success || Action_Success;
                                     if (!planNext.Action_Success)   data_issues.planNext.push("Next step for moving the needle is blank or undefined.");
                         
