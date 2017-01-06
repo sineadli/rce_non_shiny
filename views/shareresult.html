@@ -407,7 +407,7 @@ console.log('checkpoint 0.1');
                             if (eval.getresult) {
                                 try {
                                     if (eval.getresult.Result === '') {
-                                        data_issues.getresult.push("Analysis incomplete, or results were not saved.") 
+                                        data_issues.getresult.push("Analysis incomplete, or results were not saved. Try completing this tool again.") 
                                     } else {
                                         var analysis_results            = JSON.parse(eval.getresult.Result);
                                         var analysis_results_by_grade   = analysis_results.results_by_grade;
@@ -599,7 +599,7 @@ console.log('checkpoint 0.1');
                                         }
                                         baseline_vars = match_results.match_vars;   
                                     } catch(e) {
-                                        data_issues.matching.push("Missing or invalid data.");
+                                        data_issues.matching.push("Missing, invalid, or not saved data. Try completing this tool again.");
                                     }
                                 }
                                 else if (path === 'path-random') {
@@ -618,7 +618,7 @@ console.log('checkpoint 0.2');
 
                                         baseline_vars = results.baseline_vars;
                                     } catch(e) {
-                                        data_issues.random.push("Missing or invalid data.");
+                                        data_issues.random.push("Missing, invalid, or not saved data. Try completing this tool again.");
                                     }
                                 }
                             }
