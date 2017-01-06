@@ -38,9 +38,10 @@
 <body>
 
     <div id="header"></div>
-    <% if (user != "NOAUTHENTICATED") { %>
+    <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
+        if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Summarizing Your Findings</a></li>
+            <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
         </ol>
         <% if (message.length>0) { %>
         <div class="alert alert-success"><%= message %></div>
