@@ -81,7 +81,7 @@
                 var helpdetail = "in"
                 var eval = evals.filter(function (x) { return x._id.equals(user.evalid)});
                 console.log(eval);
-                if (eval[0].length>0) {
+                if (eval.length>0) {
                 var EvalButtonText = eval[0].status == 100 ? "Edit" : "Continue";
                 evaltitle = eval[0].title;
                 status=parseInt(eval[0].status) + "% Completed";
@@ -139,34 +139,37 @@
 
                         <h3><%= evaltitle %></h3>
                         <div class="sec-label current"><%= evallabel %></div>
+                        <% if (eval.length>0) { %>
                         <div class="indentleft10">
                             <p>
                                 <span class="sec-label">Started</span>: <%= startdate.getMonth() + 1 + '/' + startdate.getDate() + '/' + startdate.getFullYear() %>
                             </p>
 
-                            <% if (eval.length>0) { %>
 
-                            <span class="sec-label">Status</span>: <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;">&nbsp;</div></div> <%= status %>
+
+                            <span class="sec-label">Status</span>:
+                            <div class="outer-status-bar">
+                                <div class="status-bar" style="width: <%=statuslength + 'px'%>;">&nbsp;</div>
+                            </div> <%= status %>
                         </div>
-                        
-                        </div>
-                        <div style="float: right; width: 20%;">
-                           
-                                <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg">CONTINUE</a> <br />
-                           
-                        </div>
-                        <div class="clearfix"></div>
                         <% } %>
                         <% if (eval.length===0) { %>
                         <p>
                             Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
                         </p>
-                        <div>
-                            <p class="text-center add-padding">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">START EVALUATION</button>
-                            </p>
-                        </div>
                         <% } %>
+                        </div>
+                    
+                    <div style="float: right; width: 20%;">
+                            <% if (eval.length>0) { %>  
+                                <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
+                            <% } else if (eval.length===0) { %>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">START EVALUATION</button>
+                            <% } %>
+                        </div>
+                      
+                       <div class="clearfix"></div>
+                       
                         <!-- Trigger the modal with a button -->
                         <!-- Modal -->
                         <div id="myModal" class="modal fade" role="dialog">
