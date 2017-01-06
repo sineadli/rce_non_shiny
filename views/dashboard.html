@@ -74,12 +74,14 @@
                 var evallabel = "Begin Evaluation"
                 var evaltitle = "Ready to test an app?";
                 var status= "New";
+              
                 var statuslength = 0;
                 var helpcaret = "fa-caret-down";
                 var helphidden = "aria-hidden='false'"
                 var helpdetail = "in"
                 var eval = evals.filter(function (x) { return x._id.equals(user.evalid)});
-                if (eval.length>0) {
+                console.log(user.evalid);
+                if (eval[0].length>0) {
                 var EvalButtonText = eval[0].status == 100 ? "Edit" : "Continue";
                 evaltitle = eval[0].title;
                 status=parseInt(eval[0].status) + "% Completed";
@@ -91,7 +93,7 @@
                 helpdetail = ""
                 if (eval[0].created_at)
                 {
-                startdate = eval[0].created_at;
+                startdate = eval[0].created_at 
                 }
                 }
                 %>
