@@ -167,6 +167,7 @@
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" > 
+<%= JSON.stringify(eval.basics) %>
                         <% 
 console.log('checkpoint 0');
                             var stripPercent = function(x) {
@@ -327,11 +328,21 @@ console.log('checkpoint 0.1');
                                     Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
                                     if (!basics.Basics_Tech_Name)   data_issues.basics.push("Technology name is blank or undefined.");
 
-                                    Basics_Outcome      = basics.Basics_Outcome || Basics_Outcome;
-                                    if (!basics.Basics_Outcome)     data_issues.basics.push("Outcome is blank or undefined.");
-
-                                    Basics_Users        = basics.Basics_Users || Basics_Users;
-                                    if (!basics.Basics_Users)       data_issues.basics.push("User description is blank or undefined.");
+                                    if (!basics.Basics_Outcome) {
+                                        data_issues.basics.push("Outcome is blank or undefined.");
+                                    } else if (basics.Basics_Outcome === 'Select an option') {
+                                        data_issues.basics.push("Outcome was not specified.");
+                                    } else {
+                                        Basics_Outcome = basics.Basics_Outcome || Basics_Outcome;
+                                    }
+                                    
+                                    if (!basics.Basics_Users) {
+                                        data_issues.basics.push("User description is blank or undefined.");
+                                    } else if (basics.Basics_Outcome === 'Select an option') {
+                                        data_issues.basics.push("User description was not specified.");
+                                    } else {
+                                        Basics_Users = basics.Basics_Users || Basics_Users;
+                                    }
 
                                     if (Basics_Users === 'other') {
                                         Basics_Users = basics.Basic_Users_other || Basics_Users_Other;
@@ -862,13 +873,13 @@ console.log('checkpoint 1');
                                     <div class="row">
                                         <div class="col-xs-3 blue-background-white-text">
                                             <p> <strong> Treatment Group</strong> </p>
-                                            <p> Students who used readTech </p>
-                                            <p> # of students: <%= n_treatment %></p>
+                                            <p> <%= capitalize(Basics_Users) %> who used readTech </p>
+                                            <p> # of <%= Basics_Users %>: <%= n_treatment %></p>
                                         </div>
                                         <div class="col-xs-3 blue-background-white-text">
                                             <p> <strong> Comparison Group</strong> </p>
-                                            <p> Students who did not use readTech </p>
-                                            <p> # of students: <%= n_comparison %></p>
+                                            <p> <%= capitalize(Basics_Users) %> who did not use readTech </p>
+                                            <p> # of <%= Basics_Users %>: <%= n_comparison %></p>
                                         </div>
                                         <div class="col-xs-4 white-background-blue-border">
 
