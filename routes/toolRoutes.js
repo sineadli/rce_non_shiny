@@ -698,6 +698,8 @@ module.exports = function (app, passport) {
 				
 				eval.basics.Basics_Users = obj.Basics_Users;
 				eval.basics.Basics_Users_Others = obj.Basics_Users_Others;
+				eval.prepare.Check_Pretest = obj.Check_Pretest;
+				eval.prepare.Check_Background = obj.Check_Background;
 
 			    var prepareRandom = obj.PrepareRandom;
 					

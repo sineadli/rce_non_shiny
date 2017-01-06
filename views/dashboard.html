@@ -74,13 +74,13 @@
                 var evallabel = "Begin Evaluation"
                 var evaltitle = "Ready to test an app?";
                 var status= "New";
-              
+                var startdate = new Date();
                 var statuslength = 0;
                 var helpcaret = "fa-caret-down";
                 var helphidden = "aria-hidden='false'"
                 var helpdetail = "in"
                 var eval = evals.filter(function (x) { return x._id.equals(user.evalid)});
-                console.log(user.evalid);
+                console.log(eval);
                 if (eval[0].length>0) {
                 var EvalButtonText = eval[0].status == 100 ? "Edit" : "Continue";
                 evaltitle = eval[0].title;

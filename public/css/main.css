@@ -299,6 +299,9 @@ h2 {
   margin-top: 5px;
     margin-bottom: 15px;
 }
+div.tool-title h2 {
+    font-size: 1.55em;
+}
 h3 {
   color:#000000;
   letter-spacing: 1px;
