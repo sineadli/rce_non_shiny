@@ -32,7 +32,10 @@
         if (tool.length > 0) {
 
         status = tool[0].status;
-        d=new Date(tool[0].visited_at)
+        console.log("1");
+        d=new Date(tool[0].visited_at);
+        console.log(d);
+        console.log(d.getMonth());
         if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}
         }
         }       //tool visited
@@ -194,6 +197,8 @@
                             usestatus = "Viewed";
                         }
                         d = new Date(tool[0].visited_at);
+                        console.log("2");
+                        console.log(d);
                         var NewStatus = '<p> Status<br /><span class="all-caps"><strong>' + usestatus + '</strong></span><br />Last Visit<br /><strong><span>' + d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() + '</span></strong></p>';
                         $("#ToolDiv-" + $("#toolstep").val()).addClass(status);
                         $("#ToolDiv-" + $("#toolstep").val()).addClass("current");

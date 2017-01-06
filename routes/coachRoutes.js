@@ -38,9 +38,9 @@ module.exports = function (app, passport) {
   
     //dashboard, require logged in and get current evaluation
    // app.use(getCurrentEvaluation);
-    app.get('/dashboard', isLoggedIn,  getCurrentEvaluation,  function (req, res) {
+    app.get('/dashboard', isLoggedIn, getAllEvaluations,  function (req, res) {
         sess = req.session;
-        res.render('dashboard.html', { user: req.user, eval: sess.eval });
+        res.render('dashboard.html', { user: req.user, evals: sess.evals });
     });
 
     app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
