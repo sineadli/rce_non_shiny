@@ -38,9 +38,10 @@
 <body>
 
     <div id="header"></div>
-    <% if (user != "NOAUTHENTICATED") { %>
+    <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
+        if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Summarizing Your Findings</a></li>
+            <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
         </ol>
         <% if (message.length>0) { %>
         <div class="alert alert-success"><%= message %></div>
@@ -515,7 +516,10 @@ console.log('checkpoint 0.2');
                                 var shareresult = eval.shareresult;
                                 var conclusions_next_steps = shareresult.conclusions_next_steps || conclusions_next_steps;
                                 var challenges_limitations = shareresult.challenges_limitations || challenges_limitations;
-                                var baseline_vars_relabel = shareresult.baseline_var_relabels || baseline_vars_relabel;
+                                
+                                if (shareresult.baseline_var_relabels.length > 0) {
+                                    baseline_vars_relabel = shareresult.baseline_var_relabels;
+                                }
                             }
 
                             var baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
@@ -688,7 +692,7 @@ console.log('checkpoint 1');
                             </div > 
                         
                             <div class="col-xs-11" > 
-                                <h2 > This evaluation studied <%= tech_name %>’s impact on <%= wordList(grades_used) %> <%= users %></h2>
+                                <h2 > This evaluation studied <%= tech_name %>'s impact on <%= wordList(grades_used) %> <%= users %></h2>
 
                                     <% if (pilot_type === 'matched') { %>
                                         <p>

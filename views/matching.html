@@ -69,6 +69,7 @@
 <div class="col-xs-12">
     <div class="tool-top">
         <div class="dl-guide">
+            <a onclick=" window.open('/static/pdf/04.02 Matching Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
         </div>
         <div class="tool-header">
             <h1 class="tool-title">Build your evaluation sample using matching</h1>
@@ -359,7 +360,7 @@
             $('#loadingmessage').show();
             formData.append("data", $(this)[0].files[0]);
             $.ajax({
-                url: "https://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
+                url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
                 type: "POST",
                 processData: false,
                 contentType: false,
@@ -402,7 +403,7 @@
             formData.append("match_vars", JSON.stringify(match_vars));
             formData.append("grade_var", JSON.stringify($("#grade_var").val()));
             $.ajax({
-                url: "https://52.222.20.48/ocpu/library/edtechrce/R/matching",
+                url: "http://52.222.20.48/ocpu/library/edtechrce/R/matching",
                 type: "POST",
                 processData: false,
                 contentType: false,
@@ -410,7 +411,7 @@
                 success: function (data) {
                     var responsePaths = data.split("\n");
                     $.ajax({
-                        url: "https://52.222.20.48" + responsePaths[0] + "/json",
+                        url: "http://52.222.20.48" + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
                             $('#loadingmessage2').hide();
@@ -468,7 +469,7 @@
 
                             $("#downloadData")
                               .attr("target", "_blank")
-                              .attr("href", "https://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
+                              .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
                             // Save results to database.
                         }
                     });

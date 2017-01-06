@@ -365,7 +365,7 @@
                 $('#loadingmessage').show();
                 formData.append("data", $(this)[0].files[0]);
                 $.ajax({
-                    url: "https://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
+                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -422,7 +422,7 @@
                 $('#loadingmessage').show();
 
                 $.ajax({
-                    url: "https://52.222.20.48/ocpu/library/edtechrce/R/impact",
+                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/impact",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -432,7 +432,7 @@
                         var responsePaths = data.split("\n");
 
                         $.ajax({
-                            url: "https://52.222.20.48" + responsePaths[0] + "/json",
+                            url: "http://52.222.20.48" + responsePaths[0] + "/json",
                             type: "GET",
                             success: function (data) {
                                 $('#loadingmessage').hide();
@@ -462,7 +462,7 @@
                                             .prop("disabled", false);
                                         $("#download-link")
                                             .attr("target", "_blank")
-                                            .attr("href", "https://52.222.20.48" + responsePaths[9]);
+                                            .attr("href", "http://52.222.20.48" + responsePaths[9]);
                                     }
                                 });
                     }

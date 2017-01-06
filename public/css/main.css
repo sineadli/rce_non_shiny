@@ -1409,8 +1409,8 @@ table#timeline textarea {
     color: #B8B28F;
 }
 
-.carousel-indicators li {
-  /*background-color: #B8B28F;*/
+#annoCarousel .carousel-indicators li {
+  background-color: #B8B28F;
 }
 
 .carousel-indicators .active {
