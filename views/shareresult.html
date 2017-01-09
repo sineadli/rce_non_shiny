@@ -90,9 +90,7 @@
                 border-radius: 25px;
                 font-size: 16px;
                 line-height: 1.5em;
-                padding: 25px;
-                margin: 15px;
-                max-width: 85%;
+                padding: 15px;
             }
 
             .blue-background-white-text {
@@ -100,10 +98,9 @@
                 border: 3px #2e75b6 solid;
                 border-radius: 25px;
                 color: #fff;
-                font-size: 20px;
-                margin: 15px;
+                font-size: 16px;
                 min-height: 150px;
-                padding: 20px;
+                padding: 15px;
                 text-align: center;
             }
 
@@ -714,10 +711,7 @@ console.log('checkpoint 1');
                         <hr / > 
 
                         <div class="row" > 
-                            <div class="col-xs-1 circle" > 
-                            </div > 
-           
-                            <div class="col-xs-11" > 
+                            <div class="col-xs-12" > 
                                 <h2 > <%= header %></h2 >
                             
                                 <h3 > Research Question</h3 > 
@@ -778,14 +772,13 @@ console.log('checkpoint 1');
                             </div > 
                         </div > 
                         <div class="row" > 
-                            <div class="col-xs-1 circle" > 
-                            </div > 
-                        
-                            <div class="col-xs-11" > 
+                            <div class="col-xs-12" > 
                                 <h2 > This evaluation tested the effectiveness of <%= Basics_Tech_Name %></h2 > 
                                 
                                 <%= capitalize(Basics_Tech_Name) %> is
                                 <%= punctuate(Tech_Purpose) %>
+
+                                <p></p>
                                 
                                 <div class="white-background-blue-border">
                                     <strong> The Basics of <%= Basics_Tech_Name %></strong> <br / >
@@ -818,10 +811,7 @@ console.log('checkpoint 1');
                         </div > 
                 
                         <div class="row" > 
-                            <div class="col-xs-1 circle" > 
-                            </div > 
-                        
-                            <div class="col-xs-11" > 
+                            <div class="col-xs-12" > 
                                 <h2 > <%= capitalize(Basics_Tech_Name) %> was tested using a <%= pilot_type %> pilot</h2 > 
                                 <ul > 
                                     <li >  
@@ -871,10 +861,7 @@ console.log('checkpoint 1');
                         </div > 
                     
                         <div class="row" > 
-                            <div class="col-xs-1 circle" > 
-                            </div > 
-                        
-                            <div class="col-xs-11" > 
+                            <div class="col-xs-12" > 
                                 <h2 > This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= Basics_Users %></h2>
 
                                     <% if (pilot_type === 'matched') { %>
@@ -884,111 +871,118 @@ console.log('checkpoint 1');
                                             The final evaluation dataset included:
                                         </p>
                                     <% } %>
-                                
-                                    <div class="row">
-                                        <div class="col-xs-3 blue-background-white-text">
-                                            <p> <strong> Treatment Group</strong> </p>
-                                            <p> <%= capitalize(Basics_Users) %> who used readTech </p>
-                                            <p> # of <%= Basics_Users %>: <%= n_treatment %></p>
-                                        </div>
-                                        <div class="col-xs-3 blue-background-white-text">
-                                            <p> <strong> Comparison Group</strong> </p>
-                                            <p> <%= capitalize(Basics_Users) %> who did not use readTech </p>
-                                            <p> # of <%= Basics_Users %>: <%= n_comparison %></p>
-                                        </div>
-                                        <div class="col-xs-4 white-background-blue-border">
+                            </div>
+                        </div>   
+                                                    
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class=" blue-background-white-text">
+                                    <p> <strong> Treatment Group</strong> </p>
+                                    <p> <%= capitalize(Basics_Users) %> who used readTech </p>
+                                    <p> # of <%= Basics_Users %>: <%= n_treatment %></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class=" blue-background-white-text">
+                                    <p> <strong> Comparison Group</strong> </p>
+                                    <p> <%= capitalize(Basics_Users) %> who did not use readTech </p>
+                                    <p> # of <%= Basics_Users %>: <%= n_comparison %></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class=" white-background-blue-border">
+                                    <strong> Evaluation Context</strong> <br>
+                                    <em> School Type</em> :     <%= wordList(school_types) %><br>
+                                    <em> District Size</em> :   <%= Total_Students %><br>
+                                    <em> Setting</em> :         <%= wordList(urbanicity) %><br>
+                                    <em> Location</em> :        <%= District_State %><br>
+                                    <strong> Overall Student Population</strong> <br>
+                                    <em> Non-white</em> :       <%= non_white %>%<br>
+                                    <em> Hispanic</em> :        <%= Ethnicity_Hispanic %>%<br>
+                                    <em> Female</em> :          <%= Gender_Female %>%<br>
+                                    <!--<em> Free or Reduced Price Lunch</em> : <%= frpl %>%<br>-->
+                                    <em> English Learners</em> :    <%= English_Learners %>%<br>
+                                    <em> Students with IEPs</em> :  <%= IEP %>%<br>
 
-                                            <strong> Evaluation Context</strong> <br>
-                                            <em> School Type</em> :     <%= wordList(school_types) %><br>
-                                            <em> District Size</em> :   <%= Total_Students %><br>
-                                            <em> Setting</em> :         <%= wordList(urbanicity) %><br>
-                                            <em> Location</em> :        <%= District_State %><br>
-                                            <strong> Overall Student Population</strong> <br>
-                                            <em> Non-white</em> :       <%= non_white %>%<br>
-                                            <em> Hispanic</em> :        <%= Ethnicity_Hispanic %>%<br>
-                                            <em> Female</em> :          <%= Gender_Female %>%<br>
-                                            <!--<em> Free or Reduced Price Lunch</em> : <%= frpl %>%<br>-->
-                                            <em> English Learners</em> :    <%= English_Learners %>%<br>
-                                            <em> Students with IEPs</em> :  <%= IEP %>%<br>
-
-                                            <% if (user != "NOAUTHENTICATED") {%>
-                                                <p class="prev-answer hidden-print">
-                                                    <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                                    <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
-                                                </p>
-                                            <% } %>
-                                        </div>
-                                    </div>
-
-                                    <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
-                                        <p> Table 1 below summarizes key characteristics of the study sample: </p>
-                                        <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
-                                        <table id="table1">
-                                            <thead>
-                                                <tr>
-                                                    <% if (baseline_by_grade) { %>
-                                                        <th>Grade</th>
-                                                    <% } %>
-                                                    <th> Characteristic</th>
-                                                    <th> Overall</th>
-                                                    <th> Treatment</th>
-                                                    <th> Comparison</th>
-                                                    <th> Difference</th>
-                                                    <th> Effect Size</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                <% for (grade in baseline_results_by_grade) {
-
-                                                    try {
-                                                        var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
-                                                        var characteristics = Object.keys(baseline_var_means);
-
-                                                        for (index in characteristics) { 
-                                                            var characteristic = characteristics[index]; %>
-                                                            <tr>
-                                                                <% if (baseline_by_grade) { %>
-                                                                    <td> <%= grade %></td>
-                                                                <% } %>
-                                                                <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                                                <td> <%= baseline_var_means[characteristic].overall[0] %></td>
-                                                                <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
-                                                                <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
-                                                                <td> <%= baseline_var_means[characteristic].difference[0] %></td>
-                                                                <td> <%= baseline_var_means[characteristic].effect_size[0] %></td>
-                                                            </tr>
-                                                        <% }
-                                                    } catch (e) { %>
-                                                        </tr>
-                                                        </tbody>
-                                                    <% } %>
-                                                <% } %>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <% if (baseline_by_grade) { %>
-                                                    <td></td>
-                                                    <% } %>
-                                                    <td> Number of <%= Basics_Users %></td>
-                                                    <td> <%= n_overall %></td>
-                                                    <td> <%= n_treatment %></td>
-                                                    <td> <%= n_comparison %></td>
-                                                    <td> --</td>
-                                                    <td> --</td>
-                                                </tr>
-                                            </tfoot>
-
-                                        </table>
+                                    <% if (user != "NOAUTHENTICATED") {%>
+                                        <p class="prev-answer hidden-print">
+                                            <i class="fa fa-hand-o-right"></i> Where did I answer the above?
+                                            <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
+                                        </p>
                                     <% } %>
-                                </div> 
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+
+                                <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
+                                    <p> Table 1 below summarizes key characteristics of the study sample: </p>
+                                    <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
+                                    <table id="table1">
+                                        <thead>
+                                            <tr>
+                                                <% if (baseline_by_grade) { %>
+                                                    <th>Grade</th>
+                                                <% } %>
+                                                <th> Characteristic</th>
+                                                <th> Overall</th>
+                                                <th> Treatment</th>
+                                                <th> Comparison</th>
+                                                <th> Difference</th>
+                                                <th> Effect Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <% for (grade in baseline_results_by_grade) {
+
+                                                try {
+                                                    var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+                                                    var characteristics = Object.keys(baseline_var_means);
+
+                                                    for (index in characteristics) { 
+                                                        var characteristic = characteristics[index]; %>
+                                                        <tr>
+                                                            <% if (baseline_by_grade) { %>
+                                                                <td> <%= grade %></td>
+                                                            <% } %>
+                                                            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                                            <td> <%= baseline_var_means[characteristic].overall[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].difference[0] %></td>
+                                                            <td> <%= baseline_var_means[characteristic].effect_size[0] %></td>
+                                                        </tr>
+                                                    <% }
+                                                } catch (e) { %>
+                                                    </tr>
+                                                    </tbody>
+                                                <% } %>
+                                            <% } %>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <% if (baseline_by_grade) { %>
+                                                <td></td>
+                                                <% } %>
+                                                <td> Number of <%= Basics_Users %></td>
+                                                <td> <%= n_overall %></td>
+                                                <td> <%= n_treatment %></td>
+                                                <td> <%= n_comparison %></td>
+                                                <td> --</td>
+                                                <td> --</td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+                                <% } %>
+                            </div> 
                         </div > 
                         
                         <div class="row" > 
-                            <div class="col-xs-1 circle" > 
-                            </div > 
-                        
-                            <div class="col-xs-11" > 
+                            <div class="col-xs-12" > 
                                 
                                 <h2 > The evaluation period lasted <%= duration %>.</h2 > 
                                 <p > During this period, <%= Basics_Users %> in the intervention group were intended to use the technology 
@@ -1012,10 +1006,7 @@ console.log('checkpoint 1');
                         </div > 
                         
                         <div class="row" > 
-                            <div class="col-xs-1 circle" > 
-                            </div > 
-                        
-                            <div class="col-xs-11" > 
+                            <div class="col-xs-12" > 
                                 <h2 ><%= sentence(Basics_Outcome + ' was measured using ' + Outcome_Measure) %></h2 > 
                                 <p>
                                     Analysis of <%= Basics_Tech_Name %> 
@@ -1040,18 +1031,13 @@ console.log('checkpoint 1');
                         </div > 
 
                         <div class="row" > 
-                            <div class="col-xs-1 circle" > 
-                            </div > 
-
-                            <div class="col-xs-11" > 
+                            <div class="col-xs-12" > 
                                 <h2 > Conclusions and Next Steps</h2 > 
                                 <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
                                 <p class="visible-print-block" id="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
                             </div > 
                         </div >
 
-<<<<<<< HEAD
-=======
                         <!-- Modal -->
                         <%  var display_data_issues_modal = false;
 
@@ -1118,7 +1104,6 @@ console.log('checkpoint 1');
                                 </div>
                         <% } %>
 
->>>>>>> share-results
                         <!-- Modal -->
                         <div id="download-modal" class="modal fade" role="dialog">
                             <div class="modal-dialog">
