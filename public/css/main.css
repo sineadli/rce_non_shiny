@@ -1,17 +1,25 @@
 html {
     height: 100%;
+       background-color: #Ffffff;
+  
 }
 body {
-  font-family: 'Open Sans';
-  max-width:1000px;
-  font-size:1.6em;
-  line-height:1.5em;
-     margin: 0 auto;
-      min-height: 100%;
+    font-family: 'Open Sans';
+    max-width: 1040px;
+    font-size: 1.6em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    min-height: 100%;
     background-color: #FBFAF7;
     color: #000;
-    padding-bottom: 180px;
+    padding: 0 15px 180px 15px;
     position: relative;
+    box-shadow: 0px 0px 25px #BAB38F;
+   
+}   
+body.homepage {
+    width: 1000px;
+    padding: 0 0px 180px 0px;
 }
 body.one-col div.row div.content {
     margin: 0px auto;
@@ -40,15 +48,22 @@ ul li {
 .legal ol li, .legal ul li {
     margin-top: 10px;
 }
-div.container-fluid {
+.container-fluid {
 	width:100%;
 	font-size:100%;
     min-height: 100%;
+    
  
+}
+em.stronger {
+
+    color: #366E8F;
 }
 div.container-fluid {
     position: relative;
- }
+
+}
+
 #main {
   min-height: 100%;
   /* equal to footer height */
@@ -64,15 +79,47 @@ div.container-fluid {
 .footer {
     margin-top: 55px;
     position: absolute;
-    width: 1000px;
+    width: 100%;
     bottom: 0;
+      box-shadow: 0px 25px 25px #BAB38F;
+}
+ .row {
+	margin-left:-5px !important;
+	margin-right:-5px !important;
 }
 
-/* Header */
+/* Header and footer */
 .navbar {
     height: auto;
     padding: 5px;
     margin: 0 !important;
+}
+nav.navbar-default {
+	margin-left: -15px !important;
+	margin-right: -15px !important;
+	border-radius:0;
+	background-color: #E3E1CE;
+	
+}
+body.homepage div.footer-row {
+    background-color: #E3E1CE;
+}
+body.homepage nav.navbar-default {
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	border-radius:0;
+	background-color: #E3E1CE;
+	
+}
+nav.footer.navbar-default {
+	background-color:#fff;
+}
+.footer .row {
+	margin-left: 0px !important;
+	margin-right: 15px !important;
+	width: 100%;
+	border-radius:0;
+	
 }
 .navbar h3 {
     color: #71714A;
@@ -89,7 +136,7 @@ div.container-fluid {
 .fm_bootstrap .feedback_trigger_text {
     top: 38px;
 }
-.navbar-default {
+.navbar-default .row {
     background-color: #E3E1CE;
     border-radius: 0;
 }
@@ -131,27 +178,37 @@ div.eval-div .sec-label {
     font-size: .8em;
 }
 div.eval-div .sec-label.current {
-    font-size: .85em;
+    font-size: 1em;
     color: #006982;
     font-weight: 600;
+    margin: 10px 0 15px 0;
 }
 div.eval-div h3 {
     font-size: 1.5em;
     margin: 0 0 5px 0;
+}
+div.eval-div.current h3 {
+    font-size: 1.8em;
+    margin: 0 0 5px 0;
+    font-weight:bold;
 }
 div.eval-div p {
 
     margin: 0px 0px;
 }
 .outer-status-bar {
-    width: 200px;
-    height: 20px;
+    width: 202px;
+    height: 16px;
     display: inline-block;
-    outline: 1px solid #222;
+    border: 1px solid #BAB38F;
+    border-radius: 6px;
+    padding: 0px;
+    vertical-align: middle;
 }
 .status-bar {
     background-color: #fac500;
-    height: 20px;
+    border-radius: 5px;
+    height: 14px;
 }
 a.sec-label, button.sec-label {
     font-size: .9em;
@@ -204,6 +261,8 @@ body.homepage div.row {
 }
 body.homepage div.row.main {
     margin-top: 0px;
+    margin-right: -15px !important; 
+    margin-left: -15px !important;  
 }
 
   ul.footer-list {
@@ -301,6 +360,10 @@ h2 {
 }
 div.tool-title h2 {
     font-size: 1.55em;
+    line-height: 1.2em;
+}
+div.tool-div p {
+	line-height:1.4em;
 }
 h3 {
   color:#000000;
@@ -350,12 +413,26 @@ div.col-xs-4.tab-col ul {
 h4 label {
     text-transform: none;
 }
-label {
+label.chart , caption {
     color:#65614D;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: .85em;
   margin-top:5px;
+    font-weight: 600;
+}
+figcaption {
+    margin: 10px 0;
+}
+table.tool-table {
+   border: 1px solid black; 
+   border-collapse: collapse;
+    width: 75%;
+    margin: 10px auto;
+}
+table.tool-table th {
+    width: 20%;
+    font-weight: 600;
 }
 label.registrationFormAlert {
     text-transform: none;
@@ -622,7 +699,7 @@ h2.eval-header {
 ul.wizard-menu {
     list-style: none;
     display: block;
-    margin: 0 0 0 3px;
+    margin: 0 0 0 1px;
     padding: 0;
     height: auto;
     overflow: hidden;
@@ -651,6 +728,11 @@ div.sidebar-left ul.wizard-menu li {
 
 ul.wizard-menu li:first-child {
     border-left: none;
+    border-radius: 0 0 0 6px;
+}
+ul.wizard-menu li:last-child {
+
+    border-radius: 0 0 6px  0;
 }
 div.dash-well.sidebar-left {
     padding: 0;
@@ -741,13 +823,15 @@ div.tool-div.completed div.tool-status p span.all-caps, div.tool-div.Completed d
     color: #4081A8;
 }
 div.tool-div div.tool-title {
-    height: 225px;
+    height: 232px;
 }
 div.tool-div div.tool-bottom {
-    height: 100px;
+    height: 90px;
     display: table;
 }
-
+div.tool-div div.tool-bottom p {
+   margin-bottom:10px
+}
 
     div.tool-div.Completed, div.tool-div.completed, div.eval-div.completed  {
         background-color: #ECEBDD;
@@ -901,7 +985,7 @@ div.step-subquestion p label {
     color: #000;
 }
 div.step-action {
- margin:0px 0 15px 25px;
+ margin:0px 0 25px 25px;
   display:inline-block;
   font-size:1em;
   width:100%

@@ -141,9 +141,52 @@ module.exports = function (app, passport) {
 		//	console.log("In DYA get method.");
 		sess = req.session;
 		sess.eval.last_step = 2;
-		sess.eval.last_tool = "Who Used Your Technology and How";
+		sess.eval.last_tool = "Who Used Your Technology and How?";
 		var query = require('url').parse(req.url, true).query;
 		res.render('who_and_how.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+	});
+	app.post('/who_and_how', isLoggedIn, function (req, res) {
+		var toollist = { "name": "Who Used Your Technology and How?", "status": 'completed', "visited_at": new Date() };
+		sess = req.session;
+		sess.step = 2;
+	    console.log("I'm here posting who and how");
+		var dt = new Date();
+		async.waterfall([
+			function (done) {
+				if (sess.eval) {
+					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+						if (!eval) {
+							req.flash('error', 'No evaluation exists.');
+							return res.redirect('/coach');
+						}
+						if (err) {
+							console.log(err);
+							return res.redirect('/coach');
+						}
+						return done(err, eval);
+					});
+				}
+				else
+					res.redirect('/coach');
+			},
+			function (eval, done) {
+				eval.last_step = 2;
+				eval.last_tool = "Who Used Your Technology and How?";
+				//eval find so update the toolsVisisted accordingly
+				updateLastTool(eval, toollist);
+				eval.save(function (err) {
+					console.log("I'm here posting who and how - saving eval " + toollist.status);
+					if (err) {
+						console.log(err); return done(err);
+					}
+					sess.eval = eval;
+					return res.redirect('/coach');
+				});	
+			}
+		], function (err) {
+			if (err) return next(err);
+			res.redirect('/coach');
+		});
 	});
     //02.03 determine your approach
     app.get('/determine_your_approach', isLoggedIn, function (req, res) {
@@ -942,11 +985,14 @@ module.exports = function (app, passport) {
                 eval.last_tool = "Matching";
                 //eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
-
-				//eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
-				//eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
-				eval.planContext.Tech_Purpose = obj.Tech_Purpose; eval.planContext.Tech_Components = obj.Tech_Components;		
-                 var matching = {      
+                console.log("saving matching and obj.intervention group desc is: " + obj.Intervention_Group_Desc);
+				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
+				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
+			
+			
+					
+				var matching = {
+					    "Targeted_Access": obj.Targeted_Access,   
                         "Target_Group_Desc": obj.Target_Group_Desc,
                         "treat_var": obj.s_treat_var,
                         "match_vars": obj.s_match_vars,

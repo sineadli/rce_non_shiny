@@ -69,7 +69,7 @@
 <div class="col-xs-12">
     <div class="tool-top">
         <div class="dl-guide">
-            <a onclick=" window.open('/static/pdf/04.02 Matching Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+            <a onclick=" window.open('/static/pdf/Matching Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
         </div>
         <div class="tool-header">
             <h1 class="tool-title">Build your evaluation sample using matching</h1>
@@ -80,15 +80,16 @@
 
             <div class="tool-help">
                 <p>
-                    <b>Challenge:</b> You want to compare outcomes for individuals who used a technology to outcomes for those who didn&rsquo;t, but technology users may be different from non-users in important ways. For example, if all students are provided access to an optional reading technology, the ones who choose to use it may be the students who are already reading at or above grade-level. To get a good estimate of the effect of the technology, you want to compare students with similar reading levels and characteristics. See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf">Matching Overview</a> to learn more.
+                    <b>Challenge:</b> You want to compare outcomes for individuals who used a technology to outcomes for those who didn&rsquo;t, but technology users may be different from non-users in important ways. For example, if all students are provided access to an optional reading technology, the ones who choose to use it may be the students who are already reading at or above grade-level. To get a good estimate of the effect of the technology, you want to compare students with similar reading levels and characteristics. See the <a target="_blank" href="../static/pdf/Matching%20Overview.pdf">Matching Overview</a> to learn more.
                 </p>
                 <p>
                     <b>Solution:</b> You can match each technology user to a non-user who is very similar on important characteristics. By comparing outcomes for these matched groups of users and non-users, you will be able to get better information about whether or not the technology is moving the needle.
                 </p>
 
             </div>
-            <div class="clearfix"></div>
+
         </div>
+        <div class="clearfix"></div>
     </div>
 </div>
     </div>
@@ -105,7 +106,7 @@
                 <div class="col-xs-7">
                     <div class="step-subquestion">
 
-                        <h4> <label for="Intervention_Group_Desc">The group that used <%= Basics_Tech_Name %> (the intervention group) includes:</label></h4>
+                        <h4> <label for="Intervention_Group_Desc">The group that used <%= Basics_Tech_Name %> (the treatment group) includes:</label></h4>
 
                     </div>
                     <div class="step-action">
@@ -116,11 +117,11 @@
                             <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
                         </p>
                         <% } %>
-                        <hr />
+                 
                     </div>
                     <div class="step-subquestion">
                         <h4>
-                            <label for="Plan_Question_D">The group that did not use <%= Basics_Tech_Name %> (the potential members of the comparison group) includes:</label>
+                            <label for="Comparison_Group_Desc">The group that did not use <%= Basics_Tech_Name %> (the potential members of the comparison group) includes:</label>
                         </h4>
 
                     </div>
@@ -132,18 +133,18 @@
                             <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
                         </p>
                         <% } %>
-                        <hr />
+                     
                     </div>
                     <div class="step-subquestion">
 
 
                         <h4>
-                            <label for="Target_Group_Desc">Was use of <%= Basics_Tech_Name %> targeted in any way, for example, to low performing students, or English learners? </label>
+                            <label for="Targeted_Access">Was use of <%= Basics_Tech_Name %> targeted in any way, for example, to low performing students, or English learners? </label>
 
                         </h4>
                     </div>
                     <div class="step-action">
-                        <select required name="Targeted_Access" id="Targeted_Access">
+                        <select name="Targeted_Access" id="Targeted_Access">
                             <%
                             var options = ["Select an option", "yes", "no" ];
                             for ( var i = 0; i < options.length; i++ ) {
@@ -170,17 +171,17 @@
 
                         <div class="panel-group" id="ttc2">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
+                                <div class="panel-heading accordion-toggle">
                                     <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                       
+                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider2"><i class="fa fa-caret-down" aria-hidden="false"></i>
                                             Things to Consider
                                         </a>
                                     </h3>
                                 </div>
                                 <div id="consider2" class="panel-collapse collapse in">
                                  
-                                    <p>The information about the intervention and comparison groups is from your research question. You may edit the descriptions to make corrections or provide more detail. </p>
+                                    <p>The information about the treatment and comparison groups is from your research question. You may edit the descriptions to make corrections or provide more detail. </p>
                                 </div>
 
                             </div>
@@ -188,17 +189,17 @@
                                     <div class="panel panel-default">
                                         <div class="panel-heading accordion-toggle">
                                             <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-right" aria-hidden="true"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
+                                                
+                                                <a data-toggle="collapse" data-parent="#ttc2" href="#example2"><i class="fa fa-caret-right" aria-hidden="true"></i>
                                                     Example
                                                 </a>
                                             </h3>
                                         </div>
                                         <div id="example2" class="panel-collapse collapse">
                                             <ul>
-                                                <li>Intervention group: seven schools that used Everest Learning Lab in their fifth grade classrooms</li>
+                                                <li>Treatment group: seven schools that used Everest Learning Lab in their fifth grade classrooms</li>
                                                 <li>Comparison group: five schools that did not use Everest Learning Lab</li>
-                                                <li>Targeted: in intervention group schools, students in the bottom half of the class on the 2014 K-PREP test were given access</li>
+                                                <li>Targeted: in treatment group schools, students in the bottom half of the class on the 2014 K-PREP test were given access</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -218,7 +219,7 @@
                             <div class="step-subquestion">
                                 <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
                                 <p>
-                                    Your data file should have one row for each one of the <%= Basics_Users %> in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                                    Your data file should have one row for each one of the <%= Basics_Users %> in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a>.
                                 </p>
                             </div>
                             <div class="step-action">
@@ -236,7 +237,7 @@
                                 <div class="step-subquestion">
                                     <h4>Who is using <%= Basics_Tech_Name %>?</h4>
                                     <p>Choose the name of the data field that distinguishes who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
-                                    <p><em>Required</em></p>
+                                    <p><em class="stronger"><i class="fa fa-asterisk"></i> Required</em></p>
                                 </div>
                                 <div class="step-action ">
 
@@ -249,7 +250,7 @@
 
                                     </div>
 
-                                    <hr />
+                                  
                                 </div>
 
                                 <div class="step-subquestion">
@@ -263,23 +264,23 @@
                                         <option value="match any grade" selected="selected">match any grade</option>
                                     </select>
 
-                                    <hr/>
+                                  
                                 </div>
                                 <div class="step-subquestion">
                                     <h4>Select your pretest outcome measure. </h4>
-                                    <p><em>Required</em></p>
+                                    <p><em class="stronger"><i class="fa fa-asterisk"></i> Required</em></p>
 
                                 </div>
                                 <div class="step-action ">
                                     <select id="pretest" class="multiselect from-upload nodefault">
                                         <option value="Select a variable" selected="selected">Select a data field</option>
                                     </select>
-                                    <hr />
+                                
                                 </div>
                                 <div class="step-subquestion">
                                     <h4> Which characteristics matter when matching users to similar non-users? </h4>
                                     <p>Select characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
-                                    <p><em>At least one characteristic is required, more than one is recommeded.</em>
+                                    <p><em class="stronger"><i class="fa fa-asterisk"></i> At least one characteristic is required; more than one is recommended.</em>
                                     </p>
                                 </div>
                                 <div class="step-action ">
@@ -295,8 +296,8 @@
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                                
+                                                <a data-toggle="collapse" data-parent="#ttc3" href="#consider3"><i class="fa fa-caret-down" aria-hidden="false"></i>
                                                     Things to Consider
                                                 </a>
                                             </h3>
@@ -304,16 +305,16 @@
                                         <div id="consider3" class="panel-collapse collapse in">
                                           
                                             <p>
-                                                The Coach suggests that you create a random ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
+                                                The Coach suggests that you create an anonymous ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
                                             </p>
                                             <div class="before-upload">
                                                 <p>
                                                     It is most important that users and non-users had similar <%= Basics_Outcome %> levels before they started using <%= Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
                                                 </p>
-                                                <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on free lunch or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
+                                                <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
                                             </div>
                                             <p>
-                                                Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Matching%20overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                                                Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
                                             </p>
                                         </div>
                                     </div>
