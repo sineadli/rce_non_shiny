@@ -10,46 +10,56 @@
 <html>
 <head>
     <title>Share Your Results - Ed Tech RCE Coach</title>
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/main.css" />
-    <link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" />
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
-    <script src="/static/js/jquery.feedback_me.js"></script>
-    <!--<script src="/static/js/bootstrap-multiselect.js"></script>-->
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', 'UA-86460597-1', 'auto');
-        ga('send', 'pageview');
-    </script>
+    <% if (display === undefined) display = 'online'; 
+       
+        if (display === 'online') { %>
+            <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);" />
+            <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+            <link rel="stylesheet" href="/static/css/main.css" />
+            <link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" />
+            <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
+            <script src="/static/js/jquery.feedback_me.js"></script>
+            <!--<script src="/static/js/bootstrap-multiselect.js"></script>-->
+            <script>
+                (function (i, s, o, g, r, a, m) {
+                    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+                ga('create', 'UA-86460597-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+        <% } else if (display === 'download') { %>
+           <% include ../views/partials/downloadStyle.html %>
+        <% } %>
 
     
 </head>
 <body>
-    <div id="header"></div>
-    <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
-        if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
-        </ol>
-        <% if (message.length>0) { %>
-        <div class="alert alert-success"><%= message %></div>
+    
+    <% if (display === 'online') { %>
+        <div id="header"></div>
+        <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
+            if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
+            </ol>
+            <% if (message.length>0) { %>
+            <div class="alert alert-success"><%= message %></div>
+            <% } %>
+            <% include ../views/partials/toolHeader.html %>
         <% } %>
-        <% include ../views/partials/toolHeader.html %>
+
+        <form action="" method="post">
     <% } %>
 
-    <form action="" method="post">
-        
         <style>
             /* Specific to share results */
 
@@ -702,10 +712,13 @@ console.log('checkpoint 1');
                             <%= user_name %><br />
                             <%= organization_name %><br />
                             <%= new Date().toLocaleDateString() %>
-                            <p class="prev-answer hidden-print">
-                                <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                <a class="redirect-link" href="/setting">Profile</a>
-                            </p>
+                            
+                            <% if (display === 'online') { %>
+                                <p class="prev-answer hidden-print">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this?
+                                    <a class="redirect-link" href="/setting">Profile</a>
+                                </p>
+                            <% } %>
                         <% } %>
 
                         <hr / > 
@@ -757,7 +770,7 @@ console.log('checkpoint 1');
                                     
                                             <%= sentence(next_steps); %>
 
-                                            <% if (user != "NOAUTHENTICATED") {%>
+                                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                                 <p class="prev-answer hidden-print">
                                                     <i class="fa fa-hand-o-right"></i> Where did I answer this?
                                                     <a class="redirect-link" href="/plan_next_steps">Plan Next Steps</a>
@@ -791,7 +804,7 @@ console.log('checkpoint 1');
                                         <% } %><br / >
                                     <em> Target Outcomes</em> : <%= wordList(Outcomes).toLowerCase() %><br / >
 
-                                    <% if (user != "NOAUTHENTICATED") {%>
+                                    <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer the above?
                                             <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
@@ -800,7 +813,7 @@ console.log('checkpoint 1');
 
                                     <em> <%= capitalize(Tech_Cost_Saves) %></em> : $<%= Tech_Amount %> per <%= Tech_Cost_User %><br / >   
 
-                                    <% if (user != "NOAUTHENTICATED") {%>
+                                    <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer this?
                                             <a class="redirect-link" href="/plan_next_steps">Plan Next Steps</a>
@@ -835,7 +848,7 @@ console.log('checkpoint 1');
                                     <% } %>
 </ul > 
 
-                                <% if (baseline_vars && baseline_vars.length > 0) { %>
+                                <% if (baseline_vars && baseline_vars.length > 0 && display === 'online') { %>
                                     <div class="hidden-print">
                                         <h3>Re-label baseline variables (optional):</h3>
                                         <% for (index in baseline_vars) { 
@@ -904,7 +917,7 @@ console.log('checkpoint 1');
                                     <em> English Learners</em> :    <%= English_Learners %>%<br>
                                     <em> Students with IEPs</em> :  <%= IEP %>%<br>
 
-                                    <% if (user != "NOAUTHENTICATED") {%>
+                                    <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer the above?
                                             <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
@@ -989,14 +1002,18 @@ console.log('checkpoint 1');
                                     <%= punctuate(Expected_Dosage) %>
                                     Students in the comparison group did not have access to <%= Basics_Tech_Name %>. </p >
                                 <p > 
-                                    <label class="hidden-print"> Challenges/Limitations:</label > 
-                                    <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
-                                    <p class="visible-print-block" id="print-challenges-limitations"><%= challenges_limitations %></p>
+                                    <% if (display === 'online') { %>
+                                        <label class="hidden-print"> Challenges/Limitations:</label> 
+                                        <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
+                                        <p class="visible-print-block print-challenges-limitations"><%= challenges_limitations %></p>
+                                    <% } else if (display === 'download') { %>
+                                        <p class="print-challenges-limitations"><%= challenges_limitations %></p>
+                                    <% } %>
                                 <p>
                                     Other contextual factors or supports being provided to students may have contributed to results. Other factors include:
                                     <%= Other_Notes %>
                                 </p> 
-                                <% if (user != "NOAUTHENTICATED") {%>
+                                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                     <p class="prev-answer hidden-print">
                                         <i class="fa fa-hand-o-right"></i> Where did I answer the above?
                                         <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
@@ -1021,7 +1038,7 @@ console.log('checkpoint 1');
                                     <% } %>
                                 </p> 
 
-                                <% if (user != "NOAUTHENTICATED") {%>
+                                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                     <p class="prev-answer hidden-print">
                                         <i class="fa fa-hand-o-right"></i> Where did I answer the above?
                                         <a class="redirect-link" href="/craft_your_research_q">Craft Your Research Question</a>
@@ -1033,145 +1050,149 @@ console.log('checkpoint 1');
                         <div class="row" > 
                             <div class="col-xs-12" > 
                                 <h2 > Conclusions and Next Steps</h2 > 
-                                <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
-                                <p class="visible-print-block" id="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
+                                <% if (display === 'online') { %>
+                                    <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
+                                    <p class="visible-print-block print-conclusions-next-steps"><%= conclusions_next_steps %></p>
+                                <% } else if (display === 'download') { %>
+                                    <p class="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
+                                <% } %>
                             </div > 
                         </div >
 
-                        <!-- Modal -->
-                        <%  var display_data_issues_modal = false;
+                        <% if (display === 'online') { %>
+                            <!-- Modal -->
+                            <%  var display_data_issues_modal = false;
 
-                            for (tool in data_issues) {
-                                if (data_issues[tool].length > 0) {
-                                    display_data_issues_modal = true;
-                                    break;
+                                for (tool in data_issues) {
+                                    if (data_issues[tool].length > 0) {
+                                        display_data_issues_modal = true;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (display_data_issues_modal) { %>
+                                if (display_data_issues_modal) { %>
 
-                                <div id="data-issues-modal" class="modal fade" role="dialog">
-                                    <div class="modal-dialog">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Data Issues Found</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-xs-12">
-                                                        <p>The following issues were found in your evaluation data that indicate invalid or inconsistent data, and may prevent creating a full findings brief.</p>
-                                                        <p>Please return to and complete the appropriate tools. Until then, this brief will use placeholder values for all missing or invalid data.</p>
-                                                        <p>If this message persists after addressing each item, please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a>.</p>
-                                                    </div>
+                                    <div id="data-issues-modal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Data Issues Found</h4>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-xs-12">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <p>The following issues were found in your evaluation data that indicate invalid or inconsistent data, and may prevent creating a full findings brief.</p>
+                                                            <p>Please return to and complete the appropriate tools. Until then, this brief will use placeholder values for all missing or invalid data.</p>
+                                                            <p>If this message persists after addressing each item, please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a>.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
 
-                                                        <% for (tool in data_issues) {
-                                                            var issues = data_issues[tool];
+                                                            <% for (tool in data_issues) {
+                                                                var issues = data_issues[tool];
                                                     
-                                                            if (issues.length > 0) {
+                                                                if (issues.length > 0) {
 
-                                                                var tool_name = tool_names[tool];
-                                                                var tool_route = tool_routes[tool]; %> 
+                                                                    var tool_name = tool_names[tool];
+                                                                    var tool_route = tool_routes[tool]; %> 
 
-                                                                <h4><%= tool_name %></h4>
-                                                                <ul>
-                                                                    <% for (index in issues) { %>
-                                                                        <li><%= issues[index] %></li>
-                                                                    <% } %>
-                                                                </ul>
+                                                                    <h4><%= tool_name %></h4>
+                                                                    <ul>
+                                                                        <% for (index in issues) { %>
+                                                                            <li><%= issues[index] %></li>
+                                                                        <% } %>
+                                                                    </ul>
 
-                                                                <% if (user != "NOAUTHENTICATED") {%>
-                                                                    <p class="prev-answer hidden-print">
-                                                                        <i class="fa fa-hand-o-right"></i> Where can I address this?
-                                                                        <a class="redirect-link" href="<%- tool_route %>"><%= tool_name %></a>
-                                                                    </p>
-                                                                <% } 
-                                                            }
-                                                        } %>
+                                                                    <% if (user != "NOAUTHENTICATED") {%>
+                                                                        <p class="prev-answer hidden-print">
+                                                                            <i class="fa fa-hand-o-right"></i> Where can I address this?
+                                                                            <a class="redirect-link" href="<%- tool_route %>"><%= tool_name %></a>
+                                                                        </p>
+                                                                    <% } 
+                                                                }
+                                                            } %>
 
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                            <% } %>
+
+                            <!-- Modal -->
+                            <div id="download-modal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Download</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <p>You are able to select from the following options to export your findings brief! We suggest exporting this brief and reviewing it with others before you complete your evaluation where we'll publish it so others can see.</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>Document</label><br />
+                                                    <input type="radio" name="download_route" value="shareresult" checked> Findings Brief<br>
+                                                    <input type="radio" name="download_route" value="appendix_<%- pilot_type %>"> Technical Appendix<br>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <label>File Format</label><br />
+                                                    <input type="radio" name="file_format" value="pdf" checked> PDF document<br>
+                                                    <input type="radio" name="file_format" value="slides" disabled> PDF slides<br>
+                                                    <input type="radio" name="file_format" value="docx" disabled> DOCX file<br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                            <button type="submit" id="Download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div id="complete-evaluation-modal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Complete Evaluation</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT PUBLISH</button>
+                                            <button type="submit" id="Complete" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         <% } %>
-
-                        <!-- Modal -->
-                        <div id="download-modal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Download</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <p>You are able to select from the following options to export your findings brief! We suggest exporting this brief and reviewing it with others before you complete your evaluation where we'll publish it so others can see.</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <label>Findings Brief</label><br />
-                                                <input type="radio" name="download_type" value="brief" checked> PDF document<br>
-                                                <input type="radio" name="download_type" value="brief" disabled> PDF slides<br>
-                                                <input type="radio" name="download_type" value="brief" disabled> DOCX file<br>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <label>Technical Appendix</label><br />
-                                                <input type="radio" name="download_type" value="brief_appendix_<%- pilot_type %>" disabled> PDF document<br>
-                                                <input type="radio" name="download_type" value="brief_appendix_<%- pilot_type %>" disabled> PDF slides<br>
-                                                <input type="radio" name="download_type" value="brief_appendix_<%- pilot_type %>" disabled> DOCX file<br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                        <button type="submit" id="Download" data-action="/download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Modal -->
-                        <div id="complete-evaluation-modal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Complete Evaluation</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT PUBLISH</button>
-                                        <button type="submit" id="Complete" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </div>
-                
+<% if (display === 'online') { %>                
         <% include ../views/partials/shareresultButtons.html %>
     </form > 
     
@@ -1241,7 +1262,7 @@ console.log('checkpoint 1');
             $('textarea').change(function () {
                 var id = $(this).attr('id');
                 var val = $(this).val();
-                $('#print-' + id).text(val);
+                $('.print-' + id).text(val);
             });
 
             // Since we have multiple buttons that can take actions, set the form action on button click.
@@ -1258,6 +1279,7 @@ console.log('checkpoint 1');
         });
 
     </script>
+<% } %>
     </body > 
 </html >
             

@@ -1164,7 +1164,7 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'});
     });
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
         sess = req.session;
@@ -1172,7 +1172,7 @@ module.exports = function (app, passport) {
         console.log(query);
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.publishlists  = eval;
-            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query });
+            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query, display: 'online' });
         });
     });
     app.post('/shareresult', isLoggedIn,function (req, res) {
@@ -1257,7 +1257,7 @@ module.exports = function (app, passport) {
         var obj = req.body;
         var dt = new Date();
 
-        var download_type = obj.download_type;
+        var download_route = obj.download_route;
 
         async.waterfall([
             function (callback) {
@@ -1338,29 +1338,50 @@ module.exports = function (app, passport) {
                 // Need to generate document file here
                 var query = require('url').parse(req.url, true).query;
 
-                console.log('rendering ', 'download_' + download_type + '.html');
+                console.log('rendering ', download_route + '.html');
 
-                res.render('download_' + download_type + '.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+                var filename_map = {
+                    shareresult: 'findings-brief',
+                    appendix_randomized: 'technical-appendix',
+                    appendix_matched: 'technical-appendix'
+                };
+
+                var filename = filename_map[download_route];
+
+                res.render(download_route + '.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'download' },
                     function (err, html) {
                         console.log(err);
-                        res.setHeader('Content-disposition', 'attachment; filename=' + download_type + '.html');
-                        res.setHeader('Content-type', 'text/html');
 
-                        res.write(html);
+                        // Try to convert to PDF, and if it fails, revert to HTML;
+                        try {
+                            var wkhtmltopdf = require('wkhtmltopdf');
+
+                            wkhtmltopdf(html, {debug: true}, function (err, stream) {
+                                console.log('inside wkhtmltopdf');
+
+                                if (err) {
+                                    console.log('tried pdf, failed');
+                                    console.log(err);
+                                    res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.html');
+                                    res.setHeader('Content-type', 'text/html');
+                                    res.write(html);
+
+                                } else {
+                                    console.log('pdf success');
+                                    res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.pdf');
+                                    res.setHeader('Content-type', 'application/pdf');
+                                    res.write(stream);
+                                }
+                            });
+                        } catch (e) {
+                            console.log('wkhtmltopdf module not found');
+                            res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.html');
+                            res.setHeader('Content-type', 'text/html');
+                            res.write(html);
+                        }
+
                         res.send();
                     });
-
-                //console.log('generate document');
-                //var filename = 'node-google.pdf';
-
-                // Now download the document
-                /*
-                console.log('download document');
-                res.setHeader('Content-disposition', 'attachment; filename=brief.pdf');
-                res.setHeader('Content-type', 'application/pdf');
-                var filestream = fs.createReadStream('node-google.pdf');
-
-                filestream.pipe(res);*/
             }
         ], function (err) {
             if (err) return next(err);
