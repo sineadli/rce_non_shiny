@@ -270,9 +270,9 @@
                                 ptpathnote = "Pre-test data are necessary to create similar groups.";
                                 }
 
-                                var checked = ( eval.prepareRandom.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Pretest" name="PrepareRandom[Check_Pretest]" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
+                                <input type="checkbox" id="Check_Pretest" name="Check_Pretest" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
                                     Pretest data&mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
@@ -285,9 +285,9 @@
 
                                
 
-                                var checked = ( eval.prepareRandom.Check_Background == "Background_Checked" ) ? "checked" : "";
+                                var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Background" name="PrepareRandom[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
+                                <input type="checkbox" id="Check_Background" name="Check_Background" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
                                     Background Characteristics&mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 

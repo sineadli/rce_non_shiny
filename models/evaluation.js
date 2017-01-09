@@ -149,8 +149,7 @@ var PrepareRandom = mongoose.Schema({
 
 	Check_Sample: { type: String, default: '' },
 	
-	Check_Pretest: { type: String, default: '' },
-	Check_Background: { type: String, default: '' },
+	
 	
 	Check_OneSet: { type: String, default: '' },
 	Check_Numeric: { type: String, default: '' },
