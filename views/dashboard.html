@@ -63,7 +63,7 @@
                                <button type="button" class="btn-link sec-label" role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION </button></li>
 
                             <li class="wizard-item">
-                                <button role="link" data-target="/publications" class="btn-link sec-label">View Published Evaluations </button></li>
+                                <button role="link" id="btnPublishedList" class="btn-link sec-label" onclick="">View Published Evaluations </button></li>
                         </ul>
                        
                     </div>
@@ -255,7 +255,10 @@
                 }
             }).done(function (msg) {
             });;
-        })
+        });
+        $("#btnPublishedList").click(function (e) {
+            document.location.href = "/publications"
+        });
     </script>
 </body>
 </html>
