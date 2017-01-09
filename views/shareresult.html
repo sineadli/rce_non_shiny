@@ -461,6 +461,7 @@ console.log('checkpoint 0.1');
                                     
                                 } catch (e) {
                                     data_issues.getresult.push("Missing or invalid data.");
+                                    var header = 'Analysis results not found or incomplete.';
                                 }
                             } else {
                                 data_issues.getresult.push("No data found for this tool for this evaluation.");
@@ -1050,57 +1051,70 @@ console.log('checkpoint 1');
                         </div >
 
                         <!-- Modal -->
-                        <div id="data-issues-modal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Data Issues Found</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <p>The following issues were found in your evaluation data that indicate invalid or inconsistent data, and may prevent creating a full findings brief.</p>
-                                                <p>Please return to and complete the appropriate tools. Until then, this brief will use placeholder values for all missing or invalid data.</p>
-                                                <p>If this message persists after addressing each item, please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a>.</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-xs-12">
+                        <%  var display_data_issues_modal = false;
 
-                                                <% for (tool in data_issues) {
-                                                    var issues = data_issues[tool];
+                            for (tool in data_issues) {
+                                if (data_issues[tool].length > 0) {
+                                    display_data_issues_modal = true;
+                                    break;
+                                }
+                            }
+
+                            if (display_data_issues_modal) { %>
+
+                                <div id="data-issues-modal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Data Issues Found</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <p>The following issues were found in your evaluation data that indicate invalid or inconsistent data, and may prevent creating a full findings brief.</p>
+                                                        <p>Please return to and complete the appropriate tools. Until then, this brief will use placeholder values for all missing or invalid data.</p>
+                                                        <p>If this message persists after addressing each item, please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a>.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+
+                                                        <% for (tool in data_issues) {
+                                                            var issues = data_issues[tool];
                                                     
-                                                    if (issues.length > 0) {
-                                                        var tool_name = tool_names[tool];
-                                                        var tool_route = tool_routes[tool]; %> 
+                                                            if (issues.length > 0) {
 
-                                                        <h4><%= tool_name %></h4>
-                                                        <ul>
-                                                            <% for (index in issues) { %>
-                                                                <li><%= issues[index] %></li>
-                                                            <% } %>
-                                                        </ul>
+                                                                var tool_name = tool_names[tool];
+                                                                var tool_route = tool_routes[tool]; %> 
 
-                                                        <% if (user != "NOAUTHENTICATED") {%>
-                                                            <p class="prev-answer hidden-print">
-                                                                <i class="fa fa-hand-o-right"></i> Where can I address this?
-                                                                <a class="redirect-link" href="<%- tool_route %>"><%= tool_name %></a>
-                                                            </p>
-                                                        <% } 
-                                                    }
-                                                } %>
+                                                                <h4><%= tool_name %></h4>
+                                                                <ul>
+                                                                    <% for (index in issues) { %>
+                                                                        <li><%= issues[index] %></li>
+                                                                    <% } %>
+                                                                </ul>
 
+                                                                <% if (user != "NOAUTHENTICATED") {%>
+                                                                    <p class="prev-answer hidden-print">
+                                                                        <i class="fa fa-hand-o-right"></i> Where can I address this?
+                                                                        <a class="redirect-link" href="<%- tool_route %>"><%= tool_name %></a>
+                                                                    </p>
+                                                                <% } 
+                                                            }
+                                                        } %>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                        <% } %>
 
                         <!-- Modal -->
                         <div id="download-modal" class="modal fade" role="dialog">
@@ -1249,7 +1263,9 @@ console.log('checkpoint 1');
                 $('form').submit();
             });
 
-            $('#data-issues-modal').modal('show');
+            <% if (display_data_issues_modal) { %>
+                $('#data-issues-modal').modal('show');
+            <% } %>
             
         });
 
