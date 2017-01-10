@@ -27,6 +27,9 @@
         var tooltip = "Need to finish ' The Basics' first";
         if (eval.flag == 1) { peeking =true; }
         if (tools[i].name==="The Basics") firstTool=true;
+        console.log("Creating tool cards");
+        console.log(eval.toolsvisited);
+        console.log(tools);
         if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
 
         if (tool.length > 0) {

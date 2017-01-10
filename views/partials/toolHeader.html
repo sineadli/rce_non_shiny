@@ -21,8 +21,16 @@
     </div>
     <div class="col-xs-3">
         <div class="sec-label">Status</div>
-        <% var sts = '0'; if (eval) sts= parseInt(eval.status) + "% Completed"; %>
-        <p><%= sts %></p>
+
+        <% var status='New'; if (eval) {status = parseInt(eval.status) + "% Completed";
+
+        var statuslength = eval.status > 0 ? (200*(eval.status/100))  : 0;
+        var statusstyle = eval.status == 100 ? "completed" : "";
+
+        } %>
+        <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;"></div></div>
+
+        <p><%= status %></p>
     </div>
     <div style="clear: both; line-height: 0;"></div>
 </div>

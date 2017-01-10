@@ -93,18 +93,18 @@
                 </div>
                 <div class="col-xs-3">
                     <div class="sec-label">Status</div>
- 
+
                     <% var status='New'; if (eval) {status = parseInt(eval.status) + "% Completed";
 
                     var statuslength = eval.status > 0 ? (200*(eval.status/100))  : 0;
                     var statusstyle = eval.status == 100 ? "completed" : "";
-                    
+
                     } %>
+                    <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;"></div></div>
 
                     <p>
                         <strong><%= status %></strong>
                     </p>
-                    <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;"></div></div>
                 </div>
                 <div class="col-xs-12" style="padding: 0; margin: 0;">
                     <ul class="wizard-menu">
