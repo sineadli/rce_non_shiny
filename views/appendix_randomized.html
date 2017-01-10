@@ -44,6 +44,9 @@
         img {
             max-width: 100%;
             padding-bottom: 20px;
+            /* Following two lines keep image centered horizontally */
+            display: block;
+            margin: 0 auto;
         }
 
         .white-background-blue-border {
@@ -876,7 +879,7 @@
                                         <ul>
                                             <li> <%= interpretation_1 %></li>
                                             <li> <%= interpretation_2 %></li>
-                                            <li> The point estimate (e.g., our best guess) of the effect of the educational technology on the outcome is <%= impact %>. This number is calculated as the mean of the posterior distribution.</li>
+                                            <li> The point estimate (e.g., our best guess) of the effect of the educational technology on the outcome is <%= round3(impact) %>. This number is calculated as the mean of the posterior distribution.</li>
                                         </ul>
                                     <% } else { %>
                                         Results are missing or incomplete.
@@ -936,6 +939,8 @@
 
                                             var pvalue = grade_results.freq.pvalue;
                                             var significant = (pvalue <= 0.05) ? '' : ' not';
+
+                                            var pvalue_comparison_sign = (pvalue <= 0.05) ? '<=' : '>';
                                         %>
                                             <tr>
                                                 <% if (analysis_by_grade) { %>
@@ -956,13 +961,13 @@
 
                                 <p>
                                     With the frequentist approach, your statistical analysis would typically begin with a null hypothesis stating that the true impact of the technology is 0. 
-                                    You then calculate a point estimate, as seen under Impact Estimate in Table 3 (<%= impact %>). 
+                                    You then calculate a point estimate, as seen under Impact Estimate in Table 3 (<%= round3(impact) %>). 
                                     This estimate is informed by the observed difference between users and non-users. 
                                     You then test the likelihood of achieving your point estimate, or a value more extreme than your point estimate, 
                                     given that the true impact is 0 (as stated by your null hypothesis). 
                                     This likelihood, which is a calculated probability, is your p-value. 
                                     By comparing the p-value (as seen in Table 2) to a designated cutoff, you can test whether or not you should reject the null hypothesis. 
-                                    Traditionally researchers have used 0.05 as the cutoff. In this case, because <%= pvalue %> < 0.05, we would<%= significant %> reject the null hypothesis, i.e.<%= significant %> reject 
+                                    Traditionally researchers have used 0.05 as the cutoff. In this case, because <%= round3(pvalue) %> <%= pvalue_comparison_sign %> 0.05, we would<%= significant %> reject the null hypothesis, i.e.<%= significant %> reject 
                                     the conclusion that the impact of the technology is 0. You can also make a conclusion about the null hypothesis by looking at the confidence interval. 
                                     If the interval includes 0, you cannot reject the null hypothesis. If it does not include 0 you can reject the null hypothesis.
                                 </p>

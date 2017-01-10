@@ -243,6 +243,10 @@ console.log('checkpoint 0');
                                 return x.every( function(el) { return el === ''});
                             }
 
+                            var round3 = function(x) {
+                                return Math.round(x * 1000) / 1000;
+                            };
+
                             // Initialize default values in case tools are missing
                             
                             // basics
@@ -962,11 +966,11 @@ console.log('checkpoint 1');
                                                                 <td> <%= grade %></td>
                                                             <% } %>
                                                             <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                                            <td> <%= baseline_var_means[characteristic].overall[0] %></td>
-                                                            <td> <%= baseline_var_means[characteristic].intervention[0] %></td>
-                                                            <td> <%= baseline_var_means[characteristic].comparison[0] %></td>
-                                                            <td> <%= baseline_var_means[characteristic].difference[0] %></td>
-                                                            <td> <%= baseline_var_means[characteristic].effect_size[0] %></td>
+                                                            <td> <%= round3(baseline_var_means[characteristic].overall[0]) %></td>
+                                                            <td> <%= round3(baseline_var_means[characteristic].intervention[0]) %></td>
+                                                            <td> <%= round3(baseline_var_means[characteristic].comparison[0]) %></td>
+                                                            <td> <%= round3(baseline_var_means[characteristic].difference[0]) %></td>
+                                                            <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
                                                         </tr>
                                                     <% }
                                                 } catch (e) { %>
@@ -1151,7 +1155,7 @@ console.log('checkpoint 1');
                                                     <label>File Format</label><br />
                                                     <input type="radio" name="file_format" value="pdf" checked> PDF document<br>
                                                     <input type="radio" name="file_format" value="slides" disabled> PDF slides<br>
-                                                    <input type="radio" name="file_format" value="docx" disabled> DOCX file<br>
+                                                    <!--<input type="radio" name="file_format" value="docx" disabled> DOCX file<br>-->
                                                 </div>
                                             </div>
                                         </div>
