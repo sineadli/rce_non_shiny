@@ -17,7 +17,12 @@ $(document).ready(function() {
         $("#header").html(data);
         //$("#breadcrb").show();
     });
-   
+    if (typeof (UserAgentInfo) != 'undefined' && !window.addEventListener) {
+        UserAgentInfo.strBrowser = 1;
+    }
+    $('.datepicker').datepicker({
+        todayHighlight: true
+    });
     $('[data-toggle=collapse]').click(function() {
 
         var caret = $(this).find('i');
@@ -44,6 +49,24 @@ $(document).ready(function() {
 				break;
 			case "context_and_usage":
 				ToolName = "Summarize Context";
+				break;
+			case "basics":
+				ToolName = "The Basics";
+				break;
+			case "craft_your_research_q":
+				ToolName = "Craft Your Research Question";
+				break;
+			case "randomization":
+				ToolName = "Random Assignment";
+				break;
+			case "prepare_data_random":
+				ToolName = "Prepare for Random Assignment";
+				break;
+			case "prepare_data":
+				ToolName = "Prepare Your Data for Analysis";
+				break;
+			case "matching":
+				ToolName = "Matching";
 				break;
 			default:
 				ToolName = "";
@@ -256,6 +279,9 @@ $(document).ready(function() {
 
             $('[data-toggle="tooltip"]').tooltip();
 
+            //this piece of code is the solution for getting rid of “Object doesn't support this property or method” error in IE11, so the datepicker will work
+
+
    }); //<-end document.ready
 
 function setFeedbackOptions(email, page) {
@@ -412,9 +438,9 @@ function setUserLimitsSelections() {
 		assign = "groups of " + users;
 		assignlevel = users + " by " + scluster;
 	    datanote = "You indicated you will randomly assign " + users + " by "
-			+ scluster + ".  A " + scluster + "'s background characteristic value should be the average value for all " + users + " in the " + scluster + ".";
+			+ scluster + ".  Your data set can be at the individual or group level. If at the group level, A " + scluster + "'s background characteristic value should be the average value for all " + users + " in the " + scluster + ".";
 		pretestnote = "You indicated you will randomly assign " + users + " by "
-			+ scluster + ".  A " + scluster + "'s pretest value should be the average value for all " + users + " in the " + scluster + ".";
+			+ scluster + ".  Your data set can be at the individual or group level. If at the group level, A " + scluster + "'s pretest value should be the average value for all " + users + " in the " + scluster + ".";
 	}
 	if (cluster.toLowerCase() !== "select an option") {
 		assign = cluster;

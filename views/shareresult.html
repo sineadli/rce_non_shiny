@@ -712,7 +712,7 @@ console.log('checkpoint 1');
                             var user_name = user.profile.user_name || '< No name found in profile >';
                             var organization_name = user.profile.organization_name || '< No organization name found in profile >';
                         %>
-                            <br / >
+                            <br />
                             <%= user_name %><br />
                             <%= organization_name %><br />
                             <%= new Date().toLocaleDateString() %>
@@ -723,6 +723,10 @@ console.log('checkpoint 1');
                                     <a class="redirect-link" href="/setting">Profile</a>
                                 </p>
                             <% } %>
+                            <p class="prev-answer hidden-print">
+                                <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                                <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
+                            </p>
                         <% } %>
 
                         <hr / > 
@@ -776,8 +780,8 @@ console.log('checkpoint 1');
 
                                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                                 <p class="prev-answer hidden-print">
-                                                    <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                                    <a class="redirect-link" href="/plan_next_steps">Plan Next Steps</a>
+                                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                                                    <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
                                                 </p>
                                             <% } %>
                                         <% } else { %>
@@ -811,7 +815,7 @@ console.log('checkpoint 1');
                                     <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                            <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
+                                            <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
                                         </p>
                                     <% } %>
 
@@ -819,8 +823,8 @@ console.log('checkpoint 1');
 
                                     <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                         <p class="prev-answer hidden-print">
-                                            <i class="fa fa-hand-o-right"></i> Where did I answer this?
-                                            <a class="redirect-link" href="/plan_next_steps">Plan Next Steps</a>
+                                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
                                         </p>
                                     <% } %>
                                 </div>
@@ -1019,8 +1023,8 @@ console.log('checkpoint 1');
                                 </p> 
                                 <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                     <p class="prev-answer hidden-print">
-                                        <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                        <a class="redirect-link" href="/context_and_usage">Context and Usage</a>
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
+                                        <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
                                     </p>
                                 <% } %>
                             </div > 
@@ -1044,8 +1048,8 @@ console.log('checkpoint 1');
 
                                 <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                     <p class="prev-answer hidden-print">
-                                        <i class="fa fa-hand-o-right"></i> Where did I answer the above?
-                                        <a class="redirect-link" href="/craft_your_research_q">Craft Your Research Question</a>
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
+                                        <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
                                     </p>
                                 <% } %>
                             </div > 

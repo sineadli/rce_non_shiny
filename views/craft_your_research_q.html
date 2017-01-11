@@ -121,11 +121,11 @@
                                 }
                                 } %>
                                 <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
-                                <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
+                                <% if (user != "NOAUTHENTICATED") {%>
                                 <p class="prev-answer">
-                                    <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/basics?return=craft_your_research_q">The Basics</a>
                                 </p>
-                                <% }} %>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -167,11 +167,11 @@
                                         <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
                                     </p>
                                 </div>
-                                <% var a =''; if (user != "NOAUTHENTICATED") { if (eval.basics) { %>
+                                <% if (user != "NOAUTHENTICATED") {%>
                                 <p class="prev-answer">
-                                    <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/basics">The Basics</a>
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/basics?return=craft_your_research_q">The Basics</a>
                                 </p>
-                                <% }} %>
+                                <% } %>
                             </div>
                             <div class="step-subquestion">
                                 <p>What is the direction of intended change? </p>

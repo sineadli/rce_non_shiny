@@ -1050,7 +1050,7 @@ module.exports = function (app, passport) {
 		sess.eval.step = 4;
 		var obj = req.body;
 		var returnpath = obj.returnpath;
-        if (returnpath === '') returnpath = "Random Assignment";
+        if (returnpath === '') returnpath = "randomization";
 		console.log(obj);
 		var dt = new Date();
 		async.waterfall([
@@ -1077,8 +1077,6 @@ module.exports = function (app, passport) {
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
 
-				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
-				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
 
 			    eval.prepareRandom.Individual_Group = obj.Individual_Group;
 			    eval.prepareRandom.Cluster_Group = obj.Cluster_Group;
