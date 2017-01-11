@@ -20,15 +20,18 @@ $(document).ready(function() {
     if (typeof (UserAgentInfo) != 'undefined' && !window.addEventListener) {
         UserAgentInfo.strBrowser = 1;
     }
-    $('.datepicker').datepicker({
-        todayHighlight: true
-    });
+    //$('.datepicker').datepicker({
+    //    todayHighlight: true
+    //});
     $('[data-toggle=collapse]').click(function() {
 
         var caret = $(this).find('i');
         caret.toggleClass('fa-caret-right');
         caret.toggleClass('fa-caret-down');
     });
+
+	$('body.peeking a, body.peeking input').click(function () {
+	    preventDefault(); return false; });
 
 	var urlParams = new URLSearchParams(window.location.search);
 

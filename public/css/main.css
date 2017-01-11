@@ -960,7 +960,7 @@ h2.statistical {
     background-image: url("/static/image/StatTool_RCE-Web-Icon.png");
 }
 h2.guide {
-    background-image: url("/static/image/Guide_RCE-Web-Icon.png");
+    background-image: url("/static/image/Guide_RCE-Web2.png");
 }
 
 h2.locked {
@@ -973,7 +973,7 @@ h2.form.locked {
     background-image: url("/static/image/Form-Unavailable.png");
 }
 h2.guide.locked {
-    background-image: url("/static/image/Guide-Unavailable.png");
+    background-image: url("/static/image/Guide-Unavailable2.png");
 }
 div.step-subquestion {
 	    margin: 10px 25px 0 25px;
