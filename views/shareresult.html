@@ -36,87 +36,63 @@
                 ga('create', 'UA-86460597-1', 'auto');
                 ga('send', 'pageview');
             </script>
-        <% } else if (display === 'download') { %>
-           <% include ../views/partials/downloadStyle.html %>
-        <% } %>
+    <style>
+        /* Specific to share results */
 
-    
-</head>
-<body>
-    
-    <% if (display === 'online') { %>
-        <div id="header"></div>
-        <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
-            if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
-            </ol>
-            <% if (message.length>0) { %>
-            <div class="alert alert-success"><%= message %></div>
-            <% } %>
-            <% include ../views/partials/toolHeader.html %>
-        <% } %>
-
-        <form action="" method="post">
-    <% } %>
-
-        <style>
-            /* Specific to share results */
-
-            h2 {
-                color: #4f81bd;
-                padding-top: 15px;
-            }
+        h2 {
+            color: #4f81bd;
+            padding-top: 15px;
+        }
 
             h2.grade-header {
                 font-size: 16px;
             }
 
-            h3 {
-                padding-top: 10px;
-                letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
-            }
+        h3 {
+            padding-top: 10px;
+            letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
+        }
 
-            li {
-                margin-bottom: 10px;
-                font-size: 16px;
-            }
+        li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
 
-            p {
-                font-size: 16px;
-            }
+        p {
+            font-size: 16px;
+        }
 
-            .row {
-                padding-top: 15px;
-            }
+        .row {
+            padding-top: 15px;
+        }
 
-            img {
-                max-width: 100%;
-                padding-bottom: 20px;
-            }
+        img {
+            max-width: 100%;
+            padding-bottom: 20px;
+        }
 
-            .white-background-blue-border {
-                border: 3px #2e75b6 solid;
-                border-radius: 25px;
-                font-size: 16px;
-                line-height: 1.5em;
-                padding: 15px;
-            }
+        .white-background-blue-border {
+            border: 3px #2e75b6 solid;
+            border-radius: 25px;
+            font-size: 16px;
+            line-height: 1.5em;
+            padding: 15px;
+        }
 
-            .blue-background-white-text {
-                background-color: #2e75b6 !important;
-                border: 3px #2e75b6 solid;
-                border-radius: 25px;
-                color: #fff;
-                font-size: 16px;
-                min-height: 150px;
-                padding: 15px;
-                text-align: center;
-            }
+        .blue-background-white-text {
+            background-color: #2e75b6 !important;
+            border: 3px #2e75b6 solid;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            min-height: 150px;
+            padding: 15px;
+            text-align: center;
+        }
 
-            #table1 {
-                width: 100%;
-            }
+        #table1 {
+            width: 100%;
+        }
 
             #table1 td, #table1 th {
                 font-size: 20px;
@@ -131,46 +107,76 @@
                 border-top: 1px #000 solid;
             }
 
-            .circle {
-                width: 50px;
-                height: 50px;
-                margin-top: 10px;
-                -webkit-border-radius: 25px;
-                -moz-border-radius: 25px;
-                border-radius: 25px;
-                background-color: #4f81bd;
-                text-align: center;
-                vertical-align: middle;
-                line-height: 50px;
+        .circle {
+            width: 50px;
+            height: 50px;
+            margin-top: 10px;
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            border-radius: 25px;
+            background-color: #4f81bd;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 50px;
+        }
+
+        div.col-xs-3, div.col-xs-4 {
+            min-width: 0px;
+        }
+
+        @media print {
+
+            body {
+                -webkit-print-color-adjust: exact;
             }
 
-            @media print {
-
-                body {
-                    -webkit-print-color-adjust: exact;
-                }
-
-                a {
-                    color: #000000;
-                }
-
-                #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
-                    max-height: 1px;
-                    padding: 0px;
-                    margin: 0px;
-                }
-
-                /* Bootstrap shows link URLs in print, this removes them */
-                a[href]:after {
-                    content: none !important;
-                }
-
-                .row, table {
-                    page-break-inside: avoid;
-                }
+            a {
+                color: #000000;
             }
-                    
-        </style>
+
+            #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
+                max-height: 1px;
+                padding: 0px;
+                margin: 0px;
+            }
+
+            /* Bootstrap shows link URLs in print, this removes them */
+            a[href]:after {
+                content: none !important;
+            }
+
+            .row, table {
+                page-break-inside: avoid;
+            }
+
+        }
+    </style>
+        <% } else if (display === 'download') { %>
+           <% include ../views/partials/downloadStyle.html %>
+        <% } %>
+            
+    
+</head>
+<body>
+    
+    <% if (display === 'online') { %>
+        <div class="hidden-print">
+            <div id="header"></div>
+            <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
+                if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
+                </ol>
+                <% if (message.length>0) { %>
+                <div class="alert alert-success"><%= message %></div>
+                <% } %>
+                <% include ../views/partials/toolHeader.html %>
+            <% } %>
+        </div>
+        <form action="" method="post">
+    <% } %>
+
+        
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" > 
@@ -719,14 +725,10 @@ console.log('checkpoint 1');
                             
                             <% if (display === 'online') { %>
                                 <p class="prev-answer hidden-print">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this?
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See 
                                     <a class="redirect-link" href="/setting">Profile</a>
                                 </p>
                             <% } %>
-                            <p class="prev-answer hidden-print">
-                                <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                                <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
-                            </p>
                         <% } %>
 
                         <hr / > 
@@ -910,7 +912,7 @@ console.log('checkpoint 1');
                                     <p> # of <%= Basics_Users %>: <%= n_comparison %></p>
                                 </div>
                             </div>
-                            <div class="col-xs-3">
+                            <div class="col-xs-5">
                                 <div class="white-background-blue-border">
                                     <strong> Evaluation Context</strong> <br>
                                     <em> School Type</em> :     <%= wordList(school_types) %><br>
@@ -1080,7 +1082,7 @@ console.log('checkpoint 1');
 
                                 if (display_data_issues_modal) { %>
 
-                                    <div id="data-issues-modal" class="modal fade" role="dialog">
+                                    <div id="data-issues-modal" class="modal fade hidden-print" role="dialog">
                                         <div class="modal-dialog">
                                             <!-- Modal content-->
                                             <div class="modal-content">
@@ -1135,7 +1137,7 @@ console.log('checkpoint 1');
                             <% } %>
 
                             <!-- Modal -->
-                            <div id="download-modal" class="modal fade" role="dialog">
+                            <div id="download-modal" class="modal fade hidden-print" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
                                     <div class="modal-content">
@@ -1183,7 +1185,7 @@ console.log('checkpoint 1');
                             </div>
 
                             <!-- Modal -->
-                            <div id="complete-evaluation-modal" class="modal fade" role="dialog">
+                            <div id="complete-evaluation-modal" class="modal fade hidden-print" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
                                     <div class="modal-content">
@@ -1211,11 +1213,15 @@ console.log('checkpoint 1');
                 </div>
             </div>
         </div>
-<% if (display === 'online') { %>                
-        <% include ../views/partials/shareresultButtons.html %>
+<% if (display === 'online') { %>     
+        <div class="hidden-print">           
+            <% include ../views/partials/shareresultButtons.html %>
+        </div>
     </form > 
     
-    <% include ../views/partials/footer.html %>
+        <div class="hidden-print">
+            <% include ../views/partials/footer.html %>
+        </div>
     <script src='/static/js/custom.js' ></script > 
     <script>
         // Function to convert array into word list (e.g. ["word1", "word2", "word3"] -> "word1, word2, and word3")
