@@ -45,6 +45,24 @@ $(document).ready(function() {
 			case "context_and_usage":
 				ToolName = "Summarize Context";
 				break;
+			case "basics":
+				ToolName = "The Basics";
+				break;
+			case "craft_your_research_q":
+				ToolName = "Craft Your Research Question";
+				break;
+			case "randomization":
+				ToolName = "Random Assignment";
+				break;
+			case "prepare_data_random":
+				ToolName = "Prepare for Random Assignment";
+				break;
+			case "prepare_data":
+				ToolName = "Prepare Your Data for Analysis";
+				break;
+			case "matching":
+				ToolName = "Matching";
+				break;
 			default:
 				ToolName = "";
 		}
@@ -412,9 +430,9 @@ function setUserLimitsSelections() {
 		assign = "groups of " + users;
 		assignlevel = users + " by " + scluster;
 	    datanote = "You indicated you will randomly assign " + users + " by "
-			+ scluster + ".  A " + scluster + "'s background characteristic value should be the average value for all " + users + " in the " + scluster + ".";
+			+ scluster + ".  Your data set can be at the individual or group level. If at the group level, A " + scluster + "'s background characteristic value should be the average value for all " + users + " in the " + scluster + ".";
 		pretestnote = "You indicated you will randomly assign " + users + " by "
-			+ scluster + ".  A " + scluster + "'s pretest value should be the average value for all " + users + " in the " + scluster + ".";
+			+ scluster + ".  Your data set can be at the individual or group level. If at the group level, A " + scluster + "'s pretest value should be the average value for all " + users + " in the " + scluster + ".";
 	}
 	if (cluster.toLowerCase() !== "select an option") {
 		assign = cluster;

@@ -72,7 +72,7 @@
             <a onclick=" window.open('/static/pdf/Matching Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
         </div>
         <div class="tool-header">
-            <h1 class="tool-title">Build your evaluation sample using matching</h1>
+            <h1 class="tool-title">Build Your Evaluation Sample Using Matching</h1>
             <div class="tool-intro">
                 <p>Compare apples to apples by creating a comparison group that is similar to the group using the technology. </p>
             </div>
@@ -114,10 +114,10 @@
                         <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" rows="2" placeholder="Ex. 5th grade English learners who used eZumi Learning in their classrooms" class="shiny-bound-input"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
                         <% if (user != "NOAUTHENTICATED") { %>
                         <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
+                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See  <a class="redirect-link" href="/craft_your_research_q?return=matching">Craft Your Research Question</a>
                         </p>
                         <% } %>
-                 
+                       
                     </div>
                     <div class="step-subquestion">
                         <h4>
@@ -130,7 +130,7 @@
                         <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" rows="2" placeholder="Ex. similar 5th grade English Learners with no access to eZumi Learning" class="shiny-bound-input"><%= eval.planQuestion.Comparison_Group_Desc %></textarea>
                         <% if (user != "NOAUTHENTICATED") { %>
                         <p class="prev-answer">
-                            <i class="fa fa-hand-o-right"></i> You answered this question previously in <a href="/craft_your_research_q">Craft Your Research Question</a>
+                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See  <a class="redirect-link" href="/craft_your_research_q?return=matching">Craft Your Research Question</a>
                         </p>
                         <% } %>
                      

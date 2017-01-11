@@ -132,13 +132,33 @@ module.exports = function (app, passport) {
         sess = req.session;
         // console.log(req.body.id);
         if (!req.body.id) {
-            var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
-            //if (req.user.profile.user_name) {
-            //    eval.author = req.user.profile.user_name;
-            //}
-            //if (req.user.profile.organization_name) {
-            //    eval.company = req.user.profile.organization_name;
-            //}
+			var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
+			console.log("In creating new evaluation");
+            console.log(eval);
+			// Pre-populate milestones. Moved from get current eval.
+			if (eval.evalPlan.Milestones.length == 0) {
+				console.log("create the 12 default milestones");
+				for (var i = 0; i < 12; i++) {
+					var m = ({
+						Order:
+ i + 1,
+						Milestone_Name:
+ '',
+						Complete_Date:
+ '',
+						Assigned_To:
+ '',
+						Status:
+ '',
+						Notes:
+ '',
+						Hide:
+ ''
+					});
+					
+					eval.evalPlan.Milestones.push(m);
+				}
+			}
 
             eval.save(function (err) {
                 if (err)

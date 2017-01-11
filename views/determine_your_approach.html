@@ -67,10 +67,10 @@
                             <div class="clearfix"></div>
                             <div class="tool-intro">
                                 <p>
-                                    In any evaluation of effectiveness you will need to compare those using the technology (the intervention group) to a similar group not using the technology (the comparison group).
+                                    In any evaluation of effectiveness you will need to compare those using the technology (the treatment group) to a similar group not using the technology (the comparison group).
                                     The goal of this tool is to identify the best approach for creating these two groups.
                                 </p>
-                                <p>If you&#39;re already using the technology, we&#39;ll consider options for a backward-looking evaluation. If you&#39;re allowing new users access to a technology you&#39;ve already implemented or are not yet using, we can consider options for implementing or piloting the technology in a way that allows you to determine if it works. </p>
+                                <p>If you&#39;re already using the technology, the Coach will check that you meet the requirements to conduct a backward-looking evaluation. If you're piloting a new technology or expanding a current one to new users, the Coach will recommend one of several forward-looking evaluations. </p>
                             </div>
                         </div>
                         <div class="clearfix">&nbsp;</div>
@@ -154,8 +154,8 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title sec-label clickable">
-                                        <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider4">
+                                        
+                                        <a data-toggle="collapse" data-parent="#ttc2" href="#consider4"><i class="fa fa-caret-down" aria-hidden="false"></i>
                                             Things to Consider
                                         </a>
                                     </h3>
@@ -163,7 +163,7 @@
                                 <div id="consider4" class="panel-collapse collapse in">
                                     <p>If you are targeting a specific type of <%= Basics_Users %> (for example EL students or Title 1 schools) answer this question just for those <%= Basics_Users %>.</p>
                                     <p> The more similar the two groups are at the start of the evaluation, the more confident you can be at the end of the evaluation that the measured differences found can be attributed to using the technology.</p>
-                                    <p> Do not compare volunteers to non-volunteers, because those that volunteer are inherently different from those that do not. If you must ask for volunteers, you should select users and non-users from your pool of volunteers.</p>
+                                    <p>The Coach does not recommend comparing volunteers to non-volunteers because those that volunteer are inherently different from those that do not. If you must ask for volunteers, the Coach recommends selecting users and non-users from your pool of volunteers.</p>
                                 </div>
                             </div>
                         </div>
@@ -185,11 +185,11 @@
                     <div class="step-subquestion">
                         <p>The method you choose below, will impact how confident you can be that your technology is causing the outcomes you observe and how applicable your findings are to a broader population of <%= Basics_Users %>.</p>
 
-                        <p class="note"> Note: Across all of these methods, you do not need to create or compare groups at the individual level. If there are logistical barriers to working with individuals, you can create groups at higher levels, such as classrooms or schools. However, at higher levels you will need more study participants in order to be confident in your results</p>
+                  
                         
                     </div>
                     <div class="step-action">
-                        <p><em>Select one.</em>
+                        <p><em class="stronger"><i class="fa fa-asterisk"></i> Select one.</em>
                         </p>
                         <div class="panel-group" id="Grouping_options">
                             <div class="panel panel-default">
@@ -214,13 +214,13 @@
 
                                 <div id="randon-1" class="panel-collapse collapse in">
                                     <p>
-                                        You can think of random assignment as putting the names of your <%= Basics_Users %> in a hat and randomly picking some of the names. If you put in 10 names and selected 5, those you picked would get to pilot (or try) the technology, while those not selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups.
+                                        You can think of random assignment as putting the names of your <%= Basics_Users %> in a hat and randomly picking some of the names. If you put in 10 names and selected 5, those you picked would get to pilot (or try) the technology, while those not selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups. This process can also work with teachers, classes, or even schools. 
                                     </p>
 
                                     <h4 class="list-header">Advantages:</h4>
                                     <ul>
-                                        <li>Resulting treatment and comparison groups will, on average, be similar in both observable and unobservable characteristics, giving you the most confidence that any differences in outcomes between the groups are due to using <%= Basics_Tech_Name %>. </li>
-                                        <li>A fair way to decide who first gets to use a technology, because everyone has the same chance of being chosen.</li>
+                                        <li>Resulting treatment and comparison groups will, on average, be similar in both observed (e.g. gender) and unobservable (e.g. motivation) characteristics, giving you the most confidence that any differences in outcomes between the groups are due to using <%= Basics_Tech_Name %>. </li>
+                                        <li>It is a fair way to decide who gets to use a technology first, because everyone has the same chance of being chosen.</li>
                                         <li>Findings are relevant for the overall population you are working with (i.e. everyone in the hat).</li>
                                     </ul>
                                     <h4 class="list-header">Disadvantages:</h4>
@@ -250,17 +250,17 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div id="cutoff-2" class="panel-collapse collapse">
-                                    <p>Using a cutoff means selecting who uses the technology based on where <%= Basics_Users %> fall in relation to an existing threshold. For example, students just below the &ldquo;low score&rdquo; threshold are assigned to use <%= Basics_Tech_Name %>. We assume that students right around a cutoff are very similar. Therefore, you can compare those just below the cutoff to those just above it. </p>
+                                    <p>Using a cutoff means selecting who uses the technology based on where <%= Basics_Users %> fall in relation to an existing threshold. For example, students just below a &ldquo;low score&rdquo; threshold are assigned to use <%= Basics_Tech_Name %>. We assume that students right around a cutoff are very similar. Therefore, you can compare those just below the cutoff to those just above it. </p>
                                     <h4 class="list-header">Advantages:</h4>
                                     <ul>
-                                        <li>Allows for the mechanism of assignment to be based more on a specific measure than on chance. </li>
+                                        <li>It allows for comparison of similar users without using random assignment. </li>
 
                                     </ul>
                                     <h4 class="list-header">Disadvantages:</h4>
                                     <ul>
                                         <li>Findings only apply to <%= Basics_Users %> near the cutoff, not to the whole population.</li>
-                                        <li>May be less fair than random assignment. With this method, scoring 1 point below the cutoff gives you a 100% chance of using <%= Basics_Tech_Name %>, while scoring 1 point above the cutoff means you have a 0% chance of using <%= Basics_Tech_Name %>, even though both groups of <%= Basics_Users %> may be equally in need of it.</li>
-                                        <li>Not currently supported by the RCE Coach, but will be coming soon! <a href="mailto:EdTechRCE@mathematica-mpr.com">Contact us</a> if you&rsquo;d like to discuss testing this new method. </li>
+                                        <li>It may not be as fair as random assignment. With this method, scoring 1 point below the cutoff gives you a 100% chance of using <%= Basics_Tech_Name %>, while scoring 1 point above the cutoff means you have a 0% chance of using <%= Basics_Tech_Name %>, even though both groups of <%= Basics_Users %> may be equally in need of it.</li>
+                                        <li>It is not currently supported by the RCE Coach, but will be coming soon! <a href="mailto:EdTechRCE@mathematica-mpr.com">Contact us</a> if you&rsquo;d like to discuss testing this new method. </li>
                                     </ul>
 
                                 </div>
@@ -298,14 +298,14 @@
                                     <ul>
                                         <li>May not be considered fair to stakeholders. The group that meets the criteria may already have advantages over other <%= Basics_Users %>. </li>
                                         <li>May not align with need. Those who need <%= Basics_Tech_Name %> more or would gain more from using it may be less likely to be given access than if random assignment was used.</li>
-                                        <li>It&rsquo;s not always possible to create a good comparison group. If the Coach fails to create similar groups of users and non-users, you will not be able to determine if the educational technology is moving the needle. It&rsquo;s possible that groups appear similar, but unobserved differences, not included in the your data, are driving outcomes. </li>
+                                        <li>It&rsquo;s not always possible to create a good comparison group. If the Coach fails to create similar groups of users and non-users, you will not be able to determine if the educational technology is moving the needle. It&rsquo;s possible that groups appear similar, but unobserved differences, not included in  your data, are driving outcomes. </li>
 
                                     </ul>
 
                                 </div>
                             </div>
 
-
+                            <p class="note">Note: Across all of these methods, you do not need to create or compare groups at the individual level. If there are logistical barriers to working with individuals, you can create groups at higher levels, such as classrooms or schools. However, at higher levels you will need more study participants in order to be confident in your results.</p>
                         </div>
 
 
@@ -372,9 +372,9 @@
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                               
                                                 <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
-                                                    Things to Consider
+                                                    <i class="fa fa-caret-down" aria-hidden="false"></i>Things to Consider
                                                 </a>
                                             </h3>
                                         </div>
@@ -461,8 +461,8 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h3 class="panel-title sec-label clickable">
-                                            <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                            <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
+                                            
+                                            <a data-toggle="collapse" data-parent="#ttc6" href="#consider6"><i class="fa fa-caret-down" aria-hidden="false"></i>
                                                 Things to Consider
                                             </a>
                                         </h3>

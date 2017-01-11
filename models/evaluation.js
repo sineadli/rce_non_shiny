@@ -348,30 +348,7 @@ evaluationSchema.pre('save', function (next) {
                 this.path = "path-matching"; //no available yet
             }//what should we do?
         }
-		// Pre-populate milestones. Moved from get current eval.
-		if (this.evalPlan.Milestones.length == 0) {
-			console.log("create the 12 default milestones");
-			for (var i = 0; i < 12; i++) {
-				var m = ({
-					Order:
-					i + 1,
-					Milestone_Name:
-					'',
-					Complete_Date:
-					'',
-					Assigned_To:
-					'',
-					Status:
-					'',
-					Notes:
-					'',
-					Hide:
-					''
-				});
-
-				this.evalPlan.Milestones.push(m);
-			}
-        }
+		
     
         if (this.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "share your results" && x.status.toLowerCase() === "completed") }).length===1) {
             this.status = "100";
