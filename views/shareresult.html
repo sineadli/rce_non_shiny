@@ -591,17 +591,25 @@ console.log('checkpoint 0.1');
                                         if (duration_days === 0) data_issues.planContext.push("Evaluation start date and end date are equal.");
 
                                         if (duration_days < 7) {
-                                            duration = duration_days.toString() + ' days';
+                                            duration = duration_days;
+                                            duration_unit = 'day';
                                         }
-                                        else if (duration_days < 84) {
-                                            duration = (Math.ceil(duration_days / 7)).toString() + ' weeks';
+                                        else if (duration_days < 49) {
+                                            duration = Math.ceil(duration_days / 7);
+                                            duration_unit = 'week';
                                         }
-                                        else if (duration_days < 365) {
-                                            duration = (Math.ceil(duration_days / 30)).toString() + ' months';
+                                        else if (duration_days < 335) {
+                                            duration = Math.ceil(duration_days / 30);
+                                            duration_unit = 'month';
                                         }
                                         else {
-                                            duration = (Math.ceil(duration_days / 365)).toString() + ' years';
+                                            duration = Math.ceil(duration_days / 365);
+                                            duration_unit = 'year';
                                         }
+
+                                        duration_plural = (duration > 1) ? 's' : '';
+                                        duration = duration.toString() + ' ' + duration_unit + duration_plural;
+
                                     } catch (e) {
                                         data_issues.planContext.push("Duration of evaluation couldn't be calculated. Check start and end date.");
                                     }
