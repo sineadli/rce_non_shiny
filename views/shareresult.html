@@ -897,21 +897,21 @@ console.log('checkpoint 1');
                                                     
                         <div class="row">
                             <div class="col-xs-3">
-                                <div class=" blue-background-white-text">
+                                <div class="blue-background-white-text">
                                     <p> <strong> Treatment Group</strong> </p>
                                     <p> <%= capitalize(Basics_Users) %> who used readTech </p>
                                     <p> # of <%= Basics_Users %>: <%= n_treatment %></p>
                                 </div>
                             </div>
                             <div class="col-xs-3">
-                                <div class=" blue-background-white-text">
+                                <div class="blue-background-white-text">
                                     <p> <strong> Comparison Group</strong> </p>
                                     <p> <%= capitalize(Basics_Users) %> who did not use readTech </p>
                                     <p> # of <%= Basics_Users %>: <%= n_comparison %></p>
                                 </div>
                             </div>
-                            <div class="col-xs-4">
-                                <div class=" white-background-blue-border">
+                            <div class="col-xs-3">
+                                <div class="white-background-blue-border">
                                     <strong> Evaluation Context</strong> <br>
                                     <em> School Type</em> :     <%= wordList(school_types) %><br>
                                     <em> District Size</em> :   <%= Total_Students %><br>
@@ -1157,9 +1157,20 @@ console.log('checkpoint 1');
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <label>File Format</label><br />
-                                                    <input type="radio" name="file_format" value="pdf" checked> PDF document<br>
-                                                    <input type="radio" name="file_format" value="slides" disabled> PDF slides<br>
-                                                    <!--<input type="radio" name="file_format" value="docx" disabled> DOCX file<br>-->
+                                                    <% 
+                                                        try { 
+                                                            var wk = require('wkhtmltopdf'); %>
+                                                            
+                                                            <input type="radio" name="file_format" value="pdf" checked> PDF document<br>
+                                                            <input type="radio" name="file_format" value="slides" disabled> PDF slides<br>
+                                                    
+                                                            <small id="file-format-note"></small>
+                                                        <% } catch(e) { %>
+
+                                                            <input type="radio" name="file_format" value="html" checked> HTML file<br>
+                                                            <br />
+                                                            <small id="file-format-note">The HTML version of this file can be opened and printed from any browser, with or without an internet connection.</small>
+                                                        <% } %>
                                                 </div>
                                             </div>
                                         </div>
@@ -1279,6 +1290,17 @@ console.log('checkpoint 1');
                 $('form').attr('action', action);
                 $('form').submit();
             });
+
+            <% if (display === 'online') { %>
+                $('input[name=download_route]').change( function() {
+                    var val = $(this).val();
+
+                    var disable_slides = (val === 'appendix_matched' || val === 'appendix_randomized')
+
+                    $('input[name=file_format][value=slides]').attr('disabled', disable_slides);
+                });
+
+            <% } %>
 
             <% if (display_data_issues_modal) { %>
                 $('#data-issues-modal').modal('show');
