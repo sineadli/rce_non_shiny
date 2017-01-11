@@ -1305,7 +1305,6 @@ module.exports = function (app, passport) {
 
         async.waterfall([
             function (callback) {
-
                 if (sess.eval) {
                     Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
                         if (!eval) {
@@ -1378,7 +1377,6 @@ module.exports = function (app, passport) {
                 callback(null, eval);
             },
             function (eval, callback) {
-
                 // Need to generate document file here
                 var query = require('url').parse(req.url, true).query;
 

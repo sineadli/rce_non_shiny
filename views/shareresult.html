@@ -24,6 +24,7 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
             <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
             <script src="/static/js/jquery.feedback_me.js"></script>
+            <script src="/static/js/bootstrap-datepicker.min.js"></script>
             <!--<script src="/static/js/bootstrap-multiselect.js"></script>-->
             <script>
                 (function (i, s, o, g, r, a, m) {
@@ -36,6 +37,10 @@
                 ga('create', 'UA-86460597-1', 'auto');
                 ga('send', 'pageview');
             </script>
+    
+        <% } else if (display === 'download') { %>
+           <% include ../views/partials/downloadStyle.html %>
+        <% } %>
     <style>
         /* Specific to share results */
 
@@ -148,13 +153,8 @@
             .row, table {
                 page-break-inside: avoid;
             }
-
         }
-    </style>
-        <% } else if (display === 'download') { %>
-           <% include ../views/partials/downloadStyle.html %>
-        <% } %>
-            
+    </style>            
     
 </head>
 <body>
@@ -1293,7 +1293,9 @@ console.log('checkpoint 1');
             // Since we have multiple buttons that can take actions, set the form action on button click.
             $('button[type=submit]').click(function () {
                 var action = $(this).attr('data-action');
+                console.log('action:', action);
                 $('form').attr('action', action);
+                console.log('submitting');
                 $('form').submit();
             });
 
