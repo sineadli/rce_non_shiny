@@ -19,8 +19,12 @@
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link href="/static/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-datepicker.min.js"></script>
+
     <script src="/static/js/jquery.feedback_me.js"></script>
     <script src='/static/js/custom.js'></script>
     <script>
@@ -70,8 +74,8 @@
         var Current_or_New = eval.probAppr.Appr_Current_or_New;
         var Verb = Current_or_New === "Current" ? "did" : "will";
         var Verb2 = Current_or_New === "Current" ? "is" : "was";
-        var Eval_Begin_Date = eval.planContext.Eval_Begin_Date != "01/01/1900" ? eval.planContext.Eval_Begin_Date : "";
-        var Eval_End_Date = eval.planContext.Eval_End_Date != "01/01/1900" ? eval.planContext.Eval_End_Date : "";
+        var Eval_Begin_Date = eval.planContext.Eval_Begin_Date ;
+        var Eval_End_Date = eval.planContext.Eval_End_Date ;
 
 
 
@@ -121,12 +125,15 @@
                                 function pad(n) {
                                 return n < 10 ? "0" +n : n
                                 }
+                                if(v){
                                 d=new Date(v);
-                                dash="-"
-                                colon=":"
-                                return d.getFullYear()+dash+
-                                pad(d.getMonth()+1)+dash+
-                                pad(d.getDate())
+                                dash="/";
+                                colon=":";
+                                return pad(d.getMonth()+1) +dash+
+                                pad(d.getDate())+dash+
+                                d.getFullYear();
+                                }
+                           
 
                                 }
                                 var bd=dateformat(Eval_Begin_Date);
@@ -136,10 +143,10 @@
 
                                 <div class="step-action">
                                     <h4><label for="Eval_Begin_Date">When <%= Verb %> <%= Basics_Users %> begin using <%= Basics_Tech_Name %>?</label></h4>
-                                    <input type="date" name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= bd %>" />
+                                    <input type="text" class="datepicker"  name="Eval_Begin_Date" id="Eval_Begin_Date" value="<%= bd %>" placeholder="mm/dd/yyyy" />
                                     <br />
                                     <h4><label for="Eval_End_Date">When <%= Verb %> you measure the effect of <%= Basics_Tech_Name %> on <%= Basics_Outcome %> with <%= Outcome_Measure %></label></h4>
-                                    <input type="date" name="Eval_End_Date" id="Eval_End_Date" value="<%= ed %>" />
+                                    <input type="text" class="datepicker"  name="Eval_End_Date" id="Eval_End_Date" value="<%= ed %>" placeholder="mm/dd/yyyy" />
                                 </div>
                             </div>
 
@@ -918,6 +925,7 @@
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function () {
+         
             //var bootstrapButton = $.fn.button.noConflict(); // return $.fn.button to previously assigned value
             //$.fn.bootstrapBtn = bootstrapButton; // give $().bootstrapBtn the Bootstrap functionality
             ////set up some minimal options for the feedback_me plugin
