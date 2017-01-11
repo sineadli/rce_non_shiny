@@ -18,14 +18,16 @@
     <link rel="stylesheet" href="/static/css/main.css" />
     <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);" />
+    <link href="/static/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/css/jquery.feedback_me.css" />
     <script src="/static/js/jquery.feedback_me.js"></script>
     <script src='/static/js/custom.js'></script>
-    <script src='/static/js/autosize.js'></script>
+    <script src='/static/js/autosize.js'></script> 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="/static/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script>
         (function (i, s, o, g, r, a, m) {
@@ -395,14 +397,17 @@
                                                 function pad(n) {
                                                 return n < 10 ? "0" +n : n
                                                 }
+                                                if(v){
                                                 d=new Date(v);
-                                                dash="-"
-                                                colon=":"
-                                                return d.getFullYear()+dash+
-                                                pad(d.getMonth()+1)+dash+
-                                                pad(d.getDate())
+                                                dash="/";
+                                                colon=":";
+                                                return pad(d.getMonth()+1) +dash+
+                                                pad(d.getDate())+dash+
+                                                d.getFullYear();
+                                                }
 
-                                            }
+
+                                                }
 
                                                
                                             var bd=eval.planContext.Eval_Begin_Date ? dateformat(eval.planContext.Eval_Begin_Date) : "";
@@ -488,7 +493,7 @@
                                                         <textarea name="EvalPlan[Milestones][<%= i %>][Milestone_Name]" id="Milestone_Name_<%= i %>" class="autosizejs"><%= ms[i] %></textarea>
                                                     </td>
                                                     <td>
-                                                        <input type="date" name="EvalPlan[Milestones][<%= i %>][Complete_Date]" id="Complete_Date_<%= i %>" value="<%= dates[i] %>" />
+                                                        <input type="text" style="width:125px;font-size:.9em;" class="datepicker" name="EvalPlan[Milestones][<%= i %>][Complete_Date]" id="Complete_Date_<%= i %>" value="<%= dates[i] %>" placeholder="mm/dd/yyyy" />
                                                     </td>
                                                     <td>
                                                         <input type="text" name="EvalPlan[Milestones][<%= i %>][Assigned_To]" id="Assigned_To_<%= i %>" value="<%= ev.Milestones[i].Assigned_To %>" />
