@@ -1208,7 +1208,7 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query });
+        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'});
     });
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
         sess = req.session;
@@ -1216,7 +1216,7 @@ module.exports = function (app, passport) {
         console.log(query);
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.publishlists  = eval;
-            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query });
+            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query, display: 'online' });
         });
     });
     app.post('/shareresult', isLoggedIn,function (req, res) {
@@ -1299,8 +1299,10 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.eval.last_step = 6;
         var obj = req.body;
-
         var dt = new Date();
+
+        var download_route = obj.download_route;
+
         async.waterfall([
             function (callback) {
                 if (sess.eval) {
@@ -1376,118 +1378,52 @@ module.exports = function (app, passport) {
             },
             function (eval, callback) {
                 // Need to generate document file here
-                console.log('generate document');
-                //var filename = 'node-google.pdf';
+                var query = require('url').parse(req.url, true).query;
 
-                //var html_css_inline = juice(obj.document_html);
-                fs.writeFile('test-output.html', obj.document_html, 'utf8', function () {
-                    callback(null, 'test-output.html');
-                });
-            },
-            function (filename, callback) {
-                // Now download the document
-                console.log('download document');
-                /*res.setHeader('Content-disposition', 'attachment; filename=brief.pdf');
-                res.setHeader('Content-type', 'application/pdf');
-                var filestream = fs.createReadStream('node-google.pdf');*/
+                console.log('rendering ', download_route + '.html');
 
-                res.setHeader('Content-disposition', 'attachment; filename=test-output.html');
-                res.setHeader('Content-type', 'text/html');
-                var filestream = fs.createReadStream(filename);
-
-                filestream.pipe(res);
-
-                callback(null, filename);
-            },
-            function (filename, callback) {
-                // Delete the file
-                console.log('delete document');
-                //fs.unlink(filename);
-            }
-        ], function (err) {
-            if (err) return next(err);
-            res.redirect('/coach');
-        });
-    });
-
-    app.post('/publish', isLoggedIn, function (req, res) {
-        var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
-        sess = req.session;
-        sess.eval.last_step = 6;
-        var obj = req.body;
-        var dt = new Date();
-        async.waterfall([
-            function (done) {
-                if (sess.eval) {
-                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-                        if (!eval) {
-                            req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/coach');
-                        }
-                        if (err) {
-                            console.log(err);
-                            return res.redirect('/coach');
-                        }
-                        return done(err, eval);
-                    });
-                }
-                else
-                    res.redirect('/coach');
-            },
-            function (eval, done) {
-                eval.last_step = 6;
-                eval.last_tool = "Share Your Results";
-                //eval find so update the toolsVisisted accordingly
-                var tool = eval.toolsvisited.filter(function (x) { return x.name === "Share Your Results" });
-                if (tool.length == 0) {
-                    eval.toolsvisited.push(toollist);
-                }
-                else {
-                    var index = eval.toolsvisited.indexOf(tool[0]);
-                    if (index > -1) {
-                        if (tool[0].status === "completed") toollist = { "name": "Share Your Results", "status": "completed", "visited_at": new Date() };
-                        eval.toolsvisited.splice(index, 1);
-                        eval.toolsvisited.push(toollist);
-                    }
-                }
-                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
-
-                // Turn relabel inputs into an array rather than 
-                var relabel_index = 0;
-                var relabels = [];
-
-                while (obj['relabel-baseline-var-' + relabel_index]) {
-                    relabels.push(obj['relabel-baseline-var-' + relabel_index]);
-                    delete obj['relabel-baseline-var-' + relabel_index]
-                    relabel_index++;
-                }
-
-                var shareresult = obj;
-                shareresult.baseline_var_relabels = relabels;
-
-                if (!eval.shareresult) {
-                    shareresult.created_at = dt;
-                }
-                else {
-                    shareresult.updated_at = dt;
+                var filename_map = {
+                    shareresult: 'findings-brief',
+                    appendix_randomized: 'technical-appendix',
+                    appendix_matched: 'technical-appendix'
                 };
 
-                eval.shareresult = shareresult;
+                var filename = filename_map[download_route];
 
-                if (eval.stepsclicked.indexOf(6) < 0) eval.stepsclicked.push(6);
-                eval.save(function (err) {
-                    if (err) {
-                        console.log(err); return done(err);
-                    }
-                    sess.eval = eval;
-                    if (req.body.status == "started") {
-                        req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/shareresult');
-                    }
-                    else {
-                        return res.redirect('/coach');
-                    }
-                });
+                res.render(download_route + '.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'download' },
+                    function (err, html) {
+                        console.log(err);
+
+                        // Try to convert to PDF, and if it fails, revert to HTML;
+                        try {
+                            var wkhtmltopdf = require('wkhtmltopdf');
+
+                            wkhtmltopdf(html, {debug: true}, function (err, stream) {
+                                console.log('inside wkhtmltopdf');
+
+                                if (err) {
+                                    console.log('tried pdf, failed');
+                                    console.log(err);
+                                    res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.html');
+                                    res.setHeader('Content-type', 'text/html');
+                                    res.write(html);
+
+                                } else {
+                                    console.log('pdf success');
+                                    res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.pdf');
+                                    res.setHeader('Content-type', 'application/pdf');
+                                    res.write(stream);
+                                }
+                            });
+                        } catch (e) {
+                            console.log('wkhtmltopdf module not found');
+                            res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.html');
+                            res.setHeader('Content-type', 'text/html');
+                            res.write(html);
+                        }
+
+                        res.send();
+                    });
             }
         ], function (err) {
             if (err) return next(err);
@@ -1503,5 +1439,6 @@ module.exports = function (app, passport) {
             res.render('shareresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query });
         });
     });
+
 };
 
