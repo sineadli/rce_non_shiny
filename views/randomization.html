@@ -11,7 +11,6 @@
 <head>
     <title>Randomization - Ed Tech RCE Coach</title>
     <% include ../views/partials/scriptHeader.html %>
-    <script src="/static/js/bootstrap-multiselect.js"></script>
 </head>
 <body>
     <div id="header"></div>
@@ -135,11 +134,11 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                         %>
                     </select>
 
-                    <div id="Question_Cluster" hidden="true">
-                        <div class="step-subquestion">
+                    <div id="Question_Cluster" hidden="true" style="margin-left: 20px;">
+                       
                             <h4><label for="Cluster_Group">How will you group your <%= Basics_Users %>?</label></h4>
-                        </div>
-                        <div class="step-action">
+                      
+                      
                             <select  name="Cluster_Group" id="Cluster_Group">
                                 <%
                                 var options = ["Select an option", "by class", "by school", "other" ];
@@ -153,7 +152,7 @@ var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
                                 }
                                 %>
                             </select>
-                        </div>
+                       
                             <div id="Question_Cluster_Other" hidden="true">
                                 <p>
                                     <label for="Cluster_Group_Other">Please specify:</label>

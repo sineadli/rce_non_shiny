@@ -10,10 +10,13 @@
 <html>
 <head>
     <title>Matching - Ed Tech RCE Coach</title>
+
     <% include ../views/partials/scriptHeader.html %>
-    <script src="/static/js/bootstrap-multiselect.js"></script>
+   
+
 </head>
-<body>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %>">
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
