@@ -139,7 +139,6 @@
     
 </head>
 <body>
-    
     <% if (display === 'online') { %>
         <div class="hidden-print">
             <div id="header"></div>
@@ -165,13 +164,21 @@
                                     <h1 class="tool-title" > <%= capitalize(Basics_Tech_Name) %> Findings Brief</h1 > 
                         
                                     <% if (user != "NOAUTHENTICATED") {
-                                        var user_name = user.profile.user_name || '< No name found in profile >';
-                                        var organization_name = user.profile.organization_name || '< No organization name found in profile >';
+                                        
+                                        if (eval.published_at) {
+                                            var date = new Date(eval.published_at).toLocaleDateString();
+                                            var user_name = eval.author || '< No author associated with evaluation >';
+                                            var organization_name = eval.company || '< No organization associated with evaluation >';
+                                        } else {
+                                            var user_name = user.profile.user_name || '< No name found in profile >';
+                                            var organization_name = user.profile.organization_name || '< No organization name found in profile >';
+                                            var date = new Date().toLocaleDateString();
+                                        }
                                     %>
                                         <br />
                                         <%= user_name %><br />
                                         <%= organization_name %><br />
-                                        <%= new Date().toLocaleDateString() %>
+                                        <%= date %>
                             
                                         <% if (display === 'online') { %>
                                             <p class="prev-answer hidden-print">
