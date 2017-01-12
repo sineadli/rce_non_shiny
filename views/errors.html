@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+
+
+<html lang="en">
+<head>
+
+    <title>Coach</title>
+    <% include ../views/partials/scriptHeader.html %>
+
+</head>
+<body>
+
+    <div id="header"></div>
+    <input type="hidden" id="user_email" value="<%= user %>" />
+   
+    <div class="container-fluid">
+        <div class="dash-well">
+            <p class="text-center">Oops, something unexpected happened. Please report the error to 
+                <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a></p>
+        </div>
+    </div>
+
+    <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+      
+
+    </script>
+
+</body>
+</html>
