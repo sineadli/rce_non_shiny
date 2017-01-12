@@ -627,7 +627,12 @@ console.log('checkpoint 0.1');
                                             n_overall += samples.n_matched[0];
                                             n_treatment += samples.n_matched_treat[0];
                                         }
-                                        baseline_vars = match_results.match_vars;   
+                                        
+                                        if (match_results.match_vars) {
+                                            baseline_vars = match_results.match_vars;
+                                        } else if (match_results.args) {
+                                            baseline_vars = match_results.args.match_vars;
+                                        }
                                     } catch(e) {
                                         data_issues.matching.push("Missing, invalid, or not saved data. Try completing this tool again.");
                                     }
@@ -646,7 +651,11 @@ console.log('checkpoint 0.2');
                                             n_treatment += samples.n_treat[0];
                                         }
 
-                                        baseline_vars = results.baseline_vars;
+                                        if (results.baseline_vars) {
+                                            baseline_vars = results.baseline_vars;
+                                        } else if (results.args) {
+                                            baseline_vars = results.args.baseline_vars;
+                                        }
                                     } catch(e) {
                                         data_issues.random.push("Missing, invalid, or not saved data. Try completing this tool again.");
                                     }
