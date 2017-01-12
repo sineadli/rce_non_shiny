@@ -632,6 +632,8 @@
                             </div>
 
                             <!-- Modal -->
+                            
+
                             <div id="complete-evaluation-modal" class="modal fade hidden-print" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
@@ -641,16 +643,27 @@
                                             <h4 class="modal-title">Complete Evaluation</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <div class="row">
                                                 <div class="col-xs-12">
-                                                    <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
+                                                    <% if (!eval.published_at && (!user.profile.user_name || !user.profile.organization_name)) {
+                                                            var share_disabled = 'disabled'; %>
+
+                                                            <p>You must enter your name and organization before you can share an evaluation.</p>
+                                                            <p class="prev-answer hidden-print">
+                                                                <i class="fa fa-hand-o-right"></i> Where can I answer this? See
+                                                                <a class="redirect-link" href="/setting">Profile</a>
+                                                            </p>
+                                                    <% } else { 
+                                                            var share_disabled = ''; %>
+                                                            <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
+                                                    <% } %>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT SHARE</button>
-                                            <button type="submit" id="Complete" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">SHARE</button>
+                                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %>>DO NOT SHARE</button>
+                                            <button type="submit" id="Complete" data-action="/shareresult" class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %>>SHARE</button>
                                         </div>
                                     </div>
                                 </div>
