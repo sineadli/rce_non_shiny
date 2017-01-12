@@ -227,6 +227,13 @@ module.exports = function(app, passport) {
         //console.log(req.params.coachStep);
         res.render('partials/header.html', { user: req.user });
     });
+
+    app.get('/error', function (req, res) {
+        var user;
+        if (req.user) user = req.user
+        // render the page and pass in any flash data if it exists
+        res.render('errors.html', { user: user });
+    });
 	
 }
 

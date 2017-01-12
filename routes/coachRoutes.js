@@ -55,7 +55,10 @@ module.exports = function (app, passport) {
         console.log("hiiii   ");
         console.log(query);
            
-        res.render('publications.html', { user: req.user, publishlists: sess.publishlists, obj: query });
+        res.render('publications.html', { user: req.user, publishlists: sess.publishlists, obj: query },
+            function (err, html) {
+                if (err) { res.redirect('/error'); } else { res.send(html); }
+            });
     });
     
 
@@ -71,7 +74,10 @@ module.exports = function (app, passport) {
                 res.status(500).send(err);
             }
 			else {
-                res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval });
+                res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval },
+                    function (err, html) {
+                        if (err) { res.redirect('/error'); } else { res.send(html); }
+                    });
             }
         });
 
