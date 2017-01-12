@@ -1615,7 +1615,13 @@ div.carousel-inner div.item.active, div.carousel-inner div.item {
      border: 1px dotted #FAC500 !important;
 }
 
+/*  In Peeking Mode */
 
+body.peeking a, body.peeking input {
+    pointer-events: none;
+   cursor: default;
+    text-decoration: none;
+}
 
 
 

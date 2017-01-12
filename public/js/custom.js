@@ -30,8 +30,19 @@ $(document).ready(function() {
         caret.toggleClass('fa-caret-down');
     });
 
-	$('body.peeking a, body.peeking input').click(function () {
-	    preventDefault(); return false; });
+
+	$('body.peeking form a, body.peeking form input').click(function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+	   e.stopImmediatePropagation();
+
+	    return false;
+	});
+
+	$('body.peeking form a, body.peeking form input').each(function () {
+
+        $(this).prop('title', 'Not available in Peek mode.');
+    });
 
 	var urlParams = new URLSearchParams(window.location.search);
 
