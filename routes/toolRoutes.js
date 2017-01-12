@@ -12,9 +12,6 @@
 // load up the thing we need
 var fs = require('fs');
 var async = require('async');
-//var juice = require('juice');
-
-//var request = require('request');
 
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
@@ -1398,31 +1395,17 @@ module.exports = function (app, passport) {
                         try {
                             var wkhtmltopdf = require('wkhtmltopdf');
 
-                            wkhtmltopdf(html, {debug: true}, function (err, stream) {
-                                console.log('inside wkhtmltopdf');
-
-                                if (err) {
-                                    console.log('tried pdf, failed');
-                                    console.log(err);
-                                    res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.html');
-                                    res.setHeader('Content-type', 'text/html');
-                                    res.write(html);
-
-                                } else {
-                                    console.log('pdf success');
-                                    res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.pdf');
-                                    res.setHeader('Content-type', 'application/pdf');
-                                    res.write(stream);
-                                }
-                            });
+                            wkhtmltopdf(html).pipe(res);
+                            res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.pdf"');
+                            res.setHeader('Content-type', 'application/pdf');
+                            
                         } catch (e) {
                             console.log('wkhtmltopdf module not found');
-                            res.setHeader('Content-disposition', 'attachment; filename=' + filename + '.html');
+                            res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.html"');
                             res.setHeader('Content-type', 'text/html');
                             res.write(html);
+                            res.send();
                         }
-
-                        res.send();
                     });
             }
         ], function (err) {

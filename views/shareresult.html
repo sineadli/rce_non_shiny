@@ -73,22 +73,20 @@
             text-align: center;
         }
 
-        #table1 {
+        table {
             width: 100%;
+            font-size: 16px;
         }
 
-            #table1 td, #table1 th {
-                font-size: 20px;
-                text-align: center;
-            }
+        #table1 td, #table1 th {
+            text-align: center;
+        }
 
-            #table1 thead tr {
-                border-bottom: 1px #000 solid;
-            }
-
-            #table1 tfoot tr {
-                border-top: 1px #000 solid;
-            }
+        #table1 thead tr {
+            border-bottom: 1px #000 solid;
+            background-color: #2e75b6 !important;
+            color: #FFF;
+        }
 
         .circle {
             width: 50px;
@@ -117,6 +115,10 @@
                 color: #000000;
             }
 
+            .tooltip-gr {
+                text-shadow: none;
+            }
+
             #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
                 max-height: 1px;
                 padding: 0px;
@@ -128,8 +130,9 @@
                 content: none !important;
             }
 
-            .row, table {
+            table, .no-page-break {
                 page-break-inside: avoid;
+                display: block;
             }
         }
     </style>            
@@ -155,9 +158,7 @@
     <% } %>
 
         
-            <div class="container-fluid" > 
-                <div class="row" > 
-                    <div class="col-xs-12" > 
+            
                         <% 
 console.log('checkpoint 0');
                             var stripPercent = function(x) {
@@ -569,17 +570,25 @@ console.log('checkpoint 0.1');
                                         if (duration_days === 0) data_issues.planContext.push("Evaluation start date and end date are equal.");
 
                                         if (duration_days < 7) {
-                                            duration = duration_days.toString() + ' days';
+                                            duration = duration_days;
+                                            duration_unit = 'day';
                                         }
-                                        else if (duration_days < 84) {
-                                            duration = (Math.ceil(duration_days / 7)).toString() + ' weeks';
+                                        else if (duration_days < 49) {
+                                            duration = Math.ceil(duration_days / 7);
+                                            duration_unit = 'week';
                                         }
-                                        else if (duration_days < 365) {
-                                            duration = (Math.ceil(duration_days / 30)).toString() + ' months';
+                                        else if (duration_days < 335) {
+                                            duration = Math.ceil(duration_days / 30);
+                                            duration_unit = 'month';
                                         }
                                         else {
-                                            duration = (Math.ceil(duration_days / 365)).toString() + ' years';
+                                            duration = Math.ceil(duration_days / 365);
+                                            duration_unit = 'year';
                                         }
+
+                                        duration_plural = (duration > 1) ? 's' : '';
+                                        duration = duration.toString() + ' ' + duration_unit + duration_plural;
+
                                     } catch (e) {
                                         data_issues.planContext.push("Duration of evaluation couldn't be calculated. Check start and end date.");
                                     }
@@ -689,39 +698,49 @@ console.log('checkpoint 0.2');
                             var baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
 console.log('checkpoint 1');
                         %>
+
+                    <div class="container-fluid" > 
+                        <div class="no-page-break">
+                            <div class="row" > 
+                                <div class="col-xs-12" > 
+                                    <h1 class="tool-title" > <%= capitalize(Basics_Tech_Name) %> Findings Brief</h1 > 
                         
-                        <h1 class="tool-title" > <%= capitalize(Basics_Tech_Name) %> Findings Brief</h1 > 
-                        
-                        <% if (user != "NOAUTHENTICATED") {
-                            var user_name = user.profile.user_name || '< No name found in profile >';
-                            var organization_name = user.profile.organization_name || '< No organization name found in profile >';
-                        %>
-                            <br />
-                            <%= user_name %><br />
-                            <%= organization_name %><br />
-                            <%= new Date().toLocaleDateString() %>
+                                    <% if (user != "NOAUTHENTICATED") {
+                                        var user_name = user.profile.user_name || '< No name found in profile >';
+                                        var organization_name = user.profile.organization_name || '< No organization name found in profile >';
+                                    %>
+                                        <br />
+                                        <%= user_name %><br />
+                                        <%= organization_name %><br />
+                                        <%= new Date().toLocaleDateString() %>
                             
-                            <% if (display === 'online') { %>
-                                <p class="prev-answer hidden-print">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See 
-                                    <a class="redirect-link" href="/setting">Profile</a>
-                                </p>
-                            <% } %>
-                        <% } %>
+                                        <% if (display === 'online') { %>
+                                            <p class="prev-answer hidden-print">
+                                                <i class="fa fa-hand-o-right"></i> Where did I answer this? See 
+                                                <a class="redirect-link" href="/setting">Profile</a>
+                                            </p>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                            </div>
 
-                        <hr / > 
+                            <hr / > 
 
-                        <div class="row" > 
-                            <div class="col-xs-12" > 
-                                <h2 > <%= header %></h2 >
+                            <div class="row" > 
+                                <div class="col-xs-12" > 
+                                    <h2 > <%= header %></h2 >
                             
-                                <h3 > Research Question</h3 > 
+                                    <h3 > Research Question</h3 > 
 
-                                    Does <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Outcome_Measure %> among
-                                    <%= Intervention_Group_Desc %>
-                                    compared to
-                                    <%= Comparison_Group_Desc %>?
+                                        Does <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Outcome_Measure %> among
+                                        <%= Intervention_Group_Desc %>
+                                        compared to
+                                        <%= Comparison_Group_Desc %>?
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-xs-12">
                                     <% if (analysis_results_clean) {
                                         for (grade in analysis_results_by_grade) {
 
@@ -749,7 +768,7 @@ console.log('checkpoint 1');
                                         <h3> Findings</h3>
 
                                         <% if (grade_results_clean) { %>
-                                            <ol>
+                                            <ol class="no-page-break">
                                                 <li> <%= needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.' %></li>
                                                 <li> <%= interpretation_1 %></li>
                                                 <li> <%= interpretation_2 %></li>
@@ -772,7 +791,8 @@ console.log('checkpoint 1');
                                     <% }} %>
                             </div > 
                         </div > 
-                        <div class="row" > 
+
+                        <div class="row no-page-break" > 
                             <div class="col-xs-12" > 
                                 <h2 > This evaluation tested the effectiveness of <%= Basics_Tech_Name %></h2 > 
                                 
@@ -811,7 +831,7 @@ console.log('checkpoint 1');
                             </div > 
                         </div > 
                 
-                        <div class="row" > 
+                        <div class="row no-page-break" > 
                             <div class="col-xs-12" > 
                                 <h2 > <%= capitalize(Basics_Tech_Name) %> was tested using a <%= pilot_type %> pilot</h2 > 
                                 <ul > 
@@ -861,7 +881,7 @@ console.log('checkpoint 1');
                             </div > 
                         </div > 
                     
-                        <div class="row" > 
+                        <div class="row no-page-break" > 
                             <div class="col-xs-12" > 
                                 <h2 > This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= Basics_Users %></h2>
 
@@ -875,7 +895,7 @@ console.log('checkpoint 1');
                             </div>
                         </div>   
                                                     
-                        <div class="row">
+                        <div class="row no-page-break">
                             <div class="col-xs-3">
                                 <div class="blue-background-white-text">
                                     <p> <strong> Treatment Group</strong> </p>
@@ -915,11 +935,10 @@ console.log('checkpoint 1');
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row no-page-break">
                             <div class="col-xs-12">
 
                                 <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
-                                    <p> Table 1 below summarizes key characteristics of the study sample: </p>
                                     <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
                                     <table id="table1">
                                         <thead>
@@ -956,33 +975,29 @@ console.log('checkpoint 1');
                                                             <td> <%= round3(baseline_var_means[characteristic].difference[0]) %></td>
                                                             <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
                                                         </tr>
-                                                    <% }
-                                                } catch (e) { %>
+                                                    <% } %>
+                                                    <tr>
+                                                        <% if (baseline_by_grade) { %>
+                                                        <td></td>
+                                                        <% } %>
+                                                        <td> Number of <%= Basics_Users %></td>
+                                                        <td> <%= n_overall %></td>
+                                                        <td> <%= n_treatment %></td>
+                                                        <td> <%= n_comparison %></td>
+                                                        <td> --</td>
+                                                        <td> --</td>
                                                     </tr>
-                                                    </tbody>
+                                                <% } catch (e) { %>
+                                                    </tr>
                                                 <% } %>
                                             <% } %>
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <% if (baseline_by_grade) { %>
-                                                <td></td>
-                                                <% } %>
-                                                <td> Number of <%= Basics_Users %></td>
-                                                <td> <%= n_overall %></td>
-                                                <td> <%= n_treatment %></td>
-                                                <td> <%= n_comparison %></td>
-                                                <td> --</td>
-                                                <td> --</td>
-                                            </tr>
-                                        </tfoot>
-
                                     </table>
                                 <% } %>
                             </div> 
                         </div > 
                         
-                        <div class="row" > 
+                        <div class="row no-page-break" > 
                             <div class="col-xs-12" > 
                                 
                                 <h2 > The evaluation period lasted <%= duration %>.</h2 > 
@@ -1010,7 +1025,7 @@ console.log('checkpoint 1');
                             </div > 
                         </div > 
                         
-                        <div class="row" > 
+                        <div class="row no-page-break" > 
                             <div class="col-xs-12" > 
                                 <h2 ><%= sentence(Basics_Outcome + ' was measured using ' + Outcome_Measure) %></h2 > 
                                 <p>
@@ -1137,20 +1152,8 @@ console.log('checkpoint 1');
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <label>File Format</label><br />
-                                                    <% 
-                                                        try { 
-                                                            var wk = require('wkhtmltopdf'); %>
-                                                            
-                                                            <input type="radio" name="file_format" value="pdf" checked> PDF document<br>
-                                                            <input type="radio" name="file_format" value="slides" disabled> PDF slides<br>
-                                                    
-                                                            <small id="file-format-note"></small>
-                                                        <% } catch(e) { %>
-
-                                                            <input type="radio" name="file_format" value="html" checked> HTML file<br>
-                                                            <br />
-                                                            <small id="file-format-note">The HTML version of this file can be opened and printed from any browser, with or without an internet connection.</small>
-                                                        <% } %>
+                                                        <input type="radio" name="file_format" value="pdf" checked> PDF document<br>
+                                                        <input type="radio" name="file_format" value="slides" disabled> PDF slides<br>
                                                 </div>
                                             </div>
                                         </div>
@@ -1180,8 +1183,8 @@ console.log('checkpoint 1');
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT PUBLISH</button>
-                                            <button type="submit" id="Complete" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">PUBLISH</button>
+                                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">DO NOT SHARE</button>
+                                            <button type="submit" id="Complete" data-action="/publish" class="btn btn-primary btn-lg" data-dismiss="modal">SHARE</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1279,6 +1282,7 @@ console.log('checkpoint 1');
             });
 
             <% if (display === 'online') { %>
+                /*
                 $('input[name=download_route]').change( function() {
                     var val = $(this).val();
 
@@ -1286,7 +1290,7 @@ console.log('checkpoint 1');
 
                     $('input[name=file_format][value=slides]').attr('disabled', disable_slides);
                 });
-
+                */
             <% } %>
 
             <% if (display_data_issues_modal) { %>
