@@ -145,544 +145,10 @@
 
         }
     </style>
+        <% include('../views/partials/brief_appendix_evaluation_processing.html') %>      
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" > 
-                        <%
-                        console.log('checkpoint 0');
-                        var stripPercent = function(x) {
-                            return parseInt(x.replace(/%/g, ''));
-                        }
-
-                        var capitalize = function(x) {
-                            if (x.length === 0) {
-                                var out = '';
-                            }
-                            else {
-                                var out = x.toString()[0].toUpperCase() + x.toString().substring(1);
-                            }
-                            return out;
-                        }
-
-                        var punctuate = function(x) {
-                            return x.replace(/([^.?!])$/, "$1.")
-                        }
-
-                        var sentence = function(x) {
-                            // Capitalize first letter and if it doesn't end with punctuation, add a period.
-                            return capitalize(punctuate(x));
-                        }
-
-                        var wordList = function(x) {
-                            var out;
-
-                            if (x === undefined) {
-                                out = '';
-                            }
-                            else {
-                                x = x.filter( function(x) { return x !== '' && x !== undefined })
-
-                                x = unique(x);
-
-                                if (x.length === 0) {
-                                    out = '';
-                                }
-                                else if (x.length === 1) {
-                                    out = x[0];
-                                }
-                                else if (x.length === 2) {
-                                    out = x[0] + ' and ' + x[1];
-                                }
-                                else {
-                                    out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
-                                }
-                            }
-
-                            return out;
-                        }
-
-                        var unique = function(x) {
-
-                            for (var i = 0; i < x.length; i++) {
-                                if (x.indexOf(x[i]) < i) {
-                                    x.splice(i, 1);
-                                    i--;
-                                }
-                            }
-                            return x;
-                        }
-
-                        var allBlank = function(x) {
-                            return x.every( function(el) { return el === ''});
-                        }
-
-                        var round3 = function(x) {
-                            return Math.round(x * 1000) / 1000;
-                        };
-
-                        // Initialize default values in case tools are missing
-
-                        // basics
-                        var Basics_Tech_Name = '[technology name]',
-                        Basics_Outcome   = '[outcome of interest]',
-                        Basics_Users     = '[users]',
-                        Basics_Users_Other = '[users]'
-
-                        // planQuestion
-                        var Outcome_Direction       = '[outcome direction]',
-                        Outcome_Measure         = '[outcome measure]',
-                        Intervention_Group_Desc = '[the intervention group]',
-                        Comparison_Group_Desc   = '[the comparison group]';
-
-                        // planNext
-                        var Pass_Probability    = '[probability]',
-                        Tech_Cost_Saves     = '[Saves/Costs]',
-                        Tech_Amount         = '[amount]',
-                        Tech_Cost_User      = '[user]',
-                        Action_Success      = '[next step if moving the needle]',
-                        Action_Fail         = '[next step if not moving the needle]',
-                        Success_Effect_Size = '[success effect size]';
-
-                        // planContext
-                        var program_types = [''],
-                        delivery_types = [''],
-                        classroom_types = [''],
-                        Outcomes = [],
-                        grades_used = [],
-                        Tech_Purpose = '[purpose of technology]',
-                        Tech_Components = '',
-                        school_types = ['N/A'],
-                        urbanicity = [],
-                        non_white = 100,
-                        Total_Students = '',
-                        District_State = '',
-                        frpl = '',
-                        Ethnicity_Hispanic = '',
-                        Gender_Female = '',
-                        English_Learners = '',
-                        IEP = '';
-                        duration = '[duration]',
-                        Expected_Dosage = '[expected dosage]',
-                        Other_Notes = '[other notes]';
-                        console.log('checkpoint 0.1');
-
-
-                        var n_overall = 0,
-                        n_treatment = 0,
-                        n_full_overall = 0,
-                        n_full_treatment = 0;
-
-                        var baseline_by_grade = false;
-                        var baseline_vars = [];
-
-                        // shareresult
-                        var challenges_limitations = '',
-                        conclusions_next_steps = '';
-
-                        var tool_routes = {
-                        basics          : '/basics',
-                        planQuestion    : '/craft_your_research_q',
-                        planNext        : '/plan_next_steps',
-                        planContext     : '/context_and_usage',
-                        random          : '/randomization',
-                        matching        : '/matching',
-                        getresult       : '/getresult'
-                        }
-
-                        var tool_names = {
-                        basics          : 'Basics',
-                        planQuestion    : 'Craft Your Research Question',
-                        planNext        : 'Think About How to Use Your Results',
-                        planContext     : 'Summarize Context',
-                        random          : 'Random Assignment',
-                        matching        : 'Matching',
-                        getresult       : 'Get Results'
-                        }
-
-                        data_issues = {};
-
-                        for (tool in tool_names) {
-                        data_issues[tool] = [];
-                        }
-
-                        // Replace default values where possible
-                        if (eval.basics) {
-                        try {
-                        var basics          = eval.basics;
-                        Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
-                        if (!basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
-
-                        if (!basics.Basics_Outcome) {
-                        data_issues.basics.push("Outcome is blank or undefined.");
-                        } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
-                        data_issues.basics.push("Outcome is not specified.");
-                        } else {
-                        Basics_Outcome = basics.Basics_Outcome || Basics_Outcome;
-                        }
-
-                        if (!basics.Basics_Users) {
-                        data_issues.basics.push("User description is blank or undefined.");
-                        } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
-                        data_issues.basics.push("User description is not specified.");
-                        } else {
-                        Basics_Users = basics.Basics_Users || Basics_Users;
-                        }
-
-                        if (Basics_Users === 'other') {
-                        Basics_Users = basics.Basic_Users_other || Basics_Users_Other;
-                        if (!basics.Basics_Users_other) data_issues.basics.push("Other user description is blank or undefined.");
-                        }
-
-                        } catch (e) {
-                        data_issues.basics.push("Missing or invalid data.");
-                        }
-
-                        } else {
-                        data.issues.basics.push("No data found for this tool for this evaluation.")
-                        }
-
-
-                        if (eval.planQuestion) {
-                        try {
-                        var planQuestion    = eval.planQuestion;
-
-                        if (!planQuestion.Outcome_Direction) {
-                        data_issues.planQuestion.push("Outcome direction is blank or undefined.");
-                        } else if (planQuestion.Outcome_Direction.toLowerCase() === 'select an option') {
-                        data_issues.planQuestion.push("Outcome direction is not specified.");
-                        } else {
-                        Outcome_Direction = planQuestion.Outcome_Direction || Outcome_Direction;
-                        }
-
-                        Outcome_Measure = planQuestion.Outcome_Measure || Outcome_Measure;
-                        if (!planQuestion.Outcome_Measure) data_issues.planQuestion.push("Outcome measure is blank or undefined.");
-
-                        Intervention_Group_Desc = planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
-                        if (!planQuestion.Intervention_Group_Desc) data_issues.planQuestion.push("Intervention group description is blank or undefined.");
-
-                        Comparison_Group_Desc = planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
-                        if (!planQuestion.Comparison_Group_Desc)   data_issues.planQuestion.push("Comparison group description is blank or undefined.");
-
-                        } catch (e) {
-                        data_issues.planQuestion.push("Missing or invalid data.")
-                        }
-
-                        } else {
-                        data.issues.planQuestion.push("No data found for this tool for this evaluation.")
-                        }
-
-                        if (eval.planNext) {
-                            try {
-                                var planNext        = eval.planNext;
-
-                                Pass_Probability    = stripPercent(planNext.Pass_Probability) || Pass_Probability;
-                                if (!planNext.Pass_Probability) data_issues.planNext.push("Desired probability of moving the needle is blank or undefined.");
-
-                                if (!planNext.Tech_Cost_Saves) {
-                                    data_issues.planNext.push("Whether technology costs/saves is blank or undefined.");
-                                } else if (planNext.Tech_Cost_Saves.toLowerCase() === 'select an option') {
-                                    data_issues.planNext.push("Whether technology costs/saves is not specified.");
-                                } else {
-                                    Tech_Cost_Saves = planNext.Tech_Cost_Saves || Tech_Cost_Saves;
-                                }
-
-                                if (!planNext.Tech_Amount) data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
-                                Tech_Amount         = planNext.Tech_Amount || Tech_Amount;
-
-                                if (!planNext.Tech_Cost_User) {
-                                    data_issues.planNext.push("Technology user type is blank or undefined.");
-                                } else if (planNext.Tech_Cost_User.toLowerCase() === 'select an option') {
-                                    data_issues.planNext.push("Technology user type is not specified.");
-                                } else {
-                                    Tech_Cost_User      = planNext.Tech_Cost_User || Tech_Cost_User;
-                                }
-
-                                Action_Success      = planNext.Action_Success || Action_Success;
-                                if (!planNext.Action_Success)   data_issues.planNext.push("Next step for moving the needle is blank or undefined.");
-
-                                Action_Fail         = planNext.Action_Fail || Action_Fail;
-                                if (!planNext.Action_Fail)      data_issues.planNext.push("Next step for not moving the needle is blank or undefined.");
-
-                                Success_Effect_Size = planNext.Success_Effect_Size || Success_Effect_Size;
-                                if (!planNext.Success_Effect_Size) data_issues.planNext.push("Success effect size is blank or undefined.");
-
-                            } catch (e) {
-                                data_issues.planNext.push("Missing or invalid data.");
-                            }
-
-                        } else {
-                            data_issues.planNext.push("No data found for this tool for this evaluation.");
-                        }
-
-                        var header = 'Results not available due to incomplete analysis.';
-                        var analysis_results_clean = false;
-
-                        if (eval.getresult) {
-                        try {
-                        if (eval.getresult.Result === '') {
-                        data_issues.getresult.push("Analysis incomplete, or results were not saved. Try completing this tool again.")
-                        } else {
-                        var analysis_results            = JSON.parse(eval.getresult.Result);
-                        var analysis_results_by_grade   = analysis_results.results_by_grade;
-                        var analysis_by_grade           = Object.keys(analysis_results_by_grade).length > 1;
-
-                        var success_count = 0, failure_count = 0;
-
-                        for (grade in analysis_results_by_grade) {
-
-                        var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                        var success = (probability > Pass_Probability);
-
-                        if (success) {
-                        success_count++;
-                        } else {
-                        failure_count++;
-                        }
-                        }
-
-                        var needle_negate = (success_count === 0) ? ' not' : '';
-                        var grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
-
-                        var header = capitalize(Basics_Tech_Name) + ' is' + needle_negate + ' moving the needle on ' + Basics_Outcome + grade_qualifier;
-                        analysis_results_clean = true;
-                        }
-
-                        } catch (e) {
-                        data_issues.getresult.push("Missing or invalid data.");
-                        var header = 'Analysis results not found or incomplete.';
-                        }
-                        } else {
-                        data_issues.getresult.push("No data found for this tool for this evaluation.");
-                        }
-
-                        if (eval.planContext) {
-                        try {
-                        var planContext = eval.planContext;
-
-                        // Create a text representation of applicable grades, including streaks for consecutive grades.
-                        // e.g. if 3rd, 4th, 5th grades, combine to display as "3rd-5th" grades.
-                        // Use an array for the loop since it has defined ordering
-                        var grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
-
-                        var grade_map = {
-                        "PK" : "Pre-Kindergarten",
-                        "K"  : "Kindergarten",
-                        "1"  : "1st",
-                        "2"  : "2nd",
-                        "3"  : "3rd",
-                        "4"  : "4th",
-                        "5"  : "5th",
-                        "6"  : "6th",
-                        "7"  : "7th",
-                        "8"  : "8th",
-                        "9"  : "9th",
-                        "10" : "10th",
-                        "11" : "11th",
-                        "12" : "12th",
-                        "PS" : "Post-secondary"
-                        }
-
-                        var grades_used = [],
-                        grade_streak = 0,
-                        start_grade = '',
-                        end_grade = '';
-
-                        for (grade_index in grades) {
-                        var grade = grades[grade_index];
-
-                        if (planContext.Grades.some( function(x) { return x === grade } )) {
-                        grade_streak++;
-
-                        if (grade_streak === 1) start_grade = grade_map[grade];
-                        else end_grade = grade_map[grade];
-                        }
-                        else {
-
-                        if (grade_streak === 1) {
-                        grades_used.push(start_grade);
-                        }
-                        else if (grade_streak > 1) {
-                        grades_used.push(start_grade + '-' + end_grade);
-                        }
-
-                        grade_streak = 0;
-                        }
-                        }
-                        if (grades_used.length === 0) data_issues.planContext.push("No grades specified.");
-
-                        program_types   = [planContext.Type_Policy, planContext.Type_Teacher_Level, planContext.Type_School_Level, planContext.Type_CSchool_Structure, planContext.Type_Practice, planContext.Type_Curriculum];
-                        if (allBlank(program_types)) data_issues.planContext.push("No program types specified.");
-
-                        delivery_types  = [planContext.Delivered_School_Wide, planContext.Delivered_Whole_Class, planContext.Delivered_Small_Group, planContext.Delivered_Individually];
-                        if (allBlank(delivery_types)) data_issues.planContext.push("No delivery types specified.");
-
-                        classroom_types = [planContext.ClassroomType_Inclusion, planContext.ClassroomType_General];
-                        if (allBlank(classroom_types)) data_issues.planContext.push("No classroom types specified.");
-
-                        Outcomes        = planContext.Outcomes;
-                        if (allBlank(Outcomes)) data_issues.planContext.push("No outcome areas specified.");
-
-                        Tech_Purpose    = planContext.Tech_Purpose || Tech_Purpose;
-                        if (!planContext.Tech_Purpose) data_issues.planContext.push("Technology purpose not specified.");
-
-                        Tech_Components = planContext.Tech_Components || Tech_Components;
-                        if (!planContext.Tech_Components) data_issues.planContext.push("Technology components not specified.");
-
-                        school_types    = [planContext.SchoolType_Charter, planContext.SchoolType_Private, planContext.SchoolType_Parochial, planContext.SchoolType_Public];
-                        if (allBlank(school_types)) data_issues.planContext.push("No school type specified.");
-
-                        urbanicity      = [planContext.Urbanicity_Urban, planContext.Urbanicity_Suburban, planContext.Urbanicity_Rural];
-                        if (allBlank(urbanicity)) data_issues.planContext.push("No geographical setting specified.");
-
-                        // No perfect way to do this. Race values default to 0, so if you use 100 - white and default values (0) are in place, you get 100% non-white,
-                        // and it's not possible to know whether that's true or not. If you sum the non-white categories, you still might get 0 from default values,
-                        // but it could be the true value also. Safest way to go is default to 100% and subtract explicit value of Race_White.
-                        non_white       = 100 - planContext.Race_White || non_white;
-
-                        Total_Students      = planContext.Total_Students || Total_Students;
-                        if (!planContext.Total_Students) data_issues.planContext.push("Total students not specified.");
-
-                        District_State      = planContext.District_State || District_State;
-                        if (!planContext.District_State) data_issues.planContext.push("State not specified.");
-
-                        Ethnicity_Hispanic  = planContext.Ethnicity_Hispanic || Ethnicity_Hispanic;
-                        frpl                = planContext.FRPL_Reduced + planContext.FRPL_Free || frpl;
-                        Gender_Female       = planContext.Gender_Female || Gender_Female;
-                        English_Learners    = planContext.English_Learners || English_Learners;
-                        IEP                 = planContext.IEP;
-
-                        /* We have begin and end datetimes, rather than a plain-English duration. The following
-                        estimates the duration to the nearest day, and then converts that to the most appropriate
-                        count of days, weeks, months, or years */
-                        try {
-                        var begin_date = new Date(planContext.Eval_Begin_Date);
-                        var end_date = new Date(planContext.Eval_End_Date);
-                        var duration_days = Math.ceil((end_date - begin_date) / 86400000);
-
-                        if (duration_days === 0) data_issues.planContext.push("Evaluation start date and end date are equal.");
-
-                        if (duration_days < 7) {
-                        duration = duration_days.toString() + ' days';
-                        }
-                        else if (duration_days < 84) {
-                        duration = (Math.ceil(duration_days / 7)).toString() + ' weeks';
-                        }
-                        else if (duration_days < 365) {
-                        duration = (Math.ceil(duration_days / 30)).toString() + ' months';
-                        }
-                        else {
-                        duration = (Math.ceil(duration_days / 365)).toString() + ' years';
-                        }
-                        } catch (e) {
-                        data_issues.planContext.push("Duration of evaluation couldn't be calculated. Check start and end date.");
-                        }
-
-                        Expected_Dosage = planContext.Expected_Dosage || Expected_Dosage;
-                        if (!planContext.Expected_Dosage) data_issues.planContext.push("How often technology is used not specified.");
-
-                        Other_Notes     = planContext.Other_Notes || Other_Notes;
-                        if (!planContext.Other_Notes) data_issues.planContext.push("Other context not specified.");
-
-                        } catch (e) {
-                        data_issues.planContext.push("Missing or invalid data.");
-                        }
-                        } else {
-                        data_issues.planContext.push("No data found for this tool for this evaluation.");
-                        }
-
-                        var pilot_type = '[matched/randomized]';
-
-                        if (eval.path) {
-                        var path = eval.path;
-
-                        if (path === 'path-matching') {
-                        try {
-                        pilot_type = 'matched';
-                        var match_results = JSON.parse(eval.matching.Result);
-                        var baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
-                        var baseline_results_by_grade = match_results.results_by_grade;
-
-                        for (grade in match_results.results_by_grade) {
-                        var samples = match_results.results_by_grade[grade].samples;
-
-                        n_full_overall += samples.n_full[0];
-                        n_full_treatment += samples.n_full_treat[0];
-
-                        n_overall += samples.n_matched[0];
-                        n_treatment += samples.n_matched_treat[0];
-                        }
-                        baseline_vars = match_results.match_vars;
-                        } catch(e) {
-                        data_issues.matching.push("Missing, invalid, or not saved data. Try completing this tool again.");
-                        }
-                        }
-                        else if (path === 'path-random') {
-                        console.log('checkpoint 0.2');
-                        try {
-                        pilot_type = 'randomized';
-                        var results = JSON.parse(eval.random.Result);
-                        baseline_by_grade = Object.keys(results.results_by_block).length > 1;
-                        baseline_results_by_grade = results.results_by_block;
-
-                        for (grade in baseline_results_by_grade) {
-                        var samples = baseline_results_by_grade[grade].samples;
-                        n_overall += samples.n_full[0];
-                        n_treatment += samples.n_treat[0];
-                        }
-
-                        baseline_vars = results.baseline_vars;
-                        } catch(e) {
-                        data_issues.random.push("Missing, invalid, or not saved data. Try completing this tool again.");
-                        }
-                        }
-                        }
-
-                        var baseline_vars_relabel = baseline_vars;
-                        var assignment = Basics_Users + ' were assigned to treatment and comparison groups.';
-
-                        if (pilot_type === 'matched') {
-
-                        var suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
-                        assignment = Basics_Users + ' were matched ' + suffix;
-
-                        }
-                        else if (pilot_type === 'randomized') {
-                        var prefix = '',
-                        group = 'random values';
-
-                        if (eval.random) {
-                        if (eval.random.Individual_Group === 'groups') {
-                        prefix = 'Groups of '
-                        group = eval.random.Cluster_Group || 'groups';
-                        if (group === 'other') group = eval.random.Cluster_Group_Other || group;
-                        }
-                        }
-                        assignment = prefix + Basics_Users + ' were assigned based on ' + group ;
-                        }
-
-                        var n_comparison = n_overall - n_treatment;
-
-                        if (eval.shareresult) {
-                        try {
-                        var shareresult = eval.shareresult;
-                        var conclusions_next_steps = shareresult.conclusions_next_steps || conclusions_next_steps;
-                        var challenges_limitations = shareresult.challenges_limitations || challenges_limitations;
-
-                        if (shareresult.baseline_var_relabels.length > 0) {
-                        baseline_vars_relabel = shareresult.baseline_var_relabels;
-                        }
-
-                        } catch (e) {
-                        data.issues.shareresult("Missing or invalid data.");
-                        }
-                        } else {
-                        data_issues.planContext.push("No data found for this tool for this evaluation.");
-                        }
-
-                        var baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
-                        console.log('checkpoint 1');
-                        %>
-
                         
                         <h1 class="tool-title" > Findings Brief Appendix</h1 > 
                         <hr / > 
@@ -729,43 +195,41 @@
                                             <tbody>
 
                                                 <% for (grade in baseline_results_by_grade) {
+
                                                     try {
                                                         var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
                                                         var characteristics = Object.keys(baseline_var_means);
 
-                                                        var baseline_plot = baseline_results_by_grade[grade].plot;
-
                                                         for (index in characteristics) {
-                                                        var characteristic = characteristics[index]; %>
+                                                            var characteristic = characteristics[index]; %>
+                                                            <tr>
+                                                                <% if (baseline_by_grade) { %>
+                                                                <td> <%= grade %></td>
+                                                                <% } %>
+                                                                <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                                                <td> <%= round3(baseline_var_means[characteristic].overall[0]) %></td>
+                                                                <td> <%= round3(baseline_var_means[characteristic].intervention[0]) %></td>
+                                                                <td> <%= round3(baseline_var_means[characteristic].comparison[0]) %></td>
+                                                                <td> <%= round3(baseline_var_means[characteristic].difference[0]) %></td>
+                                                                <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
+                                                            </tr>
+                                                        <% } %>
                                                         <tr>
                                                             <% if (baseline_by_grade) { %>
-                                                            <td> <%= grade %></td>
+                                                            <td></td>
                                                             <% } %>
-                                                            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                                            <td> <%= round3(baseline_var_means[characteristic].overall[0]) %></td>
-                                                            <td> <%= round3(baseline_var_means[characteristic].intervention[0]) %></td>
-                                                            <td> <%= round3(baseline_var_means[characteristic].comparison[0]) %></td>
-                                                            <td> <%= round3(baseline_var_means[characteristic].difference[0]) %></td>
-                                                            <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
+                                                            <td> Number of <%= Basics_Users %></td>
+                                                            <td> <%= n_overall %></td>
+                                                            <td> <%= n_treatment %></td>
+                                                            <td> <%= n_comparison %></td>
+                                                            <td> --</td>
+                                                            <td> --</td>
                                                         </tr>
-                                                <%      }
-                                                   } catch(e) {
-                                                   }
-                                                } %>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <% if (baseline_by_grade) { %>
-                                                    <td></td>
+                                                    <% } catch (e) { %>
+                                                        </tr>
                                                     <% } %>
-                                                    <td> Number of <%= Basics_Users %></td>
-                                                    <td> <%= n_overall %></td>
-                                                    <td> <%= n_treatment %></td>
-                                                    <td> <%= n_comparison %></td>
-                                                    <td> --</td>
-                                                    <td> --</td>
-                                                </tr>
-                                            </tfoot>
+                                                <% } %>
+                                            </tbody>
                                         </table>
                                         <em>
                                             Table 1 above summarizes key characteristics of your sample.
@@ -815,7 +279,7 @@
                                     <p>
                                         <em>
                                             Figure 1 above indicates whether the sample created by matching contains users and non-users of the educational technology that are equivalent on important measures,
-                                            at baseline (before the study period). If your sample has good baseline equivalency, or balance, then you can be more confident that differences in the outcome you’re
+                                            at baseline (before the study period). If your sample has good baseline equivalency, or balance, then you can be more confident that differences in the outcome you're
                                             studying are caused by the educational technology you're testing.
                                         </em>
                                     </p>
@@ -856,23 +320,23 @@
                                     <% } %>
                                     
                                     <div class="no-page-break">
-                                        <br />
-                                        <em><strong>Figure 2.</strong> Posterior distribution of the effect of the educational technology on the outcome</em>
-
-                                        <img src="data:image/png;base64,<%- posterior_plot %>">
-
-                                        <p>
-                                            This figure tells us that:
-                                        </p>
-
                                         <% if (results_clean) { %>
+                                            <br />
+                                            <em><strong>Figure 2.</strong> Posterior distribution of the effect of the educational technology on the outcome</em>
+
+                                            <img src="data:image/png;base64,<%- posterior_plot %>">
+
+                                            <p>
+                                                This figure tells us that:
+                                            </p>
                                             <ul>
                                                 <li> <%= interpretation_1 %></li>
                                                 <li> <%= interpretation_2 %></li>
                                                 <li> The point estimate (e.g., our best guess) of the effect of the educational technology on the outcome is <%= round3(impact) %>. This number is calculated as the mean of the posterior distribution.</li>
                                             </ul>
                                         <% } else { %>
-                                            Results are missing or incomplete.
+                                            <p>Analysis results are missing or incomplete.
+                                            </p>
                                         <% } %> 
                                     </div>
                                 <% } %>
@@ -911,7 +375,7 @@
                                         <thead>
                                             <tr>
                                                 <% if (analysis_by_grade) { %>
-                                                <th><div>Grade</div></th>
+                                                    <th><div>Grade</div></th>
                                                 <% } %>
                                                 <th><div>Outcome</div></th>
                                                 <th><div>Impact Estimate (Effect size)</div></th>
@@ -921,61 +385,86 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% for (grade in analysis_results_by_grade) { 
-                                                var grade_results = analysis_results_by_grade[grade];
+                                            <%
+                                                if (analysis_results.outcome_var) {
+                                                    var outcome_var = analysis_results.outcome_var;
+                                                } else if (analysis_results.args && analysis_results.args.outcome_var) {
+                                                    var outcome_var = analysis_results.args.outcome_var;
+                                                } else {
+                                                    var outcome_var = '[outcome_var]';
+                                                }
+                                                
+                                                for (grade in analysis_results_by_grade) {
+                                                    try {
+                                                        var grade_results = analysis_results_by_grade[grade];
 
-                                                var impact = parseFloat(grade_results.freq.impact);
-                                                var se = parseFloat(grade_results.freq.se);
+                                                        var impact = parseFloat(grade_results.freq.impact);
+                                                        var se = parseFloat(grade_results.freq.se);
 
-                                                var effect_size = grade_results.freq.effect_size;
+                                                        var effect_size = grade_results.freq.effect_size;
 
-                                                var ci = [impact - (1.96 * se), impact + (1.96 * se)];
-                                                var ci_string = '[' + round3(ci[0]) + ', ' + round3(ci[1]) + ']';
+                                                        var ci = [impact - (1.96 * se), impact + (1.96 * se)];
+                                                        var ci_string = '[' + round3(ci[0]) + ', ' + round3(ci[1]) + ']';
 
-                                                var pvalue = grade_results.freq.pvalue;
-                                                var significant = (pvalue <= 0.05) ? '' : ' not';
+                                                        var pvalue = grade_results.freq.pvalue;
+                                                        var significant = (pvalue <= 0.05) ? '' : ' not';
 
-                                                var pvalue_comparison_sign = (pvalue <= 0.05) ? '<=' : '>';
-                                            %>
-                                                <tr>
-                                                    <% if (analysis_by_grade) { %>
-                                                    <td><div><%= grade %></div></td>
+                                                        var pvalue_comparison_sign = (pvalue <= 0.05) ? '<=' : '>';
+
+                                                        var results_clean = true;
+                                                    } catch(e) {
+                                                        var results_clean = false;
+                                                    }
+
+                                                    if (results_clean) { %>
+                                                        <tr>
+                                                            <% if (analysis_by_grade) { %>
+                                                                <td><div><%= grade %></div></td>
+                                                            <% } %>
+                                                            <td><div><%= outcome_var %></div></td>
+                                                            <td><div><%= round3(impact) %> <br /> (<%= round3(effect_size) %>)</div></td>
+                                                            <td><div><%= round3(se) %></div></td>
+                                                            <td><div><%= round3(pvalue) %></div></td>
+                                                            <td><div><%= ci_string %></div></td>
+                                                        </tr>
+
+                                                    <% } else { %>
+                                                        <tr>
+                                                            <td>Frequentist analysis results missing or incomplete.</td>
+                                                        </tr>
                                                     <% } %>
-                                                    <td><div><%= analysis_results.outcome_var %></div></td>
-                                                    <td><div><%= round3(impact) %> <br /> (<%= round3(effect_size) %>)</div></td>
-                                                    <td><div><%= round3(se) %></div></td>
-                                                    <td><div><%= round3(pvalue) %></div></td>
-                                                    <td><div><%= ci_string %></div></td>
-                                                </tr>
-                                            <% } %>
+                                                <% } %>
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <br />
                                 <br />
+                                
+                                <% if (results_clean) { %>
+                                    <p>
+                                        With the frequentist approach, your statistical analysis would typically begin with a null hypothesis stating that the true impact of the technology is 0.
+                                        You then calculate a point estimate, as seen under Impact Estimate in Table 3 (<%= round3(impact) %>).
+                                        This estimate is informed by the observed difference between users and non-users.
+                                        You then test the likelihood of achieving your point estimate, or a value more extreme than your point estimate,
+                                        given that the true impact is 0 (as stated by your null hypothesis).
+                                        This likelihood, which is a calculated probability, is your p-value.
+                                        By comparing the p-value (as seen in Table 2) to a designated cutoff, you can test whether or not you should reject the null hypothesis.
+                                        Traditionally researchers have used 0.05 as the cutoff. In this case, because <%= round3(pvalue) %> <%= pvalue_comparison_sign %> 0.05, we would<%= significant %> reject the null hypothesis, i.e.<%= significant %> reject
+                                        the conclusion that the impact of the technology is 0. You can also make a conclusion about the null hypothesis by looking at the confidence interval.
+                                        If the interval includes 0, you cannot reject the null hypothesis. If it does not include 0 you can reject the null hypothesis.
+                                    </p>
 
-                                <p>
-                                    With the frequentist approach, your statistical analysis would typically begin with a null hypothesis stating that the true impact of the technology is 0. 
-                                    You then calculate a point estimate, as seen under Impact Estimate in Table 3 (<%= round3(impact) %>). 
-                                    This estimate is informed by the observed difference between users and non-users. 
-                                    You then test the likelihood of achieving your point estimate, or a value more extreme than your point estimate, 
-                                    given that the true impact is 0 (as stated by your null hypothesis). 
-                                    This likelihood, which is a calculated probability, is your p-value. 
-                                    By comparing the p-value (as seen in Table 2) to a designated cutoff, you can test whether or not you should reject the null hypothesis. 
-                                    Traditionally researchers have used 0.05 as the cutoff. In this case, because <%= round3(pvalue) %> <%= pvalue_comparison_sign %> 0.05, we would<%= significant %> reject the null hypothesis, i.e.<%= significant %> reject 
-                                    the conclusion that the impact of the technology is 0. You can also make a conclusion about the null hypothesis by looking at the confidence interval. 
-                                    If the interval includes 0, you cannot reject the null hypothesis. If it does not include 0 you can reject the null hypothesis.
-                                </p>
-
-                                <p>
-                                    It is important to note that the impact estimate is not the true effect of the technology, just what could be estimated based on the study sample. 
-                                    The confidence interval allows us to estimate a plausible range of values for the true effect, which is unknown, based on the observed impact in the study sample. 
-                                    You might be tempted to think that values at the end of the interval are less likely than values in the middle, but this is not correct. 
-                                    When interpreting the <%= ci_string %> confidence interval, you should keep in mind that all the values contained in the interval are equally likely to be the 
-                                    true impact of the intervention. The 95% threshold for the confidence interval is commonly used, though you could calculate the interval for a different threshold. 
-                                    What this means is that if you were to conduct your study 100 times, in 95 cases you would calculate an interval that includes the true effect of the technology.
-                                </p>
+                                    <p>
+                                        It is important to note that the impact estimate is not the true effect of the technology, just what could be estimated based on the study sample.
+                                        The confidence interval allows us to estimate a plausible range of values for the true effect, which is unknown, based on the observed impact in the study sample.
+                                        You might be tempted to think that values at the end of the interval are less likely than values in the middle, but this is not correct.
+                                        When interpreting the <%= ci_string %> confidence interval, you should keep in mind that all the values contained in the interval are equally likely to be the
+                                        true impact of the intervention. The 95% threshold for the confidence interval is commonly used, though you could calculate the interval for a different threshold.
+                                        What this means is that if you were to conduct your study 100 times, in 95 cases you would calculate an interval that includes the true effect of the technology.
+                                    </p>
+                                <% } %>
+                                
 
                                 <br />
                                 <br />
