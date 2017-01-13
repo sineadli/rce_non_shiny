@@ -132,7 +132,8 @@ console.log('checkpoint 0.1');
     n_full_treatment = 0;
 
     baseline_by_grade = false;
-    baseline_vars = [];
+baseline_vars = [];
+baseline_results_by_grade = [];
 	baseline_plot = '';
 
 	// shareresult
@@ -276,6 +277,7 @@ console.log('checkpoint 0.1');
 
     header = 'Results not available due to incomplete analysis.';
     analysis_results_clean = false;
+	analysis_by_grade = false;
 
     if (eval.getresult) {
         try {

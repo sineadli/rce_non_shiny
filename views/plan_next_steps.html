@@ -14,7 +14,8 @@
     <title>Think about how you will use the results</title>
     <% include ../views/partials/scriptHeader.html %>
 </head>
-<body>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %>">
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -33,10 +34,10 @@
         if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
         if (Basics_Outcome.toLowerCase() === "") { Basics_Outcome = "outcomes"; }
 
-    Basics_Users_Others = eval.basics.Basics_Users_Others;
+        Basics_Users_Others = eval.basics.Basics_Users_Others;
         Basics_Users = eval.basics.Basics_Users;
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
- 
+
         var Outcome_Direction = eval.planQuestion.Outcome_Direction !== "" ? eval.planQuestion.Outcome_Direction : "improve";
         var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
         var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
@@ -54,9 +55,11 @@
                                 <p>
                                     The Coach will help you think about how the answer to your research question will inform the decisions you make regarding your technology. To complete this tool you will need to consider:
                                 </p>
-                                    <ul><li>What would success look like?</li>
-                                        <li>How much risk are you willing to take when making a decision or a recommendation?</li></ul> 
-                              
+                                <ul>
+                                    <li>What would success look like?</li>
+                                    <li>How much risk are you willing to take when making a decision or a recommendation?</li>
+                                </ul>
+
                             </div>
                             <div class='tool-instructions'>
                                 <p>Sections A through D will help you think about these questions. Remember, you can always come back to this step and change your answers. In other words, nothing you enter here is permanent, so just fill this out as best you can.</p>
@@ -131,8 +134,9 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h3 class="panel-title sec-label clickable">
-                                                   
-                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#consider4"><i class="fa fa-caret-down" aria-hidden="false"></i>
+
+                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#consider4">
+                                                        <i class="fa fa-caret-down" aria-hidden="false"></i>
                                                         Things to Consider
                                                     </a>
                                                 </h3>
@@ -146,8 +150,9 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading accordion-toggle">
                                                 <h3 class="panel-title sec-label clickable">
-                                                    
-                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#example4"><i class="fa fa-caret-right" aria-hidden="true"></i>
+
+                                                    <a data-toggle="collapse" data-parent="#ttc4" href="#example4">
+                                                        <i class="fa fa-caret-right" aria-hidden="true"></i>
                                                         Example
                                                     </a>
                                                 </h3>
@@ -257,8 +262,9 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <h3 class="panel-title sec-label clickable">
-                                                        
-                                                        <a data-toggle="collapse" data-parent="#ttc5" href="#consider5"><i class="fa fa-caret-down" aria-hidden="false"></i>
+
+                                                        <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
                                                             Things to Consider
                                                         </a>
                                                     </h3>
@@ -312,8 +318,9 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <h3 class="panel-title sec-label clickable">
-                                                        
-                                                        <a data-toggle="collapse" data-parent="#ttc6" href="#consider6"><i class="fa fa-caret-down" aria-hidden="false"></i>
+
+                                                        <a data-toggle="collapse" data-parent="#ttc6" href="#consider6">
+                                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
                                                             Things to Consider
                                                         </a>
                                                     </h3>
@@ -383,8 +390,9 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <h3 class="panel-title sec-label clickable">
-                                                       
-                                                        <a data-toggle="collapse" data-parent="#ttc7" href="#consider7"><i class="fa fa-caret-down" aria-hidden="false"></i>
+
+                                                        <a data-toggle="collapse" data-parent="#ttc7" href="#consider7">
+                                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
                                                             Things to Consider
                                                         </a>
                                                     </h3>
@@ -407,8 +415,9 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading accordion-toggle">
                                                     <h3 class="panel-title sec-label clickable">
-                                                        
-                                                        <a data-toggle="collapse" data-parent="#ttc7" href="#example7"><i class="fa fa-caret-right" aria-hidden="true"></i>
+
+                                                        <a data-toggle="collapse" data-parent="#ttc7" href="#example7">
+                                                            <i class="fa fa-caret-right" aria-hidden="true"></i>
                                                             Example
                                                         </a>
                                                     </h3>

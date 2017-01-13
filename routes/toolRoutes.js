@@ -891,20 +891,17 @@ module.exports = function (app, passport) {
 
 		sess.eval.last_step = 3;
 		sess.eval.last_tool = "Evaluation Plan";
-		sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
-		
+        sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
+
 		var query = require('url').parse(req.url, true).query;
-        res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'},
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
-	});
-	
-	
-	
+    });
+
 	app.post('/evaluation_plan', function (req, res) {
 		var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
-		
 		sess = req.session;
 		var obj = req.body;
 		var returnpath = obj.returnpath;
@@ -968,12 +965,112 @@ module.exports = function (app, passport) {
 						return res.redirect('/coach');
 					}
 				});
-			}
+            }
 		], function (err) {
 			if (err) return next(err);
 			res.redirect('/coach');
 		});
-	});
+    });
+
+    app.post('/evaluation_plan_pdf', function (req, res) {
+        var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        var obj = req.body;
+        var returnpath = obj.returnpath;
+        if (returnpath === '') returnpath = "evaluation_plan";
+
+        //    console.log(obj.EvalPlan.Milestones);
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+
+                eval.last_step = 3;
+                eval.last_tool = toollist.name;
+                //eval find so update the toolsVisited accordingly
+                updateLastTool(eval, toollist);
+
+                eval.planContext.Tech_Purpose = obj.Tech_Purpose;
+                eval.planContext.Tech_Components = obj.Tech_Components;
+                eval.planContext.Expected_Dosage = obj.Expected_Dosage;
+                eval.planNext.Action_Success = obj.Action_Success;
+                eval.planNext.Action_Fail = obj.Action_Fail;
+                eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
+                var evalPlan = obj.EvalPlan;
+
+                if (!eval.evalPlan) {
+                    eval.evalPlan.created_at = dt;
+                    eval.evalPlan.updated_at = dt;
+                }
+                else {
+                    eval.evalPlan.updated_at = dt;
+                };
+
+                eval.evalPlan = evalPlan;
+
+
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    if (req.body.status === "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                    }
+                    else {
+                    }
+
+                    return done(err, eval);
+                });
+            }, function (eval, done) {
+                var query = require('url').parse(req.url, true).query;
+
+                res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'download' },
+                    function (err, html) {
+                        if (err) {
+                            res.redirect('/error');
+                        } else {
+
+                            // Try to convert to PDF, and if it fails, revert to HTML;
+                            try {
+                                var wkhtmltopdf = require('wkhtmltopdf');
+
+                                wkhtmltopdf(html).pipe(res);
+                                res.setHeader('Content-disposition', 'attachment; filename="evaluation_plan.pdf"');
+                                res.setHeader('Content-type', 'application/pdf');
+
+                            } catch (e) {
+                                console.log('wkhtmltopdf module not found');
+                                res.setHeader('Content-disposition', 'attachment; filename="evaluation_plan.html"');
+                                res.setHeader('Content-type', 'text/html');
+                                res.write(html);
+                                res.send();
+                            }
+                        }
+                    });
+
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
 
     app.get('/matching', isLoggedIn, function (req, res) {
         sess = req.session;
@@ -1244,10 +1341,11 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online' },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
-            });
+       res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online' } //,
+        //    function (err, html) {
+        //        if (err) { res.redirect('/error'); } else { res.send(html); }
+		   //    }
+	   );
     });
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
         sess = req.session;

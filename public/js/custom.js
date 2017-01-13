@@ -31,19 +31,24 @@ $(document).ready(function() {
     });
 
 
-	$('body.peeking form a, body.peeking form input').click(function (e) {
+	$('body.peeking row a, body.peeking row input').not("body.peeking div.modal-body row a").click(function (e) {
 		e.preventDefault();
 		e.stopPropagation();
-	   e.stopImmediatePropagation();
+	    e.stopImmediatePropagation();
 
 	    return false;
 	});
 
-	$('body.peeking form a, body.peeking form input').each(function () {
+	$('body.peeking row a').not("body.peeking div.modal-body row a").each(function () {
 
         $(this).prop('title', 'Not available in Peek mode.');
+		$(this).prop('data-toggle', 'tooltip');
+		$(this).addClass('tooltip-gr');
     });
+	$('body.peeking row input').each(function () {
 
+        $(this).prop('disabled', true);
+    });
 	var urlParams = new URLSearchParams(window.location.search);
 
    
