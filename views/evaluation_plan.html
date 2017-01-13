@@ -13,24 +13,36 @@
 <html lang="en">
 <head>
     <title>Prepare Evaluation Plan </title>
-    <% include ../views/partials/scriptHeader.html %>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src='/static/js/autosize.js'></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  
+    <% if (display === 'online') { %>
+        <% include ../views/partials/scriptHeader.html %>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src='/static/js/autosize.js'></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <% } else { %>
+        <% include ../views/partials/downloadStyle.html %>
+        <style>
+            .no-page-break {
+                page-break-inside: avoid;
+            }
+        </style>
+    <% } %>
+    
+    
 </head>
 <body>
-    <div id="header"></div>
-    <% if (user != "NOAUTHENTICATED") { %>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
-    </ol>
-    <% if (message.length>0) { %>
-    <div class="alert alert-success"><%= message %></div>
-    <% }} %>
-
-    <form action="/evaluation_plan" method="post" novalidate>
+    <% if (display === 'online') { %>
+        <div id="header"></div>
         <% if (user != "NOAUTHENTICATED") { %>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Planning Your Research</a></li>
+        </ol>
+        <% if (message.length>0) { %>
+        <div class="alert alert-success"><%= message %></div>
+        <% }} %>
+
+        <form action="/evaluation_plan" method="post" novalidate>
+    <% } %>
+        <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
         <% include ../views/partials/toolHeader.html %>
         <% } %>
         <%
@@ -72,62 +84,79 @@
 
         %>
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="tool-top">
-                        <div class="dl-guide">
-                            <a onclick=" window.open('/static/pdf/evaluation_plan.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+            
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="tool-top">
+                            <% if (display === 'online') { %>
+                                <div class="dl-guide">
+                                    <a onclick=" window.open('/static/pdf/evaluation_plan.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                                </div>
+                                <div class="tool-header">
+                                    <h1 class="tool-title"><label style="color: #e44e0d; font-size: .7em;">PEEKING AT</label> <span style="opacity: .7;">Create an Evaluation Plan</span></h1>
+
+
+                                    <div class="tool-intro">
+                                        <p>
+                                            This tool will help you put together an evaluation plan and create a timeline of key milestones. You can use this plan to: <ul><li>Confirm that the information you have provided the Coach makes sense.</li><li>Confirm the evaluation is feasible to implement.</li><li>Explain the evaluation to stakeholders, gather their input, and build consensus.</li><li>Establish next steps, and keep track of progress and responsibilities as you move forward.</li></ul>
+
+                                        </p>
+                                        <p>
+                                            You will notice that most of the information in the plan is filled in based on your entries in previous tools.
+                                            Please review the information you have entered thus far. Some content can be revised from this tool, but for more substantive changes, you should use the links back to the information's source tool and update content from there.
+                                        </p>
+                                        <p>
+                                            When you have finished going through this tool you will be able to save and print your evaluation plan.
+                                        </p>
+
+                                    </div>
+                                </div>
+                            <% } else { %>
+                                <div class="tool-header">
+                                    <h1 class="tool-title">Evaluation Plan</span></h1>
+                                </div>
+                            <% } %>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="tool-header">
-                            <h1 class="tool-title"><label style="color: #e44e0d; font-size: .7em;">PEEKING AT</label> <span style="opacity: .7;">Create an Evaluation Plan</span></h1>
-
-
-                            <div class="tool-intro">
-                                <p>
-                                    This tool will help you put together an evaluation plan and create a timeline of key milestones. You can use this plan to: <ul><li>Confirm that the information you have provided the Coach makes sense.</li><li>Confirm the evaluation is feasible to implement.</li><li>Explain the evaluation to stakeholders, gather their input, and build consensus.</li><li>Establish next steps, and keep track of progress and responsibilities as you move forward.</li></ul>
-
-                                </p>
-                                <p>
-                                    You will notice that most of the information in the plan is filled in based on your entries in previous tools.
-                                    Please review the information you have entered thus far. Some content can be revised from this tool, but for more substantive changes, you should use the links back to the information's source tool and update content from there.
-                                </p>
-                                <p>
-                                    When you have finished going through this tool you will be able to save and print your evaluation plan.
-                                </p>
-
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
-            </div>
             <div class="row">
                 <div class="tool-questions">
 
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#A">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                <% if (display === 'online') { %>
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                <% } %>
                                 Why we are doing this evaluation
                             </h2>
                         </div>
                     </div>
                     <div id="A" class="row collapse in  q-row">
                         <div class="col-xs-10">
-                            <div class="step-subquestion">
-                                <p class="do-not-print"><em>Describe the overall purpose of this evaluation. This will be the opening paragraph of your evaluation plan.</em></p>
-                            </div>
-                            <div class="step-action">
+                            <% if (display === 'online') { %>
+                                <div class="step-subquestion">
+                                    <p class="do-not-print"><em>Describe the overall purpose of this evaluation. This will be the opening paragraph of your evaluation plan.</em></p>
+                                </div>
+                                <div class="step-action">
 
-                                <textarea name="EvalPlan[Evaluation_Why]" id="Evaluation_Why" rows="8" placeholder="Ex., The district is investing resources (both time and money) in educational technologies, so it is important to assess whether each technology is meeting the district&rsquo;s needs. This document gives an overview of the planned pilot study of the effectiveness of one technology, <%- Basics_Tech_Name %>.  "><%= eval.evalPlan.Evaluation_Why %></textarea>
+                                    <textarea name="EvalPlan[Evaluation_Why]" id="Evaluation_Why" rows="8" placeholder="Ex., The district is investing resources (both time and money) in educational technologies, so it is important to assess whether each technology is meeting the district&rsquo;s needs. This document gives an overview of the planned pilot study of the effectiveness of one technology, <%- Basics_Tech_Name %>.  "><%= eval.evalPlan.Evaluation_Why %></textarea>
+                                </div>
+                            <% } else if (display === 'download') { %>
+                                <div class="step-subquestion">
+                                    <%= eval.evalPlan.Evaluation_Why %>
+                                </div>
+                                <% } %>
                             </div>
-                        </div>
                     </div>
 
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#A">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                <% if (display === 'online') { %>
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                <% } %>
                                 Our research question
                             </h2>
                         </div>
@@ -142,7 +171,7 @@
                                 Does A do B among C compared to D?
                                 <% } %>
 
-                                <% if (user != "NOAUTHENTICATED") {%>
+                                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                 <p class="prev-answer">
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=evaluation_plan">Craft Your Research Question</a>
                                 </p>
@@ -154,7 +183,9 @@
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#F">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                <% if (display === 'online') { %>
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                <% } %>
                                 What will be tested
                             </h2>
                         </div>
@@ -164,10 +195,21 @@
                             <div class="step-subquestion">
                                 <ul>
                                     <li>This evaluation will test the effectiveness of <%= Basics_Tech_Name %>.</li>
-                                    <li><span class="capitalize-one"><%= Basics_Tech_Name %></span> is <br /><textarea name="Tech_Purpose" id="Tech_Purpose" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Tech_Purpose %></textarea></li>
-                                    <li>Key components include<textarea name="Tech_Components" id="Tech_Components" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= eval.planContext.Tech_Components %></textarea>  </li>
+                                    <li><span class="capitalize-one"><%= Basics_Tech_Name %></span> is 
+                                    <% if (display === 'online') { %>
+                                        <br />
+                                        <textarea name="Tech_Purpose" id="Tech_Purpose" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Tech_Purpose %></textarea></li>
+                                    <% } else { %>
+                                        <%= eval.planContext.Tech_Purpose %>
+                                    <% } %>
+                                    <li>Key components include
+                                    <% if (display === 'online') { %>
+                                        <textarea name="Tech_Components" id="Tech_Components" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= eval.planContext.Tech_Components %></textarea>  </li>
+                                    <% } else { %>
+                                        <%= eval.planContext.Tech_Components %>
+                                    <% } %>
                                 </ul>
-                                <% if (user != "NOAUTHENTICATED") {%>
+                                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                                 <p class="prev-answer">
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/context_and_usage?return=evaluation_plan">Summarize Context</a>
                                 </p>
@@ -180,7 +222,9 @@
                 <div class="step-header container">
                     <div data-toggle="collapse" data-target="#B">
                         <h2 class="clickable">
-                            <i class="fa fa-caret-down" aria-hidden="false"></i>
+                            <% if (display === 'online') { %>
+                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                            <% } %>
                             Evaluation design
                         </h2>
                     </div>
@@ -205,7 +249,7 @@
 
 
                             <% } %>
-                            <% if (user != "NOAUTHENTICATED") {%>
+                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <p class="prev-answer">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/determine_your_approach?return=evaluation_plan">Determine Your Approach</a>
                             </p>
@@ -217,7 +261,9 @@
                 <div class="step-header container">
                     <div data-toggle="collapse" data-target="#C">
                         <h2 class="clickable">
-                            <i class="fa fa-caret-down" aria-hidden="false"></i>
+                            <% if (display === 'online') { %>
+                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                            <% } %>
                             How <%= Basics_Tech_Name %> is intended to be used
                         </h2>
                     </div>
@@ -235,7 +281,12 @@
                         }
                         %>
                         <div class="step-subquestion">
-                            <p>During the evaluation, <%= Basics_Users %> in the intervention group <%= verb1 %> <%= Basics_Tech_Name %> <textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea></p>
+                            <p>During the evaluation, <%= Basics_Users %> in the intervention group <%= verb1 %> <%= Basics_Tech_Name %> 
+                            <% if (display === 'online') { %>
+                                <textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea></p>
+                            <% } else { %>
+                                <%= eval.planContext.Expected_Dosage %>
+                            <% } %>
                             <ul><li>Usage data can be reviewed to verify that <%= Basics_Users %> in the intervention group <%= verb3 %> using the technology as planned.</li></ul>
                             <p>
                                 <span class="capitalize-one"><%= Basics_Users %></span> in the comparison group <%= verb2 %> have access to <%= Basics_Tech_Name %>.
@@ -246,7 +297,7 @@
                             <ul><li><input type="text" id="Person_Responsible_IGroup" name="Person_Responsible_IGroup" placeholder="Ex: Jane Doe" value="<%= eval.evalPlan.Person_Responsible_IGroup %>" style="width: 50px" /> will ensure that everyone remains in their assigned group.</li></ul>
 
                             <% } %>-->
-                            <% if (user != "NOAUTHENTICATED") {%>
+                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <p class="prev-answer">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/context_and_usage?return=evaluation_plan">Summarize Context</a>
                             </p>
@@ -282,7 +333,9 @@
                 <div class="step-header container">
                     <div data-toggle="collapse" data-target="#D">
                         <h2 class="clickable">
-                            <i class="fa fa-caret-down" aria-hidden="false"></i>
+                            <% if (display === 'online') { %>
+                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                            <% } %>
                             Next steps based on the evaluation results
                         </h2>
                     </div>
@@ -299,17 +352,32 @@
                             Fail_Prob = '50%';
                             }
                             %>
-                            <p>The evaluation will result in one of three answers&mdash;<%= Basics_Tech_Name %> has the intended effect, it does not have the intended effect, or we’re not sure. This section summarizes how we plan to use the results to inform decisions in each scenario. </p>
+                            <p>The evaluation will result in one of three answers&mdash;<%= Basics_Tech_Name %> has the intended effect, it does not have the intended effect, or we're not sure. This section summarizes how we plan to use the results to inform decisions in each scenario. </p>
                             <ul>
                                 <li>If there is a more than <%= stripPercent(eval.planNext.Pass_Probability) %>% probability that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I would conclude that <%= Basics_Tech_Name %> had the intended effect. In this case I plan to
 
-                                    <br /> <textarea name="Action_Success"><%= eval.planNext.Action_Success %></textarea>
+                                    <br /> 
+                                    <% if (display === 'online') { %>
+                                        <textarea name="Action_Success"><%= eval.planNext.Action_Success %></textarea>
+                                    <% } else { %>
+                                        <%= eval.planNext.Action_Success %>
+                                    <% } %>
 </li>
-                                <li>If there is a less than <%= stripPercent(eval.planNext.Fail_Probability) %>% probability that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I would conclude that <%= Basics_Tech_Name %> did not have the intended effect. In this case I plan to <br/><textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea></li>
-                                <li>If the probability is between <%= stripPercent(eval.planNext.Pass_Probability) %>% and <%= stripPercent(eval.planNext.Fail_Probability) %>% that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I plan to <br /><textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea></li>
+                                <li>If there is a less than <%= stripPercent(eval.planNext.Fail_Probability) %>% probability that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I would conclude that <%= Basics_Tech_Name %> did not have the intended effect. In this case I plan to <br/>
+                                    <% if (display === 'online') { %>
+                                        <textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea></li>
+                                    <% } else { %>  
+                                        <%= eval.planNext.Action_Fail %>
+                                    <% } %>
+                                <li>If the probability is between <%= stripPercent(eval.planNext.Pass_Probability) %>% and <%= stripPercent(eval.planNext.Fail_Probability) %>% that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I plan to <br />
+                                    <% if (display === 'online') { %>
+                                        <textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea></li>
+                                    <% } else { %>
+                                        <%= eval.planNext.Action_Inconclusive %>
+                                    <% } %>
                             </ul>
 
-                            <% if (user != "NOAUTHENTICATED") {%>
+                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <p class="prev-answer">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=evaluation_plan">Think About How You Will Use The Results</a>
                             </p>
@@ -320,138 +388,145 @@
 
                 </div>
 
-                <div class="step-header container">
-                    <div data-toggle="collapse" data-target="#E">
-                        <h2 class="clickable">
-                            <i class="fa fa-caret-down" aria-hidden="false"></i>
-                            Evaluation timeline and milestones
-                        </h2>
-                    </div>
-                </div>
-                <div id="E" class="row collapse in  q-row">
-                    <div class="col-xs-12">
-                        <div class="step-subquestion do-not-print">
-                            <p>Create a timeline for the crucial steps in the RCE process. We have provided a list of milestones that are common in evaluations in the chronological order in which they usually occur.</p>
-                            <p class="note">If a milestone listed below is not relevant for your evaluation, you can use the check-boxes to hide it or change it to one that is relevant.  Click and drag rows to reorder milestones. Enter the date you expect (or hope) each milestone will take place, and write the name of the individual responsible for each step. Complete the information as best you can.  You can always come back and edit or update this table later.  See &ldquo;Things to Consider&rdquo; below for more on how to complete the table.</p>
-
+                <div class="no-page-break">
+                    <div class="step-header container">
+                        <div data-toggle="collapse" data-target="#E">
+                            <h2 class="clickable">
+                                <% if (display === 'online') { %>
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                <% } %>
+                                Evaluation timeline and milestones
+                            </h2>
                         </div>
-                        <div class="step-action">
+                    </div>
+                    <div id="E" class="row collapse in  q-row">
+                        <div class="col-xs-12">
+                            <% if (display === 'online') { %>
+                                <div class="step-subquestion do-not-print">
+                                    <p>Create a timeline for the crucial steps in the RCE process. We have provided a list of milestones that are common in evaluations in the chronological order in which they usually occur.</p>
+                                    <p class="note">If a milestone listed below is not relevant for your evaluation, you can use the check-boxes to hide it or change it to one that is relevant.  Click and drag rows to reorder milestones. Enter the date you expect (or hope) each milestone will take place, and write the name of the individual responsible for each step. Complete the information as best you can.  You can always come back and edit or update this table later.  See &ldquo;Things to Consider&rdquo; below for more on how to complete the table.</p>
 
-                            <div class="container">
-                                <div class="row clearfix">
-                                    <div class="col-md-12 column">
-                                        <table class="table table-bordered table-hover" id="timeline">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th class="text-center" style="width: 20%;">
-                                                        Key milestone
-                                                    </th>
-                                                    <th class="text-center" style="width: 75px;">
-                                                        Complete by
-                                                    </th>
-                                                    <th class="text-center">
-                                                        Assigned to
-                                                    </th>
-                                                    <th class="text-center">
-                                                        Status
-                                                    </th>
-                                                    <th class="text-center" style="width: 20%;">
-                                                        Notes
-                                                    </th>
-                                                    <th class="text-center">
-                                                        Hide
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            <%
-                                                console.log("Print milestones");
-                                                console.log(eval.evalPlan.Milestones[0]);
-                                            var ev = eval.evalPlan;
-                                            var dates=[];
-                                                function dateformat(v){
-                                                function pad(n) {
-                                                return n < 10 ? "0" +n : n
-                                                }
-                                                if(v){
-                                                d=new Date(v);
-                                                dash="/";
-                                                colon=":";
-                                                return pad(d.getMonth()+1) +dash+
-                                                pad(d.getDate())+dash+
-                                                d.getFullYear();
-                                                }
+                                </div>
+                            <% } %>
+                            <div class="step-action">
+
+                                <div class="container">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12 column">
+                                            <table class="table table-bordered table-hover" id="timeline">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th class="text-center" style="width: 20%;">
+                                                            Key milestone
+                                                        </th>
+                                                        <th class="text-center" style="width: 75px;">
+                                                            Complete by
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Assigned to
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Status
+                                                        </th>
+                                                        <th class="text-center" style="width: 20%;">
+                                                            Notes
+                                                        </th>
+                                                        <% if (display === 'online') { %>
+                                                            <th class="text-center">
+                                                                Hide
+                                                            </th>
+                                                        <% } %>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <%
+                                                    console.log("Print milestones");
+                                                    console.log(eval.evalPlan.Milestones[0]);
+                                                var ev = eval.evalPlan;
+                                                var dates=[];
+                                                    function dateformat(v){
+                                                    function pad(n) {
+                                                    return n < 10 ? "0" +n : n
+                                                    }
+                                                    if(v){
+                                                    d=new Date(v);
+                                                    dash="/";
+                                                    colon=":";
+                                                    return pad(d.getMonth()+1) +dash+
+                                                    pad(d.getDate())+dash+
+                                                    d.getFullYear();
+                                                    }
 
 
-                                                }
+                                                    }
 
                                                
-                                            var bd=eval.planContext.Eval_Begin_Date ? dateformat(eval.planContext.Eval_Begin_Date) : "";
-                                                var ed= eval.planContext.Eval_End_Date ? dateformat(eval.planContext.Eval_End_Date) : "";
+                                                var bd=eval.planContext.Eval_Begin_Date ? dateformat(eval.planContext.Eval_Begin_Date) : "";
+                                                    var ed= eval.planContext.Eval_End_Date ? dateformat(eval.planContext.Eval_End_Date) : "";
                                             
-                                                for (var k = 0; k < 12; k++) {
-                                                if (!ev.Milestones[k].Complete_Date || ev.Milestones[k].Complete_Date == '' )
-                                                {
-                                                dates.push('');
+                                                    for (var k = 0; k < 12; k++) {
+                                                    if (!ev.Milestones[k].Complete_Date || ev.Milestones[k].Complete_Date == '' )
+                                                    {
+                                                    dates.push('');
+                                                    }
+                                                    else {
+                                                    dates.push(dateformat(ev.Milestones[k].Complete_Date));
                                                 }
-                                                else {
-                                                dates.push(dateformat(ev.Milestones[k].Complete_Date));
-                                            }
-                                                }
-                                                dates[1] = (!ev.Milestones[1].Complete_Date || ev.Milestones[1].Complete_Date == '') ? bd : dateformat(ev.Milestones[1].Complete_Date);
-                                                dates[4] = (!ev.Milestones[4].Complete_Date || ev.Milestones[4].Complete_Date == '') ? ed : dateformat(ev.Milestones[4].Complete_Date);
+                                                    }
+                                                    dates[1] = (!ev.Milestones[1].Complete_Date || ev.Milestones[1].Complete_Date == '') ? bd : dateformat(ev.Milestones[1].Complete_Date);
+                                                    dates[4] = (!ev.Milestones[4].Complete_Date || ev.Milestones[4].Complete_Date == '') ? ed : dateformat(ev.Milestones[4].Complete_Date);
 
 
 
-                    var notes = [(ev.Milestones[0].Notes),
-                    (ev.Milestones[1].Notes),
-                    (ev.Milestones[2].Notes),
-                    (ev.Milestones[3].Notes),
-                    (ev.Milestones[4].Notes == '' ? (Outcome_Milestone_Note) : ev.Milestones[4].Notes),
-                    (ev.Milestones[5].Notes == '' ? ("Outcome data must be collected first.") : ev.Milestones[5].Notes),
+                        var notes = [(ev.Milestones[0].Notes),
+                        (ev.Milestones[1].Notes),
+                        (ev.Milestones[2].Notes),
+                        (ev.Milestones[3].Notes),
+                        (ev.Milestones[4].Notes == '' ? (Outcome_Milestone_Note) : ev.Milestones[4].Notes),
+                        (ev.Milestones[5].Notes == '' ? ("Outcome data must be collected first.") : ev.Milestones[5].Notes),
 
-                    (ev.Milestones[6].Notes),
-                    (ev.Milestones[7].Notes),
-                    (ev.Milestones[8].Notes),
-                    (ev.Milestones[9].Notes),
-                    (ev.Milestones[10].Notes),
-                    (ev.Milestones[11].Notes)];
+                        (ev.Milestones[6].Notes),
+                        (ev.Milestones[7].Notes),
+                        (ev.Milestones[8].Notes),
+                        (ev.Milestones[9].Notes),
+                        (ev.Milestones[10].Notes),
+                        (ev.Milestones[11].Notes)];
 
-                    var  ms = [(ev.Milestones[0].Milestone_Name == '' ? ("Meet with stakeholders to discuss the research plan") : ev.Milestones[0].Milestone_Name),
-                    (ev.Milestones[1].Milestone_Name == '' ? ("Assign " + Basics_Users + " to the treatment and control groups") : ev.Milestones[1].Milestone_Name),
-                    (ev.Milestones[2].Milestone_Name == '' ? (Basics_Users + " will begin using " + Basics_Tech_Name) : ev.Milestones[2].Milestone_Name),
-                    (ev.Milestones[3].Milestone_Name == '' ? 'Check technology usage' : ev.Milestones[3].Milestone_Name),
-                    (ev.Milestones[4].Milestone_Name == '' ? 'Collect outcome data' : ev.Milestones[4].Milestone_Name),
-                    (ev.Milestones[5].Milestone_Name == '' ? 'Analyze data' : ev.Milestones[5].Milestone_Name),
-                    (ev.Milestones[6].Milestone_Name == '' ? 'Prepare findings brief' : ev.Milestones[6].Milestone_Name),
-                    (ev.Milestones[7].Milestone_Name == '' ? 'Meet with stakeholders to discuss evaluation findings' : ev.Milestones[7].Milestone_Name),
-                    (ev.Milestones[8].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[8].Milestone_Name),
-                    (ev.Milestones[9].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[9].Milestone_Name),
-                    (ev.Milestones[10].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[10].Milestone_Name),
-                    (ev.Milestones[11].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[11].Milestone_Name)];
+                        var  ms = [(ev.Milestones[0].Milestone_Name == '' ? ("Meet with stakeholders to discuss the research plan") : ev.Milestones[0].Milestone_Name),
+                        (ev.Milestones[1].Milestone_Name == '' ? ("Assign " + Basics_Users + " to the treatment and control groups") : ev.Milestones[1].Milestone_Name),
+                        (ev.Milestones[2].Milestone_Name == '' ? (Basics_Users + " will begin using " + Basics_Tech_Name) : ev.Milestones[2].Milestone_Name),
+                        (ev.Milestones[3].Milestone_Name == '' ? 'Check technology usage' : ev.Milestones[3].Milestone_Name),
+                        (ev.Milestones[4].Milestone_Name == '' ? 'Collect outcome data' : ev.Milestones[4].Milestone_Name),
+                        (ev.Milestones[5].Milestone_Name == '' ? 'Analyze data' : ev.Milestones[5].Milestone_Name),
+                        (ev.Milestones[6].Milestone_Name == '' ? 'Prepare findings brief' : ev.Milestones[6].Milestone_Name),
+                        (ev.Milestones[7].Milestone_Name == '' ? 'Meet with stakeholders to discuss evaluation findings' : ev.Milestones[7].Milestone_Name),
+                        (ev.Milestones[8].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[8].Milestone_Name),
+                        (ev.Milestones[9].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[9].Milestone_Name),
+                        (ev.Milestones[10].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[10].Milestone_Name),
+                        (ev.Milestones[11].Milestone_Name == '' ? 'Other important milestone' : ev.Milestones[11].Milestone_Name)];
 
-                    if(eval.path == "path-random" || eval.path == "path-forward")
-                    {
+                        if(eval.path == "path-random" || eval.path == "path-forward")
+                        {
 
-                    notes[1] = ev.Milestones[1].Notes == '' ? "Must happen before " + Basics_Tech_Name + " is implemented" : ev.Milestones[1].Notes;
+                        notes[1] = ev.Milestones[1].Notes == '' ? "Must happen before " + Basics_Tech_Name + " is implemented" : ev.Milestones[1].Notes;
 
-                    notes[3] = ev.Milestones[3].Notes == '' ? "Checking usage early on allows us to address any usage issues before they have a chance to impact outcomes." : ev.Milestones[3].Notes;
-                    }
-
-
-                    if(eval.path == "path-matching" || eval.path == "path-backward" || eval.path == "path-none")
-                    {
-
-                    ms[1]=(ev.Milestones[1].Milestone_Name == '' ? (Basics_Users + " began using " + Basics_Tech_Name) : ev.Milestones[1].Milestone_Name);
-                    ms[2]=(ev.Milestones[2].Milestone_Name == '' ? 'Check technology usage' : ev.Milestones[2].Milestone_Name);
-                    ms[3]=(ev.Milestones[3].Milestone_Name == '' ? ("Assign " + Basics_Users + " to the treatment and control groups") : ev.Milestones[3].Milestone_Name);
-                    ms[5]=(ev.Milestones[5].Milestone_Name == '' ? 'Prepare and analyze data' : ev.Milestones[5].Milestone_Name);
-
-                    notes[2] = ev.Milestones[2].Notes == '' ? ("Check to see who actually used  " + Basics_Tech_Name + ". This information could be useful when creating treatment and control groups.") : ev.Milestones[2].Notes;
+                        notes[3] = ev.Milestones[3].Notes == '' ? "Checking usage early on allows us to address any usage issues before they have a chance to impact outcomes." : ev.Milestones[3].Notes;
+                        }
 
 
-                    }
+                        if(eval.path == "path-matching" || eval.path == "path-backward" || eval.path == "path-none")
+                        {
+
+                        ms[1]=(ev.Milestones[1].Milestone_Name == '' ? (Basics_Users + " began using " + Basics_Tech_Name) : ev.Milestones[1].Milestone_Name);
+                        ms[2]=(ev.Milestones[2].Milestone_Name == '' ? 'Check technology usage' : ev.Milestones[2].Milestone_Name);
+                        ms[3]=(ev.Milestones[3].Milestone_Name == '' ? ("Assign " + Basics_Users + " to the treatment and control groups") : ev.Milestones[3].Milestone_Name);
+                        ms[5]=(ev.Milestones[5].Milestone_Name == '' ? 'Prepare and analyze data' : ev.Milestones[5].Milestone_Name);
+
+                        notes[2] = ev.Milestones[2].Notes == '' ? ("Check to see who actually used  " + Basics_Tech_Name + ". This information could be useful when creating treatment and control groups.") : ev.Milestones[2].Notes;
+
+
+                        }
 
 
                    
@@ -459,83 +534,127 @@
 
                    
                 
-                    for (var i = 0; i < ev.Milestones.length; i++) {
-                                            var ct = i+1;
-                             hidechecked = ( ev.Milestones[i].Hide == "hide" ) ? "checked" : "";
-                    %>
+                        for (var i = 0; i < ev.Milestones.length; i++) {
+                                                var ct = i+1;
+                                 hidechecked = ( ev.Milestones[i].Hide == "hide" ) ? "checked" : "";
+                        %>
 
-                                                <tr id="addr<%= i %>">
-                                                    <td class="index"><input  type="text"  name="EvalPlan[Milestones][<%= i %>][Order]" id="Order_<%= i %>" value="<%= ev.Milestones[i].Order %>" /></td>
-                                                    <td>
-                                                        <textarea name="EvalPlan[Milestones][<%= i %>][Milestone_Name]" id="Milestone_Name_<%= i %>" class="autosizejs"><%= ms[i] %></textarea>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" style="width:125px;font-size:.9em;" class="datepicker" name="EvalPlan[Milestones][<%= i %>][Complete_Date]" id="Complete_Date_<%= i %>" value="<%= dates[i] %>" placeholder="mm/dd/yyyy" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="EvalPlan[Milestones][<%= i %>][Assigned_To]" id="Assigned_To_<%= i %>" value="<%= ev.Milestones[i].Assigned_To %>" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="EvalPlan[Milestones][<%= i %>][Status]" id="Status_<%= i %>" value="<%= ev.Milestones[i].Status %>" />
-                                                    </td>
+                                                    <tr id="addr<%= i %>">
+                                                        <td class="index">
+                                                            <% if (display === 'online') { %>   
+                                                                <input type="text"  name="EvalPlan[Milestones][<%= i %>][Order]" id="Order_<%= i %>" value="<%= ev.Milestones[i].Order %>" />
+                                                            <% } else { %>
+                                                                <%= ev.Milestones[i].Order %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <% if (display === 'online') { %>
+                                                                <textarea name="EvalPlan[Milestones][<%= i %>][Milestone_Name]" id="Milestone_Name_<%= i %>" class="autosizejs"><%= ms[i] %></textarea>
+                                                            <% } else { %>
+                                                                <%= ms[i] %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <% if (display === 'online') { %>
+                                                                <input type="text" style="width:125px;font-size:.9em;" class="datepicker" name="EvalPlan[Milestones][<%= i %>][Complete_Date]" id="Complete_Date_<%= i %>" value="<%= dates[i] %>" placeholder="mm/dd/yyyy" />
+                                                            <% } else { %>  
+                                                                <%= dates[i] %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <% if (display === 'online') { %>
+                                                                <input type="text" name="EvalPlan[Milestones][<%= i %>][Assigned_To]" id="Assigned_To_<%= i %>" value="<%= ev.Milestones[i].Assigned_To %>" />
+                                                            <% } else { %>   
+                                                                <%= ev.Milestones[i].Assigned_To %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <% if (display === 'online') { %>
+                                                                <input type="text" name="EvalPlan[Milestones][<%= i %>][Status]" id="Status_<%= i %>" value="<%= ev.Milestones[i].Status %>" />
+                                                            <% } else { %>
+                                                                <%= ev.Milestones[i].Status %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <% if (display === 'online') { %>
+                                                                <textarea name="EvalPlan[Milestones][<%= i %>][Notes]" id="Notes_<%= i %>" class="autosizejs"> <%= notes[i]  %></textarea>
+                                                            <% } else { %>
+                                                                <%= notes[i]  %>
+                                                            <% } %>
+                                                        </td>
+                                                        <% if (display === 'online') { %>
+                                                            <td>
+                                                                <label for="Hide_<%= i %>"><input type="checkbox" class="cus-input hide-row" value="hide" name="EvalPlan[Milestones][<%= i %>][Hide]" id="Hide_<%= i %>" <%- hidechecked  %> />Hide</label>
+                                                            </td>
+                                                        <% } %>
+                                                    </tr>
+                                                    <% } %>
 
-                                                    <td>
-                                                        <textarea name="EvalPlan[Milestones][<%= i %>][Notes]" id="Notes_<%= i %>" class="autosizejs"> <%= notes[i]  %></textarea>
-                                                    </td>
-                                                    <td>
-                                                        <label for="Hide_<%= i %>"><input type="checkbox" class="cus-input hide-row" value="hide" name="EvalPlan[Milestones][<%= i %>][Hide]" id="Hide_<%= i %>" <%- hidechecked  %> />Hide</label>
-                                                    </td>
-                                                </tr>
-                                                <% } %>
+                                                </tbody>
+                                            </table>
 
-                                            </tbody>
-                                        </table>
-
-                                        <Input type='Button' class="btn btn-primary" id="Unhide-row" value="Unhide Rows" />
+                                            <% if (display === 'online') { %>
+                                                <Input type='Button' class="btn btn-primary" id="Unhide-row" value="Unhide Rows" />
+                                            <% } %>
+                                        </div>
                                     </div>
+
                                 </div>
 
                             </div>
-
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="col-xs-12 do-not-print">
-                        <div class="step-to-consider">
+                    
+                    <% if (display === 'online') { %>
+                        <div class="col-xs-12 do-not-print">
                             <div class="step-to-consider">
-                                <div class="panel-group" id="ttc1">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider1" class="panel-collapse collapse in">
-                                            <p>It can be helpful to think backwards from the date you plan to implement the technology or the date you want to complete your evaluation.</p>
-                                            <p>Even if you don&rsquo;t know exact dates it will be helpful for planning purposes to estimate when these steps will occur.</p>
-                                            <p>If you do not know who will be responsible for each milestone, you can leave it as &ldquo;To be determined.&rdquo; The meeting with other stakeholders can be used to identify who will be responsible for different parts of the evaluation.</p>
-                                            <% if (eval.path == "path-random" || eval.path == "path=forward") { %>
-                                            <p>It can be helpful to check how the technology is actually being used at some point (or multiple times) during the evaluation. If the technology is not being used as expected, you will want to know this sooner rather than later in order to make any necessary adjustments to the implementation. For example, if you are piloting a personalized reading technology with students you may want to look at student usage data a month after implementing the technology to see if students have been using it. If it looks like students are not using the technology, there may be a problem with the technology implementation. To learn more about what this requires see [LINK TO CHECK USAGE DOCUMENT].</p>
-                                            <% } %>
-                                            <p>The Coach provides a tool that can quickly analyze the data. The challenging part will be combining whatever data sources you are relying on and getting the data into the appropriate format. This may require a data analyst. For more information on what this entails see LINK TO PREPARING YOUR DATA].</p>
-                                            <p>The Coach provides a tool that will automatically generate a findings brief after you have analyzed your data. The findings brief is a downloadable document that details your evaluation and the results. </p>
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc1">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider1" class="panel-collapse collapse in">
+                                                <p>It can be helpful to think backwards from the date you plan to implement the technology or the date you want to complete your evaluation.</p>
+                                                <p>Even if you don&rsquo;t know exact dates it will be helpful for planning purposes to estimate when these steps will occur.</p>
+                                                <p>If you do not know who will be responsible for each milestone, you can leave it as &ldquo;To be determined.&rdquo; The meeting with other stakeholders can be used to identify who will be responsible for different parts of the evaluation.</p>
+                                                <% if (eval.path == "path-random" || eval.path == "path=forward") { %>
+                                                <p>It can be helpful to check how the technology is actually being used at some point (or multiple times) during the evaluation. If the technology is not being used as expected, you will want to know this sooner rather than later in order to make any necessary adjustments to the implementation. For example, if you are piloting a personalized reading technology with students you may want to look at student usage data a month after implementing the technology to see if students have been using it. If it looks like students are not using the technology, there may be a problem with the technology implementation. To learn more about what this requires see [LINK TO CHECK USAGE DOCUMENT].</p>
+                                                <% } %>
+                                                <p>The Coach provides a tool that can quickly analyze the data. The challenging part will be combining whatever data sources you are relying on and getting the data into the appropriate format. This may require a data analyst. For more information on what this entails see LINK TO PREPARING YOUR DATA].</p>
+                                                <p>The Coach provides a tool that will automatically generate a findings brief after you have analyzed your data. The findings brief is a downloadable document that details your evaluation and the results. </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <% } %>
                 </div>
 
 
             </div>
         </div>
       </div>
-        <% include ../views/partials/toolButtons.html %>
-
+<% if (display === 'online') { %>
+            <input type="hidden" id="user_email" value="<%= user %>" />
+            <input class="hidden" name="status" id="status" />
+            <input class="hidden" name="returnpath" id="returnpath" />
+            <%  if (user != "NOAUTHENTICATED" && !query.peeking ) { %>
+            <div class="bottom-buttons">
+                <button type="submit" id="Save" class="btn btn-info btn-lg " data-action="/evaluation_plan">SAVE CHANGES</button>
+                <button type="submit" id="download" class="btn btn-info btn-lg" data-action="/evaluation_plan_pdf">DOWNLOAD</button>
+                <button type="submit" id="Complete" class="btn btn-primary btn-lg" data-action="/evaluation_plan">SAVE &amp; COMPLETE</button>
+            </div>
+            <% } %>
+            
+        </div>
     </form>
     <% include ../views/partials/footer.html %>
 <script>
@@ -558,8 +677,15 @@
         $("#timeline tbody").sortable({
             stop: updateIndex
         }).disableSelection();
+
+        $("button[type=submit]").click(function () {
+            var action = $(this).attr("data-action");
+            $('form').attr('action', action);
+            $('form').submit();
+        }); 
     });
 
 </script>
+<% } %>
 </body>
 </html>
