@@ -42,6 +42,8 @@ $(document).ready(function() {
 	$('body.peeking row a').not("body.peeking div.modal-body row a").each(function () {
 
         $(this).prop('title', 'Not available in Peek mode.');
+		$(this).prop('data-toggle', 'tooltip');
+		$(this).addClass('tooltip-gr');
     });
 	$('body.peeking row input').each(function () {
 

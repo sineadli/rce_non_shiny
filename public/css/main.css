@@ -1623,5 +1623,119 @@ body.peeking form a, body.peeking form input {
     text-decoration: none;
 }
 
+       /* Specific to share results */
 
+        body.brief h2 {
+            color: #4f81bd;
+            padding-top: 15px;
+        }
+
+         body.brief   h2.grade-header {
+                font-size: 16px;
+            }
+
+      body.brief  h3 {
+            padding-top: 10px;
+            letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
+        }
+
+       body.brief li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+       body.brief p {
+            font-size: 16px;
+        }
+
+       body.brief .row {
+            padding-top: 15px;
+        }
+
+       body.brief img {
+            max-width: 100%;
+            padding-bottom: 20px;
+        }
+
+       body.brief .white-background-blue-border {
+            border: 3px #2e75b6 solid;
+            border-radius: 25px;
+            font-size: 16px;
+            line-height: 1.5em;
+            padding: 15px;
+        }
+
+       body.brief .blue-background-white-text {
+            background-color: #2e75b6 !important;
+            border: 3px #2e75b6 solid;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            min-height: 150px;
+            padding: 15px;
+            text-align: center;
+        }
+
+      body.brief  table {
+            width: 100%;
+            font-size: 16px;
+        }
+
+       body.brief #table1 td, body.brief #table1 th {
+            text-align: center;
+        }
+
+      body.brief  #table1 thead tr {
+            border-bottom: 1px #000 solid;
+            background-color: #2e75b6 !important;
+            color: #FFF;
+        }
+
+       body.brief .circle {
+            width: 50px;
+            height: 50px;
+            margin-top: 10px;
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            border-radius: 25px;
+            background-color: #4f81bd;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 50px;
+        }
+
+      body.brief  div.col-xs-3,  body.brief div.col-xs-4 {
+            min-width: 0px;
+        }
+
+        @media print {
+
+            body.brief {
+                -webkit-print-color-adjust: exact;
+            }
+
+           body.brief a {
+                color: #000000;
+            }
+
+           body.brief .tooltip-gr {
+                text-shadow: none;
+            }
+
+          body.brief  #header, body.brief .wizard-header-row,body.brief  .breadcrumb, body.brief .bottom-buttons, body.brief .footer {
+                max-height: 1px;
+                padding: 0px;
+                margin: 0px;
+            }
+
+            /* Bootstrap shows link URLs in print, this removes them */
+           body.brief a[href]:after {
+                content: none !important;
+            }
+
+           body.brief table, body.brief .no-page-break {
+                page-break-inside: avoid;
+                display: block;
+            }
+        }
 

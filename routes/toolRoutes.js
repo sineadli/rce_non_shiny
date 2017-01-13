@@ -1244,10 +1244,11 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online' },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
-            });
+       res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online' } //,
+        //    function (err, html) {
+        //        if (err) { res.redirect('/error'); } else { res.send(html); }
+		   //    }
+	   );
     });
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
         sess = req.session;

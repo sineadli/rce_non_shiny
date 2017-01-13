@@ -20,126 +20,13 @@
     <% include ../views/partials/downloadStyle.html %>
     <% } %>
     <style>
-        /* Specific to share results */
-
-        h2 {
-            color: #4f81bd;
-            padding-top: 15px;
-        }
-
-            h2.grade-header {
-                font-size: 16px;
-            }
-
-        h3 {
-            padding-top: 10px;
-            letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
-        }
-
-        li {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        p {
-            font-size: 16px;
-        }
-
-        .row {
-            padding-top: 15px;
-        }
-
-        img {
-            max-width: 100%;
-            padding-bottom: 20px;
-        }
-
-        .white-background-blue-border {
-            border: 3px #2e75b6 solid;
-            border-radius: 25px;
-            font-size: 16px;
-            line-height: 1.5em;
-            padding: 15px;
-        }
-
-        .blue-background-white-text {
-            background-color: #2e75b6 !important;
-            border: 3px #2e75b6 solid;
-            border-radius: 25px;
-            color: #fff;
-            font-size: 16px;
-            min-height: 150px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-            font-size: 16px;
-        }
-
-        #table1 td, #table1 th {
-            text-align: center;
-        }
-
-        #table1 thead tr {
-            border-bottom: 1px #000 solid;
-            background-color: #2e75b6 !important;
-            color: #FFF;
-        }
-
-        .circle {
-            width: 50px;
-            height: 50px;
-            margin-top: 10px;
-            -webkit-border-radius: 25px;
-            -moz-border-radius: 25px;
-            border-radius: 25px;
-            background-color: #4f81bd;
-            text-align: center;
-            vertical-align: middle;
-            line-height: 50px;
-        }
-
-        div.col-xs-3, div.col-xs-4 {
-            min-width: 0px;
-        }
-
-        @media print {
-
-            body {
-                -webkit-print-color-adjust: exact;
-            }
-
-            a {
-                color: #000000;
-            }
-
-            .tooltip-gr {
-                text-shadow: none;
-            }
-
-            #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
-                max-height: 1px;
-                padding: 0px;
-                margin: 0px;
-            }
-
-            /* Bootstrap shows link URLs in print, this removes them */
-            a[href]:after {
-                content: none !important;
-            }
-
-            table, .no-page-break {
-                page-break-inside: avoid;
-                display: block;
-            }
-        }
+ 
     </style>
 
 </head>
-<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
-<body class="<%- peekingThis %>">
+<% var bodyclass = query.peeking == 1 ? "peeking" : "";
+       bodyclass = query.sharing == 1 ? "sharing" : ""; %>
+<body class="brief <%- bodyclass %>">
     <% if (display === 'online') { %>
     <div class="hidden-print">
         <div id="header"></div>
@@ -191,7 +78,7 @@
                     </div>
                 </div>
 
-                <hr / >
+                <hr />
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -409,7 +296,7 @@
                 <div class="row no-page-break">
                     <div class="col-xs-12">
 
-                        <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
+                        <% if (baseline_results_by_grade.length > 0 && baseline_vars && baseline_vars.length > 0) { %>
                         <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
                         <table id="table1">
                             <thead>
@@ -658,7 +545,7 @@
                                         <p>You must enter your name and organization before you can share an evaluation.</p>
                                         <p class="prev-answer hidden-print">
                                             <i class="fa fa-hand-o-right"></i> Where can I answer this? See
-                                            <a class="redirect-link" href="/setting">Profile</a>
+                                            <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
                                         </p>
                                         <% } else {
                                         var share_disabled = ''; %>
@@ -678,8 +565,7 @@
                 <% } %>
             </div>
         </div>
-        </div>
-        </div>
+      
         <% if (display === 'online') { %>
         <div class="hidden-print">
             <% include ../views/partials/shareresultButtons.html %>
@@ -781,9 +667,9 @@
 
             <% if (display_data_issues_modal) { %>
                 $('#data-issues-modal').modal('show');
-                <% } %>
+            <% } %>
 
-                });
+        });
 
     </script>
     <% } %>
