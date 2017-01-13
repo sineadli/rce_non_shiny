@@ -1617,7 +1617,7 @@ div.carousel-inner div.item.active, div.carousel-inner div.item {
 
 /*  In Peeking Mode */
 
-body.peeking a, body.peeking input {
+body.peeking form a, body.peeking form input {
     pointer-events: none;
    cursor: default;
     text-decoration: none;

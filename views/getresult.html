@@ -13,7 +13,8 @@
     <% include ../views/partials/scriptHeader.html %>
  
 </head>
-<body>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %>">
 
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
@@ -116,7 +117,7 @@
 
                                 </select>
                                 <% if (user != "NOAUTHENTICATED") {%>
-           g                     <p class="prev-answer">
+                                g                     <p class="prev-answer">
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=getresult">Craft Your Research Question</a>
                                 </p>
                                 <% } %>
@@ -370,8 +371,8 @@
 
             $("#go").click(function () {
 
-                console.log( "data: " +$("#chosenfile")[0].files[0]);
-                console.log( "outcome_var: " + JSON.stringify($("#outcome_var").val()));
+                console.log("data: " + $("#chosenfile")[0].files[0]);
+                console.log("outcome_var: " + JSON.stringify($("#outcome_var").val()));
                 console.log("treat_var: " + JSON.stringify($("#treat_var").val()));
                 console.log("control_vars: " + JSON.stringify($("#control_vars").val()));
                 console.log("cluster_var: " + JSON.stringify($("#cluster_var").val()));
@@ -428,15 +429,15 @@
                                         $('#results').append('</ul>');
                                     }
                                 }
-                                   $("#gresult").val(JSON.stringify(data));
-                               // $("#gresult").val("data");
+                                $("#gresult").val(JSON.stringify(data));
+                                // $("#gresult").val("data");
                                 $("#download-button, #download-link")
                                             .prop("disabled", false);
-                                        $("#download-link")
-                                            .attr("target", "_blank")
-                                            .attr("href", "http://52.222.20.48" + responsePaths[9]);
-                                    }
-                                });
+                                $("#download-link")
+                                    .attr("target", "_blank")
+                                    .attr("href", "http://52.222.20.48" + responsePaths[9]);
+                            }
+                        });
                     }
                 });
             });
@@ -446,4 +447,5 @@
         fm.init(fm_options);
     </script>
 </body>
+
 </html>

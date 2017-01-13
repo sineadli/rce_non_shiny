@@ -15,7 +15,8 @@
     <title>Prepare for Random Assignment</title>
     <% include ../views/partials/scriptHeader.html %>
 </head>
-<body>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %>">
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -89,7 +90,7 @@
                                 </h4>
                             </div>
                             <div class="step-action">
-                                <select  name="Basics_Users" id="Basics_Users">
+                                <select name="Basics_Users" id="Basics_Users">
 
                                     <%
                                     var options = ["Select an option", "students", "teachers", "other"];
@@ -172,7 +173,7 @@
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/determine_your_approach">Determine Your Approach</a>
                                 </p>
                                 <% } %>
-                           
+
                             </div>
                         </div>
                         <div class="col-xs-5">
@@ -182,8 +183,9 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h3 class="panel-title sec-label clickable">
-                                                   
-                                                    <a data-toggle="collapse" data-parent="#ttc5" href="#consider5"><i class="fa fa-caret-down" aria-hidden="false"></i>
+
+                                                    <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                        <i class="fa fa-caret-down" aria-hidden="false"></i>
                                                         Things to Consider
                                                     </a>
                                                 </h3>
@@ -224,10 +226,10 @@
                             </div>
 
                             <div class="step-action check-list">
-                                
 
 
-                               <%
+
+                                <%
                                 var checked = ( eval.prepareRandom.Check_Sample == "Sample_Checked" ) ? "checked" : "";
                                 console.log("checked = " + checked);
                                 console.log(eval.prepareRandom);
@@ -241,7 +243,7 @@
                                     You indicated that you will be randomly assigning <span class="assign-level"><%= Basics_Users %></span> to the treatment and comparison groups. This means you will need to compile a list of <span class="compile"><%= Basics_Users %> Include a unique identifier for each one of your <span class="tech_users"><%= Basics_Users %></span>. Also include associated identifiers for groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classrooms or schools)</span>.  Please read the <a href="/static/pdf/Build your evaluation sample_randomization.pdf">Prepare Your Data for Randomization</a> guide for more information.
                                 </p>
 
-                              
+
 
 
 
@@ -267,7 +269,7 @@
                                 var required = "Recommended";
                                 var bcpathnote ="If you include background characteristics in your dataset, the Coach will check that your treatment and comparison groups are well balanced on these characteristics.";
 
-                               
+
 
                                 var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
                                 %>
@@ -283,7 +285,7 @@
                                 <p class='sub-label'><span class='group-data-prep-note'></span></p>
 
 
-                           
+
 
                             </div>
 
