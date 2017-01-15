@@ -17,7 +17,9 @@
 </head>
 <body>
     <div id="header"></div>
-    <% if (user != "NOAUTHENTICATED") { %>
+<% if (user != "NOAUTHENTICATED") {
+   var returnpath = query.peeking == 1 ? "peeking" : "";
+%>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
     </ol>
@@ -43,7 +45,7 @@
 
                         <div class="tool-intro">
                             <p>
-                                These first questions will help the Coach make sure you have what you need to get started and get you thinking about the goal of your Ed Tech evaluation.
+                                These first questions will help the Coach make sure you have what you need to start and get you thinking about the goal of your Ed Tech evaluation.
                             </p>
 
                         </div>
@@ -68,7 +70,7 @@
                                     <div class="col-xs-10">
                                         <div class="step-subquestion">
                                             <p>
-                                                In order to use the Ed Tech Coach you need to have an educational technology to evaluate.
+                                                In order to use the Ed Tech Coach you need an educational technology to evaluate.
                                             The Coach is not designed to help you select or compare potential technologies to evaluate, but you can refer to our brief guide – <a onclick="window.open('/static/pdf/Choose a Technology.pdf', ''); return false; " href="javascript:void(0);" >Choose a technology</a> – if you have not yet selected a technology to evaluate.
                                             </p>
                                         </div>
@@ -114,7 +116,7 @@
                                 <div class="step-header container">
                                     <div data-toggle="collapse" data-target="#E">
                                         <h2 class="clickable">
-                                            <i class="fa fa-caret-down" aria-hidden="false"></i> What is the outcome you hope to change by using the technology?
+                                            <i class="fa fa-caret-down" aria-hidden="false"></i> What outcome do you hope to change by using the technology?
                                         </h2>
                                     </div>
                                 </div>
@@ -163,7 +165,7 @@
                                                     </div>
                                                     <div id="consider5" class="panel-collapse collapse in">
                                                         <p>
-                                                            An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (e.g. engaging with the educational technology).
+                                                            An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (for example, engaging with the educational technology).
                                                             We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
                                                         </p>
                                                     </div>
@@ -247,7 +249,7 @@
                                                     </div>
                                                     <div id="consider4" class="panel-collapse collapse in">
                                                         <p>
-                                                            The technology users are the group that is directly engaging with the technology. In some cases this may not be the same group for which you are trying to improve outcomes (for example you may hope a learning management platform used by teachers to coordinate lessons and assignments will improve student outcomes).
+                                                            The technology users are the group that directly engages with the technology. In some cases this might not be the same group for which you are trying to improve outcomes (for example you could hope a learning management platform used by teachers to coordinate lessons and assignments will improve student outcomes).
                                                         </p>
                                                     </div>
                                                 </div>
@@ -273,12 +275,12 @@
                                     </div>
                                     <div id="stop-no-outcome">
                                         <h2 class="stop-warning">You will need to determine what outcomes you&rsquo;ll be measuring before you can continue.</h2>
-                                        <p>To measure a technology&rsquo;s effectiveness it is critical to know what you are hoping to accomplish from its use. Therefore, you will need to determine what outcomes you&rsquo;ll be measuring before you can continue. We encourage you to talk with your colleagues about possible outcomes you would like to improve. This could be based on your priorities or what you think the technology could reasonably achieve. Come back to the Coach when you know what outcome you wish to target. </p>
+                                        <p>To measure a technology&rsquo;s effectiveness, it is critical to know what you hope to accomplish from its use. Therefore, you will have to determine what outcomes you&rsquo;ll be measuring before you can continue. We encourage you to talk with your colleagues about possible outcomes you would like to improve. This could be based on your priorities or what you think the technology could reasonably achieve. Come back to the Coach when you know what outcome you wish to target. </p>
 
                                     </div>
                                     <div id="stop-no-tech">
-                                        <h2 class="stop-warning">Without educational technology to evaluate you will not be able to proceed through the Coach</h2>
-                                        <p>We have put together the guide <a onclick="window.open('/static/pdf/Choose a Technology.pdf', ''); return false; " href="javascript:void(0);">Choose a technology</a> to help you make that selection. Once you’ve made your selection, please return to the Coach and continue your evaluation. </p>
+                                        <h2 class="stop-warning">Sorry, without educational technology to evaluate you will not be able to proceed through the Coach</h2>
+                                        <p>We have put together the guide <a onclick="window.open('/static/pdf/Choose a Technology.pdf', ''); return false; " href="javascript:void(0);">Choose a technology</a> to help you make that selection. When you’ve made your selection, please return to the Coach and continue your evaluation. </p>
 
                                     </div>
 

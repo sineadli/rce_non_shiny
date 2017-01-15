@@ -223,6 +223,12 @@ div.bottom-next a.sec-label {
     /*color: #000;
     text-shadow:1px 1px #fac500;*/
 }
+
+button span.tooltip-gr {
+  color:#ffffff;
+    /*color: #000;
+    text-shadow:1px 1px #fac500;*/
+}
 div.tool-bottom .tooltip-gr {
     font-size: 1.3em;
 }
@@ -1616,13 +1622,19 @@ div.carousel-inner div.item.active, div.carousel-inner div.item {
 }
 
 /*  In Peeking Mode */
+body.peeking {
+    box-shadow: 0px 0px 25px #b28806; 
+}
 
-body.peeking form a, body.peeking form input {
-    pointer-events: none;
+body.peeking div.step-action a, body.peeking div.step-action input {
+   
    cursor: default;
     text-decoration: none;
 }
 
+h1 span.peeking-pretitle {
+    font-size: .8em;
+}
        /* Specific to share results */
 
         body.brief h2 {

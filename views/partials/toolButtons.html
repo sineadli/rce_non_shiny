@@ -10,9 +10,9 @@
 <input type="hidden" id="user_email" value="<%= user %>" />
 <input class="hidden" name="status" id="status"/>
 <input class="hidden" name="returnpath" id="returnpath" />
-  <%  if (user != "NOAUTHENTICATED" && !query.peeking ) { %>
+ 
 <div class="bottom-buttons">
-    <button type="submit" id="Save" class="btn btn-info btn-lg ">SAVE CHANGES</button>
-    <button type="submit" id="Complete" class="btn btn-primary btn-lg">SAVE &amp; COMPLETE</button>
+    <button type="submit" id="Save" class="btn btn-info btn-lg "><span class="tooltip-gr" data-toggle="tooltip">SAVE CHANGES</span></button>
+    <button type="submit" id="Complete" class="btn btn-primary btn-lg"><span class="tooltip-gr" data-toggle="tooltip">SAVE &amp; COMPLETE</span></button>
 </div>
-        <% } %>
+       

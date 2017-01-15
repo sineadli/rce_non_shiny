@@ -31,7 +31,7 @@ $(document).ready(function() {
     });
 
 
-	$('body.peeking row a, body.peeking row input').not("body.peeking div.modal-body row a").click(function (e) {
+	$('body.peeking div.step-action a').click(function (e) {
 		e.preventDefault();
 		e.stopPropagation();
 	    e.stopImmediatePropagation();
@@ -39,16 +39,23 @@ $(document).ready(function() {
 	    return false;
 	});
 
-	$('body.peeking row a').not("body.peeking div.modal-body row a").each(function () {
+	$('body.peeking div.step-action a').each(function () {
 
-        $(this).prop('title', 'Not available in Peek mode.');
-		$(this).prop('data-toggle', 'tooltip');
-		$(this).addClass('tooltip-gr');
+       
+		$(this).replaceWith($('<span title="This action is not available in peek mode" data-toggle="tooltip" class="tooltip-gr">' + this.innerHTML + '</span>'));
     });
-	$('body.peeking row input').each(function () {
+	$('body.peeking button').each(function () {
 
         $(this).prop('disabled', true);
+		$(this).children("span").prop('title', 'This action is not available in peek mode.');
     });
+
+	$('body.sharing div.step-action a').each(function () {
+
+
+		$(this).hide();
+    });
+
 	var urlParams = new URLSearchParams(window.location.search);
 
    
@@ -92,7 +99,9 @@ $(document).ready(function() {
 		}
 		$("button#Complete").hide();
 		$("button#Save").html("Save and Return to " + ToolName);
-	
+		$('ol.breadcrum>li.breadcrum-item>a').prop("href", "/" + returnpath);
+	    $('ol.breadcrum>li.breadcrum-item>a')
+	        .text("<span class='fa fa-caret-left'></span>" + ToolName);
 	}
 	function capitalize(x) {
 		return x[0].toUpperCase() + x.substring(1);
@@ -375,27 +384,27 @@ function recordViewPDF(name, step, path) {
 };
 
 /*~~~~~~~~~~~~~~~~~~ randomization.html ~~~~~~~~~~~~~~~~~~*/
-$('#Individual_Group').change(function () {
-	var value = $(this).val();
-	var cluster = $('#Cluster_Group').val("Select an option");
+//$('#Individual_Group').change(function () {
+//	var value = $(this).val();
+//	var cluster = $('#Cluster_Group').val("Select an option");
 
-	var clusterSpecify = $("#Question_Cluster");
+//	var clusterSpecify = $("#Question_Cluster");
 
-	if (value.toLowerCase().indexOf("group") !== -1) clusterSpecify.show();
-	else clusterSpecify.hide();
+//	if (value.toLowerCase().indexOf("group") !== -1) clusterSpecify.show();
+//	else clusterSpecify.hide();
 	
-	var assign = value;
+//	var assign = value;
 
-	if (assign  === "select an option") {
-		assign = "individuals or groups";
-	}
-	
-
-
-	setUserLimitsSelections();
+//	if (assign  === "select an option") {
+//		assign = "individuals or groups";
+//	}
 	
 
-});
+
+//	setUserLimitsSelections();
+	
+
+//});
 
 $('#Cluster_Group').change(function() {
     var value = $(this).val();

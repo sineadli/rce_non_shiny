@@ -25,7 +25,9 @@
 
 </head>
 <% var bodyclass = query.peeking == 1 ? "peeking" : "";
-       bodyclass = query.sharing == 1 ? "sharing" : ""; %>
+bodyclass = query.sharing == 1 ? "sharing" : "";
+console.log("body class = " + bodyclass);
+%>
 <body class="brief <%- bodyclass %>">
     <% if (display === 'online') { %>
     <div class="hidden-print">
