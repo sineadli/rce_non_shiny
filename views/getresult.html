@@ -11,11 +11,9 @@
 <head>
     <title>Get Results - Ed Tech RCE Coach</title>
     <% include ../views/partials/scriptHeader.html %>
- 
 </head>
 <% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
 <body class="<%- peekingThis %>">
-
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -26,7 +24,6 @@
     <% } %>
     <% include ../views/partials/toolHeader.html %>
     <% } %>
-
     <form action="/getresult" method="post">
         <%
         var Result="";
@@ -46,7 +43,6 @@
         var Measure_Units = eval.planNext.Measure_Units;
         if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
         %>
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -94,8 +90,7 @@
                                 <p class="prev-answer">
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=getresult">Craft Your Research Question</a>
                                 </p>
-                                <% } %>
-                                <hr />
+                                <% } %>                               
                             </div>
                             <div class="step-subquestion">
                                 <h4>What is the direction of intended change?</h4>
@@ -121,7 +116,6 @@
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=getresult">Craft Your Research Question</a>
                                 </p>
                                 <% } %>
-                                <hr />
                             </div>
                             <div class="step-subquestion">
                                 <h4>What would success look like?</h4>
@@ -138,9 +132,7 @@
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How You Will Use The Results</a>
                                 </p>
                                 <% } %>
-                                <hr />
                             </div>
-
                             <div class="step-subquestion">
                                 <h4>
                                     How confident do you want to be that
@@ -160,9 +152,7 @@
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How You Will Use The Results</a>
                                 </p>
                                 <% } %>
-                                <hr />
                             </div>
-
                         </div>
                         <div class="col-xs-5">
                             <div class="step-to-consider">
@@ -192,7 +182,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#A">
                             <h2 class="clickable">
@@ -201,130 +190,125 @@
                         </div>
                     </div>
                     <div id="A" class="row  collapse in q-row">
-                        <div class="col-xs-7">
-                            <div class="step-subquestion">
-                                <p>
-                                    Upload a CSV file of your data. The file should have one row for each <%= Singular_User %> in your sample, and one column for each data field (for example, test scores and background characteristics). Read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> for more information.
-                                </p>
-                                <p class="note matching-path">
-                                    <strong>Note:</strong> You should use the file you downloaded after creating your matched comparison groups.
-                                </p>
-                                <p class="note random-path">
-                                    <strong>Note:</strong> You should have downloaded a file after randomly creating treatment and control groups. You should upload this file once it has been merged with your outcome data.
-                                </p>
+                        <div>
+                            <div class="col-xs-7">
+                                <div class="step-subquestion">
+                                    <p>
+                                        Upload a CSV file of your data. The file should have one row for each <%= Singular_User %> in your sample, and one column for each data field (for example, test scores and background characteristics). Read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> for more information.
+                                    </p>
+                                    <p class="note matching-path">
+                                        <strong>Note:</strong> You should use the file you downloaded after creating your matched comparison groups.
+                                    </p>
+                                    <p class="note random-path">
+                                        <strong>Note:</strong> You should have downloaded a file after randomly creating treatment and control groups. You should upload this file once it has been merged with your outcome data.
+                                    </p>
 
-                            </div>
-                            <div class="step-action">
-                                <input id="chosenfile" size="1" type="file" accept=".csv">
-                                <p class="warning">
-                                    Before uploading data, make sure you have removed any personally identifiable information (PII), such as names.
-                                </p>
-                            </div>
-                            <div id='loadingmessage' class="row" hidden>
-                                <div class="col-sm-5 col-sm-offset-6">
-                                    <img src='/static/image/ajax-loader.gif' />
                                 </div>
-                            </div>
-                            <div class="before-upload">
-                                <div class="step-subquestion">
-                                    <h4>What is the outcome variable?</h4>
-                                    <p>choose the name of the variable that measures <%= Basics_Outcome %></p>
+                                <div class="step-action">
+                                    <input id="chosenfile" size="1" type="file" accept=".csv">
+                                    <p class="warning">
+                                        Before uploading data, make sure you have removed any personally identifiable information (PII), such as names.
+                                    </p>
                                 </div>
-                                <div class="step-action ">
-                                    <div>
-                                        <select class="from-upload" id="outcome_var">
-                                            <option value="">Select the outcome variable</option>
+                                <div class="before-upload">
+                                    <div class="step-subquestion">
+                                        <h4>What is the outcome variable?</h4>
+                                        <p>choose the name of the variable that measures <%= Basics_Outcome %></p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <div>
+                                            <select class="from-upload" id="outcome_var">
+                                                <option value="">Select the outcome variable</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="step-subquestion">
+                                        <h4>Who is using the technology?</h4>
+                                        <p>Choose the name of the variable that tells us who is using <%= Basics_Tech_Name %>&mdash;the intervention versus comparison group identifier. Remember, it should equal 1 for the technology users and 0 for non-users. </p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <div>
+                                            <select class="from-upload" id="treat_var">
+                                                <option value="">Select the treatment status variable</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="step-subquestion">
+                                        <h4>Control variables, or covariates</h4>
+                                        <p>Select variables, if any, we should account for while estimating impacts. If you created a matched comparison group, you should include the variables used for matching in this list. </p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <div>
+                                            <select id="control_vars" class="multiselect from-upload" multiple="multiple">
+                                                <option value="">Select the control variables</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="step-subquestion">
+                                        <h4>If individuals are clustered, for example within classrooms or schools, select the cluster variable.</h4>
+                                    </div>
+                                    <div class="step-action ">
+                                        <select class="from-upload" id="cluster_var">
+                                            <option value="Select matching variables">Select cluster variable</option>
                                         </select>
                                     </div>
-                                    <hr />
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4>Who is using the technology?</h4>
-                                    <p>Choose the name of the variable that tells us who is using <%= Basics_Tech_Name %>&mdash;the intervention versus comparison group identifier. Remember, it should equal 1 for the technology users and 0 for non-users. </p>
-                                </div>
-                                <div class="step-action ">
-                                    <div>
-                                        <select class="from-upload" id="treat_var">
-                                            <option value="">Select the treatment status variable</option>
+                                    <div class="step-subquestion">
+                                        <h4>Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. Otherwise, select "combine all grades." </h4>
+                                    </div>
+                                    <div class="step-action ">
+                                        <select class="from-upload" id="grade_var">
+                                            <option value="Select matching variables">Select grade variable</option>
                                         </select>
                                     </div>
-                                    <hr />
                                 </div>
-                                <div class="step-subquestion">
-                                    <h4>Control variables, or covariates</h4>
-                                    <p>Select variables, if any, we should account for while estimating impacts. If you created a matched comparison group, you should include the variables used for matching in this list. </p>
-                                </div>
-                                <div class="step-action ">
-                                    <div>
-                                        <select id="control_vars" class="multiselect from-upload" multiple="multiple">
-                                            <option value="">Select the control variables</option>
-                                        </select>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc1">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider1" class="panel-collapse collapse in">
+                                                <p>
+                                                    The file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). It&rsquo;s important this file include any characteristics you want to use for matching and an indicator of who used the technology.
+                                                    The technology indicator variable should take the value 1 to indicate the record belongs to the intervention group, and 0 for the comparison group.
+                                                </p>
+                                                <div class="before-upload">
+                                                    <p>If users and non-users were chosen based on groups they belonged to rather than as individuals, we need to identify these "clusters" in order to correctly estimate the effect of the intervention. If the decision to give students a technology was made by principals, and all students in a school either get the technology or don't, then select the "School ID" variable or some other indicator of which school the student attended. Similarly, if the intervention is at the classroom level, the clusters are the classrooms. What variable, if any, should we use as a cluster indicator?</p>
+                                                    <p>In some cases it is important that analysis be conducted within groups of students in the same grade. This may be important if the outcome measure is not comparable across grades. If this does not matter for your evaluation, leave this as "combine all grades" in the select menu. If you want to conduct the analysis separately by grade, please .</p>
+                                                </div>
+                                                <p>
+                                                    For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <hr />
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4>If individuals are clustered, for example within classrooms or schools, select the cluster variable.</h4>
-                                </div>
-                                <div class="step-action ">
-                                    <select class="from-upload" id="cluster_var">
-                                        <option value="Select matching variables">Select cluster variable</option>
-                                    </select>
-                                    <hr />
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4>Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. Otherwise, select "combine all grades." </h4>
-                                </div>
-                                <div class="step-action ">
-                                    <select class="from-upload" id="grade_var">
-                                        <option value="Select matching variables">Select grade variable</option>
-                                    </select>
-                                    <hr />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc1">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider1" class="panel-collapse collapse in">
-                                            <p>
-                                                The file should have one row for each person in your sample and one column for each data field (e.g, test scores and background characteristics). It&rsquo;s important this file include any characteristics you want to use for matching and an indicator of who used the technology.
-                                                The technology indicator variable should take the value 1 to indicate the record belongs to the intervention group, and 0 for the comparison group.
-                                            </p>
-                                            <div class="before-upload">
-                                                <p>If users and non-users were chosen based on groups they belonged to rather than as individuals, we need to identify these "clusters" in order to correctly estimate the effect of the intervention. If the decision to give students a technology was made by principals, and all students in a school either get the technology or don't, then select the "School ID" variable or some other indicator of which school the student attended. Similarly, if the intervention is at the classroom level, the clusters are the classrooms. What variable, if any, should we use as a cluster indicator?</p>
-                                                <p>In some cases it is important that analysis be conducted within groups of students in the same grade. This may be important if the outcome measure is not comparable across grades. If this does not matter for your evaluation, leave this as "combine all grades" in the select menu. If you want to conduct the analysis separately by grade, please .</p>
-                                            </div>
-                                            <p>
-                                                For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data for Analysis</a>.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="shinybuttons" class="row col-xs-12 bottom-buttons hidden ">
+                            <button id="go" type="button" class="btn btn-primary btn-lg">Run Analysis!</button>
                         </div>
                     </div>
                 </div>
-
-                <!--end class=body-section-->
-                <div class="bottom-buttons">
-                    <button id="go" type="button" class="btn btn-default action-button shiny-bound-input">Run Analysis!</button>
-                </div>
-                <hr>
-                <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-                <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
-                <div id="results" class="shiny-html-output shiny-bound-output">
-                </div>
-                <input type="hidden" name="result" id="gresult" value="<%= Result %>" />
             </div>
+            <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
+            <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+            <div id="results" class="shiny-html-output shiny-bound-output"></div>
+            <div id='loadingmessage' class="row" hidden>
+                <div class="col-sm-5 col-sm-offset-6">
+                    <img src='/static/image/ajax-loader.gif' />
+                </div>
+            </div>
+        </div>
+        <div class="hidden">
+            <input type="hidden" name="result" id="gresult" value="<%= Result %>" />
         </div>
         <% include ../views/partials/toolButtons.html %>
     </form>
@@ -364,7 +348,8 @@
                         });
                         $('.multiselect').multiselect('destroy');
                         $('.multiselect').multiselect();
-                        $("#match").prop("disabled", false);
+                        //$("#match").prop("disabled", false);
+                        $("#shinybuttons").removeClass("hidden");
                     }
                 });
             });

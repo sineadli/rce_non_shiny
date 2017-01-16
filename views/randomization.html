@@ -53,19 +53,12 @@
                                 Build Your Evaluation Sample Using Random Assignment
                             </h1>
                             <div class="tool-intro">
-
-
-
                             </div>
                             <div class="tool-help">
-
-
                                 <p>
                                     The best test of whether or not your technology works is to randomly select some of your potential users to pilot the technology (treatment group) while others continue classroom practice as usual (comparison group) and compare outcomes between the two groups. Using chance or randomization to create the groups increases the likelihood that differences in outcomes are caused by the new technology.
                                 </p>
-
                                 <p>See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf">Randomization Overview</a> to learn more.</p>
-
                                 <p><strong class="begin-em">Let&rsquo;s get started!</strong></p>
                             </div>
                         </div>
@@ -84,7 +77,6 @@
                     </div>
                     <div id="A" class="row  collapse in q-row">
                         <div class="col-xs-7">
-
                             <div class="step-subquestion">
                                 <h4>
                                     <label for="Basics_Users">
@@ -178,8 +170,6 @@
                                 </p>
                                 <% } %>
                             </div>
-
-
                             <div class="step-subquestion">
                                 <h4><label for="User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups">individuals or groups</span> that can be given access to the technology?</label></h4>
 
@@ -229,8 +219,6 @@
 
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="col-xs-5">
                             <div class="step-to-consider">
@@ -261,14 +249,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#C">
                             <h2 class="clickable">
@@ -277,147 +257,111 @@
                         </div>
                     </div>
                     <div id="C" class="row  collapse in q-row">
-                        <div class="col-xs-7">
-                            <div class="step-subquestion">
-
-
-                                <h4>
-                                    Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
-                                </h4>
-                                <p>
-                                    Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForRandomization.pdf">Prepare Your Data for Randomization</a>.
-                                </p>
-
-                            </div>
-                            <div class="step-action">
-
-
-                                <input id="chosenfile" size="1" type="file" accept=".csv">
-
-
-                                <p class="warning">
-                                    Before uploading data, make sure personally identifiable information (PII), such as names and descriptors that could identify your evaluation participants, has been removed.
-                                </p>
-                            </div>
-                            <div id='loadingmessage' class="row" hidden>
-                                <div class="col-sm-5 col-sm-offset-6">
-                                    <img src='/static/image/ajax-loader.gif' />
-                                </div>
-                            </div>
-                            <div class="before-upload">
+                        <div>
+                            <div class="col-xs-7">
                                 <div class="step-subquestion">
-                                    <h4>Select the variable that contains the anonymous id that uniquely identifies each <span class="indiv-or-group">technology user or group of users</span>.</h4>
-                                    <p><em>Required</em></p>
-
+                                    <h4>
+                                        Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
+                                    </h4>
+                                    <p>
+                                        Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForRandomization.pdf">Prepare Your Data for Randomization</a>.
+                                    </p>
 
                                 </div>
-                                <div class="step-action ">
-
-                                    <div>
-                                        <select id="unit_id" name="unit_id" class="multiselect from-upload nodefault">
-
-                                            <option value="">Select a variable</option>
-
+                                <div class="step-action">
+                                    <input id="chosenfile" size="1" type="file" accept=".csv">
+                                    <p class="warning">
+                                        Before uploading data, make sure personally identifiable information (PII), such as names and descriptors that could identify your evaluation participants, has been removed.
+                                    </p>
+                                </div>
+                                <div class="before-upload">
+                                    <div class="step-subquestion">
+                                        <h4>Select the variable that contains the anonymous id that uniquely identifies each <span class="indiv-or-group">technology user or group of users</span>.</h4>
+                                        <p><em>Required</em></p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <div>
+                                            <select id="unit_id" name="unit_id" class="multiselect from-upload nodefault">
+                                                <option value="">Select a variable</option>
+                                            </select>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    <div class="step-subquestion">
+                                        <h4>Select your pretest measure variable. </h4>
+                                        <p><em>Recommended</em></p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <select id="pretest" class="multiselect from-upload nodefault">
+                                            <option value="Select a variable" selected="selected">Select a data field</option>
                                         </select>
-
+                                        <hr />
                                     </div>
-
-                                    <hr />
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4>Select your pretest measure variable. </h4>
-                                    <p><em>Recommended</em></p>
-
-                                </div>
-                                <div class="step-action ">
-                                    <select id="pretest" class="multiselect from-upload nodefault">
-                                        <option value="Select a variable" selected="selected">Select a data field</option>
-                                    </select>
-                                    <hr />
-                                </div>
-
-
-
-
-
-                                <div class="step-subquestion">
-                                    <h4> Select the variables for the characteristics that should be balanced between the treatment and control groups? </h4>
-                                    <p>These are characteristics that would make you skeptical of your results if they were found to be unbalanced between groups. </p>
-                                    <p><em>Recommended</em></p>
-                                </div>
-                                <div class="step-action ">
-                                    <select id="baseline_vars" name="baseline_vars" class="multiselect from-upload" multiple="multiple">
-                                        <option value="Select matching variables">Select variables</option>
-                                    </select>
+                                    <div class="step-subquestion">
+                                        <h4> Select the variables for the characteristics that should be balanced between the treatment and control groups? </h4>
+                                        <p>These are characteristics that would make you skeptical of your results if they were found to be unbalanced between groups. </p>
+                                        <p><em>Recommended</em></p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <select id="baseline_vars" name="baseline_vars" class="multiselect from-upload" multiple="multiple">
+                                            <option value="Select matching variables">Select variables</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-
-
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-
-                                <div class="panel-group" id="ttc3">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                <span class="fa fa-caret-down" aria-hidden="false"></span>
-                                                <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider3" class="panel-collapse collapse in">
-
-
-                                            <p>Be sure to create a key or a file that links the original names or IDs to the new anonymous IDs. You will need this key to know who was assigned to each group and to add outcome data at the end of the pilot period.</p>
-                                            <p> If available, the Coach will use the pretest measure and background characteristics to check the equivalence or balance of the treatment and comparison groups. If you have a small sample, the Coach may need to randomize multiple times to create balanced groups.</p>
-
-
-
-                                            <p>
-                                                Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf" target="_blank">The Radomization Overview</a> for more on which variables should be included.
-                                            </p>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc3">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+                                                    <span class="fa fa-caret-down" aria-hidden="false"></span>
+                                                    <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div id="consider3" class="panel-collapse collapse in">
+                                                <p>Be sure to create a key or a file that links the original names or IDs to the new anonymous IDs. You will need this key to know who was assigned to each group and to add outcome data at the end of the pilot period.</p>
+                                                <p> If available, the Coach will use the pretest measure and background characteristics to check the equivalence or balance of the treatment and comparison groups. If you have a small sample, the Coach may need to randomize multiple times to create balanced groups.</p>
+                                                <p>
+                                                    Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf" target="_blank">The Radomization Overview</a> for more on which variables should be included.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div id="shinybuttons" class="row col-xs-12 bottom-buttons hidden ">
+                            <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">Randomize!</button>
+                            <a id="downloadData" class="btn btn-info btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
+                                <i class="fa fa-download"></i>
+                                Download
+                            </a>
+                        </div>                      
                     </div>
                 </div>
-            </div>
-            <div class="bottom-buttons">
-                <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Randomize!</button>
-                <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled">
-                    <i class="fa fa-download"></i>
-                    Download
-                </a>
-            </div>
+            </div>   
             <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
             <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
-            <div id="results" class="shiny-html-output shiny-bound-output">
-            </div>
-            <div id='loadingmessage2' class="row" hidden>
+            <div id="results" class="shiny-html-output shiny-bound-output"></div>
+            <div id='loadingmessage' class="row" hidden>
                 <div class="col-sm-5 col-sm-offset-6">
                     <img src='/static/image/ajax-loader.gif' />
                 </div>
             </div>
         </div>
-
-
-        <input type="hidden" name="s_pretest" id="s_pretest" />
-        <input type="hidden" name="s_baseline_vars" id="s_baseline_vars" />
-        <input type="hidden" name="s_block_id" id="s_block_id" />
-        <input type="hidden" name="s_unit_id" id="s_unit_id" />
-
-        <input type="hidden" name="result" id="mresult" />
-
+        <div class="hidden">
+            <input type="hidden" name="s_pretest" id="s_pretest" />
+            <input type="hidden" name="s_baseline_vars" id="s_baseline_vars" />
+            <input type="hidden" name="s_block_id" id="s_block_id" />
+            <input type="hidden" name="s_unit_id" id="s_unit_id" />
+            <input type="hidden" name="result" id="mresult" />
+        </div>
         <% include ../views/partials/toolButtons.html %>
     </form>
-
     <% include ../views/partials/footer.html %>
-
     <script>
         $(document).ready(function () {
             var group = $("#Individual_Group").val();
@@ -470,14 +414,23 @@
                         });
                         $('.multiselect').multiselect('destroy');
                         $('.multiselect').multiselect();
-                        $("#match").prop("disabled", false);
+                      //  $("#match").prop("disabled", false);
+                        $("#shinybuttons").removeClass("hidden");
                     }
                 });
             });
-
+            $("#pretest").change(function () {
+                enablebuttons();
+            });
+            $("#unit_id").change(function () {
+                enablebuttons();
+            });
+            $("#baseline_vars").change(function () {
+                enablebuttons();
+            });
             $("#match").click(function () {
 
-                $('#loadingmessage2').show();
+                $('#loadingmessage').show();
                 var formData = new FormData();
                 var pretest = $("#pretest").val()
                 var baseline_vars = $("#baseline_vars").val();
@@ -499,14 +452,6 @@
                 $("#s_pretest").val(JSON.stringify($("#pretest").val()));
                 $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
                 //$("#s_block_id").val(JSON.stringify($("#block_id").val()));
-
-                //console.log( $("#chosenfile")[0].files[0]);
-                console.log("unit_id: " + JSON.stringify($("#unit_id").val()));
-                console.log("intervention_type: " + JSON.stringify(interv_type));
-                console.log("intervention_quantity: " + JSON.stringify(interv_quantity));
-                //if (baseline_vars) console.log("baseline_vars: " + JSON.stringify(baseline_vars));
-                //if (block_id) console.log("block_id: " + JSON.stringify(block_id));
-
                 formData.append("data", $("#chosenfile")[0].files[0]);
                 formData.append("unit_id", JSON.stringify($("#unit_id").val()));
                 formData.append("intervention_type", JSON.stringify(interv_type));
@@ -526,7 +471,7 @@
                             url: "http://52.222.20.48" + responsePaths[0] + "/json",
                             type: "GET",
                             success: function (data) {
-                                $('#loadingmessage2').hide();
+                                $('#loadingmessage').hide();
                                 console.log(data);
                                 var error = data.error_message[0];
                                 $('#results').html("");
@@ -598,7 +543,7 @@
                                 if (data.randomize_success[0]) {
                                     $("#downloadData")
                                         .removeClass("disabled");
-                                    $("#downloadData")
+                                    $("#downloadData").removeClass("hidden")
                                       .attr("target", "_blank")
                                       .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
                                 }
@@ -610,6 +555,15 @@
                 });
             });
         });
+        function enablebuttons() {
+            if ($("#unit_id").val() !== "None selected" ) {
+                $("#match").prop("disabled", false);
+            }
+            else {
+                $("#match").prop("disabled", true);
+            }
+
+        }
         //init feedback_me plugin
         var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
         fm.init(fm_options);
