@@ -15,7 +15,9 @@
     <% include ../views/partials/scriptHeader.html %>
 
 </head>
-<body>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %>">
+
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -25,37 +27,37 @@
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
 
-<form action="/craft_your_research_q" method="post">
- <% if (user != "NOAUTHENTICATED") { %>
-    <% include ../views/partials/toolHeader.html %>
-    <% } %>
-    <%
+    <form action="/craft_your_research_q" method="post">
+        <% if (user != "NOAUTHENTICATED") { %>
+        <% include ../views/partials/toolHeader.html %>
+        <% } %>
+        <%
 
-    var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-    var Basics_Outcome = eval.basics.Basics_Outcome;
-    if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-    var Basics_Users_Others = eval.basics.Basics_Users_Others;
-    var Basics_Users = eval.basics.Basics_Users;
-    if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-    var Basics_Tech_Name = eval.basics.Basics_Tech_Name == '' ? 'the educational technology' : eval.basics.Basics_Tech_Name
-  
-    %>
-    <input type="hidden" id="user_email" value="<%= user %>" />
-<div class="container-fluid">
-<div class="row">
-<div class="col-xs-12">
+        var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+        var Basics_Outcome = eval.basics.Basics_Outcome;
+        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+        var Basics_Users_Others = eval.basics.Basics_Users_Others;
+        var Basics_Users = eval.basics.Basics_Users;
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        var Basics_Tech_Name = eval.basics.Basics_Tech_Name == '' ? 'the educational technology' : eval.basics.Basics_Tech_Name
 
-    <div class="tool-top">
-        <div class="dl-guide">
-            <a onclick=" window.open('/static/pdf/03.01 Craft your research question_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
-        </div>
-        <div class="tool-header">
+        %>
+        <input type="hidden" id="user_email" value="<%= user %>" />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
 
-            <h1 class="tool-title"> Craft your research question</h1>
+                    <div class="tool-top">
+                        <div class="dl-guide">
+                            <a onclick=" window.open('/static/pdf/Craft Your Research Question.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                        </div>
+                        <div class="tool-header">
+
+                            <h1 class="tool-title"> Craft Your Research Question</h1>
 
                             <div class="tool-intro">
                                 <p>
-                                    Your <span data-toggle="tooltip" title="an answerable question about a specific effect resulting from the educational technology" class='tooltip-gr'>research question</span> will drive the rest of your study. A good question has four building blocks, which we call the "A, B, C, D's".
+                                    Your <span data-toggle="tooltip" title="an answerable question about a specific effect resulting from the educational technology" class='tooltip-gr'>research question</span> will drive the rest of your study. A good question has four building blocks, which we call the &ldquo;A, B, C, D&rsquo;s&rdquo;.
                                 </p>
                             </div>
 
@@ -67,12 +69,12 @@
                                 </div>
                                 <div class="tool-example">
                                     <p>
-                                        <b>Example:</b> Does eZumi Learning increase student achievement on the benchmark assessment for math among 5th grade English Learners compared to similar students with no access to eZumi Learning?
+                                        <b>Example:</b> Does eZumi Learning increase student achievement on the benchmark assessment for math among 5th-grade English learners compared to similar students with no access to eZumi Learning?
                                     </p>
                                 </div>
                             </div>
                             <div class="tool-instructions">
-                                <p>Answer the questions in sections A through D below to build your own question, piece by piece. Check "Things to consider" and the "Examples" if you need help answering a question.</p>
+                                <p>Answer the questions in sections A through D below to build your own question, piece by piece. Check &ldquo;Things to consider&rdquo; and the &ldquo;Examples&rdquo; if you need help answering a question.</p>
                                 <p class="note">
                                     <strong>NOTE:</strong> Make sure you do not include any personally identifiable information, such as names (teachers or students) or descriptors that would reveal who your participants are.
                                 </p>
@@ -87,7 +89,7 @@
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#A">
                             <h2 class="clickable">
-                                <span class="fa fa-caret-down" aria-hidden="false"></span> A. What is the name of the educational technology you are testing?
+                                <span class="fa fa-caret-down" aria-hidden="false"></span> <label for="Basics_Tech_Name"> A. What is the name of the educational technology you are testing?</label>
                             </h2>
                         </div>
                     </div>
@@ -120,27 +122,27 @@
                         <div class="col-xs-7">
                             <div class="step-subquestion">
                                 <p>
-                                    What is the <span data-toggle="tooltip" title="knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity" class='tooltip-gr'>outcome of interest</span>?
+                                    <label for="Basics_Outcome">What is the <span data-toggle="tooltip" title="knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity" class='tooltip-gr'>outcome of interest</span>?</label>
                                 </p>
                             </div>
                             <div class="step-action">
                                 <select required name="Basics_Outcome" id="Basics_Outcome">
                                     <%
-                                    var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
+                                    var options = ["Student academic achievement", "Student non-academic achievement","Teacher performance","Parental engagement","Other" ];
+                                    var values = ["student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected;
-                                    if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
+                                    var selected = ( eval.basics.Basics_Outcome== values[i] ) ? "selected" : "";
 
 
                                     %>
-                                    <option value="<%=options[i] %>" <%=selected %> ><%=options[i] %></option>
+                                    <option value="<%=values[i] %>" <%=selected %> ><%=options[i] %></option>
                                     <%
                                     }
                                     %>
 
                                 </select>
-                                <div id="Question_Outcome_Other" hidden="true">
+                                <div id="Question_Outcome_Other" hidden="true" style="margin-left: 20px;">
                                     <p>
                                         <label for="Basics_Outcome_Other">Please specify:</label>
 
@@ -154,17 +156,16 @@
                                 <% } %>
                             </div>
                             <div class="step-subquestion">
-                                <p>What is the direction of intended change? </p>
+                                <p><label for="Outcome_Direction">What is the direction of intended change?</label> </p>
                             </div>
                             <div class="step-action">
                                 <select required name="Outcome_Direction" id="Outcome_Direction">
                                     <%
                                     var options = ["Select an option", "increase", "decrease" ];
+                                    var values = ["Select an option", "Increase", "Decrease" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected;
-                                    if  (user != "NOAUTHENTICATED") {
-                                    if (eval.planQuestion) { selected = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";}}
+                                    var selected = ( eval.planQuestion.Outcome_Direction== values[i] ) ? "selected" : "";
                                     %>
                                     <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                     }
@@ -173,7 +174,7 @@
                                 </select>
                             </div>
                             <div class="step-subquestion">
-                                <p>What measure will you use to test whether there was an effect?</p>
+                                <p><label for="Outcome_Direction">What measure will you use to test whether there was an effect?</label></p>
                             </div>
                             <div class="step-action">
 
@@ -198,7 +199,7 @@
                                         </div>
                                         <div id="consider2" class="panel-collapse collapse in">
                                             <p>
-                                                An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (e.g. engaging with the educational technology).
+                                                An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (for example, engaging with the educational technology).
                                                 We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
                                             </p>
                                         </div>
@@ -230,7 +231,7 @@
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#C">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> C. Among whom are you hoping to see results?
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> <label for="Intervention_Group_Desc"> C. Among whom are you hoping to see results?</label>
                             </h2>
                         </div>
                     </div>
@@ -255,7 +256,7 @@
                                         </div>
                                         <div id="consider3" class="panel-collapse collapse in">
                                             <p>
-                                                What group of individuals are you trying to affect? For example, students may be using the technology to increase their own achievement or teachers could be using the technology to increase their students' achievement. In both cases you are hoping to see results among students.
+                                                What group are you trying to affect? For example, students could be using the technology to increase their own achievement or teachers could be using it to increase their students&rsquo; achievement. In both cases you&rsquo;re hoping to see results among students.
                                             </p>
                                         </div>
                                     </div>
@@ -270,9 +271,9 @@
                                         </div>
                                         <div id="example3" class="panel-collapse collapse">
                                             <ul>
-                                                <li>6th grade students</li>
-                                                <li>5th grade English learners</li>
-                                                <li>3rd through 5th grade teachers</li>
+                                                <li>6th-grade students</li>
+                                                <li>5th-grade English learners</li>
+                                                <li>3rd- through 5th-grade teachers</li>
                                             </ul>
 
                                         </div>
@@ -284,7 +285,7 @@
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#D">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> D. Who are you comparing them against?
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> <label for="Comparison_Group_Desc">D. Who are you comparing them against?</label>
                             </h2>
                         </div>
                     </div>
@@ -308,7 +309,7 @@
                                             </h3>
                                         </div>
                                         <div id="consider4" class="panel-collapse collapse in">
-                                            <p>Are you comparing users to a group with no access to an educational technology, or with access to a different educational technology? This will determine how you interpret your findings later on and what kinds of decisions the results will empower you to make.</p>
+                                            <p>Are you comparing users to a group with no access to an educational technology, or with access to a different educational technology? This will determine how you interpret your findings later and what kinds of decisions the results will empower you to make.</p>
                                         </div>
                                     </div>
                                     <div class="panel panel-default">
@@ -322,8 +323,8 @@
                                         </div>
                                         <div id="example4" class="panel-collapse collapse">
                                             <ul>
-                                                <li>Similar 5th grade English Learners with no access to eZumi Learning</li>
-                                                <li>Similar 5th grade English Learners that use Wizlet Math instead of eZumi Learning</li>
+                                                <li>Similar 5th-grade English learners with no access to eZumi Learning</li>
+                                                <li>Similar 5th-grade English learners that use Wizlet Math instead of eZumi Learning</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -333,11 +334,11 @@
                     </div>
                     <div class="step-conclusion container">
 
-                        <h2>Your Question</h2>
+                        <h2>Your question</h2>
                     </div>
                     <div class="row">
                         <div class="col-xs-7">
-                            <em> DOES <strong><%= Basics_Tech_Name %></strong> <span class='change-direction'>DO</span> <strong><span class='eval-outcome'></span> <span class="effect-measure"></span></strong> AMONG <strong><span class='treatment-group'>C</span></strong> COMPARED TO <strong><span class='comparison-group'>D</span></strong>?</em>
+                            <em> Does <strong><span class="tech-name"><%= Basics_Tech_Name %></span></strong> <span class='change-direction'>do</span> <strong><span class='eval-outcome'></span> <span class="effect-measure"></span></strong> among <strong><span class='treatment-group'>C</span></strong> compared to <strong><span class='comparison-group'>D</span></strong>?</em>
                         </div>
                         <div class="col-xs-5">
                             <div class="step-to-consider">
@@ -369,52 +370,73 @@
     <script>
         $(document).ready(function () {
 
-        var tech = $("#Basics_Tech_Name").val();
-        if (tech === "") {
-            tech = "A";
-        }
+            var tech = $("#Basics_Tech_Name").val();
+            if (tech === "") {
+                tech = "A";
+            }
 
-        var outcome = $("#Basics_Outcome").val();
-        if ($("#Basics_Outcome").val().toLowerCase() === "other") {
-            outcome = $("#Basics_Outcome_Other").val();
-        }
-        var measure = $("#Outcome_Measure").val();
-        if (outcome === "Select an option") {
-            outcome = "B";
-        }
-        else
-        {
-            if (measure) { measure =  " as measured by " + measure; }
-        }
+            var outcome = $("#Basics_Outcome").val();
+            if ($("#Basics_Outcome").val().toLowerCase() === "other") {
+                outcome = $("#Basics_Outcome_Other").val();
+            }
+            var measure = $("#Outcome_Measure").val();
+            if (outcome === "Select an option") {
+                outcome = "B";
+            }
+            else {
+                if (measure) { measure = " as measured by " + measure; }
+            }
 
-        var direction = $("#Outcome_Direction").val();
-        if (direction === "Select an option") {
-            direction = "DO";
-        }
+            var direction = $("#Outcome_Direction").val();
+            if (direction === "Select an option") {
+                direction = "DO";
+            }
 
-        var cgroup = $("#Comparison_Group_Desc").val();
-        if (cgroup === "") {
-            cgroup = "D";
-        }
+            var cgroup = $("#Comparison_Group_Desc").val();
+            if (cgroup === "") {
+                cgroup = "D";
+            }
 
-        var tgroup = $("#Intervention_Group_Desc").val();
-        if (tgroup === "") {
-            tgroup = "C";
-        }
+            var tgroup = $("#Intervention_Group_Desc").val();
+            if (tgroup === "") {
+                tgroup = "C";
+            }
 
-        $(".eval-outcome").text(outcome);
-        $('.effect-measure').text(measure);
-        $('.tech-name').text(tech);
-        $('.change-direction').text(direction);
-        $('.treatment-group').text(tgroup);
-        $('.comparison-group').text(cgroup);
+            $(".eval-outcome").text(outcome);
+            $('.effect-measure').text(measure);
+            $('.tech-name').text(tech);
+            $('.change-direction').text(direction);
+            $('.treatment-group').text(tgroup);
+            $('.comparison-group').text(cgroup);
 
 
-        //init feedback_me plugin
-        var fm_options = setFeedbackOptions($("#user_email").val(), "craft_your_research_q");
-        fm.init(fm_options);
+            //init feedback_me plugin
+            var fm_options = setFeedbackOptions($("#user_email").val(), "craft_your_research_q");
+            fm.init(fm_options);
 
-    });
+        });
+        $('#Basics_Outcome').change(function () {
+            outcomeUpdate(this);
+        });
+        $("#Basics_Outcome_Other").keyup(function () {
+            outcomeOtherUpdate(this);
+        });
+        $('#Basics_Tech_Name').change(function () {
+            techNameUpdate(this);
+        });
+        $('#Outcome_Measure').keyup(function () {
+            outcomeMeasureUpdate(this);
+        });
+        $('#Outcome_Direction').change(function () {
+            outcomeDirectionUpdate(this);
+        });
+        $('#Intervention_Group_Desc').keyup(function () {
+            interventionGroupDescUpdate(this);
+        });
+
+        $('#Comparison_Group_Desc').keyup(function () {
+            comparisonGroupDescUpdate(this);
+        });
     </script>
 
 </body>

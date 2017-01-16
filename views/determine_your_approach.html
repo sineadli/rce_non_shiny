@@ -60,7 +60,7 @@
                                     In any evaluation of effectiveness you will have to compare the group using the technology (the treatment group) to a similar group not using the technology (the comparison group).
                                     This tool will help you identify the best approach for creating these two groups.
                                 </p>
-                                <p>If you&rsquo;re already using the technology, we&rsquo; consider options for a backward-looking evaluation.  If you&rsquo;re granting new users access to a technology you&rsquo;ve already implemented or are not yet using, we can consider options for implementing or piloting the technology in a way that lets you determine whether it works.</p>
+                                <p>If you&rsquo;re already using the technology, the Coach will check that you meet the requirements to conduct a backward-looking evaluation. If you're piloting a new technology or expanding a current one to new users, the Coach will recommend one of several forward-looking evaluations.</p>
                             </div>
                         </div>
                         <div class="clearfix">&nbsp;</div>
@@ -154,7 +154,7 @@
                                                 <div id="consider4" class="panel-collapse collapse in">
                                                     <p>If you are targeting a specific group of <%= Basics_Users %> (for example English learners or Title 1 schools) answer this question only for those <%= Basics_Users %>.</p>
                                                     <p> The more similar the two groups are at the start of the evaluation, the more confident you can be at the end of the evaluation that the measured differences found can be attributed to using the technology.</p>
-                                                    <p>If possible, do not make participation in the evaluation voluntary and compare volunteers with nonvolunteers. Research shows that those who volunteer are inherently different from those who do not. If you must ask for volunteers, you should select users and non-users from your pool of volunteers.</p>
+                                                    <p>The Coach does not recommend comparing volunteers to non-volunteers because those that volunteer are inherently different from those that do not. If you must ask for volunteers, the Coach recommends selecting users and non-users from your pool of volunteers.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -245,7 +245,7 @@
                                                     <p>Using a cutoff means selecting who uses the technology based on where <%= Basics_Users %> rank in relation to an existing threshold. For example, students just below a &ldquo;low score&rdquo; threshold are assigned to use <%= Basics_Tech_Name %>. We assume that students close to a cutoff are very similar, therefore, you can compare those just below the cutoff to those just above it. </p>
                                                     <h4 class="list-header">Advantage</h4>
                                                     <ul>
-                                                        <li>Allows for the method of assignment to be based more on a specific measure than on chance. </li>
+                                                        <li>It allows for comparison of similar users without using random assignment.</li>
 
                                                     </ul>
                                                     <h4 class="list-header">Disadvantages</h4>
@@ -317,7 +317,7 @@
                                         <div class="step-action">
                                             <select name="Individual_Group" id="Individual_Group">
                                                 <%
-                                                var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
+                                                var options = ["Select an option", "Individual " + Basics_Users , "Groups of " + Basics_Users ];
                                                 var ovals = ["Select an option", "users" , "groups" ];
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
@@ -335,7 +335,7 @@
                                                 <div class="step-action">
                                                     <select name="Cluster_Group" id="Cluster_Group">
                                                         <%
-                                                        var options = ["Select an option", "by class", "by school", "other" ];
+                                                        var options = ["Select an option", "By class", "By school", "Other" ];
                                                         var ovals = ["Select an option", "classes", "schools", "other" ];
                                                         for ( var i = 0; i < options.length; i++ )
                                                         {
@@ -347,11 +347,12 @@
                                                         %>
                                                     </select>
                                                     <div id="Question_Cluster_Other" hidden="true">
-                                                        <p>
-                                                            <label for="Cluster_Group_Other">Please specify:</label>
-                                                            <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
-                                                        </p>
-                                                    </div>
+                                                        <div class="step-subquestion">
+                                                            <h4><label for="Cluster_Group_Other">Please specify:</label></h4>
+                                                        </div><div class="step-action">
+    <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
+    </div>
+</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -424,7 +425,7 @@
                                 </p>
                             </div>
                             <div id="Con_NoGroups">
-                                <h2 class="stop-warning">Caution, It will not be possible to create a comparison group of non-users for your evaluation.</h2>
+                                <h2 class="stop-warning">Caution, it will not be possible to create a comparison group of non-users for your evaluation.</h2>
                                 <p>
                                     In order to evaluate whether the educational technology is moving the needle, you&#39;ll need to be able to compare <%= Basics_Users %> using the technology to similar <%= Basics_Users %> not using the technology. Your answers indicate that all <%= Basics_Users %> will be using the technology.
                                 </p>
@@ -433,7 +434,7 @@
                                 </p>
                             </div>
                             <div id="Con_Matched_Current">
-                                <h2>Based on your answers, the Coach will guide you through an evaluation using a matched comparison design.</h2>
+                                <h2>Great, based on your answers, the Coach will guide you through an evaluation using a matched comparison design.</h2>
                                 <p>
                                     Use the Coach&rsquo;s Matching tool to create two groups that are similar in terms of observed characteristics for which you have data.  For this tool to work you will need to collect pretest and background characteristic data for your <%= Basics_Users %>.
 
@@ -441,7 +442,7 @@
 
                             </div>
                             <div id="Con_Matched_Selected">
-                                <h2> Based on your answers, the Coach will guide you through an evaluation using a matched comparison design.</h2>
+                                <h2> Great, based on your answers, the Coach will guide you through an evaluation using a matched comparison design.</h2>
                                 <p>
                                     Since you are selecting your users, a matched comparison will allow you to compare those you select to a similar group of non&#45;users that you can create using the RCE Coach Matching tool. For this method to work, you&#39;ll want to be sure that some similar <%= Basics_Users %> are not pilot users.
                                 </p>
@@ -501,9 +502,12 @@
             });
 
             $('#Individual_Group').change(function () {
+                ShowCluster(this);
                 setApproachConclusion();
             });
             $('#Cluster_Group').change(function () {
+                
+                ShowClusterOther(this);
                 setApproachConclusion();
             });
             $("input[type=radio][name=Appr_How_Choose]").change(function () {
@@ -656,6 +660,7 @@
 
                     $("button.complete").attr("disabled", "disabled");
                 }
+                return true;
             }
 
             //init feedback_me plugin

@@ -77,14 +77,13 @@
                                         <div class="step-action">
                                             <select required name="Basics[Basics_Have]" id="Basics_Have">
                                                 <%
-                                                var options = ["Select an option", "yes", "no" ];
+                                                var options = ["Select an option", "Yes", "No" ];
+                                                var values = ["Select an option", "yes", "no" ];
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
-                                                var selected;
-                                                if (user != "NOAUTHENTICATED") {
-                                                if (eval.basics) { selected = ( eval.basics.Basics_Have == options[i] ) ? "selected" : "";}}
+                                                var selected = ( eval.basics.Basics_Have == values[i] ) ? "selected" : "";
                                                 %>
-                                                <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option><%
+                                                <option value="<%=values[i] %>" <%= selected %> ><%=options[ i ] %></option><%
                                                 }
                                                 %>
 
@@ -126,15 +125,15 @@
                                         <div class="step-action">
                                             <select required name="Basics[Basics_Outcome]" id="Basics_Outcome">
                                                 <%
-                                                var options = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
+                                                var options = ["Select an option","Student academic achievement", "Student non-academic achievement","Teacher performance","Parental engagement","Other","Not sure" ];
+                                                var values = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
-                                                var selected;
-                                                if (user != "NOAUTHENTICATED"){ if (eval.basics) { selected = ( eval.basics.Basics_Outcome== options[i] ) ? "selected" : "";}}
+                                                var selected = ( eval.basics.Basics_Outcome== values[i] ) ? "selected" : "";
 
 
                                                 %>
-                                                <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                <option value="<%=values[i] %>" <%=selected %> ><%=options[ i ] %></option><%
                                                 }
                                                 %>
 
@@ -210,16 +209,15 @@
                                             <select required name="Basics[Basics_Users]" id="Basics_Users">
 
                                                 <%
-                                                var options = ["Select an option", "students", "teachers", "other"];
-
+                                                var options = ["Select an option", "Students", "Teachers", "Other"];
+                                                var values = ["Select an option", "students", "teachers", "other"];
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
 
-                                                var selected;
-                                                if (user != "NOAUTHENTICATED"){if (eval.basics) { selected = ( eval.basics.Basics_Users == options[i] ) ? "selected" : "";}}
+                                                var selected = ( eval.basics.Basics_Users == values[i] ) ? "selected" : "";
 
                                                 %>
-                                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                <option value="<%=values[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                                 }
                                                 %>
 
@@ -325,7 +323,27 @@
         fm.init(fm_options);
 
     });
-    
+    $('#Basics_Users').change(function() {
+        usersUpdate(this);
+        setBasicsConclusion();
+    });
+    $('#Basics_Outcome').change(function() {
+        outcomeUpdate(this);
+        setBasicsConclusion();
+    });
+    $('#Basics_Have').change(function () {
+        $("#Q_Tech_Name").show();
+        $("#Q_Who_Users").show();
+        $("#Q_Have_Outcome").show();
+        setBasicsConclusion();
+    });
+
+    $('#Basics_Tech_Name').change(function () {
+        setBasicsConclusion();
+    });
+    $('#Basics_Using').change(function () {
+        setBasicsConclusion();
+    });
     </script>
 
 </body>

@@ -52,8 +52,8 @@ module.exports = function (app, passport) {
     app.get('/publications', isLoggedIn, getAllPublications, function (req, res) {
         sess = req.session;
         query = require('url').parse(req.url, true).query;
-        console.log("hiiii   ");
-        console.log(query);
+     //   console.log("hiiii   ");
+     //   console.log(query);
            
         res.render('publications.html', { user: req.user, publishlists: sess.publishlists, obj: query },
             function (err, html) {
@@ -108,7 +108,7 @@ module.exports = function (app, passport) {
 		//console.log(req.params.coachStep);
 		sess = req.session;
 		var coachStep;
-		console.log(sess.eval.path);
+		//console.log(sess.eval.path);
 		CoachStep.findOne({ step: req.params.coachStep }, function (err, coach) {
 			if (err) {
 				res.status(500).send(err);
@@ -139,11 +139,11 @@ module.exports = function (app, passport) {
         // console.log(req.body.id);
         if (!req.body.id) {
 			var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
-			console.log("In creating new evaluation");
-            console.log(eval);
+		//	console.log("In creating new evaluation");
+        //    console.log(eval);
 			// Pre-populate milestones. Moved from get current eval.
 			if (eval.evalPlan.Milestones.length == 0) {
-				console.log("create the 12 default milestones");
+			//	console.log("create the 12 default milestones");
 				for (var i = 0; i < 12; i++) {
 					var m = ({
 						Order:

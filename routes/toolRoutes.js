@@ -138,10 +138,10 @@ module.exports = function (app, passport) {
     
 	//02. Who used and how	   
 	app.get('/who_and_how', function (req, res) {
-		//	console.log("In DYA get method.");
+		//	console.log("In Who and How Get");
 		sess = req.session;
 		sess.eval.last_step = 2;
-		sess.eval.last_tool = "Who Used Your Technology and How?";
+		sess.eval.last_tool = "Who Is Using Your Technology and How?";
 		var query = require('url').parse(req.url, true).query;
         res.render('who_and_how.html', {user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query},
             function(err, html) {
@@ -149,10 +149,10 @@ module.exports = function (app, passport) {
             } );
 	});
 	app.post('/who_and_how', isLoggedIn, function (req, res) {
-		var toollist = { "name": "Who Used Your Technology and How?", "status": 'completed', "visited_at": new Date() };
+		var toollist = { "name": "Who Is Using Your Technology and How?", "status": 'completed', "visited_at": new Date() };
 		sess = req.session;
 		sess.step = 2;
-	//    console.log("I'm here posting who and how");
+	    console.log("I'm here posting who and how");
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
@@ -174,11 +174,11 @@ module.exports = function (app, passport) {
 			},
 			function (eval, done) {
 				eval.last_step = 2;
-				eval.last_tool = "Who Used Your Technology and How?";
+				eval.last_tool = toollist.name;
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
 				eval.save(function (err) {
-				//	console.log("I'm here posting who and how - saving eval " + toollist.status);
+					console.log("I'm here posting who and how - saving eval " + toollist.status);
 					if (err) {
 						console.log(err); return done(err);
 					}
@@ -368,7 +368,7 @@ module.exports = function (app, passport) {
             },
             function (eval, done) {
 				eval.last_step = 3;
-                eval.last_tool = "Craft Your Research Question";
+                eval.last_tool = toollist.name;
                 //eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
 				
@@ -399,7 +399,7 @@ module.exports = function (app, passport) {
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {
-                        req.flash('saveMessage', 'Changes Saved.')
+                        req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/' + returnpath);
                     }
                     else {
@@ -571,10 +571,12 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 3;
         sess.eval.last_tool = "Summarize Context";
         var query = require('url').parse(req.url, true).query;
-        res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
-            });
+        res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query }
+			//,
+            //function (err, html) {
+            //    if (err) { res.redirect('/error'); } else { res.send(html); }
+            //}
+		);
     });
     app.post('/context_and_usage', isLoggedIn,  function (req, res) {
         var toollist = { "name": "Summarize Context", "status": req.body.status, "visited_at": new Date() };
@@ -606,8 +608,9 @@ module.exports = function (app, passport) {
 				eval.last_step = 3;
                 eval.last_tool = "Summarize Context";
                 updateLastTool(eval, toollist);
-				
-				
+
+                eval.basics.Basics_Outcome = obj.Basics_Outcome;
+				eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
 				//add/update the planQuestion within eval
                 var grades = [], outcomes = [];
      
@@ -630,6 +633,9 @@ module.exports = function (app, passport) {
                 if (obj.Outcome_Literacy) outcomes.push(obj.Outcome_Literacy);
                 if (obj.Outcome_Mathematics) outcomes.push(obj.Outcome_Mathematics);
                 if (obj.Outcome_Science) outcomes.push(obj.Outcome_Science);
+				if (obj.Outcome_Social_Studies) outcomes.push(obj.Outcome_Social_Studies);
+				if (obj.Outcome_Computer) outcomes.push(obj.Outcome_Computer);
+				if (obj.Outcome_Art) outcomes.push(obj.Outcome_Art);
                 if (obj.Outcome_Behavior) outcomes.push(obj.Outcome_Behavior);
                 if (obj.Outcome_Teacher_Excellence) outcomes.push(obj.Outcome_Teacher_Excellence);
                 if (obj.Outcome_Graduation) outcomes.push(obj.Outcome_Graduation);
@@ -638,10 +644,10 @@ module.exports = function (app, passport) {
 						Eval_End_Date: obj.Eval_End_Date,
 						Type_Curriculum: obj.Type_Curriculum,
 						Type_Practice: obj.Type_Practice,
-						Type_School_Structure: obj.Type_School_Structure,
-						Type_School_Level: obj.Type_School_Level,
-						Type_Teacher_Level: obj.Type_Teacher_Level,
-						Type_Policy: obj.Type_Policy,
+						Type_Supplement: obj.Type_Supplement,
+						Type_Assessment: obj.Type_Assessment,
+						Type_Professional_Learning: obj.Type_Professional_Learning,
+						Type_Information_Management: obj.Type_Information_Management,
 						Tech_Purpose: obj.Tech_Purpose,
 						Tech_Components: obj.Tech_Components,
 						Delivered_Individually: obj.Delivered_Individually,
@@ -891,20 +897,17 @@ module.exports = function (app, passport) {
 
 		sess.eval.last_step = 3;
 		sess.eval.last_tool = "Evaluation Plan";
-		sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
-		
+        sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
+
 		var query = require('url').parse(req.url, true).query;
-        res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'},
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
-	});
-	
-	
-	
+    });
+
 	app.post('/evaluation_plan', function (req, res) {
 		var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
-		
 		sess = req.session;
 		var obj = req.body;
 		var returnpath = obj.returnpath;
@@ -931,6 +934,8 @@ module.exports = function (app, passport) {
 					res.redirect('/coach');
 			},
 			function (eval, done) {
+				console.log("Saving Eval Plan and obj = ");
+			    console.log(obj);
 				eval.last_step = 3;
 				eval.last_tool = toollist.name;
 				//eval find so update the toolsVisited accordingly
@@ -968,12 +973,112 @@ module.exports = function (app, passport) {
 						return res.redirect('/coach');
 					}
 				});
-			}
+            }
 		], function (err) {
 			if (err) return next(err);
 			res.redirect('/coach');
 		});
-	});
+    });
+
+    app.post('/evaluation_plan_pdf', function (req, res) {
+        var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
+        sess = req.session;
+        var obj = req.body;
+        var returnpath = obj.returnpath;
+        if (returnpath === '') returnpath = "evaluation_plan";
+
+        //    console.log(obj.EvalPlan.Milestones);
+        var dt = new Date();
+        async.waterfall([
+            function (done) {
+                if (sess.eval) {
+                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
+                        if (!eval) {
+                            req.flash('error', 'No evaluation exists.');
+                            return res.redirect('/coach');
+                        }
+                        if (err) {
+                            console.log(err);
+                            return res.redirect('/coach');
+                        }
+                        return done(err, eval);
+                    });
+                }
+                else
+                    res.redirect('/coach');
+            },
+            function (eval, done) {
+
+                eval.last_step = 3;
+                eval.last_tool = toollist.name;
+                //eval find so update the toolsVisited accordingly
+                updateLastTool(eval, toollist);
+
+                eval.planContext.Tech_Purpose = obj.Tech_Purpose;
+                eval.planContext.Tech_Components = obj.Tech_Components;
+                eval.planContext.Expected_Dosage = obj.Expected_Dosage;
+                eval.planNext.Action_Success = obj.Action_Success;
+                eval.planNext.Action_Fail = obj.Action_Fail;
+                eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
+                var evalPlan = obj.EvalPlan;
+
+                if (!eval.evalPlan) {
+                    eval.evalPlan.created_at = dt;
+                    eval.evalPlan.updated_at = dt;
+                }
+                else {
+                    eval.evalPlan.updated_at = dt;
+                };
+
+                eval.evalPlan = evalPlan;
+
+
+                eval.save(function (err) {
+                    if (err) {
+                        console.log(err); return done(err);
+                    }
+                    sess.eval = eval;
+                    if (req.body.status === "started") {
+                        req.flash('saveMessage', 'Changes Saved.');
+                    }
+                    else {
+                    }
+
+                    return done(err, eval);
+                });
+            }, function (eval, done) {
+                var query = require('url').parse(req.url, true).query;
+
+                res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'download' },
+                    function (err, html) {
+                        if (err) {
+                            res.redirect('/error');
+                        } else {
+
+                            // Try to convert to PDF, and if it fails, revert to HTML;
+                            try {
+                                var wkhtmltopdf = require('wkhtmltopdf');
+
+                                wkhtmltopdf(html).pipe(res);
+                                res.setHeader('Content-disposition', 'attachment; filename="evaluation_plan.pdf"');
+                                res.setHeader('Content-type', 'application/pdf');
+
+                            } catch (e) {
+                                console.log('wkhtmltopdf module not found');
+                                res.setHeader('Content-disposition', 'attachment; filename="evaluation_plan.html"');
+                                res.setHeader('Content-type', 'text/html');
+                                res.write(html);
+                                res.send();
+                            }
+                        }
+                    });
+
+            }
+        ], function (err) {
+            if (err) return next(err);
+            res.redirect('/coach');
+        });
+    });
 
     app.get('/matching', isLoggedIn, function (req, res) {
         sess = req.session;
@@ -1426,7 +1531,6 @@ module.exports = function (app, passport) {
              //   console.log('rendering ', download_route + '.html');
 
                 var filename_map = {
-                    shareresult: 'findings-brief',
                     appendix_randomized: 'technical-appendix',
                     appendix_matched: 'technical-appendix'
                 };

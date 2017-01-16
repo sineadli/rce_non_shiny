@@ -320,8 +320,16 @@ div.side-box-last {
   background-color: white;
 }
 ul {
-  padding-left:20px;
-    margin-left: 25px;
+  padding-left:15px;
+    margin-left: 30px;
+}
+.col-xs-7 ul, .col-xs-5 ul, .col-xs-6 ul {
+  padding-left:10px;
+    margin-left: 15px;
+}
+div.step-to-consider ul {
+    padding: 5px;
+    margin-left: 15px;
 }
 ul.no-bullet {
 	list-style-type: none;
@@ -405,6 +413,7 @@ div.fixed-col-head h4{
 
  
 }
+
 div.col-xs-4.tab-col {
     padding: 0px;
     margin: 0px;
@@ -447,11 +456,15 @@ label.registrationFormAlert {
 h2.clickable ,p.clickable {
   cursor:pointer;
 }
-h2.clickable {
+h2.clickable, h2.clickable label {
     font-size: 1.5em;
     margin: 20px 0 10px 0;
 
 }
+    h2.clickable label {
+        font-weight: 600;
+        font-size: 1em;
+    }
 div.header-section {
 }
 div.body-section {
@@ -979,7 +992,7 @@ h2.form.locked {
     background-image: url("/static/image/Form-Unavailable.png");
 }
 h2.guide.locked {
-    background-image: url("/static/image/Guide-Unavailable2.png");
+    background-image: url("/static/image/Guide_Unavailable3.png");
 }
 div.step-subquestion {
 	    margin: 10px 25px 0 25px;
@@ -1053,7 +1066,7 @@ div.step-to-consider {
 div.step-to-consider .panel-group .panel, div.step-to-consider .panel-heading {
 	background-color:#F4F2EB;
 }
-div.step-to-consider .panel-heading {
+div.step-to-consider .panel-heading, div#How-Group div.step-to-consider .panel-heading {
     padding: 12px;
 }
 div.step-to-consider .panel-collapse {
@@ -1298,9 +1311,7 @@ div.step-action > select,input,textarea {
   height:auto;
   width:85%;
 }
-div.step-action div.step-action > select {
-    width: 75%;
-}
+
 input[type=radio] {
     width: 5%;
 }
@@ -1470,18 +1481,19 @@ div.context-tag input[type="checkbox"] + label {
     display: inline-block;
     vertical-align: middle;
     width: 155px;
-    height: 48px;
+    height: 58px;
+    line-height: 1em;
     background-color: #D9D7BE;
     text-align: center;
     border: 2px solid #D9D7BE;
     font-size: 1em;
-    padding-top: 9px;
+    padding-top: 18px;
     border-radius: 5px;
     margin-top: 1px;
 }
     div.context-tag input[type="checkbox"] + label.tall-box {
 
-        padding-top: 0px;
+        padding-top: 9px;
 
     }
 

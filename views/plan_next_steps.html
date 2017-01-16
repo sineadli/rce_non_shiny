@@ -101,17 +101,18 @@
                                             %>
                                         </select>
 
-                                        approximately $<label class="hidden" for="Tech_Amount">Enter amount technology costs or saves in dollars.</label><input type="text" style="width: 40px;" name="Tech_Amount" id="Tech_Amount" placeholder="20" value="<%= eval.planNext.Tech_Amount %>" />
+                                        about $<label class="hidden" for="Tech_Amount">Enter amount technology costs or saves in dollars.</label><input type="text" style="width: 40px;" name="Tech_Amount" id="Tech_Amount" placeholder="20" value="<%= eval.planNext.Tech_Amount %>" />
                                         per
-                                        <select required name="Tech_Cost_User">
+                                        <label class="hidden" for="Tech_Cost_User">Select technology user.</label><select required name="Tech_Cost_User">
                                             <%
-                                            var options = ["Select an option", "student", "teacher", "school" ];
+                                         
+                                                                                                                      var options = ["Select an option", "student", "teacher", "school" ];
                                             for ( var i = 0; i < options.length; i++ )
                                             {
                                             var selected = ( eval.planNext.Tech_Cost_User== options[i] ) ? "selected" : "";
 
                                             %>
-                                            <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                            <option value="<%=options[i] %>" <%=selected %> ><%=options[ i ] %></option><%
                                             }
                                             %>
 
@@ -143,7 +144,7 @@
                                             </div>
                                             <div id="consider4" class="panel-collapse collapse in">
                                                 <p>
-                                                    The cost of a technology could simply be the cost per user. It could also be the savings realized by replacing one technology with another less expensive technology. Cost may also be measured in something other than dollars, such as teacher prep time saved.
+                                                    The cost of a technology could simply be the cost per user. It could also be the savings realized by replacing one technology with another less expensive technology. Cost can also be measured in something other than dollars, such as teacher preparation time saved.
                                                 </p>
                                             </div>
                                         </div>
@@ -159,9 +160,9 @@
                                             </div>
                                             <div id="example4" class="panel-collapse collapse">
                                                 <ul>
-                                                    <li>It costs approximately $20 per student to use the educational technology</li>
-                                                    <li>It saves approximately $1,000 per classroom to use the educational technology</li>
-                                                    <li>We're not sure. We believe using this tool will save teachers 20 minutes per day on prep time</li>
+                                                    <li>It costs about $20 per student to use the educational technology.</li>
+                                                    <li>It saves about $1,000 per classroom to use the educational technology.</li>
+                                                    <li>We're not sure. We believe using this tool will save teachers 20 minutes per day on prep time.</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -185,24 +186,25 @@
                                     <p>What is the direction of intended change in <%= Basics_Outcome %>?</p>
                                 </div>
                                 <div class="step-action">
-                                    <select required name="Outcome_Direction" id="Outcome_Direction">
+                                    <label class="hidden" for="Outcome_Direction">Select direction of intended change.</label><select required name="Outcome_Direction" id="Outcome_Direction">
                                         <%
-                                        var options = ["Select an option", "increase", "decrease" ];
+                                        var options = ["Select an option", "Increase", "Decrease" ];
+                                                                                                                                  var values = ["Select an option", "increase", "decrease" ];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
                                         var selected;
 
-                                        selected = ( eval.planQuestion.Outcome_Direction== options[i] ) ? "selected" : "";
+                                        selected = ( eval.planQuestion.Outcome_Direction== values[i] ) ? "selected" : "";
 
                                         %>
-                                        <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                        <option value="<%=values[i] %>" <%=selected %> ><%=options[i] %></option><%
                                         }
                                         %>
 
                                     </select>
                                     <% if (user != "NOAUTHENTICATED") {%>
                                     <p class="prev-answer">
-                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=Plan_next_steps">Craft Your Research Question</a>
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
                                     </p>
                                     <% } %>
                                 </div>
@@ -211,7 +213,7 @@
                                 </div>
                                 <div class="step-action">
 
-                                    <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
+                                    <label class="hidden" for="Outcome_Measure">Enter outcome measure.</label><textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
                                     <% if (user != "NOAUTHENTICATED") { %>
                                     <p class="prev-answer">
                                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See  <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
@@ -222,18 +224,19 @@
 
                                 <div class="step-subquestion">
                                     <p>
-                                        What is the unit that <span class="effect-measure"><%= Outcome_Measure %></span> uses to measure <%= Basics_Outcome %>?
+                                        What unit of measurement does <span class="effect-measure"><%= Outcome_Measure %></span> use to measure <%= Basics_Outcome %>?
                                     </p>
                                 </div>
                                 <div class="step-action">
-                                    <select required name="Measure_Units" id="Measure_Units">
+                                    <label class="hidden" for="Measure_Units">Select outcome measure units.</label><select required name="Measure_Units" id="Measure_Units">
                                         <%
-                                        var options = ["Select an option", "test score points", "days", "percentage points", "other" ];
+                                        var options = ["Select an option", "Test score points", "Days", "Percentage points", "Other" ];
+                                                                                                                       var values = ["Select an option", "test score points", "days", "percentage points", "other" ];
                                         for ( var i = 0; i < options.length; i++ ) {
-                                        var selected = (eval.planNext.Measure_Units == options[i] ) ? "selected" : "";
+                                        var selected = (eval.planNext.Measure_Units == values[i] ) ? "selected" : "";
 
                                         %>
-                                        <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
+                                        <option value="<%=values[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
                                         <% } %>
 
                                     </select>
@@ -250,7 +253,7 @@
                                     <p>
                                         I would consider any <span class="effect-direction"><%= Outcome_Direction %></span> larger than
 
-                                        <input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
+                                        <label class="hidden" for="Success_Effect_Size">Input size.</label><input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
                                         <span class="measure-units">units</span> on <span class="effect-measure"><%= Outcome_Measure %></span> a success.
                                     </p>
                                 </div>
@@ -271,8 +274,8 @@
                                                 </div>
                                                 <div id="consider5" class="panel-collapse collapse in">
                                                     <ul>
-                                                        <li>If you are hoping to see an increase in a reading test score, would a one point increase, on average, be a meaningful increase? What about 5 points?</li>
-                                                        <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.</li>
+                                                        <li>If you hope to see an increase in a reading test score, would a 1 point increase, on average, be a meaningful increase? What about 5 points?</li>
+                                                        <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology saves you a lot of money, you might be willing to consider any change that is greater than a small negative number a success.</li>
 
 
 
@@ -287,7 +290,7 @@
                         <div class="step-header container">
                             <div data-toggle="collapse" data-target="#C">
                                 <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> C. How confident do you want to be that&hellip;
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> C. How confident do you want to be that &hellip;
                                 </h2>
                             </div>
                         </div>
@@ -300,14 +303,14 @@
                                     <p>
                                         If I learned that there was a
 
-                                        <input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <%= Outcome_Direction %>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> had the intended effect.
+                                        <label class="hidden" for="Pass_Probability">Input probability as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <span class='change-direction'><%= Outcome_Direction %></span>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> had the intended effect.
                                     </p>
                                 </div>
                                 <div class="step-subquestion">
                                     <p>&hellip; <%= Basics_Tech_Name %> did not move the needle?</p>
 
                                     <p>
-                                        If I learned that there was less than a <input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <%= Outcome_Direction %>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
+                                        If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <span class='change-direction'><%= Outcome_Direction %></span>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
                                     </p>
                                 </div>
                             </div>
@@ -326,7 +329,7 @@
                                                     </h3>
                                                 </div>
                                                 <div id="consider6" class="panel-collapse collapse in">
-                                                    <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. Thinking forward to your results, what likelihood (or probability) would you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
+                                                    <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. Thinking forward to your results, what likelihood (or probability) would you need to be comfortable concluding that the educational technology is moving the needle? You might want a higher level of certainty, and therefore a higher probability, if your results will affect a higher stakes decision, such as implementing a district-wide curriculum. But you might be comfortable with a lower probability for a lower stakes decision. </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -337,7 +340,7 @@
                         <div class="step-header container">
                             <div data-toggle="collapse" data-target="#D">
                                 <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> D. What will you do if...
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> D. What will you do if &hellip;
                                 </h2>
                             </div>
                         </div>
@@ -349,7 +352,7 @@
 
 
                                         <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'>&nbsp;<%= Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= Outcome_Direction %></span>s <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
                                         <% } %>
                                         <% if (user == "NOAUTHENTICATED") { %>
                                         A does B among C compared to D?
@@ -357,14 +360,14 @@
                                     </p>
                                 </div>
                                 <div class="step-action">
-
+                                    <label class="hidden" for="Action_Success">Input what you would do if confident that technology improved outcomes.</label>
                                     <textarea name="Action_Success"><%= eval.planNext.Action_Success %></textarea>
                                 </div>
                                 <div class="step-subquestion">
                                     <p>
                                         &hellip; the evidence suggests that it is not likely that
                                         <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'>&nbsp;<%= Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= Outcome_Direction  %></span>s <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
                                         <% } %>
                                         <% if (user == "NOAUTHENTICATED") { %>
                                         A does B among C compared to D?
@@ -373,14 +376,14 @@
                                 </div>
                                 <div class="step-action">
 
-                                    <textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
+                                    <label class="hidden" for="Action_Fail">Input what you would do if confident that technology did not improve outcomes.</label><textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
                                 </div>
                                 <div class="step-subquestion">
                                     <p>&hellip; the results are inconclusive?</p>
                                 </div>
                                 <div class="step-action">
 
-                                    <textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea>
+                                    <label class="hidden" for="Action_Fail">Input what you would do if not sure of technology's impact on outcomes.</label><textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea>
                                 </div>
                             </div>
                             <div class="col-xs-5">
@@ -388,7 +391,7 @@
                                     <div class="step-to-consider">
                                         <div class="panel-group" id="ttc7">
                                             <div class="panel panel-default">
-                                                <div class="panel-heading">
+                                                <div class="panel-heading  accordion-toggle">
                                                     <h3 class="panel-title sec-label clickable">
 
                                                         <a data-toggle="collapse" data-parent="#ttc7" href="#consider7">
@@ -399,17 +402,17 @@
                                                 </div>
                                                 <div id="consider7" class="panel-collapse collapse in">
                                                     <p>
-                                                        <b>Your Research Question:</b> <br />
+                                                        <b>Your research question:</b> <br />
                                                         <% if (user != "NOAUTHENTICATED") { %>
-                                                        DOES
-                                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= Outcome_Direction + "s"  %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                                        Does
+                                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= Outcome_Direction %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
                                                         <% } %>
                                                         <% if (user == "NOAUTHENTICATED") { %>
                                                         A does B among C compared to D?
                                                         <% } %>
 
                                                     </p>
-                                                    <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you need to make.</p>
+                                                    <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you have to make.</p>
                                                 </div>
                                             </div>
                                             <div class="panel panel-default">
@@ -457,6 +460,28 @@
             $(".measure-units").text(munits);
 
             $('.success-effect-size').text($("#Success_Effect_Size").val());
+        });
+
+        $('#Outcome_Direction').change(function () {
+            outcomeDirectionUpdate(this);
+        });
+        $('#Measure_Units').change(function () {
+            measureUnitsUpdate(this);
+        });
+        $("#Measure_Units_Other").keyup(function () {
+            measureUnitsOtherUpdate(this);
+        });
+
+        $('#Success_Effect_Size').change(function () {
+            successEffectSizeUpdate(this);
+        });
+
+        $('#Pass_Probability').change(function () {
+            passProbUpdate(this);
+        });
+
+        $('#Fail_Probability').change(function () {
+            failProbUpdate(this);
         });
 
 

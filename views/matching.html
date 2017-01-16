@@ -49,6 +49,7 @@
 <input type="hidden" id="user_email" value="<%= user %>"/>
 
 <div class="container-fluid">
+
 <div class="row">
 <div class="col-xs-12">
     <div class="tool-top">
@@ -66,24 +67,22 @@
 </h1>
             <div class="tool-intro">
                 <p>Compare apples to apples by creating a comparison group that is similar to the group using the technology. </p>
+
+                </div>
+                <div class="tool-help">
+                    <p>
+                        <b>Challenge:</b> You want to compare outcomes for individuals who used a technology to outcomes for those who didn&rsquo;t, but technology users may be different from non-users in important ways. For example, if all students are provided access to an optional reading technology, the ones who choose to use it may be the students who are already reading at or above grade-level. To get a good estimate of the effect of the technology, you want to compare students with similar reading levels and characteristics. See the <a target="_blank" href="../static/pdf/Matching%20Overview.pdf">Matching Overview</a> to learn more.
+                    </p>
+                    <p>
+                        <b>Solution:</b> You can match each technology user to a non-user who is very similar on important characteristics. By comparing outcomes for these matched groups of users and non-users, you will be able to get better information about whether or not the technology is moving the needle.
+                    </p>
+                </div>
+
             </div>
-
-
-            <div class="tool-help">
-                <p>
-                    <b>Challenge:</b> You want to compare outcomes for individuals who used a technology to outcomes for those who didn&rsquo;t, but technology users may be different from non-users in important ways. For example, if all students are provided access to an optional reading technology, the ones who choose to use it may be the students who are already reading at or above grade-level. To get a good estimate of the effect of the technology, you want to compare students with similar reading levels and characteristics. See the <a target="_blank" href="../static/pdf/Matching%20Overview.pdf">Matching Overview</a> to learn more.
-                </p>
-                <p>
-                    <b>Solution:</b> You can match each technology user to a non-user who is very similar on important characteristics. By comparing outcomes for these matched groups of users and non-users, you will be able to get better information about whether or not the technology is moving the needle.
-                </p>
-
-            </div>
-
+            <div class="clearfix"></div>
         </div>
-        <div class="clearfix"></div>
     </div>
-</div>
-    </div>
+        </div>
     <div class="row">
         <div class="tool-questions">
             <div class="step-header container">
@@ -206,132 +205,121 @@
                         </div>
                     </div>
                     <div id="B" class="row  collapse in q-row">
-                        <div class="col-xs-7">
-                            <div class="step-subquestion">
-                                <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
-                                <p>
-                                    Your data file should have one row for each one of the <%= Basics_Users %> in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a>.
-                                </p>
-                            </div>
-                            <div class="step-action">
-                                <input id="chosenfile" size="1" type="file" accept=".csv">
-                                <p class="warning">
-                                    Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
-                                </p>
-                            </div>
-                            <div id='loadingmessage' class="row" hidden>
-                                <div class="col-sm-5 col-sm-offset-6">
-                                    <img src='/static/image/ajax-loader.gif' />
-                                </div>
-                            </div>
-                            <div class="before-upload">
+                        <div >
+                            <div class="col-xs-7">
                                 <div class="step-subquestion">
-                                    <h4>Who is using <%= Basics_Tech_Name %>?</h4>
-                                    <p>Choose the name of the data field that distinguishes who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
-                                    <p><em class="stronger"><i class="fa fa-asterisk"></i> Required</em></p>
+                                    <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
+                                    <p>
+                                        Your data file should have one row for each one of the <%= Basics_Users %> in your sample and one column for each data field (e.g, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and also an indicator of who used the technology. For more information, please read <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a>.
+                                    </p>
                                 </div>
-                                <div class="step-action ">
-
-                                    <div>
-                                        <select id="treat_var" class="multiselect from-upload nodefault">
-
-                                            <option value="">Select a data field</option>
-
+                                <div class="step-action">
+                                    <input id="chosenfile" size="1" type="file" accept=".csv">
+                                    <p class="warning">
+                                        Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
+                                    </p>
+                                </div>
+                                
+                                <div class="before-upload">
+                                    <div class="step-subquestion">
+                                        <h4>Who is using <%= Basics_Tech_Name %>?</h4>
+                                        <p>Choose the name of the data field that distinguishes who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                                        <p><em class="stronger"><i class="fa fa-asterisk red"></i> Required</em></p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <div>
+                                            <select id="treat_var" class="multiselect from-upload required nodefault ">
+                                                <option value="">Select a data field</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="step-subquestion">
+                                        <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
+                                        <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the data field that indicates student grade. </p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <select id="grade_var" class="multiselect from-upload required nodefault ">
+                                            <option value="match any grade" selected="selected">match any grade</option>
+                                        </select>
+                                    </div>
+                                    <div class="step-subquestion">
+                                        <h4>Select your pretest outcome measure. </h4>
+                                        <p><em class="stronger"><i class="fa fa-asterisk"></i> Required</em></p>
+                                    </div>
+                                    <div class="step-action ">
+                                        <select id="pretest" class="multiselect from-upload nodefault">
+                                            <option value="Select a variable" selected="selected">Select a data field</option>
                                         </select>
 
                                     </div>
-
-                                  
-                                </div>
-
-                                <div class="step-subquestion">
-                                    <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
-                                    <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the data field that indicates student grade. </p>
-                                </div>
-                                <div class="step-action ">
-
-
-                                    <select id="grade_var" class="multiselect from-upload nodefault">
-                                        <option value="match any grade" selected="selected">match any grade</option>
-                                    </select>
-
-                                  
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4>Select your pretest outcome measure. </h4>
-                                    <p><em class="stronger"><i class="fa fa-asterisk"></i> Required</em></p>
-
-                                </div>
-                                <div class="step-action ">
-                                    <select id="pretest" class="multiselect from-upload nodefault">
-                                        <option value="Select a variable" selected="selected">Select a data field</option>
-                                    </select>
-                                
-                                </div>
-                                <div class="step-subquestion">
-                                    <h4> Which characteristics matter when matching users to similar non-users? </h4>
-                                    <p>Select characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
-                                    <p><em class="stronger"><i class="fa fa-asterisk"></i> At least one characteristic is required; more than one is recommended.</em>
-                                    </p>
-                                </div>
-                                <div class="step-action ">
-                                    <select id="match_vars" name="match_vars" class="multiselect from-upload" multiple="multiple">
-                                        <option value="Select matching variables">Select matching variables</option>
-                                    </select>
+                                    <div class="step-subquestion">
+                                        <h4> Which characteristics matter when matching users to similar non-users? </h4>
+                                        <p>Select characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>. </p>
+                                        <p>
+                                            <em class="stronger"><i class="fa fa-asterisk"></i> At least one characteristic is required; more than one is recommended.</em>
+                                        </p>
+                                    </div>
+                                    <div class="step-action  ">
+                                        <select id="match_vars" name="match_vars" class="multiselect from-upload required" multiple="multiple">
+                                            <option value="Select matching variables">Select matching variables</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xs-5">
-                            <div class="step-to-consider">
-                                <div class="panel-group" id="ttc3">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title sec-label clickable">
-                                                
-                                                <a data-toggle="collapse" data-parent="#ttc3" href="#consider3"><i class="fa fa-caret-down" aria-hidden="false"></i>
-                                                    Things to Consider
-                                                </a>
-                                            </h3>
-                                        </div>
-                                        <div id="consider3" class="panel-collapse collapse in">
-                                          
-                                            <p>
-                                                The Coach suggests that you create an anonymous ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
-                                            </p>
-                                            <div class="before-upload">
-                                                <p>
-                                                    It is most important that users and non-users had similar <%= Basics_Outcome %> levels before they started using <%= Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
-                                                </p>
-                                                <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
+                            <div class="col-xs-5">
+                                <div class="step-to-consider">
+                                    <div class="panel-group" id="ttc3">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title sec-label clickable">
+
+                                                    <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                                        <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                                        Things to Consider
+                                                    </a>
+                                                </h3>
                                             </div>
-                                            <p>
-                                                Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
-                                            </p>
+                                            <div id="consider3" class="panel-collapse collapse in">
+
+                                                <p>
+                                                    The Coach suggests that you create an anonymous ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will allow you to add more information or link files in the future.
+                                                </p>
+                                                <div class="before-upload">
+                                                    <p>
+                                                        It is most important that users and non-users had similar <%= Basics_Outcome %> levels before they started using <%= Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
+                                                    </p>
+                                                    <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students' use of the technology. </p>
+                                                </div>
+                                                <p>
+                                                    Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div> <!--end class=body-section-->
-                <div class="bottom-buttons">
-                    <button id="match" type="button" class="btn btn-default action-button shiny-bound-input">Match!</button>
-                    <a id="downloadData" class="btn btn-default shiny-download-link  shiny-bound-output disabled " href="#" target="_blank" disabled="disabled">
-                        <i class="fa fa-download"></i>
-                        Download
-                    </a>
-                </div>
+                        <div id="shinybuttons" class="row col-xs-12 bottom-buttons hidden ">
+                                <button id="match" type="button" class="btn btn-primary btn-lg "  disabled="disabled">Match!</button>
+                                <a id="downloadData" class="btn btn-info btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
+                                    <i class="fa fa-download"></i>
+                                    Download
+                                </a>
+                        </div>                             
+                    </div>                    
+                </div> <!--end class=body-section-->                
                 <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
                 <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
                 <div id="results" class="shiny-html-output shiny-bound-output">
                 </div>
-                <div id='loadingmessage2' class="row" hidden>
+                <div id='loadingmessage' class="row" hidden>
                     <div class="col-sm-5 col-sm-offset-6">
                         <img src='/static/image/ajax-loader.gif' />
                     </div>
                 </div>
             </div>
-        </div>
+</div>
+    <div class="hidden">
         <input type="hidden" name="s_treat_var" id="s_treat_var" />
         <input type="hidden" name="s_match_vars" id="s_match_vars" />
         <input type="hidden" name="s_grade_var" id="s_grade_var" />
@@ -340,9 +328,10 @@
         <input type="hidden" name="n_matched" id="n_matched" />
         <input type="hidden" name="n_matched_treat" id="n_matched_treat" />
         <input type="hidden" name="result" id="mresult" />
-        <% include ../views/partials/toolButtons.html %>
-    </form>
-    <% include ../views/partials/footer.html %>
+    </div>
+<% include ../views/partials/toolButtons.html %>
+</form>
+<% include ../views/partials/footer.html %>
 
     <script>
     $(document).ready(function () {
@@ -377,16 +366,31 @@
                           .text(value));
                     });
                    $('.multiselect').multiselect('destroy');
-										$('.multiselect').multiselect();
-                    $("#match").prop("disabled", false);
+                   $('.multiselect').multiselect();
+                   $("#shinybuttons").removeClass("hidden");
+                    //$("#match").prop("disabled", false);
                 }
             });
         });
+        $("#treat_var").change(function () {
+            enablebuttons();
+        });
+        $("#grade_var").change(function () {
+            enablebuttons();
+        });
+        $("#pretest").change(function () {
+            enablebuttons();
+        });
+        $("#match_vars").change(function () {
+            enablebuttons();
+        });
         $("#match").click(function () {
-            $('#loadingmessage2').show();
+         
+            $('#loadingmessage').show();
             var formData = new FormData();
             var match_vars = $("#match_vars").val();
             match_vars.push($("#pretest").val());
+            if (match_vars && $("#pretest").val() !== "None selected") { match_vars.push($("#pretest").val()); }
             $("#s_treat_var").val(JSON.stringify($("#treat_var").val()));
             $("#s_match_vars").val(JSON.stringify(match_vars));
             $("#s_grade_var").val(JSON.stringify($("#grade_var").val()));
@@ -406,7 +410,7 @@
                         url: "http://52.222.20.48" + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
-                            $('#loadingmessage2').hide();
+                            $('#loadingmessage').hide();
                             var results_by_grade = data.results_by_grade;
                             var n_full=0, n_full_treat=0, n_matched=0, n_matched_treat=0
                             for (var key in results_by_grade) {
@@ -459,7 +463,7 @@
                             $("#downloadData")
                              .removeClass("disabled");
 
-                            $("#downloadData")
+                            $("#downloadData").removeClass("hidden")
                               .attr("target", "_blank")
                               .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
                             // Save results to database.
@@ -469,6 +473,17 @@
             });
         });
     });
+    function enablebuttons() {
+        if ($("#treat_var").val() !== "None selected" && $("#grade_var").val() !== "None selected"
+            && $("#pretest").val() !== "None selected" && $("#match_vars").val()) {
+            $("#match").prop("disabled", false);
+        }
+        else {
+            $("#match").prop("disabled", true);
+        }
+      
+    }
+
     //init feedback_me plugin
     var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
     fm.init(fm_options);

@@ -12,53 +12,51 @@
 
 /*~~~~~~~~~~~~~~~~~~ ALL ~~~~~~~~~~~~~~~~~~*/
 $(document).ready(function() {
-    /** Load Header **/
+
+	  /** Load Header **/
     $.get("/header", function(data) {
         $("#header").html(data);
-        //$("#breadcrb").show();
     });
     if (typeof (UserAgentInfo) != 'undefined' && !window.addEventListener) {
         UserAgentInfo.strBrowser = 1;
     }
-    //$('.datepicker').datepicker({
-    //    todayHighlight: true
-    //});
-    $('[data-toggle=collapse]').click(function() {
+    $('.datepicker').datepicker({
+        todayHighlight: true
+    });
 
+    $('[data-toggle=collapse]').click(function() {
         var caret = $(this).find('i');
         caret.toggleClass('fa-caret-right');
         caret.toggleClass('fa-caret-down');
     });
 
-
+// If peeking a tool, deactivate links and buttons, add tooltips
 	$('body.peeking div.step-action a').click(function (e) {
 		e.preventDefault();
 		e.stopPropagation();
 	    e.stopImmediatePropagation();
-
 	    return false;
 	});
-
-	$('body.peeking div.step-action a').each(function () {
-
-       
+	$('body.peeking div.step-action a').each(function () {		
 		$(this).replaceWith($('<span title="This action is not available in peek mode" data-toggle="tooltip" class="tooltip-gr">' + this.innerHTML + '</span>'));
     });
 	$('body.peeking button').each(function () {
-
         $(this).prop('disabled', true);
 		$(this).children("span").prop('title', 'This action is not available in peek mode.');
     });
 
-	$('body.sharing div.step-action a').each(function () {
-
-
+	// If get to brief through shared eval page, hide return links and change breadcrumb path
+	$('body.sharing p.prev-answer').each(function () {
 		$(this).hide();
     });
+	$('body.sharing ol.breadcrumb>li.breadcrumb-item>a').prop("href", "/publications");
+	$('body.sharing ol.breadcrumb>li.breadcrumb-item>a')
+		.html("<span class='fa fa-caret-left'></span> BACK TO SHARED EVALUTAIONS");
 
+
+// For links with return paths, get return tool name to use in button text and breadcrumb
 	var urlParams = new URLSearchParams(window.location.search);
 
-   
 	if (urlParams.has('return')) {
 	    var ToolName = "";
 		var returnpath = urlParams.get('return');
@@ -69,9 +67,6 @@ $(document).ready(function() {
 				break;
 			case "shareresult":
 			    ToolName = "Share Your Results";
-				break;
-			case "plan_next_steps":
-				ToolName = "How You Will Use Results";
 				break;
 			case "context_and_usage":
 				ToolName = "Summarize Context";
@@ -94,93 +89,146 @@ $(document).ready(function() {
 			case "matching":
 				ToolName = "Matching";
 				break;
+			case "plan_next_steps":
+				ToolName = "Think About How You Will Use The Results";
+				break;
 			default:
 				ToolName = "";
 		}
 		$("button#Complete").hide();
 		$("button#Save").html("Save and Return to " + ToolName);
-		$('ol.breadcrum>li.breadcrum-item>a').prop("href", "/" + returnpath);
-	    $('ol.breadcrum>li.breadcrum-item>a')
-	        .text("<span class='fa fa-caret-left'></span>" + ToolName);
-	}
-	function capitalize(x) {
-		return x[0].toUpperCase() + x.substring(1);
+		$('ol.breadcrumb>li.breadcrumb-item>a').prop("href", "/" + returnpath);
+	    $('ol.breadcrumb>li.breadcrumb-item>a')
+	        .html("<span class='fa fa-caret-left'></span> BACK TO " + ToolName);
 	}
 
-    $(".capitalize-one").each(function() {
-        var x = $(this).text();
-        ;
-        $(this).text(capitalize(x));
-    });
-
-	
-
-        $(document).on('click', '.tool-view-button', function(e) {
-            e.preventDefault();
-            $("div.tool-div").removeClass("current");
-            var href = $(this).attr("href");
-            $(this).parent(".tool-view-btn").parent(".tool-div").addClass("current");
-
-            window.location = href;
+	$('button#Complete').click(function () {
+		$('#status').val('completed');
+	});
+	$('button#Save').click(function () {
+		$('#status').val('started');
 	});
 
-		$(".redirect-link").click(function (e) {
-            e.preventDefault();
-            var returnpath = this.pathname.substr(1) + this.search;
-            $("#returnpath").val(returnpath);
-            $("#status").val("started");
-            $("form").submit();
+	$(".redirect-link").click(function (e) {
+		e.preventDefault();
+		var returnpath = this.pathname.substr(1) + this.search;
+		$("#returnpath").val(returnpath);
+		$("#status").val("started");
+		$("form").submit();
 
-        });
+	});
 
-        $('button#Complete').click(function () {
-            $('#status').val('completed');
-		});
-		$('button#Save').click(function () {
-            $('#status').val('started');
-		});
-         
-		/*~~~~~~~~~~~~~~~~ The Basics ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-		$('#Basics_Users').change(function () {
+	$(".capitalize-one").each(function () {
+		var x = $(this).text();
+		;
+		$(this).text(capitalize(x));
+	});
 
-			var value = $(this).val();
-			var subject = "users";
-			var otherSpecify = $("#Question_Users_Other");
-			if (value === "other") otherSpecify.show();
-			else otherSpecify.hide();
-			if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
-				subject = value;
-			}
-			$(".tech_users").text(subject);
-
-			setBasicsConclusion();
-		});
-		$('#Basics_Outcome').change(function () {
-
-			var value = $(this).val();
-
-			var otherSpecify = $("#Question_Outcome_Other");
-			if (value.toLowerCase() === "other") otherSpecify.show();
-			else otherSpecify.hide();
-
-			setBasicsConclusion();
-		});
-		$('#Basics_Have').change(function () {
-			$("#Q_Tech_Name").show();
-			$("#Q_Who_Users").show();
-			$("#Q_Have_Outcome").show();
-			setBasicsConclusion();
-		});
-
-		$('#Basics_Tech_Name').change(function () {
-			setBasicsConclusion();
-		});
-		$('#Basics_Using').change(function () {
-			setBasicsConclusion();
-		});
+	
+   }); //<-end document.ready
 
 
-		
+
+
+function capitalize(x) {
+	return x[0].toUpperCase() + x.substring(1);
+}
+
+
+$(document).on('click', '.tool-view-button', function (e) {
+	e.preventDefault();
+	$("div.tool-div").removeClass("current");
+	var href = $(this).attr("href");
+	$(this).parent(".tool-view-btn").parent(".tool-div").addClass("current");
+
+	window.location = href;
+});
+
+
+
+
+
+/*~~~~~~~~~~~~~~~~ The Basics ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+function usersUpdate(t) {
+
+	var value = $(t).val();
+	var subject = "users";
+	var otherSpecify = $("#Question_Users_Other");
+	if (value === "other") otherSpecify.show();
+	else otherSpecify.hide();
+	if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
+		subject = value;
+	}
+	$(".tech_users").text(subject);
+};
+function techNameUpdate(t) {
+	var tech = $(t).val();
+	$('.tech-name').text(tech);
+}
+function outcomeUpdate(t) {
+
+	var value = $(t).val();
+
+	var otherSpecify = $("#Question_Outcome_Other");
+	if (value.toLowerCase() === "other") otherSpecify.show();
+	else otherSpecify.hide();
+
+	if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
+		$(".eval-outcome").text(value);
+	} else {
+		$(".eval-outcome").text("B");
+	}
+
+};
+
+function setBasicsConclusion() {
+	var haveTech = $('#Basics_Have').val();
+	var techName = $('#Basics_Tech_Name').val();
+	var whoUsers = $('#Basics_Users').val();
+	if (whoUsers.toLowerCase === "other") whoUsers = $('#Basics_Users_Other').val();
+	var haveOutcome = $('#Basics_Outcome').val();
+	if (haveOutcome.toLowerCase === "other") haveOutcome = $('#Basics_Outcome_Other').val();
+
+
+	if (haveTech.toLowerCase() === "no") {
+
+		$("#Q_Tech_Name").hide();
+		$("#Q_Who_Users").hide();
+		$("#Q_Have_Outcome").hide();
+		$("#Step_Conclusion").show();
+		$("#stop-no-tech").show();
+		$("#stop-no-outcome").hide();
+		$("#success").hide();
+		$("button.complete").attr("disabled", "disabled");
+
+	}
+	else if (haveOutcome.toLowerCase() === "not sure") {
+		$("#Step_Conclusion").show();
+		$("#stop-no-outcome").show();
+		$("#stop-no-tech").hide();
+		$("#success").hide();
+		$("button.complete").attr("disabled", "disabled");
+	}
+	else if (techName !== "" && whoUsers.toLowerCase !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
+		$("#Step_Conclusion").show();
+		$("#success").show();
+		$("#stop-no-tech").hide();
+		$("#stop-no-outcome").hide();
+		$("button.complete").removeAttr("disabled");
+	}
+	else {
+		$("#Q_Tech_Name").show();
+		$("#Q_Who_Users").show();
+		$("#Q_Have_Outcome").show();
+		$("#Step_Conclusion").hide();
+		$("#stop-no-tech").hide();
+		$("#stop-no-outcome").hide();
+		$("#success").hide();
+		$("button.complete").attr("disabled", "disabled");
+	}
+}
+
+
 
 
 
@@ -188,129 +236,87 @@ $(document).ready(function() {
 /*~~~~~~~~~~~~~~~~~~ craft_your_research_q.html ~~~~~~~~~~~~~~~~~~*/
 
 
-        $('#Basics_Outcome').change(function() {
-            var value = $(this).val();
 
-            var otherSpecify = $("#Question_Outcome_Other");
+function outcomeOtherUpdate(t) {
+	var value = $(t).val();
+	$(".eval-outcome").text(value);
+};
 
-            if (value.toLowerCase() === "other") otherSpecify.show();
-            else otherSpecify.hide();
-
-            if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
-                $(".eval-outcome").text(value);
-            } else {
-                $(".eval-outcome").text("B");
-            }
-        });
-
-        $("#Basics_Outcome_Other").keyup(function() {
-            var value = $(this).val();
-            $(".eval-outcome").text(value);
-        });
-
-        /* Outcome Measure */
-        $('#Outcome_Measure').keyup(function() {
-            var value = $(this).val();
-            $('.effect-measure').text("as measured by " + value);
-        });
+/* Outcome Measure */
+function outcomeMeasureUpdate(t) {
+	var value = $(t).val();
+	$('.effect-measure').text("as measured by " + value);
+};
 
 
-        $('#Outcome_Direction').change(function() {
-            var value = $(this).val();
-            $('.change-direction').text(value);
-        });
+function outcomeDirectionUpdate(t) {
+	var value = $(t).val();
+	$('.change-direction').text(value);
+};
 
-        $('#Intervention_Group_Desc').keyup(function() {
-            var value = $(this).val();
-            $('.treatment-group').text(value);
-        });
+function interventionGroupDescUpdate(t) {
+	var value = $(t).val();
+	$('.treatment-group').text(value);
+};
 
-        $('#Comparison_Group_Desc').keyup(function() {
-            var value = $(this).val();
-            $('.comparison-group').text(value);
-        });
+function comparisonGroupDescUpdate(t) {
+	var value = $(t).val();
+	$('.comparison-group').text(value);
+};
 
 
-		
+
 /*~~~~~~~~~~~~~~~~~~ plan_next_steps.html ~~~~~~~~~~~~~~~~~~*/
-        $('#Measure_Units').change(function() {
-            var value = $(this).val();
+function measureUnitsUpdate(t) {
+	var value = $(t).val();
 
-            var otherSpecify = $("#Question_Units_Other");
+	var otherSpecify = $("#Question_Units_Other");
 
-            if (value.toLowerCase() === "other") otherSpecify.show();
-            else otherSpecify.hide();
+	if (value.toLowerCase() === "other") otherSpecify.show();
+	else otherSpecify.hide();
 
-            var munits = $("#Measure_Units").val();
-            if (munits.toLowerCase === "other") {
-                munits = $("#Measure_Units_Other").val();
-            }
-            if (munits === "" || munits.toLowerCase() === "select an option") {
-                munits = "units";
-            }
-            $(".measure-units").text(munits);
+	var munits = $("#Measure_Units").val();
+	if (munits.toLowerCase === "other") {
+		munits = $("#Measure_Units_Other").val();
+	}
+	if (munits === "" || munits.toLowerCase() === "select an option") {
+		munits = "units";
+	}
+	$(".measure-units").text(munits);
 
-        });
+};
 
-        $("#Measure_Units_Other").keyup(function() {
-            var value = $(this).val();
-            $(".measure-units").text(value);
-        });
+function measureUnitsOtherUpdate(t) {
+	var value = $(this).val();
+	$(".measure-units").text(value);
+};
 
-        $('#Success_Effect_Size').change(function() {
-            var value = $(this).val();
-            $('.success-effect-size').text(value);
-        });
+function successEffectSizeUpdate(t) {
+	var value = $(t).val();
+	$('.success-effect-size').text(value);
+};
 
-        $('#Pass_Probability').change(function() {
-            var value = $(this).val();
-            $('.prob-success').text(value);
-        });
+function passProbUpdate(t) {
+	var value = $(t).val();
+	$('.prob-success').text(value);
+};
 
-        $('#Fail_Probability').change(function() {
-            var value = $(this).val();
-            $('.prob-failure').text(value);
-        });
-
- /*~~~~~~~~~~~~~~~~~~ evaluation_plan.html ~~~~~~~~~~~~~~~~~~*/
-        $("input[type=checkbox]:checked.hide-row").each(function () {
-			$(this).parent("label").parent("td").parent("tr").addClass("hide-row");
-			;
-		});
-			$("input[type=checkbox].hide-row").change(function () {
-				if (this.checked) {
-				    var thisrow = $(this).parent("label").parent("td").parent("tr");
-					thisrow.addClass("hide-row").fadeOut();
-					thisrow.appendTo('#timeline');
-				    var i = 1;
-					$('td.index input').each(function (i) {
-						$(this).val(i + 1);
-					});
-					
-				} else {
-			        $(this).parent("label").parent("td").parent("tr").removeClass("hide-row");}
-			});
-
-			$("#Unhide-row").click(function () {
-			    $("input[type=checkbox].hide-row").each(function() {
-					$(this).attr('checked', false);
-			    });
-			    $("tr.hide-row").each(function() {
-					$(this).removeClass("hide-row").fadeIn();
-
-			    });
-			});
+function failProbUpdate(t) {
+	var value = $(t).val();
+	$('.prob-failure').text(value);
+};
 
 
-			
 
 
-            $('[data-toggle="tooltip"]').tooltip();
+
+
+
+$('[data-toggle="tooltip"]').tooltip({ html: true, trigger: "click focus hover" });
 
             //this piece of code is the solution for getting rid of “Object doesn't support this property or method” error in IE11, so the datepicker will work
 
 
-   }); //<-end document.ready
 
 function setFeedbackOptions(email, page) {
 	var fm_options = {
@@ -384,42 +390,34 @@ function recordViewPDF(name, step, path) {
 };
 
 /*~~~~~~~~~~~~~~~~~~ randomization.html ~~~~~~~~~~~~~~~~~~*/
-//$('#Individual_Group').change(function () {
-//	var value = $(this).val();
-//	var cluster = $('#Cluster_Group').val("Select an option");
-
-//	var clusterSpecify = $("#Question_Cluster");
-
-//	if (value.toLowerCase().indexOf("group") !== -1) clusterSpecify.show();
-//	else clusterSpecify.hide();
-	
-//	var assign = value;
-
-//	if (assign  === "select an option") {
-//		assign = "individuals or groups";
-//	}
-	
-
-
-//	setUserLimitsSelections();
-	
-
-//});
-
-$('#Cluster_Group').change(function() {
-    var value = $(this).val();
-
-    var otherSpecify = $("#Question_Cluster_Other");
-
-    if (value.toLowerCase() === "other" ) otherSpecify.show();
-    else otherSpecify.hide();
-
-	var assign = value;
-	
-
-    setUserLimitsSelections();
+$('#Individual_Group').change(function () {
+    ShowCluster(this);
+	setUserLimitsSelections();
 
 });
+
+function ShowCluster(e) {
+    var value = $(e).val();
+
+	var clusterSpecify = $("#Question_Cluster");
+
+	if (value.toLowerCase().indexOf("group") !== -1) clusterSpecify.show();
+	else clusterSpecify.hide();	
+}
+
+$('#Cluster_Group').change(function() {
+    ShowClusterOther(this);
+});
+function ShowClusterOther(e) {
+	var value = $(e).val();
+	
+    var otherSpecify = $("#Question_Cluster_Other");
+
+    if (value.toLowerCase() === "other") otherSpecify.show();
+    else otherSpecify.hide();
+
+    setUserLimitsSelections();
+}
 
 $('#User_Limit_Exist').change(function () {
     var value = $(this).val();
@@ -521,52 +519,7 @@ $('#Targeted_Access').change(function () {
 
 });
 
-function setBasicsConclusion() {
-	var haveTech = $('#Basics_Have').val();
-	var techName = $('#Basics_Tech_Name').val();
-	var whoUsers = $('#Basics_Users').val();
-	if (whoUsers.toLowerCase === "other") whoUsers = $('#Basics_Users_Other').val();
-	var haveOutcome = $('#Basics_Outcome').val();
-	if (haveOutcome.toLowerCase === "other") haveOutcome = $('#Basics_Outcome_Other').val();
 
-
-	if (haveTech.toLowerCase() === "no") {
-
-		$("#Q_Tech_Name").hide();
-		$("#Q_Who_Users").hide();
-		$("#Q_Have_Outcome").hide();
-		$("#Step_Conclusion").show();
-		$("#stop-no-tech").show();
-		$("#stop-no-outcome").hide();
-		$("#success").hide();
-		$("button.complete").attr("disabled", "disabled");
-
-	}
-	else if (haveOutcome.toLowerCase() === "not sure") {
-		$("#Step_Conclusion").show();
-		$("#stop-no-outcome").show();
-		$("#stop-no-tech").hide();
-		$("#success").hide();
-		$("button.complete").attr("disabled", "disabled");
-	}
-	else if (techName !== "" && whoUsers.toLowerCase !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
-		$("#Step_Conclusion").show();
-		$("#success").show();
-		$("#stop-no-tech").hide();
-		$("#stop-no-outcome").hide();
-		$("button.complete").removeAttr("disabled");
-	}
-	else {
-		$("#Q_Tech_Name").show();
-		$("#Q_Who_Users").show();
-		$("#Q_Have_Outcome").show();
-		$("#Step_Conclusion").hide();
-		$("#stop-no-tech").hide();
-		$("#stop-no-outcome").hide();
-		$("#success").hide();
-		$("button.complete").attr("disabled", "disabled");
-	}
-}
 
 
 
