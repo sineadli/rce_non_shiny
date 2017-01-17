@@ -567,7 +567,7 @@
                             var results_by_block = data.results_by_block;
                             var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
 
-                            $('#results').append('<div id="Step_Conclusion" style="margin-left:-40px;">' + rSuccess + '</h2></div>');
+                            $('#results').append(rSuccess + '</h2></div>');
                             for (var key in results_by_block) {
                                 if (results_by_block.hasOwnProperty(key)) {
                                     var imgid = "plot" + key;

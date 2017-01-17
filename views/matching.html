@@ -292,7 +292,8 @@
                                             <p>
                                                 It is most important that users and non-users had similar <%= Basics_Outcome %> levels before they started using <%= Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
                                             </p>
-                                            <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology. </p>
+                                            <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology.
+                                            </p>
                                         </div>
                                         <p>
                                             Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
@@ -302,20 +303,21 @@
                             </div>
                         </div>
                     </div>
-
-                    <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-                    <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
-                    <div id="results" class="shiny-html-output shiny-bound-output">
+                    <div class="clearfix"></div>
+                    <div id="Step_Conclusion" style="margin-left:-40px;">
+                        <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
+                        <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+                        <div id="results" class="shiny-html-output shiny-bound-output">
+                        </div>
+                        </div>
+                        <div id="shinybuttons" class="row col-xs-7 col-sm-offset-0 bottom-buttons hidden ">
+                            <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">Match!</button>
+                            <a id="downloadData" class="btn btn-info btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
+                                <i class="fa fa-download"></i>
+                                Download
+                            </a>
+                        </div>
                     </div>
-
-                    <div id="shinybuttons" class="row col-xs-7 col-sm-offset-0 bottom-buttons hidden ">
-                        <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">Match!</button>
-                        <a id="downloadData" class="btn btn-info btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
-                            <i class="fa fa-download"></i>
-                            Download
-                        </a>
-                    </div>
-                </div>
 
               
                 <div id='loadingmessage' class="row" hidden>
@@ -421,6 +423,11 @@
                         type: "GET",
                         success: function (data) {
                             $('#loadingmessage').hide();
+                            $('#results').html("");
+                            var errors = data.error_message;
+                            if (errors.length > 0) {
+                                $('#results').append('<h2 class="stop-warning">Unable to match.</h2><p>' + errors[0] + '</p>');
+                            } 
                             var results_by_grade = data.results_by_grade;
                             var n_full=0, n_full_treat=0, n_matched=0, n_matched_treat=0
                             for (var key in results_by_grade) {
@@ -438,12 +445,12 @@
                                     $('#results').append('<div class="row"><div class="col-xs-7"><h2>Matching Results</h2><h3>' + grade_object.title + '</h3>');
                                     if (grade_object.good_balance) {
                                         bal1 = 'Congratulations! The RCE Engine was able to produce a good comparison group. The following figure shows improvement on baseline equivalence.';
-                                        bal2 = 'Your next step is to use the impact dashboard to determine whether the educational technology you are evaluating is moving the needle or not.';
+                                        bal2 = 'Your next step is to use the &ldquo;Get Results&rdquo; tool to determine whether your educational technology  is moving the needle.';
                                     }
                                     else {
                                         bal1 = 'The RCE Engine was not able to produce a good comparison group. The following figure shows you baseline equivalence before and after matching:';
                                         bal2 = 'The following variables do not satisfy baseline equivalence: ';
-                                        bal3 = 'This means students using the educational technology are very different to students not using it. You can contact us [this link should go to our help/contact page], to discuss other options to determine whether the educational technology is moving the needle.';
+                                        bal3 = "This means the group using the educational technology is very different from the group not using it. You can <a href='mailto:edtechrce@mathematica-mpr.com'>contact us</a>, to discuss other options to determine whether your educational technology is moving the needle.";
                                     }
                                     $('#results').append('<p>' + bal1 + '</p>');
                                     $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + grade_object.plot + ' />' + '</div>');
