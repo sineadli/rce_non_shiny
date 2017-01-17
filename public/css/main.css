@@ -964,6 +964,10 @@ div#Step_Conclusion h2, div.step-conclusion h2 {
     padding-left: 55px;
     padding-top: 5px;
 }
+
+.shiny-html-output {
+    padding: 20px 50px;
+}
 div#Step_Conclusion h2.stop-warning {
      background-image: url("/static/image/WarningIcon.png");
 }

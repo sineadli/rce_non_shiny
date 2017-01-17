@@ -128,7 +128,7 @@
                             <div class="step-action">
                                 <select name="PrepareRandom[Individual_Group]" id="Individual_Group">
                                     <%
-                                    var options = ["Select an option", "Individual " + Basics_Users , "Groups of " + Basics_Users ];
+                                    var options = ["Select an option", "Individuals"  , "Groups" ];
                                     var ovals = ["Select an option", "users" , "groups" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
@@ -697,8 +697,10 @@
             setUserLimitsSelections();
             var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
             fm.init(fm_options);
-        })
-
+        });
+        $('#Basics_Users').change(function () {
+            usersUpdate(this);
+        });
         $('#Individual_Group').change(function () {
             ShowCluster(this);
             setUserLimitsSelections();
