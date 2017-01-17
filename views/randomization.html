@@ -579,10 +579,13 @@
                                         n_full_treat = block_object.samples.n_treat[0];
                                     }
 
-                                    if (block_object.good_balance[0])
-                                    { balance = block_object.good_balance[0] === true ? "Yes" : "No"; }
-                                    else
-                                    { balance = "No" }
+                                    if (block_object.good_balance) {
+                                        if (block_object.good_balance[0] === null)
+                                        { balance = "N/A (no baseline variables specified)"; }
+                                        else
+                                        { balance = block_object.good_balance[0] === true ? "Yes" : "No"; }
+                                    }
+                                    else { balance = "N/A" }
 
                                     //show block name if block specified
                                     if (title) $('#results').append('<div class="col-xs-7"><span>' + title + ' </span></div>');
