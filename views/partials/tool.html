@@ -24,21 +24,21 @@
         var tool =[], status = "NOT STARTED", d = "", btnText = "START";
         var peeking=false, firstTool =false;
         var lock = "";
-        var tooltip = "Need to finish ' The Basics' first";
+        var tooltip = "Need to finish 'The Basics' first";
         if (eval.flag == 1) { peeking =true; }
         if (tools[i].name==="The Basics") firstTool=true;
-        console.log("Creating tool cards");
+      //  console.log("Creating tool cards");
         console.log(eval.toolsvisited);
-        console.log(tools);
+      //  console.log(tools);
         if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
 
         if (tool.length > 0) {
 
         status = tool[0].status;
-        console.log("1");
+        console.log("status=" + status);
         d=new Date(tool[0].visited_at);
         console.log(d);
-        console.log(d.getMonth());
+       console.log(d.getMonth());
         if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}
         }
         }       //tool visited
@@ -46,7 +46,7 @@
         var current = eval.last_tool == tools[i].name ? "current" : "";
         var buttondivid = tools[i].name;
    
-        if (peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) {btnText="PEEK"; lock="locked"; }
+        if ((peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) ) {btnText="PEEK"; lock="locked"; }
         if (tools[i].coachStep===4  ) {tooltip="Need to finish 'Determine Your Approach' first"; 
             if ( tools[i].evalPath  &&  eval.path && tools[i].evalPath !== eval.path)
                 {tooltip="This tool is not available for the chosen " + eval.path; 
@@ -125,7 +125,9 @@
         <% } %>
 
 
-        <% if (toolindropdown.length > 1) { console.log(toolindropdown);%>
+        <% if (toolindropdown.length > 1) {
+       // console.log(toolindropdown);
+        %>
         <%
         var note = 'Based on your answers in Determine Your Approach the Coach is guiding you through ';
 

@@ -934,7 +934,7 @@ module.exports = function (app, passport) {
 					res.redirect('/coach');
 			},
 			function (eval, done) {
-				console.log("Saving Eval Plan and obj = ");
+				console.log("Saving Eval Plan and eval = ");
 			    console.log(obj);
 				eval.last_step = 3;
 				eval.last_tool = toollist.name;
@@ -980,7 +980,7 @@ module.exports = function (app, passport) {
 		});
     });
 
-    app.post('/evaluation_plan_pdf', function (req, res) {
+	app.post('/evaluation_plan_pdf', function (req, res) {
         var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         var obj = req.body;

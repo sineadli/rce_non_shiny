@@ -51,7 +51,7 @@
                 <div class="col-xs-12">
                     <div class="tool-top">
                         <div class="dl-guide">
-                            <a onclick=" window.open('/static/pdf/04.01 Prepare your data for analysis_randomized pilot.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <a onclick=" window.open('/static/pdf/Random Assignment Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
 
                         <div class="tool-header">
@@ -59,7 +59,7 @@
 
                             <div class="tool-intro">
                                 <p>
-                                    To randomly assign your <%= Basics_Users %> to treatment and comparison groups you may need data from multiple sources. This tool will guide you through collecting, formatting, and checking your data. It provides a series of checklists to help you determine if your data is ready for randomization.
+                                    To randomly assign your <%= Basics_Users %> to treatment and comparison groups you might need data from multiple sources. This tool will guide you through collecting, formatting, and checking your data. It provides a series of checklists to help you determine if your data is ready for randomization.
 
                                 </p>
                             </div>
@@ -93,15 +93,15 @@
                                 <select name="Basics_Users" id="Basics_Users">
 
                                     <%
-                                    var options = ["Select an option", "students", "teachers", "other"];
-
+                                    var options = ["Select an option", "Students", "Teachers", "Other"];
+                                    var ovals = ["Select an option", "students", "teachers", "other"];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
 
-                                    var selected = ( eval.basics.Basics_Users == options[i] ) ? "selected" : "";
+                                    var selected = ( eval.basics.Basics_Users == ovals[i] ) ? "selected" : "";
 
                                     %>
-                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option>
+                                    <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[ i ] %></option>
                                     <%
                                     }
                                     %>
@@ -118,7 +118,7 @@
 
                                 <% if (user != "NOAUTHENTICATED") { %>
                                 <p class="prev-answer">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/basics">The Basics</a>
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/basics?return=prepare_data_random">The Basics</a>
                                 </p>
                                 <% } %>
                             </div>
@@ -128,7 +128,7 @@
                             <div class="step-action">
                                 <select name="PrepareRandom[Individual_Group]" id="Individual_Group">
                                     <%
-                                    var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
+                                    var options = ["Select an option", "Individual " + Basics_Users , "Groups of " + Basics_Users ];
                                     var ovals = ["Select an option", "users" , "groups" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
@@ -146,7 +146,7 @@
 
                                     <select name="PrepareRandom[Cluster_Group]" id="Cluster_Group">
                                         <%
-                                        var options = ["Select an option", "by class", "by school", "other" ];
+                                        var options = ["Select an option", "By class", "By school", "Other" ];
                                         var ovals = ["Select an option", "classes", "schools", "other" ];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
@@ -170,7 +170,7 @@
 
                                 <% if (user != "NOAUTHENTICATED") { %>
                                 <p class="prev-answer">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a href="/determine_your_approach">Determine Your Approach</a>
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/determine_your_approach?return="prepare_data_random">Determine Your Approach</a>
                                 </p>
                                 <% } %>
 
@@ -197,7 +197,7 @@
                                                 </p>
 
                                                 <p>
-                                                    Bigger is better. With only a few individuals or groups in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples allow you to detect smaller effects.
+                                                    Bigger is better. With only a few individuals or groups in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples enable you to detect smaller effects.
                                                 </p>
                                             </div>
                                         </div>
@@ -221,7 +221,7 @@
                         <div class="col-xs-12">
                             <div class="step-subquestion">
                                 <p>
-                                    There are several types of data you may use to build your treatment and comparison groups.
+                                    There are several types of data you might use to build your treatment and comparison groups.
                                 </p>
                             </div>
 
@@ -231,16 +231,14 @@
 
                                 <%
                                 var checked = ( eval.prepareRandom.Check_Sample == "Sample_Checked" ) ? "checked" : "";
-                                console.log("checked = " + checked);
-                                console.log(eval.prepareRandom);
-                                console.log(eval.basics);
+                                
                                 %>
                                 <input type="checkbox" <%= checked %> id="Check_Sample" name="PrepareRandom[Check_Sample]" value="Sample_Checked" /><label class="sec-label" for="Check_Sample">
                                     List of <span class="tech_users"><%= Basics_Users %></span>&mdash;<em class="recommendation">Required</em>
                                 </label><br />
 
                                 <p class="sub-label">
-                                    You indicated that you will be randomly assigning <span class="assign-level"><%= Basics_Users %></span> to the treatment and comparison groups. This means you will need to compile a list of <span class="compile"><%= Basics_Users %> Include a unique identifier for each one of your <span class="tech_users"><%= Basics_Users %></span>. Also include associated identifiers for groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classrooms or schools)</span>.  Please read the <a href="/static/pdf/Build your evaluation sample_randomization.pdf">Prepare Your Data for Randomization</a> guide for more information.
+                                    You indicated that you will be randomly assigning <span class="assign-level"><%= Basics_Users %></span> to the treatment and comparison groups. This means you will need to compile a list of <span class="compile"><%= Basics_Users %> Include a unique identifier for each one of your <span class="tech_users"><%= Basics_Users %></span>. Also include associated identifiers for groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classrooms or schools)</span>.  Please read the <a href="/static/pdf/Prepare your data for analysis_randomized pilot.pdf">Prepare Your Data for Randomization</a> guide for more information.
                                 </p>
 
 
@@ -278,9 +276,9 @@
                                 </label><br />
 
                                 <p class="sub-label">
-                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, Individualized Education Plan (IEP) status, English learner (EL) status, and socioeconomic status (SES). Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
+                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, Individualized Education Plan status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
                                 </p>
-                                <p class="sub-label">It is preferable to measure all background characteristics before the introduction of <%= Basics_Tech_Name %>. Because some background characteristics, like English learner status, can change over time and even change as a result of using a technology (e.g., the introduction of a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
+                                <p class="sub-label">It is preferable to measure all background characteristics before the introduction of <%= Basics_Tech_Name %>. Because some background characteristics, like English learner status, can change over time and even change as a result of using a technology (for example, the introduction of a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
                                 <p class="sub-label"> <%- bcpathnote %></p>
                                 <p class='sub-label'><span class='group-data-prep-note'></span></p>
 
@@ -296,7 +294,7 @@
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#E">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> Creating your data set
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> Creating your dataset
                             </h2>
                         </div>
 
@@ -306,9 +304,9 @@
 
 
                             <div class="step-subquestion">
-                                <p>Once you have identified the data elements and data sources, the next step is to combine all data elements into one tidy dataset. We recommend generating tidy datasets not only because it is a requirement to use the RCE Coach and most statistical software packages, but also because a tidy dataset is easy to manipulate, model, and visualize. </p>
+                                <p>Once you have identified the data elements and sources, the next step is to combine all data elements into one tidy dataset. We recommend generating tidy datasets not only because it is a requirement to use the RCE Coach and most statistical software packages, but also because a tidy dataset is easy to manipulate, model, and visualize. </p>
                                 <p>If you do not have access to statistical software, you can use Microsoft Excel to prepare your data. An <a href="/static/pdf/RCE Coach Data Template.xlsx">Excel Template</a> is available to help you organize your data. </p>
-                                <p>Uploading a data set that does not follow the guidelines outlined below may lead to problems in running your analysis. Please read our <a href="/static/pdf/Build your evaluation sample_randomization.pdf">Prepare Your Data for Randomization</a> guide for more information.</p>
+                                <p>Uploading a data set that does not follow the guidelines might lead to problems in running your analysis. Please read our <a href="/static/pdf/Prepare your data for analysis_randomized pilot.pdf">Prepare Your Data for Randomization</a> guide for more information.</p>
                             </div>
                             <div class="step-subquestion">
                                 <p> When you are finished with this step, your data set should look similar to the one below. </p>
@@ -605,9 +603,9 @@
 
                                 <p class="sub-label">
                                     You will need to convert all categorical variables to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
-                                    For example, if your background characteristics include gender as a variable, you may have &ldquo;M&rdquo; or &ldquo;F&rdquo; in each cell of that column. Instead, you should change the variable from ‘Gender’ to ‘Female’, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
+                                    For example, if your background characteristics include gender as a variable, you might have &ldquo;M&rdquo; or &ldquo;F&rdquo; in each cell of that column. Instead, you should change the variable from ‘Gender’ to ‘Female’, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
                                 </p>
-                                <p class="sub-label">If your categorical variable contains more than two options, such as &ldquo;Race&rdquo; (where the options are (1) Asian, (2) Black, (3) White, and (4) Other), you will need to create a binary or dummy variable for each option. For example, &ldquo;Asian&rdquo; would be one column (with 0 representing non-Asians and 1 representing Asians), &ldquo;Black&rdquo; would be a second column, &ldquo;White” would be a third column, and &ldquo;Other&rdquo; would be a fourth column. </p>
+                                <p class="sub-label">If your categorical variable contains more than two options, such as &ldquo;Race&rdquo; (where the options are (1) Asian, (2) Black, (3) White, and (4) Other), you will have to create a binary or dummy variable for each option. For example, &ldquo;Asian&rdquo; would be one column (with 0 representing non-Asians and 1 representing Asians), &ldquo;Black&rdquo; would be a second column, &ldquo;White” would be a third column, and &ldquo;Other&rdquo; would be a fourth column. </p>
 
                             </div>
 
@@ -622,7 +620,7 @@
 
                                 <p class="sub-label">
 
-                                    If you have merged datasets and there is missing data, make sure you are consistently coding that as “NA” to ensure that the Coach can analyze your data. You want to be extra careful to make sure missing data has not been given a number designation, like 0 or 999. These values will get incorporated into the analysis.
+                                    If you have merged datasets and there is missing data, make sure you are consistently coding missing values as &ldquo;NA.&rdquo;  You want to be extra careful that missing data does not have a number value, like 0 or 999. These values will get incorporated into the analysis.
                                 </p>
 
                             </div>
@@ -663,7 +661,7 @@
                                 </label><br />
 
 
-                                <p class="sub-label">This check may help to identify extremely low or high values that are outliers in your distribution or may signal a special missing code that needs to be converted to a missing value. You may want to check with someone who is familiar with the data to confirm the value range makes sense. </p>
+                                <p class="sub-label">This check might help to identify extremely low or high values that are outliers in your distribution or might signal a special missing code that needs to be converted to &ldquo;NA.&rdquo; You might want to check with someone who is familiar with the data to confirm the value range makes sense. </p>
                                 <p class="note">If you are working in Excel you can use MIN and MAX functions to easily find these values.</p>
                             </div>
                             <div class="step-action check-list">
@@ -675,7 +673,7 @@
                                 </label><br />
 
 
-                                <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations that contain missing data. You should try to understand why data is missing and how excluding <span class="tech_users"><%= Basics_Users %></span> with incomplete data will affect your results. </p>
+                                <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations missing key data. You should try to understand why data is missing and how excluding <span class="tech_users"><%= Basics_Users %></span> with incomplete data will affect your results. </p>
                                 <p class="note">If you are working in Excel you can sort and filter your data to view missing values. To determine exactly how many values are missing for a single variable you can use the COUNTIF function, and to determine how many observations have at least one missing value you can use a nested COUNTIF with OR function.</p>
 
                             </div>
@@ -700,6 +698,16 @@
             var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
             fm.init(fm_options);
         })
+
+        $('#Individual_Group').change(function () {
+            ShowCluster(this);
+            setUserLimitsSelections();
+
+        });
+        $('#Cluster_Group').change(function () {
+            ShowClusterOther(this);
+            setUserLimitsSelections();
+        });
     </script>
 </body>
 </html>

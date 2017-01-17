@@ -390,14 +390,10 @@ function recordViewPDF(name, step, path) {
 };
 
 /*~~~~~~~~~~~~~~~~~~ randomization.html ~~~~~~~~~~~~~~~~~~*/
-$('#Individual_Group').change(function () {
-    ShowCluster(this);
-	setUserLimitsSelections();
 
-});
 
-function ShowCluster(e) {
-    var value = $(e).val();
+function ShowCluster(t) {
+    var value = $(t).val();
 
 	var clusterSpecify = $("#Question_Cluster");
 
@@ -405,22 +401,19 @@ function ShowCluster(e) {
 	else clusterSpecify.hide();	
 }
 
-$('#Cluster_Group').change(function() {
-    ShowClusterOther(this);
-});
-function ShowClusterOther(e) {
-	var value = $(e).val();
+
+function ShowClusterOther(t) {
+	var value = $(t).val();
 	
     var otherSpecify = $("#Question_Cluster_Other");
 
     if (value.toLowerCase() === "other") otherSpecify.show();
     else otherSpecify.hide();
 
-    setUserLimitsSelections();
 }
 
-$('#User_Limit_Exist').change(function () {
-    var value = $(this).val();
+function UpdateUserLimitExists(t) {
+    var value = $(t).val();
 
     var specifyLimits = $("#Question_User_Limits");
 
@@ -432,9 +425,8 @@ $('#User_Limit_Exist').change(function () {
         specifyLimits.hide();
     }
 
-    setUserLimitsSelections();
 
-});
+};
 
 
 function setUserLimitsSelections() {
