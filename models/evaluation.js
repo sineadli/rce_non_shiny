@@ -326,7 +326,7 @@ evaluationSchema.pre('save', function (next) {
             this.flag = 0;
             // if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
         }
-        var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 10 * 100;
+        var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 15 * 100;
         this.status = parseInt(per);
   
        
