@@ -231,9 +231,6 @@
 
                                 <%
                                 var checked = ( eval.prepareRandom.Check_Sample == "Sample_Checked" ) ? "checked" : "";
-                                console.log("checked = " + checked);
-                                console.log(eval.prepareRandom);
-                                console.log(eval.basics);
                                 %>
                                 <input type="checkbox" <%= checked %> id="Check_Sample" name="PrepareRandom[Check_Sample]" value="Sample_Checked" /><label class="sec-label" for="Check_Sample">
                                     List of <span class="tech_users"><%= Basics_Users %></span>&mdash;<em class="recommendation">Required</em>

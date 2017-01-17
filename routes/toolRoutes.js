@@ -868,7 +868,7 @@ module.exports = function (app, passport) {
 				
 				eval.prepare = prepare;
 				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-				//console.log(eval);
+
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -902,7 +902,7 @@ module.exports = function (app, passport) {
 		var query = require('url').parse(req.url, true).query;
         res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'},
             function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
+                if (err) { res.send(err); } else { res.send(html); }
             });
     });
 
@@ -913,7 +913,6 @@ module.exports = function (app, passport) {
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "evaluation_plan";
 	
-	//    console.log(obj.EvalPlan.Milestones);
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
@@ -934,8 +933,6 @@ module.exports = function (app, passport) {
 					res.redirect('/coach');
 			},
 			function (eval, done) {
-				console.log("Saving Eval Plan and obj = ");
-			    console.log(obj);
 				eval.last_step = 3;
 				eval.last_tool = toollist.name;
 				//eval find so update the toolsVisited accordingly
@@ -943,10 +940,11 @@ module.exports = function (app, passport) {
 
 				eval.planContext.Tech_Purpose = obj.Tech_Purpose;
 				eval.planContext.Tech_Components = obj.Tech_Components;
-				eval.planContext.Expected_Dosage = obj.Expected_Dosage;
+                eval.planContext.Expected_Dosage = obj.Expected_Dosage;
 			    eval.planNext.Action_Success = obj.Action_Success;
 			    eval.planNext.Action_Fail = obj.Action_Fail;
-			    eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
+                eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
+                
 			    var evalPlan = obj.EvalPlan;
 
 				if (!eval.evalPlan) {
@@ -958,13 +956,13 @@ module.exports = function (app, passport) {
 				};
 				
 				eval.evalPlan = evalPlan;
-
-
+                eval.planNext._id = eval.evalPlan._id;
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
 					}
-					sess.eval = eval;					
+                    sess.eval = eval;	
+			
 					if (req.body.status === "started") {						
 						req.flash('saveMessage', 'Changes Saved.');
 						return res.redirect('/'+returnpath);
