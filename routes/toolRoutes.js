@@ -12,12 +12,12 @@
 // load up the thing we need
 var fs = require('fs');
 var async = require('async');
-
+var extend = require('util')._extend;
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var sess;
-//please note that req.session.step is for managing the active tab for coach.html
+//please note that req.sess.step is for managing the active tab for coach.html
 //the following defines the tool routes available, only four routes available currently
 
 
@@ -60,7 +60,8 @@ module.exports = function (app, passport) {
 	//02.03 The Basics
     app.get('/basics', isLoggedIn, function (req, res) {
 		sess = req.session;
-		sess.eval.last_step = 2;
+        sess.eval.last_step = 2;
+        sess.step = 2;
 		sess.eval.last_tool = "The Basics";
 	//	console.log(eval.basics);
         var query = require('url').parse(req.url, true).query;
@@ -140,7 +141,8 @@ module.exports = function (app, passport) {
 	app.get('/who_and_how', function (req, res) {
 		//	console.log("In Who and How Get");
 		sess = req.session;
-		sess.eval.last_step = 2;
+        sess.eval.last_step = 2;
+        sess.step = 2;
 		sess.eval.last_tool = "Who Is Using Your Technology and How?";
 		var query = require('url').parse(req.url, true).query;
         res.render('who_and_how.html', {user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query},
@@ -196,6 +198,7 @@ module.exports = function (app, passport) {
 	//	console.log("In DYA get method.");
         sess = req.session;
         sess.eval.last_step = 2;
+        sess.step = 2;
         sess.eval.last_tool = "Determine Your Approach";
         var query = require('url').parse(req.url, true).query;
         res.render('determine_your_approach.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -331,6 +334,7 @@ module.exports = function (app, passport) {
 		sess = req.session;
 	//	console.log(sess.eval);
         sess.eval.last_step = 3;
+        sess.step = 3;
         sess.eval.last_tool = "Craft Your Research Question";
         var query = require('url').parse(req.url, true).query;
         res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -374,8 +378,20 @@ module.exports = function (app, passport) {
 				
 				
 				//add/update the planQuestion within eval
-				eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
-				eval.basics.Basics_Outcome = obj.Basics_Outcome;
+                var basics = {
+                    "Basics_Have": eval.basics.Basics_Have,
+                    "Basics_Using": eval.basics.Basics_Using,
+                    "Basics_Users": eval.basics.Basics_Users,
+                    "Basics_Users_Other": eval.basics.Basics_Users_Other,
+                    "Basics_Tech_Name": obj.Basics_Tech_Name,
+                    "Basics_Outcome_Other": obj.Basics_Outcome_Other,
+                    "Basics_Outcome": obj.Basics_Outcome,
+                    "created_at": eval.basics.created_at
+                };
+                eval.basics = basics;
+    //            eval.basics.Basics_Tech_Name = obj.Basics_Tech_Name;
+				//eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
+				//eval.basics.Basics_Outcome = obj.Basics_Outcome;
 
                 var planQuestion = {
                         "Outcome_Measure": obj.Outcome_Measure,
@@ -416,6 +432,7 @@ module.exports = function (app, passport) {
     app.get('/plan_next_steps', isLoggedIn,  function (req, res) {
         sess = req.session;
         sess.eval.last_step = 3;
+        sess.step = 3;
         sess.eval.last_tool = "Think About How to Use Your Result";
         var query = require('url').parse(req.url, true).query;
         res.render('plan_next_steps.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -506,7 +523,8 @@ module.exports = function (app, passport) {
 	app.get('/working_with_provider', isLoggedIn, function (req, res) {
 	//	console.log("start work with providers");
 		sess = req.session;
-		sess.eval.last_step = 3;
+        sess.eval.last_step = 3;
+        sess.step = 3;
 		sess.eval.last_tool = "Working with Ed Tech Providers";
 		var query = require('url').parse(req.url, true).query;
         res.render('working_with_provider.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -569,6 +587,7 @@ module.exports = function (app, passport) {
     app.get('/context_and_usage', isLoggedIn, function (req, res) {
 		sess = req.session;
         sess.eval.last_step = 3;
+        sess.step = 3;
         sess.eval.last_tool = "Summarize Context";
         var query = require('url').parse(req.url, true).query;
         res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query }
@@ -723,7 +742,8 @@ module.exports = function (app, passport) {
 	app.get('/prepare_data_random', function (req, res) {
 		//	console.log("In DYA get method.");
 		sess = req.session;
-		sess.eval.last_step = 4;
+        sess.eval.last_step = 4;
+        sess.step = 4;
 		sess.eval.last_tool = "Prepare for Random Assignment";
 		var query = require('url').parse(req.url, true).query;
         res.render('prepare_data_random.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -811,7 +831,8 @@ module.exports = function (app, passport) {
 	app.get('/prepare_data', function (req, res) {
 		//	console.log("In DYA get method.");
 		sess = req.session;
-		sess.eval.last_step = 4;
+        sess.eval.last_step = 4;
+        sess.step = 4;
 		sess.eval.last_tool = "Prepare Your Data for Analysis";
 		var query = require('url').parse(req.url, true).query;
         res.render('prepare_data.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -868,7 +889,7 @@ module.exports = function (app, passport) {
 				
 				eval.prepare = prepare;
 				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-
+				//console.log(eval);
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -895,15 +916,14 @@ module.exports = function (app, passport) {
 	app.get('/evaluation_plan', function (req, res) {
 		sess = req.session;
 
-		sess.eval.last_step = 3;
+        sess.eval.last_step = 3;
+        sess.step  = 3;
 		sess.eval.last_tool = "Evaluation Plan";
         sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
 
 		var query = require('url').parse(req.url, true).query;
-        res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'},
-            function (err, html) {
-                if (err) { res.send(err); } else { res.send(html); }
-            });
+        res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'})
+        
     });
 
 	app.post('/evaluation_plan', function (req, res) {
@@ -913,6 +933,7 @@ module.exports = function (app, passport) {
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "evaluation_plan";
 	
+	//    console.log(obj.EvalPlan.Milestones);
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
@@ -933,18 +954,37 @@ module.exports = function (app, passport) {
 					res.redirect('/coach');
 			},
 			function (eval, done) {
+				console.log("Saving Eval Plan and eval = ");
+			    console.log(obj);
 				eval.last_step = 3;
 				eval.last_tool = toollist.name;
 				//eval find so update the toolsVisited accordingly
 			    updateLastTool(eval, toollist);
-
-				eval.planContext.Tech_Purpose = obj.Tech_Purpose;
-				eval.planContext.Tech_Components = obj.Tech_Components;
+               // let planContext = Object.assign({}, eval.planContext);
+                p = eval.planContext
+                var planContext = extend({}, eval.planContext);
+                eval.planContext.Tech_Purpose = obj.Tech_Purpose;
+                eval.planContext.Tech_Components = obj.Tech_Components;
                 eval.planContext.Expected_Dosage = obj.Expected_Dosage;
-			    eval.planNext.Action_Success = obj.Action_Success;
-			    eval.planNext.Action_Fail = obj.Action_Fail;
-                eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
-                
+                console.log(planContext);
+              // eval.planContext = planContext;
+                var planNext = {
+                    "Tech_Cost_Saves": eval.planNext.Tech_Cost_Saves,
+                    "Tech_Amount": eval.planNext.Tech_Amount,
+                    "Tech_Cost_User": eval.planNext.Tech_Cost_User, 
+                    "Tech_Cost_Desc": eval.planNext.Tech_Cost_Desc, 
+                    "Measure_Units": eval.planNext.Measure_Units,
+                    "Measure_Units_Other": eval.planNext.Measure_Units_Other,
+                    "Success_Effect_Size": eval.planNext.Success_Effect_Size, 
+                    "Pass_Probability": eval.planNext.Pass_Probability,
+                    "Fail_Probability": eval.planNext.Fail_Probability, 
+                    "Action_Success": obj.Action_Success,
+                    "Action_Fail": obj.Action_Fail,
+                     "Action_Inconclusive": obj.Action_Inconclusive,
+                     "created_at": eval.planNext.created_at
+                };
+			  
+                eval.planNext = planNext;
 			    var evalPlan = obj.EvalPlan;
 
 				if (!eval.evalPlan) {
@@ -956,14 +996,15 @@ module.exports = function (app, passport) {
 				};
 				
 				eval.evalPlan = evalPlan;
-                eval.planNext._id = eval.evalPlan._id;
+
+
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
 					}
-                    sess.eval = eval;	
-			
-					if (req.body.status === "started") {						
+					sess.eval = eval;					
+                    if (req.body.status === "started") {		
+                        console.log(eval);				
 						req.flash('saveMessage', 'Changes Saved.');
 						return res.redirect('/'+returnpath);
 					}
@@ -978,7 +1019,7 @@ module.exports = function (app, passport) {
 		});
     });
 
-    app.post('/evaluation_plan_pdf', function (req, res) {
+	app.post('/evaluation_plan_pdf', function (req, res) {
         var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         var obj = req.body;
@@ -1081,6 +1122,7 @@ module.exports = function (app, passport) {
     app.get('/matching', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 4;
+        sess.step  =4;
         sess.eval.last_tool = "Matching";
         var query = require('url').parse(req.url, true).query;
         res.render('matching.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -1170,7 +1212,8 @@ module.exports = function (app, passport) {
 	});
 	app.get('/randomization', isLoggedIn, function (req, res) {
 		sess = req.session;
-		sess.eval.last_step = 4;
+        sess.eval.last_step = 4;
+        sess.step = 4;
         sess.eval.last_tool = "Randomization";
         var query = require('url').parse(req.url, true).query;
         res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -1264,6 +1307,7 @@ module.exports = function (app, passport) {
     app.get('/getresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 5;
+        sess.step = 5;
         sess.eval.last_tool = "Get Results";
         var query = require('url').parse(req.url, true).query;
         res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
@@ -1345,6 +1389,7 @@ module.exports = function (app, passport) {
     app.get('/shareresult', isLoggedIn, function (req, res) {
         sess = req.session;
         sess.eval.last_step = 6;
+        sess.step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
        res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online' } //,
@@ -1369,6 +1414,7 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.last_step = 6;
+        sess.step = 6;
 		var obj = req.body;
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "shareresult";
@@ -1444,6 +1490,7 @@ module.exports = function (app, passport) {
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         sess.eval.last_step = 6;
+        sess.step = 6;
         var obj = req.body;
         var dt = new Date();
 

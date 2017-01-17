@@ -26,9 +26,9 @@ var getCurrentEvaluation = function (req, res, next) {
 
                 if (eval) {
                  //   console.log("In get current eval if eval");
-	
 					
                     sess.eval = eval;
+                    if (!sess.step) { sess.step = eval.last_step; }
                     req.user.evalid = eval._id;
                     req.user.save();
                     return next();

@@ -129,14 +129,14 @@
                                 <select required name="Basics_Outcome" id="Basics_Outcome">
                                     <%
                                     var options = ["Student academic achievement", "Student non-academic achievement","Teacher performance","Parental engagement","Other" ];
-                                    var values = ["student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other" ];
+                                    var ovalues = ["student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected = ( eval.basics.Basics_Outcome== values[i] ) ? "selected" : "";
+                                    var selected = ( eval.basics.Basics_Outcome== ovalues[i] ) ? "selected" : "";
 
 
                                     %>
-                                    <option value="<%=values[i] %>" <%=selected %> ><%=options[i] %></option>
+                                    <option value="<%=ovalues[i] %>" <%=selected %> ><%=options[i] %></option>
                                     <%
                                     }
                                     %>
@@ -161,13 +161,13 @@
                             <div class="step-action">
                                 <select required name="Outcome_Direction" id="Outcome_Direction">
                                     <%
-                                    var options = ["Select an option", "increase", "decrease" ];
-                                    var values = ["Select an option", "increase", "decrease" ];
+                                    var options = ["Select an option", "Increase", "Decrease" ];
+                                    var ovalues = ["Select an option", "increase", "decrease" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected = ( eval.planQuestion.Outcome_Direction== values[i] ) ? "selected" : "";
+                                    var selected = ( eval.planQuestion.Outcome_Direction== ovalues[i] ) ? "selected" : "";
                                     %>
-                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option><%
+                                    <option value="<%=ovalues[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                     }
                                     %>
 

@@ -26,7 +26,7 @@
 </head>
 <% var bodyclass = query.peeking == 1 ? "peeking" : "";
 bodyclass = query.sharing == 1 ? "sharing" : "";
-console.log("body class = " + bodyclass);
+
 %>
 <body class="brief <%- bodyclass %>">
     <% if (display === 'online') { %>
@@ -427,12 +427,15 @@ console.log("body class = " + bodyclass);
                 <% if (display === 'online') { %>
                 <!-- Modal -->
                 <%  var display_data_issues_modal = false;
-
+            if (query.sharing === 1 || query.peeking === 1) {display_data_issues_modal = false;
+            }
+             else {
                 for (tool in data_issues) {
                 if (data_issues[tool].length > 0) {
                 display_data_issues_modal = true;
                 break;
                 }
+            }
                 }
 
                 if (display_data_issues_modal) { %>
@@ -588,7 +591,7 @@ console.log("body class = " + bodyclass);
                 out = '';
             }
             else {
-                x = x.filter(function (x) { return x !== '' && x !== undefined })
+                x = x.filter(function(x) { return x !== '' && x !== undefined });
 
                 if (x.length === 0) {
                     out = '';
@@ -655,21 +658,16 @@ console.log("body class = " + bodyclass);
                 $('form').submit();
             });
 
-            <% if (display === 'online') { %>
-                /*
-                $('input[name=download_route]').change( function() {
-                    var val = $(this).val();
+            var urlParams = new URLSearchParams(window.location.search);
 
-                    var disable_slides = (val === 'appendix_matched' || val === 'appendix_randomized')
+            var peeking = urlParams.get('peeking');
+            var sharing = urlParams.get('sharing');
+            if ((peeking === "1" || sharing === "1")) {
 
-                    $('input[name=file_format][value=slides]').attr('disabled', disable_slides);
-                });
-                */
-            <% } %>
-
-            <% if (display_data_issues_modal) { %>
-                $('#data-issues-modal').modal('show');
-            <% } %>
+            } else {
+                $('#data-issues-modal').modal();
+            }
+       
 
         });
 

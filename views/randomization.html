@@ -35,13 +35,16 @@
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
         var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
         var Outcome_Direction = eval.planQuestion.Outcome_Direction;
-        var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
+    var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
+    var Cluster_Group = eval.prepareRandom.Cluster_Group = "" ? "individuals or groups" : eval.prepareRandom.Cluster_Group;
+        var Cluster_Group = Cluster_Group = "other" ? "groups" : Cluster_Group;
         %>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="tool-top">
                         <div class="dl-guide">
+                            <a onclick="window.open('/static/pdf/Build your evaluation sample_randomization.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
                             <h1 class="tool-title">
@@ -53,13 +56,15 @@
                                 Build Your Evaluation Sample Using Random Assignment
                             </h1>
                             <div class="tool-intro">
+                                <p>
+                                    The best test of whether your technology works is to randomly select some of your potential users to pilot the technology (treatment group) while others continue their typical classroom practice (comparison group) and compare outcomes between the two groups. Using chance or randomization to create the groups increases the likelihood that the new technology causes the differences in outcomes.
+                                </p>
+                                <p><strong class="begin-em">Let&rsquo;s get started!</strong></p>
                             </div>
                             <div class="tool-help">
-                                <p>
-                                    The best test of whether or not your technology works is to randomly select some of your potential users to pilot the technology (treatment group) while others continue classroom practice as usual (comparison group) and compare outcomes between the two groups. Using chance or randomization to create the groups increases the likelihood that differences in outcomes are caused by the new technology.
-                                </p>
-                                <p>See the <a target="_blank" href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf">Randomization Overview</a> to learn more.</p>
-                                <p><strong class="begin-em">Let&rsquo;s get started!</strong></p>
+                               
+                               
+                               
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -118,12 +123,12 @@
                                 <% } %>
                             </div>
                             <div class="step-subquestion">
-                                <h4><label for="Individual_Group">Do you want to randomly assign individual <%= Basics_Users %> or groups of <%= Basics_Users %> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
+                                <h4><label for="Individual_Group">Do you want to randomly assign individual <%= Basics_Users %> or groups of <%= Basics_Users %> (for example, classes or schools) to the treatment and comparison groups?</label></h4>
                             </div>
                             <div class="step-action">
                                 <select name="Individual_Group" id="Individual_Group">
                                     <%
-                                    var options = ["Select an option", "individual " + Basics_Users , "groups of " + Basics_Users ];
+                                    var options = ["Select an option", "Individual " + Basics_Users , "Groups of " + Basics_Users ];
                                     var ovals = ["Select an option", "users" , "groups" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
@@ -142,7 +147,7 @@
 
                                     <select name="Cluster_Group" id="Cluster_Group">
                                         <%
-                                        var options = ["Select an option", "by class", "by school", "other" ];
+                                        var options = ["Select an option", "By class", "By school", "Other" ];
                                         var ovals = ["Select an option", "classes", "schools", "other" ];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
@@ -166,27 +171,28 @@
                                 </div>
                                 <% if (user != "NOAUTHENTICATED") { %>
                                 <p class="prev-answer">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/prepare_data_randomization?return=randomization">Prepare for Random Assignment</a>
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/prepare_data_random?return=randomization">Prepare for Random Assignment</a>
                                 </p>
                                 <% } %>
                             </div>
                             <div class="step-subquestion">
-                                <h4><label for="User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups">individuals or groups</span> that can be given access to the technology?</label></h4>
+                                <h4><label for="User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups"><%= Cluster_Group %></span> that can be given access to the technology?</label></h4>
 
 
                             </div>
                             <div class="step-action">
                                 <select name="User_Limit_Exist" id="User_Limit_Exist">
                                     <%
-                                    var options = ["Select an option", "yes", "no" ];
+                                    var options = ["Select an option", "Yes", "No" ];
+                                    var ovals = ["Select an option", "yes", "no" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected= ( eval.random.User_Limit_Exist== options[i] ) ? "selected" : "";
+                                    var selected= ( eval.random.User_Limit_Exist== ovals[i] ) ? "selected" : "";
                                     %>
-                                    <option value="<%=options[ i ] %>" <%=selected %> ><%=options[i] %></option>
+                                    <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
                                     <% } %>
                                 </select>
-                                <div id="Question_User_Limits" hidden="true">
+                                <div id="Question_User_Limits" hidden="true" style="padding-left: 20px;">
                                     <div class="step-subquestion">
 
                                         <h4>What are the limits?</h4>
@@ -195,21 +201,22 @@
                                         <p>
 
                                             No more than
-                                            <input type="text" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>" />
-                                            <select name="intervention_type" id="intervention_type">
-                                                <%
+                                            <label class="hidden" for="intervention_quantity">Input limit amount</label>
+                                                <input type="text" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>" />
+                                            <label class="hidden" for="intervention_type">Select limit amount unit</label><select name="intervention_type" id="intervention_type">
+                                                    <%
 
-                                                var options = ["Select an option", "percent of individuals or groups", "individuals or groups" ];
-                                                var ovals = ["Select an option", "percentage", "number" ];
-                                                for ( var i = 0; i < options.length; i++ )
-                                                {
-                                                var selected = ( eval.random.intervention_type == ovals[i] ) ? "selected" : "";
-                                                %>
-                                                <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
-                                                <% }%>
-                                            </select> can access <%= Basics_Tech_Name %>.
+                                                    var options = ["Select an option", "Percent of individuals or groups", "Individuals or groups" ];
+                                                    var ovals = ["Select an option", "percentage", "number" ];
+                                                    for ( var i = 0; i < options.length; i++ )
+                                                    {
+                                                    var selected = ( eval.random.intervention_type == ovals[i] ) ? "selected" : "";
+                                                    %>
+                                                    <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
+                                                    <% }%>
+                                                </select> can access <%= Basics_Tech_Name %>.
 
-                                        </p>
+</p>
 
 
 
@@ -236,11 +243,11 @@
                                             <div id="consider5" class="panel-collapse collapse in">
 
                                                 <p>
-                                                    You do not need to randomly select <%= Basics_Users %> at the individual level. It may be more feasible to select by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
+                                                    You do not have to randomly select <%= Basics_Users %> at the individual level. It might be more feasible to select by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
                                                 </p>
-                                                <p>Do you have any resource constraints (e.g. computer or software availibility, or time constraints) that would impact the size of your treatment group? Treatment and comparison group sizes should be as similar as possible, but do not need to be equal.</p>
+                                                <p>Do you have any resource constraints (such as computer or software availability, or time constraints) that would affect the size of your treatment group? Treatment and comparison group sizes should be as similar as possible, but do not have to be equal.</p>
                                                 <p>
-                                                    Bigger is better.  With only a few individuals or groups in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples allow you to detect smaller effects.
+                                                    Bigger is better.  With only a few individuals or groups in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples enable you to detect smaller effects.
                                                 </p>
                                             </div>
                                         </div>
@@ -264,7 +271,7 @@
                                         Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
                                     </h4>
                                     <p>
-                                        Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (e.g, test scores and background characteristics). For more information, please read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForRandomization.pdf">Prepare Your Data for Randomization</a>.
+                                        Your data file should have one row for each <span class="indiv-or-group">technology user or group of users</span> and one column for each data field (for example, test scores and background characteristics). For more information, please read <a target="_blank" href="/static/pdf/Prepare your data for analysis_randomized pilot.pdf">Prepare Your Data for Randomization</a>.
                                     </p>
 
                                 </div>
@@ -276,8 +283,8 @@
                                 </div>
                                 <div class="before-upload">
                                     <div class="step-subquestion">
-                                        <h4>Select the variable that contains the anonymous id that uniquely identifies each <span class="indiv-or-group">technology user or group of users</span>.</h4>
-                                        <p><em>Required</em></p>
+                                        <h4><label for="unit_id">Select the variable that contains the anonymous id that uniquely identifies each <span class="indiv-or-group">technology user or group of users</span>.</label></h4>
+                                        <p><em class="stronger"><i class="fa fa-asterisk"></i>Required</em></p>
                                     </div>
                                     <div class="step-action ">
                                         <div>
@@ -285,22 +292,22 @@
                                                 <option value="">Select a variable</option>
                                             </select>
                                         </div>
-                                        <hr />
+                                      
                                     </div>
                                     <div class="step-subquestion">
-                                        <h4>Select your pretest measure variable. </h4>
-                                        <p><em>Recommended</em></p>
+                                        <h4><label for="pretest">Select your pretest measure variable. </label> </h4>
+                                        <p><em class="stronger">Recommended</em></p>
                                     </div>
                                     <div class="step-action ">
                                         <select id="pretest" class="multiselect from-upload nodefault">
                                             <option value="Select a variable" selected="selected">Select a data field</option>
                                         </select>
-                                        <hr />
+                                       
                                     </div>
                                     <div class="step-subquestion">
-                                        <h4> Select the variables for the characteristics that should be balanced between the treatment and control groups? </h4>
+                                        <h4><label for="baseline_vars">Select the variables for the characteristics that should be balanced between the treatment and control groups? </label></h4>
                                         <p>These are characteristics that would make you skeptical of your results if they were found to be unbalanced between groups. </p>
-                                        <p><em>Recommended</em></p>
+                                        <p><em class="stronger">Recommended</em></p>
                                     </div>
                                     <div class="step-action ">
                                         <select id="baseline_vars" name="baseline_vars" class="multiselect from-upload" multiple="multiple">
@@ -323,9 +330,9 @@
                                             </div>
                                             <div id="consider3" class="panel-collapse collapse in">
                                                 <p>Be sure to create a key or a file that links the original names or IDs to the new anonymous IDs. You will need this key to know who was assigned to each group and to add outcome data at the end of the pilot period.</p>
-                                                <p> If available, the Coach will use the pretest measure and background characteristics to check the equivalence or balance of the treatment and comparison groups. If you have a small sample, the Coach may need to randomize multiple times to create balanced groups.</p>
+                                                <p> If available, the Coach will use the pretest measure and background characteristics to check the equivalence or balance of the treatment and comparison groups. If you have a small sample, the Coach might have to randomize multiple times to create balanced groups.</p>
                                                 <p>
-                                                    Please refer to the <a href="https://edtechrce.org/static/pdf/02.04%20Randomization%20overview.pdf" target="_blank">The Radomization Overview</a> for more on which variables should be included.
+                                                    Please refer to the <a href="/static/pdf/Prepare your data for analysis_randomized pilot.pdf" target="_blank">Prepare Your Data for Random Assignment</a> for more details on the variables to include.
                                                 </p>
                                             </div>
                                         </div>
@@ -364,6 +371,9 @@
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function () {
+
+            setUserLimitsSelections();
+
             var group = $("#Individual_Group").val();
             var clusterSpecify = $("#Question_Cluster");
 
@@ -377,183 +387,10 @@
             if (limit.toLowerCase() === "yes") specifyLimits.show();
             else specifyLimits.hide();
 
-            setUserLimitsSelections();
-
             $('.multiselect').multiselect();
-            $("#chosenfile").change(function () {
 
-                var formData = new FormData();
-                $('#loadingmessage').show();
-
-                formData.append("data", $(this)[0].files[0]);
-
-                $.ajax({
-                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
-                    type: "POST",
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    success: function (data) {
-                        $('#loadingmessage').hide();
-                        $("select.from-upload").empty();
-                        $(".before-upload").addClass("after-upload");
-                        $(".after-upload").removeClass("before-upload");
-                        $("#block_id")
-                            .append($("<option></option>")
-                                .attr("value", "Do not block")
-                                .text("Do not block"));
-                        $("select.nodefault")
-                            .append($("<option></option>")
-                                .attr("value", "None selected")
-                                .text("None selected"));
-                        $.each(data.colnames, function (index, value) {
-                            $("select.from-upload")
-                                .append($("<option></option>")
-                                    .attr("value", value)
-                                    .text(value));
-                        });
-                        $('.multiselect').multiselect('destroy');
-                        $('.multiselect').multiselect();
-                      //  $("#match").prop("disabled", false);
-                        $("#shinybuttons").removeClass("hidden");
-                    }
-                });
-            });
-            $("#pretest").change(function () {
-                enablebuttons();
-            });
-            $("#unit_id").change(function () {
-                enablebuttons();
-            });
-            $("#baseline_vars").change(function () {
-                enablebuttons();
-            });
-            $("#match").click(function () {
-
-                $('#loadingmessage').show();
-                var formData = new FormData();
-                var pretest = $("#pretest").val()
-                var baseline_vars = $("#baseline_vars").val();
-                if (baseline_vars && pretest !== "None selected") baseline_vars.push($("#pretest").val());
-                //var block_id = $("#block_id").val();
-                //alert(block_id);
-                //if ($("#block_id").val().toLowerCase() === "do not block") {
-                //    block_id = '';
-                //};
-                var interv_type = $("#intervention_type").val();
-                var interv_quantity = $("#intervention_quantity").val();
-                if (interv_type.toLowerCase() === "select an option") {
-                    interv_type = 'percentage';
-                };
-                if (interv_quantity === "0" || interv_quantity === "") {
-                    interv_quantity = 50;
-                };
-                $("#s_unit_id").val(JSON.stringify($("#unit_id").val()));
-                $("#s_pretest").val(JSON.stringify($("#pretest").val()));
-                $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
-                //$("#s_block_id").val(JSON.stringify($("#block_id").val()));
-                formData.append("data", $("#chosenfile")[0].files[0]);
-                formData.append("unit_id", JSON.stringify($("#unit_id").val()));
-                formData.append("intervention_type", JSON.stringify(interv_type));
-                formData.append("intervention_quantity", JSON.stringify(interv_quantity));
-                if (baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
-                // if (block_id) formData.append("block_id", JSON.stringify(block_id));
-
-                $.ajax({
-                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/randomize",
-                    type: "POST",
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    success: function (data) {
-                        var responsePaths = data.split("\n");
-                        $.ajax({
-                            url: "http://52.222.20.48" + responsePaths[0] + "/json",
-                            type: "GET",
-                            success: function (data) {
-                                $('#loadingmessage').hide();
-                                console.log(data);
-                                var error = data.error_message[0];
-                                $('#results').html("");
-                                if (error) { $('#results').append('<div class="row"><div class="col-xs-10"><h2>' + error + '</h2></div></div>'); return; }
-                                //  $('#diagnostic_error').remove();
-                                var rSuccess = "Randomization success!";
-                                var balance, baseline_vars;
-                                if (!data.randomize_success[0]) { rSuccess = "Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. " }
-                                var results_by_block = data.results_by_block;
-                                var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
-
-                                $('#results').append('<div class="row"><div class="col-xs-10"><h2>Random Assignment Results</h2></div></div>');
-                                $('#results').append('<div class="row"><div class="col-xs-10"><h3>' + rSuccess + '</h3></div></div>');
-                                for (var key in results_by_block) {
-                                    if (results_by_block.hasOwnProperty(key)) {
-                                        var imgid = "plot" + key;
-                                        var title = "";
-                                        // if (block_id) {title=block_id + " = " +  key; }
-                                        var block_object = results_by_block[key];
-                                        if (block_object.samples) {
-                                            n_full_com = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
-                                            n_full_treat = block_object.samples.n_treat[0];
-                                        }
-
-                                        if (block_object.good_balance[0])
-                                        { balance = block_object.good_balance[0] === true ? "Yes" : "No"; }
-                                        else
-                                        { balance = "N/A (no baseline variables specified)" }
-
-                                        //show block name if block specified
-                                        if (title) $('#results').append('<div class="row"><div class="col-xs-7"><span>' + title + ' </div></span></div>');
-                                        $('#results').append('<div class="row"><div class="col-xs-7"><span>Treatment group size:  ' + n_full_treat + ' </div></span></div>');
-                                        $('#results').append('<div class="row"><div class="col-xs-7"><span>Comparision group size:  ' + n_full_com + ' </div></span></div>');
-                                        $('#results').append('<div class="row"><div class="col-xs-7"><span>Balanced:  ' + balance + ' </div></span></div>');
-
-                                        if (block_object.plot) { $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + block_object.plot + ' />' + '</div>'); }
-                                        if (block_object.baseline_var_means) {
-                                            var x = document.createElement("TABLE");
-                                            x.setAttribute("id", "table" + key);
-                                            $('#results').append("<div class=row>");
-                                            $('#results').append(x);
-                                            $('#results').append("</div>");
-                                            baseline_vars = block_object.baseline_var_means;
-                                            for (var bvar in baseline_vars) {
-                                                if (baseline_vars.hasOwnProperty(bvar)) {
-
-                                                    var row = x.insertRow(0);
-                                                    console.log(baseline_vars[bvar]);
-                                                    row.insertCell(0).innerHTML = "<span>" + bvar + "</span>";
-                                                    row.insertCell(1).innerHTML = "<span>" + baseline_vars[bvar].intervention[0] + "</span>";
-                                                    row.insertCell(2).innerHTML = "<span>" + baseline_vars[bvar].comparison[0] + "</span>";
-                                                    row.insertCell(3).innerHTML = "<span>" + baseline_vars[bvar].difference[0] + "</span>";
-                                                    row.insertCell(4).innerHTML = "<span>" + balance + "</span>";
-                                                }
-                                            }
-                                            var header = x.createTHead();
-                                            var row = header.insertRow(0);
-                                            row.insertCell(0).innerHTML = "<span>Baseline Variable</span>";
-                                            row.insertCell(1).innerHTML = "<span>Treatment</span>";
-                                            row.insertCell(2).innerHTML = "<span>Comparison</span>";
-                                            row.insertCell(3).innerHTML = "<span>Difference</span>";
-                                            row.insertCell(4).innerHTML = "<span>Balance</span>";
-
-                                        }
-                                    }
-                                }
-                                $("#mresult").val(JSON.stringify(data));
-
-                                if (data.randomize_success[0]) {
-                                    $("#downloadData")
-                                        .removeClass("disabled");
-                                    $("#downloadData").removeClass("hidden")
-                                      .attr("target", "_blank")
-                                      .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
-                                }
-
-                                // Save results to database.
-                            }
-                        });
-                    }
-                });
-            });
+            var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
+            fm.init(fm_options);
         });
         function enablebuttons() {
             if ($("#unit_id").val() !== "None selected" ) {
@@ -564,9 +401,198 @@
             }
 
         }
+
+
+        $('#Individual_Group').change(function () {
+            ShowCluster(this);
+            setUserLimitsSelections();
+
+        });
+        $('#Cluster_Group').change(function () {
+            ShowClusterOther(this);
+            setUserLimitsSelections();
+        });
+        $('#User_Limit_Exist').change(function () {
+            UpdateUserLimitExists(this);
+            setUserLimitsSelections();
+        });
+
+        $("#chosenfile").change(function () {
+
+            var formData = new FormData();
+            $('#loadingmessage').show();
+
+            formData.append("data", $(this)[0].files[0]);
+
+            $.ajax({
+                url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    $('#loadingmessage').hide();
+                    $("select.from-upload").empty();
+                    $(".before-upload").addClass("after-upload");
+                    $(".after-upload").removeClass("before-upload");
+                    $("#block_id")
+                        .append($("<option></option>")
+                            .attr("value", "Do not block")
+                            .text("Do not block"));
+                    $("select.nodefault")
+                        .append($("<option></option>")
+                            .attr("value", "None selected")
+                            .text("None selected"));
+                    $.each(data.colnames, function (index, value) {
+                        $("select.from-upload")
+                            .append($("<option></option>")
+                                .attr("value", value)
+                                .text(value));
+                    });
+                    $('.multiselect').multiselect('destroy');
+                    $('.multiselect').multiselect();
+                    //  $("#match").prop("disabled", false);
+                    $("#shinybuttons").removeClass("hidden");
+                }
+            });
+        });
+        $("#pretest").change(function () {
+            enablebuttons();
+        });
+        $("#unit_id").change(function () {
+            enablebuttons();
+        });
+        $("#baseline_vars").change(function () {
+            enablebuttons();
+        });
+        $("#match").click(function () {
+
+            $('#loadingmessage').show();
+            var formData = new FormData();
+            var pretest = $("#pretest").val()
+            var baseline_vars = $("#baseline_vars").val();
+            if (baseline_vars && pretest !== "None selected") baseline_vars.push($("#pretest").val());
+            //var block_id = $("#block_id").val();
+            //alert(block_id);
+            //if ($("#block_id").val().toLowerCase() === "do not block") {
+            //    block_id = '';
+            //};
+            var interv_type = $("#intervention_type").val();
+            var interv_quantity = $("#intervention_quantity").val();
+            if (interv_type.toLowerCase() === "select an option") {
+                interv_type = 'percentage';
+            };
+            if (interv_quantity === "0" || interv_quantity === "") {
+                interv_quantity = 50;
+            };
+            $("#s_unit_id").val(JSON.stringify($("#unit_id").val()));
+            $("#s_pretest").val(JSON.stringify($("#pretest").val()));
+            $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
+            //$("#s_block_id").val(JSON.stringify($("#block_id").val()));
+            formData.append("data", $("#chosenfile")[0].files[0]);
+            formData.append("unit_id", JSON.stringify($("#unit_id").val()));
+            formData.append("intervention_type", JSON.stringify(interv_type));
+            formData.append("intervention_quantity", JSON.stringify(interv_quantity));
+            if (baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
+            // if (block_id) formData.append("block_id", JSON.stringify(block_id));
+
+            $.ajax({
+                url: "http://52.222.20.48/ocpu/library/edtechrce/R/randomize",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    var responsePaths = data.split("\n");
+                    $.ajax({
+                        url: "http://52.222.20.48" + responsePaths[0] + "/json",
+                        type: "GET",
+                        success: function (data) {
+                            $('#loadingmessage').hide();
+                            console.log(data);
+                            var error = data.error_message[0];
+                            $('#results').html("");
+                            if (error) { $('#results').append('<div class="row"><div class="col-xs-10"><h2>' + error + '</h2></div></div>'); return; }
+                            //  $('#diagnostic_error').remove();
+                            var rSuccess = "Randomization success!";
+                            var balance, baseline_vars;
+                            if (!data.randomize_success[0]) { rSuccess = "Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. " }
+                            var results_by_block = data.results_by_block;
+                            var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
+
+                            $('#results').append('<div class="row"><div class="col-xs-10"><h2>Random Assignment Results</h2></div></div>');
+                            $('#results').append('<div class="row"><div class="col-xs-10"><h3>' + rSuccess + '</h3></div></div>');
+                            for (var key in results_by_block) {
+                                if (results_by_block.hasOwnProperty(key)) {
+                                    var imgid = "plot" + key;
+                                    var title = "";
+                                    // if (block_id) {title=block_id + " = " +  key; }
+                                    var block_object = results_by_block[key];
+                                    if (block_object.samples) {
+                                        n_full_com = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
+                                        n_full_treat = block_object.samples.n_treat[0];
+                                    }
+
+                                    if (block_object.good_balance[0])
+                                    { balance = block_object.good_balance[0] === true ? "Yes" : "No"; }
+                                    else
+                                    { balance = "N/A (no baseline variables specified)" }
+
+                                    //show block name if block specified
+                                    if (title) $('#results').append('<div class="row"><div class="col-xs-7"><span>' + title + ' </div></span></div>');
+                                    $('#results').append('<div class="row"><div class="col-xs-7"><span>Treatment group size:  ' + n_full_treat + ' </div></span></div>');
+                                    $('#results').append('<div class="row"><div class="col-xs-7"><span>Comparision group size:  ' + n_full_com + ' </div></span></div>');
+                                    $('#results').append('<div class="row"><div class="col-xs-7"><span>Balanced:  ' + balance + ' </div></span></div>');
+
+                                    if (block_object.plot) { $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + block_object.plot + ' />' + '</div>'); }
+                                    if (block_object.baseline_var_means) {
+                                        var x = document.createElement("TABLE");
+                                        x.setAttribute("id", "table" + key);
+                                        $('#results').append("<div class=row>");
+                                        $('#results').append(x);
+                                        $('#results').append("</div>");
+                                        baseline_vars = block_object.baseline_var_means;
+                                        for (var bvar in baseline_vars) {
+                                            if (baseline_vars.hasOwnProperty(bvar)) {
+
+                                                var row = x.insertRow(0);
+                                                console.log(baseline_vars[bvar]);
+                                                row.insertCell(0).innerHTML = "<span>" + bvar + "</span>";
+                                                row.insertCell(1).innerHTML = "<span>" + baseline_vars[bvar].intervention[0] + "</span>";
+                                                row.insertCell(2).innerHTML = "<span>" + baseline_vars[bvar].comparison[0] + "</span>";
+                                                row.insertCell(3).innerHTML = "<span>" + baseline_vars[bvar].difference[0] + "</span>";
+                                                row.insertCell(4).innerHTML = "<span>" + balance + "</span>";
+                                            }
+                                        }
+                                        var header = x.createTHead();
+                                        var row = header.insertRow(0);
+                                        row.insertCell(0).innerHTML = "<span>Baseline Variable</span>";
+                                        row.insertCell(1).innerHTML = "<span>Treatment</span>";
+                                        row.insertCell(2).innerHTML = "<span>Comparison</span>";
+                                        row.insertCell(3).innerHTML = "<span>Difference</span>";
+                                        row.insertCell(4).innerHTML = "<span>Balanced</span>";
+
+                                    }
+                                }
+                            }
+                            $("#mresult").val(JSON.stringify(data));
+
+                            if (data.randomize_success[0]) {
+                                $("#downloadData")
+                                    .removeClass("disabled");
+                                $("#downloadData").removeClass("hidden")
+                                  .attr("target", "_blank")
+                                  .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
+                            }
+
+                            // Save results to database.
+                        }
+                    });
+                }
+            });
+        });
         //init feedback_me plugin
-        var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
-        fm.init(fm_options);
+       
     </script>
 </body>
 

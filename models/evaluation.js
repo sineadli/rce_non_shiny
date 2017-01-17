@@ -321,7 +321,7 @@ evaluationSchema.pre('save', function (next) {
     if (!this.created_at)
         this.created_at = currentDate;
     if (this.toolsvisited.length > 0) {
-  
+
         if (this.toolsvisited[this.toolsvisited.length - 1].status === "completed") {
             this.flag = 0;
             // if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
