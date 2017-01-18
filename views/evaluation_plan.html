@@ -94,7 +94,14 @@
                             <a onclick=" window.open('/static/pdf/evaluation_plan.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
-                            <h1 class="tool-title">Create an Evaluation Plan</h1>
+                            <h1 class="tool-title">
+                                <% if(query.peeking == 1) {
+                                var peekingnote = "You need to complete <a href='/basics'>The Basics</a> before you can use this tool.";
+                                %>
+                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% } %>
+                                Create an Evaluation Plan
+                            </h1>
 
 
                             <div class="tool-intro">
