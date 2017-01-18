@@ -45,16 +45,13 @@ module.exports = function (app, passport) {
 
     app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
         sess = req.session;
-       // console.log(sess.evals)
         res.render('evaluations.html', { user: req.user, evals: sess.evals });
     });
 
     app.get('/publications', isLoggedIn, getAllPublications, function (req, res) {
         sess = req.session;
         query = require('url').parse(req.url, true).query;
-     //   console.log("hiiii   ");
-     //   console.log(query);
-           
+
         res.render('publications.html', { user: req.user, publishlists: sess.publishlists, obj: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
@@ -64,8 +61,6 @@ module.exports = function (app, passport) {
 
     app.get('/coach', isLoggedIn, getCurrentEvaluation, function (req, res) {
 		sess = req.session;
-		//console.log(sess.eval);
-		//console.log(sess);
 		if (!sess.step) { sess.step = 2 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
       
@@ -105,16 +100,15 @@ module.exports = function (app, passport) {
 
 	// this is for returning the partial view tool.html on the coach.html
     app.get('/tools/:coachStep', isLoggedIn, function (req, res) {
-		//console.log(req.params.coachStep);
+
 		sess = req.session;
 		var coachStep;
-		//console.log(sess.eval.path);
+
 		CoachStep.findOne({ step: req.params.coachStep }, function (err, coach) {
 			if (err) {
 				res.status(500).send(err);
 			}
 			else {
-				// console.log(CoachStep);
 				coachStep = coach;
 				Tool.find({ coachStep: req.params.coachStep }, function (err, tools) {
 					if (err) {
@@ -122,8 +116,7 @@ module.exports = function (app, passport) {
 						res.status(500).send(err);
 					}
 					else {
-						// if (coachStep.step === 5 && eval.evalPath !=="") { tools = tools.filter(function (x) { return x.evalPath === sess.eval.evalPath; }); console.log(tools);}
-						
+												
 						tools.sort(dynamicSort("order"));
 						res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval });
 					}
@@ -136,14 +129,10 @@ module.exports = function (app, passport) {
     //new or change title only
     app.post('/api/eval', isLoggedIn, function (req, res) {
         sess = req.session;
-        // console.log(req.body.id);
         if (!req.body.id) {
 			var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
-		//	console.log("In creating new evaluation");
-        //   // console.log(eval);
 			// Pre-populate milestones. Moved from get current eval.
 			if (eval.evalPlan.Milestones.length == 0) {
-			//	console.log("create the 12 default milestones");
 				for (var i = 0; i < 12; i++) {
 					var m = ({
 						Order:

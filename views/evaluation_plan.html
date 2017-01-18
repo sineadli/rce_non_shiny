@@ -50,8 +50,7 @@
         var stripPercent = function(x) {
         return parseInt(x.replace(/%/g, ''));
         }
-        console.log("In Eval Plan");
-        //   console.log(eval);
+
         var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
         var Basics_Outcome = eval.basics.Basics_Outcome;
         if (eval.basics.Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
@@ -438,8 +437,6 @@
                                                     </thead>
                                                     <tbody>
                                                         <%
-                                                        // console.log("Print milestones");
-                                                        // console.log(eval.evalPlan.Milestones[0]);
                                                         var ev = eval.evalPlan;
                                                         var dates=[];
                                                         function dateformat(v){
