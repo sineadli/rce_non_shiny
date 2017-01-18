@@ -42,7 +42,6 @@ module.exports = function (app, passport) {
 	
 	function updateLastTool(eval, toollist) {
 		var tool = eval.toolsvisited.filter(function (x) { return x.name === toollist.name });
-	  //  console.log(tool);
 		if (tool.length == 0) {
 			eval.toolsvisited.push(toollist);
 		}
@@ -63,7 +62,6 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 2;
         sess.step = 2;
 		sess.eval.last_tool = "The Basics";
-	//	console.log(eval.basics);
         var query = require('url').parse(req.url, true).query;
         res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
@@ -120,7 +118,6 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
                     sess.eval = eval;
-                    //  console.log(eval);
                     if (req.body.status === "started") {
                         req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/' + returnpath);
@@ -139,7 +136,6 @@ module.exports = function (app, passport) {
     
 	//02. Who used and how	   
 	app.get('/who_and_how', function (req, res) {
-		//	console.log("In Who and How Get");
 		sess = req.session;
         sess.eval.last_step = 2;
         sess.step = 2;
@@ -154,7 +150,6 @@ module.exports = function (app, passport) {
 		var toollist = { "name": "Who Is Using Your Technology and How?", "status": 'completed', "visited_at": new Date() };
 		sess = req.session;
 		sess.step = 2;
-	    console.log("I'm here posting who and how");
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
@@ -180,7 +175,6 @@ module.exports = function (app, passport) {
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
 				eval.save(function (err) {
-					console.log("I'm here posting who and how - saving eval " + toollist.status);
 					if (err) {
 						console.log(err); return done(err);
 					}
@@ -195,7 +189,6 @@ module.exports = function (app, passport) {
 	});
     //02.03 determine your approach
     app.get('/determine_your_approach', isLoggedIn, function (req, res) {
-	//	console.log("In DYA get method.");
         sess = req.session;
         sess.eval.last_step = 2;
         sess.step = 2;
@@ -266,7 +259,6 @@ module.exports = function (app, passport) {
                         console.log(err); return done(err);
                     }
 					sess.eval = eval;
-                  //  console.log(eval);
                     if (req.body.status == "started") {
                         req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/' + returnpath);
@@ -288,7 +280,6 @@ module.exports = function (app, passport) {
 		var obj = req.body;
 		var toollist = { "name": obj.tname, "status": "completed", "visited_at": new Date() };
 		var dt = new Date();
-		//console.log(req.body);
 		async.waterfall([
 			function (done) {
 				if (sess.eval) {
@@ -306,7 +297,6 @@ module.exports = function (app, passport) {
                     res.status(404).send("Eval not found");
 			},
 			function (eval, done) {
-				//console.log(eval);
 				//eval find so update the toolsVisisted accordingly
 				eval.last_step = obj.step;
 				eval.last_tool = obj.tname;
@@ -319,7 +309,6 @@ module.exports = function (app, passport) {
 					}
 					else {
                         sess.eval = eval;
-                        //console.log(eval);
                         res.send(eval);
 					}
                     
@@ -332,7 +321,6 @@ module.exports = function (app, passport) {
 
     app.get('/craft_your_research_q', isLoggedIn, function (req, res) {	   
 		sess = req.session;
-	//	console.log(sess.eval);
         sess.eval.last_step = 3;
         sess.step = 3;
         sess.eval.last_tool = "Craft Your Research Question";
@@ -447,7 +435,6 @@ module.exports = function (app, passport) {
 		var obj = req.body;
 		var returnpath = obj.returnpath;
         if (returnpath === '') returnpath = "plan_next_steps";
-	//	console.log(obj);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -521,7 +508,6 @@ module.exports = function (app, passport) {
 	});
 	//03.03 Work with providers
 	app.get('/working_with_provider', isLoggedIn, function (req, res) {
-	//	console.log("start work with providers");
 		sess = req.session;
         sess.eval.last_step = 3;
         sess.step = 3;
@@ -537,13 +523,11 @@ module.exports = function (app, passport) {
 		var toollist = { "name": "Working with Ed Tech Providers", "status": 'completed', "visited_at": new Date() };
 		sess = req.session;
 		sess.step = 3;
-	//	console.log("In saving working with providers");
 		
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
 				if (sess.eval) {
-				//	console.log("Yes eval in saving working with providers");
 					Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
 						if (!eval) {
 							req.flash('error', 'No evaluation exists.');
@@ -560,7 +544,6 @@ module.exports = function (app, passport) {
 					res.redirect('/coach');
 			},
 			function (eval, done) {
-			//	console.log("Eval found in saving working with providers");
 				eval.last_step = 3;
 				eval.last_tool = "Working with Ed Tech Providers";
 				//eval find so update the toolsVisisted accordingly
@@ -706,7 +689,6 @@ module.exports = function (app, passport) {
 						
 
                 };
-              //      console.log(planContext);
 				if (!eval.planContext) {
 				    planContext.created_at = dt;
 				}
@@ -740,7 +722,6 @@ module.exports = function (app, passport) {
 	
 	//02. Prepare data	   
 	app.get('/prepare_data_random', function (req, res) {
-		//	console.log("In DYA get method.");
 		sess = req.session;
         sess.eval.last_step = 4;
         sess.step = 4;
@@ -755,9 +736,8 @@ module.exports = function (app, passport) {
 		var toollist = { "name": "Prepare for Random Assignment", "status": req.body.status, "visited_at": new Date() };
 		sess.eval.step = 4;
 		var obj = req.body;
-	//	console.log("post prepare_data_radom");
 
-	//	console.log(toollist);
+
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "prepare_data_random";
 		var dt = new Date();
@@ -784,7 +764,6 @@ module.exports = function (app, passport) {
 				eval.last_tool = "Prepare Your Data for Analysis";
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
-			//    console.log(obj);
 				
 				eval.basics.Basics_Users = obj.Basics_Users;
 				eval.basics.Basics_Users_Others = obj.Basics_Users_Others;
@@ -802,8 +781,6 @@ module.exports = function (app, passport) {
 				};
 				
 				eval.prepareRandom = prepareRandom;
-			//	console.log(returnpath);
-			//	console.log(eval);
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -829,7 +806,6 @@ module.exports = function (app, passport) {
 	
 	//02. Prepare data	   
 	app.get('/prepare_data', function (req, res) {
-		//	console.log("In DYA get method.");
 		sess = req.session;
         sess.eval.last_step = 4;
         sess.step = 4;
@@ -889,7 +865,6 @@ module.exports = function (app, passport) {
 				
 				eval.prepare = prepare;
 				if (eval.stepsclicked.indexOf(5) < 0) eval.stepsclicked.push(5);
-				//console.log(eval);
 				eval.save(function (err) {
 					if (err) {
 						console.log(err); return done(err);
@@ -919,9 +894,7 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 3;
         sess.step  = 3;
 		sess.eval.last_tool = "Evaluation Plan";
-	    console.log(sess.eval);
 		if (sess.eval.evalPlan.Milestones.length == 0) {
-			//	console.log("create the 12 default milestones");
 			for (var i = 0; i < 12; i++) {
 				var m = ({
 					Order:
@@ -957,7 +930,6 @@ module.exports = function (app, passport) {
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "evaluation_plan";
 	
-	//    console.log(obj.EvalPlan.Milestones);
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
@@ -978,19 +950,16 @@ module.exports = function (app, passport) {
 					res.redirect('/coach');
 			},
 			function (eval, done) {
-				console.log("Saving Eval Plan and eval = ");
-			    console.log(obj);
+
 				eval.last_step = 3;
 				eval.last_tool = toollist.name;
 				//eval find so update the toolsVisited accordingly
 			    updateLastTool(eval, toollist);
                // let planContext = Object.assign({}, eval.planContext);
-                p = eval.planContext
                 var planContext = extend({}, eval.planContext);
                 eval.planContext.Tech_Purpose = obj.Tech_Purpose;
                 eval.planContext.Tech_Components = obj.Tech_Components;
                 eval.planContext.Expected_Dosage = obj.Expected_Dosage;
-                console.log(planContext);
               // eval.planContext = planContext;
                 var planNext = {
                     "Tech_Cost_Saves": eval.planNext.Tech_Cost_Saves,
@@ -1027,8 +996,7 @@ module.exports = function (app, passport) {
 						console.log(err); return done(err);
 					}
 					sess.eval = eval;					
-                    if (req.body.status === "started") {		
-                        console.log(eval);				
+                    if (req.body.status === "started") {				
 						req.flash('saveMessage', 'Changes Saved.');
 						return res.redirect('/'+returnpath);
 					}
@@ -1050,7 +1018,6 @@ module.exports = function (app, passport) {
         var returnpath = obj.returnpath;
         if (returnpath === '') returnpath = "evaluation_plan";
 
-        //    console.log(obj.EvalPlan.Milestones);
         var dt = new Date();
         async.waterfall([
             function (done) {
@@ -1127,7 +1094,6 @@ module.exports = function (app, passport) {
                                 res.setHeader('Content-type', 'application/pdf');
 
                             } catch (e) {
-                                console.log('wkhtmltopdf module not found');
                                 res.setHeader('Content-disposition', 'attachment; filename="evaluation_plan.html"');
                                 res.setHeader('Content-type', 'text/html');
                                 res.write(html);
@@ -1184,7 +1150,7 @@ module.exports = function (app, passport) {
                 eval.last_tool = "Matching";
                 //eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
-             //   console.log("saving matching and obj.intervention group desc is: " + obj.Intervention_Group_Desc);
+             
 				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
 				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
 			
@@ -1254,7 +1220,6 @@ module.exports = function (app, passport) {
 		var obj = req.body;
 		var returnpath = obj.returnpath;
         if (returnpath === '') returnpath = "randomization";
-	//	console.log(obj);
 		var dt = new Date();
 		async.waterfall([
 			function (done) {
@@ -1425,7 +1390,6 @@ module.exports = function (app, passport) {
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
         sess = req.session;
         var query = require('url').parse(req.url, true).query;
-       // console.log(query);
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.publishlists  = eval;
             res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query, display: 'online' },
@@ -1597,8 +1561,6 @@ module.exports = function (app, passport) {
                 // Need to generate document file here
                 var query = require('url').parse(req.url, true).query;
 
-             //   console.log('rendering ', download_route + '.html');
-
                 var filename_map = {
                     appendix_randomized: 'technical-appendix',
                     appendix_matched: 'technical-appendix'
@@ -1619,7 +1581,7 @@ module.exports = function (app, passport) {
                             res.setHeader('Content-type', 'application/pdf');
                             
                         } catch (e) {
-                       //     console.log('wkhtmltopdf module not found');
+                     
                             res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.html"');
                             res.setHeader('Content-type', 'text/html');
                             res.write(html);

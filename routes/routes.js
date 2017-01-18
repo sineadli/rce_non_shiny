@@ -195,7 +195,7 @@ module.exports = function(app, passport) {
                     text: 'Feedback from ' + req.body.user_email + ' viewing ' + req.body.page + '\n\n' + req.body.message
 
                 };
-                //console.log("feedback");
+
                 try {
                     transport.sendMail(mailOptions, function(err) {
                         req.flash('info', 'Sent email with feedback from ' + req.body.user_email);
