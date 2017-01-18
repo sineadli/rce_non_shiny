@@ -297,9 +297,13 @@
                             %>
                             <div class="step-subquestion">
                                 <p>
-                                    <label for="Expected_Dosage">
+                                    <% if (display === 'online') { %>
+                                        <label for="Expected_Dosage">
+                                    <% } %>
                                         During the evaluation, <%= Basics_Users %> in the treatment group <%= verb1 %> <%= Basics_Tech_Name %>
-                                    </label>
+                                    <% if (display === 'online') { %>
+                                        </label>
+                                    <% } %>
                                     <% if (display === 'online') { %>
                                     <br /><textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea><br />
 
