@@ -220,6 +220,7 @@ div.bottom-next a.sec-label {
 }
 .tooltip-gr {
   color:#e44e0d;
+    cursor: pointer;
     /*color: #000;
     text-shadow:1px 1px #fac500;*/
 }
@@ -231,6 +232,7 @@ button span.tooltip-gr {
 }
 div.tool-bottom .tooltip-gr {
     font-size: 1.3em;
+     cursor:not-allowed;
 }
 
 .all-caps {
@@ -1650,6 +1652,7 @@ body.peeking div.step-action a, body.peeking div.step-action input {
 
 h1 span.peeking-pretitle {
     font-size: .8em;
+   
 }
        /* Specific to share results */
 
