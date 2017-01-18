@@ -14,8 +14,8 @@
     <title>Summarize Context</title>
     <% include ../views/partials/scriptHeader.html %>
 </head>
-<% var peekingThis = query.peeking ===1 ? "peeking" : ""; %>
-<body class="<%= peekingThis %>">
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %>">
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -63,7 +63,12 @@
                             <a onclick="window.open('/static/pdf/Summarize Context.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
-                            <h1 class="tool-title ">Summarize Context</h1>
+                           <h1 class="tool-title">
+                                <% if(query.peeking == 1) {
+                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool." ;
+                                %>
+                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% } %>Summarize Context</h1>
                             <div class="tool-intro">
 
                                 <p>We want to collect some information about your evaluation and its participants. This context will help you make sense of your results and it is important for understanding how your results apply to other contexts. As we gather results from many evaluations, we&rsquo;ll use this information to sort and filter similar studies from similar settings, so that we can help you learn from other users and help other users learn from your experience.</p>

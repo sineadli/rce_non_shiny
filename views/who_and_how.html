@@ -15,7 +15,9 @@
     <title>Who used your technology and how?</title>
     <% include ../views/partials/scriptHeader.html %>
 </head>
-<body>
+<% var peekingThis = query.peeking == 1 ? "peeking" : "";
+%>
+<body class="<%- peekingThis %>">
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -46,7 +48,14 @@
                             <a onclick="window.open('/static/pdf/Who used your technology and how.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
-                            <h1 class="tool-title">Who Is Using Your Technology and How?</h1>
+                            <h1 class="tool-title">
+                                <% if(query.peeking == 1) {
+                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool." ;
+                                %>
+                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% } %>
+                                Who Is Using Your Technology and How?
+                            </h1>
 
 
                             <div class="tool-intro">
@@ -85,9 +94,11 @@
                                     Is the technology being used as expected?
                                 </h3>
 
-                                <p>If usage is very low, the technology might be unlikely to have an impact, and you might want to explore possible factors explaining patterns of use. 
-                            
-                                For example, in Table 1, class 450 has much lower usage than class 123, so you would not expect to see much effect on student outcomes.</p>
+                                <p>
+                                    If usage is very low, the technology might be unlikely to have an impact, and you might want to explore possible factors explaining patterns of use.
+
+                                    For example, in Table 1, class 450 has much lower usage than class 123, so you would not expect to see much effect on student outcomes.
+                                </p>
                                 <table class="tool-table">
                                     <caption>Table 1. Basic usage data by student</caption>
                                     <tr>
@@ -385,17 +396,17 @@
                                 </h3>
 
 
-                            <p>Usage data can address other types of questions about how users engage with the product, such as patterns of usage over time and how students score on assessments embedded within the technology. If you see patterns of low usage at specific points in time or within specific units of content, this might help identify factors that promote or prevent usage. Detailed information about usage can also help you understand your study’s main findings about the impact of the technology. </p>
-                          
-                            <figure role="group" style="margin: 10px auto; width: 75%;">
-                                <label class="chart">Chart 1. Number of students attempting and completing modules</label>
-                                <img  src="/static/image/Chart1.png" alt="Number Of Students attempting modules and completing modules" style="width:100%;">
-                                <figcaption>
-                                    Chart 1 shows that student engagement with the system dropped rapidly after the first two modules. This could be an important factor in explaining the effects of the technology.
-                                </figcaption>
-                            </figure>
-                               
-                               
+                                <p>Usage data can address other types of questions about how users engage with the product, such as patterns of usage over time and how students score on assessments embedded within the technology. If you see patterns of low usage at specific points in time or within specific units of content, this might help identify factors that promote or prevent usage. Detailed information about usage can also help you understand your study’s main findings about the impact of the technology. </p>
+
+                                <figure role="group" style="margin: 10px auto; width: 75%;">
+                                    <label class="chart">Chart 1. Number of students attempting and completing modules</label>
+                                    <img src="/static/image/Chart1.png" alt="Number Of Students attempting modules and completing modules" style="width:100%;">
+                                    <figcaption>
+                                        Chart 1 shows that student engagement with the system dropped rapidly after the first two modules. This could be an important factor in explaining the effects of the technology.
+                                    </figcaption>
+                                </figure>
+
+
 
 
                             </div>
@@ -431,27 +442,27 @@
                                     </div>
                                     <div class="col-xs-4 tab-col">
                                         <div class="fixed-col-head">
-                                            <h4 >Usage by course topic</h4>
+                                            <h4>Usage by course topic</h4>
                                         </div>
-                                            <ul class="small">
-                                                <li>Topic(s) covered in each module</li>
-                                                <li>Attempted modules (which modules a student started)</li>
-                                                <li>Completed modules</li>
-                                                <li>Scores on assessments for each module</li>
-                                            </ul>
-                                        </div>
+                                        <ul class="small">
+                                            <li>Topic(s) covered in each module</li>
+                                            <li>Attempted modules (which modules a student started)</li>
+                                            <li>Completed modules</li>
+                                            <li>Scores on assessments for each module</li>
+                                        </ul>
+                                    </div>
                                     <div class="col-xs-4 tab-col">
                                         <div class="fixed-col-head">
-                                            <h4 >Usage over time</h4>
+                                            <h4>Usage over time</h4>
                                         </div>
-                                            <ul class="small">
-                                                <li>Duration of use by month</li>
-                                                <li>Number of sessions by month</li>
-                                                <li>Modules completed by month</li>
-                                            </ul>
-                                        </div>
+                                        <ul class="small">
+                                            <li>Duration of use by month</li>
+                                            <li>Number of sessions by month</li>
+                                            <li>Modules completed by month</li>
+                                        </ul>
+                                    </div>
 
-                                 
+
 
                                 </div>
                                 <div class="clearfix"></div>
@@ -472,8 +483,9 @@
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h3 class="panel-title sec-label clickable">
-                                               
-                                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5"><i class="fa fa-caret-down" aria-hidden="false"></i>
+
+                                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5">
+                                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
                                                     Things to Consider
                                                 </a>
                                             </h3>
@@ -486,10 +498,12 @@
                                                 <li>
                                                     <p><span style="font-weight: 600;">Do some students or classes have little or no usage?</span></p>
                                                 <li>
-                                                    <p><span style="font-weight: 600;">
-    How does actual usage compare to what the vendor says should happen?</span>
-    If the vendor says students should spend at least 90 minutes per week using the education technology, check to see how actual average weekly usage compares to this target.
-</p>
+                                                    <p>
+                                                        <span style="font-weight: 600;">
+                                                            How does actual usage compare to what the vendor says should happen?
+                                                        </span>
+                                                        If the vendor says students should spend at least 90 minutes per week using the education technology, check to see how actual average weekly usage compares to this target.
+                                                    </p>
                                                 </li>
                                                 <li>
                                                     <p><span style="font-weight: 600;">Are there signs that students are &ldquo;gaming the system&rdquo;?</span>  If students make repeated attempts at assessments without spending time in instructional content, they may be trying to click their way through rather than learning the material.</p>
@@ -506,7 +520,7 @@
 
 
             </div>
-            
+
         </div>
         <% include ../views/partials/guidToolButton.html %>
     </form>

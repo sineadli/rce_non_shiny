@@ -23,7 +23,7 @@ $(document).ready(function() {
     $('.datepicker').datepicker({
         todayHighlight: true
     });
-
+	$('[data-toggle="tooltip"]').tooltip({ html: true, trigger: "click focus hover" });
     $('[data-toggle=collapse]').click(function() {
         var caret = $(this).find('i');
         caret.toggleClass('fa-caret-right');
@@ -67,6 +67,9 @@ $(document).ready(function() {
 				break;
 			case "shareresult":
 			    ToolName = "Share Your Results";
+				break;
+			case "getresult":
+				ToolName = "Get Results";
 				break;
 			case "context_and_usage":
 				ToolName = "Summarize Context";
@@ -124,6 +127,7 @@ $(document).ready(function() {
 		$(this).text(capitalize(x));
 	});
 
+	
 	
    }); //<-end document.ready
 
@@ -312,7 +316,7 @@ function failProbUpdate(t) {
 
 
 
-$('[data-toggle="tooltip"]').tooltip({ html: true, trigger: "click focus hover" });
+
 
             //this piece of code is the solution for getting rid of “Object doesn't support this property or method” error in IE11, so the datepicker will work
 

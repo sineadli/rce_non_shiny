@@ -50,7 +50,13 @@
                             <a onclick=" window.open('/static/pdf/03.02 Think about how you will use results_downloadable.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
-                            <h1 class="tool-title"> Think About How You Will Use The Results</h1>
+                            <h1 class="tool-title">
+                                <% if(query.peeking == 1) {
+                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool." ;
+                                %>
+                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% } %> Think About How You Will Use The Results
+                            </h1>
                             <div class="tool-intro">
                                 <p>
                                     The Coach will help you think about how the answer to your research question will inform the decisions you make regarding your technology. To complete this tool you will need to consider:
@@ -253,7 +259,7 @@
                                     <p>
                                         I would consider any <span class="effect-direction"><%= Outcome_Direction %></span> larger than
 
-                                        <label class="hidden" for="Success_Effect_Size">Input size.</label><input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
+                                        <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
                                         <span class="measure-units">units</span> on <span class="effect-measure"><%= Outcome_Measure %></span> a success.
                                     </p>
                                 </div>
@@ -303,7 +309,7 @@
                                     <p>
                                         If I learned that there was a
 
-                                        <label class="hidden" for="Pass_Probability">Input probability as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <span class='change-direction'><%= Outcome_Direction %></span>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> had the intended effect.
+                                        <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <span class='change-direction'><%= Outcome_Direction %></span>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> had the intended effect.
                                     </p>
                                 </div>
                                 <div class="step-subquestion">

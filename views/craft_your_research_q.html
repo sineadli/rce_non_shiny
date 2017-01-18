@@ -49,11 +49,17 @@
 
                     <div class="tool-top">
                         <div class="dl-guide">
-                            <a onclick=" window.open('/static/pdf/Craft Your Research Question.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <a onclick="window.open('/static/pdf/Craft Your Research Question.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
                         </div>
                         <div class="tool-header">
 
-                            <h1 class="tool-title"> Craft Your Research Question</h1>
+                            <h1 class="tool-title">
+                                <% if(query.peeking == 1) {
+                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool." ;
+                                %>
+                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% } %> Craft Your Research Question
+                            </h1>
 
                             <div class="tool-intro">
                                 <p>

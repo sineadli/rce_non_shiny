@@ -15,7 +15,8 @@
     <title>Working with Ed Tech Providers</title>
     <% include ../views/partials/scriptHeader.html %>
 </head>
-<body>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %>">
     <div id="header"></div>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -29,7 +30,7 @@
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
         <% } %>
- 
+
 
         <%
         var Basics_Users_Others = eval.basics.Basics_Users_Others;
@@ -48,7 +49,13 @@
                         </div>
 
                         <div class="tool-header">
-                            <h1 class="tool-title "> Working with Ed Tech Providers </h1>
+                            <h1 class="tool-title">
+                                <% if(query.peeking == 1) {
+                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool." ;
+                                %>
+                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% } %> Working with Ed Tech Providers
+                            </h1>
 
                             <div class="tool-intro">
                                 <p>
@@ -140,7 +147,7 @@
 
                                     <li>
                                         <p>
-                                            <b>Use our <a onclick="window.open('/static/pdf/Working with your ed tech provider_discussion guide.pdf', ''); return false; " href="javascript:void(0);" >sample discussion guide.</a></b> This document can help to organize your initial conversation with developers. Edit it to fit your needs, or tick off the topics you want to be sure to cover.
+                                            <b>Use our <a onclick="window.open('/static/pdf/Working with your ed tech provider_discussion guide.pdf', ''); return false; " href="javascript:void(0);">sample discussion guide.</a></b> This document can help to organize your initial conversation with developers. Edit it to fit your needs, or tick off the topics you want to be sure to cover.
                                         </p>
                                     </li>
                                     <li>
