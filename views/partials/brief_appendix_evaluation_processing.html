@@ -33,25 +33,29 @@ console.log('checkpoint 0');
     wordList = function(x) {
         var out;
 
-        if (x === undefined) {
+        if (x === undefined || !(x instanceof Array)) {
             out = '';
         }
         else {
-            x = x.filter( function(x) { return x !== '' && x !== undefined })
+            try {
+                x = x.filter( function(x) { return x !== '' && x !== undefined })
 
-            x = unique(x);
+                x = unique(x);
 
-            if (x.length === 0) {
+                if (x.length === 0) {
+                    out = '';
+                }
+                else if (x.length === 1) {
+                    out = x[0];
+                }
+                else if (x.length === 2) {
+                    out = x[0] + ' and ' + x[1];
+                }
+                else {
+                    out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+                }
+            } catch(e) {
                 out = '';
-            }
-            else if (x.length === 1) {
-                out = x[0];
-            }
-            else if (x.length === 2) {
-                out = x[0] + ' and ' + x[1];
-            }
-            else {
-                out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
             }
         }
 
@@ -372,7 +376,8 @@ baseline_results_by_grade = [];
             }
             if (grades_used.length === 0) data_issues.planContext.push("No grades specified.");
 
-            program_types   = [planContext.Type_Policy, planContext.Type_Teacher_Level, planContext.Type_School_Level, planContext.Type_CSchool_Structure, planContext.Type_Practice, planContext.Type_Curriculum];
+            //program_types   = [planContext.Type_Policy, planContext.Type_Teacher_Level, planContext.Type_School_Level, planContext.Type_CSchool_Structure, planContext.Type_Practice, planContext.Type_Curriculum];
+            program_types = [planContext.Type_Curriculum, planContext.Type_Practice, planContext.Type_Supplement, planContext.Type_Assessment, planContext.Type_Professional_Learning, planContext.Type_Information_Management];
             if (allBlank(program_types)) data_issues.planContext.push("No program types specified.");
 
             delivery_types  = [planContext.Delivered_School_Wide, planContext.Delivered_Whole_Class, planContext.Delivered_Small_Group, planContext.Delivered_Individually];
