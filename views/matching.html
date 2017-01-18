@@ -260,7 +260,7 @@
                                 <h4> Which characteristics matter when matching users to similar non-users? </h4>
                                 <p><label for="match_vars">Select characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>.</label> </p>
                                 <p>
-                                    <em class="stronger"><i class="fa fa-asterisk"></i> At least one characteristic is required; more than one is recommended.</em>
+                                    <em class="stronger"><i class="fa fa-asterisk"></i> More than one is recommended.</em>
                                 </p>
                             </div>
                             <div class="step-action  ">
@@ -304,17 +304,17 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div id="Step_Conclusion" style="margin-left:-40px;">
+                    <div id="Step_Conclusion" class="container">
                         <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
                         <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
                         <div id="results" class="shiny-html-output shiny-bound-output">
                         </div>
                         </div>
-                        <div id="shinybuttons" class="row col-xs-7 col-sm-offset-0 bottom-buttons hidden ">
+                        <div id="shinybuttons" class="row col-xs-10 col-sm-offset-0 bottom-buttons hidden ">
                             <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">Match!</button>
                             <a id="downloadData" class="btn btn-info btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
                                 <i class="fa fa-download"></i>
-                                Download
+                                Download Revised Dataset
                             </a>
                         </div>
                     </div>
@@ -331,16 +331,17 @@
         </div>
             </div>
 </div>
-    <div class="hidden">
-        <input type="hidden" name="s_treat_var" id="s_treat_var" />
-        <input type="hidden" name="s_match_vars" id="s_match_vars" />
-        <input type="hidden" name="s_grade_var" id="s_grade_var" />
-        <input type="hidden" name="n_full" id="n_full" />
-        <input type="hidden" name="n_full_treat" id="n_full_treat" />
-        <input type="hidden" name="n_matched" id="n_matched" />
-        <input type="hidden" name="n_matched_treat" id="n_matched_treat" />
-        <input type="hidden" name="result" id="mresult" />
-    </div>
+<div class="hidden">
+    <input type="hidden" name="basicsUsers" id="basicsUsers" value="<%= Basics_Users %>" />
+    <input type="hidden" name="s_treat_var" id="s_treat_var"/>
+    <input type="hidden" name="s_match_vars" id="s_match_vars"/>
+    <input type="hidden" name="s_grade_var" id="s_grade_var"/>
+    <input type="hidden" name="n_full" id="n_full"/>
+    <input type="hidden" name="n_full_treat" id="n_full_treat"/>
+    <input type="hidden" name="n_matched" id="n_matched"/>
+    <input type="hidden" name="n_matched_treat" id="n_matched_treat"/>
+    <input type="hidden" name="result" id="mresult"/>
+</div>
 <% include ../views/partials/toolButtons.html %>
 </form>
 <% include ../views/partials/footer.html %>
@@ -401,8 +402,10 @@
             $('#loadingmessage').show();
             var formData = new FormData();
             var match_vars = $("#match_vars").val();
-            match_vars.push($("#pretest").val());
-            if (match_vars && $("#pretest").val() !== "None selected") { match_vars.push($("#pretest").val()); }
+            //match_vars.push($("#pretest").val());
+            if (match_vars && $("#pretest").val() !== "None selected") {
+                match_vars.push($("#pretest").val());
+            } else match_vars = $("#pretest").val();
             $("#s_treat_var").val(JSON.stringify($("#treat_var").val()));
             $("#s_match_vars").val(JSON.stringify(match_vars));
             $("#s_grade_var").val(JSON.stringify($("#grade_var").val()));
@@ -424,52 +427,141 @@
                         success: function (data) {
                             $('#loadingmessage').hide();
                             $('#results').html("");
+                            var basicsUsers = $("#basicsUsers").val();
                             var errors = data.error_message;
                             if (errors.length > 0) {
-                                $('#results').append('<h2 class="stop-warning">Unable to match.</h2><p>' + errors[0] + '</p>');
-                            } 
-                            var results_by_grade = data.results_by_grade;
-                            var n_full=0, n_full_treat=0, n_matched=0, n_matched_treat=0
-                            for (var key in results_by_grade) {
-                                if (results_by_grade.hasOwnProperty(key)) {
-                                    var imgid = "plot" + key;
-                                    var grade_object = results_by_grade[key];
-                                    var bal1, bal2, bal3, info, buttxt;
-                                    n_full += parseInt(grade_object.samples.n_full);
-                                    n_full_treat += parseInt(grade_object.samples.n_full_treat);
-                                    n_matched += parseInt(grade_object.samples.n_matched);
-                                    n_matched_treat += parseInt(grade_object.samples.n_matched_treat);
-                                    info = 'The data you uploaded has ' + grade_object.samples.n_full + ' observations (after removing observations missing the selected matching variables), ' + grade_object.samples.n_full_treat + ' of which used the technology. The matched data set produced has ' + grade_object.samples.n_matched + ' observations, ' + grade_object.samples.n_matched_treat + ' of which are in the treatment group.';
-                                    buttxt = 'To learn more about how this tool works, you can review this <a href="/static/pdf/Matching Technical Appendix.pdf" target="_blank" > <u> technical appendix</u></a>.';
+                                $('#results').append('<h2 class="stop-warning">Unable to match.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p></h2>');
+                                return;
+                            } else {
+                                var nextstep = 'The Coach revised your dataset to only include ' + basicsUsers + ' in your treatment and comparison groups. <strong>Download this revised dataset.</strong> You will need it for the &ldquo;Get Results&rdquo; tool to determine whether your educational technology is moving the needle.';
 
-                                    $('#results').append('<div class="row"><div class="col-xs-7"><h2>Matching Results</h2><h3>' + grade_object.title + '</h3>');
-                                    if (grade_object.good_balance) {
-                                        bal1 = 'Congratulations! The RCE Engine was able to produce a good comparison group. The following figure shows improvement on baseline equivalence.';
-                                        bal2 = 'Your next step is to use the &ldquo;Get Results&rdquo; tool to determine whether your educational technology  is moving the needle.';
-                                    }
-                                    else {
-                                        bal1 = 'The RCE Engine was not able to produce a good comparison group. The following figure shows you baseline equivalence before and after matching:';
-                                        bal2 = 'The following variables do not satisfy baseline equivalence: ';
-                                        bal3 = "This means the group using the educational technology is very different from the group not using it. You can <a href='mailto:edtechrce@mathematica-mpr.com'>contact us</a>, to discuss other options to determine whether your educational technology is moving the needle.";
-                                    }
-                                    $('#results').append('<p>' + bal1 + '</p>');
-                                    $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + grade_object.plot + ' />' + '</div>');
-                                    $('#results').append('<p>' + info + '</p>');
-                                    $('#results').append('<p>' + bal2 + '</p>');
-                                    if (!grade_object.good_balance) {
-                                        var unbalanced = grade_object.unbalanced_vars;
-                                        $('#results').append('<ul >');
-                                        for (i = 0; i < unbalanced.length; i++)
-                                        {
-                                            $('#results').append('<li>' + unbalanced[i] + '</li>');
-                                    }
-                                        $('#results').append('</ul >');
-                                        $('#results').append('<p>' + bal3 + '</p>');
-                                    }
-                                    $('#results').append('<p>' + buttxt + '</p></div></div>');
+                                var nobalance = "The Coach&rsquo;s Matching tool was not able to produce a good comparison group. This means the group using the educational technology is very different from the group not using it. You can <a href='mailto:edtechrce@mathematica-mpr.com'>contact us</a>, to discuss other options to determine whether your educational technology is moving the needle.";
+                                var yesbalance = 'The RCE Coach was able to produce a good comparison group.';
 
-                                }
+
+                                var fig1 = 'Baseline equivalence before and after matching ' + basicsUsers;
+
+                                var unbalanceexplanation = "This means the group using the educational technology is very different from the group not using it. You can <a href='mailto:edtechrce@mathematica-mpr.com'>contact us</a>, to discuss other options to determine whether your educational technology is moving the needle.";
+
+
+                                var results_by_grade = data.results_by_grade;
+                                var n_full = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0, balance = "No", balancedtext = "", finaltext = "";
+                                for (var key in results_by_grade) {
+                                    if (results_by_grade.hasOwnProperty(key)) {
+                                        var imgid = "plot" + key;
+                                        var grade_object = results_by_grade[key];
+                                        var bal1, bal2, info, buttxt, title;
+                                        var unbalancedlist = "";
+                                        var balancedsubtext = "";
+                                        var num = key === "All" ? "1" : key;
+                                        var figend = key === "All" ? "" : " in grade " + grade_object.grade;
+                                        var figlabel = "Figure " + num + ". " + fig1 + " " + figend + ".";
+                                        title = (grade_object.title) != "" ? grade_object.title + "&mdash;" : "";
+                                        n_full += parseInt(grade_object.samples.n_full);
+                                        n_full_treat += parseInt(grade_object.samples.n_full_treat);
+                                        var n_full_comp = n_full - n_full_treat;
+                                        n_matched += parseInt(grade_object.samples.n_matched);
+                                        n_matched_treat += parseInt(grade_object.samples.n_matched_treat);
+                                        var n_matched_comp = n_matched - n_matched_treat;
+
+                                        if (grade_object.good_balance) {
+                                            if (grade_object.good_balance[0] === null) {
+                                                balancedtext = "N/A (no baseline variables specified)";
+                                            } else {
+                                                balance = grade_object.good_balance[0] === true ? "Yes" : "No";
+                                                balancedtext = yesbalance;
+                                                finaltext = nextstep;
+                                            }
+                                        } else {
+                                            balance = "N/A";
+                                            balancedtext = nobalance;
+                                            balancedsubtext = unbalanceexplanation;
+                                        }
+
+
+                                        $('#results').append('<h2 style="margin-top:40px;margin-left:-40px">' + title + " " + balancedtext + '</h2>');
+                                        $('#results').append('<p>' + balancedsubtext + '</p>');
+                                        if (grade_object.good_balance) {
+                                            var g = document.createElement("TABLE");
+                                            var c = g.createCaption();
+                                            c.innerHTML = "Number of " + basicsUsers + " in treatment (technology users) and comparison (non-users) groups before and after matching.";
+                                            g.setAttribute("id", "sumtable" + key);
+
+
+                                            var row1 = g.insertRow(0);
+
+                                            row1.insertCell(0).innerHTML = "<span>Treatment (users)</span>";
+                                            row1.insertCell(1).innerHTML = "<span>" + n_full_treat + "</span>";
+                                            row1.insertCell(2).innerHTML = "<span>" + n_matched_treat + "</span>";
+                                            var row2 = g.insertRow(1);
+
+                                            row2.insertCell(0).innerHTML = "<span>Comparison (non-users)</span>";
+                                            row2.insertCell(1).innerHTML = "<span>" + n_full_comp + "</span>";
+                                            row2.insertCell(2).innerHTML = "<span>" + n_matched_comp + "</span>";
+
+
+                                            var header = g.createTHead();
+                                            var hrow = header.insertRow(0);
+                                            hrow.insertCell(0).outerHTML = "<th>Group</th>";
+                                            hrow.insertCell(1).outerHTML = "<th>Before matching</th>";
+                                            hrow.insertCell(2).outerHTML = "<th>After matching</th>";
+
+                                            $('#results').append(g);
+
+
+                                            if (!grade_object.good_balance) {
+                                                var unbalanced = grade_object.unbalanced_vars;
+                                                unbalancedlist = '<ul>';
+                                                for (i = 0; i < unbalanced.length; i++) {
+                                                    unbalancedlist = unbalancedlist + '<li>' + unbalanced[i] + '</li>';
+                                                }
+                                                unbalancedlist = unbalancedlist + '</ul>';
+                                            }
+
+
+                                            if (grade_object.baseline_var_means) {
+                                                var x = document.createElement("TABLE");
+                                                var cap = x.createCaption();
+                                                cap.innerHTML = "Background characteristics of " + basicsUsers + "  in the evaluation sample.";
+                                                x.setAttribute("id", "baltable" + key);
+
+                                                var baseline_vars = grade_object.baseline_var_means;
+                                                for (var bvar in baseline_vars) {
+                                                    if (baseline_vars.hasOwnProperty(bvar)) {
+
+                                                        var row = x.insertRow(0);
+                                                        console.log(baseline_vars[bvar]);
+                                                        row.insertCell(0).innerHTML = "<span>" + bvar + "</span>";
+                                                        row.insertCell(1).innerHTML = "<span>" + baseline_vars[bvar].intervention[0] + "</span>";
+                                                        row.insertCell(2).innerHTML = "<span>" + baseline_vars[bvar].comparison[0] + "</span>";
+                                                        row.insertCell(3).innerHTML = "<span>" + baseline_vars[bvar].difference[0] + "</span>";
+                                                        row.insertCell(4).innerHTML = "<span>" + balance + "</span>";
+                                                    }
+                                                }
+                                                var header = x.createTHead();
+                                                var hrow = header.insertRow(0);
+                                                hrow.insertCell(0).outerHTML = "<th>Baseline Variable</th>";
+                                                hrow.insertCell(1).outerHTML = "<th>Treatment (users)</th>";
+                                                hrow.insertCell(2).outerHTML = "<th>Comparison (non-users)</th>";
+                                                hrow.insertCell(3).outerHTML = "<th>Difference</th>";
+                                                hrow.insertCell(4).outerHTML = "<th>Balanced</th>";
+
+                                                $('#results').append(x);
+                                            }
+                                        }
+
+
+                                        $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + grade_object.plot + ' />' + '<p>' + figlabel + '<br/></p></div>');
+
+
+                                    } //has key
+
+
+                                } // by grade
+
+                                $('#results').append('<p style="margin-top:40px;">' + finaltext + '</p>');
                             }
+
 
                             $("#mresult").val(JSON.stringify(data));
                             $("#n_full").val(JSON.stringify(n_full));
@@ -492,7 +584,7 @@
     });
     function enablebuttons() {
         if ($("#treat_var").val() !== "None selected" && $("#grade_var").val() !== "None selected"
-            && $("#pretest").val() !== "None selected" && $("#match_vars").val()) {
+            && $("#pretest").val() !== "None selected" ) {
             $("#match").prop("disabled", false);
         }
         else {

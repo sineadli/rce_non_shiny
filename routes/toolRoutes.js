@@ -897,6 +897,30 @@ module.exports = function (app, passport) {
 
 		sess.eval.last_step = 3;
 		sess.eval.last_tool = "Evaluation Plan";
+	    console.log(sess.eval);
+		if (sess.eval.evalPlan.Milestones.length == 0) {
+			//	console.log("create the 12 default milestones");
+			for (var i = 0; i < 12; i++) {
+				var m = ({
+					Order:
+ i + 1,
+					Milestone_Name:
+ '',
+					Complete_Date:
+ '',
+					Assigned_To:
+ '',
+					Status:
+ '',
+					Notes:
+ '',
+					Hide:
+ ''
+				});
+				
+				sess.eval.evalPlan.Milestones.push(m);
+			}
+		}
         sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
 
 		var query = require('url').parse(req.url, true).query;
