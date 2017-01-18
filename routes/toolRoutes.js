@@ -1565,6 +1565,7 @@ module.exports = function (app, passport) {
                 var query = require('url').parse(req.url, true).query;
 
                 var filename_map = {
+                    shareresult: 'findings-brief',
                     appendix_randomized: 'technical-appendix',
                     appendix_matched: 'technical-appendix'
                 };

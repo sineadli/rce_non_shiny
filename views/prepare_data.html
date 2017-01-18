@@ -51,7 +51,12 @@
                 <div class="col-xs-12">
                     <div class="tool-top">
                         <div class="dl-guide">
-                            <a onclick=" window.open('/static/pdf/04.01 Prepare your data for analysis_matching.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <% if (eval.path === "path-random") {  %>
+                            <a onclick="window.open('/static/pdf/Prepare your data for analysis_randomized pilot.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <% } %> 
+                            <% if (eval.path === "path-matching") { %>
+                            <a onclick="window.open('/static/pdf/Prepare your data for analysis_matching.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <% } %> 
                         </div>
 
                         <div class="tool-header">
@@ -66,9 +71,13 @@
 
                             <div class="tool-intro">
                                 <p>
-                                    To answer your research question you will need data from multiple sources. This tool will guide you through collecting, formatting, and checking the data you need to complete your evaluation. It provides a series of checklists to help you determine if your data is ready for use by the Coach.
+                                    You will need data from multiple sources to answer your research questions. This tool will guide you through collecting, formatting, and checking the data you need to complete your evaluation. It provides a series of checklists to help you determine if your data are ready for use by the Coach. <% if (eval.path === "path-random") { %> If you created a data set to use with the Random Assignment tool, you should be familiar with many of these data preparation steps. <% } %>
 
                                 </p>
+                                <% if (eval.path === "path-random") { %>
+                                <p class="note"><strong>Note:</strong> The data set created by the &ldquo;Random Assignment&rdquo; tool will be one of your data sources as it will contain your treatment status information.
+                                </p>
+                                <% } %>
                             </div>
                         </div>
                         <div class="clearfix">&nbsp;</div>
@@ -92,7 +101,7 @@
                         <div class="col-xs-12">
                             <div class="step-subquestion">
                                 <p>
-                                    There are multiple types of data you will use to build your treatment and comparison groups and to run your analysis.
+                                    You will use multiple types of data to build your treatment and comparison groups and run your analysis.
                                 </p>
                             </div>
 
@@ -104,11 +113,11 @@
                                 var checked = ( eval.prepare.Check_Treatment == "Treatment_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Treatment" name="Prepare[Check_Treatment]" value="Treatment_Checked" <%- checked %>/><label class="sec-label" for="Check_Treatment">
-                                    Treatment Status&mdash;<em class="recommendation">Required</em>
+                                    Treatment status&mdash;<em class="recommendation">Required</em>
                                 </label><br />
 
                                 <p class="sub-label">
-                                    Data that indicates which <span class="tech_users"><%= Basics_Users %></span> were given access to <%= Basics_Tech_Name %> and which were not. Valid values are 1 (had access), or 0 (no access).
+                                    Data that indicates which <span class="tech_users"><%= Basics_Users %></span> received access to <%= Basics_Tech_Name %> and which did not. Valid values are 1 (had access) or 0 (no access).
                                 </p>
 
 
@@ -129,7 +138,7 @@
                                     You must use the original file with the original treatment status variable, even if
                                     someone in your comparison group found a way to use the technology. The Coach will
                                     calculate the effect of being randomly assigned to use the technology on your outcome of
-                                    interest. If you move participants from one group to another after randomization, your
+                                    interest. If you move participants from one group to another after random assignment, your
                                     groups may be unbalanced, and you will not be able to make reliable conclusions about the
                                     technology&rsquo;s effect.
                                 </p>
@@ -149,10 +158,10 @@
 
                                 <%
                                 var required = "Recommended";
-                                var ptpathnote ="Pretest information will be used to check the equivalence of the treatment and comparison groups at the start of your evaluation."
+                                var ptpathnote ="The Coach will use pretest information to check the equivalence of the treatment and comparison groups at the start of your evaluation."
                                 if (path === "path-matching") {
                                 required = "Required";
-                                ptpathnote = "Pre-test data are necessary to create similar groups.";
+                                ptpathnote = "Pretest data are necessary to create similar groups.";
                                 }
 
                                 var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
@@ -161,7 +170,7 @@
                                     Pretest data&mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
-                                <p class="sub-label"> This is a measure of <%= Basics_Outcome %> just prior to the introduction of <%= Basics_Tech_Name %> (such as an assessment from the beginning of the school year). <%- ptpathnote %></p>
+                                <p class="sub-label"> This is a measure of <%= Basics_Outcome %> just before the introduction of <%= Basics_Tech_Name %> (such as an assessment from the beginning of the school year). <%- ptpathnote %></p>
 
                                 <%
                                 var required = "Recommended";
@@ -169,19 +178,19 @@
 
                                 if (path === "path-matching") {
 
-                                bcpathnote = "Background traits are particularly important for matched comparison evaluations because you can use them to make sure your treatment and comparison groups are well matched (balanced).";
+                                bcpathnote = "Background traits are particularly important for matched comparison evaluations because you can use them to make sure your treatment and comparison groups are well matched or balanced.";
                                 }
 
                                 var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Background" name="Prepare[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
-                                    Background Characteristics &mdash;<em class="recommendation"><%= required %></em>
+                                    Background characteristics &mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
                                 <p class="sub-label">
-                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, Individualized Education Plan (IEP) status, English learner (EL) status, and socioeconomic status (SES). Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
+                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, individualized education plan  status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
                                 </p>
-                                <p class="note">It is preferable to measure all background characteristics before the introduction of <%= Basics_Tech_Name %>. Because some background characteristics, like English learner status, can change over time and even change as a result of using a technology (e.g., the introduction of a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
+                                <p class="note">It is preferable to measure all background characteristics before introducting <%= Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
                                 <p class="sub-label"> <%- bcpathnote %></p>
                                 <p class='sub-label'><span class='group-data-prep-note'></span></p>
 
@@ -198,15 +207,15 @@
                                 var checked = ( eval.prepare.Check_Usage == "Usage_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Usage" name="Prepare[Check_Usage]" value="Usage_Checked" <%- checked %> /><label class="sec-label" for="Check_Usage">
-                                    Usage Data &mdash;<em class="recommendation"><%= required %></em>
+                                    Usage data &mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
                                 <p class="sub-label">
-                                    Includes data on how often <%= Basics_Tech_Name %> was used, patterns of usage over time, and how <span class="tech_users"><%= Basics_Users %></span> scored on assessments. This information will help you interpret your evaluation findings.
+                                    This includes data on how often <%= Basics_Tech_Name %> was used, patterns of use over time, and how <span class="tech_users"><%= Basics_Users %></span> scored on assessments. This information will help you interpret your evaluation findings.
                                 </p>
                                 <p class="sub-label"> <%- upathnote %></p>
                                 <p class="sub-label">
-                                    Please see <a href="/who_and_how">Who used your technology and how</a> for more information.
+                                    Please see <a href="/static/pdf/Who used your technology and how.pdf">Who Used Your Technology and How</a> for more information.
                                 </p>
 
 
@@ -219,7 +228,7 @@
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#E">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> Creating your data set
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> Creating your dataset
                             </h2>
                         </div>
 
@@ -229,12 +238,18 @@
 
 
                             <div class="step-subquestion">
-                                <p>Once you have identified the data elements and data sources, the next step is to combine all data elements into one tidy dataset. We recommend generating tidy datasets not only because it is a requirement to use the RCE Coach and most statistical software packages, but also because a tidy dataset is easy to manipulate, model, and visualize. </p>
-                                <p>If you do not have access to statistical software, you can use Microsoft Excel to prepare your data. An <a href="#">Excel Template</a> is available to help you organize your data. </p>
-                                <p>Uploading a data set that does not follow the guidelines outlined below may lead to problems in running your analysis. Please read our <a href="#">Prepare Your Data Set for Analysis</a> guide for more information</p>
+                                <p>After you have identified the data elements and data sources, the next step is to combine all data elements into one tidy dataset. We recommend generating tidy datasets not only because it is a requirement to use the RCE Coach and most statistical software packages, but also because a tidy dataset is easy to manipulate, model, and visualize. </p>
+                                <p>If you do not have access to statistical software, you can use Microsoft Excel to prepare your data. An <a href="/static/pdf/RCE Coach Data Template.xlsx" target="_blank">Excel template</a> is available to help you organize your data. </p>
+                                <p>Uploading a dataset that does not follow the guidelines outlined below could lead to problems in running your analysis. Please read our 
+                                <% if (eval.path === "path-random") {  %>
+<a href="/static/pdf/Prepare your data for analysis_randomized pilot.pdf" target="_blank">Prepare Your Data for Analysis</a>
+                            <% } %>
+                            <% if (eval.path === "path-matching") { %>
+                                    <a href="/static/pdf/Prepare your data for analysis_matching.pdf" target="_blank">Prepare Your Data for Analysis</a>
+                            <% } %>  guide for more information</p>
                             </div>
                             <div class="step-subquestion">
-                                <p> When you are finished with this step, your data set should look similar to the one below. </p>
+                                <p> When you finish this step, your data set should look similar to the one below. </p>
 
                                 <div id="annoCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
                                     <!-- Indicators -->
@@ -512,7 +527,7 @@
 
 
                                 <p class="sub-label">
-                                    You will need to merge your existing datasets into one complete dataset. Your data set should have one row for each one of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
+                                    You will have to merge your existing datasets into one complete dataset. Your data set should have one row for each of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
                                 </p><p class="note">If you are using Excel to manage your data you can do this using a VLOOKUP function. </p>
 
                             </div>
@@ -527,10 +542,10 @@
 
 
                                 <p class="sub-label">
-                                    You will need to convert all categorical variable to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
-                                    For example, if your background characteristics include gender as a variable, you may have &ldquo;M&rdquo; or &ldquo;F&rdquo; in each cell of that column. Instead, you should change the variable from ‘Gender’ to ‘Female’, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
+                                    You will have to convert all categorical variable to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
+                                    For example, if your background characteristics include gender as a variable, you might have M or F in each cell of that column. Instead, you should change the variable from Gender to Female, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
                                 </p>
-                                <p class="sub-label">If your categorical variable contains more than two options, such as &ldquo;Free or Reduced Price Lunch&rdquo; (where the options are (1) free, (2) reduced, and (3) full price) you will need to create a dummy variable for each option. For example, Free would be one column (with 0 representing that they don&rsquo;t receive a free lunch and 1 representing that they do), Reduced price would be a second column, and Paid (meaning they pay full price) would be a third column. </p>
+                                <p class="sub-label">If your categorical variable contains more than two options, such as free or reduced price lunch (where the options are  free,  reduced, and  full price) you will have to create a dummy variable for each option. For example, Free would be one column (with 0 representing  students that don&rsquo;t receive a free lunch and 1 representing studentsthat do), Reduced price would be a second column, and Paid (meaning students pay full price) would be a third column. </p>
 
                             </div>
 
@@ -539,13 +554,13 @@
                                 var checked = ( eval.prepare.Check_Missing == "Missing_Checked" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Check_Missing" name="Check_Missing" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
-                                    All missing data is consistently coded as &ldquo;NA&rdquo;.
+                                    All missing data is consistently coded as NA (not available).
                                 </label><br />
 
 
                                 <p class="sub-label">
 
-                                    If you have merged datasets and there is missing data, make sure you are consistently coding that as “NA” to ensure that the Coach can analyze your data. You want to be extra careful to make sure missing data has not been given a number designation, like 0 or 999. These values will get incorporated into the analysis.
+                                    If you have merged datasets and there are missing data, make sure you consistently code that as NA to ensure that the Coach can analyze your data. You want to be extra careful to make sure missing data has not been given a number value, like 0 or 999. These values will get incorporated into the analysis.
                                 </p>
 
                             </div>
@@ -570,7 +585,7 @@
                         <div class="col-xs-12">
                             <div class="step-subquestion">
                                 <p>
-                                    After constructing your data file and converting your variables, the final step is to check the quality of your data. The following checks can be run to identify potential data issues that warrant additional investigation:
+                                    After constructing your data file and converting your variables, the final step is to check the quality of your data. The following checks can identify potential data issues that warrant additional investigation:
 
                                 </p>
 
@@ -586,7 +601,7 @@
                                 </label><br />
 
 
-                                <p class="sub-label">This check may help to identify extremely low or high values that are outliers in your distribution or may signal a special missing code that needs to be converted to a missing value. You may want to check with someone who is familiar with the data to confirm the value range makes sense. </p>
+                                <p class="sub-label">This check can identify extremely low or high values that are outliers in your distribution or could signal a special missing code that has to be converted to NA. You might want to check with someone who is familiar with the data to confirm the value range makes sense. </p>
                                 <p class="note">If you are working in Excel you can use MIN and MAX functions to easily find these values.</p>
                             </div>
                             <div class="step-action check-list">
@@ -598,7 +613,7 @@
                                 </label><br />
 
 
-                                <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations that contain missing data. You should try to understand why data is missing and how excluding <span class="tech_users"><%= Basics_Users %></span> with incomplete data will affect your results. </p>
+                                <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations that contain missing data. You should try to understand why data are missing and how excluding <span class="tech_users"><%= Basics_Users %></span> with incomplete data will affect your results. </p>
                                 <p class="note">If you are working in Excel you can sort and filter your data to view missing values. To determine exactly how many values are missing for a single variable you can use the COUNTIF function, and to determine how many observations have at least one missing value you can use a nested COUNTIF with OR function.</p>
 
                             </div>
