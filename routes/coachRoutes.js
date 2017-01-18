@@ -66,7 +66,7 @@ module.exports = function (app, passport) {
 		sess = req.session;
 		//console.log(sess.eval);
 		//console.log(sess);
-		if (!sess.step) { sess.step = 1 }
+		if (!sess.step) { sess.step = 2 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
       
         CoachStep.find(function (err, coachSteps) {
@@ -74,7 +74,7 @@ module.exports = function (app, passport) {
                 res.status(500).send(err);
             }
 			else {
-                res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval },
+                res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval, step: sess.step },
                     function (err, html) {
                         if (err) { res.redirect('/error'); } else { res.send(html); }
                     });
@@ -140,7 +140,7 @@ module.exports = function (app, passport) {
         if (!req.body.id) {
 			var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
 		//	console.log("In creating new evaluation");
-        //    console.log(eval);
+        //   // console.log(eval);
 			// Pre-populate milestones. Moved from get current eval.
 			if (eval.evalPlan.Milestones.length == 0) {
 			//	console.log("create the 12 default milestones");

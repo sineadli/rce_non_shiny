@@ -28,7 +28,7 @@
         if (eval.flag == 1) { peeking =true; }
         if (tools[i].name==="The Basics") firstTool=true;
       //  console.log("Creating tool cards");
-        console.log(eval.toolsvisited);
+       // console.log(eval.toolsvisited);
       //  console.log(tools);
         if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
 
@@ -87,7 +87,7 @@
                             <span data-toggle="tooltip" title="<%= tooltip %>" class='tooltip-gr'>
                                 <i class="fa fa-question-circle" aria-hidden="true"></i>
                             </span>
-</p>
+                        </p>
                         <% } else { %>
                         <% if ( tool.length > 0 ) { %>
                         <p>
