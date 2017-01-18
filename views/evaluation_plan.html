@@ -90,7 +90,7 @@
                     <div class="tool-top">
                         <% if (display === 'online') { %>
                         <div class="dl-guide">
-                            <a onclick=" window.open('/static/pdf/evaluation_plan.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                         
                         </div>
                         <div class="tool-header">
                             <h1 class="tool-title">
@@ -298,9 +298,13 @@
                             %>
                             <div class="step-subquestion">
                                 <p>
-                                    <label for="Expected_Dosage">
+                                    <% if (display === 'online') { %>
+                                        <label for="Expected_Dosage">
+                                    <% } %>
                                         During the evaluation, <%= Basics_Users %> in the treatment group <%= verb1 %> <%= Basics_Tech_Name %>
-                                    </label>
+                                    <% if (display === 'online') { %>
+                                        </label>
+                                    <% } %>
                                     <% if (display === 'online') { %>
                                     <br /><textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea><br />
 
@@ -626,7 +630,7 @@
                                                 <p>Even if you don&rsquo;t know exact dates it will be helpful for planning purposes to estimate when these steps will occur.</p>
                                                 <p>If you do not know who will be responsible for each milestone, you can leave it as &ldquo;To be determined.&rdquo; You can use the meeting with other stakeholders to identify who will be responsible for different parts of the evaluation.</p>
                                                 <% if (eval.path == "path-random" || eval.path == "path=forward") { %>
-                                                <p>It can be helpful to check how the technology is actually being used at some point (or multiple times) during the evaluation. If the technology is not being used as expected, you will want to know this sooner rather than later in order to make any necessary adjustments to the implementation.  To learn more about what this requires see the <a onclick="window.open('/static/pdf/Who used your technology and how.pdf', ''); return false; " href="javascript:void(0);">Who Used Your technology and How.</a></p>
+                                                <p>It can be helpful to check how the technology is actually being used at some point (or multiple times) during the evaluation. If the technology is not being used as expected, you will want to know this sooner rather than later in order to make any necessary adjustments to the implementation.  To learn more about what this requires see  <a onclick="window.open('/static/pdf/Who used your technology and how.pdf', ''); return false; " href="javascript:void(0);">Who Used Your technology and How.</a></p>
                                                 <% } %>
                                                 <p>The Coach provides a tool that can quickly analyze the data. The challenging part will be combining the data from different sources and getting the data into the appropriate format. This might require a data analyst. The Coach&rsquo;s <a href="/prepare_data">Preparing Your Data for Analysis</a> tool will quide you through this process.</p>
                                                 <p>The Coach provides a tool that will automatically generate a findings brief after you have analyzed your data. The findings brief is a downloadable document that details your evaluation and the results. </p>
