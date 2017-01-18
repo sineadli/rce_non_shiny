@@ -86,7 +86,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
-            sess.step = 1;
+            sess.step = 2;
             sess.last_tool = "none";
             req.user.evalid = eval._id;
             req.user.save();
@@ -96,7 +96,7 @@ module.exports = function (app, passport) {
                 }
                 else {
 
-                    res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval});
+                    res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval, step: sess.step});
 
                 }
             });
