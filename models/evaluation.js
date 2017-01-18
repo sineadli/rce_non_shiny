@@ -351,7 +351,7 @@ evaluationSchema.pre('save', function (next) {
 		
 		// Pre-populate milestones. Moved from get current eval.
 		if (this.evalPlan.Milestones.length == 0) {
-			console.log("create the 12 default milestones");
+
 			for (var i = 0; i < 12; i++) {
 				var m = ({
 					Order:
