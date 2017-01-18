@@ -183,7 +183,55 @@
             </div>
         </div>
     </div>
-    <% include ../views/partials/footer.html %>
+    <nav class="footer navbar-default" role="navigation">
+        <div class="footer-row">
+            <div class="col-xs-4">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        <h3 class="sec-label">Ed Tech RCE Coach <span style="text-transform: none;"><em>beta</em></span></h3>
+                    </a>
+                </div>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-xs-8">
+                <div class="col-xs-4">
+                    <ul class="footer-list">
+                        <li>
+                            <a href="/About" class="sec-label">About</a>
+                        </li>
+
+                        <li>
+                            <a href="/TermsOfUse" class="sec-label">Terms of Use</a>
+                        </li>
+                        <li>
+                            <a href="/PrivacyPolicy" class="sec-label">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-8">
+                    <ul style="list-style:none;margin-top:20px;">
+                        <li>
+                            <a class="sec-label" onclick="window.open('/static/pdf/Glossary.pdf', ''); return false; " href="javascript:void(0);">
+                                Glossary
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sec-label">FAQs </a>
+                        </li>
+                        <li>
+                            <a href="/PreviewTools" class="sec-label">Preview Tools </a>
+                        </li>
+                    </ul>
+                </div>
+               
+
+            </div>
+            <div>
+                <p class="text-center text-muted">&copy; 2016 Mathematica Policy Research, Inc. </p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </nav>
     <script>
         $(document).ready(function () {
             //rotation speed and timer
