@@ -30,12 +30,12 @@
         <% include ../views/partials/toolHeader.html %>
         <% } %>
         <%
-
-        var  Basics_Users_Others = eval.basics.Basics_Users_Others;
+        console.log(eval.basics);
+        var  Basics_Users_Other = eval.basics.Basics_Users_Other;
         var Basics_Users = eval.basics.Basics_Users ? eval.basics.Basics_Users : "users";
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
         var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
-
+        console.log(Basics_Users);
         %>
         <input type="hidden" id="Basics_Users" value="<%= Basics_Users %>" />
         <div class="container-fluid">
@@ -233,7 +233,7 @@
 
                                                     <input type="radio" id="Choose-Cutoff" name="Appr_How_Choose" class="radio" value="cutoff" <%= checked %>/>
                                                     <label class="panel-title  clickable" for="Choose-Cutoff">
-                                                        Cutoff:
+                                                        Cutoff
 
                                                     </label>
                                                     <a data-toggle="collapse" href="#cutoff-2">
@@ -252,7 +252,7 @@
                                                     <ul>
                                                         <li>Findings apply only to <%= Basics_Users %> near the cutoff, not to the whole population.</li>
                                                         <li>Might be less fair than random assignment. With this method, scoring 1 point below the cutoff gives you a 100% chance of using <%= Basics_Tech_Name %>, whereas scoring 1 point above the cutoff means you have a 0% chance of using <%= Basics_Tech_Name %>, even though both groups of <%= Basics_Users %> might equally in need of it.</li>
-                                                        <li>Not currently supported by the RCE Coach, but will be coming soon! <a href="mailto:EdTechRCE@mathematica-mpr.com">Contact us</a> if you&rsquo;d like to discuss testing this new method. </li>
+                                                        <li>Not currently supported by the RCE Coach. <a href="mailto:EdTechRCE@mathematica-mpr.com">Contact us</a> if you&rsquo;d like to discuss testing this new method. </li>
                                                     </ul>
 
                                                 </div>
@@ -312,7 +312,7 @@
                                     <div class="col-xs-6">
 
                                         <div class="step-subquestion">
-                                            <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
+                                            <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (for example, classes or schools) to the treatment and comparison groups?</label></h4>
                                         </div>
                                         <div class="step-action">
                                             <select name="Individual_Group" id="Individual_Group">

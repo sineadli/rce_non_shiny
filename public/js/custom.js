@@ -189,9 +189,9 @@ function setBasicsConclusion() {
 	var haveTech = $('#Basics_Have').val();
 	var techName = $('#Basics_Tech_Name').val();
 	var whoUsers = $('#Basics_Users').val();
-	if (whoUsers.toLowerCase === "other") whoUsers = $('#Basics_Users_Other').val();
+	if (whoUsers.toLowerCase() === "other") whoUsers = $('#Basics_Users_Other').val();
 	var haveOutcome = $('#Basics_Outcome').val();
-	if (haveOutcome.toLowerCase === "other") haveOutcome = $('#Basics_Outcome_Other').val();
+	if (haveOutcome.toLowerCase() === "other") haveOutcome = $('#Basics_Outcome_Other').val();
 
 
 	if (haveTech.toLowerCase() === "no") {
@@ -213,7 +213,7 @@ function setBasicsConclusion() {
 		$("#success").hide();
 		$("button.complete").attr("disabled", "disabled");
 	}
-	else if (techName !== "" && whoUsers.toLowerCase !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
+	else if (techName !== "" && whoUsers.toLowerCase() !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
 		$("#Step_Conclusion").show();
 		$("#success").show();
 		$("#stop-no-tech").hide();
@@ -280,7 +280,7 @@ function measureUnitsUpdate(t) {
 	else otherSpecify.hide();
 
 	var munits = $("#Measure_Units").val();
-	if (munits.toLowerCase === "other") {
+	if (munits.toLowerCase() === "other") {
 		munits = $("#Measure_Units_Other").val();
 	}
 	if (munits === "" || munits.toLowerCase() === "select an option") {

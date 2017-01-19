@@ -211,25 +211,25 @@
 
                                                 <%
                                                 var options = ["Select an option", "Students", "Teachers", "Other"];
-                                                var values = ["Select an option", "students", "teachers", "other"];
+                                                var ovals = ["Select an option", "students", "teachers", "other"];
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
 
-                                                var selected = ( eval.basics.Basics_Users == values[i] ) ? "selected" : "";
+                                                var selected = ( eval.basics.Basics_Users == ovals[i] ) ? "selected" : "";
 
                                                 %>
-                                                <option value="<%=values[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                                 }
                                                 %>
 
                                             </select>
 
-                                            <div id="Question_Users_Other" hidden="true">
-                                                <div>
-                                                    <label for="Basics[Basics_User_Other]">Please specify:</label>
-                                                </div>
+                                            <div id="Question_Users_Other" hidden="true" style="margin-left: 20px;">
+                                                              
+                                                    <label for="Basics_Users_other">Please specify:</label>
+                                               
 
-                                                <input type="text" name='Basics_Users_other' id="Basics_Users_other" value="<%= eval.basics.Basic_Users_other %>" />
+                                                <input type="text" name="Basics[Basics_Users_Other]" id="Basics_Users_other" value="<%= eval.basics.Basics_Users_Other %>" />
                                             </div>
                                         </div>
                                     </div>
@@ -317,7 +317,9 @@
     $(document).ready(function () {
 
         setBasicsConclusion();
-
+        if ($('#Basics_Users').val().toLowerCase() === "other") {
+            $('#Question_Users_Other').show();
+        }
 
         //init feedback_me plugin
         var fm_options = setFeedbackOptions($("#user_email").val(), "craft_your_research_q");
