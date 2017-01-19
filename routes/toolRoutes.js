@@ -129,7 +129,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
     });
@@ -183,7 +183,7 @@ module.exports = function (app, passport) {
 				});	
 			}
 		], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
 		});
 	});
@@ -270,7 +270,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
 	});
@@ -412,7 +412,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
     });
@@ -502,7 +502,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
 	});
@@ -561,7 +561,7 @@ module.exports = function (app, passport) {
 					
 			}
 		], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
 		});
 	});
@@ -718,7 +718,7 @@ module.exports = function (app, passport) {
                 
             }
         ], function (err) {
-            if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath);
         });
 	});
@@ -802,7 +802,7 @@ module.exports = function (app, passport) {
 				});
 			}
 		], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
 		});
 	});
@@ -885,7 +885,7 @@ module.exports = function (app, passport) {
 				});
 			}
 		], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
 		});
 	});
@@ -1009,7 +1009,7 @@ module.exports = function (app, passport) {
 				});
             }
 		], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
 		});
     });
@@ -1107,7 +1107,7 @@ module.exports = function (app, passport) {
 
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
     });
@@ -1199,7 +1199,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
 	});
@@ -1291,7 +1291,7 @@ module.exports = function (app, passport) {
 				});
 			}
 		], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
 		});
 	});
@@ -1374,7 +1374,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
     });
@@ -1472,7 +1472,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
     });
@@ -1594,7 +1594,7 @@ module.exports = function (app, passport) {
                     });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try.');
+            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
     });
