@@ -14,9 +14,10 @@
     <% include ../views/partials/scriptHeader.html %>
 </head>
 <body class="one-col">
+    <% url="/", des="Back to Home"; if (user) {url="/dashboard"; des ="Back to Dashboard"; } %>
     <div id="header"></div>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/"><span class="fa fa-caret-left"></span> Back to Home</a></li>
+        <li class="breadcrumb-item"><a href= <%= url %>><span class="fa fa-caret-left"></span> <%= des %></a></li>
     </ol>
     <div class="container-fluid">
         <div class="page-header">
@@ -144,7 +145,7 @@
                             </div>
                         </li>
                         <li>
-                            <a onclick=" window.open('/static/pdf/Prepare your data for analysis_matching.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Prepare Your Data for Analysis - Matching<a/>
+                            <a onclick=" window.open('/static/pdf/Prepare your data for analysis_matching.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Prepare Your Data for Analysis - Matching</a>
                             <div class="tool-access">
                             </div>
                         </li>
