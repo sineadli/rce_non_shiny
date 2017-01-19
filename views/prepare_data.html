@@ -71,7 +71,7 @@
 
                             <div class="tool-intro">
                                 <p>
-                                    You will need data from multiple sources to answer your research questions. This tool will guide you through collecting, formatting, and checking the data you need to complete your evaluation. It provides a series of checklists to help you determine if your data are ready for use by the Coach. <% if (eval.path === "path-random") { %> If you created a data set to use with the Random Assignment tool, you should be familiar with many of these data preparation steps. <% } %>
+                                    You will need data from multiple sources to answer your research question. This tool will guide you through collecting, formatting, and checking the data you need to complete your evaluation. It provides a series of checklists to help you determine if your data are ready for use by the Coach. <% if (eval.path === "path-random") { %> If you created a data set to use with the Random Assignment tool, you should be familiar with many of these data preparation steps. <% } %>
 
                                 </p>
                                 <% if (eval.path === "path-random") { %>
@@ -215,7 +215,7 @@
                                 </p>
                                 <p class="sub-label"> <%- upathnote %></p>
                                 <p class="sub-label">
-                                    Please see <a href="/static/pdf/Who used your technology and how.pdf">Who Used Your Technology and How</a> for more information.
+                                    Please see <a href="/static/pdf/Who used your technology and how.pdf" target="_blank">Who Used Your Technology and How</a> for more information.
                                 </p>
 
 
@@ -266,12 +266,12 @@
 
                                         <div class="item  active">
 
-                                            <p>Each row represents a single observations (e.g. treatment, spring score, school id). <span id="row-note">For example, the current highlighted row is for the student with id 834305.</span></p>
+                                            <p>Each row represents a single observation. <span id="row-note">For example, the current highlighted row is for the student with id 834305.</span></p>
 
                                         </div>
                                         <div class="item">
 
-                                            <p> Each variable has its own column.</p>
+                                            <p> Each variable has its own column (for example, treatment, spring score, school id).</p>
 
                                         </div>
                                         <div class="item">
@@ -281,7 +281,7 @@
                                         </div>
                                         <div class="item">
 
-                                            <p>Missing data is replaced with "NA" so that the Coach skips that cell.</p>
+                                            <p>Missing data is replaced with NA (not available) so that the Coach skips that cell.</p>
 
                                         </div>
                                     </div>
@@ -527,7 +527,7 @@
 
 
                                 <p class="sub-label">
-                                    You will have to merge your existing datasets into one complete dataset. Your data set should have one row for each of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
+                                    You will have to merge your existing datasets into one complete dataset. Your dataset should have one row for each of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
                                 </p><p class="note">If you are using Excel to manage your data you can do this using a VLOOKUP function. </p>
 
                             </div>
@@ -542,10 +542,10 @@
 
 
                                 <p class="sub-label">
-                                    You will have to convert all categorical variable to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
+                                    You will have to convert all categorical variables to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
                                     For example, if your background characteristics include gender as a variable, you might have M or F in each cell of that column. Instead, you should change the variable from Gender to Female, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
                                 </p>
-                                <p class="sub-label">If your categorical variable contains more than two options, such as free or reduced price lunch (where the options are  free,  reduced, and  full price) you will have to create a dummy variable for each option. For example, Free would be one column (with 0 representing  students that don&rsquo;t receive a free lunch and 1 representing studentsthat do), Reduced price would be a second column, and Paid (meaning students pay full price) would be a third column. </p>
+                                <p class="sub-label">If your categorical variable contains more than two options, such as Race&mdash;where the options are Asian,  Black,  White, and Other&mdash;you will have to create a binary or dummy variable for each option. For example, Asian would be one column (with 0 representing non-Asians and 1 representing Asians), Black would be a second column, White would be a third column, and Other would be a fourth column. </p>
 
                             </div>
 
@@ -560,7 +560,7 @@
 
                                 <p class="sub-label">
 
-                                    If you have merged datasets and there are missing data, make sure you consistently code that as NA to ensure that the Coach can analyze your data. You want to be extra careful to make sure missing data has not been given a number value, like 0 or 999. These values will get incorporated into the analysis.
+                                    If you have merged datasets and there are missing data, make sure you are consistently coding missing values as NA.  You want to be extra careful that missing data does not have a number value, such as 0 or 999. These values will get incorporated into the analysis.
                                 </p>
 
                             </div>

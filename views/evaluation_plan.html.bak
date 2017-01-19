@@ -56,7 +56,7 @@
         if (eval.basics.Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
         if (eval.basics.Basics_Outcome.toLowerCase() === "") { Basics_Outcome = "outcomes"; }
 
-        var Basics_Users_Others = eval.basics.Basics_Users_Other;
+        var Basics_Users_Others = eval.basics.Basics_Users_Others;
         var Basics_Users = (eval.basics.Basics_Users === "") ? "users" : eval.basics.Basics_Users;
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
 
@@ -252,7 +252,7 @@
                             <div class="step-subquestion">
 
                                 <% if(eval.path === "path-random") { %>
-                                <p>This evaluation will use a randomized pilot. The choice of who will pilot the technology will be determined by chance, like a coin flip. This design is the best way to determine if <%= Basics_Tech_Name %> is moving the needle because it creates two groups that are similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This means that we can be confident that any differences we see in outcomes are due to the technology and not other factors.</p>
+                                <p>This evaluation will use a randomized pilot. The choice of who will pilot the technology will be determined by chance, like a coin flip. This design is the best way to determine if the educational technology is moving the needle because it creates two groups that are similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This means that we can be confident that any differences we see in outcomes are due to the technology and not other factors.</p>
                                 <p>
                                     <div class="sentence-case"><%= Random_Level %></div> will be randomly selected to use the technology.
                                     <ul><li>Why does this matter? There are multiple ways to randomly assign individuals: we could randomly select individuals to use the technology, or we could randomly select groups of individuals (such as schools) to use the technology. In general, the lower the level of randomization, the stronger ones ability to make conclusions, but it is not always feasible to randomly assign at the individual level.</li></ul>
@@ -298,13 +298,9 @@
                             %>
                             <div class="step-subquestion">
                                 <p>
-                                    <% if (display === 'online') { %>
-                                        <label for="Expected_Dosage">
-                                    <% } %>
+                                    <label for="Expected_Dosage">
                                         During the evaluation, <%= Basics_Users %> in the treatment group <%= verb1 %> <%= Basics_Tech_Name %>
-                                    <% if (display === 'online') { %>
-                                        </label>
-                                    <% } %>
+                                    </label>
                                     <% if (display === 'online') { %>
                                     <br /><textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea><br />
 
@@ -630,7 +626,7 @@
                                                 <p>Even if you don&rsquo;t know exact dates it will be helpful for planning purposes to estimate when these steps will occur.</p>
                                                 <p>If you do not know who will be responsible for each milestone, you can leave it as &ldquo;To be determined.&rdquo; You can use the meeting with other stakeholders to identify who will be responsible for different parts of the evaluation.</p>
                                                 <% if (eval.path == "path-random" || eval.path == "path=forward") { %>
-                                                <p>It can be helpful to check how the technology is actually being used at some point (or multiple times) during the evaluation. If the technology is not being used as expected, you will want to know this sooner rather than later in order to make any necessary adjustments to the implementation.  To learn more about what this requires see  <a onclick="window.open('/static/pdf/Who used your technology and how.pdf', ''); return false; " href="javascript:void(0);">Who Used Your technology and How.</a></p>
+                                                <p>It can be helpful to check how the technology is actually being used at some point (or multiple times) during the evaluation. If the technology is not being used as expected, you will want to know this sooner rather than later in order to make any necessary adjustments to the implementation.  To learn more about what this requires see the <a onclick="window.open('/static/pdf/Who used your technology and how.pdf', ''); return false; " href="javascript:void(0);">Who Used Your technology and How.</a></p>
                                                 <% } %>
                                                 <p>The Coach provides a tool that can quickly analyze the data. The challenging part will be combining the data from different sources and getting the data into the appropriate format. This might require a data analyst. The Coach&rsquo;s <a href="/prepare_data">Preparing Your Data for Analysis</a> tool will quide you through this process.</p>
                                                 <p>The Coach provides a tool that will automatically generate a findings brief after you have analyzed your data. The findings brief is a downloadable document that details your evaluation and the results. </p>

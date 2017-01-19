@@ -436,6 +436,9 @@ function UpdateUserLimitExists(t) {
 function setUserLimitsSelections() {
 
 	var users = $('#Basics_Users').val();
+	if (users.toLowerCase() === "other") {
+		users = $('#Basics_Users_Other').val();
+	}
 
 	var gORi = $('#Individual_Group').val();
     var cluster = $('#Cluster_Group').val();
