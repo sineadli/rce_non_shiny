@@ -186,16 +186,14 @@ baseline_results_by_grade = [];
             }
                                     
             if (!basics.Basics_Users) {
-                data_issues.basics.push("User description is blank or undefined.");
-            } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
-                data_issues.basics.push("User description is not specified.");
+                data_issues.basics.push("User description is blank or undefined.");           
             } else {
                 Basics_Users = basics.Basics_Users || Basics_Users;
             }
 
             if (Basics_Users === 'other') {
-                Basics_Users = basics.Basic_Users_other || Basics_Users_Other;
-                if (!basics.Basics_Users_other) data_issues.basics.push("Other user description is blank or undefined.");
+                Basics_Users = basics.Basics_Users_Other || Basics_Users_Other;
+                if (!basics.Basics_Users_Other) data_issues.basics.push("Other user description is blank or undefined.");
             }
                         
         } catch (e) {

@@ -971,7 +971,7 @@ div#Step_Conclusion h2, div.step-conclusion h2 {
     padding: 20px 50px;
 }
 div#Step_Conclusion h2.stop-warning {
-     background-image: url("/static/image/WarningIcon.png");
+     background-image: url("/static/image/WarningIcon2.png");
 }
 h2.form, h2.statistical, h2.guide, h2.locked {
       background-image: url("/static/image/Form_RCE-Web-Icon.png");
@@ -1287,6 +1287,9 @@ div.action-buttons > button {
   font-size:12px;
   padding:10px;
   border-radius:8px;
+}
+div.other-div {
+    margin-left: 20px;
 }
 div.step-action > button {
   box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
@@ -1657,7 +1660,7 @@ h1 span.peeking-pretitle {
        /* Specific to share results */
 
         body.brief h2 {
-            color: #4f81bd;
+            color: #006982;
             padding-top: 15px;
         }
 
@@ -1689,7 +1692,7 @@ h1 span.peeking-pretitle {
         }
 
        body.brief .white-background-blue-border {
-            border: 3px #2e75b6 solid;
+            border: 3px #006982 solid;
             border-radius: 25px;
             font-size: 16px;
             line-height: 1.5em;
@@ -1697,8 +1700,8 @@ h1 span.peeking-pretitle {
         }
 
        body.brief .blue-background-white-text {
-            background-color: #2e75b6 !important;
-            border: 3px #2e75b6 solid;
+            background-color: #006982 !important;
+            border: 3px #006982 solid;
             border-radius: 25px;
             color: #fff;
             font-size: 16px;
@@ -1718,7 +1721,7 @@ h1 span.peeking-pretitle {
 
       body.brief  #table1 thead tr {
             border-bottom: 1px #000 solid;
-            background-color: #2e75b6 !important;
+            background-color: #006982 !important;
             color: #FFF;
         }
 
@@ -1729,7 +1732,7 @@ h1 span.peeking-pretitle {
             -webkit-border-radius: 25px;
             -moz-border-radius: 25px;
             border-radius: 25px;
-            background-color: #4f81bd;
+            background-color: #006982;
             text-align: center;
             vertical-align: middle;
             line-height: 50px;

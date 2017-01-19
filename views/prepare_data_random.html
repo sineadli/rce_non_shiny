@@ -32,9 +32,9 @@
         <% } %>
 
         <%
-        var Basics_Users_Others = eval.basics.Basics_Users_Others;
+        var Basics_Users_Other = eval.basics.Basics_Users_Other;
         var Basics_Users = eval.basics.Basics_Users;
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
+        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
         var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
         if (Basics_Tech_Name == "") { Basics_Tech_Name = "the educational technology"; }
         var path = eval.path;
@@ -114,12 +114,12 @@
 
                                 </select>
 
-                                <div id="Question_Users_Other" hidden="true">
+                                <div id="Question_Users_Other" hidden="true" class="other-div">
                                     <div>
                                         <label for="Basics_User_Other">Please specify:</label>
                                     </div>
 
-                                    <input type="text" name='Basics_Users_other' id="Basics_Users_other" value="<%= eval.basics.Basic_Users_other %>" />
+                                    <input type="text" name='Basics_Users_Other' id="Basics_Users_Other" value="<%= eval.basics.Basics_Users_Other %>" />
                                 </div>
 
                                 <% if (user != "NOAUTHENTICATED") { %>
@@ -163,7 +163,7 @@
                                         }
                                         %>
                                     </select>
-                                    <div id="Question_Cluster_Other" hidden="true">
+                                    <div id="Question_Cluster_Other" hidden="true" class="other-div">
 
                                         <h4>
                                             <label for="Cluster_Group_Other">Please specify:</label>
@@ -254,10 +254,10 @@
 
                                 <%
                                 var required = "Recommended";
-                                var ptpathnote ="The Coarch will use pretest information will be used to check the equivalence of the treatment and comparison groups before the start of your evaluation."
+                                var ptpathnote ="The Coach will use pretest information to check the equivalence of the treatment and comparison groups before the start of your evaluation."
                                 if (path === "path-matching") {
                                 required = "Required";
-                                ptpathnote = "Pre-test data are necessary to create similar groups.";
+                                ptpathnote = "Pretest data are necessary to create similar groups.";
                                 }
 
                                 var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
@@ -284,7 +284,7 @@
                                 <p class="sub-label">
                                     Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, individualized education plan status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
                                 </p>
-                                <p class="sub-label">It is preferable to measure all background characteristics before introducing <%= Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, ntroducing a reading software), it is important to know if characteristics were recorded before or after introducing <%= Basics_Tech_Name %>. </p>
+                                <p class="sub-label">It is preferable to measure all background characteristics before introducing <%= Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software), it is important to know if characteristics were recorded before or after introducing <%= Basics_Tech_Name %>. </p>
                                 <p class="sub-label"> <%- bcpathnote %></p>
                                 <p class='sub-label'><span class='group-data-prep-note'></span></p>
 
@@ -347,7 +347,7 @@
                                         </div>
                                         <div class="item">
 
-                                            <p>Missing data is replaced with "NA" so that the Coach skips that cell.</p>
+                                            <p>Missing data is replaced with NA (not available) so that the Coach skips that cell.</p>
 
                                         </div>
                                     </div>
@@ -593,7 +593,7 @@
 
 
                                 <p class="sub-label">
-                                    You will have to merge your existing datasets into one complete dataset. Your data set should have one row for each of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
+                                    You will have to merge your existing datasets into one complete dataset. Your dataset should have one row for each of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
                                 </p><p class="note">If you use Excel to manage your data you can do this using a VLOOKUP function. </p>
 
                             </div>
@@ -609,7 +609,7 @@
 
                                 <p class="sub-label">
                                     You will have to convert all categorical variables to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
-                                    For example, if your background characteristics include gender as a variable, you might have M; or F in each cell of that column. Instead, you should change the variable from Gender to Female, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
+                                    For example, if your background characteristics include gender as a variable, you might have M or F in each cell of that column. Instead, you should change the variable from Gender to Female, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
                                 </p>
                                 <p class="sub-label">If your categorical variable contains more than two options, such as Race&mdash;where the options are Asian,  Black,  White, and Other&mdash;you will have to create a binary or dummy variable for each option. For example, Asian would be one column (with 0 representing non-Asians and 1 representing Asians), Black would be a second column, White would be a third column, and Other would be a fourth column. </p>
 
@@ -703,6 +703,16 @@
             setUserLimitsSelections();
             var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
             fm.init(fm_options);
+
+            if ($("#Basics_Users").val().toLowerCase() === "other") {
+              
+                $("#Question_Users_Other").show();
+            }
+            if ($("#Cluster_Group").val().toLowerCase() === "other") {
+
+                $("#Question_Cluster_Other").show();
+            }
+         
         });
         $('#Basics_Users').change(function () {
             usersUpdate(this);

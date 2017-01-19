@@ -316,16 +316,17 @@
                 <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
                 <div id="results" class="shiny-html-output shiny-bound-output"></div>
             </div>
-            <div id="shinybuttons" class="row row col-xs-10 col-sm-offset-0 bottom-buttons hidden ">
-                <button id="go" type="button" class="btn btn-primary btn-lg">Run Analysis!</button>
-            </div>
-            <div id='loadingmessage' class="row" hidden>
-                <div class="col-sm-5 col-sm-offset-3" style="margin-top: 15px;">
-                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+            <div id='loadingmessage' class="row col-xs-10" hidden>
+                <div  style="margin: 10px auto; width: 30px;">
+                    <i class="fa fa-cog fa-spin fa-3x fa-fw" ></i>
                     <span class="sr-only">Loading...</span>
 
                 </div>
             </div>
+            <div id="shinybuttons" class="row row col-xs-10 col-sm-offset-0 bottom-buttons hidden ">
+                <button id="go" type="button" class="btn btn-primary btn-lg">Run Analysis!</button>
+            </div>
+          
         </div>
 
     </div>
@@ -365,9 +366,18 @@
     <% include ../views/partials/footer.html %>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('.multiselect').multiselect();
-            $("#chosenfile").change(function () {
+
+            $('.success-effect-size').text($("#Success_Effect_Size").val());
+
+            //init feedback_me plugin
+            var fm_options = setFeedbackOptions($("#user_email").val(), "getresult");
+            fm.init(fm_options);
+
+        });
+       
+        $("#chosenfile").change(function () {
                 var formData = new FormData();
                 $('#loadingmessage').show();
                 formData.append("data", $(this)[0].files[0]);
@@ -483,10 +493,8 @@
                     }
                 });
             });
-        });
-        //init feedback_me plugin
-        var fm_options = setFeedbackOptions($("#user_email").val(), "getresult");
-        fm.init(fm_options);
+       
+       
     </script>
 </body>
 

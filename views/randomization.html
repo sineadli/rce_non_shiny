@@ -109,12 +109,12 @@
 
                 </select>
 
-                <div id="Question_Users_Other" hidden="true">
+                <div id="Question_Users_Other" hidden="true" class="other-div">
                     <div>
-                        <label for="Basics_User_Other">Please specify:</label>
+                        <label for="Basics_Users_Other">Please specify:</label>
                     </div>
 
-                    <input type="text" name='Basics_Users_other' id="Basics_Users_other" value="<%= eval.basics.Basic_Users_other %>"/>
+                    <input type="text" name='Basics_Users_Other' id="Basics_Users_Other" value="<%= eval.basics.Basics_Users_Other %>"/>
                 </div>
 
                 <% if (user != "NOAUTHENTICATED") { %>
@@ -141,7 +141,7 @@
                     %>
                 </select>
 
-                <div id="Question_Cluster" hidden="true" style="margin-left: 20px;">
+                <div id="Question_Cluster" hidden="true" class="other-div">
 
                     <h4><label for="Cluster_Group">How will you group your <%= Basics_Users %>?</label></h4>
 
@@ -160,7 +160,7 @@
                         %>
                     </select>
 
-                    <div id="Question_Cluster_Other" hidden="true">
+                    <div id="Question_Cluster_Other" hidden="true" class="other-div">
                         <p>
                             <label for="Cluster_Group_Other">Please specify:</label>
                             <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>"/>
@@ -193,7 +193,7 @@
                     <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
                     <% } %>
                 </select>
-                <div id="Question_User_Limits" hidden="true" style="padding-left: 20px;">
+                <div id="Question_User_Limits" hidden="true" class="other-div">
                     <div class="step-subquestion">
 
                         <h4>What are the limits?</h4>
@@ -357,7 +357,14 @@
                         <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
                         <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
                         <div id="results" class="shiny-html-output shiny-bound-output"></div>
+                    </div>
+                    <div id='loadingmessage' class="row" hidden>
+                        <div class="col-sm-5 col-sm-offset-3" style="margin-top: 15px;">
+                            <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+
                         </div>
+                    </div>
                         <div id="shinybuttons" class="row col-xs-10 col-sm-offset-0 bottom-buttons hidden ">
                             <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">Randomize!<br /> </button>
                             <a id="downloadData" class="btn btn-primary btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
@@ -368,13 +375,7 @@
                     </div>
                   
             </div>
-            <div id='loadingmessage' class="row" hidden>
-                <div class="col-sm-5 col-sm-offset-3" style="margin-top: 15px;">
-                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
-                    <span class="sr-only">Loading...</span>
-
-                </div>
-            </div>
+       
         </div>
 
     </div>
@@ -419,6 +420,14 @@
     <script>
         $(document).ready(function () {
 
+            if ($("#Basics_Users").val().toLowerCase() === "other") {
+
+                $("#Question_Users_Other").show();
+            }
+            if ($("#Cluster_Group").val().toLowerCase() === "other") {
+
+                $("#Question_Cluster_Other").show();
+            }
             setUserLimitsSelections();
             $('#randomResults').hide();
             var group = $("#Individual_Group").val();
@@ -574,6 +583,9 @@
                                 var finaltext = "";
                                 var rSuccess = "<h2 style='margin-left:-40px'>Random assignment was successful</h2>";
                                 var basicsUsers = $("#Basics_Users").val();
+                                if (basicsUsers.toLowerCase() === "other") {
+                                    basicsUsers = $("#Basics_Users_Other").val();
+                                }
                                 var figlabel = 'Figure 1. Baseline equivalence of the treatment and comparison groups.';
                                 var nextstep = 'The Coach added a &ldquo;Treatment&rdquo; variable to your dataset that identifies which ' + basicsUsers + ' are in the treatment and comparison groups. <strong>Download this revised dataset.</strong> Later, you will add your evaluation results to it and the &ldquo;Get Results&rdquo; tool will use it to determine whether your educational technology is moving the needle.';
                                 var balance, baseline_vars;
