@@ -89,7 +89,7 @@
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
                                             <label for="email">Username (email)</label>
-                                            <input type="email" name="email" />
+                                            <input type="email" name="email" value="<%= user.local.email  %>"/>
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
                                             <button type="submit" class="btn btn-lg btn-primary">Save</button>
@@ -142,7 +142,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <input type="checkbox" id="chkRecUpdate" name="receive_update"> <label for="chkRecUpdate">I would like to receive e-mail notifications when this site is updated.</label>
+                                            <input type="checkbox" id="chkRecUpdate" name="receive_update" checked="<%= user.receive_update %>"> <label for="chkRecUpdate">I would like to receive e-mail notifications when this site is updated.</label>
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
                                             <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg">Save</button>
@@ -166,9 +166,9 @@
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
                                             <label for="first_name">First Name</label>
-                                            <input type="text" name="first_name" />
+                                            <input type="text" name="first_name"  value="<%= user.profile.first_name %>" />
                                             <label for="last_name">Last Name</label>
-                                            <input type="text" name="last_name" />
+                                            <input type="text" name="last_name" value="<%= user.profile.last_name %>" />
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
                                             <button type="submit" class="btn btn-lg btn-primary">Save</button>
@@ -189,7 +189,7 @@
                                 <div class="panel-body">
                                     <div class="form-group col-sm-6 col-sm-offset-2">
                                         <label for="organization_name">Organization Name</label>
-                                        <input type="text" class="form-control" name="organization_name">
+                                        <input type="text" class="form-control" name="organization_name" value="<%= user.profile.organization_name %>">
                                     </div>
 
                                     <div class="col-sm-3 col-sm-offset-9 ">
@@ -202,7 +202,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <label class="label-one">Type of Organization</label>
-                                    <label class="label-two"><%= user.profile.organiztion_type %><% if (user.profile.organiztion_type=="other") { %> <%=  user.profile.organiztion_type_other %> <% } %></label>
+                                    <label class="label-two"><% if (user.profile.organiztion_type=="other") { %> <%=  user.profile.organiztion_type_other %> <% } else {%> <%= user.profile.organiztion_type %> <% } %></label>
                                     <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileThree">Update</a></label>
                                 </h4>
                             </div>
@@ -217,9 +217,10 @@
                                             <option value="research">Research organization</option>
                                             <option value="other">other</option>
                                         </select>
+                                        <input type="hidden" id="hdOrganiztion_type" value="<%= user.profile.organiztion_type %>" />
                                         <div id="other-specify-type" hidden="hidden">
                                             <p>Please specify:</p>
-                                            <input type="text" id="organiztion_type_other" name="organiztion_type_other" />
+                                            <input type="text" id="organiztion_type_other" name="organiztion_type_other" value="<%= user.profile.organiztion_type_other %>" />
                                         </div>
                                     </div>
 
@@ -233,7 +234,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <label class="label-one">Role</label>
-                                    <label class="label-two"><%= user.profile.role %> <% if (user.profile.role=="other") { %> <%=  user.profile.role_other %> <% } %></label>
+                                    <label class="label-two"><% if (user.profile.role=="other") { %> <%=  user.profile.role_other %> <% } else {%> <%= user.profile.role %> <% } %></label>
                                     <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileFour">Update</a></label>
                                 </h4>
                             </div>
@@ -250,9 +251,10 @@
                                             <option value="Researcher">Researcher</option>
                                             <option value="other">Other</option>
                                         </select>
+                                        <input type="hidden" id="hdRole" value="<%= user.profile.role %>" />
                                         <div id="other-specify-role" hidden="hidden">
                                             <p>Please specify:</p>
-                                            <input type="text" id="role_other" name="role_other" />
+                                            <input type="text" id="role_other" name="role_other"  value="<%= user.profile.role_other %>"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3 col-sm-offset-9 ">
@@ -269,6 +271,12 @@
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function () {
+            $("#organiztion_type").val($("#hdOrganiztion_type").val());
+            $("#role").val($("#hdRole").val());
+            if ($("#hdOrganiztion_type").val() === "other") { $("#other-specify-type").show(); }
+            else { $("#other-specify-type").hide(); }
+            if ($("#hdRole").val() === "other") { $("#other-specify-role").show(); }
+            else { $("#other-specify-role").hide(); }
             $("#reset-confirmpassword").keyup(checkPasswordMatch);
 
             function checkPasswordMatch() {
@@ -292,19 +300,19 @@
         });
         $('#role').change(function () {
             var value = $(this).val();
-
+            if (value !== "other") { $("#role_other").val(""); }
             var otherSpecify = $("#other-specify-role");
 
             if (value === "other") otherSpecify.show();
-            else otherSpecify.hide();
+            else { $("#role_other").val("");  otherSpecify.hide(); }
         });
         $('#organiztion_type').change(function () {
             var value = $(this).val();
-
+            if (value !== "other") { $("#organiztion_type_other").val(""); }
             var otherSpecify = $("#other-specify-type");
 
             if (value === "other") otherSpecify.show();
-            else otherSpecify.hide();
+            else {  otherSpecify.hide(); }
         });
     </script>
 </body>
