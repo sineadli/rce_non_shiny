@@ -244,7 +244,7 @@
                             </select>
                         </div>
                     </div>
-                    <% if(eval.path == "path-random") { %>
+                   
                     <div class="step-subquestion">
                         <h4><label for="cluster_var">If individuals are clustered, for example within classrooms or schools, select the cluster variable.</label></h4>
                     </div>
@@ -253,7 +253,7 @@
                             <option value="Select cluster variables">Select cluster variable</option>
                         </select>
                     </div>
-                    <% } %>
+                  
                     <div class="step-subquestion">
                         <h4><label for="grade_var">Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. Otherwise, select &ldquo;combine all grades.&rdquo;</label> </h4>
                     </div>
@@ -458,7 +458,7 @@
                                 $('#results').html("");
                                 var errors = data.error_message;
                                 if (errors.length > 0) {
-                                    $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + errors + '</p></h2>');
+                                    $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
                                     return;
                                 } else {
                                     console.log(data);

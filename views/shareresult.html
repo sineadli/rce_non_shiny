@@ -111,10 +111,13 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                         var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
                         var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
+                       
+                       
 
                         var grade_results_clean = true;
                         } catch (e) {
                         var grade_results_clean = false;
+                        console.log(e);
                         }
                         %>
 
@@ -158,15 +161,17 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <p></p>
 
                         <div class="white-background-blue-border">
-                            <strong> The Basics of <%= Basics_Tech_Name %></strong> <br / >
-                            <em> Program Type</em> :    <%= wordList(program_types).toLowerCase() %><br / >
-                            <em> Key Components</em> :  <%= Tech_Components %><br / >
-                            <em> Delivery Type</em> :   <%= wordList(delivery_types).toLowerCase() %><br / >
+                            <strong> The Basics of <%= Basics_Tech_Name %></strong> <br />
+                            <em> Program Type</em> :    <%= wordList(program_types).toLowerCase() %><br />
+                            <em> Key Components</em> :  <%= Tech_Components %><br />
+                            <em> Delivery Type</em> :   <%= wordList(delivery_types).toLowerCase() %><br />
                             <em> Used in</em> :
                             <% if (grades_used.length > 0) { %>
-                            <%= capitalize(wordList(grades_used)) %> grade <%= wordList(classroom_types).toLowerCase() %> classrooms
-                            <% } %><br / >
-                            <em> Target Outcomes</em> : <%= wordList(Outcomes).toLowerCase() %><br / >
+                            <%= capitalize(wordList(grades_used)) %> grade <%- wordList(classroom_types).toLowerCase() %> classrooms
+                            <% } %><br/>
+                            <% console.log(wordList(Outcomes));
+                            var OutcomesList = wordList(Outcomes).toLowerCase().replace('<br/>',' '); %>
+                            <em> Target Outcomes</em> : <%- OutcomesList %><br />
 
                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <p class="prev-answer hidden-print">
@@ -175,7 +180,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                             </p>
                             <% } %>
 
-                            <em> <%= capitalize(Tech_Cost_Saves) %></em> : $<%= Tech_Amount %> per <%= Tech_Cost_User %><br / >
+                            <em> <%= capitalize(Tech_Cost_Saves) %></em> : $<%= Tech_Amount %> per <%= Tech_Cost_User %><br />
 
                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <p class="prev-answer hidden-print">
@@ -243,7 +248,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                 <div class="row no-page-break">
                     <div class="col-xs-12">
-                        <h2> This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= Basics_Users %></h2>
+                        <h2> This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= useGrades %> <%= Basics_Users %></h2>
 
                         <% if (pilot_type === 'matched') { %>
                         <p>
@@ -259,14 +264,14 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                     <div class="col-xs-3">
                         <div class="blue-background-white-text">
                             <p> <strong> Treatment Group</strong> </p>
-                            <p> <%= capitalize(Basics_Users) %> who used readTech </p>
+                            <p> <%= capitalize(Basics_Users) %> who used <%= Basics_Tech_Name %> </p>
                             <p> # of <%= Basics_Users %>: <%= n_treatment %></p>
                         </div>
                     </div>
                     <div class="col-xs-3">
                         <div class="blue-background-white-text">
                             <p> <strong> Comparison Group</strong> </p>
-                            <p> <%= capitalize(Basics_Users) %> who did not use readTech </p>
+                            <p> <%= capitalize(Basics_Users) %> who did not use <%= Basics_Tech_Name %> </p>
                             <p> # of <%= Basics_Users %>: <%= n_comparison %></p>
                         </div>
                     </div>
@@ -362,9 +367,9 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                         <h2> The evaluation period lasted <%= duration %>.</h2>
                         <p>
-                            During this period, <%= Basics_Users %> in the intervention group were intended to use the technology
+                            During this period, <%= Basics_Users %> in the treatment group were expected to use <%= Basics_Tech_Name %>
                             <%= punctuate(Expected_Dosage) %>
-                            Students in the comparison group did not have access to <%= Basics_Tech_Name %>.
+                            <%= capitalize(Basics_Users) %> in the comparison group did not have access to <%= Basics_Tech_Name %>.
                         </p>
                         <p>
                             <% if (display === 'online') { %>
@@ -375,7 +380,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <p class="print-challenges-limitations"><%= challenges_limitations %></p>
                         <% } %>
                         <p>
-                            Other contextual factors or supports being provided to students may have contributed to results. Other factors include:
+                            Other contextual factors or initiatives might have contributed to results. Other factors include:
                             <%= Other_Notes %>
                         </p>
                         <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
