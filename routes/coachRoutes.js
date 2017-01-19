@@ -81,7 +81,8 @@ module.exports = function (app, passport) {
         sess = req.session;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.eval = eval;
-            sess.step = 2;
+            sess.step = eval.last_step;
+            if (!sess.step) sess.step = 2;
             sess.last_tool = "none";
             req.user.evalid = eval._id;
             req.user.save();
@@ -129,6 +130,7 @@ module.exports = function (app, passport) {
     //new or change title only
     app.post('/api/eval', isLoggedIn, function (req, res) {
         sess = req.session;
+        sess.step = 2;
         if (!req.body.id) {
 			var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
 			// Pre-populate milestones. Moved from get current eval.
