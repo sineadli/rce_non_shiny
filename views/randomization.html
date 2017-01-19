@@ -535,8 +535,10 @@
             $("#downloadData").addClass("hidden");
             var formData = new FormData();
             var pretest = $("#pretest").val();
-            var baseline_vars = $("#baseline_vars").val();
-            if (baseline_vars && pretest !== "None selected") baseline_vars.push($("#pretest").val());
+            var basein = $("#baseline_vars").val();
+            var baseline_vars = [];
+            if (basein) baseline_vars.push(basein);
+            if (pretest !== "None selected") baseline_vars.push(pretest);
         
             var interv_type = $("#intervention_type").val();
             var interv_quantity = $("#intervention_quantity").val();
@@ -577,7 +579,7 @@
                             var error = data.error_message[0];
                             $('#results').html("");
                             if (error) {
-                                $('#results').append('<h2 class="stop-warning"><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p></h2>');
+                                $('#results').append('<h2 class="stop-warning">There appears to be something wrong with your data set.</h2>  <p>Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p><p>Detailed error message: ' + error + '</p>');
                                 return;
                             } else {
                                 var finaltext = "";

@@ -101,7 +101,9 @@ console.log('checkpoint 0');
     Pass_Probability    = '[probability]';
     Tech_Cost_Saves     = '[Saves/Costs]';
     Tech_Amount         = '[amount]';
-    Tech_Cost_User      = '[user]';
+Tech_Cost_User = '[user]';
+Measure_Units = '[units]';
+Measure_Units_Other = '[units]';
     Action_Success      = '[next step if moving the needle]';
     Action_Fail         = '[next step if not moving the needle]';
 	Success_Effect_Size = '[success effect size]';
@@ -111,7 +113,8 @@ console.log('checkpoint 0');
         delivery_types = [''];
         classroom_types = [''];
         Outcomes = [];
-        grades_used = [];
+grades_used = [];
+useGrades = '';
         Tech_Purpose = '[purpose of technology]';
         Tech_Components = '';
         school_types = ['N/A'];
@@ -258,9 +261,21 @@ baseline_results_by_grade = [];
                 data_issues.planNext.push("Technology user type is not specified.");
             } else {
                 Tech_Cost_User      = planNext.Tech_Cost_User || Tech_Cost_User;
+}
+             if (!planNext.Measure_Units) {
+                data_issues.planNext.push("Outcome measure units is blank or undefined.");
+            } else if (planNext.Measure_Units.toLowerCase() === 'select an option') {
+                 data_issues.planNext.push("Outcome measure units is blank or undefined.");
+            } else {
+                Measure_Units = planNext.Measure_Units || Measure_Units;
             }
-                                    
-            Action_Success      = planNext.Action_Success || Action_Success;
+
+            if (Measure_Units === 'other') {
+                Measure_Units = planNext.Measure_Units_Other || Measure_Units_Other;
+                if (!planNext.Measure_Units_Other)  data_issues.planNext.push("Other outcome measure units descripiton is blank or undefined.");
+            }
+
+Action_Success      = planNext.Action_Success || Action_Success;
             if (!planNext.Action_Success)   data_issues.planNext.push("Next step for moving the needle is blank or undefined.");
                         
             Action_Fail         = planNext.Action_Fail || Action_Fail;
@@ -373,7 +388,7 @@ baseline_results_by_grade = [];
                 }
             }
             if (grades_used.length === 0) data_issues.planContext.push("No grades specified.");
-
+            if (grades_used.length !== 0) useGrades = "grade";
             //program_types   = [planContext.Type_Policy, planContext.Type_Teacher_Level, planContext.Type_School_Level, planContext.Type_CSchool_Structure, planContext.Type_Practice, planContext.Type_Curriculum];
             program_types = [planContext.Type_Curriculum, planContext.Type_Practice, planContext.Type_Supplement, planContext.Type_Assessment, planContext.Type_Professional_Learning, planContext.Type_Information_Management];
             if (allBlank(program_types)) data_issues.planContext.push("No program types specified.");

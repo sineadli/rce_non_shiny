@@ -463,7 +463,7 @@
                             var basicsUsers = $("#basicsUsers").val();
                             var errors = data.error_message;
                             if (errors.length > 0) {
-                                $('#results').append('<h2 class="stop-warning">Unable to match.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p></h2>');
+                                $('#results').append('<h2 class="stop-warning">Unable to match.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p><p>Detailed error message: ' + error + '</p>');
                                 return;
                             } else {
                                 var nextstep = 'The Coach revised your dataset to only include ' + basicsUsers + ' in your treatment and comparison groups. <strong>Download this revised dataset.</strong> You will need it for the &ldquo;Get Results&rdquo; tool to determine whether your educational technology is moving the needle.';
