@@ -27,8 +27,8 @@ body.one-col div.row div.content {
 }
 .legal {
     margin: 45px auto;
-    font-size: 1.1em;
-    line-height: 1.6em;
+    font-size: 1em;
+
     width: 80%;
     float: none;
 }
@@ -561,7 +561,7 @@ div.front-header h1 {
 
 #slides li {
     width: 100%;
-  height:200px;
+  height:auto;
   float: left;
   text-align: center;
   position: relative;
@@ -617,7 +617,7 @@ a#next:hover, a#next:focus {
 
 .quote-phrase {
   height: 200px;
-  font-size: 24px;
+  font-size: 20px;
   color: #222;
   font-style: italic;
   text-shadow: .5px 0px #b14943;
