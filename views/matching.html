@@ -602,13 +602,23 @@
                             $("#n_matched").val(JSON.stringify(n_matched));
                             $("#n_matched_treat").val(JSON.stringify(n_matched_treat));
 
-                            $("#downloadData")
-                             .removeClass("disabled");
+                            // Look for download path, in case ordering shifts.
+                            var downloadPath = '';
 
-                            $("#downloadData").removeClass("hidden")
-                              .attr("target", "_blank")
-                              .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
-                            // Save results to database.
+                            for (var i = 0; i < responsePaths.length; i++) {
+                                if (responsePaths[i].indexOf('/files/matching-') > -1) {
+                                    downloadPath = responsePaths[i];
+                                    break;
+                                }
+                            }
+
+                            if (downloadPath !== '') {
+                                $("#downloadData")
+                                    .removeClass("disabled");
+                                $("#downloadData").removeClass("hidden")
+                                  .attr("target", "_blank")
+                                  .attr("href", "http://52.222.20.48" + downloadPath).removeAttr("disabled");
+                            }
                         },
                             error: function (xhr) {
                                 $('#loadingmessage').hide();
