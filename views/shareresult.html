@@ -46,8 +46,10 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
     <form action="" method="post">
         <% } %>
         <% include('../views/partials/brief_appendix_evaluation_processing.html') %>
+     
 
-        <div class="container-fluid">
+    
+    <div class="container-fluid">
             <div class="no-page-break">
                 <div class="row">
                     <div class="col-xs-12">
@@ -121,6 +123,9 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         }
                         %>
 
+                        <input type="hidden" id="interpretation_1" value="<%= interpretation_1 %>" />
+                        <input type="hidden" id="interpretation_2" value="<%= interpretation_2 %>" />
+
                         <% if (analysis_by_grade) { %>
                         <h2 class="grade-header">Grade <%= grade %></h2>
                         <% } %>
@@ -129,8 +134,8 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <% if (grade_results_clean) { %>
                         <ol class="no-page-break">
                             <li> <%= needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.' %></li>
-                            <li> <%= interpretation_1 %></li>
-                            <li> <%= interpretation_2 %></li>
+                            <li id="item_interp_1"> <%= interpretation_1 %></li>
+                            <li id="item_interp_2"> <%= interpretation_2 %></li>
                         </ol>
                         <h3> Next steps</h3>
 
@@ -372,11 +377,13 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                             <%= capitalize(Basics_Users) %> in the comparison group did not have access to <%= Basics_Tech_Name %>.
                         </p>
                         <p>
-                            <% if (display === 'online') { %>
+                        <%
+                        console.log("display = " + display + " and sharing = " + query.sharing);
+                            if (display === 'online' && query.sharing != 1) { %>
                             <label class="hidden-print"> Challenges/Limitations:</label>
                             <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
                         <p class="visible-print-block print-challenges-limitations"><%= challenges_limitations %></p>
-                        <% } else if (display === 'download') { %>
+                        <% } else if (display === 'download' || query.sharing == 1) { %>
                         <p class="print-challenges-limitations"><%= challenges_limitations %></p>
                         <% } %>
                         <p>
@@ -419,13 +426,16 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                 <div class="row">
                     <div class="col-xs-12">
+
+                        <% if (display === 'online' && query.sharing != 1) { %>
                         <h2> Conclusions and Next Steps</h2>
-                        <% if (display === 'online') { %>
                         <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
                         <p class="visible-print-block print-conclusions-next-steps"><%= conclusions_next_steps %></p>
-                        <% } else if (display === 'download') { %>
+                        <% } else if (display === 'download' || query.sharing == 1) {
+                        if(conclusions_next_steps != "") { %>
+                        <h2> Conclusions and Next Steps</h2>
                         <p class="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
-                        <% } %>
+                        <% }} %>
                     </div>
                 </div>
 
@@ -511,8 +521,14 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <p>You are able to select from the following options to export your findings brief! We suggest exporting this brief and reviewing it with others before you complete your evaluation where we'll publish it so others can see.</p>
+                                        <% if (query.sharing != 1) { %>
+                                        <p>You can select from the following options to export your findings brief. We suggest exporting this brief and reviewing it with others before you share it and complete your evaluation.  Shared briefs can be viewed by all of the Coach's registered users.</p>
+                                        <% } %>
+                                        <% if (query.sharing == 1) { %>
+                                        <p>Select which document to download and your prefered document format.</p>
+                                        <% } %>
                                     </div>
+                                  
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-6">
@@ -589,6 +605,9 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
     <script>
         // Function to convert array into word list (e.g. ["word1", "word2", "word3"] -> "word1, word2, and word3")
+
+      
+
         var wordList = function (x) {
             var out;
 

@@ -52,7 +52,9 @@ $(document).ready(function() {
 	$('body.sharing ol.breadcrumb>li.breadcrumb-item>a').prop("href", "/publications");
 	$('body.sharing ol.breadcrumb>li.breadcrumb-item>a')
 		.html("<span class='fa fa-caret-left'></span> BACK TO SHARED EVALUTAIONS");
-
+	$('body.sharing button#Save').hide();
+	$('body.sharing button#open-complete-evaluation-modal').hide();
+	
 
 // For links with return paths, get return tool name to use in button text and breadcrumb
 	var urlParams = new URLSearchParams(window.location.search);
