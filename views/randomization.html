@@ -676,9 +676,19 @@
                             }
 
                             // Save results to database.
-                        }
+                        },
+                            error: function (xhr) {
+                                $('#loadingmessage').hide();
+                                var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
+                                $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                            }
                     });
-                }
+                },
+                    error: function (xhr) {
+                        $('#loadingmessage').hide();
+                        var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
+                        $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                    }
             });
         });
         //init feedback_me plugin
