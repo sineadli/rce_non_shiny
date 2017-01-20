@@ -38,10 +38,12 @@
         var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
         var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
         var Basics_Outcome = eval.basics.Basics_Outcome;
-        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+    if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+        var Outcome_Direction = eval.planQuestion.Outcome_Direction;
         var Measure_Units_Other = eval.planNext.Measure_Units_Other;
         var Measure_Units = eval.planNext.Measure_Units;
-        if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
+    if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
+        if (Measure_Units === "") { Measure_Units = "units"; }
         %>
     <div class="container-fluid">
     <div class="row">
@@ -124,7 +126,7 @@
             </div>
             <div class="step-action">
                 <p>
-                    I would consider any <%= eval.planQuestion.Outcome_Direction %> larger than
+                    I would consider any <%= eval.planQuestion.Outcome_Direction %> at least
                     <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="number" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px"/>
                     <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span> a success.
                 </p>
@@ -358,9 +360,13 @@
                 </div>
             </div>
         </div>
-        <div class="hidden">
-            <input type="hidden" name="result" id="gresult" value="<%= Result %>" />
-        </div>
+    <div class="hidden">
+        <input type="hidden" id="techName" value="<%= Basics_Tech_Name %>"/>
+        <input type="hidden"  id="evalOutcome" value="<%= Basics_Outcome %>"/>
+        <input type="hidden"  id="outDirection" value="<%= Outcome_Direction %>" />
+        <input type="hidden" id="measureUnits" value="<%= Measure_Units %>"/>
+        <input type="hidden" name="result" id="gresult" value="<%= Result %>" />
+    </div>
         <% include ../views/partials/toolButtons.html %>
     </form>
     <% include ../views/partials/footer.html %>
@@ -390,14 +396,20 @@
                     success: function (data) {
                         $('#loadingmessage').hide();
                         $("select.from-upload").empty();
+                        $("#outcome_var").append($("<option></option>")
+                        .attr("value", "none selected")
+                        .text("None Selected"));
+                        $("#treat_var").append($("<option></option>")
+                       .attr("value", "none selected")
+                       .text("None Selected"));
                         $("#grade_var")
                         .append($("<option></option>")
                         .attr("value", "combine all grades")
-                        .text("combine all grades"));
+                        .text("Combine all grades"));
                         $("#cluster_var ")
                 .append($("<option></option>")
                 .attr("value", "no cluster")
-                .text("no cluster"));
+                .text("No cluster"));
                         $(".before-upload").addClass("after-upload");
                         $(".after-upload").removeClass("before-upload");
                         $.each(data.colnames, function (index, value) {
@@ -472,12 +484,15 @@
                                             var grade_object = results_by_grade[key];
                                             $('#results').append('<h3>Grade ' + grade_object.grade + '</h3>');
                                             if (grade_object.interpretation) {
-                                                $('#results').append('<ul>');
-                                                var text1 = grade_object.interpretation.texts[0];
-                                                var text2 = grade_object.interpretation.texts[1];
-                                                $('#results').append('<li>' + text2 + '</li>');
+                                                var text1 = "";
+                                                if ($("#Success_Effect_Size").val() > 0 && grade_object.interpretation_cutoff_0) {
+                                                    text1 = "<li>There is a " + grade_object.interpretation_cutoff_0.probability[0] + " probability that  " + $("#techName").val() + " " + $("#Outcome_Direction").val() + "s " + $("#evalOutcome").val() + ".</li>";
+                                                }
+                                                var text2 = "<li>There is a " + grade_object.interpretation.probability[0] + " probability that  " + $("#techName").val() + " " + $("#Outcome_Direction").val() + "s " + $("#evalOutcome").val() + " by " + $("#Success_Effect_Size").val() + " " + $("#measureUnits").val() + " or more.</li>";
+                                                
+                                                $('#results').append('<ul>' + text1  + text2);
                                             }
-                                            $('#results').append('</ul>');
+                                           
                                         }
                                     }
 

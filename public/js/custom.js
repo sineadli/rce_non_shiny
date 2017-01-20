@@ -215,7 +215,10 @@ function setBasicsConclusion() {
 		$("#success").hide();
 		$("button.complete").attr("disabled", "disabled");
 	}
-	else if (techName !== "" && whoUsers.toLowerCase() !== "select an option" && haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" && haveOutcome.toLowerCase() !== "select an option") {
+	else if (techName !== "" &&
+		whoUsers.toLowerCase() !== "select an option" && whoUsers.toLowerCase() !== "" &&
+		haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" &&
+		haveOutcome.toLowerCase() !== "select an option" && haveOutcome.toLowerCase() !== "") {
 		$("#Step_Conclusion").show();
 		$("#success").show();
 		$("#stop-no-tech").hide();
