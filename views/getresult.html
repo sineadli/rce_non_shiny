@@ -42,7 +42,8 @@
         var Outcome_Direction = eval.planQuestion.Outcome_Direction;
         var Measure_Units_Other = eval.planNext.Measure_Units_Other;
         var Measure_Units = eval.planNext.Measure_Units;
-        if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
+    if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
+        if (Measure_Units === "") { Measure_Units = "units"; }
         %>
     <div class="container-fluid">
     <div class="row">
