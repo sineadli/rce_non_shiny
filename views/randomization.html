@@ -537,8 +537,8 @@
             var pretest = $("#pretest").val();
             var basein = $("#baseline_vars").val();
             var baseline_vars = [];
-            if (basein) baseline_vars.push(basein);
-            if (pretest !== "None selected") baseline_vars.push(pretest);
+            if (basein) baseline_vars = baseline_vars.concat(basein);
+            if (pretest !== "None selected") baseline_vars = baseline_vars.concat(pretest);
         
             var interv_type = $("#intervention_type").val();
             var interv_quantity = $("#intervention_quantity").val();
@@ -552,13 +552,11 @@
             $("#s_pretest").val(JSON.stringify($("#pretest").val()));
             $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
             
-
             formData.append("data", $("#chosenfile")[0].files[0]);
             formData.append("unit_id", JSON.stringify($("#unit_id").val()));
             formData.append("intervention_type", JSON.stringify(interv_type));
             formData.append("intervention_quantity", JSON.stringify(interv_quantity));
             if (baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
-           
 
             $.ajax({
                 url: "http://52.222.20.48/ocpu/library/edtechrce/R/randomize",
@@ -668,19 +666,30 @@
                             $("#mresult").val(JSON.stringify(data));
 
                             if (data.randomize_success[0]) {
-                                $("#downloadData")
-                                    .removeClass("disabled");
-                                $("#downloadData").removeClass("hidden")
-                                  .attr("target", "_blank")
-                                  .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
-                            }
 
-                            // Save results to database.
+                                // Look for download path, in case ordering shifts.
+                                var downloadPath = '';
+
+                                for (var i = 0; i < responsePaths.length; i++) {
+                                    if (responsePaths[i].indexOf('/files/randomize-') > -1) {
+                                        downloadPath = responsePaths[i];
+                                        break;
+                                    }
+                                }
+
+                                if (downloadPath !== '') {
+                                    $("#downloadData")
+                                        .removeClass("disabled");
+                                    $("#downloadData").removeClass("hidden")
+                                      .attr("target", "_blank")
+                                      .attr("href", "http://52.222.20.48" + downloadPath).removeAttr("disabled");
+                                }
+                            }
                         },
                             error: function (xhr) {
                                 $('#loadingmessage').hide();
                                 var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
-                                $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                                $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
                             }
                     });
                 },
