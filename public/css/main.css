@@ -686,6 +686,9 @@ div.dash-well div.help-sec {
     border-right: 2px #D9D7BE solid;
 
 }
+body.downloads div.dash-well ul {
+    list-style: none;
+}
 .btn-primary {
     background-color: #006982;
 }

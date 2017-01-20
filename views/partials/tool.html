@@ -33,7 +33,9 @@
 
         status = tool[0].status;
         d=new Date(tool[0].visited_at);
-        if (status.toLowerCase()=="completed") {btnText="EDIT"} else {btnText="CONTINUE"}
+        if (status.toLowerCase()=="completed" && tool[0].type !="guide") {btnText="EDIT"}
+        else if (status.toLowerCase()!="completed" && tool[0].type !="guide") {btnText="CONTINUE"}
+        else {btnText="VIEW"}
         }
         }       //tool visited
 

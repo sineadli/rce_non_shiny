@@ -111,8 +111,8 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                         var next_steps = (success) ? Action_Success : Action_Fail;
 
-                        var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
-                        var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
+                       var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
+                      //  var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
                        
                        
 
@@ -123,8 +123,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         }
                         %>
 
-                        <input type="hidden" id="interpretation_1" value="<%= interpretation_1 %>" />
-                        <input type="hidden" id="interpretation_2" value="<%= interpretation_2 %>" />
+                     
 
                         <% if (analysis_by_grade) { %>
                         <h2 class="grade-header">Grade <%= grade %></h2>
@@ -134,8 +133,8 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <% if (grade_results_clean) { %>
                         <ol class="no-page-break">
                             <li> <%= needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.' %></li>
+                     
                             <li id="item_interp_1"> <%= interpretation_1 %></li>
-                            <li id="item_interp_2"> <%= interpretation_2 %></li>
                         </ol>
                         <h3> Next steps</h3>
 
