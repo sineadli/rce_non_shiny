@@ -624,7 +624,7 @@
 
 
                                 <div class="step-action context-tag">
-                                    <input type="text" name='Total_Students' id="Total_Students" value="<%= eval.planContext.Total_Students %>" class="num-input" />
+                                    <input type="number" name='Total_Students' id="Total_Students" value="<%= eval.planContext.Total_Students %>" class="num-input" />
                                   
                                 </div>
                                 <div class="step-subquestion">
@@ -728,7 +728,7 @@
 
                                         %>
 
-                                        <input type="text" id="<%= cbid %>" name="<%= cbid %>" class="per-input" value="<%= cbvalue %>" /><label for="<%= cbid %>">&#37;&nbsp;<%= cblabel %></label><br /> <%- midbreak %>
+                                        <input type="number" id="<%= cbid %>" name="<%= cbid %>" class="per-input" value="<%= cbvalue %>" /><label for="<%= cbid %>">&#37;&nbsp;<%= cblabel %></label><br /> <%- midbreak %>
                                         <%
                                         }
                                         %>
