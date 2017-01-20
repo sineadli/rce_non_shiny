@@ -668,14 +668,25 @@
                             $("#mresult").val(JSON.stringify(data));
 
                             if (data.randomize_success[0]) {
-                                $("#downloadData")
-                                    .removeClass("disabled");
-                                $("#downloadData").removeClass("hidden")
-                                  .attr("target", "_blank")
-                                  .attr("href", "http://52.222.20.48" + responsePaths[8]).removeAttr("disabled");
-                            }
 
-                            // Save results to database.
+                                // Look for download path, in case ordering shifts.
+                                var downloadPath = '';
+
+                                for (var i = 0; i < responsePaths.length; i++) {
+                                    if (responsePaths[i].indexOf('/files/randomize-') > -1) {
+                                        downloadPath = responsePaths[i];
+                                        break;
+                                    }
+                                }
+
+                                if (downloadPath !== '') {
+                                    $("#downloadData")
+                                        .removeClass("disabled");
+                                    $("#downloadData").removeClass("hidden")
+                                      .attr("target", "_blank")
+                                      .attr("href", "http://52.222.20.48" + downloadPath).removeAttr("disabled");
+                                }
+                            }
                         },
                             error: function (xhr) {
                                 $('#loadingmessage').hide();
