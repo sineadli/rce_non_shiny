@@ -110,16 +110,22 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         var needle_negate = (success) ? '' : ' not';
 
                         var next_steps = (success) ? Action_Success : Action_Fail;
-
-                       var interpretation_1 = analysis_results_by_grade[grade].interpretation.texts[1];
-                      //  var interpretation_2 = analysis_results_by_grade[grade].interpretation.texts[0];
+                        var interpretation_2 = "";
+                        if(Success_Effect_Size > 0){
+                          if(analysis_results_by_grade[grade].interpretation_cutoff_0 ) {
+                                interpretation_2 = "There is a " + analysis_results_by_grade                [grade].interpretation_cutoff_0.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ".";
+                         }
+                        }
+                        
+                        var interpretation_1 = "There is a " + analysis_results_by_grade[grade].interpretation.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more.";
+                    
                        
                        
 
                         var grade_results_clean = true;
                         } catch (e) {
                         var grade_results_clean = false;
-                        console.log(e);
+                        console.log("grad results error = " + e);
                         }
                         %>
 
@@ -133,7 +139,10 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <% if (grade_results_clean) { %>
                         <ol class="no-page-break">
                             <li> <%= needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.' %></li>
-                     
+
+                            <% if (Success_Effect_Size > 0) { %>
+                            <li id="item_interp_2"> <%= interpretation_2 %></li>
+                            <% } %>
                             <li id="item_interp_1"> <%= interpretation_1 %></li>
                         </ol>
                         <h3> Next steps</h3>

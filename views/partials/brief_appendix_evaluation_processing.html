@@ -304,7 +304,8 @@ Action_Success      = planNext.Action_Success || Action_Success;
                  analysis_results            = JSON.parse(eval.getresult.Result);
                  analysis_results_by_grade   = analysis_results.results_by_grade;
                  analysis_by_grade           = Object.keys(analysis_results_by_grade).length > 1;
-
+console.log("analysis_results = " + analysis_results);
+console.log("analysis_results_by_grade = " + analysis_results_by_grade);
                  success_count = 0, failure_count = 0;
 
                 for (grade in analysis_results_by_grade) {

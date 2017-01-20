@@ -220,6 +220,7 @@
                                                 %>
                                                 <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
                                                 }
+                                                console.log("basics = " + eval.basics)
                                                 %>
 
                                             </select>
@@ -332,16 +333,16 @@
         usersUpdate(this);
         setBasicsConclusion();
     });
-    $("#Basics_Users_Other").keyup(function () {
-        usersUpdate(this);
+    $("#Basics_Users_Other").change(function () {
+    
         setBasicsConclusion();
     });
     $('#Basics_Outcome').change(function() {
         outcomeUpdate(this);
         setBasicsConclusion();
     });
-    $("#Basics_Outcome_Other").keyup(function () {
-        outcomeUpdate(this);
+    $("#Basics_Outcome_Other").change(function () {
+      
         setBasicsConclusion();
     });
     $('#Basics_Have').change(function () {
