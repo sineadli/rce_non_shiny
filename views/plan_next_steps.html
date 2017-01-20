@@ -107,7 +107,7 @@
                                             %>
                                         </select>
 
-                                        about $<label class="hidden" for="Tech_Amount">Enter amount technology costs or saves in dollars.</label><input type="text" style="width: 40px;" name="Tech_Amount" id="Tech_Amount" placeholder="20" value="<%= eval.planNext.Tech_Amount %>" />
+                                        about $<label class="hidden" for="Tech_Amount">Enter amount technology costs or saves in dollars.</label><input type="number" style="width: 40px;" name="Tech_Amount" id="Tech_Amount" placeholder="20" value="<%= eval.planNext.Tech_Amount %>" />
                                         per
                                         <label class="hidden" for="Tech_Cost_User">Select technology user.</label><select required name="Tech_Cost_User">
                                             <%
@@ -259,7 +259,7 @@
                                     <p>
                                         I would consider any <span class="effect-direction"><%= Outcome_Direction %></span> larger than
 
-                                        <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
+                                        <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="number" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" />
                                         <span class="measure-units">units</span> on <span class="effect-measure"><%= Outcome_Measure %></span> a success.
                                     </p>
                                 </div>
