@@ -24,6 +24,7 @@ var crypto = require('crypto');
 
 var configDB = require('./config/database.js');
 var preventClickjacking = require('./middleware/preventClickjacking.js');
+var coachsteps = require('./middleware/coachsteps.js');
 
 app.disable('x-powered-by')
 // configuration ===============================================================
@@ -56,7 +57,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 console.log(" passport loaded ");
 
-
+app.use(coachsteps);
 
 // routes ======================================================================
 //require('./routes/routes.js')(app, passport, StepOne, StepTwo, StepThree, StepFour); // load our routes and pass in our app and fully configured passport

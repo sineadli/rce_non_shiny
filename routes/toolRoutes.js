@@ -25,8 +25,7 @@ var sess;
 module.exports = function (app, passport) {
    // app.use(isLoggedIn);
     app.use(getCurrentEvaluation);
-	
-	
+		
 	function dynamicSort(property) {
 		var sortOrder = 1;
 		if (property[0] === "-") {
@@ -38,8 +37,7 @@ module.exports = function (app, passport) {
 			return result * sortOrder;
 		}
 	}
-	
-	
+		
 	function updateLastTool(eval, toollist) {
 		var tool = eval.toolsvisited.filter(function (x) { return x.name === toollist.name });
 		if (tool.length == 0) {
