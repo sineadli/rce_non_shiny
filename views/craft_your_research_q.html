@@ -148,7 +148,7 @@
                                     %>
 
                                 </select>
-                                <div id="Question_Outcome_Other" hidden="true" style="margin-left: 20px;">
+                                <div id="Question_Outcome_Other" hidden="true" class="other-div">
                                     <p>
                                         <label for="Basics_Outcome_Other">Please specify:</label>
 
@@ -384,7 +384,9 @@
             var outcome = $("#Basics_Outcome").val();
             if ($("#Basics_Outcome").val().toLowerCase() === "other") {
                 outcome = $("#Basics_Outcome_Other").val();
+                $('#Question_Outcome_Other').show();
             }
+          
             var measure = $("#Outcome_Measure").val();
             if (outcome === "Select an option") {
                 outcome = "B";
