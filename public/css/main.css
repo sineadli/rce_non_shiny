@@ -1118,13 +1118,14 @@ div#How-Group label {
     margin-top: 0;
 }
 
-/*input[type=checkbox] {
-    width: 20px;
+input[type=checkbox] {
+    cursor: pointer;
+/*    width: 20px;
     height: 20px;
     vertical-align: top;
     margin-top: 10px;
-    margin-right: 5px;
-}*/
+    margin-right: 5px;*/
+}
 /* hide input */
 div#How-Group input.radio:empty,
 div.check-list input[type=checkbox]:empty {
@@ -1465,9 +1466,9 @@ th, td {
     padding: 8px;
     vertical-align: top;
 }
-    tr:nth-child(odd){background-color: #fff}
+    tr:nth-child(odd), table#timeline tr:nth-child(odd) td.index input{background-color: #fff}
 
-     tr:nth-child(even){background-color: #F4F2EB}
+     tr:nth-child(even), table#timeline tr:nth-child(even) td.index input{background-color: #F4F2EB}
 
 
 tr.hide-row {
@@ -1545,12 +1546,18 @@ table#timeline td, table#timeline th{
 }
 table#timeline td.index input{
      width:25px;
+    cursor: default;
+    border: none;
 }
 table#timeline tr:hover, table#timeline tr:focus {
     outline: 1px  solid #56ACE0;
     background-color: #D5EAF7;
     cursor: move;
 }
+
+    table#timeline tr:hover td.index input {
+        background-color: #D5EAF7;
+    }
 table#timeline input[type=date] {
     width: 125px;
     font-size: .9em;

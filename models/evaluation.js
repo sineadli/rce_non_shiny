@@ -30,17 +30,21 @@ function stripPercent(x) {
 
 
 //define enums:
-units = ["students", "schools", "teachers", "parents", "others"];
-achievement = ["Student academic achievement", "Student non-academic achievement", "Teacher performance", "other"];
-direction = ["Increase", "Decrease"];
-spendresults = ["costs", "saves"];
-unitmeasured = ["student", "teacher", "school"];
+var units = ["students", "schools", "teachers", "parents", "others"];
+var achievement = ["Student academic achievement", "Student non-academic achievement", "Teacher performance", "other"];
+var direction = ["increase", "decrease"];
+var spendresults = ["costs", "saves"];
+var unitmeasured = ["student", "teacher", "school"];
+var yesno  = {
+	values: ["yes", "no"],
+		message: 'Invalid response for `{PATH}` with value `{VALUE}`'
+}
 
 totalToolNumber = 11; //for completed status
 
 //02.03 determine your approach
 var Basics = mongoose.Schema({
-    Basics_Have: { type: String, default: '' },
+    Basics_Have: { type: String,  default: '' },
     Basics_Tech_Name: { type: String, default: '' }, // was Plan_Question_A
     Basics_Using: { type: String, default: '' }, // was Prob_Appr_A This is not used.  Replaced by Prob_Appr_Current_or_New
     Basics_Users: { type: String, default: 'users' }, // Was Prob_Appr_B

@@ -231,11 +231,9 @@ module.exports = function (app, passport) {
                 eval.last_tool = "Determine Your Approach";
 				updateLastTool(eval, toollist);
 				//add/update the probAppr within eval
-               
+                eval.markModified('prepareRandom');
                     eval.prepareRandom.Individual_Group = obj.Individual_Group;
-				
                     eval.prepareRandom.Cluster_Group = obj.Cluster_Group;
-				
                     eval.prepareRandom.Cluster_Group_Other = obj.Cluster_Group_Other;
               
                 var probAppr = {
@@ -364,23 +362,11 @@ module.exports = function (app, passport) {
                 //eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
 				
-				
-				//add/update the planQuestion within eval
-                var basics = {
-                    "Basics_Have": eval.basics.Basics_Have,
-                    "Basics_Using": eval.basics.Basics_Using,
-                    "Basics_Users": eval.basics.Basics_Users,
-                    "Basics_Users_Other": eval.basics.Basics_Users_Other,
-                    "Basics_Tech_Name": obj.Basics_Tech_Name,
-                    "Basics_Outcome_Other": obj.Basics_Outcome_Other,
-                    "Basics_Outcome": obj.Basics_Outcome,
-                    "created_at": eval.basics.created_at
-                };
-                eval.basics = basics;
-    //            eval.basics.Basics_Tech_Name = obj.Basics_Tech_Name;
-				//eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
-				//eval.basics.Basics_Outcome = obj.Basics_Outcome;
-
+				eval.markModified('basics');
+                eval.basics.Basics_Tech_Name =obj.Basics_Tech_Name;
+                eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
+                eval.basics.Basics_Outcome = obj.Basics_Outcome;
+		
                 var planQuestion = {
                         "Outcome_Measure": obj.Outcome_Measure,
 						"Outcome_Direction": obj.Outcome_Direction, 
@@ -389,7 +375,6 @@ module.exports = function (app, passport) {
 				};
 				if (!eval.planQuestion) {
 				    eval.planQuestion.created_at = dt;
-
 				}
                 else {
 				    eval.planQuestion.updated_at = dt;
@@ -461,6 +446,7 @@ module.exports = function (app, passport) {
 				updateLastTool(eval, toollist);
 
 				//add/update the planQuestion within eval
+				eval.markModified('planQuestion');
 				eval.planQuestion.Outcome_Measure = obj.Outcome_Measure; // measure
 				eval.planQuestion.Outcome_Direction = obj.Outcome_Direction; // direction
 			
@@ -610,7 +596,8 @@ module.exports = function (app, passport) {
 				eval.last_step = 3;
                 eval.last_tool = "Summarize Context";
                 updateLastTool(eval, toollist);
-
+				
+				eval.markModified('basics');
                 eval.basics.Basics_Outcome = obj.Basics_Outcome;
 				eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
 				//add/update the planQuestion within eval
@@ -739,8 +726,6 @@ module.exports = function (app, passport) {
 		var toollist = { "name": "Prepare for Random Assignment", "status": req.body.status, "visited_at": new Date() };
 		sess.eval.step = 4;
 		var obj = req.body;
-
-
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "prepare_data_random";
 		var dt = new Date();
@@ -767,9 +752,12 @@ module.exports = function (app, passport) {
 				eval.last_tool = "Prepare Your Data for Analysis";
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
-				
+
+			    eval.markModified('basics');
 				eval.basics.Basics_Users = obj.Basics_Users;
 				eval.basics.Basics_Users_Others = obj.Basics_Users_Others;
+				
+				eval.markModified('prepare');
 				eval.prepare.Check_Pretest = obj.Check_Pretest;
 				eval.prepare.Check_Background = obj.Check_Background;
 
@@ -958,29 +946,18 @@ module.exports = function (app, passport) {
 				eval.last_tool = toollist.name;
 				//eval find so update the toolsVisited accordingly
 			    updateLastTool(eval, toollist);
-               // let planContext = Object.assign({}, eval.planContext);
-                var planContext = extend({}, eval.planContext);
-                eval.planContext.Tech_Purpose = obj.Tech_Purpose;
+				
+
+				eval.markModified('planContext');
+				eval.planContext.Tech_Purpose = obj.Tech_Purpose;
                 eval.planContext.Tech_Components = obj.Tech_Components;
                 eval.planContext.Expected_Dosage = obj.Expected_Dosage;
-              // eval.planContext = planContext;
-                var planNext = {
-                    "Tech_Cost_Saves": eval.planNext.Tech_Cost_Saves,
-                    "Tech_Amount": eval.planNext.Tech_Amount,
-                    "Tech_Cost_User": eval.planNext.Tech_Cost_User, 
-                    "Tech_Cost_Desc": eval.planNext.Tech_Cost_Desc, 
-                    "Measure_Units": eval.planNext.Measure_Units,
-                    "Measure_Units_Other": eval.planNext.Measure_Units_Other,
-                    "Success_Effect_Size": eval.planNext.Success_Effect_Size, 
-                    "Pass_Probability": eval.planNext.Pass_Probability,
-                    "Fail_Probability": eval.planNext.Fail_Probability, 
-                    "Action_Success": obj.Action_Success,
-                    "Action_Fail": obj.Action_Fail,
-                     "Action_Inconclusive": obj.Action_Inconclusive,
-                     "created_at": eval.planNext.created_at
-                };
-			  
-                eval.planNext = planNext;
+				
+				eval.markModified('planNext');
+                eval.planNext.Action_Success= obj.Action_Success;
+			    eval.planNext.Action_Fail = obj.Action_Fail;
+			    eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
+			   		
 			    var evalPlan = obj.EvalPlan;
 
 				if (!eval.evalPlan) {
@@ -1046,10 +1023,13 @@ module.exports = function (app, passport) {
                 eval.last_tool = toollist.name;
                 //eval find so update the toolsVisited accordingly
                 updateLastTool(eval, toollist);
-
+				
+				eval.markModified('planContext');
                 eval.planContext.Tech_Purpose = obj.Tech_Purpose;
                 eval.planContext.Tech_Components = obj.Tech_Components;
-                eval.planContext.Expected_Dosage = obj.Expected_Dosage;
+				eval.planContext.Expected_Dosage = obj.Expected_Dosage;
+				
+				eval.markModified('planNext');
                 eval.planNext.Action_Success = obj.Action_Success;
                 eval.planNext.Action_Fail = obj.Action_Fail;
                 eval.planNext.Action_Inconclusive = obj.Action_Inconclusive;
@@ -1153,12 +1133,11 @@ module.exports = function (app, passport) {
                 eval.last_tool = "Matching";
                 //eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
-             
+
+                eval.markModified('planQuestion');
 				eval.planQuestion.Intervention_Group_Desc = obj.Intervention_Group_Desc;
 				eval.planQuestion.Comparison_Group_Desc = obj.Comparison_Group_Desc;
-			
-			
-					
+	
 				var matching = {
 					    "Targeted_Access": obj.Targeted_Access,   
                         "Target_Group_Desc": obj.Target_Group_Desc,
@@ -1248,7 +1227,7 @@ module.exports = function (app, passport) {
 				//eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
 
-
+				eval.markModified('prepareRandom');
 			    eval.prepareRandom.Individual_Group = obj.Individual_Group;
 			    eval.prepareRandom.Cluster_Group = obj.Cluster_Group;
 			    eval.prepareRandom.Cluster_Group_Other = obj.Cluster_Group_Other;
@@ -1338,9 +1317,12 @@ module.exports = function (app, passport) {
                 eval.last_tool = "Get Results";
                 //eval find so update the toolsVisisted accordingly
 				updateLastTool(eval, toollist);
-
+				
+				eval.markModified('planQuestion');
 				eval.planQuestion.Outcome_Measure = obj.Outcome_Measure;
 				eval.planQuestion.Outcome_Direction = obj.Outcome_Direction;
+				
+				eval.markModified('planNext');
 				eval.planNext.Success_Effect_Size= obj.Success_Effect_Size;
 				eval.planNext.Pass_Probability= obj.Pass_Probability;
 				
@@ -1440,7 +1422,7 @@ module.exports = function (app, passport) {
 
                 while (obj['relabel-baseline-var-' + relabel_index]) {
                     relabels.push(obj['relabel-baseline-var-' + relabel_index]);
-                    delete obj['relabel-baseline-var-' + relabel_index] 
+                    delete obj['relabel-baseline-var-' + relabel_index];
                     relabel_index++;
                 }
 
