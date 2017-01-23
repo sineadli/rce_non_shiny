@@ -16,7 +16,7 @@
     <% include ../views/partials/scriptHeader.html %>
 </head>
 <body>
-    <div id="header"></div>
+    <% include ../views/partials/header.html %>
 <% if (user != "NOAUTHENTICATED") {
    var returnpath = query.peeking == 1 ? "peeking" : "";
 %>

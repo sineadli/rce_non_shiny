@@ -31,7 +31,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 <body class="brief <%- bodyclass %>">
     <% if (display === 'online') { %>
     <div class="hidden-print">
-        <div id="header"></div>
+        <% include ../views/partials/header.html %>
         <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
         if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
         <ol class="breadcrumb">

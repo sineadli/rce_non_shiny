@@ -13,10 +13,7 @@
 /*~~~~~~~~~~~~~~~~~~ ALL ~~~~~~~~~~~~~~~~~~*/
 $(document).ready(function() {
 
-	  /** Load Header **/
-    $.get("/header", function(data) {
-        $("#header").html(data);
-    });
+
     if (typeof (UserAgentInfo) != 'undefined' && !window.addEventListener) {
         UserAgentInfo.strBrowser = 1;
     }

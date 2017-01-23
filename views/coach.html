@@ -18,9 +18,7 @@
 
 </head>
 <body>
-
-    <div id="header"></div>
-    <input type="hidden" id="user_email" value="<%= user %>" />
+    <% include ../views/partials/header.html %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
     </ol>
@@ -147,9 +145,7 @@
 
 
             /** Load Header **/
-            $.get("/header", function (data) {
-                $("#header").html(data);
-            });
+   
             $.get("/tools/" + step, function (data) {
                 $(".result").html(data);
             });

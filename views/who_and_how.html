@@ -18,7 +18,7 @@
 <% var peekingThis = query.peeking == 1 ? "peeking" : "";
 %>
 <body class="<%- peekingThis %>">
-    <div id="header"></div>
+    <% include ../views/partials/header.html %>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>

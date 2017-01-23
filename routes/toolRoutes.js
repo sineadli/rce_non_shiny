@@ -62,7 +62,7 @@ module.exports = function (app, passport) {
         sess.step = 2;
 		sess.eval.last_tool = "The Basics";
         var query = require('url').parse(req.url, true).query;
-        res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('basics.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html);}
             });
@@ -140,7 +140,7 @@ module.exports = function (app, passport) {
         sess.step = 2;
 		sess.eval.last_tool = "Who Is Using Your Technology and How?";
 		var query = require('url').parse(req.url, true).query;
-        res.render('who_and_how.html', {user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query},
+        res.render('who_and_how.html', {user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query},
             function(err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             } );
@@ -193,7 +193,7 @@ module.exports = function (app, passport) {
         sess.step = 2;
         sess.eval.last_tool = "Determine Your Approach";
         var query = require('url').parse(req.url, true).query;
-        res.render('determine_your_approach.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('determine_your_approach.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             } );
@@ -324,7 +324,7 @@ module.exports = function (app, passport) {
         sess.step = 3;
         sess.eval.last_tool = "Craft Your Research Question";
         var query = require('url').parse(req.url, true).query;
-        res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('craft_your_research_q.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -422,7 +422,7 @@ module.exports = function (app, passport) {
         sess.step = 3;
         sess.eval.last_tool = "Think About How to Use Your Result";
         var query = require('url').parse(req.url, true).query;
-        res.render('plan_next_steps.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('plan_next_steps.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -512,7 +512,7 @@ module.exports = function (app, passport) {
         sess.step = 3;
 		sess.eval.last_tool = "Working with Ed Tech Providers";
 		var query = require('url').parse(req.url, true).query;
-        res.render('working_with_provider.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('working_with_provider.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -572,7 +572,7 @@ module.exports = function (app, passport) {
         sess.step = 3;
         sess.eval.last_tool = "Summarize Context";
         var query = require('url').parse(req.url, true).query;
-        res.render('context_and_usage.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query }
+        res.render('context_and_usage.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query }
 			//,
             //function (err, html) {
             //    if (err) { res.redirect('/error'); } else { res.send(html); }
@@ -729,7 +729,7 @@ module.exports = function (app, passport) {
         sess.step = 4;
 		sess.eval.last_tool = "Prepare for Random Assignment";
 		var query = require('url').parse(req.url, true).query;
-        res.render('prepare_data_random.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('prepare_data_random.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -813,7 +813,7 @@ module.exports = function (app, passport) {
         sess.step = 4;
 		sess.eval.last_tool = "Prepare Your Data for Analysis";
 		var query = require('url').parse(req.url, true).query;
-        res.render('prepare_data.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('prepare_data.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -921,7 +921,7 @@ module.exports = function (app, passport) {
         sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
 
 		var query = require('url').parse(req.url, true).query;
-        res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'})
+        res.render('evaluation_plan.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'})
         
     });
 
@@ -1081,7 +1081,7 @@ module.exports = function (app, passport) {
             }, function (eval, done) {
                 var query = require('url').parse(req.url, true).query;
 
-                res.render('evaluation_plan.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'download' },
+                res.render('evaluation_plan.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'download' },
                     function (err, html) {
                         if (err) {
                             res.redirect('/error');
@@ -1117,7 +1117,7 @@ module.exports = function (app, passport) {
         sess.step  =4;
         sess.eval.last_tool = "Matching";
         var query = require('url').parse(req.url, true).query;
-        res.render('matching.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
+        res.render('matching.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -1208,7 +1208,7 @@ module.exports = function (app, passport) {
         sess.step = 4;
         sess.eval.last_tool = "Randomization";
         var query = require('url').parse(req.url, true).query;
-        res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
+        res.render('randomization.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -1301,7 +1301,7 @@ module.exports = function (app, passport) {
         sess.step = 5;
         sess.eval.last_tool = "Get Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
+        res.render('getresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
