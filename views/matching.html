@@ -47,7 +47,7 @@
     }
     %>
 <input type="hidden" id="user_email" value="<%= user %>"/>
-
+    <input type="hidden" id="coreurl" value="<%= shiny_url %>" />
 <div class="container-fluid">
 
 <div class="row">
@@ -378,14 +378,17 @@
 <% include ../views/partials/footer.html %>
 
     <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
+            var coreurl = $("#coreurl").val();
+           // var coreurl = "http://52.222.20.48";  //for production comment this out
+            //var coreurl = "https://edtechrce.org" //for production uncomment this
         $('.multiselect').multiselect();
         $("#chosenfile").change(function () {
             var formData = new FormData();
             $('#loadingmessage').show();
             formData.append("data", $(this)[0].files[0]);
             $.ajax({
-                url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
+                url:  coreurl + "/ocpu/library/edtechrce/R/csv_colnames/json",
                 type: "POST",
                 processData: false,
                 contentType: false,
@@ -441,20 +444,28 @@
             $("#s_treat_var").val(JSON.stringify($("#treat_var").val()));
             $("#s_match_vars").val(JSON.stringify(match_vars));
             $("#s_grade_var").val(JSON.stringify($("#grade_var").val()));
+
+            console.log("treat_var: " + JSON.stringify($("#treat_var").val()));
+            console.log("match_vars: " + JSON.stringify(match_vars));
+            console.log("grade_var: " + JSON.stringify($("#grade_var").val()));
+            
             formData.append("data", $("#chosenfile")[0].files[0]);
             formData.append("treat_var", JSON.stringify($("#treat_var").val()));
             formData.append("match_vars", JSON.stringify(match_vars));
             formData.append("grade_var", JSON.stringify($("#grade_var").val()));
+            console.log(formData);
             $.ajax({
-                url: "http://52.222.20.48/ocpu/library/edtechrce/R/matching",
+                url: coreurl + "/ocpu/library/edtechrce/R/matching",
                 type: "POST",
                 processData: false,
                 contentType: false,
                 data: formData,
                 success: function (data) {
                     var responsePaths = data.split("\n");
+                    console.log(responsePaths);
+                    console.log(coreurl + responsePaths[0] + "/json");
                     $.ajax({
-                        url: "http://52.222.20.48" + responsePaths[0] + "/json",
+                        url: coreurl  + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
                             $('#loadingmessage').hide();
@@ -617,11 +628,12 @@
                                     .removeClass("disabled");
                                 $("#downloadData").removeClass("hidden")
                                   .attr("target", "_blank")
-                                  .attr("href", "http://52.222.20.48" + downloadPath).removeAttr("disabled");
+                                  .attr("href", coreurl + downloadPath).removeAttr("disabled");
                             }
                         },
                             error: function (xhr) {
                                 $('#loadingmessage').hide();
+                                console.log(xhr);
                                 var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
                                 $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
                             }
@@ -629,6 +641,7 @@
                 },
                     error: function (xhr) {
                         $('#loadingmessage').hide();
+                        console.log(xhr);
                         var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
                         $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
                     }

@@ -137,18 +137,7 @@
 
             //just load the first one for now, will have to determine which is the active currently for returning user with
             //an ongoing eval
-            var ua = navigator.userAgent;
-            var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-            if (/trident/i.test(M[1])) {
-                if (document.URL.indexOf("#") == -1) {
-                    // Set the URL to whatever it was plus "#".
-                    url = document.URL + "#";
-                    location = "#";
-
-                    //Reload the page
-                    location.reload(true);
-                }
-            }
+      
 
             var stepvisited = $("#stepvisited").val();
             var step = $("#step").val();

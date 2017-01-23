@@ -39,6 +39,7 @@
     var Cluster_Group = eval.prepareRandom.Cluster_Group = "" ? "individuals or groups" : eval.prepareRandom.Cluster_Group;
         var Cluster_Group = Cluster_Group = "other" ? "groups" : Cluster_Group;
         %>
+        <input type="hidden" id="coreurl" value="<%= shiny_url %>" />
     <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12">
@@ -419,7 +420,9 @@
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function () {
-
+            var coreurl = $("#coreurl").val();
+           // var coreurl = "http://52.222.20.48";//for production comment this out
+             //var coreurl = "https://edtechrce.org" //for production uncomment this
             if ($("#Basics_Users").val().toLowerCase() === "other") {
 
                 $("#Question_Users_Other").show();
@@ -447,6 +450,250 @@
 
             var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
             fm.init(fm_options);
+            $('#Individual_Group').change(function () {
+                ShowCluster(this);
+                setUserLimitsSelections();
+
+            });
+            $('#Cluster_Group').change(function () {
+                ShowClusterOther(this);
+                setUserLimitsSelections();
+            });
+            $('#User_Limit_Exist').change(function () {
+                UpdateUserLimitExists(this);
+                setUserLimitsSelections();
+            });
+
+            $("#chosenfile").change(function () {
+
+                var formData = new FormData();
+                $('#loadingmessage').show();
+
+
+                formData.append("data", $(this)[0].files[0]);
+
+                $.ajax({
+                    url: coreurl + "/ocpu/library/edtechrce/R/csv_colnames/json",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        $('#loadingmessage').hide();
+                        $("select.from-upload").empty();
+                        $(".before-upload").addClass("after-upload");
+                        $(".after-upload").removeClass("before-upload");
+                        $('#randomResults').show();
+                        $("#block_id")
+                            .append($("<option></option>")
+                                .attr("value", "Do not block")
+                                .text("Do not block"));
+                        $("select.nodefault")
+                            .append($("<option></option>")
+                                .attr("value", "None selected")
+                                .text("None selected"));
+                        $.each(data.colnames, function (index, value) {
+                            $("select.from-upload")
+                                .append($("<option></option>")
+                                    .attr("value", value)
+                                    .text(value));
+                        });
+                        $('.multiselect').multiselect('destroy');
+                        $('.multiselect').multiselect();
+                        //  $("#match").prop("disabled", false);
+                        $("#shinybuttons").removeClass("hidden");
+                    }
+                });
+            });
+            $("#pretest").change(function () {
+                enablebuttons();
+            });
+            $("#unit_id").change(function () {
+                enablebuttons();
+            });
+            $("#baseline_vars").change(function () {
+                enablebuttons();
+            });
+            $("#match").click(function () {
+
+                $('#loadingmessage').show();
+                $('#warning-modal').modal("show");
+                $('#results').html("");
+                $("#downloadData").addClass("disabled");
+                $("#downloadData").addClass("hidden");
+                var formData = new FormData();
+                var pretest = $("#pretest").val();
+                var basein = $("#baseline_vars").val();
+                var baseline_vars = [];
+                if (basein) baseline_vars = baseline_vars.concat(basein);
+                if (pretest !== "None selected") baseline_vars = baseline_vars.concat(pretest);
+
+                var interv_type = $("#intervention_type").val();
+                var interv_quantity = $("#intervention_quantity").val();
+                if (interv_type.toLowerCase() === "select an option") {
+                    interv_type = 'percentage';
+                };
+                if (interv_quantity === "0" || interv_quantity === "") {
+                    interv_quantity = 50;
+                };
+                $("#s_unit_id").val(JSON.stringify($("#unit_id").val()));
+                $("#s_pretest").val(JSON.stringify($("#pretest").val()));
+                $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
+                console.log("unit_id: " + JSON.stringify($("#unit_id").val()));
+                console.log("intervention_type: " + JSON.stringify($("#intervention_type").val()));
+                console.log("intervention_quantity: " + JSON.stringify($("#intervention_quantity").val()));
+                console.log("baseline_vars: " + JSON.stringify($("#baseline_vars").val()));
+                formData.append("data", $("#chosenfile")[0].files[0]);
+                formData.append("unit_id", JSON.stringify($("#unit_id").val()));
+                formData.append("intervention_type", JSON.stringify(interv_type));
+                formData.append("intervention_quantity", JSON.stringify(interv_quantity));
+                formData.append("baseline_vars", JSON.stringify(baseline_vars));
+              //  if (baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
+
+                $.ajax({
+                    url: coreurl + "/ocpu/library/edtechrce/R/randomize",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        var responsePaths = data.split("\n");
+                        $.ajax({
+                            url: coreurl + responsePaths[0] + "/json",
+                            type: "GET",
+                            success: function (data) {
+                                $('#loadingmessage').hide();
+                                $('#warning-modal').modal("hide");
+                                $('#randomResults').show();
+                                console.log(data);
+                                var error = data.error_message[0];
+                                $('#results').html("");
+                                if (error) {
+                                    $('#results').append('<h2 class="stop-warning">There appears to be something wrong with your data set.</h2>  <p>Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p><p>Detailed error message: ' + error + '</p>');
+                                    return;
+                                } else {
+                                    var finaltext = "";
+                                    var rSuccess = "<h2 style='margin-left:-40px'>Random assignment was successful</h2>";
+                                    var basicsUsers = $("#Basics_Users").val();
+                                    if (basicsUsers.toLowerCase() === "other") {
+                                        basicsUsers = $("#Basics_Users_Other").val();
+                                    }
+                                    var figlabel = 'Figure 1. Baseline equivalence of the treatment and comparison groups.';
+                                    var nextstep = 'The Coach added a &ldquo;Treatment&rdquo; variable to your dataset that identifies which ' + basicsUsers + ' are in the treatment and comparison groups. <strong>Download this revised dataset.</strong> Later, you will add your evaluation results to it and the &ldquo;Get Results&rdquo; tool will use it to determine whether your educational technology is moving the needle.';
+                                    var balance, baseline_vars;
+                                    if (!data.randomize_success[0]) {
+                                        rSuccess = "<h2 style='margin-left:-40px' class='stop-warning'>Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. You can re-run randomization or <a href='mailto:edtechrce@mathematica-mpr.com'>contact us for assistance</a>.";
+                                    } else finaltext = nextstep;
+
+                                    var results_by_block = data.results_by_block;
+                                    var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
+
+                                    $('#results').append(rSuccess);
+                                    for (var key in results_by_block) {
+                                        if (results_by_block.hasOwnProperty(key)) {
+                                            var imgid = "plot" + key;
+                                            var title = "";
+                                            // if (block_id) {title=block_id + " = " +  key; }
+                                            var block_object = results_by_block[key];
+                                            if (block_object.samples) {
+                                                n_full_com = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
+                                                n_full_treat = block_object.samples.n_treat[0];
+                                            }
+
+                                            if (block_object.good_balance) {
+                                                if (block_object.good_balance[0] === null) {
+                                                    balance = "N/A (no baseline variables specified)";
+                                                } else {
+                                                    balance = block_object.good_balance[0] === true ? "Yes" : "No";
+                                                }
+                                            } else {
+                                                balance = "N/A";
+                                            }
+
+                                            //show block name if block specified
+                                            if (title) $('#results').append(title);
+                                            $('#results').append('<ul Style="margin-left:15px;"><li><span>Treatment group size:  ' + n_full_treat + ' </li><li><span>Comparision group size:  ' + n_full_com + ' </li><li><span>Balanced:  ' + balance + ' </span></li></ul>');
+
+
+                                            if (block_object.baseline_var_means) {
+                                                var x = document.createElement("TABLE");
+                                                var cap = x.createCaption();
+                                                cap.innerHTML = "Baseline characteristics of " + basicsUsers + "  in the evaluation sample.";
+                                                x.setAttribute("id", "table" + key);
+
+                                                $('#results').append(x);
+
+                                                baseline_vars = block_object.baseline_var_means;
+                                                for (var bvar in baseline_vars) {
+                                                    if (baseline_vars.hasOwnProperty(bvar)) {
+
+                                                        var row = x.insertRow(0);
+                                                        console.log(baseline_vars[bvar]);
+                                                        row.insertCell(0).innerHTML = "<span>" + bvar + "</span>";
+                                                        row.insertCell(1).innerHTML = "<span>" + baseline_vars[bvar].intervention[0] + "</span>";
+                                                        row.insertCell(2).innerHTML = "<span>" + baseline_vars[bvar].comparison[0] + "</span>";
+                                                        row.insertCell(3).innerHTML = "<span>" + baseline_vars[bvar].difference[0] + "</span>";
+                                                        row.insertCell(4).innerHTML = "<span>" + balance + "</span>";
+                                                    }
+                                                }
+                                                var header = x.createTHead();
+                                                var hrow = header.insertRow(0);
+                                                hrow.insertCell(0).outerHTML = "<th>Baseline Variable</th>";
+                                                hrow.insertCell(1).outerHTML = "<th>Treatment</th>";
+                                                hrow.insertCell(2).outerHTML = "<th>Comparison</th>";
+                                                hrow.insertCell(3).outerHTML = "<th>Difference</th>";
+                                                hrow.insertCell(4).outerHTML = "<th>Balanced</th>";
+
+                                            }
+
+                                            if (block_object.plot) {
+                                                $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + block_object.plot + ' />' + '<p>' + figlabel + '<br/></p></div>');
+                                            }
+
+                                        }
+                                        $('#results').append('<div><p style="margin-top:40px;">' + finaltext + '</p></div>');
+                                    }
+
+                                }
+                                $("#mresult").val(JSON.stringify(data));
+
+                                if (data.randomize_success[0]) {
+
+                                    // Look for download path, in case ordering shifts.
+                                    var downloadPath = '';
+
+                                    for (var i = 0; i < responsePaths.length; i++) {
+                                        if (responsePaths[i].indexOf('/files/randomize-') > -1) {
+                                            downloadPath = responsePaths[i];
+                                            break;
+                                        }
+                                    }
+
+                                    if (downloadPath !== '') {
+                                        $("#downloadData")
+                                            .removeClass("disabled");
+                                        $("#downloadData").removeClass("hidden")
+                                          .attr("target", "_blank")
+                                          .attr("href", coreurl + downloadPath).removeAttr("disabled");
+                                    }
+                                }
+                            },
+                            error: function (xhr) {
+                                $('#loadingmessage').hide();
+                                console.log(xhr);
+                                var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
+                                $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                            }
+                        });
+                    },
+                    error: function (xhr) {
+                        $('#loadingmessage').hide();
+                        console.log(xhr);
+                        var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
+                        $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                    }
+                });
+            });
         });
 
 
@@ -462,244 +709,7 @@
         }
 
 
-        $('#Individual_Group').change(function () {
-            ShowCluster(this);
-            setUserLimitsSelections();
-
-        });
-        $('#Cluster_Group').change(function () {
-            ShowClusterOther(this);
-            setUserLimitsSelections();
-        });
-        $('#User_Limit_Exist').change(function () {
-            UpdateUserLimitExists(this);
-            setUserLimitsSelections();
-        });
-
-        $("#chosenfile").change(function () {
-
-            var formData = new FormData();
-            $('#loadingmessage').show();
-           
-
-            formData.append("data", $(this)[0].files[0]);
-
-            $.ajax({
-                url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
-                type: "POST",
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function (data) {
-                    $('#loadingmessage').hide();
-                    $("select.from-upload").empty();
-                    $(".before-upload").addClass("after-upload");
-                    $(".after-upload").removeClass("before-upload");
-                    $('#randomResults').show();
-                    $("#block_id")
-                        .append($("<option></option>")
-                            .attr("value", "Do not block")
-                            .text("Do not block"));
-                    $("select.nodefault")
-                        .append($("<option></option>")
-                            .attr("value", "None selected")
-                            .text("None selected"));
-                    $.each(data.colnames, function (index, value) {
-                        $("select.from-upload")
-                            .append($("<option></option>")
-                                .attr("value", value)
-                                .text(value));
-                    });
-                    $('.multiselect').multiselect('destroy');
-                    $('.multiselect').multiselect();
-                    //  $("#match").prop("disabled", false);
-                    $("#shinybuttons").removeClass("hidden");
-                }
-            });
-        });
-        $("#pretest").change(function () {
-            enablebuttons();
-        });
-        $("#unit_id").change(function () {
-            enablebuttons();
-        });
-        $("#baseline_vars").change(function () {
-            enablebuttons();
-        });
-        $("#match").click(function () {
-
-            $('#loadingmessage').show();
-            $('#warning-modal').modal("show");
-            $('#results').html("");
-            $("#downloadData").addClass("disabled");
-            $("#downloadData").addClass("hidden");
-            var formData = new FormData();
-            var pretest = $("#pretest").val();
-            var basein = $("#baseline_vars").val();
-            var baseline_vars = [];
-            if (basein) baseline_vars = baseline_vars.concat(basein);
-            if (pretest !== "None selected") baseline_vars = baseline_vars.concat(pretest);
         
-            var interv_type = $("#intervention_type").val();
-            var interv_quantity = $("#intervention_quantity").val();
-            if (interv_type.toLowerCase() === "select an option") {
-                interv_type = 'percentage';
-            };
-            if (interv_quantity === "0" || interv_quantity === "") {
-                interv_quantity = 50;
-            };
-            $("#s_unit_id").val(JSON.stringify($("#unit_id").val()));
-            $("#s_pretest").val(JSON.stringify($("#pretest").val()));
-            $("#s_baseline_vars").val(JSON.stringify($("#baseline_vars").val()));
-            
-            formData.append("data", $("#chosenfile")[0].files[0]);
-            formData.append("unit_id", JSON.stringify($("#unit_id").val()));
-            formData.append("intervention_type", JSON.stringify(interv_type));
-            formData.append("intervention_quantity", JSON.stringify(interv_quantity));
-            if (baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
-
-            $.ajax({
-                url: "http://52.222.20.48/ocpu/library/edtechrce/R/randomize",
-                type: "POST",
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function (data) {
-                    var responsePaths = data.split("\n");
-                    $.ajax({
-                        url: "http://52.222.20.48" + responsePaths[0] + "/json",
-                        type: "GET",
-                        success: function (data) {
-                            $('#loadingmessage').hide();
-                            $('#warning-modal').modal("hide");
-                            $('#randomResults').show();
-                            console.log(data);
-                            var error = data.error_message[0];
-                            $('#results').html("");
-                            if (error) {
-                                $('#results').append('<h2 class="stop-warning">There appears to be something wrong with your data set.</h2>  <p>Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p><p>Detailed error message: ' + error + '</p>');
-                                return;
-                            } else {
-                                var finaltext = "";
-                                var rSuccess = "<h2 style='margin-left:-40px'>Random assignment was successful</h2>";
-                                var basicsUsers = $("#Basics_Users").val();
-                                if (basicsUsers.toLowerCase() === "other") {
-                                    basicsUsers = $("#Basics_Users_Other").val();
-                                }
-                                var figlabel = 'Figure 1. Baseline equivalence of the treatment and comparison groups.';
-                                var nextstep = 'The Coach added a &ldquo;Treatment&rdquo; variable to your dataset that identifies which ' + basicsUsers + ' are in the treatment and comparison groups. <strong>Download this revised dataset.</strong> Later, you will add your evaluation results to it and the &ldquo;Get Results&rdquo; tool will use it to determine whether your educational technology is moving the needle.';
-                                var balance, baseline_vars;
-                                if (!data.randomize_success[0]) {
-                                    rSuccess = "<h2 style='margin-left:-40px' class='stop-warning'>Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. You can re-run randomization or <a href='mailto:edtechrce@mathematica-mpr.com'>contact us for assistance</a>.";
-                                } else finaltext = nextstep;
-
-                                var results_by_block = data.results_by_block;
-                                var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
-
-                                $('#results').append(rSuccess);
-                                for (var key in results_by_block) {
-                                    if (results_by_block.hasOwnProperty(key)) {
-                                        var imgid = "plot" + key;
-                                        var title = "";
-                                        // if (block_id) {title=block_id + " = " +  key; }
-                                        var block_object = results_by_block[key];
-                                        if (block_object.samples) {
-                                            n_full_com = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
-                                            n_full_treat = block_object.samples.n_treat[0];
-                                        }
-
-                                        if (block_object.good_balance) {
-                                            if (block_object.good_balance[0] === null) {
-                                                balance = "N/A (no baseline variables specified)";
-                                            } else {
-                                                balance = block_object.good_balance[0] === true ? "Yes" : "No";
-                                            }
-                                        } else {
-                                            balance = "N/A";
-                                        }
-
-                                        //show block name if block specified
-                                        if (title) $('#results').append(title);
-                                        $('#results').append('<ul Style="margin-left:15px;"><li><span>Treatment group size:  ' + n_full_treat + ' </li><li><span>Comparision group size:  ' + n_full_com + ' </li><li><span>Balanced:  ' + balance + ' </span></li></ul>');
-
-                                       
-                                        if (block_object.baseline_var_means) {
-                                            var x = document.createElement("TABLE");
-                                            var cap = x.createCaption();
-                                            cap.innerHTML = "Baseline characteristics of " + basicsUsers + "  in the evaluation sample.";
-                                            x.setAttribute("id", "table" + key);
-
-                                            $('#results').append(x);
-
-                                            baseline_vars = block_object.baseline_var_means;
-                                            for (var bvar in baseline_vars) {
-                                                if (baseline_vars.hasOwnProperty(bvar)) {
-
-                                                    var row = x.insertRow(0);
-                                                    console.log(baseline_vars[bvar]);
-                                                    row.insertCell(0).innerHTML = "<span>" + bvar + "</span>";
-                                                    row.insertCell(1).innerHTML = "<span>" + baseline_vars[bvar].intervention[0] + "</span>";
-                                                    row.insertCell(2).innerHTML = "<span>" + baseline_vars[bvar].comparison[0] + "</span>";
-                                                    row.insertCell(3).innerHTML = "<span>" + baseline_vars[bvar].difference[0] + "</span>";
-                                                    row.insertCell(4).innerHTML = "<span>" + balance + "</span>";
-                                                }
-                                            }
-                                            var header = x.createTHead();
-                                            var hrow = header.insertRow(0);
-                                            hrow.insertCell(0).outerHTML = "<th>Baseline Variable</th>";
-                                            hrow.insertCell(1).outerHTML = "<th>Treatment</th>";
-                                            hrow.insertCell(2).outerHTML = "<th>Comparison</th>";
-                                            hrow.insertCell(3).outerHTML = "<th>Difference</th>";
-                                            hrow.insertCell(4).outerHTML = "<th>Balanced</th>";
-
-                                        }
-
-                                        if (block_object.plot) {
-                                            $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + block_object.plot + ' />' + '<p>' + figlabel + '<br/></p></div>');
-                                        }
-                                       
-                                    }
-                                    $('#results').append('<div><p style="margin-top:40px;">' + finaltext + '</p></div>');
-                                }
-                               
-                            }
-                            $("#mresult").val(JSON.stringify(data));
-
-                            if (data.randomize_success[0]) {
-
-                                // Look for download path, in case ordering shifts.
-                                var downloadPath = '';
-
-                                for (var i = 0; i < responsePaths.length; i++) {
-                                    if (responsePaths[i].indexOf('/files/randomize-') > -1) {
-                                        downloadPath = responsePaths[i];
-                                        break;
-                                    }
-                                }
-
-                                if (downloadPath !== '') {
-                                    $("#downloadData")
-                                        .removeClass("disabled");
-                                    $("#downloadData").removeClass("hidden")
-                                      .attr("target", "_blank")
-                                      .attr("href", "http://52.222.20.48" + downloadPath).removeAttr("disabled");
-                                }
-                            }
-                        },
-                            error: function (xhr) {
-                                $('#loadingmessage').hide();
-                                var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
-                                $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
-                            }
-                    });
-                },
-                    error: function (xhr) {
-                        $('#loadingmessage').hide();
-                        var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
-                        $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
-                    }
-            });
-        });
         //init feedback_me plugin
        
     </script>
