@@ -45,6 +45,7 @@
     if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
         if (Measure_Units === "") { Measure_Units = "units"; }
         %>
+        <input type="hidden" id="coreurl" value="<%= shiny_url %>" />
     <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12">
@@ -372,7 +373,10 @@
     <% include ../views/partials/footer.html %>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            var coreurl = $("#coreurl").val();
+           // var coreurl= "http://52.222.20.48";//for production comment this out
+            // var coreurl = "https://edtechrce.org" //for production uncomment this
             $('.multiselect').multiselect();
 
             $('.success-effect-size').text($("#Success_Effect_Size").val());
@@ -381,14 +385,12 @@
             var fm_options = setFeedbackOptions($("#user_email").val(), "getresult");
             fm.init(fm_options);
 
-        });
-       
-        $("#chosenfile").change(function () {
+            $("#chosenfile").change(function () {
                 var formData = new FormData();
                 $('#loadingmessage').show();
                 formData.append("data", $(this)[0].files[0]);
                 $.ajax({
-                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
+                    url: coreurl + "/ocpu/library/edtechrce/R/csv_colnames/json",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -449,11 +451,11 @@
                 formData.append("cutoff", JSON.stringify($("#Success_Effect_Size").val()));
                 formData.append("probability", JSON.stringify($("#Pass_Probability").val()));
 
-               
+
                 $('#warning-modal').modal("show");
                 $('#loadingmessage').show();
                 $.ajax({
-                    url: "http://52.222.20.48/ocpu/library/edtechrce/R/impact",
+                    url: coreurl + "/ocpu/library/edtechrce/R/impact",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -463,7 +465,7 @@
                         var responsePaths = data.split("\n");
 
                         $.ajax({
-                            url: "http://52.222.20.48" + responsePaths[0] + "/json",
+                            url: coreurl + responsePaths[0] + "/json",
                             type: "GET",
                             success: function (data) {
                                 $('#loadingmessage').hide();
@@ -471,7 +473,7 @@
                                 $('#results').html("");
                                 var errors = data.error_message;
                                 if (errors.length > 0) {
-                                    $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
+                                    $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
                                     return;
                                 } else {
                                     console.log(data);
@@ -489,10 +491,10 @@
                                                     text1 = "<li>There is a " + grade_object.interpretation_cutoff_0.probability[0] + " probability that  " + $("#techName").val() + " " + $("#Outcome_Direction").val() + "s " + $("#evalOutcome").val() + ".</li>";
                                                 }
                                                 var text2 = "<li>There is a " + grade_object.interpretation.probability[0] + " probability that  " + $("#techName").val() + " " + $("#Outcome_Direction").val() + "s " + $("#evalOutcome").val() + " by " + $("#Success_Effect_Size").val() + " " + $("#measureUnits").val() + " or more.</li>";
-                                                
-                                                $('#results').append('<ul>' + text1  + text2);
+
+                                                $('#results').append('<ul>' + text1 + text2);
                                             }
-                                           
+
                                         }
                                     }
 
@@ -503,7 +505,7 @@
                                             .prop("disabled", false);
                                 $("#download-link")
                                     .attr("target", "_blank")
-                                    .attr("href", "http://52.222.20.48" + responsePaths[9]);
+                                    .attr("href", coreurl + responsePaths[9]);
                             },
                             error: function (xhr) {
                                 $('#loadingmessage').hide();
@@ -514,12 +516,17 @@
                     },
                     error: function (xhr) {
                         $('#loadingmessage').hide();
+                        console.log(xhr);
                         var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
                         $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
-                            //alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
-                        }
+                        //alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+                    }
                 });
             });
+
+        });
+       
+      
        
        
     </script>

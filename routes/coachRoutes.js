@@ -16,22 +16,10 @@ var getAllEvaluations = require('../middleware/getAllEvaluations.js');
 var getAllPublications = require('../middleware/getAllPublications.js');
 var noCache = require('../middleware/noCache.js');
 
-var CoachStep = require('../models/coachStep'),
-    Tool = require('../models/tool.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
 var sess;
 
-function dynamicSort(property) {
-    var sortOrder = 1;
-    if (property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
-    }
-    return function(a, b) {
-        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-        return result * sortOrder;
-    }
-}
+
 
 module.exports = function (app, passport) {
     app.use(noCache);
@@ -64,17 +52,10 @@ module.exports = function (app, passport) {
 		if (!sess.step) { sess.step = 2 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
       
-        CoachStep.find(function (err, coachSteps) {
-			if (err) {
-                res.status(500).send(err);
-            }
-			else {
-                res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval, step: sess.step },
-                    function (err, html) {
-                        if (err) { res.redirect('/error'); } else { res.send(html); }
-                    });
-            }
-        });
+        res.render('coach.html', { user: req.user.local.email, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step },
+            function (err, html) {
+                if (err) { res.redirect('/error'); } else { res.send(html); }
+            });
 
     });
     app.get('/coach/:id', isLoggedIn, function (req, res) {
@@ -86,16 +67,7 @@ module.exports = function (app, passport) {
             sess.last_tool = "none";
             req.user.evalid = eval._id;
             req.user.save();
-            CoachStep.find(function (err, coachSteps) {
-                if (err) {
-                    res.status(500).send(err);
-                }
-                else {
-
-                    res.render('coach.html', { user: req.user.local.email, coachSteps: coachSteps, eval: sess.eval, step: sess.step});
-
-                }
-            });
+            res.render('coach.html', { user: req.user.local.email, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step });
         });
     });
 
@@ -103,27 +75,9 @@ module.exports = function (app, passport) {
     app.get('/tools/:coachStep', isLoggedIn, function (req, res) {
 
 		sess = req.session;
-		var coachStep;
-
-		CoachStep.findOne({ step: req.params.coachStep }, function (err, coach) {
-			if (err) {
-				res.status(500).send(err);
-			}
-			else {
-				coachStep = coach;
-				Tool.find({ coachStep: req.params.coachStep }, function (err, tools) {
-					if (err) {
-						
-						res.status(500).send(err);
-					}
-					else {
-												
-						tools.sort(dynamicSort("order"));
-						res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval });
-					}
-				});
-			}
-		});
+        var coachStep = sess.coachsteps.filter(function (x) { return (x.step === req.params.coachStep) }); 
+        var tools = sess.tools.filter(function (x) { return (x.coachStep == req.params.coachStep) });     
+        res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval });
 	});
 
     //this route is update evaluation object, it is called from dashboard.html and coach.html

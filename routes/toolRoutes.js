@@ -16,6 +16,7 @@ var extend = require('util')._extend;
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
+var configDB = require('../config/database.js');
 var sess;
 //please note that req.sess.step is for managing the active tab for coach.html
 //the following defines the tool routes available, only four routes available currently
@@ -25,8 +26,7 @@ var sess;
 module.exports = function (app, passport) {
    // app.use(isLoggedIn);
     app.use(getCurrentEvaluation);
-	
-	
+		
 	function dynamicSort(property) {
 		var sortOrder = 1;
 		if (property[0] === "-") {
@@ -38,8 +38,7 @@ module.exports = function (app, passport) {
 			return result * sortOrder;
 		}
 	}
-	
-	
+		
 	function updateLastTool(eval, toollist) {
 		var tool = eval.toolsvisited.filter(function (x) { return x.name === toollist.name });
 		if (tool.length == 0) {
@@ -1098,7 +1097,7 @@ module.exports = function (app, passport) {
         sess.step  =4;
         sess.eval.last_tool = "Matching";
         var query = require('url').parse(req.url, true).query;
-        res.render('matching.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('matching.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -1188,7 +1187,7 @@ module.exports = function (app, passport) {
         sess.step = 4;
         sess.eval.last_tool = "Randomization";
         var query = require('url').parse(req.url, true).query;
-        res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('randomization.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -1281,7 +1280,7 @@ module.exports = function (app, passport) {
         sess.step = 5;
         sess.eval.last_tool = "Get Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('getresult.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
