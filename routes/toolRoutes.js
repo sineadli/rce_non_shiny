@@ -62,7 +62,7 @@ module.exports = function (app, passport) {
         sess.step = 2;
 		sess.eval.last_tool = "The Basics";
         var query = require('url').parse(req.url, true).query;
-        res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('basics.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, valerrs : sess.valerrs },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html);}
             });
@@ -72,7 +72,8 @@ module.exports = function (app, passport) {
 		var obj = req.body;
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "basics";
-        var toolName = "The Basics";
+		var toolName = "The Basics";
+		sess.valerrs = []; // Clear out old errors.
         var toollist = { "name": toolName, "status": req.body.status, "visited_at": new Date() };
         var dt = new Date();
         async.waterfall([
@@ -96,7 +97,8 @@ module.exports = function (app, passport) {
             function (eval, done) {
                 //eval find so update the toolsVisisted accordingly
                 eval.last_step = 2;
-                eval.last_tool = toolName;
+				eval.last_tool = toolName;
+
                 updateLastTool(eval, toollist);
 				//add/update the probAppr within eval
 				var basics = obj.Basics;
@@ -112,9 +114,16 @@ module.exports = function (app, passport) {
 
                 eval.basics = basics;
                 if (eval.stepsclicked.indexOf(2) < 0) eval.stepsclicked.push(2);
-                eval.save(function (err) {
-                    if (err) {
-                        console.log(err); return done(err);
+				eval.save(function (err) {
+					//console.log(err);
+				    sess.valerrs = [];
+					if (err) {
+						sess.valerrs = err.errors;
+						console.log(basics);
+				
+					//	console.log("error saving basics: " + err);
+						req.flash('saveMessage', 'There is a problem with some of the information you entered. Please look below for the specific errors. ');
+						return res.redirect('/' + returnpath);
                     }
                     sess.eval = eval;
                     if (req.body.status === "started") {
@@ -127,9 +136,12 @@ module.exports = function (app, passport) {
 
                 });
             }
-        ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
-            return res.redirect('/' + returnpath); 
+		], function (err) {
+
+			if (err) req.flash('saveMessage', 'There is a problem with some of the information you entered. Please look below for the specific errors. ' + err);
+		
+		
+			return res.redirect('/' + returnpath);
         });
     });
     
@@ -182,7 +194,7 @@ module.exports = function (app, passport) {
 				});	
 			}
 		], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
+            if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
 		});
 	});
@@ -200,8 +212,7 @@ module.exports = function (app, passport) {
     });
     app.post('/determine_your_approach', isLoggedIn,  function (req, res) {
         sess = req.session;
-		var obj = req.body;
-		var returnpath = obj.returnpath;		
+		var obj = req.body;		
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "determine_your_approach";
         var toollist = { "name": "Determine Your Approach", "status": req.body.status, "visited_at": new Date() };
@@ -267,7 +278,7 @@ module.exports = function (app, passport) {
                 });
             }
         ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
+            if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath); 
         });
 	});
@@ -320,19 +331,25 @@ module.exports = function (app, passport) {
 		sess = req.session;
         sess.eval.last_step = 3;
         sess.step = 3;
-        sess.eval.last_tool = "Craft Your Research Question";
+		sess.eval.last_tool = "Craft Your Research Question";
+		console.log("In craft question.");
+        console.log(sess.valerrs);
         var query = require('url').parse(req.url, true).query;
-        res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
-            });
+        res.render('craft_your_research_q.html', { user: req.user.local.email, eval: sess.eval, message: req.flash('saveMessage'), query: query, valerrs : sess.valerrs  });
+        //,
+        //         function (err, html) {
+        //             if (err) { res.redirect('/error'); } else { res.send(html); }
+        //         });
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn,  function (req, res) {
         var toollist = { "name": "Craft Your Research Question", "status": req.body.status, "visited_at": new Date() };
-        sess = req.session;
+		sess = req.session;
+		sess.valerrs = []; // Clear out old errors.
         sess.step = 3;
 		var obj = req.body;
+        console.log("In post craft question");
+        console.log(obj);
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "craft_your_research_q";
         var dt = new Date();
@@ -365,7 +382,9 @@ module.exports = function (app, passport) {
                 eval.basics.Basics_Tech_Name =obj.Basics_Tech_Name;
                 eval.basics.Basics_Outcome_Other = obj.Basics_Outcome_Other;
                 eval.basics.Basics_Outcome = obj.Basics_Outcome;
-		
+				console.log("In post craft question - Setting eval to new values from form");
+				console.log(obj);
+				console.log(eval.basics);
                 var planQuestion = {
                         "Outcome_Measure": obj.Outcome_Measure,
 						"Outcome_Direction": obj.Outcome_Direction, 
@@ -382,8 +401,11 @@ module.exports = function (app, passport) {
                 eval.planQuestion = planQuestion;
                 if (eval.stepsclicked.indexOf(3) < 0) eval.stepsclicked.push(3);
                 eval.save(function (err) {
-                    if (err) {
-                        console.log(err); return done(err);
+					if (err) {
+						sess.valerrs = err.errors;
+						console.log(err); 
+						req.flash('saveMessage', 'There is a problem with some of the information you entered. Please look below for the specific errors. ');
+						return res.redirect('/' + returnpath);
                     }
                     sess.eval = eval;
                     if (req.body.status == "started") {

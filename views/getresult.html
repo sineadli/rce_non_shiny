@@ -429,7 +429,7 @@
             });
 
             $("#go").click(function () {
-
+                $('#results').html("");
                 console.log("data: " + $("#chosenfile")[0].files[0]);
                 console.log("outcome_var: " + JSON.stringify($("#outcome_var").val()));
                 console.log("treat_var: " + JSON.stringify($("#treat_var").val()));
@@ -470,7 +470,7 @@
                             success: function (data) {
                                 $('#loadingmessage').hide();
                                 $('#warning-modal').modal("hide");
-                                $('#results').html("");
+                                
                                 var errors = data.error_message;
                                 if (errors.length > 0) {
                                     $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');

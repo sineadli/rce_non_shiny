@@ -60,12 +60,15 @@ module.exports = function (app, passport) {
     });
     app.get('/coach/:id', isLoggedIn, function (req, res) {
         sess = req.session;
-        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+		Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+			console.log("in get coach with id: " + eval.title);
             sess.eval = eval;
             sess.step = eval.last_step;
             if (!sess.step) sess.step = 2;
             sess.last_tool = "none";
-            req.user.evalid = eval._id;
+			req.user.evalid = eval._id;
+			eval.updated_at = new Date();
+            eval.save();
             req.user.save();
             res.render('coach.html', { user: req.user.local.email, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step });
         });
@@ -114,10 +117,13 @@ module.exports = function (app, passport) {
             eval.save(function (err) {
                 if (err)
                     console.log(err);
-                else {
+				else {
+					console.log("in post api eval");
                     sess.eval = eval;
                     req.user.evalid = eval._id;
-                    req.user.save();
+					req.user.save();
+					eval.updated_at = new Date();
+                    eval.save();
                     res.status(201).send(eval);
                 }
             });
@@ -131,9 +137,10 @@ module.exports = function (app, passport) {
                     if (!eval) {
                         eval = new Evaluation({ _id: req.body.id, userid: req.user._id });
 					}
-                   
+					console.log("in post eval find by id");
                     eval.title = req.body.title;
-                    sess.eval = eval;
+					sess.eval = eval;
+					eval.updated_at = new Date();
                     eval.save(function (err) {
                         if (err)
                             console.log(err);

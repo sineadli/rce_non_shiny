@@ -36,7 +36,7 @@
 
     <div class="container-fluid" id="main build-profile">
 
-        <div class="page-header col-sm-8 col-sm-offset-2 ">
+        <div class="page-header col-sm-12 " style="margin-bottom: 0;">
             <h1 class="form-title">Build Your Profile</h1>
             <p>You are almost ready to start evaluating. Just a few brief questions to build your profile.</p>
         </div>
@@ -46,7 +46,7 @@
                 <div class="form-group">
 
                     <div>
-                        <label for="user_name">Full Name</label>
+                        <h4><label for="user_name">Full Name</label></h4>
                     </div>
                     <div>
                         <input id="user_name" name="user_name" type="text" />
@@ -56,7 +56,7 @@
                 </div>
                 <div class="form-group">
                     <div>
-                        <label for="organization_name">Organization Name</label>
+                        <h4><label for="organization_name">Organization Name</label></h4> 
                     </div>
                     <div>
                         <input id="organization_name" name="organization_name" type="text" />
@@ -64,23 +64,25 @@
                 </div>
                 <div class="form-group">
                     <div>
-                        <label for="organiztion_type">Type of Organization</label>
+                        <h4><label for="organiztion_type">Type of Organization</label></h4>
                         <select id="organiztion_type" name="organiztion_type">
                             <option value="">Select an option</option>
                             <option value="school">School</option>
                             <option value="district">School district</option>
                             <option value="research">Research organization</option>
-                            <option value="other">other</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
-                    <div id="other-specify-type" hidden="hidden">
-                        <label for="organiztion_type_other">Please specify</label>
-                        <input type="text" id="organiztion_type_other" name="organiztion_type_other" value="<%= user.profile.organiztion_type_other %>" />
+                    <div id="other-specify-type" hidden="hidden" class="other-div">
+                        <p>
+                            <label for="organiztion_type_other">Please specify</label>
+                            <input type="text" id="organiztion_type_other" name="organiztion_type_other" value="<%= user.profile.organiztion_type_other %>" />
+                        </p> 
                     </div>
                 </div>
                 <div class="form-group">
                     <div>
-                        <label for="role">Role</label>
+                        <h4><label for="role">Role</label></h4>
                         <select id="role" name="role">
 
                             <option value="">Select an option</option>
@@ -94,15 +96,17 @@
                         </select>
 
                     </div>
-                    <div id="other-specify-role" hidden="hidden">
-                        <label for="role_other">Please specify</label>
-                        <input type="text" id="role_other" name="role_other" />
+                    <div id="other-specify-role" hidden="hidden" class="other-div">
+                        <p>
+                            <label for="role_other">Please specify</label>
+                            <input type="text" id="role_other" name="role_other" />
+                        </p> 
                     </div>
 
                 </div>
 
                 <div class="bottom-buttons">
-                    <button class="btn btn-primary" id="SaveProfile" type="submit" value="Save Profile">Save Profile</button>
+                    <button class="btn btn-primary" id="SaveProfile" type="submit" value="Save Profile">SAVE PROFILE</button>
                 </div>
             </div>
 

@@ -55,6 +55,7 @@ ul li {
     
  
 }
+
 em.stronger {
 
     color: #366E8F;
@@ -73,7 +74,7 @@ div.container-fluid {
   content: "";
   display: block;
 }
-.footer, #main:after {
+.footer {
   height: 160px; 
 }
 .footer {
@@ -387,7 +388,7 @@ h3 {
   font-size: 18px;
   /*margin-top:5px;*/
 }
-h4, h4 label, h4 em {
+h4, h4 label, div.form-group h4 label,h4 em {
   font-size:1em;
   /*font-style:italic;*/
   font-weight:600;
@@ -665,6 +666,7 @@ div.dash-well div.panel-heading {
 }
 div.dash-well div.panel-heading a {
     text-decoration: none;
+    font-size: .9em;
 }
     div.dash-well div.panel-heading h2.clickable {
         margin: 0;
@@ -676,14 +678,15 @@ div.dash-well h2 {
         padding-top: 10px;
     }
 div.dash-well div.help-main {
-    border-bottom: 2px #D9D7BE solid;
+    border-top: 1px #D9D7BE solid;
     
-   border-top: 2px #D9D7BE solid;
-    padding: 10px 15px 0 15px;
+   /*border-top: 2px #D9D7BE solid;*/
+   margin: 0 15px 15px;
 
 }
 div.dash-well div.help-sec {
     border-right: 2px #D9D7BE solid;
+    height: 167px;
 
 }
 body.downloads div.dash-well ul {
@@ -776,6 +779,13 @@ ul.wizard-menu li p, div.dash-well.sidebar-left ul.wizard-menu li button {
     /*height: 55px;*/
     font-weight: 600;
   
+}
+div.dash-well.sidebar-left ul.wizard-menu li button {
+    color: #71714a;
+    font-weight: bold;
+}
+div.dash-well.sidebar-left ul.wizard-menu li:last-child, div.dash-well.sidebar-left ul.wizard-menu li:first-child {
+    border-radius: 0;
 }
     ul.wizard-menu li.active p {
         color: #4081A8;
@@ -1044,11 +1054,15 @@ em.recommendation {
 
 
 
-div.step-action label {
+div.step-action label, div.form-group label {
   /*display:none;*/
     font-weight: normal;
     margin-top: 10px;
     text-transform: none;
+}
+
+div.form-group label.no-top {
+    margin-top: 0;
 }
     div.step-action label.sec-label {
         text-transform: uppercase;
@@ -1098,7 +1112,9 @@ div#How-Group .panel-collapse {
 	padding:8px 20px 0px 20px;
 
 }
-
+div.error p.alert-danger {
+    display: inline;
+}
 
 div#How-Group .panel-collapse {
 	clear: both;
@@ -1345,6 +1361,14 @@ input[type=date] {
     margin-left: -90px;
 
 
+}
+
+
+div.hcenter input[type=checkbox]  {
+    margin-left: 0px;
+  height:auto;
+    vertical-align: top;
+  width:5%;
 }
 .dropdown-menu>.active>a {
     background-color: #afcbda;

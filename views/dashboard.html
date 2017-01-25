@@ -83,30 +83,40 @@
                 <div class="panel panel-default dash-well">
                     <div class="panel-heading">
                         <h2 class="panel-title  clickable">
-                            <a data-toggle="collapse" data-target="#welcomeDetails">
-                                <i class="fa <%= helpcaret %>" <%= helphidden %> ></i> Welcome
+                            <a data-toggle="collapse" data-target="#welcomeDetails" style="display: block;">
+                                <i class="fa <%= helpcaret %>" <%= helphidden %> ></i> Need help getting started? 
                             </a>
                         </h2>
                     </div>
                     <div id="welcomeDetails" class="panel-collapse collapse <%= helpdetail %>">
-                        <div class="help-panel help-main">
-                            <h3 class="sec-label">What You’ll Need to Get Started </h3>
-                            <p>Get acquainted with the skills and data necessary to conduct a successful evaluation. </p>
-                            <p class="pull-right">
-                                <a onclick=" window.open('/static/pdf/What you need to get started.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
-                            </p>
-                            <div class="clearfix"></div>
-                        </div>
+                       
+                            <div class="col-sm-6 help-panel help-sec">
+                                <h3 class="sec-label">Overview of the Ed Tech RCE Coach</h3>
+                                <p style="min-height: 53px;">We&rsquo;ll help you get answers in 5 easy steps. </p>
+                                <p class="pull-right">
+                                    <a onclick=" window.open('/static/pdf/Graphic Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                </p>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-sm-6 help-panel ">
+                                <h3 class="sec-label">What You’ll Need to Get Started </h3>
+                                <p>Get acquainted with the skills and data necessary to conduct a successful evaluation. </p>
+                                <p class="pull-right">
+                                    <a onclick=" window.open('/static/pdf/What you need to get started.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        <div class="help-main clearfix"> </div>
                         <div class="col-sm-6 help-panel help-sec">
                             <h3 class="sec-label">Choosing a technology</h3>
-                            <p>If you are looking for a technology to implement, use this guide to help you with that process and return to the Coach once you are ready to plan a pilot of that technology. </p>
+                            <p style="min-height: 92px;">If you are looking for a technology to implement, use this guide to help you with that process. </p>
                             <p class="pull-right">
                                 <a onclick=" window.open('/static/pdf/Choose a Technology.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
                             </p>
                         </div>
                         <div class="col-sm-6 help-panel ">
                             <h3 class="sec-label">Understanding types of evidence</h3>
-                            <p>This resource describes common types and sources of evidence. It explains how to tell if the evidence can support claims that a technology is effective.</p>
+                            <p>What are the common types and sources of evidence? How can evidence support claims that a technology is effective?</p>
                             <p class="pull-right">
                                 <a onclick=" window.open('/static/pdf/Understanding types of evidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
                             </p>
@@ -147,7 +157,7 @@
                             <% if (eval.length>0) { %>  
                                 <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
                             <% } else if (eval.length===0) { %>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">START EVALUATION</button>
+                            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">START</button>
                             <% } %>
                         </div>
                       

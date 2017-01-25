@@ -39,20 +39,32 @@ var yesno  = {
 	values: ["yes", "no"],
 		message: 'Invalid response for `{PATH}` with value `{VALUE}`'
 }
+var validateChar = function (intext)
+{
+	var re = /^$|^[A-Za-z0-9 _.,]{5,35}$/;
+		return re.test(intext);
+}
+var charval = [/^[A-Za-z0-9\s]+$/, "Invalid input. Ony letters, numbers, and basic punctuation are allowed."];
+
+var validateEmail = function (email) {
+    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return re.test(email);
+};
 
 totalToolNumber = 11; //for completed status
 
 //02.03 determine your approach
 var Basics = mongoose.Schema({
     Basics_Have: { type: String,  default: '' },
-    Basics_Tech_Name: { type: String, default: '' }, // was Plan_Question_A
+    Basics_Tech_Name: { type: String, default: '', validate: validateChar  }, // was Plan_Question_A
     Basics_Using: { type: String, default: '' }, // was Prob_Appr_A This is not used.  Replaced by Prob_Appr_Current_or_New
     Basics_Users: { type: String, default: 'users' }, // Was Prob_Appr_B
-	Basics_Users_Other: { type: String, default: '' }, // Was Prob_Appr_B_other
+//	Basics_Users_Other: { type: String, default: '', validate: validateChar, message: 'Please check description of other users for invalid characters.  Only use alphanumerics and basic punctuation.' }, // Was Prob_Appr_B_other
+	Basics_Users_Other: { type: String, default: '', validate: validateChar }, // Was Prob_Appr_B_other
 	//Eval_Users: {type: String, set: useOther(Basics_Users, Basics_Users_Other)},
 //	Singular_User: { type:String, set: getSingular(Basics_Users)}, 
     Basics_Outcome: { type: String, default: '' }, 
-	Basics_Outcome_Other: { type: String, default: '' },    
+	Basics_Outcome_Other: { type: String, default: '', validate: validateChar },    
 	//Eval_Outcome: { type: String, set: useOther(Basics_Outcome, Basics_Outcome_Other) },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
@@ -69,10 +81,10 @@ var ProbAppr = mongoose.Schema({
 });
 //03.01 crafting a research question
 var PlanQuestion = mongoose.Schema({
-    Outcome_Measure: { type: String, default: '' }, // was Plan_Question_B_2
+    Outcome_Measure: { type: String, default: '', validate: validateChar }, // was Plan_Question_B_2
     Outcome_Direction: { type: String, default: '' }, // was  Plan_Question_B_3
-    Intervention_Group_Desc: { type: String, default: '' }, // was  Plan_Question_C
-    Comparison_Group_Desc: { type: String, default: '' }, // was Plan_Question_D
+    Intervention_Group_Desc: { type: String, default: '', validate: validateChar }, // was  Plan_Question_C
+    Comparison_Group_Desc: { type: String, default: '', validate: validateChar }, // was Plan_Question_D
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
@@ -82,7 +94,7 @@ var PlanNext = mongoose.Schema({
     Tech_Cost_Saves: { type: String, default: '' }, // was Plan_Next_A_1
     Tech_Amount: { type: Number, default: 0 }, // was Plan_Next_A_2
     Tech_Cost_User: { type: String, default: '' }, // was Plan_Next_A_3
-    Tech_Cost_Desc: { type: String, default:'' }, // was Plan_Next_A_4
+    Tech_Cost_Desc: { type: String, default: '' }, // was Plan_Next_A_4
 	Measure_Units: { type: String, default: '' }, // was Plan_Next_Units
 	Measure_Units_Other: { type: String, default: '' }, // was Plan_Next_Units_Other
     Success_Effect_Size: { type: Number, default: 0 }, // was  Plan_Next_B

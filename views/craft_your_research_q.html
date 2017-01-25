@@ -15,7 +15,16 @@
     <% include ../views/partials/scriptHeader.html %>
 
 </head>
-<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<% 
+var peekingThis = query.peeking == 1 ? "peeking" : "";
+
+var valerrors = [];
+var validationMessage = "<p class='alert-danger'>Please use only letters, numbers and basic punctuation.</p>";
+if(valerrs) valerrors = valerrs;
+
+%>
+
+
 <body class="<%- peekingThis %>">
 
     <div id="header"></div>
@@ -151,8 +160,22 @@
                                 <div id="Question_Outcome_Other" hidden="true" class="other-div">
                                     <p>
                                         <label for="Basics_Outcome_Other">Please specify:</label>
+                                     
+                                        <%
+                                        var valueToUse = eval.basics.Basics_Outcome_Other;
+                                        if(valerrors['basics.Basics_Outcome_Other']) {
+                                        valueToUse = valerrors['basics.Basics_Outcome_Other'].value;
+                                        }
+                                        %>
+                                        <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= valueToUse %>"/>
+                                        <div class="error">
+                                            <%
+                                            if(valerrors['basics.Basics_Outcome_Other']) {
+                                            %>
+                                            <%- validationMessage %>
 
-                                        <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
+                                            <% } %>
+                                        </div>  
                                     </p>
                                 </div>
                                 <% if (user != "NOAUTHENTICATED") {%>
@@ -382,7 +405,7 @@
             }
 
             var outcome = $("#Basics_Outcome").val();
-            if ($("#Basics_Outcome").val().toLowerCase() === "other") {
+            if ($("#Basics_Outcome").val().toLowerCase() === "other" | $("#Basics_Outcome_Other").val() !== "") {
                 outcome = $("#Basics_Outcome_Other").val();
                 $('#Question_Outcome_Other').show();
             }
