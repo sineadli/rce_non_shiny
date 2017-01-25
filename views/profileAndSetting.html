@@ -78,7 +78,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one" style="text-align:left;">Username (email) </label>
+                                    <label class="label-one" style="text-align:left;">User name (email address) </label>
                                     <label class="label-two"><%= user.local.email  %></label>
                                     <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseOne">Update</a></label>
                                 </h4>
@@ -88,7 +88,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <label for="email">Username (email)</label>
+                                            <label for="email">Please enter your email address</label>
                                             <input type="email" name="email" value="<%= user.local.email  %>"/>
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
@@ -112,11 +112,11 @@
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="form-group col-sm-6 col-sm-offset-2">
-                                        <label for="password">New Password</label>
+                                        <label for="password">New password</label>
                                         <input type="password" class="form-control" id="reset-password" name="password" novalidate>
                                     </div>
                                     <div class="form-group col-sm-6 col-sm-offset-2">
-                                        <label for="confirm">Confirm Password</label>
+                                        <label for="confirm">Confirm password</label>
                                         <input type="password" class="form-control" id="reset-confirmpassword" name="confirm" validate>
                                         <label class="registrationFormAlert" id="checkPasswordMatch"></label>
                                     </div>
@@ -130,7 +130,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one" style="text-align:left;">email notifications </label>
+                                    <label class="label-one" style="text-align:left;">Email notifications </label>
                                     <% var rcv = "No"; if (user.receive_update) {rcv = "Yes";} %>
                                     <label class="label-two"><%= rcv %></label>
                                     <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseThree">Update</a></label>
@@ -142,7 +142,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <input type="checkbox" id="chkRecUpdate" name="receive_update" checked="<%= user.receive_update %>"> <label for="chkRecUpdate">I would like to receive e-mail notifications when this site is updated.</label>
+                                            <input type="checkbox" id="chkRecUpdate" name="receive_update" checked="<%= user.receive_update %>"> <label style="margin-top: 0;" for="chkRecUpdate">I would like to receive e-mail notifications when this site is updated.</label>
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
                                             <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg">Save</button>
@@ -156,7 +156,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one">Full Name</label>
+                                    <label class="label-one">Full name</label>
                                     <label class="label-two"><%= user.profile.user_name  %> </label>
                                     <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileOne">Update</a></label>
                                 </h4>
@@ -165,9 +165,9 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <label for="first_name">First Name</label>
+                                            <label for="first_name">First name</label>
                                             <input type="text" name="first_name"  value="<%= user.profile.first_name %>" />
-                                            <label for="last_name">Last Name</label>
+                                            <label for="last_name">Last name</label>
                                             <input type="text" name="last_name" value="<%= user.profile.last_name %>" />
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
@@ -180,7 +180,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one">Organization Name </label>
+                                    <label class="label-one">Organization name </label>
                                     <label class="label-two"><%= user.profile.organization_name %></label>
                                     <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileTwo">Update</a></label>
                                 </h4>
@@ -188,7 +188,7 @@
                             <div id="collapseProfileTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="form-group col-sm-6 col-sm-offset-2">
-                                        <label for="organization_name">Organization Name</label>
+                                        <label for="organization_name">Organization name</label>
                                         <input type="text" class="form-control" name="organization_name" value="<%= user.profile.organization_name %>">
                                     </div>
 
@@ -201,7 +201,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one">Type of Organization</label>
+                                    <label class="label-one">Type of organization</label>
                                     <label class="label-two"><% if (user.profile.organiztion_type=="other") { %> <%=  user.profile.organiztion_type_other %> <% } else {%> <%= user.profile.organiztion_type %> <% } %></label>
                                     <label class="label-three"> <a data-toggle="collapse" data-parent="#setting" href="#collapseProfileThree">Update</a></label>
                                 </h4>
@@ -209,7 +209,7 @@
                             <div id="collapseProfileThree" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="form-group col-sm-6 col-sm-offset-2">
-                                        <label for="organiztion_type">Type of Organization</label>
+                                        <label for="organiztion_type">Type of organization</label>
                                         <select id="organiztion_type" name="organiztion_type">
                                             <option value="">Select an option</option>
                                             <option value="school">School</option>

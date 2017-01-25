@@ -51,7 +51,7 @@ module.exports = function (app, passport) {
 		sess = req.session;
 		if (!sess.step) { sess.step = 2 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
-      
+        console.log(req.user);
         res.render('coach.html', { user: req.user, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step 
             });
 
@@ -68,7 +68,7 @@ module.exports = function (app, passport) {
 			eval.updated_at = new Date();
             eval.save();
             req.user.save();
-            res.render('coach.html', { user: req.user.local.email, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step });
+            res.render('coach.html', { user: req.user, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step });
         });
     });
 

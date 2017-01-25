@@ -1364,7 +1364,7 @@ input[type=date] {
 }
 
 
-div.hcenter input[type=checkbox]  {
+div.hcenter input[type=checkbox], div.panel-body div.form-group input[type=checkbox]  {
     margin-left: 0px;
   height:auto;
     vertical-align: top;

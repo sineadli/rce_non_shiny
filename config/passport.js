@@ -58,7 +58,7 @@ module.exports = function(passport) {
             //var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
              var re = /^((?=.*[A-Z])(?=.*[a-z])(?=.*\d)|(?=.*[a-z])(?=.*\d)(?=.*[\$\%\&])|(?=.*[A-Z])(?=.*\d)(?=.*[\$\%\&])|(?=.*[A-Z])(?=.*[a-z])(?=.*[\$\%\&])).{8,}$/;
             if (!re.test(password)) {
-                return done(null, false, req.flash('signupMessage', 'Password not meet requirments!')); }
+                return done(null, false, req.flash('signupMessage', 'Password does not meet requirments!')); }
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -68,7 +68,7 @@ module.exports = function(passport) {
 
             // check to see if theres already a user with that email
             if (user) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                return done(null, false, req.flash('signupMessage', 'An account already exists for that email address.'));
             } else {
 
                 // if there is no user with that email
