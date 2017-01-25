@@ -52,9 +52,7 @@ module.exports = function (app, passport) {
 		if (!sess.step) { sess.step = 2 }
 		if (!sess.last_tool) {sess.last_tool = "none"}
       
-        res.render('coach.html', { user: req.user.local.email, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
+        res.render('coach.html', { user: req.user, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step 
             });
 
     });
