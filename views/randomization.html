@@ -542,12 +542,16 @@
                 console.log("unit_id: " + JSON.stringify($("#unit_id").val()));
                 console.log("intervention_type: " + JSON.stringify($("#intervention_type").val()));
                 console.log("intervention_quantity: " + JSON.stringify($("#intervention_quantity").val()));
-                console.log("baseline_vars: " + JSON.stringify($("#baseline_vars").val()));
+                console.log(baseline_vars);
+                console.log("baseline_vars: " + JSON.stringify(baseline_vars));
                 formData.append("data", $("#chosenfile")[0].files[0]);
                 formData.append("unit_id", JSON.stringify($("#unit_id").val()));
                 formData.append("intervention_type", JSON.stringify(interv_type));
                 formData.append("intervention_quantity", JSON.stringify(interv_quantity));
-                formData.append("baseline_vars", JSON.stringify(baseline_vars));
+
+                if (baseline_vars.length > 0) {
+                    formData.append("baseline_vars", JSON.stringify(baseline_vars));
+                }
               //  if (baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
 
                 $.ajax({
