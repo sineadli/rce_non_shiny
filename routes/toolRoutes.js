@@ -62,7 +62,7 @@ module.exports = function (app, passport) {
         sess.step = 2;
 		sess.eval.last_tool = "The Basics";
         var query = require('url').parse(req.url, true).query;
-        res.render('basics.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('basics.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, valerrs: sess.valerrs  },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html);}
             });
@@ -335,7 +335,7 @@ module.exports = function (app, passport) {
 		console.log("In craft question.");
         console.log(sess.valerrs);
         var query = require('url').parse(req.url, true).query;
-        res.render('craft_your_research_q.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('craft_your_research_q.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, valerrs: sess.valerrs },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });

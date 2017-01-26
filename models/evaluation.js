@@ -59,13 +59,9 @@ var Basics = mongoose.Schema({
     Basics_Tech_Name: { type: String, default: '', validate: validateChar  }, // was Plan_Question_A
     Basics_Using: { type: String, default: '' }, // was Prob_Appr_A This is not used.  Replaced by Prob_Appr_Current_or_New
     Basics_Users: { type: String, default: 'users' }, // Was Prob_Appr_B
-//	Basics_Users_Other: { type: String, default: '', validate: validateChar, message: 'Please check description of other users for invalid characters.  Only use alphanumerics and basic punctuation.' }, // Was Prob_Appr_B_other
-	Basics_Users_Other: { type: String, default: '', validate: validateChar }, // Was Prob_Appr_B_other
-	//Eval_Users: {type: String, set: useOther(Basics_Users, Basics_Users_Other)},
-//	Singular_User: { type:String, set: getSingular(Basics_Users)}, 
+	Basics_Users_Other: { type: String, default: '', validate: validateChar }, // Was Prob_Appr_B_other	 
     Basics_Outcome: { type: String, default: '' }, 
-	Basics_Outcome_Other: { type: String, default: '', validate: validateChar },    
-	//Eval_Outcome: { type: String, set: useOther(Basics_Outcome, Basics_Outcome_Other) },
+	Basics_Outcome_Other: { type: String, default: '', validate: validateChar },   
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
@@ -92,12 +88,12 @@ var PlanQuestion = mongoose.Schema({
 //03.02 plan next steps
 var PlanNext = mongoose.Schema({
     Tech_Cost_Saves: { type: String, default: '' }, // was Plan_Next_A_1
-    Tech_Amount: { type: Number, default: 0 }, // was Plan_Next_A_2
+    Tech_Amount: { type: String, default: 0 }, // was Plan_Next_A_2
     Tech_Cost_User: { type: String, default: '' }, // was Plan_Next_A_3
     Tech_Cost_Desc: { type: String, default: '' }, // was Plan_Next_A_4
 	Measure_Units: { type: String, default: '' }, // was Plan_Next_Units
 	Measure_Units_Other: { type: String, default: '' }, // was Plan_Next_Units_Other
-    Success_Effect_Size: { type: Number, default: 0 }, // was  Plan_Next_B
+    Success_Effect_Size: { type: String, default: "" }, // was  Plan_Next_B
     Pass_Probability: { type: String, default: '' },// was Plan_Next_C_1
     Fail_Probability: { type: String, default: '' },// was Plan_Next_C_2
     Action_Success: { type: String, default: '' }, // was Plan_Next_D_1
@@ -139,20 +135,20 @@ var PlanContext = mongoose.Schema({
 	Urbanicity_Suburban: { type: String, default: '' },
 	Urbanicity_Urban: { type: String, default: '' },
 	District_State: { type: String, default: '' },
-	Race_Asian: { type: Number, default: 0 },
-	Race_Black: { type: Number, default: 0 },
-	Race_Native_American: { type: Number, default: 0 },
-	Race_Pacific_Islander: { type: Number, default: 0 },
-	Race_White: { type: Number, default: 0 },
-	Race_Other: { type: Number, default: 0 },
-    Ethnicity_Hispanic: { type: Number, default: 0 },
-	Ethnicity_Not_Hispanic: { type: Number, default: 0 },
-	Gender_Female: { type: Number, default: 0 },
-	Gender_Male: { type: Number, default: 0 },
-	FRPL_Free: { type: Number, default: 0 },
-	FRPL_Reduced: { type: Number, default: 0 },
-    English_Learners: { type: Number, default: 0 },
-    IEP: { type: Number, default: 0 },
+	Race_Asian: { type: Number, default: '' },
+	Race_Black: { type: Number, default: '' },
+	Race_Native_American: { type: Number, default: '' },
+	Race_Pacific_Islander: { type: Number, default: '' },
+	Race_White: { type: Number, default: '' },
+	Race_Other: { type: Number, default: '' },
+    Ethnicity_Hispanic: { type: Number, default: '' },
+	Ethnicity_Not_Hispanic: { type: Number, default: '' },
+	Gender_Female: { type: Number, default: '' },
+	Gender_Male: { type: Number, default: '' },
+	FRPL_Free: { type: Number, default: '' },
+	FRPL_Reduced: { type: Number, default: '' },
+    English_Learners: { type: Number, default: '' },
+    IEP: { type: Number, default: '' },
     Other_Notes: { type: String, default: '' },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
