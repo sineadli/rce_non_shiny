@@ -15,7 +15,7 @@
 </head>
 <body class="one-col downloads">
     <% url="/", des="Back to Home"; if (user) {url="/dashboard"; des ="Back to Dashboard"; } %>
-    <div id="header"></div>
+    <% include ../views/partials/header.html %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href= <%= url %>><span class="fa fa-caret-left"></span> <%= des %></a></li>
     </ol>
@@ -168,13 +168,6 @@
         </div>
     </div>
     <% include ../views/partials/footer.html %>
-    <script>
-        $(document).ready(function () {
-            /** Load Header **/
-            $.get("/header", function (data) {
-                $("#header").html(data);
-            });
-        })
-    </script>
+
 </body>
 </html>
