@@ -128,7 +128,7 @@
             <div class="step-action">
                 <p>
                     I would consider any <%= eval.planQuestion.Outcome_Direction %> at least
-                    <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="number" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px"/>
+                    <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px"/>
                     <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span> a success.
                 </p>
 
@@ -373,17 +373,23 @@
     <% include ../views/partials/footer.html %>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var coreurl = $("#coreurl").val();
-           // var coreurl= "http://52.222.20.48";//for production comment this out
+            // var coreurl= "http://52.222.20.48";//for production comment this out
             // var coreurl = "https://edtechrce.org" //for production uncomment this
             $('.multiselect').multiselect();
 
+           
             $('.success-effect-size').text($("#Success_Effect_Size").val());
 
             //init feedback_me plugin
             var fm_options = setFeedbackOptions($("#user_email").val(), "getresult");
             fm.init(fm_options);
+        });
+
+        $("#Success_Effect_Size").change(function() {
+            $('.success-effect-size').text($("#Success_Effect_Size").val());
+        });
 
             $("#chosenfile").change(function () {
                 var formData = new FormData();
@@ -429,7 +435,7 @@
             });
 
             $("#go").click(function () {
-
+                $('#results').html("");
                 console.log("data: " + $("#chosenfile")[0].files[0]);
                 console.log("outcome_var: " + JSON.stringify($("#outcome_var").val()));
                 console.log("treat_var: " + JSON.stringify($("#treat_var").val()));
@@ -470,7 +476,7 @@
                             success: function (data) {
                                 $('#loadingmessage').hide();
                                 $('#warning-modal').modal("hide");
-                                $('#results').html("");
+                                
                                 var errors = data.error_message;
                                 if (errors.length > 0) {
                                     $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
@@ -524,7 +530,7 @@
                 });
             });
 
-        });
+      
        
       
        

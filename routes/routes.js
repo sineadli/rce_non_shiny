@@ -230,7 +230,7 @@ module.exports = function(app, passport) {
 
     app.get('/error', function (req, res) {
         var user;
-        if (req.user) user = req.user
+        if (req.user) user = req.user;
         // render the page and pass in any flash data if it exists
         res.render('errors.html', { user: user });
     });

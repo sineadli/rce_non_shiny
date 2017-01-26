@@ -158,7 +158,11 @@ function usersUpdate(t) {
 	var subject = "users";
 	var otherSpecify = $("#Question_Users_Other");
 	if (value === "other") otherSpecify.show();
-	else otherSpecify.hide();
+	else {
+	    $("#Basics_Users_Other").val("");
+		otherSpecify.hide();
+	}
+	
 	if (value.toLowerCase() != "select an option" && value.toLowerCase() != "other") {
 		subject = value;
 	}
@@ -174,7 +178,10 @@ function outcomeUpdate(t) {
 
 	var otherSpecify = $("#Question_Outcome_Other");
 	if (value.toLowerCase() === "other") otherSpecify.show();
-	else otherSpecify.hide();
+	else {
+		$("#Basics_Outcome_Other").val("");
+		otherSpecify.hide();
+	}
 
 	if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
 		$(".eval-outcome").text(value);
@@ -279,7 +286,10 @@ function measureUnitsUpdate(t) {
 	var otherSpecify = $("#Question_Units_Other");
 
 	if (value.toLowerCase() === "other") otherSpecify.show();
-	else otherSpecify.hide();
+	else {
+		$("#Measure_Units_Other").val("");
+		otherSpecify.hide();
+	}
 
 	var munits = $("#Measure_Units").val();
 	if (munits.toLowerCase() === "other") {
@@ -414,7 +424,10 @@ function ShowClusterOther(t) {
     var otherSpecify = $("#Question_Cluster_Other");
 
     if (value.toLowerCase() === "other") otherSpecify.show();
-    else otherSpecify.hide();
+	else {
+		$("#Cluster_Group_Otherr").val("");
+		otherSpecify.hide();
+	}
 
 }
 

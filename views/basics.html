@@ -23,7 +23,14 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
     </ol>
-    <% if (message.length>0) { %>
+<%
+var valerrors = [];
+var validationMessage = "<p class='alert-danger'>Please use only letters, numbers and basic punctuation.</p>";
+if(valerrs) valerrors = valerrs;
+
+
+
+if (message.length>0) { %>
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
 
@@ -104,9 +111,21 @@
                                     <div class="col-xs-10">
                                        
                                             <div class="step-action">
-
-                                                <textarea name="Basics[Basics_Tech_Name]" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
-                                               
+                                                <%
+                                                var valueToUse = eval.basics.Basics_Tech_Name;
+                                                if(valerrors['basics.Basics_Tech_Name']) {
+                                                valueToUse = valerrors['basics.Basics_Tech_Name'].value;
+                                                }
+                                                %>
+                                                <textarea name="Basics[Basics_Tech_Name]" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= valueToUse %></textarea>
+                                                <div class="error">
+                                                    <%
+                                                    if(valerrors['basics.Basics_Tech_Name']) {
+                                                    %>
+                                                    <%- validationMessage %>
+                                                    
+                                                    <% } %>
+                                                </div>              
                                             </div>
                                         </div>
                                 </div>
@@ -142,8 +161,23 @@
                                                 <p>
                                                     <label for="Basics_Outcome_Other">Please specify:</label>
 
-                                                    <input type="text" name='Basics[Basics_Outcome_Other]' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
+                                                    <%
+                                                    var valueToUse = eval.basics.Basics_Outcome_Other;
+                                                    if(valerrors['basics.Basics_Outcome_Other']) {
+                                                    valueToUse = valerrors['basics.Basics_Outcome_Other'].value;
+                                                    }
+                                                    %>
+
+                                                    <input type="text" name='Basics[Basics_Outcome_Other]' id="Basics_Outcome_Other" value="<%= valueToUse %>"/>
                                                 </p>
+                                                <div class="error">
+                                                    <%
+                                                    if(valerrors['basics.Basics_Outcome_Other']) {
+                                                    %>
+                                                    <%- validationMessage %>
+
+                                                    <% } %>
+                                                </div>         
                                             </div>
                                         </div>
 
@@ -228,9 +262,23 @@
                                             <div id="Question_Users_Other" hidden="true" class="other-div">
                                                               
                                                     <label for="Basics_Users_Other">Please specify:</label>
-                                               
 
-                                                <input type="text" name="Basics[Basics_Users_Other]" id="Basics_Users_Other" value="<%= eval.basics.Basics_Users_Other %>" />
+                                                <%
+                                                var valueToUse = eval.basics.Basics_Users_Other;
+                                                if(valerrors['basics.Basics_Users_Other']) {
+                                                valueToUse = valerrors['basics.Basics_Users_Other'].value;
+                                                }
+                                                %>
+                                                <input type="text" name="Basics[Basics_Users_Other]" id="Basics_Users_Other" value="<%= valueToUse %>"/>
+
+                                                <div class="error">
+                                                    <%
+                                                    if(valerrors['basics.Basics_Users_Other']) {
+                                                    %>
+                                                    <%- validationMessage %>
+
+                                                    <% } %>
+                                                </div>         
                                             </div>
                                         </div>
                                     </div>
@@ -318,12 +366,14 @@
     $(document).ready(function () {
 
         setBasicsConclusion();
-        if ($('#Basics_Users').val().toLowerCase() === "other") {
+        if ($('#Basics_Users').val().toLowerCase() === "other" ) {
             $('#Question_Users_Other').show();
         }
-        if ($('#Basics_Outcome').val().toLowerCase() === "other") {
+        if ($('#Basics_Outcome').val().toLowerCase() === "other" ) {
             $('#Question_Outcome_Other').show();
         }
+
+
         //init feedback_me plugin
         var fm_options = setFeedbackOptions($("#user_email").val(), "craft_your_research_q");
         fm.init(fm_options);

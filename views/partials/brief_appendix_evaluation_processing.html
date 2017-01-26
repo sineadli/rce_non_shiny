@@ -251,9 +251,12 @@ baseline_results_by_grade = [];
             } else {
                 Tech_Cost_Saves = planNext.Tech_Cost_Saves || Tech_Cost_Saves;
             }
-                                
-            if (!planNext.Tech_Amount) data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
-            Tech_Amount         = planNext.Tech_Amount || Tech_Amount;
+            
+            if (typeof planNext.Tech_Amount === 'number') {
+                Tech_Amount = planNext.Tech_Amount;
+            } else {
+                data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
+            }
 
             if (!planNext.Tech_Cost_User) {
                 data_issues.planNext.push("Technology user type is blank or undefined.");
@@ -281,8 +284,12 @@ Action_Success      = planNext.Action_Success || Action_Success;
             Action_Fail         = planNext.Action_Fail || Action_Fail;
             if (!planNext.Action_Fail)      data_issues.planNext.push("Next step for not moving the needle is blank or undefined.");
 
-			Success_Effect_Size = planNext.Success_Effect_Size || Success_Effect_Size;
-			if (!planNext.Success_Effect_Size) data_issues.planNext.push("Success effect size is blank or undefined.");
+			if (typeof planNext.Success_Effect_Size === 'number') {
+                Success_Effect_Size = planNext.Success_Effect_Size;
+            }
+            else {
+                data_issues.planNext.push("Success effect size is blank or undefined.");
+            }
                         
         } catch (e) {
             data_issues.planNext.push("Missing or invalid data.");
@@ -418,10 +425,15 @@ console.log("analysis_results_by_grade = " + analysis_results_by_grade);
             // No perfect way to do this. Race values default to 0, so if you use 100 - white and default values (0) are in place, you get 100% non-white, 
             // and it's not possible to know whether that's true or not. If you sum the non-white categories, you still might get 0 from default values,
             // but it could be the true value also. Safest way to go is default to 100% and subtract explicit value of Race_White.
-            non_white       = 100 - planContext.Race_White || non_white;
-                                    
-            Total_Students      = planContext.Total_Students || Total_Students;
-            if (!planContext.Total_Students) data_issues.planContext.push("Total students not specified.");  
+            if (typeof planContext.Race_White === 'number') {
+                non_white       = 100 - planContext.Race_White;
+            }
+                               
+            if (typeof planContext.Total_Students === 'number') {
+                Total_Students = planContext.Total_Students;
+            } else {
+                data_issues.planContext.push("Total students not specified.");  
+            }  
 
             District_State      = planContext.District_State || District_State;
             if (!planContext.District_State) data_issues.planContext.push("State not specified.");  
