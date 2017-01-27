@@ -408,7 +408,14 @@
 
                                                         var effect_size = grade_results.freq.effect_size;
 
-                                                        var ci = [impact - (1.96 * se), impact + (1.96 * se)];
+                                                        if (grade_results.freq.ub && grade_results.freq.lb) {
+                                                            var lb = parseFloat(grade_results.freq.lb);
+                                                            var ub = parseFloat(grade_results.freq.ub);
+                                                            var ci = [lb, ub];
+                                                        } else {
+                                                            var ci = [impact - (1.96 * se), impact + (1.96 * se)];
+                                                        }
+
                                                         var ci_string = '[' + round3(ci[0]) + ', ' + round3(ci[1]) + ']';
 
                                                         var pvalue = grade_results.freq.pvalue;
