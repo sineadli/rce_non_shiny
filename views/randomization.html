@@ -14,7 +14,7 @@
 </head>
 <% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
 <body class="<%- peekingThis %>">
-    <div id="header"></div>
+    <% include ../views/partials/header.html %>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Preparing Your Data</a></li>
@@ -204,7 +204,7 @@
 
                             No more than
                             <label class="hidden" for="intervention_quantity">Input limit amount</label>
-                            <input type="number" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>"/>
+                            <input type="number" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>" step="any"/>
                             <label class="hidden" for="intervention_type">Select limit amount unit</label><select name="intervention_type" id="intervention_type">
                                 <%
 
