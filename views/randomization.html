@@ -355,8 +355,7 @@
 
                 <div class="col-xs-10">
                     <div id="Step_Conclusion" class="container">
-                        <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-                        <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+                      
                         <div id="results" class="shiny-html-output shiny-bound-output"></div>
                     </div>
                     <div id='loadingmessage' class="row" hidden>
@@ -419,30 +418,24 @@
     </form>
     <% include ../views/partials/footer.html %>
     <script>
-        $(document).ready(function () {
-            var coreurl = $("#coreurl").val();
-           // var coreurl = "http://52.222.20.48";//for production comment this out
-             //var coreurl = "https://edtechrce.org" //for production uncomment this
+        $(document).ready(function() {
+            
             if ($("#Basics_Users").val().toLowerCase() === "other") {
-
                 $("#Question_Users_Other").show();
             }
             if ($("#Cluster_Group").val().toLowerCase() === "other") {
-
                 $("#Question_Cluster_Other").show();
             }
             setUserLimitsSelections();
-            $('#randomResults').hide();
+           
+
             var group = $("#Individual_Group").val();
             var clusterSpecify = $("#Question_Cluster");
-
             if (group.toLowerCase().indexOf("group") !== -1) clusterSpecify.show();
             else clusterSpecify.hide();
 
             var limit = $("#User_Limit_Exist").val();
-
             var specifyLimits = $("#Question_User_Limits");
-
             if (limit.toLowerCase() === "yes") specifyLimits.show();
             else specifyLimits.hide();
 
@@ -450,30 +443,43 @@
 
             var fm_options = setFeedbackOptions($("#user_email").val(), "plan_next_steps");
             fm.init(fm_options);
-            $('#Individual_Group').change(function () {
-                ShowCluster(this);
-                setUserLimitsSelections();
+           
+        });
 
-            });
-            $('#Cluster_Group').change(function () {
-                ShowClusterOther(this);
-                setUserLimitsSelections();
-            });
-            $('#User_Limit_Exist').change(function () {
-                UpdateUserLimitExists(this);
-                setUserLimitsSelections();
-            });
+        // Field Change functions
+        $('#Individual_Group').change(function () {
+            ShowCluster(this);
+            setUserLimitsSelections();
 
-            $("#chosenfile").change(function () {
+        });
+        $("#pretest").change(function () {
+            enablebuttons();
+        });
+        $("#unit_id").change(function () {
+            enablebuttons();
+        });
+        $("#baseline_vars").change(function () {
+            enablebuttons();
+        });
+        $('#Cluster_Group').change(function () {
+            ShowClusterOther(this);
+            setUserLimitsSelections();
+        });
+        $('#User_Limit_Exist').change(function () {
+            UpdateUserLimitExists(this);
+            setUserLimitsSelections();
+        });
 
-                var formData = new FormData();
+        // Upload file and get field names
+        $("#chosenfile").change(function () {
+  
                 $('#loadingmessage').show();
 
-
+                var formData = new FormData();
                 formData.append("data", $(this)[0].files[0]);
 
                 $.ajax({
-                    url: coreurl + "/ocpu/library/edtechrce/R/csv_colnames/json",
+                    url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/csv_colnames/json",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -505,15 +511,8 @@
                     }
                 });
             });
-            $("#pretest").change(function () {
-                enablebuttons();
-            });
-            $("#unit_id").change(function () {
-                enablebuttons();
-            });
-            $("#baseline_vars").change(function () {
-                enablebuttons();
-            });
+  
+        // Randomize
             $("#match").click(function () {
 
                 $('#loadingmessage').show();
@@ -555,7 +554,7 @@
               //  if (baseline_vars) formData.append("baseline_vars", JSON.stringify(baseline_vars));
 
                 $.ajax({
-                    url: coreurl + "/ocpu/library/edtechrce/R/randomize",
+                    url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/randomize",
                     type: "POST",
                     processData: false,
                     contentType: false,
@@ -563,7 +562,7 @@
                     success: function (data) {
                         var responsePaths = data.split("\n");
                         $.ajax({
-                            url: coreurl + responsePaths[0] + "/json",
+                            url: $("#coreurl").val() + responsePaths[0] + "/json",
                             type: "GET",
                             success: function (data) {
                                 $('#loadingmessage').hide();
@@ -678,7 +677,7 @@
                                             .removeClass("disabled");
                                         $("#downloadData").removeClass("hidden")
                                           .attr("target", "_blank")
-                                          .attr("href", coreurl + downloadPath).removeAttr("disabled");
+                                          .attr("href", $("#coreurl").val() + downloadPath).removeAttr("disabled");
                                     }
                                 }
                             },
@@ -698,10 +697,10 @@
                     }
                 });
             });
-        });
+        
 
 
-
+// Helpers
         function enablebuttons() {
             if ($("#unit_id").val() !== "None selected" ) {
                 $("#match").prop("disabled", false);

@@ -88,12 +88,12 @@ var PlanQuestion = mongoose.Schema({
 //03.02 plan next steps
 var PlanNext = mongoose.Schema({
     Tech_Cost_Saves: { type: String, default: '' }, // was Plan_Next_A_1
-    Tech_Amount: { type: String, default: 0 }, // was Plan_Next_A_2
+    Tech_Amount: { type: Number, default: '' }, // was Plan_Next_A_2
     Tech_Cost_User: { type: String, default: '' }, // was Plan_Next_A_3
     Tech_Cost_Desc: { type: String, default: '' }, // was Plan_Next_A_4
 	Measure_Units: { type: String, default: '' }, // was Plan_Next_Units
 	Measure_Units_Other: { type: String, default: '' }, // was Plan_Next_Units_Other
-    Success_Effect_Size: { type: String, default: "" }, // was  Plan_Next_B
+    Success_Effect_Size: { type: Number, default: '' }, // was  Plan_Next_B
     Pass_Probability: { type: String, default: '' },// was Plan_Next_C_1
     Fail_Probability: { type: String, default: '' },// was Plan_Next_C_2
     Action_Success: { type: String, default: '' }, // was Plan_Next_D_1
@@ -130,7 +130,7 @@ var PlanContext = mongoose.Schema({
 	SchoolType_Private: { type: String, default: '' }, 
 	SchoolType_Parochial: { type: String, default: '' }, 
 	SchoolType_Public: { type: String, default: '' },
-    Total_Students: { type: Number, default: 0 },
+    Total_Students: { type: String, default: 0 },
 	Urbanicity_Rural: { type: String, default: '' },
 	Urbanicity_Suburban: { type: String, default: '' },
 	Urbanicity_Urban: { type: String, default: '' },

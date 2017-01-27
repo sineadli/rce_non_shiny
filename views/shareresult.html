@@ -105,11 +105,20 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         try {
                         var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
                         var success = (probability > Pass_Probability);
+                        var inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability)
 
                         var needle_decision = (success) ? 'Yes' : 'No';
                         var needle_negate = (success) ? '' : ' not';
 
-                        var next_steps = (success) ? Action_Success : Action_Fail;
+                        var next_steps = Action_Fail
+                        if (success) {
+                        next_steps= Action_Success;
+                        } else if (inconclusive) {
+                        next_steps = Action_Inconclusive; 
+                        }
+
+                       var findingsConclusion = (inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the neede.' : needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.'
+
                         var interpretation_2 = "";
                         if(Success_Effect_Size > 0){
                           if(analysis_results_by_grade[grade].interpretation_cutoff_0 ) {
@@ -138,7 +147,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                         <% if (grade_results_clean) { %>
                         <ol class="no-page-break">
-                            <li> <%= needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.' %></li>
+                            <li> <%= findingsConclusion %></li>
 
                             <% if (Success_Effect_Size > 0) { %>
                             <li id="item_interp_2"> <%= interpretation_2 %></li>

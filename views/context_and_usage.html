@@ -313,7 +313,7 @@
 
                                     <p>
                                         <em class="capitalize-one"><%= Basics_Users %> are using <%= Basics_Tech_Name %>&hellip;</em>
-                                    </p> <textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea>
+                                    </p> <textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea>
                                    
                                 </div>
 
@@ -624,7 +624,7 @@
 
 
                                 <div class="step-action context-tag">
-                                    <input type="number" name='Total_Students' id="Total_Students" value="<%= eval.planContext.Total_Students %>" class="num-input" />
+                                    <input type="text" name='Total_Students' id="Total_Students" value="<%= eval.planContext.Total_Students %>" class="num-input" />
                                   
                                 </div>
                                 <div class="step-subquestion">
@@ -728,7 +728,7 @@
 
                                         %>
 
-                                        <input type="number" id="<%= cbid %>" name="<%= cbid %>" class="per-input" value="<%= cbvalue %>" /><label for="<%= cbid %>">&#37;&nbsp;<%= cblabel %></label><br /> <%- midbreak %>
+                                        <input type="number" id="<%= cbid %>" name="<%= cbid %>" class="per-input" value="<%= cbvalue %>" step="any"  /><label for="<%= cbid %>">&#37;&nbsp;<%= cblabel %></label><br /> <%- midbreak %>
                                         <%
                                         }
                                         %>

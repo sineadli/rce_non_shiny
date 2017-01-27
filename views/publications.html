@@ -13,67 +13,6 @@
     <title>Shared Evaluations - Ed Tech RCE Coach</title>
     <% include ../views/partials/scriptHeader.html %>
 <style>
- div.r_i {
-    padding: 20px 10px 10px 10px;
-    line-height: 1.4em;
-    clear: right;
-}
-div.r_t {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-div.r_a, div.r_c, div.r_d, div.r_g, div.r_oc,div.r_t  {
-    margin-bottom: 5px;
-}
-        div.r_d {
-                color: #274;
-            border-bottom:1px solid #e7e7e7;
-        }
-div.r_f, div#r_colR div.r_f {
-    padding: 9px 10px 4px 10px;
-    clear: left;
-    float: left;
-    width: 100px;
-    margin: 5px 0 3px 10px;
-    font-size: .9em;
-}
-div#fbar {   
-    width: 54%;
-    font-size: 1em;
-    line-height: .9em;
-    margin-left:10px;
-}
-
-#fbar  input[type=submit] {
-    float: right;
-    width: 20%;
-    position: relative;
-    color: #fff;
-    height: 30px;
-    font-weight: bold;
-    background-color: #006982;
-    margin-right:17px;
-}
-#fbar input[type=text] {
-    width: 75%;
-    height: 30px;
-
-}
-div#sbar {   
-    float: right;
-    clear:right;
-    width: 45%;
-    font-size: 1em;
-    line-height: .9em;
-    text-align:right;
-}
-#sbar > select {
-    float: right;
-    clear: right;
-    margin-right:15px;
-    width: 60%;
-    height: 30px;
-}
 
 </style>
 </head>
@@ -90,19 +29,26 @@ div#sbar {
         <input type="hidden" id="obj_sort" value="<%= obj.sort %>" />
         <%}%>
         <div class="page-header">
-            <h1 class="page-title">Shared Evaluation</h1>
+            <h1 class="page-title">Shared Evaluations</h1>
             <div class="row">
-                
-                <form id="s" >
+
+                <form id="s">
+                    <div id="fbar">
+                        <div>
+                            <label class="hidden" for="keywords">Enter search keywords.</label>
+                            <input id="keywords" type="text" name="search" value="<%= obj.search %>" placeholder="Technology, outcome, grade, author or organization">
+                            <input type="submit" value="SEARCH" class="btn btn-primary" id="btnSearch">
+                        </div>
+                    </div>
                     <div id="sbar">
-                        <label for="s"> Sort by: </label>
-                        <select name="sort" id="s" onchange="this.form.submit();">
+                        <label for="sortby"> Sort by:&nbsp;&nbsp;</label>
+                        <select name="sort" id="sortby" onchange="this.form.submit(); ">
                             <% var options = ["Publication Date (Newest First)", "Publication Date (Oldest First)","Tech Name (A-Z)","Tech Name (Z-A)" ];
                             var values = ["-published_at", "published_at","basics.Basics_Tech_Name","-basics.Basics_Tech_Name" ];
                             for ( var i = 0; i < options.length; i++ )
                             {
                             var selected;
-                            
+
                             { if (obj.sort) { selected = ( obj.sort== values[i] ) ? "selected" : "";}}
 
 
@@ -112,12 +58,7 @@ div#sbar {
                             <% } %>
                         </select>
                     </div>
-                    <div id="fbar">
-                        <div>
-                            <input id="f" type="text" name="search" value="<%= obj.search %>" placeholder="Search technology, outcome, grade, author or organization">
-                            <input type="submit" value="SEARCH" id="btnSearch">
-                        </div>
-                    </div>
+
                 </form>
             </div>       
         </div>

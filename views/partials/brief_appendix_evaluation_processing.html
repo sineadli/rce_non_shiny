@@ -97,15 +97,17 @@ console.log('checkpoint 0');
     Intervention_Group_Desc = '[the intervention group]';
     Comparison_Group_Desc   = '[the comparison group]';
                                 
-    // planNext 
-    Pass_Probability    = '[probability]';
+    // planNext
+    Pass_Probability = '[probability]';
+     Fail_Probability    = '[probability]';
     Tech_Cost_Saves     = '[Saves/Costs]';
     Tech_Amount         = '[amount]';
 Tech_Cost_User = '[user]';
 Measure_Units = '[units]';
 Measure_Units_Other = '[units]';
     Action_Success      = '[next step if moving the needle]';
-    Action_Fail         = '[next step if not moving the needle]';
+Action_Fail = '[next step if not moving the needle]';
+Action_Inconclusive = '[next step if results inconclusive]';
 	Success_Effect_Size = '[success effect size]';
 
     // planContext
@@ -241,9 +243,10 @@ baseline_results_by_grade = [];
         try {
              planNext        = eval.planNext;
 
-            Pass_Probability    = stripPercent(planNext.Pass_Probability) || Pass_Probability;
+    Pass_Probability = stripPercent(planNext.Pass_Probability) || Pass_Probability;
+    Fail_Probability    = stripPercent(planNext.Fail_Probability) || Fail_Probability;
             if (!planNext.Pass_Probability) data_issues.planNext.push("Desired probability of moving the needle is blank or undefined.");
-                        
+             if (!planNext.Fail_Probability) data_issues.planNext.push("Desired probability of not moving the needle is blank or undefined.");            
             if (!planNext.Tech_Cost_Saves) {
                 data_issues.planNext.push("Whether technology costs/saves is blank or undefined.");
             } else if (planNext.Tech_Cost_Saves.toLowerCase() === 'select an option') {
@@ -284,7 +287,7 @@ Action_Success      = planNext.Action_Success || Action_Success;
             Action_Fail         = planNext.Action_Fail || Action_Fail;
             if (!planNext.Action_Fail)      data_issues.planNext.push("Next step for not moving the needle is blank or undefined.");
 
-			if (typeof planNext.Success_Effect_Size === 'number') {
+			if ( typeof planNext.Success_Effect_Size === 'number') {
                 Success_Effect_Size = planNext.Success_Effect_Size;
             }
             else {
@@ -429,7 +432,7 @@ console.log("analysis_results_by_grade = " + analysis_results_by_grade);
                 non_white       = 100 - planContext.Race_White;
             }
                                
-            if (typeof planContext.Total_Students === 'number') {
+            if (planContext.Total_Students !== '') {
                 Total_Students = planContext.Total_Students;
             } else {
                 data_issues.planContext.push("Total students not specified.");  

@@ -25,6 +25,24 @@ body.one-col div.row div.content {
     margin: 0px auto;
     float: none;
 }
+
+
+/*  In Peeking Mode */
+body.peeking {
+    box-shadow: 0px 0px 25px #b28806; 
+}
+
+body.peeking div.step-action a, body.peeking div.step-action input {
+   
+   cursor: default;
+    text-decoration: none;
+}
+
+h1 span.peeking-pretitle {
+    font-size: .8em;
+   
+}
+
 .legal {
     margin: 45px auto;
     font-size: 1em;
@@ -75,7 +93,7 @@ div.container-fluid {
   display: block;
 }
 .footer {
-  height: 160px; 
+  height: auto; 
 }
 .footer {
     margin-top: 55px;
@@ -83,6 +101,9 @@ div.container-fluid {
     width: 100%;
     bottom: 0;
       box-shadow: 0px 25px 25px #BAB38F;
+}
+nav.footer p {
+    margin: 20px auto;
 }
  /*.row {
 	margin-left:-5px !important;
@@ -431,30 +452,10 @@ div.col-xs-4.tab-col ul {
 h4 label {
     text-transform: none;
 }
-label.chart , caption {
-    color:#65614D;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: .85em;
-  margin-top:5px;
-    font-weight: 600;
-}
-figcaption {
-    margin: 10px 0;
-}
-table.tool-table {
-   border: 1px solid black; 
-   border-collapse: collapse;
-    width: 75%;
-    margin: 10px auto;
-}
-table.tool-table th {
-    width: 20%;
-    font-weight: 600;
-}
+
 label.registrationFormAlert {
     text-transform: none;
-    color: #800000;
+    color: #ec2b2b;
 }
 h2.clickable ,p.clickable {
   cursor:pointer;
@@ -717,6 +718,9 @@ div.wizard-header-row {
 
    
 }
+    div.wizard-header-row p {
+        font-weight: 600;
+    }
 h2.eval-header {
     font-size: 2em;
     margin-bottom: 25px;
@@ -1362,6 +1366,27 @@ input[type=date] {
 
 
 }
+label.chart , caption {
+    color:#65614D;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: .85em;
+  margin-top:5px;
+    font-weight: 600;
+}
+figcaption {
+    margin: 10px 0;
+}
+table.tool-table {
+   border: 1px solid black; 
+   border-collapse: collapse;
+    width: 75%;
+    margin: 10px auto;
+}
+table.tool-table th {
+    width: 20%;
+    font-weight: 600;
+}
 
 
 div.hcenter input[type=checkbox], div.panel-body div.form-group input[type=checkbox]  {
@@ -1676,21 +1701,72 @@ div.carousel-inner div.item.active, div.carousel-inner div.item {
      border: 1px dotted #FAC500 !important;
 }
 
-/*  In Peeking Mode */
-body.peeking {
-    box-shadow: 0px 0px 25px #b28806; 
+
+
+/*  Shared Evals Page */
+ div.r_i {
+    padding: 20px 10px 10px 10px;
+    line-height: 1.4em;
+    clear: right;
+}
+div.r_t {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+div.r_a, div.r_c, div.r_d, div.r_g, div.r_oc,div.r_t  {
+    margin-bottom: 5px;
+}
+        div.r_d {
+                color: #274;
+            border-bottom:1px solid #e7e7e7;
+        }
+div.r_f, div#r_colR div.r_f {
+    padding: 9px 10px 4px 10px;
+    clear: left;
+    float: left;
+    width: 100px;
+    margin: 5px 0 3px 10px;
+    font-size: .9em;
+}
+div#fbar {   
+    width: 54%;
+    font-size: 1em;
+    line-height: .9em;
+    margin-left:10px;
+    float: left;
+           display:inline;
 }
 
-body.peeking div.step-action a, body.peeking div.step-action input {
-   
-   cursor: default;
-    text-decoration: none;
+#fbar  input[type=submit] {
+    width: auto;
+    position: relative;
+    /*color: #fff;
+    height: 30px;
+    font-weight: bold;
+    background-color: #006982;
+    margin-right:17px;*/
+}
+#fbar input[type=text] {
+    width: 80%;
+    height: 30px;
+
+}
+div#sbar {   
+    float: right;
+    clear:right;
+    width: 45%;
+    font-size: 1em;
+    line-height: 1.8em;
+    text-align:right;
+}
+#sbar > select {
+    float: right;
+    clear: right;
+    margin-right:15px;
+    width: 60%;
+    height: 30px;
 }
 
-h1 span.peeking-pretitle {
-    font-size: .8em;
-   
-}
        /* Specific to share results */
 
         body.brief h2 {

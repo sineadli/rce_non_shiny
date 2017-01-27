@@ -32,7 +32,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Enter evaluation title</h4>
+                        <h4 class="modal-title">Edit the name of your evaluation.</h4>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="evalid" value="<%= eval._id %>" />
@@ -43,7 +43,8 @@
                         <input type="text" id="title" autofocus />
                     </div>
                     <div class="modal-footer">
-                        <button id="getTitle" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                        <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
                     </div>
                 </div>
 
@@ -65,7 +66,7 @@
                     <div class="sec-label">Start Date</div>
                     <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
                     <p>
-                        <strong><%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %></strong>
+                        <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
                     </p>
                 </div>
                 <div class="col-xs-3">
@@ -80,7 +81,7 @@
                     <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;"></div></div>
 
                     <p>
-                        <strong><%= status %></strong>
+                        <%= status %>
                     </p>
                 </div>
                 <div class="col-xs-12" style="padding: 0; margin: 0;">

@@ -378,17 +378,31 @@
 <% include ../views/partials/footer.html %>
 
     <script>
-        $(document).ready(function () {
-            var coreurl = $("#coreurl").val();
-           // var coreurl = "http://52.222.20.48";  //for production comment this out
-            //var coreurl = "https://edtechrce.org" //for production uncomment this
-        $('.multiselect').multiselect();
+        $(document).ready(function() {
+
+            $('.multiselect').multiselect();
+        });
+
+
+        $("#treat_var").change(function () {
+            enablebuttons();
+        });
+        $("#grade_var").change(function () {
+            enablebuttons();
+        });
+        $("#pretest").change(function () {
+            enablebuttons();
+        });
+        $("#match_vars").change(function () {
+            enablebuttons();
+        });
+
         $("#chosenfile").change(function () {
             var formData = new FormData();
             $('#loadingmessage').show();
             formData.append("data", $(this)[0].files[0]);
             $.ajax({
-                url:  coreurl + "/ocpu/library/edtechrce/R/csv_colnames/json",
+                url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/csv_colnames/json",
                 type: "POST",
                 processData: false,
                 contentType: false,
@@ -412,24 +426,12 @@
                           .attr("value", value)
                           .text(value));
                     });
-                   $('.multiselect').multiselect('destroy');
-                   $('.multiselect').multiselect();
-                   $("#shinybuttons").removeClass("hidden");
+                    $('.multiselect').multiselect('destroy');
+                    $('.multiselect').multiselect();
+                    $("#shinybuttons").removeClass("hidden");
                     //$("#match").prop("disabled", false);
                 }
             });
-        });
-        $("#treat_var").change(function () {
-            enablebuttons();
-        });
-        $("#grade_var").change(function () {
-            enablebuttons();
-        });
-        $("#pretest").change(function () {
-            enablebuttons();
-        });
-        $("#match_vars").change(function () {
-            enablebuttons();
         });
         $("#match").click(function () {
          
@@ -455,17 +457,15 @@
             formData.append("grade_var", JSON.stringify($("#grade_var").val()));
             console.log(formData);
             $.ajax({
-                url: coreurl + "/ocpu/library/edtechrce/R/matching",
+                url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/matching",
                 type: "POST",
                 processData: false,
                 contentType: false,
                 data: formData,
                 success: function (data) {
-                    var responsePaths = data.split("\n");
-                    console.log(responsePaths);
-                    console.log(coreurl + responsePaths[0] + "/json");
+                    var responsePaths = data.split("\n");              
                     $.ajax({
-                        url: coreurl  + responsePaths[0] + "/json",
+                        url: $("#coreurl").val() + responsePaths[0] + "/json",
                         type: "GET",
                         success: function (data) {
                             $('#loadingmessage').hide();
@@ -628,7 +628,7 @@
                                     .removeClass("disabled");
                                 $("#downloadData").removeClass("hidden")
                                   .attr("target", "_blank")
-                                  .attr("href", coreurl + downloadPath).removeAttr("disabled");
+                                  .attr("href", $("#coreurl").val() + downloadPath).removeAttr("disabled");
                             }
                         },
                             error: function (xhr) {
@@ -647,7 +647,7 @@
                     }
             });
         });
-    });
+   
     function enablebuttons() {
         if ($("#treat_var").val() !== "None selected" && $("#grade_var").val() !== "None selected"
             && $("#pretest").val() !== "None selected" ) {
