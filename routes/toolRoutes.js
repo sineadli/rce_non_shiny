@@ -672,7 +672,7 @@ module.exports = function (app, passport) {
 						Total_Students: obj.Total_Students,
 						Urbanicity_Rural: obj.Urbanicity_Rural,
 						Urbanicity_Suburban: obj.Urbanicity_Suburban,
-					Urbanicity_Urban: obj.Urbanicity_Urban,
+						Urbanicity_Urban: obj.Urbanicity_Urban,
 						District_State: obj.District_State,
 						Race_Asian: obj.Race_Asian,
 						Race_Black: obj.Race_Black,
@@ -983,7 +983,8 @@ module.exports = function (app, passport) {
 				else {
 					eval.evalPlan.updated_at = dt;
 				};
-				
+				console.log("Saving Eval Plan");
+				console.log(obj.EvalPlan);
 				eval.evalPlan = evalPlan;
 
 

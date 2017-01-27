@@ -204,10 +204,17 @@ if (Measure_Units === "") { Measure_Units = "units"; }
 
             </div>
             <div class="step-action">
-                <input id="chosenfile" size="1" type="file" accept=".csv">
                 <p class="warning">
                     Before uploading data, make sure you have removed any personally identifiable information (PII), such as names.
                 </p>
+                <input id="chosenfile" size="1" type="file" accept=".csv">
+                <div id='loadingmessageUp' hidden>
+                    <div class="loading">
+                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+
+                    </div>
+                </div>
             </div>
             <div class="before-upload">
                 <div class="step-subquestion">
@@ -302,7 +309,7 @@ if (Measure_Units === "") { Measure_Units = "units"; }
                             <% } %>
                             <% if(eval.path == "path-random") { %>
                             <p class="note random-path">
-                                You should have downloaded a file after randomly creating treatment and control groups. Upload that file here after merging it with your outcome data.
+                                You should have downloaded a dataset after randomly creating treatment and control groups. Upload that dataset here after merging it with your outcome data.
                             </p>
                             <% } %>
                             <div class="before-upload">
@@ -330,19 +337,19 @@ if (Measure_Units === "") { Measure_Units = "units"; }
         </div>
         <div class="clearfix"></div>
         <div id="Step_Conclusion" class="container">
-            <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-            <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+          
             <div id="results" class="shiny-html-output shiny-bound-output"></div>
         </div>
-        <div id='loadingmessage' class="row col-xs-10" hidden>
-            <div style="margin: 10px auto; width: 30px;">
+        <div id='loadingmessage' hidden>
+            <div class="loading">
                 <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                 <span class="sr-only">Loading...</span>
 
             </div>
         </div>
+        <div class="clearfix"></div>
         <div id="shinybuttons" class="bottom-buttons hidden ">
-            <button id="go" type="button" class="btn btn-primary btn-lg">Run Analysis!</button>
+            <button id="go" type="button" class="btn btn-primary btn-lg">RUN ANALYSIS</button>
         </div>
 
     </div>
@@ -392,8 +399,7 @@ if (Measure_Units === "") { Measure_Units = "units"; }
         $(document).ready(function() {
      
             $('.multiselect').multiselect();
-
-           
+            enablebuttons();
             $('.success-effect-size').text($("#Success_Effect_Size").val());
 
             //init feedback_me plugin
@@ -404,10 +410,16 @@ if (Measure_Units === "") { Measure_Units = "units"; }
         $("#Success_Effect_Size").change(function() {
             $('.success-effect-size').text($("#Success_Effect_Size").val());
         });
+        $("#treat_var").change(function () {
+            enablebuttons();
+        });
+        $("#outcome_var").change(function() {
+            enablebuttons();
+        });
 
             $("#chosenfile").change(function () {
                 var formData = new FormData();
-                $('#loadingmessage').show();
+                $('#loadingmessageUp').show();
                 formData.append("data", $(this)[0].files[0]);
                 $.ajax({
                     url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/csv_colnames/json",
@@ -416,7 +428,7 @@ if (Measure_Units === "") { Measure_Units = "units"; }
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        $('#loadingmessage').hide();
+                        $('#loadingmessageUp').hide();
                         $("select.from-upload").empty();
                         $("#outcome_var").append($("<option></option>")
                         .attr("value", "none selected")
@@ -545,7 +557,15 @@ if (Measure_Units === "") { Measure_Units = "units"; }
             });
 
       
-       
+            function enablebuttons() {
+                if (($("#treat_var").val() === "none selected") || ($("#outcome_var").val() === "none selected") || ($("#treat_var").val() === "") || ($("#outcome_var").val() === "")) {
+                    $("#go").prop("disabled", true);
+                }
+                else {
+                    $("#go").prop("disabled", false);
+                }
+
+            }
       
        
        

@@ -252,9 +252,12 @@ button span.tooltip-gr {
     /*color: #000;
     text-shadow:1px 1px #fac500;*/
 }
+.btn[disabled] span.tooltip-gr {
+    cursor: not-allowed;
+}
 div.tool-bottom .tooltip-gr {
     font-size: 1.3em;
-     cursor:not-allowed;
+     cursor:pointer;
 }
 
 .all-caps {
@@ -267,9 +270,13 @@ div.tool-header {
 
 .note {
     font-style: italic;
+
     margin-top: 8px;
-    color: #286090;
-        margin: 15px 25px;
+    color: #222;
+          margin: 15px 55px;
+    border: solid 2px /*#006982*/ #666;
+    padding: 15px;
+    border-radius: 8px;
 }
 .prev-answer{
     font-style: italic;
@@ -686,11 +693,11 @@ div.dash-well div.help-main {
 
 }
 div.dash-well div.help-sec {
-    border-right: 2px #D9D7BE solid;
+    border-right: 1px #D9D7BE solid;
     height: 167px;
 
 }
-body.downloads div.dash-well ul {
+body.downloads div.dash-well ul, ul.downloads {
     list-style: none;
 }
 .btn-primary {
@@ -1249,6 +1256,18 @@ div.step-to-consider h3 {
 div.step-to-consider p {
 	margin-bottom:20px;
 }
+div.step-to-consider p.note {
+	margin:10px 0 20px 0;
+    border-width:1px;
+}
+div#results p.note {
+    margin: 15px 0;
+    width: 80%;
+    border: none;
+}
+div#plotAll {
+    margin: 15px;
+}
 div.step-to-consider li p {
 	margin-bottom:5px;
 }
@@ -1365,6 +1384,12 @@ input[type=date] {
     margin-left: -90px;
 
 
+}
+
+div.loading {
+    margin: 20px auto;
+    display: block;
+    text-align: center;
 }
 label.chart , caption {
     color:#65614D;

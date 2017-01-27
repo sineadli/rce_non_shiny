@@ -547,7 +547,7 @@
                                                         <tr id="addr<%= i %>">
                                                             <td class="index">
                                                                 <% if (display === 'online') { %>
-                                                                <input type="text" name="EvalPlan[Milestones][<%= i %>][Order]" disabled  id="Order_<%= i %>" value="<%= ev.Milestones[i].Order %>" />
+                                                                <input type="text" name="EvalPlan[Milestones][<%= i %>][Order]"   id="Order_<%= i %>" value="<%= ev.Milestones[i].Order %>" />
                                                                 <% } else { %>
                                                                 <%= ev.Milestones[i].Order %>
                                                                 <% } %>
@@ -648,7 +648,7 @@
             </div>
         </div>
         <% if (display === 'online') { %>
-        <input type="hidden" id="user_email" value="<%= user %>" />
+ 
         <input class="hidden" name="status" id="status" />
         <input class="hidden" name="returnpath" id="returnpath" />
       

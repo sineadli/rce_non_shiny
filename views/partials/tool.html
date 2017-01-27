@@ -18,50 +18,64 @@
 </div>
 <div class="row">
     <div class="tool-row">
-        <% var toolindropdown=[{}]; for (var i=0; i< tools.length; i++) {
-        var divid = "ToolDiv-"+tools[i].step;
-        var statusdivid = "StatusDiv" + tools[i].step;
-        var tool =[], status = "NOT STARTED", d = "", btnText = "START";
-        var peeking=false, firstTool =false;
+        <% var toolindropdown=[{}];
+        
+        for (var i=0; i< tools.length; i++) {
+            var divid = "ToolDiv-"+tools[i].step;
+            var statusdivid = "StatusDiv" + tools[i].step;
+            var tool =[], status = "NOT STARTED", d = "", btnText = "START";
+            var peeking=false, firstTool =false;
+
         var lock = "";
-        var tooltip = "Need to finish 'The Basics' first";
-        if (eval.flag == 1) { peeking =true; }
-        if (tools[i].name==="The Basics") firstTool=true;
-        if (eval.toolsvisited) {tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
+        var tooltip = "You need to complete &ldquo;The Basics&rdquo; before you can use this tool.";
+        var dyaMessage = "You need to complete &lsquo;Determine Your Approach&rsquo; before you can use this tool.";
+        var dyaContextMessage = "You need to complete &lsquo;Summarize Context&rdquo; and &lsquo;Get Results&rdquo; before you can use this tool."
+        var pathMessage = "Based on your answers in &lsquo;Determine Your Approach,&rsquo; you do not need to complete this tool."
+        
+            if (eval.flag == 1) { peeking =true; }
+            if (tools[i].name==="The Basics") firstTool=true;
+       
+         if (eval.toolsvisited) {
+            tool = eval.toolsvisited.filter(function (x) { return x.name === tools[i].name });
+            if (tool.length > 0) {
 
-        if (tool.length > 0) {
-
-        status = tool[0].status;
-        d=new Date(tool[0].visited_at);
-        if (status.toLowerCase()=="completed" && tool[0].type !="guide") {btnText="EDIT"}
-        else if (status.toLowerCase()!="completed" && tool[0].type !="guide") {btnText="CONTINUE"}
-        else {btnText="VIEW"}
-        }
+            status = tool[0].status;
+            d=new Date(tool[0].visited_at);
+            if (status.toLowerCase()=="completed" && tool[0].type !="guide") {btnText="EDIT"}
+            else if (status.toLowerCase()!="completed" && tool[0].type !="guide") {btnText="CONTINUE"}
+            else {btnText="VIEW"}
+         }
         }       //tool visited
 
+        
         var current = eval.last_tool == tools[i].name ? "current" : "";
         var buttondivid = tools[i].name;
    
         if ((peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) ) {btnText="PEEK"; lock="locked"; }
-        if (tools[i].coachStep===4  ) {tooltip="Need to finish 'Determine Your Approach' first"; 
-            if ( tools[i].evalPath  &&  eval.path && tools[i].evalPath !== eval.path)
-                {tooltip="This tool is not available for the chosen " + eval.path; 
-                  var objTool ={};
-                  objTool.name = tools[i].name;
-                  objTool.path = tools[i].path + "?peeking=1"
+        if (tools[i].coachStep===4 ) {
+            tooltip= dyaMessage; 
+            if ( tools[i].evalPath  &&  eval.path && tools[i].evalPath !== eval.path){
+                 tooltip=pathMessage; 
+                 var objTool ={};
+                 objTool.name = tools[i].name;
+                 objTool.path = tools[i].path + "?peeking=1"
                  toolindropdown.push( objTool) ;
-                continue;}}
+                 continue;
+             }
+        }
         if (tools[i].coachStep===6) {
-        var toolsDepends = eval.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "summarize context" || x.name.toLowerCase() === "get results")})
-        if(!eval.path) {tooltip="Need to finish 'Determine Your Approach' first";btnText="PEEK"; lock="locked"; }
-        else {
-        if (!toolsDepends || toolsDepends.length < 2 ) {
-        tooltip="Need to finish 'Summarize Context' and 'Get Results'";btnText="PEEK"; lock="locked";
-        }
+         var toolsDepends = eval.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "summarize context" || x.name.toLowerCase() === "get results")})
+        if(!eval.path) {
+            tooltip=dyaMessage;
+            btnText="PEEK"; lock="locked"; }
+          else {
+          if (!toolsDepends || toolsDepends.length < 2 ) {
+                tooltip=dyaContextMessage;
+               btnText="PEEK"; lock="locked";
+             }
 
-        }
-     
-  
+            }
+
         }
         %>
         <div class="col-xs-3">
@@ -80,7 +94,7 @@
                         <p>
                             Status<br /><span class="all-caps" id="status"><strong>NOT AVAILABLE</strong></span><br />
                             
-                            <span data-toggle="tooltip" title="<%= tooltip %>" class='tooltip-gr'>
+                            <span data-toggle="tooltip" title="<%- tooltip %>" class='tooltip-gr'>
                                 <i class="fa fa-question-circle" aria-hidden="true"></i>
                             </span>
                         </p>
@@ -101,9 +115,9 @@
                     <div class="tool-view-btn">
 
                         <% var option=""; if (tools[i].path) {option=tools[i].path; if (lock==="locked") option=tools[i].path + "?peeking=1"} %>
-                        <% if (option.indexOf(".pdf") !== -1) { %>
+                        <% if (tools[i].type.toLowerCase() == "guide") { %>
                         <!--<button type="button" id="viewpdf" class="btn btn-primary btn-lg" >VIEW</button>-->
-                        <a id="viewpdf" class="tool-view-button btn btn-primary btn-lg" href="#">VIEW <span class="fa fa-download" aria-hidden="true"></span></a>
+                        <a href="<%= option %>" class="tool-view-button btn btn-primary btn-lg" href="#">VIEW</a>
                         <% } else { %>
                         <a href="<%= option %>" class="tool-view-button btn btn-primary btn-lg"><%= btnText %></a>
                         <% } %>
@@ -124,7 +138,7 @@
         <% if (toolindropdown.length > 1) {
         %>
         <%
-        var note = 'Based on your answers in Determine Your Approach the Coach is guiding you through ';
+        var note = 'Based on your answers in &ldquo;Determine Your Approach,&rdquo; the Coach is guiding you through ';
 
         var approach ='a randomized pilot. '
         var note2 = 'These tools are not used for this approach.'

@@ -217,10 +217,17 @@
                 </p>
             </div>
             <div class="step-action">
-                <input id="chosenfile" size="1" type="file" accept=".csv">
                 <p class="warning">
                     Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
                 </p>
+                <input id="chosenfile" size="1" type="file" accept=".csv">
+                <div id='loadingmessageUp' hidden>
+                    <div class="loading">
+                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+
+                    </div>
+                </div>
             </div>
 
             <div class="before-upload">
@@ -237,16 +244,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="step-subquestion">
-                    <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
-                    <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the data field that indicates student grade. </p>
-                </div>
-                <div class="step-action ">
-                    <label for="grade_var" class="hidden">please select the name of the data field that indicates student grade. If grade is not relevant, leave as match any grade.</label>
-                    <select id="grade_var" class="multiselect from-upload required nodefault ">
-                        <option value="match any grade" selected="selected">match any grade</option>
-                    </select>
-                </div>
+                
                 <div class="step-subquestion">
                     <h4><label for="pretest">Select your pretest outcome measure.</label> </h4>
                     <p><em class="stronger"><i class="fa fa-asterisk"></i> Required</em>
@@ -269,6 +267,16 @@
                 <div class="step-action  ">
                     <select id="match_vars" name="match_vars" class="multiselect from-upload required" multiple="multiple">
                         <option value="Select matching variables">Select matching variables</option>
+                    </select>
+                </div>
+                <div class="step-subquestion">
+                    <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
+                    <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the data field that indicates student grade. </p>
+                </div>
+                <div class="step-action ">
+                    <label for="grade_var" class="hidden">please select the name of the data field that indicates student grade. If grade is not relevant, leave as match any grade.</label>
+                    <select id="grade_var" class="multiselect from-upload required nodefault ">
+                        <option value="match any grade" selected="selected">match any grade</option>
                     </select>
                 </div>
             </div>
@@ -311,20 +319,20 @@
         </div>
         <div class="clearfix"></div>
         <div id="Step_Conclusion" class="container">
-            <div id="diagnostic_error" class="shiny-html-output shiny-bound-output"></div>
-            <div id="save_status" class="shiny-html-output shiny-bound-output"></div>
+            
             <div id="results" class="shiny-html-output shiny-bound-output">
             </div>
         </div>
-        <div id='loadingmessage' class="row" hidden>
-            <div class="col-sm-5 col-sm-offset-3" style="margin-top: 15px;">
+        <div id='loadingmessage' hidden>
+            <div class="loading">
                 <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                 <span class="sr-only">Loading...</span>
 
             </div>
         </div>
-        <div id="shinybuttons" class="row col-xs-10 col-sm-offset-0 bottom-buttons hidden ">
-            <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">Match!</button>
+ 
+        <div id="shinybuttons" class="bottom-buttons hidden ">
+            <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">MATCH</button>
             <a id="downloadData" class="btn btn-primary btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
                 <i class="fa fa-download"></i>
                 Download Revised Dataset
@@ -399,7 +407,7 @@
 
         $("#chosenfile").change(function () {
             var formData = new FormData();
-            $('#loadingmessage').show();
+            $('#loadingmessageUp').show();
             formData.append("data", $(this)[0].files[0]);
             $.ajax({
                 url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/csv_colnames/json",
@@ -408,7 +416,7 @@
                 contentType: false,
                 data: formData,
                 success: function (data) {
-                    $('#loadingmessage').hide();
+                    $('#loadingmessageUp').hide();
                     $("select.from-upload").empty();
                     $(".before-upload").addClass("after-upload");
                     $(".after-upload").removeClass("before-upload");

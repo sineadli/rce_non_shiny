@@ -278,10 +278,17 @@
 
                 </div>
                 <div class="step-action">
-                    <input id="chosenfile" size="1" type="file" accept=".csv">
                     <p class="warning">
                         Before uploading data, make sure personally identifiable information (PII), such as names and descriptors that could identify your evaluation participants, has been removed.
                     </p>
+                    <input id="chosenfile" size="1" type="file" accept=".csv">
+                    <div id='loadingmessageUp'  hidden>
+                        <div class="loading" >
+                            <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+
+                        </div>
+                    </div>
                 </div>
                 <div class="before-upload">
                     <div class="step-subquestion">
@@ -353,20 +360,20 @@
             <div class="clearfix"></div>
             <div id="randomResults">
 
-                <div class="col-xs-10">
+               
                     <div id="Step_Conclusion" class="container">
                       
                         <div id="results" class="shiny-html-output shiny-bound-output"></div>
                     </div>
-                    <div id='loadingmessage' class="row" hidden>
-                        <div class="col-sm-5 col-sm-offset-3" style="margin-top: 15px;">
+                    <div id='loadingmessage'  hidden>
+                        <div class="loading">
                             <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                             <span class="sr-only">Loading...</span>
 
                         </div>
                     </div>
-                        <div id="shinybuttons" class="row col-xs-10 col-sm-offset-0 bottom-buttons hidden ">
-                            <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">Randomize!<br /> </button>
+                        <div id="shinybuttons" class="row  bottom-buttons hidden ">
+                            <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">RANDOMIZE<br /> </button>
                             <a id="downloadData" class="btn btn-primary btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
                                 <i class="fa fa-download"></i>
                                 Download Revised Dataset
@@ -473,7 +480,7 @@
         // Upload file and get field names
         $("#chosenfile").change(function () {
   
-                $('#loadingmessage').show();
+                $('#loadingmessageUp').show();
 
                 var formData = new FormData();
                 formData.append("data", $(this)[0].files[0]);
@@ -485,7 +492,7 @@
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        $('#loadingmessage').hide();
+                        $('#loadingmessageUp').hide();
                         $("select.from-upload").empty();
                         $(".before-upload").addClass("after-upload");
                         $(".after-upload").removeClass("before-upload");
