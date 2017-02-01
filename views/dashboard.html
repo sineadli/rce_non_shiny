@@ -63,7 +63,7 @@
                 var helphidden = "aria-hidden='false'"
                 var helpdetail = "in"
                 var eval = evals.filter(function (x) { return x._id.equals(user.evalid)});
-
+                if (eval.length===0 && evals.length > 0) {eval[0] = evals[0];user.evalid =evals[0]._id;  }
                 if (eval.length>0) {
                 var EvalButtonText = eval[0].status == 100 ? "Edit" : "Continue";
                 evaltitle = eval[0].title;
@@ -156,35 +156,15 @@
                     <div style="float: right; width: 20%;">
                             <% if (eval.length>0) { %>  
                                 <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
+                        <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete</a>
                             <% } else if (eval.length===0) { %>
                             <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">START</button>
                             <% } %>
+                        
                         </div>
                       
                        <div class="clearfix"></div>
-                       
-                        <!-- Trigger the modal with a button -->
-                        <!-- Modal -->
-                        <div id="myModal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Enter a name for your evaluation.</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <% var evalid; if (eval) {evalid = eval._id} %>
-                                        <input type="hidden" id="evalid" value="<%= evalid %>" />
-                                        <input type="text" id="title" />
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                        <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                     
                     </div>
                 <%  if(evals.length>0){ for (var i=0; i < evals.length; i++){
                 if (evals[i]._id.equals(user.evalid) ){continue;}
@@ -212,15 +192,62 @@
                     </div>
                    
                         <div style="float: right; width: 20%;">
-                           
-                                <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a>
-                        
+                   
+                            <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a> 
+                            <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete</a>
+                                 
                         </div>
 
                    
                     <div class="clearfix"></div>
                     </div>
+
+                
                 <%}} %>
+            </div>
+            <!-- Trigger the modal with a button -->
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Enter a name for your evaluation.</h4>
+                        </div>
+                        <div class="modal-body">
+                            <% var evalid; if (eval) {evalid = eval._id} %>
+                            <input type="hidden" id="evalid" value="<%= evalid %>" />
+                            <input type="text" id="title" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                            <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="deleteConfirm" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Delete evaluation</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label>
+                                Are you sure that your want to delete <label id="evaltl"></label>?
+                            </label>
+                            <input type="hidden" id="toDeleted" />
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                            <button type="button" id="delEval" class="btn btn-primary btn-lg" data-dismiss="modal">Delete</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -231,7 +258,16 @@
             var fm_options = setFeedbackOptions($("#user_email").val(), "dashboard");
             fm.init(fm_options);
 
-          
+            $('#deleteConfirm').on('show.bs.modal', function (e) {
+
+                //get data-id attribute of the clicked element
+                var deletedId = $(e.relatedTarget).data('delete-id');
+                var title = $(e.relatedTarget).data('delete-title');
+
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
+                $(e.currentTarget).find('label[id="evaltl"]').text(title);
+            });
         });
 
         $("#getTitle").click(function (e) {
@@ -251,6 +287,22 @@
         });
         $("#btnPublishedList").click(function (e) {
             document.location.href = "/publications"
+        });
+        $("#delEval").click(function (e) {
+            var idtobedeleted = $("#toDeleted").val();
+            var url = '/api/delEval';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "id": idtobedeleted }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                  
+                }
+            }
+            )
+            $(document).ajaxStop(function () { location.reload(true); });
         });
     </script>
 </body>

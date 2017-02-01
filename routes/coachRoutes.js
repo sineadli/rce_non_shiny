@@ -153,6 +153,18 @@ module.exports = function (app, passport) {
         }
 
     });
+
+    app.post('/api/delEval', isLoggedIn, function (req, res) {
+        Evaluation.remove({ _id: req.body.id}, function (err) {
+            if (err)
+                console.log(err);
+            else {
+                console.log("Selected evaluation deleted.");
+                res.status(201).send("Selected evaluation deleted.");
+            }
+        });
+    })
+    
        
 };
 
