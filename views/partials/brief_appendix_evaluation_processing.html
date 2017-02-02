@@ -87,17 +87,21 @@ console.log('checkpoint 0');
                             
     // basics
     Basics_Tech_Name = '[technology name]';
-    Basics_Outcome   = '[outcome of interest]';
+Basics_Outcome = '[outcome of interest]';
+ Basics_Outcome_Other   = '[outcome of interest]';
     Basics_Users     = '[users]';
-    Basics_Users_Other = '[users]';
+Basics_Users_Other = '[users]';
+Basics_User = [user];
 
     // planQuestion
     Outcome_Direction       = '[outcome direction]';
     Outcome_Measure         = '[outcome measure]';
     Intervention_Group_Desc = '[the intervention group]';
     Comparison_Group_Desc   = '[the comparison group]';
-                                
-    // planNext
+
+// determine
+path = "[approach]"
+// planNext
     Pass_Probability = '[probability]';
      Fail_Probability    = '[probability]';
     Tech_Cost_Saves     = '[Saves/Costs]';
@@ -180,17 +184,22 @@ baseline_results_by_grade = [];
         try {
              basics          = eval.basics;
             Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
-            if (!basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
+if (!basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
 
-            if (!basics.Basics_Outcome) {
+
+
+if (!basics.Basics_Outcome) {
                 data_issues.basics.push("Outcome is blank or undefined.");
             } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
                 data_issues.basics.push("Outcome is not specified.");
             } else {
                 Basics_Outcome = basics.Basics_Outcome || Basics_Outcome;
             }
-                                    
-            if (!basics.Basics_Users) {
+              if (Basics_Outcome === 'other') {
+                Basics_Outcome = basics.Basics_Outcome_Other || Basics_Outcome_Other;
+                if (!basics.Basics_Outcome_Other) data_issues.basics.push("Other outcome description is blank or undefined.");
+}                       
+            if (!basics.Basics_Users ||basics.Basics_Users == "Select an option") {
                 data_issues.basics.push("User description is blank or undefined.");           
             } else {
                 Basics_Users = basics.Basics_Users || Basics_Users;
@@ -199,7 +208,8 @@ baseline_results_by_grade = [];
             if (Basics_Users === 'other') {
                 Basics_Users = basics.Basics_Users_Other || Basics_Users_Other;
                 if (!basics.Basics_Users_Other) data_issues.basics.push("Other user description is blank or undefined.");
-            }
+}
+Basics_User = Basics_Users.substr(0,Basics_Users.length -1 )
                         
         } catch (e) {
             data_issues.basics.push("Missing or invalid data.");
@@ -302,7 +312,8 @@ Action_Success      = planNext.Action_Success || Action_Success;
         data_issues.planNext.push("No data found for this tool for this evaluation.");
     }
 
-    header = 'Results not available due to incomplete analysis.';
+header = 'Results not available due to incomplete analysis.';
+inconclusive_qualifier = '';
     analysis_results_clean = false;
 	analysis_by_grade = false;
 
@@ -316,27 +327,35 @@ Action_Success      = planNext.Action_Success || Action_Success;
                  analysis_by_grade           = Object.keys(analysis_results_by_grade).length > 1;
 console.log("analysis_results = " + analysis_results);
 console.log("analysis_results_by_grade = " + analysis_results_by_grade);
-                 success_count = 0, failure_count = 0;
+                 success_count = 0, failure_count = 0; inconclusive_count = 0;
 
                 for (grade in analysis_results_by_grade) {
 
                      probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                     success = (probability > Pass_Probability);
+                    var success = (probability > Pass_Probability);
+                    var inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability)
 
                     if (success) {
                         success_count++;
+                    } else if (inconclusive) {
+                        inconclusive_count++;
                     } else {
                         failure_count++;
                     }
                 }
 
+            if (inconclusive_count == (inconclusive_count + success_count + failure_count)) {
+                header = "The results from the evaluation of " + Basics_Tech_Name + " are inconclusive."
+            }
+        else {
                  needle_negate = (success_count === 0) ? ' not' : '';
-                 grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, and not for others' : '';
+grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, but not for others' : '';
+inconclusive_qualifier = (inconclusive_count > 0) ? 'For some grades, results were inconclusive.' : '';
 
                 header = capitalize(Basics_Tech_Name) + ' is' + needle_negate + ' moving the needle on ' + Basics_Outcome + grade_qualifier;
                 analysis_results_clean = true;
             }
-                                    
+          }                          
         } catch (e) {
             data_issues.getresult.push("Missing or invalid data.");
             header = 'Analysis results not found or incomplete.';

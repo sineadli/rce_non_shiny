@@ -242,7 +242,7 @@ div.bottom-next a.sec-label {
 }
 .tooltip-gr {
   color:#e44e0d;
-    cursor: pointer;
+    cursor:help;
     /*color: #000;
     text-shadow:1px 1px #fac500;*/
 }
@@ -300,6 +300,11 @@ body.homepage div.row.main {
     margin-top: 0px;
     margin-right: -15px !important; 
     margin-left: -15px !important;  
+}
+body.homepage div.row.smargin {
+
+    margin-right: 15px !important; 
+    margin-left: 15px !important;  
 }
 
   ul.footer-list {
@@ -376,6 +381,9 @@ div.sentence-case {
 }
 div.sentence-case:first-letter {
     text-transform: capitalize;
+}
+img.pdf {
+    padding: 0 !important;
 }
 .h1, .h2 {
     line-height: 1em;
@@ -1033,27 +1041,27 @@ div.step-subquestion p label {
     font-weight: normal;
     color: #000;
 }
-div.step-action {
+div.step-action, div.step-action-panel {
  margin:0px 0 25px 25px;
   display:inline-block;
   font-size:1em;
   width:100%
 }
-    div.step-action em {
+    div.step-action em, div.step-action-panel em {
         font-size: 1.05em;
          
     }
-div.col-xs-12 div.step-action {
+div.col-xs-12 div.step-action, div.col-xs-12 div.step-action-panel {
      width:90%
 }
-div.step-action hr {
+div.step-action hr, div.step-action-panel hr {
     border-color:#56ACE0;
     border-width: 1px;
     margin-left: 0;
     width: 95%;
     text-align: center;
 }
-div.step-action p.sub-label {
+div.step-action p.sub-label, div.step-action-panel p.sub-label {
     margin-left: 50px;
     clear: both;
 }
@@ -1358,7 +1366,7 @@ div > select,input,textarea {
   border-width: 1px;
  
 }
-div.step-action > select,input,textarea {
+div.step-action > select,input,textarea, div.step-action-panel > select,input,textarea {
     margin-left: 5px;
   height:auto;
   width:85%;
@@ -1825,6 +1833,7 @@ div#sbar {
             max-width: 100%;
             padding-bottom: 20px;
         }
+       
 
        body.brief .white-background-blue-border {
             border: 3px #006982 solid;

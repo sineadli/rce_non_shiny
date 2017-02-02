@@ -32,7 +32,7 @@
         <%
 
         var  Basics_Users_Other = eval.basics.Basics_Users_Other;
-        var Basics_Users = eval.basics.Basics_Users ? eval.basics.Basics_Users : "users";
+        var Basics_Users = eval.basics.Basics_Users != "Select an option" ? eval.basics.Basics_Users : "users";
         if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
         var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
         console.log(Basics_Users);
@@ -179,7 +179,7 @@
 
 
                                     </div>
-                                    <div class="step-action">
+                                    <div class="step-action-panel">
                                         <p>
                                             <em class="stronger"><i class="fa fa-asterisk"></i> Select one.</em>
                                         </p>
