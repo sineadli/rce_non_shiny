@@ -19,52 +19,101 @@ var getAllPublications = function (req, res, next) {
     var query = require('url').parse(req.url, true).query;
     if (query.search) search = query.search;
     if (query.sort) sort = query.sort;
-    //console.log(query.search);
-   // console.log(query.sort);
+    console.log(query.search);
+   
     sess = req.session;
-    if (!search ) {
-        Evaluation.find({ status: '100' }).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
+    if (sort === "-basics.Basics_Tech_Name") {
+        if (!search) {
+            console.log(query.sort);
+            Evaluation.find({ status: '100' }).sort({"basics.Basics_Tech_Name":-1}).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+                if (err) {
+                    console.log(err);
+                    return next();
+                } else {
 
-                if (evals) {
-                   
-                    evals.sort(dynamicSort(sort));
-                    sess.publishlists = evals;
+                    if (evals) {
+
+                        sess.publishlists = evals;
+                        return next();
+                    }
                     return next();
                 }
-                return next();
-            }
-        });
+            });
 
-    }
-    else {
+        }
+        else {
 
-        Evaluation.find({$and:
-        [{ status: '100' }, {
-            $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
-                { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
-            }]
-        }).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
-            if (err) {
-                console.log(err);
-                return next();
-            } else {
+            Evaluation.find({
+                $and:
+                [{ status: '100' }, {
+                    $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
+                        { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
+                }]
+            }).sort({ "basics.Basics_Tech_Name": -1 }).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+                if (err) {
+                    console.log(err);
+                    return next();
+                } else {
 
-                if (evals) {
-                    
-                    evals.sort(dynamicSort(sort));
-                    sess.publishlists = evals;
+                    if (evals) {
+
+                        sess.publishlists = evals;
+                        return next();
+                    }
                     return next();
                 }
-                return next();
-            }
-        });
+            });
 
+        }
     }
+    else
+    {
+        if (!search) {
+            console.log(query.sort);
+            Evaluation.find({ status: '100' }).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+                if (err) {
+                    console.log(err);
+                    return next();
+                } else {
 
+                    if (evals) {
+
+                        evals.sort(dynamicSort(sort));
+                        sess.publishlists = evals;
+                        return next();
+                    }
+                    return next();
+                }
+            });
+
+        }
+        else {
+
+            Evaluation.find({
+                $and:
+                [{ status: '100' }, {
+                    $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
+                        { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
+                }]
+            }).select("userid basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+                if (err) {
+                    console.log(err);
+                    return next();
+                } else {
+
+                    if (evals) {
+
+                        evals.sort(dynamicSort(sort));
+                        sess.publishlists = evals;
+                        return next();
+                    }
+                    return next();
+                }
+            });
+
+        }
+ }
+  
 
 
 };
