@@ -75,7 +75,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                         <% if (display === 'online') { %>
                         <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                            <i class="fa fa-hand-o-right"></i> Where did I add this? See
                             <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
                         </p>
                         <% } %>
@@ -87,7 +87,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2> <%= header %></h2>
+                        <h2> <%= header %> <%= inconclusive_qualifier %></h2>
 
                         <h3> Research Question</h3>
 
@@ -118,7 +118,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         next_steps = Action_Inconclusive; 
                         }
 
-                       var findingsConclusion = (inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the neede.' : needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.'
+                       var findingsConclusion = (inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.'
 
                         var interpretation_2 = "";
                         if(Success_Effect_Size > 0){
@@ -135,6 +135,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         var grade_results_clean = true;
                         } catch (e) {
                         var grade_results_clean = false;
+                        var error = e;
                         console.log("grad results error = " + e);
                         }
                         %>
@@ -168,9 +169,35 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <% } else { %>
 
                         Problem detected in analysis results. Try re-running the analysis tool.
+                        <%- error %>
 
                         <% } // End if (grade_results_clean) %>
-                        <% }} %>
+                        <% }} //End for each grade %>
+
+                        <% // Sample matching note
+                        if(path === 'path-matching') {
+                        if(samples) {
+                        console.log(samples);
+                          var N = samples.n_full_treat;
+                          var P = samples.n_matched_treat;
+                          var M = samples.n_full ;
+                        var Q = samples.n_matched ;
+                        var inNonUsers = Q-N;
+                          var exUsers = N-P;
+                        var exNonUsers = M-Q-N-P;
+                        var match_treat_text = "";
+                        var exclusions = false;
+                        if((exUsers + exNonUsers) > 0 ) {
+                        match_treat_text = "There were " + exUsers + " " + (exUsers === 1 ? Basics_User : Basics_Users) + " who did use " + Basics_Tech_Name + " and " + exNonUsers + " " + (exNonUsers === 1 ? Basics_User : Basics_Users) + " who did not use " + Basics_Tech_Name + " excluded from the evaluation sample because the Coach could not find good matches for them. It is important to note that these findings only apply to " + Basics_Users + " who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology.";
+                        exclusions = true;
+                        }
+                        console.log(samples);
+                        %>
+                        <p class="note">This analysis relies on the validity of the comparison group. To see how the comparison group was created check our <img src="/static/image/pdf25.png" title="PDF document" alt="PDF document" class="pdf"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/Matching Overview.pdf', ''); return false; " href="javascript:void(0);">Matching Overview</a> (707 KB).  The final evaluation dataset  included: <%= N %> <%= Basics_Users %> who used <%= Basics_Tech_Name %> and <%= inNonUsers %> <%= Basics_Users %> who did not use <%= Basics_Tech_Name %>. <%=  match_treat_text %></p>
+                        <%
+                        }
+                        }
+                        %>
                     </div>
                 </div>
 
@@ -594,15 +621,15 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                                         </p>
                                         <% } else {
                                         var share_disabled = ''; %>
-                                        <p>Congratulations! You've completed your evaluation. We would like to share what you've discovered with other users similar to you. Please confirm below.</p>
+                                        <p>Congratulations! You're ready to share your results with other registered users and complete your evaluation. Please confirm below.</p>
                                         <% } %>
 
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %>>DO NOT SHARE</button>
-                                <button type="submit" id="Complete" data-action="/shareresult" class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %>>SHARE</button>
+                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %>>NO, NOT READY</button>
+                                <button type="submit" id="Complete" data-action="/publications?search=&sort=-published_at" class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %>>YES, I AM READY TO SHARE MY RESULTS.</button>
                             </div>
                         </div>
                     </div>
