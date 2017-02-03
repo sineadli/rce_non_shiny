@@ -33,7 +33,8 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
     <div class="hidden-print">
         <% include ../views/partials/header.html %>
         <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
-        if (query.backto) {rtnPath="/publications"; rtnDesc="Back to Publication Lists" } %>
+        if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists" }
+        if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard" } %>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
         </ol>

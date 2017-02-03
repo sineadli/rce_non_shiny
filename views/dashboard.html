@@ -156,7 +156,11 @@
                     <div style="float: right; width: 20%;">
                             <% if (eval.length>0) { %>  
                                 <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
-                        <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete</a>
+                                <a class="btn-link " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete</a><br />
+                                <% if (eval[0].status ==='100') { %>
+                                <a class="btn-link" href="/shareresult/<%= user.evalid %>?backto=dashboard" id="viewbrief">View Brief</a><br />
+                                <a class="unshared btn-link" href="#" id="<%= user.evalid %>" >Un-Sharing</a>
+                                <% } %>
                             <% } else if (eval.length===0) { %>
                             <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">START</button>
                             <% } %>
@@ -187,15 +191,19 @@
                    
                             <span class="sec-label">Status</span>: <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;">&nbsp;</div></div> <%= status %>
                         
-
+                        
                       
                     </div>
                    
                         <div style="float: right; width: 20%;">
                    
                             <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a> 
-                            <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete</a>
-                                 
+                            
+                            <a class="btn-link  " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete</a>
+                            <% if (evals[i].status==='100') { %>
+                            <br /><a class="btn-link" href="/shareresult/<%= evals[i]._id %>?backto=dashboard" id="viewbrief">View Brief</a>
+                            <br /><a class="unshared btn-link " href="#" id="<%= evals[i]._id %>">Un-Sharing</a>
+                            <% } %>
                         </div>
 
                    
@@ -260,7 +268,7 @@
 
             $('#deleteConfirm').on('show.bs.modal', function (e) {
 
-                //get data-id attribute of the clicked element
+                //get delete-id attribute of the clicked element
                 var deletedId = $(e.relatedTarget).data('delete-id');
                 var title = $(e.relatedTarget).data('delete-title');
 
@@ -268,6 +276,7 @@
                 $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
                 $(e.currentTarget).find('label[id="evaltl"]').text(title);
             });
+            
         });
 
         $("#getTitle").click(function (e) {
@@ -304,6 +313,24 @@
             )
             $(document).ajaxStop(function () { location.reload(true); });
         });
+        $(".unshared").click(function (e) {
+           // alert(e.target.id);
+            var unsharedid = e.target.id;
+              var url = '/api/unshared';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "id": unsharedid }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+
+                }
+            }
+            )
+            $(document).ajaxStop(function () { location.reload(true); });
+        });
+       
     </script>
 </body>
 </html>
