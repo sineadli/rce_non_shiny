@@ -1466,7 +1466,7 @@ module.exports = function (app, passport) {
                         return res.redirect('/' + returnpath);
                     }
                     else {
-                        return res.redirect('/coach');
+                        return res.redirect('/publications');
                     }
                 });
             }
