@@ -248,6 +248,7 @@ div.bottom-next a.sec-label {
 }
 
 button span.tooltip-gr {
+    cursor:pointer;
   color:#ffffff;
     /*color: #000;
     text-shadow:1px 1px #fac500;*/

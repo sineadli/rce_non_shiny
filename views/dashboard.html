@@ -151,19 +151,23 @@
                         </p>
                         <% } %>
                         </div>
-                    
-                    <div style="float: right; width: 20%;">
-                            <% if (eval.length>0) { %>  
-                                <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
-                        <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete</a>
-                            <% } else if (eval.length===0) { %>
-                            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">START</button>
-                            <% } %>
-                        
+
+                    <div style="float: right; height: 100%;">
+                        <% if (eval.length>0) { %>
+                        <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br/>
+                        <div style="float: right; margin: 16px 10px 0 0;">
+                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
                         </div>
-                      
-                       <div class="clearfix"></div>
-                       
+                        <% } else if (eval.length===0) { %>
+                        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">START</button>
+                        <% } %>
+
+                    </div>
+                    <% if (eval.length>0) { %>
+                   
+                        <% } %>
+                        <div class="clearfix"></div>
+
                         <!-- Trigger the modal with a button -->
                         <!-- Modal -->
                         <div id="myModal" class="modal fade" role="dialog">
@@ -205,24 +209,27 @@
                         <p>
                             <span class="sec-label evaldate">Started</span>: <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
                         </p>
-                   
-                            <span class="sec-label">Status</span>: <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;">&nbsp;</div></div> <%= status %>
-                        
 
-                      
+                        <span class="sec-label">Status</span>: <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;">&nbsp;</div></div> <%= status %>
+
+
+
                     </div>
-                   
-                        <div style="float: right; width: 20%;">
-                   
-                            <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a> 
-                            <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete</a>
-                                 
+
+                    <div style="float: right;">
+
+                        <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a><br/>
+                        <div style="float: right;  margin: 16px 10px 0 0;">
+                            <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete <i class="fa  fa-times-circle"></i></a>
                         </div>
 
+                    </div>
+                   
+
+                    <div class="clearfix"></div>
                    
                     <div class="clearfix"></div>
-                    </div>
-
+                </div>
                 
                 <%}} %>
             </div>
@@ -254,18 +261,18 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Delete evaluation</h4>
+                            <h4 class="modal-title">Delete Evaluation</h4>
                         </div>
                         <div class="modal-body">
                             <label>
-                                Are you sure that your want to delete <label id="evaltl"></label>?
+                                Are you sure you want to delete <label id="evaltl"></label>?
                             </label>
                             <input type="hidden" id="toDeleted" />
 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                            <button type="button" id="delEval" class="btn btn-primary btn-lg" data-dismiss="modal">Delete</button>
+                            <button type="button" id="delEval" class="btn btn-primary btn-lg" data-dismiss="modal">DELETE</button>
                         </div>
                     </div>
                 </div>

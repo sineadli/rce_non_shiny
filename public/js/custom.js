@@ -48,7 +48,7 @@ $(document).ready(function() {
     });
 	$('body.sharing ol.breadcrumb>li.breadcrumb-item>a').prop("href", "/publications");
 	$('body.sharing ol.breadcrumb>li.breadcrumb-item>a')
-		.html("<span class='fa fa-caret-left'></span> BACK TO SHARED EVALUTAIONS");
+		.html("<span class='fa fa-caret-left'></span> BACK TO SHARED EVALUATIONS");
 	$('body.sharing button#Save').hide();
 	$('body.sharing button#open-complete-evaluation-modal').hide();
 	
