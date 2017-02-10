@@ -157,6 +157,10 @@
                         <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br/>
                         <div style="float: right; margin: 16px 10px 0 0;">
                             <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
+                            <% if (eval[0].status ==='100') { %>
+                            <br /><a class="btn-link  sec-label" style="vertical-align: bottom;" href="/shareresult/<%= user.evalid %>?backto=dashboard" id="viewbrief">View Brief</a><br />
+                            <a class="unshared btn-link  sec-label" style="vertical-align: bottom;" href="#" id="<%= user.evalid %>">Un-Sharing</a>
+                            <% } %>
                         </div>
                         <% } else if (eval.length===0) { %>
                         <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">START</button>
@@ -221,6 +225,10 @@
                         <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a><br/>
                         <div style="float: right;  margin: 16px 10px 0 0;">
                             <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete <i class="fa  fa-times-circle"></i></a>
+                            <% if (evals[i].status==='100') { %>
+                            <br /><a class="btn-link sec-label" style="vertical-align: bottom;" href="/shareresult/<%= evals[i]._id %>?backto=dashboard" id="viewbrief">View Brief</a>
+                            <br /><a class="unshared btn-link sec-label " style="vertical-align: bottom;" href="#" id="<%= evals[i]._id %>">Un-Sharing</a>
+                            <% } %>
                         </div>
 
                     </div>
@@ -290,6 +298,7 @@
 
                 //get delete-id attribute of the clicked element
                 var deletedId = $(e.relatedTarget).data('delete-id');
+                console.log(deletedId);
                 var title = $(e.relatedTarget).data('delete-title');
 
                 //populate the textbox
@@ -319,6 +328,7 @@
         });
         $("#delEval").click(function (e) {
             var idtobedeleted = $("#toDeleted").val();
+
             var url = '/api/delEval';
             $.ajax({
                 type: "POST",
