@@ -288,7 +288,7 @@
 
             $('#deleteConfirm').on('show.bs.modal', function (e) {
 
-                //get data-id attribute of the clicked element
+                //get delete-id attribute of the clicked element
                 var deletedId = $(e.relatedTarget).data('delete-id');
                 var title = $(e.relatedTarget).data('delete-title');
 
@@ -296,6 +296,7 @@
                 $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
                 $(e.currentTarget).find('label[id="evaltl"]').text(title);
             });
+            
         });
 
         $("#getTitle").click(function (e) {
@@ -332,6 +333,24 @@
             )
             $(document).ajaxStop(function () { location.reload(true); });
         });
+        $(".unshared").click(function (e) {
+           // alert(e.target.id);
+            var unsharedid = e.target.id;
+              var url = '/api/unshared';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "id": unsharedid }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+
+                }
+            }
+            )
+            $(document).ajaxStop(function () { location.reload(true); });
+        });
+       
     </script>
 </body>
 </html>

@@ -165,7 +165,16 @@ module.exports = function (app, passport) {
         });
     })
     
-       
+    app.post('/api/unshared', isLoggedIn, function (req, res) {
+        Evaluation.update({ _id: req.body.id }, { $set: { status: "85" }},  function (err) {
+            if (err)
+                console.log(err);
+            else {
+                console.log(req.body.id + " unshared.");
+                res.status(201).send("Selected evaluation unshared.");
+            }
+        });
+    })
 };
 
 
