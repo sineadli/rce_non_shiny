@@ -5,7 +5,7 @@
 *   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
 *   by the U.S. Department of Education’s Office of Educational Technology through
 *   Contract No. ED-OOS-15-C-0053.
--->publications?search=&sort=-published_at
+-->
 
 <html>
 <head>
@@ -40,9 +40,12 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
         </ol>
         <% if (message.length>0) { %>
         <div class="alert alert-success"><%= message %></div>
-        <% } %>
+        <% }  %>
+      
+
+        <% if (query.sharing != 1) { %>
         <% include ../views/partials/toolHeader.html %>
-        <% } %>
+        <% }} %>
     </div>
     <form action="" method="post">
         <% } %>
