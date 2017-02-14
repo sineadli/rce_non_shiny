@@ -1008,7 +1008,7 @@ module.exports = function (app, passport) {
 		});
     });
 
-	app.post('/evaluation_plan_pdf', function (req, res) {
+	app.post('/evaluation_plan_download', function (req, res) {
         var toollist = { "name": "Evaluation Plan", "status": req.body.status, "visited_at": new Date() };
         sess = req.session;
         var obj = req.body;
@@ -1084,20 +1084,32 @@ module.exports = function (app, passport) {
                         if (err) {
                             res.redirect('/error');
                         } else {
+                            console.log('hi');
 
-                            // Try to convert to PDF, and if it fails, revert to HTML;
-                            try {
-                                var wkhtmltopdf = require('wkhtmltopdf');
-
-                                wkhtmltopdf(html).pipe(res);
-                                res.setHeader('Content-disposition', 'attachment; filename="evaluation_plan.pdf"');
-                                res.setHeader('Content-type', 'application/pdf');
-
-                            } catch (e) {
-                                res.setHeader('Content-disposition', 'attachment; filename="evaluation_plan.html"');
+                            if (obj.file_format === 'html') {
+                                console.log('in html block');
+                                res.setHeader('Content-disposition', 'attachment; filename="evaluation-plan.html"');
                                 res.setHeader('Content-type', 'text/html');
                                 res.write(html);
                                 res.send();
+
+                            } else if (obj.file_format === 'pdf') {
+                                console.log('in pdf block');
+                                // Try to convert to PDF, and if it fails, revert to HTML;
+                                try {
+                                    var wkhtmltopdf = require('wkhtmltopdf');
+
+                                    wkhtmltopdf(html).pipe(res);
+                                    res.setHeader('Content-disposition', 'attachment; filename="evaluation-plan.pdf"');
+                                    res.setHeader('Content-type', 'application/pdf');
+
+                                } catch (e) {
+
+                                    res.setHeader('Content-disposition', 'attachment; filename="evaluation-plan.html"');
+                                    res.setHeader('Content-type', 'text/html');
+                                    res.write(html);
+                                    res.send();
+                                }
                             }
                         }
                     });
@@ -1513,20 +1525,30 @@ module.exports = function (app, passport) {
                     function (err, html) {
                         console.log(err);
 
-                        // Try to convert to PDF, and if it fails, revert to HTML;
-                        try {
-                            var wkhtmltopdf = require('wkhtmltopdf');
-
-                            wkhtmltopdf(html).pipe(res);
-                            res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.pdf"');
-                            res.setHeader('Content-type', 'application/pdf');
-
-                        } catch (e) {
+                        if (obj.file_format === 'html') {
 
                             res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.html"');
                             res.setHeader('Content-type', 'text/html');
                             res.write(html);
                             res.send();
+
+                        } else if (obj.file_format === 'pdf') {
+
+                            // Try to convert to PDF, and if it fails, revert to HTML;
+                            try {
+                                var wkhtmltopdf = require('wkhtmltopdf');
+
+                                wkhtmltopdf(html).pipe(res);
+                                res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.pdf"');
+                                res.setHeader('Content-type', 'application/pdf');
+
+                            } catch (e) {
+
+                                res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.html"');
+                                res.setHeader('Content-type', 'text/html');
+                                res.write(html);
+                                res.send();
+                            }
                         }
                     });
             }

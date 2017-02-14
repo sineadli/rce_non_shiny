@@ -11,141 +11,8 @@
 <head>
     <title>Share Your Results - Ed Tech RCE Coach</title>
     <% include ../views/partials/downloadStyle.html %>
-    <style>
-        /* Specific to share results */
-
-        h2 {
-            color: #4f81bd;
-            padding-top: 15px;
-        }
-
-        h2.grade-header {
-            font-size: 16px;
-        }
-
-        h3 {
-            padding-top: 10px;
-            letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
-        }
-
-        li {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        p {
-            font-size: 16px;
-        }
-
-        .row {
-            padding-top: 15px;
-        }
-
-        img {
-            max-width: 100%;
-            padding-bottom: 20px;
-            /* Following two lines keep image centered horizontally */
-            display: block;
-            margin: 0 auto;
-        }
-
-        .white-background-blue-border {
-            border: 3px #2e75b6 solid;
-            border-radius: 25px;
-            font-size: 16px;
-            line-height: 1.5em;
-            padding: 25px;
-            margin: 15px;
-            max-width: 85%;
-        }
-
-        .blue-background-white-text {
-            background-color: #2e75b6 !important;
-            border: 3px #2e75b6 solid;
-            border-radius: 25px;
-            color: #fff;
-            font-size: 20px;
-            margin: 15px;
-            min-height: 150px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-            font-size: 16px;
-        }
-
-        #table1 td, #table1 th, #table2 th, #table3 td, #table3 th {
-            text-align: center;
-        }
-
-        #table2 td {
-            text-align: left;
-        }
-
-        #table1 thead tr, #table3 thead tr {
-            border-bottom: 1px #000 solid;
-            background-color: #2e75b6 !important;
-            color: #FFF;
-        }
-
-        #table1 tfoot tr {
-            border-top: 1px #000 solid;
-        }
-
-        #table2 thead tr {
-            border-bottom: 1px #000 solid;
-            background-color: #000 !important;
-            color: #FFF;
-        }
-
-        .circle {
-            width: 50px;
-            height: 50px;
-            margin-top: 10px;
-            -webkit-border-radius: 25px;
-            -moz-border-radius: 25px;
-            border-radius: 25px;
-            background-color: #4f81bd;
-            text-align: center;
-            vertical-align: middle;
-            line-height: 50px;
-        }
-
-        @media print {
-
-            body {
-                -webkit-print-color-adjust: exact;
-            }
-
-            a {
-                color: #000000;
-            }
-
-            .tooltip-gr {
-                text-shadow: none;
-            }
-
-            #header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer {
-                max-height: 1px;
-                padding: 0px;
-                margin: 0px;
-            }
-
-            /* Bootstrap shows link URLs in print, this removes them */
-            a[href]:after {
-                content: none !important;
-            }
-
-            table, .no-page-break {
-                page-break-inside: avoid;
-                display: block;
-            }
-
-        }
-    </style>
-        <% include('../views/partials/brief_appendix_evaluation_processing.html') %>            
+    <% include('../views/partials/brief_appendix_evaluation_processing.html') %>            
+    <body class="brief">
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" >                      
@@ -417,7 +284,6 @@
                                                         }
 
                                                         var ci_string = '[' + round3(ci[0]) + ', ' + round3(ci[1]) + ']';
-
                                                         var pvalue = grade_results.freq.pvalue;
                                                         var significant = (pvalue <= 0.05) ? '' : ' not';
 
