@@ -478,7 +478,8 @@
                                     <p><em class="stronger">Select all that apply.</em></p>
                                     <%
                                     var taller=[4,7,8]
-                                    var options= ["Literacy", "Mathematics", "Science","Social Studies","Computer Science &amp; Engineering", "Art &amp; Music", "Behavior","Teacher<br /> Excellence", "Path to<br/>Graduation"];
+                                    var labels= ["Literacy", "Mathematics", "Science","Social Studies","Computer Science &amp; Engineering", "Art &amp; Music", "Behavior","Teacher<br/>Excellence", "Path to<br/>Graduation"];
+                                    var options= ["Literacy", "Mathematics", "Science","Social Studies","Computer Science &amp; Engineering", "Art &amp; Music", "Behavior","Teacher Excellence", "Path to Graduation"];
                                     var tips = ["Reading, writing, language development","","","","","","Behavior, emotional/internal behavior, external behavior, knowledge, attitudes and values, social-emotional development, social outcomes","Teacher retention at the school, teacher retention in the profession, teacher retention in the school district","Access and enrollment, attainment, Completing school, credit accumulation and persistence, progress in developmental education, progressing in school, staying in school" ]
                                     var selected =eval.planContext.Outcomes;
                                     var names =["Outcome_Literacy", "Outcome_Mathematics", "Outcome_Science","Outcome_Social_Studies","Outcome_Computer","Outcome_Art","Outcome_Behavior","Outcome_Teacher_Excellence", "Outcome_Graduation"];
@@ -493,6 +494,7 @@
                                     if(selected[k] == options[i]) checked = "checked";
                                     }
                                     var cbid = names[i];
+                                    var cblabel = labels[i];
                                     var cbvalue = options[i];
                                     var tallclass="";
                                     var addtip = tips[i] != "" ? "<span data-toggle='tooltip' title='" + tips[i] + "' class='tooltip-gr'><i class='fa fa-question-circle'></i></span>" : "" ;
@@ -504,7 +506,7 @@
 
                                     <input type="checkbox" id="<%= cbid %>" name="<%= cbid %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
                                     <label for="<%= cbid %>" <%- tallclass %> >
-                            <%- cbvalue %> <%- addtip %></label>
+                            <%- cblabel %> <%- addtip %></label>
                                     <%
                                     }
                                     %>

@@ -422,7 +422,7 @@ div.tool-div p {
 h3 {
   color:#000000;
   letter-spacing: 1px;
-  font-size: 18px;
+  font-size: 1.25em;
   /*margin-top:5px;*/
 }
 h4, h4 label, div.form-group h4 label,h4 em {
@@ -1805,15 +1805,17 @@ div#sbar {
 
         body.brief h2 {
             color: #006982;
-            padding-top: 15px;
+            font-size: 1.55em;
+          
         }
 
          body.brief   h2.grade-header {
-                font-size: 16px;
+                font-size: 1.3em;
+             margin: 10px 0 0 0;
             }
 
       body.brief  h3 {
-            padding-top: 10px;
+            padding-top: 0;
             letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
         }
 
@@ -1823,13 +1825,18 @@ div#sbar {
         }
 
        body.brief p {
-            font-size: 16px;
+           font-size: 1em;
+            margin: 0 0 15px;
         }
 
        body.brief .row {
-            padding-top: 15px;
+            padding-top: 0;
+           margin-bottom: 35px;
         }
-
+body.brief p.note {
+    width: 85%;
+    margin: 20px auto;
+}
        body.brief img {
             max-width: 100%;
             padding-bottom: 20px;
@@ -1842,8 +1849,18 @@ div#sbar {
             font-size: 16px;
             line-height: 1.5em;
             padding: 15px;
+           background-color: #ffffff;
+           width: 95%;
+    margin: 10px auto;
+           
         }
-
+        body.brief .white-background-blue-border h3 {
+            font-size: 1.2em;
+            margin-top: 0;
+            padding: 0 0 10px 0;
+            border-bottom: 1px solid #C1BEAE;
+        }
+        
        body.brief .blue-background-white-text {
             background-color: #006982 !important;
             border: 3px #006982 solid;
@@ -1856,14 +1873,18 @@ div#sbar {
         }
 
       body.brief  table {
-            width: 100%;
-            font-size: 16px;
+            width: 90%;
+    font-size: .9em;
+    margin: 0 auto 25px auto;
         }
 
        body.brief #table1 td, body.brief #table1 th {
             text-align: center;
         }
-
+body.brief table td.align-right {
+    text-align: right;
+    padding-right: 20px;
+}
       body.brief  #table1 thead tr {
             border-bottom: 1px #000 solid;
             background-color: #006982 !important;
@@ -1887,6 +1908,40 @@ div#sbar {
             min-width: 0px;
         }
 
+      .char-label-div, .char-label-div-wide {
+          width: 30%;
+           padding: 5px;
+          padding-right: 1%;
+          display: inline-block;
+          text-align: right;
+          font-weight: 600;
+          vertical-align: top;
+         
+      }
+    .char-label-div-wide {
+          width:40%;
+        
+      }
+      .char-content-div, .char-content-div-narrow {
+          width: 65%;
+           padding: 5px;
+          display: inline-block;
+          text-align: left; 
+          vertical-align: top;
+           padding-left: 1%;
+           border-left:1px #E3E0CD solid;
+      }
+.char-content-div-narrow {
+    width: 30%;
+}
+      .char-row-div {
+          /*border-bottom: 1px #E3E0CD solid;*/
+         
+          display: block;
+          width: 95%;
+          min-width: 300px;
+          margin: 0 auto;
+      }
         @media print {
 
             body.brief {

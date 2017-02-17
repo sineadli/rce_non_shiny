@@ -159,7 +159,7 @@
                             <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (eval[0].status ==='100') { %>
                             <br /><a class="btn-link  sec-label" style="vertical-align: bottom;" href="/shareresult/<%= user.evalid %>?backto=dashboard" id="viewbrief">View Brief</a><br />
-                            <a class="unshared btn-link  sec-label" style="vertical-align: bottom;" href="#" id="<%= user.evalid %>">Un-Sharing</a>
+                            <a class="unshared btn-link  sec-label" style="vertical-align: bottom;" href="#" id="<%= user.evalid %>">Un-Share</a>
                             <% } %>
                         </div>
                         <% } else if (eval.length===0) { %>
@@ -227,7 +227,7 @@
                             <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (evals[i].status==='100') { %>
                             <br /><a class="btn-link sec-label" style="vertical-align: bottom;" href="/shareresult/<%= evals[i]._id %>?backto=dashboard" id="viewbrief">View Brief</a>
-                            <br /><a class="unshared btn-link sec-label " style="vertical-align: bottom;" href="#" id="<%= evals[i]._id %>">Un-Sharing</a>
+                            <br /><a class="unshared btn-link sec-label " style="vertical-align: bottom;" href="#" id="<%= evals[i]._id %>">Un-Share</a>
                             <% } %>
                         </div>
 

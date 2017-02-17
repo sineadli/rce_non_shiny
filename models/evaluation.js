@@ -402,7 +402,7 @@ evaluationSchema.pre('save', function (next) {
             });
         }
         else {
-            if (this.status = "100") { this.status = "85";}
+            if (this.status === "100") { this.status = "85";}
             next();
         }
     }

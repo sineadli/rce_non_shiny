@@ -53,7 +53,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
      
 
     
-    <div class="container-fluid">
+        <div class="container-fluid">
             <div class="no-page-break">
                 <div class="row">
                     <div class="col-xs-12">
@@ -90,7 +90,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2> <%= header %> <%= inconclusive_qualifier %></h2>
+                        <h2> <%= header %><%= inconclusive_qualifier %>.</h2>
 
                         <h3> Research Question</h3>
 
@@ -98,42 +98,46 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <%= Intervention_Group_Desc %>
                         compared to
                         <%= Comparison_Group_Desc %>?
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
+                 
                         <% if (analysis_results_clean) {
-                        for (grade in analysis_results_by_grade) {
-
-                        try {
-                        var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                        var success = (probability > Pass_Probability);
-                        var inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability)
-
-                        var needle_decision = (success) ? 'Yes' : 'No';
-                        var needle_negate = (success) ? '' : ' not';
-
-                        var next_steps = Action_Fail
-                        if (success) {
-                        next_steps= Action_Success;
-                        } else if (inconclusive) {
-                        next_steps = Action_Inconclusive; 
-                        }
-
-                       var findingsConclusion = (inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : needle_decision + ', we think ' + Basics_Tech_Name + ' is' + needle_negate + ' moving the needle.'
-
-                        var interpretation_2 = "";
-                        if(Success_Effect_Size > 0){
-                          if(analysis_results_by_grade[grade].interpretation_cutoff_0 ) {
-                                interpretation_2 = "There is a " + analysis_results_by_grade                [grade].interpretation_cutoff_0.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ".";
-                         }
-                        }
-                        
-                        var interpretation_1 = "There is a " + analysis_results_by_grade[grade].interpretation.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more.";
-                    
+                        var findingsTableRows = "";
+                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability "+ Outcome_Direction + "s " + Basics_Outcome+ "</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th></tr>";
                        
-                       
+
+    for (grade in analysis_results_by_grade) {
+    //   console.log("Grade object");
+    //  console.log(analysis_results_by_grade);
+    try {
+
+
+    var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+    var success = (probability > Pass_Probability);
+    var inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability)
+
+    var needle_decision = (success) ? 'Yes' : 'No';
+    var needle_negate = (success) ? '' : ' not';
+
+    var next_steps = Action_Fail
+
+    if (success) {
+    next_steps= Action_Success;
+    } else if (inconclusive) {
+    next_steps = Action_Inconclusive;
+    }
+
+    var findingsConclusion = (inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : ((success) ? Basics_Tech_Name + ' is moving the needle.' : Basics_Tech_Name + ' did not ' +  Outcome_Direction +  ' ' + Basics_Outcome + '.');
+
+    var interpretation_2 = "";
+    if(Success_Effect_Size > 0){
+    if(analysis_results_by_grade[grade].interpretation_cutoff_0 ) {
+    interpretation_2 = "There is a " + analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ".";
+    }
+    }
+
+    var interpretation_1 = "There is a " + analysis_results_by_grade[grade].interpretation.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more.";
+
+
+    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td>" + analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0] + "</td><td>" + analysis_results_by_grade[grade].interpretation.probability[0] + "</td></tr>";
 
                         var grade_results_clean = true;
                         } catch (e) {
@@ -141,113 +145,184 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         var error = e;
                         console.log("grad results error = " + e);
                         }
+
+                        var findingsAddText = "";
+                       }  //End for each grade
+                      }// End if (grade_results_clean)
+                    
+                        
                         %>
-
-                     
-
-                        <% if (analysis_by_grade) { %>
-                        <h2 class="grade-header">Grade <%= grade %></h2>
-                        <% } %>
-                        <h3> Findings</h3>
 
                         <% if (grade_results_clean) { %>
-                        <ol class="no-page-break">
-                            <li> <%= findingsConclusion %></li>
+                   
+                            <h3> Findings</h3>
+                            <% if (analysis_by_grade) { %>
+                        <table><caption>Summary of results by grade based on the data used in this analysis.</caption><%- findingsTableHeader %><%- findingsTableRows %></table>
 
-                            <% if (Success_Effect_Size > 0) { %>
-                            <li id="item_interp_2"> <%= interpretation_2 %></li>
+                            <% } else { %>
+                            <ol class="no-page-break">
+                                <li> <%= findingsConclusion %></li>
+
+                                <% if (Success_Effect_Size > 0) { %>
+                                <li id="item_interp_2"> <%= interpretation_2 %></li>
+                                <% } %>
+                                <li id="item_interp_1"> <%= interpretation_1 %></li>
+                            </ol>
                             <% } %>
-                            <li id="item_interp_1"> <%= interpretation_1 %></li>
-                        </ol>
-                        <h3> Next steps</h3>
+                     
+                      
+                      
+                        <div class="clearfix"></div>
 
-                        <%= sentence(next_steps); %>
+    <% } else { %>
 
-                        <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
-                        </p>
-                        <% } %>
-                        <% } else { %>
+    Problem detected in analysis results. Try re-running the analysis tool.
+    <%- error %>
+                        <% } 
+   
+   
+    if (analysis_results_clean) {
+    var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
+    var tableRows = "";
+    if(path === 'path-matching') {
+    if ( baseline_results_by_grade) {
+    initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
 
-                        Problem detected in analysis results. Try re-running the analysis tool.
-                        <%- error %>
 
-                        <% } // End if (grade_results_clean) %>
-                        <% }} //End for each grade %>
+    for (grade in baseline_results_by_grade) {
+    gradesamples = baseline_results_by_grade[grade].samples;
+    var N=0, P=0, M=0, Q=0;
+    var grade_object = analysis_results_by_grade[grade];
+    if(gradesamples) {
+    console.log("Grade Samples Object");
+    console.log(gradesamples);
+    var N = gradesamples.n_full_treat;
+    var P = gradesamples.n_matched_treat;
+    var M = gradesamples.n_full ;
+    var Q = gradesamples.n_matched ;
+    }
+    else if(samples) {
+    console.log("Samples Object");
+    console.log(samples);
+    var N = samples.n_full_treat;
+    var P = samples.n_matched_treat;
+    var M = samples.n_full ;
+    var Q = samples.n_matched ;
+    }
+    var matchedNonUsers = Q-P;
+    var allNonUsers = M-N;
 
-                        <% // Sample matching note
-                        if(path === 'path-matching') {
-                        if(samples) {
-                        console.log(samples);
-                          var N = samples.n_full_treat;
-                          var P = samples.n_matched_treat;
-                          var M = samples.n_full ;
-                        var Q = samples.n_matched ;
-                        var inNonUsers = Q-N;
-                          var exUsers = N-P;
-                        var exNonUsers = M-Q-N-P;
-                        var match_treat_text = "";
-                        var exclusions = false;
-                        if((exUsers + exNonUsers) > 0 ) {
-                        match_treat_text = "There were " + exUsers + " " + (exUsers === 1 ? Basics_User : Basics_Users) + " who did use " + Basics_Tech_Name + " and " + exNonUsers + " " + (exNonUsers === 1 ? Basics_User : Basics_Users) + " who did not use " + Basics_Tech_Name + " excluded from the evaluation sample because the Coach could not find good matches for them. It is important to note that these findings only apply to " + Basics_Users + " who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology.";
-                        exclusions = true;
-                        }
-                        console.log(samples);
-                        %>
-                        <p class="note">This analysis relies on the validity of the comparison group. To see how the comparison group was created check our <img src="/static/image/pdf25.png" title="PDF document" alt="PDF document" class="pdf"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/Matching Overview.pdf', ''); return false; " href="javascript:void(0);">Matching Overview</a> (707 KB).  The final evaluation dataset  included: <%= N %> <%= Basics_Users %> who used <%= Basics_Tech_Name %> and <%= inNonUsers %> <%= Basics_Users %> who did not use <%= Basics_Tech_Name %>. <%=  match_treat_text %></p>
-                        <%
-                        }
-                        }
-                        %>
-                    </div>
+
+
+    tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round((P/N)*100,0)+ '%</td></tr>';
+    tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + Basics_Users +'</td><td>' + matchedNonUsers + ' ' + Basics_Users + '</td><td class="align-right">' + round((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
+    }  // end grade loop.
+    } //end if analysis by grade
+    } // end if matching
+
+    if(path === 'path-random') {
+                        console.log("path = random");
+                        console.log(n_full_treatment);
+                        console.log(n_full_overall)
+    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+    tableRows = '<tr><td>Treatment</td><td>' +  n_treatment + ' ' + Basics_Users +  '</td></tr>';
+                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + n_comparison + Basics_Users + '</td></tr>';
+                        console.log(tableRows);
+    } // end path random
+    } // end if clean analysis
+    %>
+
+
+
+
+    <%  if(path === 'path-matching') { %>
+    <p class="note" style="margin-top: 15px;">
+        <strong>Interpreting these findings:</strong>
+        This analysis relies on the validity of the comparison group. To see how the comparison group was created check our   Matching Overview. Table 1 summarizes the number of students in the treatment and comparison groups before and after matching. It is important to note that these findings only apply to students who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology
+    </p>
+    <% } %>
+    <table><caption>Number of <%= Basics_Users %> in treatment and comparison groups </caption><%- initTableHeader %><%- tableRows %></table>
+</div>
                 </div>
 
                 <div class="row no-page-break">
                     <div class="col-xs-12">
-                        <h2> This evaluation tested the effectiveness of <%= Basics_Tech_Name %></h2>
+                        <h2> This evaluation tested the effectiveness of <%= Basics_Tech_Name %>.</h2>
+                        
+                       
 
-                        <%= capitalize(Basics_Tech_Name) %> is
-                        <%= punctuate(Tech_Purpose) %>
-
-                        <p></p>
+                        <p> <%= capitalize(Basics_Tech_Name) %> is
+                        <%= punctuate(Tech_Purpose) %></p>
 
                         <div class="white-background-blue-border">
-                            <strong> The Basics of <%= Basics_Tech_Name %></strong> <br />
-                            <em> Program Type</em> :    <%= wordList(program_types).toLowerCase() %><br />
-                            <em> Key Components</em> :  <%= Tech_Components %><br />
-                            <em> Delivery Type</em> :   <%= wordList(delivery_types).toLowerCase() %><br />
-                            <em> Used in</em> :
+                            <h3> The Basics of <%= Basics_Tech_Name %></h3>
+                            <div class="char-row-div">
+                                <div class="char-label-div"> Program Type</div>
+                                <div class="char-content-div"><%= wordList(program_types).toLowerCase() %></div>
+                            </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div"> Key Components</div>
+                                    <div class="char-content-div">
+                                        <%= Tech_Components %>
+                                    </div>
+                                </div>
+                            <div class="char-row-div">
+                                <div class="char-label-div"> Delivery Type</div>
+                                <div class="char-content-div">
+                                    <%= wordList(delivery_types).toLowerCase() %>
+                                </div>
+                            </div>
                             <% if (grades_used.length > 0) { %>
-                            <%= capitalize(wordList(grades_used)) %> grade <%- wordList(classroom_types).toLowerCase() %> classrooms
-                            <% } %><br/>
-                            <% console.log(wordList(Outcomes));
-                            var OutcomesList = wordList(Outcomes).toLowerCase().replace('<br/>',' '); %>
-                            <em> Target Outcomes</em> : <%- OutcomesList %><br />
+                            <div class="char-row-div">
+                                <div class="char-label-div"> Used in</div>
+                                <div class="char-content-div">
+
+
+                                    <%= capitalize(wordList(grades_used)) %> grade <%- wordList(classroom_types).toLowerCase() %> classrooms
+
+                                </div>
+                            </div>
+                            <% } %>
+                                <%
+                                var OutcomesList = wordList(Outcomes).toLowerCase().replace('<br />',' '); %>
+                            <div class="char-row-div">
+                                <div class="char-label-div">Target Outcomes</div>
+                                <div class="char-content-div">
+                                    <%- OutcomesList %>
+                                </div>
+                            </div>
 
                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                            <p class="prev-answer hidden-print">
-                                <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
-                                <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
-                            </p>
-                            <% } %>
+                            <div class="char-row-div">
+                                <p class="prev-answer hidden-print">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
+                                    <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                </p>
+                            </div>
+                                <% } %>
 
-                            <em> <%= capitalize(Tech_Cost_Saves) %></em> : $<%= Tech_Amount %> per <%= Tech_Cost_User %><br />
+                                <div class="char-row-div">
+                                    <div class="char-label-div"><%= capitalize(Tech_Cost_Saves) %></div>
+                            <div class="char-content-div">
+                                        $<%= Tech_Amount %> per <%= Tech_Cost_User %>
+                                    </div>
+                                </div><% if (user != "NOAUTHENTICATED" && display === 'online') {%>
 
-                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                            <p class="prev-answer hidden-print">
-                                <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                                <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
-                            </p>
+                                <div class="char-row-div">
+                                    <p class="prev-answer hidden-print">
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                                        <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                                    </p>
+                                </div>
                             <% } %>
-                        </div>
+                            <div class="clearfix"></div>
+                            </div>
                     </div>
                 </div>
 
                 <div class="row no-page-break">
                     <div class="col-xs-12">
-                        <h2> <%= capitalize(Basics_Tech_Name) %> was tested using a <%= pilot_type %> pilot</h2>
+                        <h2> <%= capitalize(Basics_Tech_Name) %> was tested using a <%= pilot_type %> pilot.</h2>
                         <ul>
                             <li>
                                 <% if (pilot_type === 'randomized') { %>
@@ -301,58 +376,100 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                 <div class="row no-page-break">
                     <div class="col-xs-12">
-                        <h2> This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= useGrades %> <%= Basics_Users %></h2>
+                        <h2> This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= useGrades %> <%= Basics_Users %>.</h2>
 
-                        <% if (pilot_type === 'matched') { %>
-                        <p>
-                            The original dataset included <%= n_full_treatment %> students who used <%= Basics_Tech_Name %> and
-                            <%= n_full_overall - n_full_treatment %> students who did not use <%= Basics_Tech_Name %>.
-                            The final evaluation dataset included:
-                        </p>
-                        <% } %>
-                    </div>
-                </div>
-
-                <div class="row no-page-break">
-                    <div class="col-xs-3">
-                        <div class="blue-background-white-text">
-                            <p> <strong> Treatment Group</strong> </p>
-                            <p> <%= capitalize(Basics_Users) %> who used <%= Basics_Tech_Name %> </p>
-                            <p> # of <%= Basics_Users %>: <%= n_treatment %></p>
-                        </div>
-                    </div>
-                    <div class="col-xs-3">
-                        <div class="blue-background-white-text">
-                            <p> <strong> Comparison Group</strong> </p>
-                            <p> <%= capitalize(Basics_Users) %> who did not use <%= Basics_Tech_Name %> </p>
-                            <p> # of <%= Basics_Users %>: <%= n_comparison %></p>
-                        </div>
-                    </div>
-                    <div class="col-xs-5">
+                    <div class="col-xs-12">
                         <div class="white-background-blue-border">
-                            <strong> Evaluation Context</strong> <br>
-                            <em> School Type</em> :     <%= wordList(school_types) %><br>
-                            <em> District Size</em> :   <%= Total_Students %><br>
-                            <em> Setting</em> :         <%= wordList(urbanicity) %><br>
-                            <em> Location</em> :        <%= District_State %><br>
-                            <strong> Overall Student Population</strong> <br>
-                            <em> Non-white</em> :       <%= non_white %>%<br>
-                            <em> Hispanic</em> :        <%= Ethnicity_Hispanic %>%<br>
-                            <em> Female</em> :          <%= Gender_Female %>%<br>
-                            <!--<em> Free or Reduced Price Lunch</em> : <%= frpl %>%<br>-->
-                            <em> English Learners</em> :    <%= English_Learners %>%<br>
-                            <em> Students with IEPs</em> :  <%= IEP %>%<br>
-
-                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                            <p class="prev-answer hidden-print">
-                                <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
-                                <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
-                            </p>
-                            <% } %>
+                            <div class="col-xs-5">
+                                <h3> Evaluation Context</h3>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        School Type
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= wordList(school_types) %>
+                                    </div>
+                                </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        District Size
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= Total_Students %>
+                                    </div>
+                                </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        Setting
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= wordList(urbanicity) %>
+                                    </div>
+                                </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        Location
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= District_State %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-7">
+                                <h3> Overall Student Population</h3>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        Non-white
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= non_white %>%
+                                    </div>
+                                </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        Hispanic
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= Ethnicity_Hispanic %>%
+                                    </div>
+                                </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        Female
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= Gender_Female %>%
+                                    </div>
+                                </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        <!--<em> Free or Reduced Price Lunch</em> : <%= frpl %>%<br>-->
+                                        English Learners
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= English_Learners %>%
+                                    </div>
+                                </div>
+                                <div class="char-row-div">
+                                    <div class="char-label-div-wide">
+                                        Students with IEPs
+                                    </div>
+                                    <div class="char-content-div-narrow">
+                                        <%= IEP %>%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                                <p class="prev-answer hidden-print">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
+                                    <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                </p>
+                                <% } %>
+                            </div>
+                            </div>
                         </div>
-                    </div>
                 </div>
-
                 <div class="row no-page-break">
                     <div class="col-xs-12">
 
@@ -477,11 +594,29 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
 
                         <% if (display === 'online' && query.sharing != 1) { %>
                         <h2> Conclusions and Next Steps</h2>
+                       
+                            <h3> Next steps</h3>
+                            <p>
+                                <%= sentence(next_steps); %>
+                            </p>
+                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                            <div class="clearfix">
+                                <p class="prev-answer hidden-print">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                                    <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                                </p>
+                            </div>
+                            <% } %>
+                       
                         <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
                         <p class="visible-print-block print-conclusions-next-steps"><%= conclusions_next_steps %></p>
                         <% } else if (display === 'download' || query.sharing == 1) {
                         if(conclusions_next_steps != "") { %>
                         <h2> Conclusions and Next Steps</h2>
+                        <h3> Next steps</h3>
+                        <p>
+                            <%= sentence(next_steps); %>
+                        </p>
                         <p class="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
                         <% }} %>
                     </div>
