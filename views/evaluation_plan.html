@@ -654,8 +654,36 @@
       
         <div class="bottom-buttons">
             <button type="submit" id="Save" class="btn btn-info btn-lg " data-action="/evaluation_plan"><span class="tooltip-gr" data-toggle="tooltip">SAVE CHANGES</span></button>
-            <button type="submit" id="download" class="btn btn-info btn-lg" data-action="/evaluation_plan_pdf"><span class="tooltip-gr" data-toggle="tooltip">DOWNLOAD</span></button>
+            <button type="button" id="download" class="btn btn-info btn-lg" data-action="/evaluation_plan_download"><span class="tooltip-gr" data-toggle="modal" data-target="#download-modal">DOWNLOAD</span></button>
             <button type="submit" id="Complete" class="btn btn-primary btn-lg" data-action="/evaluation_plan"><span class="tooltip-gr" data-toggle="tooltip">SAVE &amp; COMPLETE</span></button>
+        </div>
+
+        <!-- Modal -->
+        <div id="download-modal" class="modal fade hidden-print" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Download Evaluation Plan</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label>File Format</label><br />
+                                <input type="radio" name="file_format" value="pdf" checked> PDF<br>
+                                <input type="radio" name="file_format" value="html"> HTML
+                                <span data-toggle="tooltip" title="The HTML version can be viewed in any browser, with or without an internet connection." class="tooltip-gr"><i class="fa fa-question-circle"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <% var route="/download/" +eval._id %>
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                        <button type="submit" id="Download" data-action="/evaluation_plan_download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
+                    </div>
+                </div>
+            </div>
         </div>
         
 

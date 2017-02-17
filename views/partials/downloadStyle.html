@@ -7508,10 +7508,28 @@ body.one-col div.row div.content {
     margin: 0px auto;
     float: none;
 }
+
+
+/*  In Peeking Mode */
+body.peeking {
+    box-shadow: 0px 0px 25px #b28806; 
+}
+
+body.peeking div.step-action a, body.peeking div.step-action input {
+   
+   cursor: default;
+    text-decoration: none;
+}
+
+h1 span.peeking-pretitle {
+    font-size: .8em;
+   
+}
+
 .legal {
     margin: 45px auto;
-    font-size: 1.1em;
-    line-height: 1.6em;
+    font-size: 1em;
+
     width: 80%;
     float: none;
 }
@@ -7538,6 +7556,7 @@ ul li {
     
  
 }
+
 em.stronger {
 
     color: #366E8F;
@@ -7556,8 +7575,8 @@ div.container-fluid {
   content: "";
   display: block;
 }
-.footer, #main:after {
-  height: 160px; 
+.footer {
+  height: auto; 
 }
 .footer {
     margin-top: 55px;
@@ -7565,6 +7584,9 @@ div.container-fluid {
     width: 100%;
     bottom: 0;
       box-shadow: 0px 25px 25px #BAB38F;
+}
+nav.footer p {
+    margin: 20px auto;
 }
  /*.row {
 	margin-left:-5px !important;
@@ -7703,19 +7725,23 @@ div.bottom-next a.sec-label {
 }
 .tooltip-gr {
   color:#e44e0d;
-    cursor: pointer;
+    cursor:help;
     /*color: #000;
     text-shadow:1px 1px #fac500;*/
 }
 
 button span.tooltip-gr {
+    cursor:pointer;
   color:#ffffff;
     /*color: #000;
     text-shadow:1px 1px #fac500;*/
 }
+.btn[disabled] span.tooltip-gr {
+    cursor: not-allowed;
+}
 div.tool-bottom .tooltip-gr {
     font-size: 1.3em;
-     cursor:not-allowed;
+     cursor:pointer;
 }
 
 .all-caps {
@@ -7728,9 +7754,13 @@ div.tool-header {
 
 .note {
     font-style: italic;
+
     margin-top: 8px;
-    color: #286090;
-        margin: 15px 25px;
+    color: #222;
+          margin: 15px 55px;
+    border: solid 2px /*#006982*/ #666;
+    padding: 15px;
+    border-radius: 8px;
 }
 .prev-answer{
     font-style: italic;
@@ -7754,6 +7784,11 @@ body.homepage div.row.main {
     margin-top: 0px;
     margin-right: -15px !important; 
     margin-left: -15px !important;  
+}
+body.homepage div.row.smargin {
+
+    margin-right: 15px !important; 
+    margin-left: 15px !important;  
 }
 
   ul.footer-list {
@@ -7831,6 +7866,9 @@ div.sentence-case {
 div.sentence-case:first-letter {
     text-transform: capitalize;
 }
+img.pdf {
+    padding: 0 !important;
+}
 .h1, .h2 {
     line-height: 1em;
 }
@@ -7870,7 +7908,7 @@ h3 {
   font-size: 18px;
   /*margin-top:5px;*/
 }
-h4, h4 label, h4 em {
+h4, h4 label, div.form-group h4 label,h4 em {
   font-size:1em;
   /*font-style:italic;*/
   font-weight:600;
@@ -7913,30 +7951,10 @@ div.col-xs-4.tab-col ul {
 h4 label {
     text-transform: none;
 }
-label.chart , caption {
-    color:#65614D;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: .85em;
-  margin-top:5px;
-    font-weight: 600;
-}
-figcaption {
-    margin: 10px 0;
-}
-table.tool-table {
-   border: 1px solid black; 
-   border-collapse: collapse;
-    width: 75%;
-    margin: 10px auto;
-}
-table.tool-table th {
-    width: 20%;
-    font-weight: 600;
-}
+
 label.registrationFormAlert {
     text-transform: none;
-    color: #800000;
+    color: #ec2b2b;
 }
 h2.clickable ,p.clickable {
   cursor:pointer;
@@ -8044,7 +8062,7 @@ div.front-header h1 {
 
 #slides li {
     width: 100%;
-  height:200px;
+  height:auto;
   float: left;
   text-align: center;
   position: relative;
@@ -8100,7 +8118,7 @@ a#next:hover, a#next:focus {
 
 .quote-phrase {
   height: 200px;
-  font-size: 24px;
+  font-size: 20px;
   color: #222;
   font-style: italic;
   text-shadow: .5px 0px #b14943;
@@ -8148,6 +8166,7 @@ div.dash-well div.panel-heading {
 }
 div.dash-well div.panel-heading a {
     text-decoration: none;
+    font-size: .9em;
 }
     div.dash-well div.panel-heading h2.clickable {
         margin: 0;
@@ -8159,15 +8178,19 @@ div.dash-well h2 {
         padding-top: 10px;
     }
 div.dash-well div.help-main {
-    border-bottom: 2px #D9D7BE solid;
+    border-top: 1px #D9D7BE solid;
     
-   border-top: 2px #D9D7BE solid;
-    padding: 10px 15px 0 15px;
+   /*border-top: 2px #D9D7BE solid;*/
+   margin: 0 15px 15px;
 
 }
 div.dash-well div.help-sec {
-    border-right: 2px #D9D7BE solid;
+    border-right: 1px #D9D7BE solid;
+    height: 167px;
 
+}
+body.downloads div.dash-well ul, ul.downloads {
+    list-style: none;
 }
 .btn-primary {
     background-color: #006982;
@@ -8194,6 +8217,9 @@ div.wizard-header-row {
 
    
 }
+    div.wizard-header-row p {
+        font-weight: 600;
+    }
 h2.eval-header {
     font-size: 2em;
     margin-bottom: 25px;
@@ -8256,6 +8282,13 @@ ul.wizard-menu li p, div.dash-well.sidebar-left ul.wizard-menu li button {
     /*height: 55px;*/
     font-weight: 600;
   
+}
+div.dash-well.sidebar-left ul.wizard-menu li button {
+    color: #71714a;
+    font-weight: bold;
+}
+div.dash-well.sidebar-left ul.wizard-menu li:last-child, div.dash-well.sidebar-left ul.wizard-menu li:first-child {
+    border-radius: 0;
 }
     ul.wizard-menu li.active p {
         color: #4081A8;
@@ -8454,7 +8487,7 @@ div#Step_Conclusion h2, div.step-conclusion h2 {
     padding: 20px 50px;
 }
 div#Step_Conclusion h2.stop-warning {
-     background-image: url("/static/image/WarningIcon.png");
+     background-image: url("/static/image/WarningIcon2.png");
 }
 h2.form, h2.statistical, h2.guide, h2.locked {
       background-image: url("/static/image/Form_RCE-Web-Icon.png");
@@ -8492,27 +8525,27 @@ div.step-subquestion p label {
     font-weight: normal;
     color: #000;
 }
-div.step-action {
+div.step-action, div.step-action-panel {
  margin:0px 0 25px 25px;
   display:inline-block;
   font-size:1em;
   width:100%
 }
-    div.step-action em {
+    div.step-action em, div.step-action-panel em {
         font-size: 1.05em;
          
     }
-div.col-xs-12 div.step-action {
+div.col-xs-12 div.step-action, div.col-xs-12 div.step-action-panel {
      width:90%
 }
-div.step-action hr {
+div.step-action hr, div.step-action-panel hr {
     border-color:#56ACE0;
     border-width: 1px;
     margin-left: 0;
     width: 95%;
     text-align: center;
 }
-div.step-action p.sub-label {
+div.step-action p.sub-label, div.step-action-panel p.sub-label {
     margin-left: 50px;
     clear: both;
 }
@@ -8524,11 +8557,15 @@ em.recommendation {
 
 
 
-div.step-action label {
+div.step-action label, div.form-group label {
   /*display:none;*/
     font-weight: normal;
     margin-top: 10px;
     text-transform: none;
+}
+
+div.form-group label.no-top {
+    margin-top: 0;
 }
     div.step-action label.sec-label {
         text-transform: uppercase;
@@ -8578,7 +8615,9 @@ div#How-Group .panel-collapse {
 	padding:8px 20px 0px 20px;
 
 }
-
+div.error p.alert-danger {
+    display: inline;
+}
 
 div#How-Group .panel-collapse {
 	clear: both;
@@ -8598,13 +8637,14 @@ div#How-Group label {
     margin-top: 0;
 }
 
-/*input[type=checkbox] {
-    width: 20px;
+input[type=checkbox] {
+    cursor: pointer;
+/*    width: 20px;
     height: 20px;
     vertical-align: top;
     margin-top: 10px;
-    margin-right: 5px;
-}*/
+    margin-right: 5px;*/
+}
 /* hide input */
 div#How-Group input.radio:empty,
 div.check-list input[type=checkbox]:empty {
@@ -8708,6 +8748,18 @@ div.step-to-consider h3 {
 div.step-to-consider p {
 	margin-bottom:20px;
 }
+div.step-to-consider p.note {
+	margin:10px 0 20px 0;
+    border-width:1px;
+}
+div#results p.note {
+    margin: 15px 0;
+    width: 80%;
+    border: none;
+}
+div#plotAll {
+    margin: 15px;
+}
 div.step-to-consider li p {
 	margin-bottom:5px;
 }
@@ -8771,6 +8823,9 @@ div.action-buttons > button {
   padding:10px;
   border-radius:8px;
 }
+div.other-div {
+    margin-left: 20px;
+}
 div.step-action > button {
   box-shadow: 0.5px 0.5px 0.5px 0.5px #888888;
 }
@@ -8795,7 +8850,7 @@ div > select,input,textarea {
   border-width: 1px;
  
 }
-div.step-action > select,input,textarea {
+div.step-action > select,input,textarea, div.step-action-panel > select,input,textarea {
     margin-left: 5px;
   height:auto;
   width:85%;
@@ -8821,6 +8876,41 @@ input[type=date] {
     margin-left: -90px;
 
 
+}
+
+div.loading {
+    margin: 20px auto;
+    display: block;
+    text-align: center;
+}
+label.chart , caption {
+    color:#65614D;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: .85em;
+  margin-top:5px;
+    font-weight: 600;
+}
+figcaption {
+    margin: 10px 0;
+}
+table.tool-table {
+   border: 1px solid black; 
+   border-collapse: collapse;
+    width: 75%;
+    margin: 10px auto;
+}
+table.tool-table th {
+    width: 20%;
+    font-weight: 600;
+}
+
+
+div.hcenter input[type=checkbox], div.panel-body div.form-group input[type=checkbox]  {
+    margin-left: 0px;
+  height:auto;
+    vertical-align: top;
+  width:5%;
 }
 .dropdown-menu>.active>a {
     background-color: #afcbda;
@@ -8942,9 +9032,9 @@ th, td {
     padding: 8px;
     vertical-align: top;
 }
-    tr:nth-child(odd){background-color: #fff}
+    tr:nth-child(odd), table#timeline tr:nth-child(odd) td.index input{background-color: #fff}
 
-     tr:nth-child(even){background-color: #F4F2EB}
+     tr:nth-child(even), table#timeline tr:nth-child(even) td.index input{background-color: #F4F2EB}
 
 
 tr.hide-row {
@@ -9022,12 +9112,18 @@ table#timeline td, table#timeline th{
 }
 table#timeline td.index input{
      width:25px;
+    cursor: default;
+    border: none;
 }
 table#timeline tr:hover, table#timeline tr:focus {
     outline: 1px  solid #56ACE0;
     background-color: #D5EAF7;
     cursor: move;
 }
+
+    table#timeline tr:hover td.index input {
+        background-color: #D5EAF7;
+    }
 table#timeline input[type=date] {
     width: 125px;
     font-size: .9em;
@@ -9122,25 +9218,76 @@ div.carousel-inner div.item.active, div.carousel-inner div.item {
      border: 1px dotted #FAC500 !important;
 }
 
-/*  In Peeking Mode */
-body.peeking {
-    box-shadow: 0px 0px 25px #b28806; 
+
+
+/*  Shared Evals Page */
+ div.r_i {
+    padding: 20px 10px 10px 10px;
+    line-height: 1.4em;
+    clear: right;
+}
+div.r_t {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+div.r_a, div.r_c, div.r_d, div.r_g, div.r_oc,div.r_t  {
+    margin-bottom: 5px;
+}
+        div.r_d {
+                color: #274;
+            border-bottom:1px solid #e7e7e7;
+        }
+div.r_f, div#r_colR div.r_f {
+    padding: 9px 10px 4px 10px;
+    clear: left;
+    float: left;
+    width: 100px;
+    margin: 5px 0 3px 10px;
+    font-size: .9em;
+}
+div#fbar {   
+    width: 54%;
+    font-size: 1em;
+    line-height: .9em;
+    margin-left:10px;
+    float: left;
+           display:inline;
 }
 
-body.peeking div.step-action a, body.peeking div.step-action input {
-   
-   cursor: default;
-    text-decoration: none;
+#fbar  input[type=submit] {
+    width: auto;
+    position: relative;
+    /*color: #fff;
+    height: 30px;
+    font-weight: bold;
+    background-color: #006982;
+    margin-right:17px;*/
+}
+#fbar input[type=text] {
+    width: 80%;
+    height: 30px;
+
+}
+div#sbar {   
+    float: right;
+    clear:right;
+    width: 45%;
+    font-size: 1em;
+    line-height: 1.8em;
+    text-align:right;
+}
+#sbar > select {
+    float: right;
+    clear: right;
+    margin-right:15px;
+    width: 60%;
+    height: 30px;
 }
 
-h1 span.peeking-pretitle {
-    font-size: .8em;
-   
-}
        /* Specific to share results */
 
         body.brief h2 {
-            color: #4f81bd;
+            color: #006982;
             padding-top: 15px;
         }
 
@@ -9169,10 +9316,14 @@ h1 span.peeking-pretitle {
        body.brief img {
             max-width: 100%;
             padding-bottom: 20px;
+            /* Following two lines keep image centered horizontally */
+            display: block;
+            margin: 0 auto;
         }
+       
 
        body.brief .white-background-blue-border {
-            border: 3px #2e75b6 solid;
+            border: 3px #006982 solid;
             border-radius: 25px;
             font-size: 16px;
             line-height: 1.5em;
@@ -9180,8 +9331,8 @@ h1 span.peeking-pretitle {
         }
 
        body.brief .blue-background-white-text {
-            background-color: #2e75b6 !important;
-            border: 3px #2e75b6 solid;
+            background-color: #006982 !important;
+            border: 3px #006982 solid;
             border-radius: 25px;
             color: #fff;
             font-size: 16px;
@@ -9195,13 +9346,17 @@ h1 span.peeking-pretitle {
             font-size: 16px;
         }
 
-       body.brief #table1 td, body.brief #table1 th {
+       body.brief #table1 td, body.brief #table1 th, body.brief #table3 td, body.brief #table3 th {
             text-align: center;
         }
 
-      body.brief  #table1 thead tr {
+        body.brief #table2 td {
+            text-align: left;
+        }
+
+      body.brief  thead tr {
             border-bottom: 1px #000 solid;
-            background-color: #2e75b6 !important;
+            background-color: #006982 !important;
             color: #FFF;
         }
 
@@ -9212,7 +9367,7 @@ h1 span.peeking-pretitle {
             -webkit-border-radius: 25px;
             -moz-border-radius: 25px;
             border-radius: 25px;
-            background-color: #4f81bd;
+            background-color: #006982;
             text-align: center;
             vertical-align: middle;
             line-height: 50px;
@@ -9252,6 +9407,8 @@ h1 span.peeking-pretitle {
                 display: block;
             }
         }
+
+
 
 </style>
 <!--<link rel="stylesheet" href="/static/css/font-awesome.min.css" />-->
