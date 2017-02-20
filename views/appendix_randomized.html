@@ -74,11 +74,11 @@
                                                                 <td> <%= grade %></td>
                                                                 <% } %>
                                                                 <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                                                <td> <%= round3(baseline_var_means[characteristic].overall[0]) %></td>
-                                                                <td> <%= round3(baseline_var_means[characteristic].intervention[0]) %></td>
-                                                                <td> <%= round3(baseline_var_means[characteristic].comparison[0]) %></td>
-                                                                <td> <%= round3(baseline_var_means[characteristic].difference[0]) %></td>
-                                                                <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
+                                                                <td> <%= round(baseline_var_means[characteristic].overall[0],2) %></td>
+                                                                <td> <%= round(baseline_var_means[characteristic].intervention[0],2) %></td>
+                                                                <td> <%= round(baseline_var_means[characteristic].comparison[0],2) %></td>
+                                                                <td> <%= round(baseline_var_means[characteristic].difference[0],2) %></td>
+                                                                <td> <%= (baseline_var_means[characteristic].effect_size[0]) %></td>
                                                             </tr>
                                                         <% } %>
                                                         <tr>

@@ -1842,7 +1842,9 @@ body.brief p.note {
             padding-bottom: 20px;
         }
        
-
+ body.brief hr {
+     margin: 15px 0 0px 0;
+ }
        body.brief .white-background-blue-border {
             border: 3px #006982 solid;
             border-radius: 25px;
@@ -1885,7 +1887,7 @@ body.brief table td.align-right {
     text-align: right;
     padding-right: 20px;
 }
-      body.brief  #table1 thead tr {
+      body.brief thead tr {
             border-bottom: 1px #000 solid;
             background-color: #006982 !important;
             color: #FFF;

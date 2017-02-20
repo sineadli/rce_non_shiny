@@ -29,25 +29,32 @@ console.log('checkpoint 0');
         // Capitalize first letter and if it doesn't end with punctuation, add a period.
         return capitalize(punctuate(x));
     }
-round = function(value, exp) {
 
-  if (typeof exp === 'undefined' || +exp === 0)
-    return Math.round(value);
+    round = function(value, exp) {
 
-  value = +value;
-  exp = +exp;
+         if (typeof exp === 'undefined' || +exp === 0)
+            return Math.round(value);
 
-  if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
-    return NaN;
+        value = +value;
+        exp = +exp;
 
-  // Shift
-  value = value.toString().split('e');
-  value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+       if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
+             return NaN;
 
-  // Shift back
-  value = value.toString().split('e');
-  return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
+        // Shift
+value = value.toString().split('e');
+console.log("In shift in round");
+consol.log(value);
+         value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+consol.log(value);
+       // Shift back
+value = value.toString().split('e');
+console.log("In shift back in round");
+consol.log(value);
+        return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
 }
+
+
     wordList = function(x) {
         var out;
 

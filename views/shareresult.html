@@ -56,7 +56,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
         <div class="container-fluid">
             <div class="no-page-break">
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div>
                         <h1 class="tool-title"> <%= capitalize(Basics_Tech_Name) %> Findings Brief</h1>
 
                         <% if (user != "NOAUTHENTICATED") {
@@ -71,9 +71,9 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         var date = new Date().toLocaleDateString();
                         }
                         %>
-                        <br />
-                        <%= user_name %><br />
-                        <%= organization_name %><br />
+
+                        <%= user_name %><br/>
+                        <%= organization_name %><br/>
                         <%= date %>
 
                         <% if (display === 'online') { %>
@@ -84,9 +84,10 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <% } %>
                         <% } %>
                     </div>
+                    <hr />
                 </div>
 
-                <hr />
+           
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -137,7 +138,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
     var interpretation_1 = "There is a " + analysis_results_by_grade[grade].interpretation.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more.";
 
 
-    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td>" + analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0] + "</td><td>" + analysis_results_by_grade[grade].interpretation.probability[0] + "</td></tr>";
+    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0] + "</td><td class='align-right'>" + analysis_results_by_grade[grade].interpretation.probability[0] + "</td></tr>";
 
                         var grade_results_clean = true;
                         } catch (e) {
@@ -157,7 +158,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                    
                             <h3> Findings</h3>
                             <% if (analysis_by_grade) { %>
-                        <table><caption>Summary of results by grade based on the data used in this analysis.</caption><%- findingsTableHeader %><%- findingsTableRows %></table>
+                        <table><caption>Summary of results by grade based on the data used in this analysis.</caption><thead><%- findingsTableHeader %></thead><tbody><%- findingsTableRows %></tbody></table>
 
                             <% } else { %>
                             <ol class="no-page-break">
@@ -241,7 +242,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
         This analysis relies on the validity of the comparison group. To see how the comparison group was created check our   Matching Overview. Table 1 summarizes the number of students in the treatment and comparison groups before and after matching. It is important to note that these findings only apply to students who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology
     </p>
     <% } %>
-    <table><caption>Number of <%= Basics_Users %> in treatment and comparison groups </caption><%- initTableHeader %><%- tableRows %></table>
+                        <table><caption>Number of <%= Basics_Users %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
 </div>
                 </div>
 
@@ -284,7 +285,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                             </div>
                             <% } %>
                                 <%
-                                var OutcomesList = wordList(Outcomes).toLowerCase().replace('<br />',' '); %>
+                                var OutcomesList = wordList(Outcomes).toLowerCase(); %>
                             <div class="char-row-div">
                                 <div class="char-label-div">Target Outcomes</div>
                                 <div class="char-content-div">
@@ -326,9 +327,9 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <ul>
                             <li>
                                 <% if (pilot_type === 'randomized') { %>
-                                This evaluation used a randomized pilot.The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if ReadTech was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
+                                This evaluation used a randomized pilot.The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if <%= Basics_Tech_Name %> was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
                                 <% } else if (pilot_type === 'matched') { %>
-                                This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the students using the technology that you want to test.
+                                This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the <%= Basics_Users %> using the technology that you want to test.
                                 <% } else { %>
                                 [Description of pilot type, either matched or randomized.]
                                 <% } %>
