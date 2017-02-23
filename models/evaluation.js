@@ -77,7 +77,7 @@ var ProbAppr = mongoose.Schema({
 });
 //03.01 crafting a research question
 var PlanQuestion = mongoose.Schema({
-    Outcome_Measure: { type: String, default: '', validate: validateChar }, // was Plan_Question_B_2
+    Outcome_Measure: { type: String, default: '' }, // was Plan_Question_B_2
     Outcome_Direction: { type: String, default: '' }, // was  Plan_Question_B_3
     Intervention_Group_Desc: { type: String, default: '', validate: validateChar }, // was  Plan_Question_C
     Comparison_Group_Desc: { type: String, default: '', validate: validateChar }, // was Plan_Question_D
@@ -248,6 +248,7 @@ var ShareResult = new mongoose.Schema({
     challenges_limitations: { type: String, default: '' },
     conclusions_next_steps: { type: String, default: '' },
     baseline_var_relabels: [String],
+	control_var_relabels: [String],
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 })
@@ -338,7 +339,7 @@ evaluationSchema.pre('save', function (next) {
             this.flag = 0;
             // if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
         }
-        var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 15 * 100;
+        var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 14 * 100;
         this.status = parseInt(per);
   
        

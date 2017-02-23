@@ -7752,7 +7752,7 @@ div.tool-header {
 
 }
 
-.note {
+.note, .pnote{
     font-style: italic;
 
     margin-top: 8px;
@@ -9396,6 +9396,9 @@ div#sbar {
                 padding: 0px;
                 margin: 0px;
             }
+          nav.footer div.row {
+              margin-bottom: 0;
+          }
 
             /* Bootstrap shows link URLs in print, this removes them */
            body.brief a[href]:after {
@@ -12176,4 +12179,195 @@ div#sbar {
         overflow: visible;
         clip: auto;
     }
+          /* Specific to share results */
+
+        body.brief h2 {
+            color: #006982;
+            font-size: 1.55em;
+          
+        }
+
+         body.brief   h2.grade-header {
+                font-size: 1.3em;
+             margin: 10px 0 0 0;
+            }
+
+      body.brief  h3 {
+            padding-top: 0;
+            letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
+        }
+
+       body.brief li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+       body.brief p {
+           font-size: 1em;
+            margin: 0 0 15px;
+        }
+
+       body.brief .row {
+            padding-top: 0;
+           margin-bottom: 35px;
+        }
+body.brief p.pnote, body.brief p.note {
+    width: 85%;
+    margin: 20px auto;
+}
+p.pnote {
+    border: none;
+}
+       body.brief img {
+            max-width: 100%;
+            padding-bottom: 20px;
+        }
+       
+ body.brief hr {
+     margin: 15px 0 0px 0;
+ }
+       body.brief .white-background-blue-border {
+            border: 3px #006982 solid;
+            border-radius: 25px;
+            font-size: 16px;
+            line-height: 1.5em;
+            padding: 15px;
+           background-color: #ffffff;
+           width: 95%;
+    margin: 10px auto;
+           
+        }
+        body.brief .white-background-blue-border h3 {
+            font-size: 1.2em;
+            margin-top: 0;
+            padding: 0 0 10px 0;
+            border-bottom: 1px solid #C1BEAE;
+        }
+        
+       body.brief .blue-background-white-text {
+            background-color: #006982 !important;
+            border: 3px #006982 solid;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            min-height: 150px;
+            padding: 15px;
+            text-align: center;
+        }
+
+      body.brief  table {
+            width: 90%;
+    font-size: .9em;
+    margin: 0 auto 25px auto;
+        }
+
+       body.brief #table1 td, body.brief #table1 th {
+            text-align: center;
+        }
+body.brief table td.align-right {
+    text-align: right;
+    padding-right: 20px;
+}
+      body.brief thead tr {
+            border-bottom: 1px #000 solid;
+            background-color: #006982 !important;
+            color: #FFF;
+        }
+
+       body.brief .circle {
+            width: 50px;
+            height: 50px;
+            margin-top: 10px;
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            border-radius: 25px;
+            background-color: #006982;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 50px;
+        }
+
+      body.brief  div.col-xs-3,  body.brief div.col-xs-4 {
+            min-width: 0px;
+        }
+
+      .char-label-div, .char-label-div-wide {
+          width: 30%;
+           padding: 5px;
+          padding-right: 1%;
+          display: inline-block;
+          text-align: right;
+          font-weight: 600;
+          vertical-align: top;
+         
+      }
+    .char-label-div-wide {
+          width:40%;
+        
+      }
+      .char-content-div, .char-content-div-narrow {
+          width: 65%;
+           padding: 5px;
+          display: inline-block;
+          text-align: left; 
+          vertical-align: top;
+           padding-left: 1%;
+           border-left:1px #E3E0CD solid;
+      }
+.char-content-div-narrow {
+    width: 30%;
+}
+      .char-row-div {
+          /*border-bottom: 1px #E3E0CD solid;*/
+         
+          display: block;
+          width: 95%;
+          min-width: 300px;
+          margin: 0 auto;
+      }
+        @media print {
+
+            body.brief {
+                -webkit-print-color-adjust: exact;
+            }
+
+           body.brief a {
+                color: #000000;
+            }
+
+           body.brief .tooltip-gr {
+                text-shadow: none;
+            }
+
+          body.brief  #header, body.brief .wizard-header-row,body.brief  .breadcrumb, body.brief .bottom-buttons, body.brief .footer {
+                max-height: 1px;
+                padding: 0px;
+                margin: 0px;
+            }
+
+            /* Bootstrap shows link URLs in print, this removes them */
+           body.brief a[href]:after {
+                content: none !important;
+            }
+
+           body.brief table, body.brief .no-page-break {
+                page-break-inside: avoid;
+                display: block;
+            }
+        }
+label.chart , caption {
+    color:#65614D;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: .85em;
+  margin-top:5px;
+    font-weight: 600;
+}
+.figcaption {
+    margin: 10px 0;
+}
+.figdiv {
+    width: 90%;
+    margin: 20px auto;
+}
 </style>

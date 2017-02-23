@@ -280,6 +280,11 @@ function comparisonGroupDescUpdate(t) {
 
 
 /*~~~~~~~~~~~~~~~~~~ plan_next_steps.html ~~~~~~~~~~~~~~~~~~*/
+function outcomeMeasureUpdate2(t) {
+	var value = $(t).val();
+	$('.effect-measure').text(value);
+};
+
 function measureUnitsUpdate(t) {
 	var value = $(t).val();
 

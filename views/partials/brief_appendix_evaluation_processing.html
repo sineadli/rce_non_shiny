@@ -1,645 +1,706 @@
 <!--
-	This file contains the JS used to process the evaluation object to produce the brief and appendix documents.
-	Including this single file allows changes to made once instead of across all views.    
+//This file contains the JS used to process the evaluation object to produce the brief and appendix documents.
+//Including this single file allows changes to made once instead of across all views.
 -->
-
 <%
 console.log('checkpoint 0');
-	stripPercent = function(x) {
-        return parseInt(x.replace(/%/g, ''));
+stripPercent = function(x) {
+    //console.log("in stripPercent and x = " + parseFloat(x.replace(/%/g, '')));
+    return parseFloat(x.replace(/%/g, ''));
+}
+
+capitalize = function(x) {
+    var out;
+
+    if (x.length === 0) {
+        out = '';
     }
-
-    capitalize = function(x) {
-		var out;
-
-        if (x.length === 0) {
-             out = '';
-        }
-        else {
-             out = x.toString()[0].toUpperCase() + x.toString().substring(1);
-        }
-        return out;
+    else {
+        out = x.toString()[0].toUpperCase() + x.toString().substring(1);
     }
+    return out;
+}
 
-    punctuate = function(x) {
-        return x.replace(/([^.?!])$/, "$1.")
-    }
+punctuate = function(x) {
+    return x.replace(/([^.?!])$/, "$1.")
+}
 
-    sentence = function(x) {
-        // Capitalize first letter and if it doesn't end with punctuation, add a period.
-        return capitalize(punctuate(x));
-    }
+sentence = function(x) {
+    // Capitalize first letter and if it doesn't end with punctuation, add a period.
+    return capitalize(punctuate(x));
+}
 
-    round = function(value, exp) {
+round10 = function(value, exp) {
+    // If the exp is undefined or zero...
+    if (typeof exp === 'undefined' || +exp === 0)
+        return Math.round(value);
 
-         if (typeof exp === 'undefined' || +exp === 0)
-            return Math.round(value);
+    value = +value;
+    exp = +exp;
+    // If the value is not a number or the exp is not an integer...
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
+        return NaN;
 
-        value = +value;
-        exp = +exp;
+    // Shift
+    value = value.toString().split('e');
+    value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
 
-       if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
-             return NaN;
-
-        // Shift
-value = value.toString().split('e');
-console.log("In shift in round");
-consol.log(value);
-         value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
-consol.log(value);
-       // Shift back
-value = value.toString().split('e');
-console.log("In shift back in round");
-consol.log(value);
-        return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
+    // Shift back
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
 }
 
 
-    wordList = function(x) {
-        var out;
+wordList = function(x) {
+    var out;
 
-        if (x === undefined || !(x instanceof Array)) {
-            out = '';
-        }
-        else {
-            try {
-                x = x.filter( function(x) { return x !== '' && x !== undefined })
+    if (x === undefined || !(x instanceof Array)) {
+        out = '';
+    }
+    else {
+        try {
+            x = x.filter( function(x) { return x !== '' && x !== undefined })
 
-                x = unique(x);
+            x = unique(x);
 
-                if (x.length === 0) {
-                    out = '';
-                }
-                else if (x.length === 1) {
-                    out = x[0];
-                }
-                else if (x.length === 2) {
-                    out = x[0] + ' and ' + x[1];
-                }
-                else {
-                    out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
-                }
-            } catch(e) {
+            if (x.length === 0) {
                 out = '';
             }
-        }
-
-        return out;
-    }
-
-    unique = function(x) {
-
-        for (var i = 0; i < x.length; i++) {
-            if (x.indexOf(x[i]) < i) {
-                x.splice(i, 1);
-                i--;
+            else if (x.length === 1) {
+                out = x[0];
             }
+            else if (x.length === 2) {
+                out = x[0] + ' and ' + x[1];
+            }
+            else {
+                out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+            }
+        } catch(e) {
+            out = '';
         }
-
-        return x;
     }
 
-    allBlank = function(x) {
-        return x.every( function(el) { return el === ''});
+    return out;
+}
+
+unique = function(x) {
+
+    for (var i = 0; i < x.length; i++) {
+        if (x.indexOf(x[i]) < i) {
+            x.splice(i, 1);
+            i--;
+        }
     }
 
-    round3 = function(x) {
-        return Math.round(x * 1000) / 1000;
-    };
-    
+    return x;
+}
 
-    // Initialize default values in case tools are missing
-                            
-    // basics
-    Basics_Tech_Name = '[technology name]';
+allBlank = function(x) {
+    return x.every( function(el) { return el === ''});
+}
+
+round3 = function(x) {
+    return Math.round(x * 1000) / 1000;
+};
+
+
+// Initialize default values in case tools are missing
+
+//Evaluation
+ if (eval.published_at) {
+ published_at = new Date(eval.published_at).toLocaleDateString();
+} else published_at = '[not published]';
+ author = eval.author || '[ No author associated with evaluation ]';
+ company = eval.company || '[ No organization associated with evaluation ]';
+                        
+
+// basics
+Basics_Tech_Name = '[technology name]';
 Basics_Outcome = '[outcome of interest]';
- Basics_Outcome_Other   = '[outcome of interest]';
-    Basics_Users     = '[users]';
+Basics_Outcome_Other   = '[outcome of interest]';
+Basics_Users     = '[users]';
 Basics_Users_Other = '[users]';
 Basics_User = [user];
 
-    // planQuestion
-    Outcome_Direction       = '[outcome direction]';
-    Outcome_Measure         = '[outcome measure]';
-    Intervention_Group_Desc = '[the intervention group]';
-    Comparison_Group_Desc   = '[the comparison group]';
+// planQuestion
+Outcome_Direction       = '[outcome direction]';
+Outcome_Measure         = '[outcome measure]';
+Intervention_Group_Desc = '[the intervention group]';
+Comparison_Group_Desc   = '[the comparison group]';
 
 // determine
 path = "[approach]"
+
 // planNext
-    Pass_Probability = '[probability]';
-     Fail_Probability    = '[probability]';
-    Tech_Cost_Saves     = '[Saves/Costs]';
-    Tech_Amount         = '[amount]';
+Pass_Probability = '[probability]';
+Fail_Probability    = '[probability]';
+Tech_Cost_Saves     = '[Saves/Costs]';
+Tech_Amount         = '[amount]';
 Tech_Cost_User = '[user]';
 Measure_Units = '[units]';
 Measure_Units_Other = '[units]';
-    Action_Success      = '[next step if moving the needle]';
+Action_Success      = '[next step if moving the needle]';
 Action_Fail = '[next step if not moving the needle]';
 Action_Inconclusive = '[next step if results inconclusive]';
-	Success_Effect_Size = '[success effect size]';
+Success_Effect_Size = 0;
 
-    // planContext
-     program_types = [''];
-        delivery_types = [''];
-        classroom_types = [''];
-        Outcomes = [];
+// planContext
+program_types = [''];
+delivery_types = [''];
+classroom_types = [''];
+Outcomes = [];
 grades_used = [];
 useGrades = '';
-        Tech_Purpose = '[purpose of technology]';
-        Tech_Components = '';
-        school_types = ['N/A'];
-        urbanicity = [];
-        non_white = 100;
-        Total_Students = '';
-        District_State = '';
-        frpl = '';
-        Ethnicity_Hispanic = '';
-        Gender_Female = '';
-        English_Learners = '';
-        IEP = '';
-        duration = '[duration]';
-        Expected_Dosage = '[expected dosage]';
-        Other_Notes = '[other notes]';
+Tech_Purpose = '[purpose of technology]';
+Tech_Components = '';
+school_types = ['N/A'];
+urbanicity = [];
+non_white = 100;
+Total_Students = '';
+District_State = '';
+frpl = '';
+Ethnicity_Hispanic = '';
+Gender_Female = '';
+English_Learners = '';
+IEP = '';
+duration = '[duration]';
+Expected_Dosage = '[expected usage]';
+Other_Notes = '[other notes]';
 console.log('checkpoint 0.1');
 
+//Prepare random
+Cluster_Group = 'Cluster Groups';
+Cluster_Group_Other = 'Cluster Groups'
 
-    n_overall = 0;
-    n_treatment = 0;
-    n_full_overall = 0;
-    n_full_treatment = 0;
+next_steps = Action_Fail;
+success = false;
+failure = false;
+inconclusive = false;
+grade_qualifier = '';
+inconclusive_qualifier = '';
+needle_negate = '';
 
-    baseline_by_grade = false;
+n_overall = 0;
+n_treatment = 0;
+n_full_overall = 0;
+n_full_treatment = 0;
+
+baseline_by_grade = false;
 baseline_vars = [];
+control_vars = [];
 baseline_results_by_grade = [];
-	baseline_plot = '';
+baseline_plot = '';
 
-	// shareresult
-     challenges_limitations = '';
-     conclusions_next_steps = '';
+// shareresult
+challenges_limitations = '';
+conclusions_next_steps = '';
 
-     tool_routes = {
-        basics          : '/basics',
-        planQuestion    : '/craft_your_research_q',
-        planNext        : '/plan_next_steps',
-        planContext     : '/context_and_usage',
-        random          : '/randomization',
-        matching        : '/matching',
-        getresult       : '/getresult'
-    }
-
-     tool_names = {
-        basics          : 'Basics',
-        planQuestion    : 'Craft Your Research Question',
-        planNext        : 'Think About How to Use Your Results',
-        planContext     : 'Summarize Context',
-        random          : 'Random Assignment',
-        matching        : 'Matching',
-        getresult       : 'Get Results'
-    }
-
-    data_issues = {};
-
-    for (tool in tool_names) {
-        data_issues[tool] = [];
-    }
-
-    // Replace default values where possible
-    if (eval.basics) {
-        try {
-             basics          = eval.basics;
-            Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
-if (!basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
-
-
-
-if (!basics.Basics_Outcome) {
-                data_issues.basics.push("Outcome is blank or undefined.");
-            } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
-                data_issues.basics.push("Outcome is not specified.");
-            } else {
-                Basics_Outcome = basics.Basics_Outcome || Basics_Outcome;
-            }
-              if (Basics_Outcome === 'other') {
-                Basics_Outcome = basics.Basics_Outcome_Other || Basics_Outcome_Other;
-                if (!basics.Basics_Outcome_Other) data_issues.basics.push("Other outcome description is blank or undefined.");
-}                       
-            if (!basics.Basics_Users ||basics.Basics_Users == "Select an option") {
-                data_issues.basics.push("User description is blank or undefined.");           
-            } else {
-                Basics_Users = basics.Basics_Users || Basics_Users;
-            }
-
-            if (Basics_Users === 'other') {
-                Basics_Users = basics.Basics_Users_Other || Basics_Users_Other;
-                if (!basics.Basics_Users_Other) data_issues.basics.push("Other user description is blank or undefined.");
+tool_routes = {
+    basics          : '/basics',
+    planQuestion    : '/craft_your_research_q',
+    planNext        : '/plan_next_steps',
+    planContext     : '/context_and_usage',
+    random          : '/randomization',
+    matching        : '/matching',
+    getresult       : '/getresult'
 }
+
+tool_names = {
+    basics          : 'Basics',
+    planQuestion    : 'Craft Your Research Question',
+    planNext        : 'Think About How to Use Your Results',
+    planContext     : 'Summarize Context',
+    random          : 'Random Assignment',
+    matching        : 'Matching',
+    getresult       : 'Get Results',
+    shareresult     : 'Share Results'
+
+}
+
+data_issues = {};
+
+for (tool in tool_names) {
+    data_issues[tool] = [];
+}
+
+// Replace default values where possible
+if (eval.basics) {
+    try {
+        basics = eval.basics;
+
+        Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
+        if (!basics.Basics_Tech_Name) data_issues.basics.push("Technology name is blank or undefined.");
+
+        if (!basics.Basics_Outcome) {
+            data_issues.basics.push("Outcome is blank or undefined.");
+        } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
+            data_issues.basics.push("Outcome is not specified.");
+        } else {
+            Basics_Outcome = basics.Basics_Outcome || Basics_Outcome;
+        }
+        if (Basics_Outcome === 'other') {
+            Basics_Outcome = basics.Basics_Outcome_Other || Basics_Outcome_Other;
+            if (!basics.Basics_Outcome_Other) data_issues.basics.push("Other outcome description is blank or undefined.");
+        }
+        if (!basics.Basics_Users ||basics.Basics_Users == "Select an option") {
+            data_issues.basics.push("User description is blank or undefined.");
+        } else {
+            Basics_Users = basics.Basics_Users || Basics_Users;
+        }
+
+        if (Basics_Users === 'other') {
+            Basics_Users = basics.Basics_Users_Other || Basics_Users_Other;
+            if (!basics.Basics_Users_Other) data_issues.basics.push("Other user description is blank or undefined.");
+        }
 Basics_User = Basics_Users.substr(0,Basics_Users.length -1 )
-                        
-        } catch (e) {
-            data_issues.basics.push("Missing or invalid data.");
-        }
 
-    } else {
-        data.issues.basics.push("No data found for this tool for this evaluation.")
+if(eval.prepareRandom.Cluster_Group === '') {
+     Cluster_Group = Basics_Users;
+} else if(eval.prepareRandom.Cluster_Group === 'other') {
+    Cluster_Group = eval.prepareRandom.Cluster_Group_Other || Cluster_Group_Other;
+} else {  Cluster_Group = eval.prepareRandom.Cluster_Group }
+
+
+
+} catch (e) {
+        data_issues.basics.push("Missing or invalid data.");
     }
 
-
-    if (eval.planQuestion) {
-        try {
-             planQuestion    = eval.planQuestion;
-                                    
-            if (!planQuestion.Outcome_Direction) {
-                data_issues.planQuestion.push("Outcome direction is blank or undefined.");
-            } else if (planQuestion.Outcome_Direction.toLowerCase() === 'select an option') {
-                data_issues.planQuestion.push("Outcome direction is not specified.");
-            } else {
-                Outcome_Direction = planQuestion.Outcome_Direction || Outcome_Direction;
-            }
-                                    
-            Outcome_Measure = planQuestion.Outcome_Measure || Outcome_Measure;
-            if (!planQuestion.Outcome_Measure) data_issues.planQuestion.push("Outcome measure is blank or undefined.");
-
-            Intervention_Group_Desc = planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
-            if (!planQuestion.Intervention_Group_Desc) data_issues.planQuestion.push("Intervention group description is blank or undefined.");
-
-            Comparison_Group_Desc = planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
-            if (!planQuestion.Comparison_Group_Desc)   data_issues.planQuestion.push("Comparison group description is blank or undefined.");
-                         
-        } catch (e) {
-            data_issues.planQuestion.push("Missing or invalid data.")
-        }
-
-    } else {
-        data.issues.planQuestion.push("No data found for this tool for this evaluation.")
-    }
-
-    if (eval.planNext) {
-        try {
-             planNext        = eval.planNext;
-
-    Pass_Probability = stripPercent(planNext.Pass_Probability) || Pass_Probability;
-    Fail_Probability    = stripPercent(planNext.Fail_Probability) || Fail_Probability;
-            if (!planNext.Pass_Probability) data_issues.planNext.push("Desired probability of moving the needle is blank or undefined.");
-             if (!planNext.Fail_Probability) data_issues.planNext.push("Desired probability of not moving the needle is blank or undefined.");            
-            if (!planNext.Tech_Cost_Saves) {
-                data_issues.planNext.push("Whether technology costs/saves is blank or undefined.");
-            } else if (planNext.Tech_Cost_Saves.toLowerCase() === 'select an option') {
-                data_issues.planNext.push("Whether technology costs/saves is not specified.");
-            } else {
-                Tech_Cost_Saves = planNext.Tech_Cost_Saves || Tech_Cost_Saves;
-            }
-            
-            if (typeof planNext.Tech_Amount === 'number') {
-                Tech_Amount = planNext.Tech_Amount;
-            } else {
-                data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
-            }
-
-            if (!planNext.Tech_Cost_User) {
-                data_issues.planNext.push("Technology user type is blank or undefined.");
-            } else if (planNext.Tech_Cost_User.toLowerCase() === 'select an option') {
-                data_issues.planNext.push("Technology user type is not specified.");
-            } else {
-                Tech_Cost_User      = planNext.Tech_Cost_User || Tech_Cost_User;
+} else {
+    data_issues.basics.push("No data found for this tool for this evaluation.")
 }
-             if (!planNext.Measure_Units) {
-                data_issues.planNext.push("Outcome measure units is blank or undefined.");
-            } else if (planNext.Measure_Units.toLowerCase() === 'select an option') {
-                 data_issues.planNext.push("Outcome measure units is blank or undefined.");
-            } else {
-                Measure_Units = planNext.Measure_Units || Measure_Units;
-            }
 
-            if (Measure_Units === 'other') {
-                Measure_Units = planNext.Measure_Units_Other || Measure_Units_Other;
-                if (!planNext.Measure_Units_Other)  data_issues.planNext.push("Other outcome measure units descripiton is blank or undefined.");
-            }
 
-Action_Success      = planNext.Action_Success || Action_Success;
-            if (!planNext.Action_Success)   data_issues.planNext.push("Next step for moving the needle is blank or undefined.");
-                        
-            Action_Fail         = planNext.Action_Fail || Action_Fail;
-            if (!planNext.Action_Fail)      data_issues.planNext.push("Next step for not moving the needle is blank or undefined.");
+if (eval.planQuestion) {
+    try {
+        planQuestion    = eval.planQuestion;
 
-			if ( typeof planNext.Success_Effect_Size === 'number') {
-                Success_Effect_Size = planNext.Success_Effect_Size;
-            }
-            else {
-                data_issues.planNext.push("Success effect size is blank or undefined.");
-            }
-                        
-        } catch (e) {
-            data_issues.planNext.push("Missing or invalid data.");
+        if (!planQuestion.Outcome_Direction) {
+            data_issues.planQuestion.push("Outcome direction is blank or undefined.");
+        } else if (planQuestion.Outcome_Direction.toLowerCase() === 'select an option') {
+            data_issues.planQuestion.push("Outcome direction is not specified.");
+        } else {
+            Outcome_Direction = planQuestion.Outcome_Direction || Outcome_Direction;
         }
 
-    } else {
-        data_issues.planNext.push("No data found for this tool for this evaluation.");
+        Outcome_Measure = planQuestion.Outcome_Measure || Outcome_Measure;
+        if (!planQuestion.Outcome_Measure) data_issues.planQuestion.push("Outcome measure is blank or undefined.");
+
+        Intervention_Group_Desc = planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
+        if (!planQuestion.Intervention_Group_Desc) data_issues.planQuestion.push("Intervention group description is blank or undefined.");
+
+        Comparison_Group_Desc = planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
+        if (!planQuestion.Comparison_Group_Desc)   data_issues.planQuestion.push("Comparison group description is blank or undefined.");
+
+    } catch (e) {
+        data_issues.planQuestion.push("Missing or invalid data.")
     }
+
+} else {
+    data_issues.planQuestion.push("No data found for this tool for this evaluation.")
+}
+
+if (eval.planNext) {
+    try {
+        planNext        = eval.planNext;
+
+        Pass_Probability = stripPercent(planNext.Pass_Probability) || Pass_Probability;
+        Fail_Probability = stripPercent(planNext.Fail_Probability) || Fail_Probability;
+        if (!planNext.Pass_Probability) data_issues.planNext.push("Desired probability of moving the needle is blank or undefined.");
+        if (!planNext.Fail_Probability) data_issues.planNext.push("Desired probability of not moving the needle is blank or undefined.");
+
+        if (!planNext.Tech_Cost_Saves) {
+            data_issues.planNext.push("Whether technology costs/saves is blank or undefined.");
+        } else if (planNext.Tech_Cost_Saves.toLowerCase() === 'select an option') {
+            data_issues.planNext.push("Whether technology costs/saves is not specified.");
+        } else {
+            Tech_Cost_Saves = planNext.Tech_Cost_Saves || Tech_Cost_Saves;
+        }
+
+        if (typeof planNext.Tech_Amount === 'number') {
+            Tech_Amount = planNext.Tech_Amount;
+        } else {
+            data_issues.planNext.push("Amount technology costs/saves is blank or undefined.");
+        }
+
+        if (!planNext.Tech_Cost_User) {
+            data_issues.planNext.push("Technology user type is blank or undefined.");
+        } else if (planNext.Tech_Cost_User.toLowerCase() === 'select an option') {
+            data_issues.planNext.push("Technology user type is not specified.");
+        } else {
+            Tech_Cost_User      = planNext.Tech_Cost_User || Tech_Cost_User;
+        }
+        if (!planNext.Measure_Units) {
+            data_issues.planNext.push("Outcome measure units is blank or undefined.");
+        } else if (planNext.Measure_Units.toLowerCase() === 'select an option') {
+            data_issues.planNext.push("Outcome measure units is blank or undefined.");
+        } else {
+            Measure_Units = planNext.Measure_Units || Measure_Units;
+        }
+
+        if (Measure_Units === 'other') {
+            Measure_Units = planNext.Measure_Units_Other || Measure_Units_Other;
+            if (!planNext.Measure_Units_Other)  data_issues.planNext.push("Other outcome measure units descripiton is blank or undefined.");
+        }
+
+        Action_Success      = planNext.Action_Success || Action_Success;
+        if (!planNext.Action_Success)   data_issues.planNext.push("Next step for moving the needle is blank or undefined.");
+
+        Action_Fail         = planNext.Action_Fail || Action_Fail;
+        if (!planNext.Action_Fail) data_issues.planNext.push("Next step for not moving the needle is blank or undefined.");
+
+        Action_Inconclusive         = planNext.Action_Inconclusive || Action_Inconclusive;
+        if (!planNext.Action_Inconclusive)      data_issues.planNext.push("Next step for inconclusive results is blank or undefined.");
+      console.log("Action inconclusive = " + Action_Inconclusive);
+        if ( typeof planNext.Success_Effect_Size === 'number') {
+            Success_Effect_Size = planNext.Success_Effect_Size;
+        }
+        else {
+            data_issues.planNext.push("Success effect size is blank or undefined.");
+        }
+
+    } catch (e) {
+        data_issues.planNext.push("Missing or invalid data.");
+    }
+
+} else {
+    data_issues.planNext.push("No data found for this tool for this evaluation.");
+}
 
 header = 'Results not available due to incomplete analysis.';
 inconclusive_qualifier = '';
-    analysis_results_clean = false;
-	analysis_by_grade = false;
+analysis_results_clean = false;
+analysis_by_grade = false;
+   console.log("Action fail = " + Action_Fail);
+if (eval.getresult) {
+    try {
+        if (eval.getresult.Result === '') {
+            data_issues.getresult.push("Get Results analysis incomplete, or results were not saved. Try completing &ldquo;Get Results&rdquo; again.")
+        } else {
+            analysis_results            = JSON.parse(eval.getresult.Result);
+            analysis_results_by_grade   = analysis_results.results_by_grade;
+            analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
+            control_vars = analysis_results.control_vars;
+            control_vars_relabel =control_vars;
 
-    if (eval.getresult) {
-        try {
-            if (eval.getresult.Result === '') {
-                data_issues.getresult.push("Analysis incomplete, or results were not saved. Try completing this tool again.") 
-            } else {
-                 analysis_results            = JSON.parse(eval.getresult.Result);
-                 analysis_results_by_grade   = analysis_results.results_by_grade;
-                 analysis_by_grade           = Object.keys(analysis_results_by_grade).length > 1;
-console.log("analysis_results = " + analysis_results);
-console.log("analysis_results_by_grade = " + analysis_results_by_grade);
-                 success_count = 0, failure_count = 0; inconclusive_count = 0;
 
-                for (grade in analysis_results_by_grade) {
+            success_count = 0, failure_count = 0; inconclusive_count = 0;
 
-                     probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                    var success = (probability > Pass_Probability);
-                    var inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability)
+            for (grade in analysis_results_by_grade) {
 
-                    if (success) {
-                        success_count++;
-                    } else if (inconclusive) {
-                        inconclusive_count++;
-                    } else {
-                        failure_count++;
-                    }
+                var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                var cutoff_probability = stripPercent(analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0]);
+                var success = (probability > Pass_Probability);
+                var inconclusive = (cutoff_probability < Pass_Probability) && (cutoff_probability > Fail_Probability)
+
+                if (success) {
+                    success_count++;
+                } else if (inconclusive) {
+                    inconclusive_count++;
+                } else {
+                    failure_count++;
                 }
+            }
 
             if (inconclusive_count == (inconclusive_count + success_count + failure_count)) {
-                header = "The results from the evaluation of " + Basics_Tech_Name + " are inconclusive."
+                header = "The results from the evaluation of " + Basics_Tech_Name + " are inconclusive"
+                inconclusive = true;
+                next_steps = Action_Inconclusive;
+console.log("success count = " + success_count + " failure count = " + failure_count + " inconclusive count = " + inconclusive_count)
             }
-        else {
-                 needle_negate = (success_count === 0) ? ' not' : '';
-grade_qualifier = (success_count > 0 && failure_count > 0) ? ' for some grades, but not for others' : '';
-inconclusive_qualifier = (inconclusive_count > 0) ? 'For some grades, results were inconclusive.' : '';
+            else {
+
+                if (success_count === 0) {
+                    needle_negate = ' not';
+                    failure = true;
+                    next_steps = Action_Fail;
+                }
+                if (success_count > 0 && failure_count > 0) {
+                    grade_qualifier = ' for some grades, but not for others';
+                    next_steps = Action_Inconclusive;
+                }
+                if (inconclusive_count > 0) inconclusive_qualifier = 'For some grades, results were inconclusive.';
+
+                if (success_count > 0 && failure_count === 0 && success_count > inconclusive_count ) next_steps = Action_Success;
 
                 header = capitalize(Basics_Tech_Name) + ' is' + needle_negate + ' moving the needle on ' + Basics_Outcome + grade_qualifier;
-                analysis_results_clean = true;
-            }
-          }                          
-        } catch (e) {
-            data_issues.getresult.push("Missing or invalid data.");
-            header = 'Analysis results not found or incomplete.';
-        }
-    } else {
-        data_issues.getresult.push("No data found for this tool for this evaluation.");
-    }
 
-    if (eval.planContext) {
+            }
+            analysis_results_clean = true;
+console.log("next steps set at = " + next_steps);
+        }
+    } catch (e) {
+        data_issues.getresult.push("Missing or invalid data.");
+        header = 'Analysis results not found or incomplete.';
+    }
+} else {
+    data_issues.getresult.push("No data found for this tool for this evaluation.");
+}
+
+if (eval.planContext) {
+    try {
+        planContext = eval.planContext;
+
+        // Create a text representation of applicable grades, including streaks for consecutive grades.
+        // e.g. if 3rd, 4th, 5th grades, combine to display as "3rd-5th" grades.
+        // Use an array for the loop since it has defined ordering
+        grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
+
+        grade_map = {
+            "PK" : "Pre-Kindergarten",
+            "K"  : "Kindergarten",
+            "1"  : "1st",
+            "2"  : "2nd",
+            "3"  : "3rd",
+            "4"  : "4th",
+            "5"  : "5th",
+            "6"  : "6th",
+            "7"  : "7th",
+            "8"  : "8th",
+            "9"  : "9th",
+            "10" : "10th",
+            "11" : "11th",
+            "12" : "12th",
+            "PS" : "Post-secondary"
+        }
+
+        grades_used = [],
+        grade_streak = 0,
+        start_grade = '',
+        end_grade = '';
+
+        for (grade_index in grades) {
+            grade = grades[grade_index];
+
+            if (planContext.Grades.some( function(x) { return x === grade } )) {
+                grade_streak++;
+
+                if (grade_streak === 1) start_grade = grade_map[grade];
+                else end_grade = grade_map[grade];
+            }
+            else {
+
+                if (grade_streak === 1) {
+                    grades_used.push(start_grade);
+                }
+                else if (grade_streak > 1) {
+                    grades_used.push(start_grade + '-' + end_grade);
+                }
+
+                grade_streak = 0;
+            }
+        }
+        if (grades_used.length === 0) data_issues.planContext.push("No grades specified.");
+        if (grades_used.length !== 0) useGrades = "grade";
+        //program_types   = [planContext.Type_Policy, planContext.Type_Teacher_Level, planContext.Type_School_Level, planContext.Type_CSchool_Structure, planContext.Type_Practice, planContext.Type_Curriculum];
+        program_types = [planContext.Type_Curriculum, planContext.Type_Practice, planContext.Type_Supplement, planContext.Type_Assessment, planContext.Type_Professional_Learning, planContext.Type_Information_Management];
+        if (allBlank(program_types)) data_issues.planContext.push("No program types specified.");
+
+        delivery_types  = [planContext.Delivered_School_Wide, planContext.Delivered_Whole_Class, planContext.Delivered_Small_Group, planContext.Delivered_Individually];
+        if (allBlank(delivery_types)) data_issues.planContext.push("No delivery types specified.");
+
+        classroom_types = [planContext.ClassroomType_Inclusion, planContext.ClassroomType_General];
+        if (allBlank(classroom_types)) data_issues.planContext.push("No classroom types specified.");
+
+        Outcomes        = planContext.Outcomes;
+        if (allBlank(Outcomes)) data_issues.planContext.push("No outcome areas specified.");
+
+        Tech_Purpose    = planContext.Tech_Purpose || Tech_Purpose;
+        if (!planContext.Tech_Purpose) data_issues.planContext.push("Technology purpose not specified.");
+
+        Tech_Components = planContext.Tech_Components || Tech_Components;
+        if (!planContext.Tech_Components) data_issues.planContext.push("Technology components not specified.");
+
+        school_types    = [planContext.SchoolType_Charter, planContext.SchoolType_Private, planContext.SchoolType_Parochial, planContext.SchoolType_Public];
+        if (allBlank(school_types)) data_issues.planContext.push("No school type specified.");
+
+        urbanicity      = [planContext.Urbanicity_Urban, planContext.Urbanicity_Suburban, planContext.Urbanicity_Rural];
+        if (allBlank(urbanicity)) data_issues.planContext.push("No geographical setting specified.");
+
+        // No perfect way to do this. Race values default to 0, so if you use 100 - white and default values (0) are in place, you get 100% non-white,
+        // and it's not possible to know whether that's true or not. If you sum the non-white categories, you still might get 0 from default values,
+        // but it could be the true value also. Safest way to go is default to 100% and subtract explicit value of Race_White.
+        if (typeof planContext.Race_White === 'number') {
+            non_white       = 100 - planContext.Race_White;
+        }
+
+        if (planContext.Total_Students !== '') {
+            Total_Students = planContext.Total_Students;
+        } else {
+            data_issues.planContext.push("Total students not specified.");
+        }
+
+        District_State      = planContext.District_State || District_State;
+        if (!planContext.District_State) data_issues.planContext.push("State not specified.");
+
+        Ethnicity_Hispanic  = planContext.Ethnicity_Hispanic || Ethnicity_Hispanic;
+        frpl                = planContext.FRPL_Reduced + planContext.FRPL_Free || frpl;
+        Gender_Female       = planContext.Gender_Female || Gender_Female;
+        English_Learners    = planContext.English_Learners || English_Learners;
+        IEP                 = planContext.IEP;
+
+        /* We have begin and end datetimes, rather than a plain-English duration. The following
+		estimates the duration to the nearest day, and then converts that to the most appropriate
+		count of days, weeks, months, or years */
         try {
-             planContext = eval.planContext;
+            begin_date = new Date(planContext.Eval_Begin_Date);
+            end_date = new Date(planContext.Eval_End_Date);
+            duration_days = Math.ceil((end_date - begin_date) / 86400000);
 
-            // Create a text representation of applicable grades, including streaks for consecutive grades.
-            // e.g. if 3rd, 4th, 5th grades, combine to display as "3rd-5th" grades.
-            // Use an array for the loop since it has defined ordering
-             grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
+            if (duration_days === 0) data_issues.planContext.push("Evaluation start date and end date are equal.");
 
-             grade_map = {
-                "PK" : "Pre-Kindergarten",
-                "K"  : "Kindergarten",
-                "1"  : "1st",
-                "2"  : "2nd",
-                "3"  : "3rd",
-                "4"  : "4th",
-                "5"  : "5th",
-                "6"  : "6th",
-                "7"  : "7th",
-                "8"  : "8th",
-                "9"  : "9th",
-                "10" : "10th",
-                "11" : "11th",
-                "12" : "12th",
-                "PS" : "Post-secondary"
+            if (duration_days < 7) {
+                duration = duration_days;
+                duration_unit = 'day';
+            }
+            else if (duration_days < 49) {
+                duration = Math.ceil(duration_days / 7);
+                duration_unit = 'week';
+            }
+            else if (duration_days < 335) {
+                duration = Math.ceil(duration_days / 30);
+                duration_unit = 'month';
+            }
+            else {
+                duration = Math.ceil(duration_days / 365);
+                duration_unit = 'year';
             }
 
-             grades_used = [],
-                grade_streak = 0, 
-                start_grade = '', 
-                end_grade = '';
-
-            for (grade_index in grades) {
-                 grade = grades[grade_index];
-
-                if (planContext.Grades.some( function(x) { return x === grade } )) {
-                    grade_streak++;
-
-                    if (grade_streak === 1) start_grade = grade_map[grade];
-                    else end_grade = grade_map[grade];
-                }
-                else {
-
-                    if (grade_streak === 1) {
-                        grades_used.push(start_grade);
-                    }
-                    else if (grade_streak > 1) {
-                        grades_used.push(start_grade + '-' + end_grade);
-                    }
-
-                    grade_streak = 0;
-                }
-            }
-            if (grades_used.length === 0) data_issues.planContext.push("No grades specified.");
-            if (grades_used.length !== 0) useGrades = "grade";
-            //program_types   = [planContext.Type_Policy, planContext.Type_Teacher_Level, planContext.Type_School_Level, planContext.Type_CSchool_Structure, planContext.Type_Practice, planContext.Type_Curriculum];
-            program_types = [planContext.Type_Curriculum, planContext.Type_Practice, planContext.Type_Supplement, planContext.Type_Assessment, planContext.Type_Professional_Learning, planContext.Type_Information_Management];
-            if (allBlank(program_types)) data_issues.planContext.push("No program types specified.");
-
-            delivery_types  = [planContext.Delivered_School_Wide, planContext.Delivered_Whole_Class, planContext.Delivered_Small_Group, planContext.Delivered_Individually];
-            if (allBlank(delivery_types)) data_issues.planContext.push("No delivery types specified.");
-
-            classroom_types = [planContext.ClassroomType_Inclusion, planContext.ClassroomType_General];
-            if (allBlank(classroom_types)) data_issues.planContext.push("No classroom types specified.");
-
-            Outcomes        = planContext.Outcomes;
-            if (allBlank(Outcomes)) data_issues.planContext.push("No outcome areas specified.");
-
-            Tech_Purpose    = planContext.Tech_Purpose || Tech_Purpose;
-            if (!planContext.Tech_Purpose) data_issues.planContext.push("Technology purpose not specified.");
-
-            Tech_Components = planContext.Tech_Components || Tech_Components;
-            if (!planContext.Tech_Components) data_issues.planContext.push("Technology components not specified.");
-
-            school_types    = [planContext.SchoolType_Charter, planContext.SchoolType_Private, planContext.SchoolType_Parochial, planContext.SchoolType_Public];
-            if (allBlank(school_types)) data_issues.planContext.push("No school type specified.");
-
-            urbanicity      = [planContext.Urbanicity_Urban, planContext.Urbanicity_Suburban, planContext.Urbanicity_Rural];
-            if (allBlank(urbanicity)) data_issues.planContext.push("No geographical setting specified.");  
-
-            // No perfect way to do this. Race values default to 0, so if you use 100 - white and default values (0) are in place, you get 100% non-white, 
-            // and it's not possible to know whether that's true or not. If you sum the non-white categories, you still might get 0 from default values,
-            // but it could be the true value also. Safest way to go is default to 100% and subtract explicit value of Race_White.
-            if (typeof planContext.Race_White === 'number') {
-                non_white       = 100 - planContext.Race_White;
-            }
-                               
-            if (planContext.Total_Students !== '') {
-                Total_Students = planContext.Total_Students;
-            } else {
-                data_issues.planContext.push("Total students not specified.");  
-            }  
-
-            District_State      = planContext.District_State || District_State;
-            if (!planContext.District_State) data_issues.planContext.push("State not specified.");  
-
-            Ethnicity_Hispanic  = planContext.Ethnicity_Hispanic || Ethnicity_Hispanic;
-            frpl                = planContext.FRPL_Reduced + planContext.FRPL_Free || frpl;
-            Gender_Female       = planContext.Gender_Female || Gender_Female;
-            English_Learners    = planContext.English_Learners || English_Learners;
-            IEP                 = planContext.IEP;
-
-            /* We have begin and end datetimes, rather than a plain-English duration. The following
-            estimates the duration to the nearest day, and then converts that to the most appropriate
-            count of days, weeks, months, or years */
-            try {   
-                 begin_date = new Date(planContext.Eval_Begin_Date);
-                 end_date = new Date(planContext.Eval_End_Date);
-                 duration_days = Math.ceil((end_date - begin_date) / 86400000);
-
-                if (duration_days === 0) data_issues.planContext.push("Evaluation start date and end date are equal.");
-
-                if (duration_days < 7) {
-                    duration = duration_days;
-                    duration_unit = 'day';
-                }
-                else if (duration_days < 49) {
-                    duration = Math.ceil(duration_days / 7);
-                    duration_unit = 'week';
-                }
-                else if (duration_days < 335) {
-                    duration = Math.ceil(duration_days / 30);
-                    duration_unit = 'month';
-                }
-                else {
-                    duration = Math.ceil(duration_days / 365);
-                    duration_unit = 'year';
-                }
-
-                duration_plural = (duration > 1) ? 's' : '';
-                duration = duration.toString() + ' ' + duration_unit + duration_plural;
-
-            } catch (e) {
-                data_issues.planContext.push("Duration of evaluation couldn't be calculated. Check start and end date.");
-            }
-
-            Expected_Dosage = planContext.Expected_Dosage || Expected_Dosage;
-            if (!planContext.Expected_Dosage) data_issues.planContext.push("How often technology is used not specified.");
-
-            Other_Notes     = planContext.Other_Notes || Other_Notes;
-            if (!planContext.Other_Notes) data_issues.planContext.push("Other context not specified.");
+            duration_plural = (duration > 1) ? 's' : '';
+            duration = duration.toString() + ' ' + duration_unit + duration_plural;
 
         } catch (e) {
-            data_issues.planContext.push("Missing or invalid data.");
+            data_issues.planContext.push("Duration of evaluation couldn't be calculated. Check start and end date.");
         }
-    } else {
-        data_issues.planContext.push("No data found for this tool for this evaluation.");
+
+        Expected_Dosage = planContext.Expected_Dosage || Expected_Dosage;
+        if (!planContext.Expected_Dosage) data_issues.planContext.push("How often technology is used not specified.");
+console.log("Expected Dosage = " + Expected_Dosage);
+        Other_Notes     = planContext.Other_Notes || Other_Notes;
+        if (!planContext.Other_Notes) data_issues.planContext.push("Other context not specified.");
+
+    } catch (e) {
+        data_issues.planContext.push("Missing or invalid data.");
     }
-                          
-    pilot_type = '[matched/randomized]';
+} else {
+    data_issues.planContext.push("No data found for this tool for this evaluation.");
+}
 
-    if (eval.path) {
-         path = eval.path;
+pilot_type = '[matched/randomized]';
 
-        if (path === 'path-matching') {
-            try {
-                pilot_type = 'matched';
-                 match_results = JSON.parse(eval.matching.Result);
-                 baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
-                 baseline_results_by_grade = match_results.results_by_grade;
+//Create flag indicating if user completed matching or random assignment tool.
+sample_created_using_coach = false;
+console.log("was sample create in Coach?");
+console.log(eval.matching.s_treat_var);
+console.log(eval.random.s_unit_id);
+if(eval.matching.s_treat_var !== '' || eval.random.s_unit_id !== '' ) { sample_created_using_coach = true; }
 
-                for (grade in baseline_results_by_grade) {
-                     samples = baseline_results_by_grade[grade].samples;
+if (eval.path) {
+    path = eval.path;
 
-                    n_full_overall += samples.n_full[0];
-                    n_full_treatment += samples.n_full_treat[0];
-
-                    n_overall += samples.n_matched[0];
-                    n_treatment += samples.n_matched_treat[0];
-
-					baseline_plot = baseline_results_by_grade[grade].plot;
-                }
-                                        
-                if (match_results.match_vars) {
-                    baseline_vars = match_results.match_vars;
-                } else if (match_results.args) {
-                    baseline_vars = match_results.args.match_vars;
-                }
-            } catch(e) {
-                data_issues.matching.push("Missing, invalid, or not saved data. Try completing this tool again.");
-            }
-        }
-        else if (path === 'path-random') {
-console.log('checkpoint 0.2');
-            try {
-                pilot_type = 'randomized';
-                 results = JSON.parse(eval.random.Result);
-                baseline_by_grade = Object.keys(results.results_by_block).length > 1;
-                baseline_results_by_grade = results.results_by_block;
-                                        
-                for (grade in baseline_results_by_grade) {
-                     samples = baseline_results_by_grade[grade].samples;
-                    n_overall += samples.n_full[0];
-                    n_treatment += samples.n_treat[0];
-
-					baseline_plot = baseline_results_by_grade[grade].plot;
-                }
-
-                if (results.baseline_vars) {
-                    baseline_vars = results.baseline_vars;
-                } else if (results.args) {
-                    baseline_vars = results.args.baseline_vars;
-                }
-            } catch(e) {
-                data_issues.random.push("Missing, invalid, or not saved data. Try completing this tool again.");
-            }
-        }
-    }
-
-     baseline_vars_relabel = baseline_vars;
-     assignment = Basics_Users + ' were assigned to treatment and comparison groups.';
-
-    if (pilot_type === 'matched') {
-
-         suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
-        assignment = Basics_Users + ' were matched ' + suffix;
-
-    }
-    else if (pilot_type === 'randomized') {
-         prefix = '',
-        group = 'random values';
-
-        if (eval.random) {
-            if (eval.random.Individual_Group === 'groups') {
-                prefix = 'Groups of '
-                group = eval.random.Cluster_Group || 'groups';
-                if (group === 'other') group = eval.random.Cluster_Group_Other || group;
-            }
-        }
-        assignment = prefix + Basics_Users + ' were assigned based on ' + group ;
-    }
-
-     n_comparison = n_overall - n_treatment;
-                        
-    if (eval.shareresult) {
+    if (path === 'path-matching') {
         try {
-             shareresult = eval.shareresult;
-             conclusions_next_steps = shareresult.conclusions_next_steps || conclusions_next_steps;
-             challenges_limitations = shareresult.challenges_limitations || challenges_limitations;
-                                
-            if (shareresult.baseline_var_relabels.length > 0) {
-                baseline_vars_relabel = shareresult.baseline_var_relabels;
+            pilot_type = 'matched';
+            match_results = JSON.parse(eval.matching.Result);
+            baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
+            baseline_results_by_grade = match_results.results_by_grade;
+
+            for (grade in baseline_results_by_grade) {
+                samples = baseline_results_by_grade[grade].samples;
+
+                n_full_overall += samples.n_full[0];
+                n_full_treatment += samples.n_full_treat[0];
+
+                n_overall += samples.n_matched[0];
+                n_treatment += samples.n_matched_treat[0];
+
+                baseline_plot = baseline_results_by_grade[grade].plot;
             }
 
-        } catch (e) {
-            data.issues.shareresult("Missing or invalid data.");
+            if (match_results.match_vars) {
+                baseline_vars = match_results.match_vars;
+            } else if (match_results.args) {
+                baseline_vars = match_results.args.match_vars;
+            }
+        } catch(e) {
+            data_issues.matching.push("Missing, invalid, or not saved data. Try completing this tool again.");
         }
-    } else {
-        data_issues.planContext.push("No data found for this tool for this evaluation.");
     }
+    else if (path === 'path-random') {
+        console.log('checkpoint 0.2');
+        try {
+            pilot_type = 'randomized';
+            results = JSON.parse(eval.random.Result);
+            baseline_by_grade = Object.keys(results.results_by_block).length > 1;
+            baseline_results_by_grade = results.results_by_block;
 
-     baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
+            for (grade in baseline_results_by_grade) {
+            samples = baseline_results_by_grade[grade].samples;
+
+                n_overall += samples.n_full[0];
+                n_treatment += samples.n_treat[0];
+
+                baseline_plot = baseline_results_by_grade[grade].plot;
+            }
+
+            if (results.baseline_vars) {
+                baseline_vars = results.baseline_vars;
+            } else if (results.args) {
+                baseline_vars = results.args.baseline_vars;
+            }
+        } catch(e) {
+            data_issues.random.push("Missing, invalid, or not saved data. Try completing this tool again.");
+        }
+    }
+}
+
+baseline_vars_relabel = baseline_vars;
+assignment = Basics_Users + ' were assigned to treatment and comparison groups.';
+
+if (pilot_type === 'matched') {
+
+    suffix = (baseline_by_grade) ? 'by grade' : 'as individuals';
+    assignment = Basics_Users + ' were matched ' + suffix;
+
+}
+else if (pilot_type === 'randomized') {
+    prefix = '',
+    group = 'random values';
+
+    if (eval.random) {
+        if (eval.random.Individual_Group === 'groups') {
+            prefix = 'Groups of '
+            group = eval.random.Cluster_Group || 'groups';
+            if (group === 'other') group = eval.random.Cluster_Group_Other || group;
+        }
+    }
+    assignment = prefix + Basics_Users + ' were assigned based on ' + group ;
+}
+
+n_comparison = n_overall - n_treatment;
+
+if (eval.shareresult) {
+    try {
+        shareresult = eval.shareresult;
+        conclusions_next_steps = shareresult.conclusions_next_steps || conclusions_next_steps;
+        challenges_limitations = shareresult.challenges_limitations || challenges_limitations;
+
+        if (shareresult.baseline_var_relabels.length > 0  && shareresult.baseline_var_relabels.length === baseline_vars.length) {
+            baseline_vars_relabel = shareresult.baseline_var_relabels;
+        }
+        if (shareresult.control_var_relabels.length > 0 && shareresult.control_var_relabels.length === control_vars.length) {
+            control_vars_relabel = shareresult.control_var_relabels;
+        }
+
+    } catch (e) {
+        data_issues.shareresult.push("Missing or invalid data.");
+    }
+} else {
+    data_issues.shareresult.push("No data found for this tool for this evaluation.");
+}
+
+baseline_vars_relabel_wordlist = wordList(baseline_vars_relabel);
+control_vars_relabel_wordlist = wordList(control_vars_relabel);
 console.log('checkpoint 1');
 %>
+

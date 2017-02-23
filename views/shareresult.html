@@ -12,6 +12,7 @@
     <title>Share Your Results - Ed Tech RCE Coach</title>
 
     <% if (display === undefined) display = 'online';
+   
 
     if (display === 'online') { %>
     <% include ../views/partials/scriptHeader.html %>
@@ -26,7 +27,7 @@
 </head>
 <% var bodyclass = query.peeking == 1 ? "peeking" : "";
 bodyclass = query.sharing == 1 ? "sharing" : "";
-
+var tabcounter = 0; var figcounter = 0;
 %>
 <body class="brief <%- bodyclass %>">
     <% if (display === 'online') { %>
@@ -49,7 +50,9 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
     </div>
     <form action="" method="post">
         <% } %>
-        <% include('../views/partials/brief_appendix_evaluation_processing.html') %>
+    <% include('../views/partials/brief_appendix_evaluation_processing.html')
+   
+    %>
      
 
     
@@ -81,8 +84,8 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                             <i class="fa fa-hand-o-right"></i> Where did I add this? See
                             <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
                         </p>
-                        <% } %>
-                        <% } %>
+                        <% }} %>
+                      
                     </div>
                     <hr />
                 </div>
@@ -99,68 +102,76 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <%= Intervention_Group_Desc %>
                         compared to
                         <%= Comparison_Group_Desc %>?
-                 
-                        <% if (analysis_results_clean) {
-                        var findingsTableRows = "";
-                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability "+ Outcome_Direction + "s " + Basics_Outcome+ "</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th></tr>";
-                       
 
-    for (grade in analysis_results_by_grade) {
-    //   console.log("Grade object");
-    //  console.log(analysis_results_by_grade);
-    try {
+                        <% if (display === 'online') { %>
+                        <p class="prev-answer hidden-print">
+                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                            <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
+                        </p>
+                        <% } %>
 
-
-    var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-    var success = (probability > Pass_Probability);
-    var inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability)
-
-    var needle_decision = (success) ? 'Yes' : 'No';
-    var needle_negate = (success) ? '' : ' not';
-
-    var next_steps = Action_Fail
-
-    if (success) {
-    next_steps= Action_Success;
-    } else if (inconclusive) {
-    next_steps = Action_Inconclusive;
-    }
-
-    var findingsConclusion = (inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : ((success) ? Basics_Tech_Name + ' is moving the needle.' : Basics_Tech_Name + ' did not ' +  Outcome_Direction +  ' ' + Basics_Outcome + '.');
-
-    var interpretation_2 = "";
-    if(Success_Effect_Size > 0){
-    if(analysis_results_by_grade[grade].interpretation_cutoff_0 ) {
-    interpretation_2 = "There is a " + analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ".";
-    }
-    }
-
-    var interpretation_1 = "There is a " + analysis_results_by_grade[grade].interpretation.probability[0] + " probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more.";
-
-
-    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0] + "</td><td class='align-right'>" + analysis_results_by_grade[grade].interpretation.probability[0] + "</td></tr>";
-
+                        <%
                         var grade_results_clean = true;
+
+                        if (analysis_results_clean) {
+
+                        var findingsTableRows = "";
+                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + "</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th></tr>";
+
+
+                        for (grade in analysis_results_by_grade) {
+                      
+                        try {
+
+
+                        var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
+                        var cutoff_probability = stripPercent(analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0]);
+                        var gsuccess = (probability > Pass_Probability);
+                        var ginconclusive = (cutoff_probability < Pass_Probability) && (cutoff_probability > Fail_Probability);
+
+                        var needle_decision = (gsuccess) ? 'Yes' : 'No';
+                        var needle_negate = (gsuccess) ? '' : ' not';
+
+                        var findingsConclusion = (ginconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : ((gsuccess) ? Basics_Tech_Name + ' is moving the needle.' : Basics_Tech_Name + ' did not ' + Outcome_Direction + ' ' + Basics_Outcome + '.');
+
+                        var interpretation_2 = "";
+                      
+                        if (Success_Effect_Size > 0) {
+                        if (cutoff_probability || cutoff_probability === 0) {
+                        interpretation_2 = "There is a " + cutoff_probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ".";
+                        }
+                        }
+
+                        var interpretation_1 = "There is a " + probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more.";
+
+
+                        findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + cutoff_probability + "</td><td class='align-right'>" + probability + "</td></tr>";
+
+                        grade_results_clean = true;
                         } catch (e) {
-                        var grade_results_clean = false;
+                        grade_results_clean = false;
                         var error = e;
-                        console.log("grad results error = " + e);
+                        console.log("grade results not clean");
+                        console.log(error);
                         }
 
                         var findingsAddText = "";
-                       }  //End for each grade
-                      }// End if (grade_results_clean)
-                    
-                        
+                        }  //End for each grade
+                        }// End if (grade_results_clean)
+
+
                         %>
 
                         <% if (grade_results_clean) { %>
-                   
-                            <h3> Findings</h3>
-                            <% if (analysis_by_grade) { %>
-                        <table><caption>Summary of results by grade based on the data used in this analysis.</caption><thead><%- findingsTableHeader %></thead><tbody><%- findingsTableRows %></tbody></table>
 
-                            <% } else { %>
+                        <h3> Findings</h3>
+                        
+                        <% if (analysis_by_grade) { %>
+                        <% tabcounter = 1 + tabcounter;  %>
+                        <table><caption>Table <%= tabcounter %>. Summary of results by grade based on the data used in this analysis.</caption><thead><%- findingsTableHeader %></thead><tbody><%- findingsTableRows %></tbody></table>
+
+                        <% } else { %>
+                        <p>Based on the data used in this analysis:
                             <ol class="no-page-break">
                                 <li> <%= findingsConclusion %></li>
 
@@ -169,81 +180,105 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                                 <% } %>
                                 <li id="item_interp_1"> <%= interpretation_1 %></li>
                             </ol>
-                            <% } %>
-                     
-                      
-                      
+                        </p>
+                        <% } %>
+
+
+
                         <div class="clearfix"></div>
 
-    <% } else { %>
+                        <% } else { %>
 
-    Problem detected in analysis results. Try re-running the analysis tool.
-    <%- error %>
-                        <% } 
-   
-   
-    if (analysis_results_clean) {
-    var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
-    var tableRows = "";
-    if(path === 'path-matching') {
-    if ( baseline_results_by_grade) {
-    initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
+                        Problem detected in analysis results. Try re-running the analysis tool.
+                        <%- error %>
+                        console.log("error" + error);
+                        <% }
+                      
+                        if(sample_created_using_coach ) {
+                        if (analysis_results_clean) {
+                        var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
+                        var tableRows = "";
 
+                        if(path === 'path-matching') {
+                        console.log("in path-matching");
+                        console.log("samples");
+                        console.log(samples);
 
-    for (grade in baseline_results_by_grade) {
-    gradesamples = baseline_results_by_grade[grade].samples;
-    var N=0, P=0, M=0, Q=0;
-    var grade_object = analysis_results_by_grade[grade];
-    if(gradesamples) {
-    console.log("Grade Samples Object");
-    console.log(gradesamples);
-    var N = gradesamples.n_full_treat;
-    var P = gradesamples.n_matched_treat;
-    var M = gradesamples.n_full ;
-    var Q = gradesamples.n_matched ;
-    }
-    else if(samples) {
-    console.log("Samples Object");
-    console.log(samples);
-    var N = samples.n_full_treat;
-    var P = samples.n_matched_treat;
-    var M = samples.n_full ;
-    var Q = samples.n_matched ;
-    }
-    var matchedNonUsers = Q-P;
-    var allNonUsers = M-N;
+                        if ( baseline_results_by_grade) {
+                        initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
+                        } else {
+                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
+                        }
 
+                        if(samples && !baseline_results_by_grade) {
+                        console.log("in matching and not by grade");
+                        var N = samples.n_full_treat;
+                        var P = samples.n_matched_treat;
+                        var M = samples.n_full ;
+                        var Q = samples.n_matched ;
 
+                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
+                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + (M-N) + ' ' + Basics_Users +'</td><td>' + (Q-P) + ' ' + Basics_Users + '</td><td class="align-right">' + round10(((Q-P)/(M-N))*100,0) + '%</td></tr>';
+                        }
+                        for (grade in baseline_results_by_grade) {
+                        console.log("in matching and for loop by grade and grade = " + grade);
+                        gradesamples = baseline_results_by_grade[grade].samples;
+                        var N=0, P=0, M=0, Q=0;
+                        var grade_object = analysis_results_by_grade[grade];
+                        if(gradesamples) {
+                        console.log("in matching and by grade");
+                        var N = gradesamples.n_full_treat;
+                        var P = gradesamples.n_matched_treat;
+                        var M = gradesamples.n_full ;
+                        var Q = gradesamples.n_matched ;
+                        }
 
-    tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round((P/N)*100,0)+ '%</td></tr>';
-    tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + Basics_Users +'</td><td>' + matchedNonUsers + ' ' + Basics_Users + '</td><td class="align-right">' + round((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
-    }  // end grade loop.
-    } //end if analysis by grade
-    } // end if matching
-
-    if(path === 'path-random') {
-                        console.log("path = random");
-                        console.log(n_full_treatment);
-                        console.log(n_full_overall)
-    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
-    tableRows = '<tr><td>Treatment</td><td>' +  n_treatment + ' ' + Basics_Users +  '</td></tr>';
-                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + n_comparison + Basics_Users + '</td></tr>';
-                        console.log(tableRows);
-    } // end path random
-    } // end if clean analysis
-    %>
+                        var matchedNonUsers = Q-P;
+                        var allNonUsers = M-N;
 
 
 
+                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
+                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + Basics_Users +'</td><td>' + matchedNonUsers + ' ' + Basics_Users + '</td><td class="align-right">' + round10((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
+                        }  // end grade loop.
+                       // } //end if analysis by grade
+                        } // end if matching
 
-    <%  if(path === 'path-matching') { %>
-    <p class="note" style="margin-top: 15px;">
-        <strong>Interpreting these findings:</strong>
-        This analysis relies on the validity of the comparison group. To see how the comparison group was created check our   Matching Overview. Table 1 summarizes the number of students in the treatment and comparison groups before and after matching. It is important to note that these findings only apply to students who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology
-    </p>
-    <% } %>
-                        <table><caption>Number of <%= Basics_Users %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
-</div>
+                        if(path === 'path-random') {
+                        var n_overall = 0;
+                        var n_treatment = 0;
+                        for (grade in baseline_results_by_grade) {
+                        samples = baseline_results_by_grade[grade].samples;
+                       
+                        n_overall += samples.n_full[0];
+                        n_treatment += samples.n_treat[0];
+
+                        }
+                        n_comparison =  n_overall - n_treatment;
+                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                        tableRows = '<tr><td>Treatment</td><td>' +   n_treatment  + ' ' + Cluster_Group +  '</td></tr>';
+                        tableRows = tableRows + '<tr><td>Comparison</td><td>' +  n_comparison    + ' ' +  Cluster_Group + '</td></tr>';
+
+                        } // end path random
+                      
+                        } // end if clean analysis
+                        %>
+
+
+
+
+                        <%  if(path === 'path-matching') { %>
+                        <p class="note" style="margin-top: 15px;">
+                            <strong>Interpreting these findings:</strong>
+                            This analysis relies on the validity of the comparison group. To see how the comparison group was created check our   Matching Overview. Table 1 summarizes the number of <%= Basics_Users %> in the treatment and comparison groups before and after matching. It is important to note that these findings only apply to <%= Basics_Users %> who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology
+                        </p>
+                        <% } %>
+                        <% tabcounter = 1 + tabcounter;  %>
+                        <table><caption>Table <%= tabcounter %>. Number of <%= Basics_Users %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
+                        <% } else { %>
+                        <p>Since the intervention and comparison groups were created outside of the Coach, sample size information is not available.</p>
+                        <% } %>
+                    </div>
                 </div>
 
                 <div class="row no-page-break">
@@ -349,8 +384,83 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                                 Baseline equivalence (or similarity across treatment and comparison) was not tested.
                                 <% } %>
                         </ul>
+                        <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
+                        <% tabcounter = 1 + tabcounter;  %>
+                        <table>
+                            <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
+                            <thead>
+                                <tr>
+                                    <% if (baseline_by_grade) { %>
+                                    <th>Grade</th>
+                                    <% } %>
+                                    <th> Characteristic</th>
+                                    <th> Overall</th>
+                                    <th> Treatment</th>
+                                    <th> Comparison</th>
+                                    <th> Difference</th>
+                                    <th> Effect Size</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        <% if (baseline_vars && baseline_vars.length > 0 && display === 'online') { %>
+                                <% for (grade in baseline_results_by_grade) {
+
+                                try {
+                                var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+
+                            var samples = baseline_results_by_grade[grade].samples;
+
+                                var n_overall = 0;
+                                var n_treatment = 0;
+                                if(path ==="path-matching") {
+                                n_overall = samples.n_matched[0];
+                                 n_treatment = samples.n_matched_treat[0];                               
+                                }
+                                else if (path === "path-random") {
+                                n_overall = samples.n_full[0];
+                                n_treatment = samples.n_treat[0];
+                                }
+                                var n_comparison = n_overall - n_treatment;
+
+                                var characteristics = Object.keys(baseline_var_means);
+                                var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+
+                                for (index in characteristics) {
+                                var characteristic = characteristics[index];
+
+                                %>
+                                <tr>
+                                    <% if (baseline_by_grade  && index == 0) { %>
+                                    <td rowspan="<%= growspan %>"> <%= grade %></td>
+                                    <% } %>
+                                    <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                    <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
+                                    <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
+                                    <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
+                                    <td> <%= round10(baseline_var_means[characteristic].difference[0]) %></td>
+                                    <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
+                                </tr>
+                            <% } 
+                                if(sample_created_using_coach ) { %>
+                                <tr>
+
+                                    <td> Number of <%= Cluster_Group %></td>
+                                    <td> <%= n_overall %></td>
+                                    <td> <%= n_treatment %></td>
+                                    <td> <%= n_comparison %></td>
+                                    <td> --</td>
+                                    <td> --</td>
+                                </tr>
+                                <% }} catch (e) {
+                                var error = e;
+                                console.log("baseline characteristics error");
+                                console.log(error);
+                                }
+                                } %>
+                            </tbody>
+                        </table>
+                        <% } %>
+                        <% if (baseline_vars && baseline_vars.length > 0 && display === 'online' && query.sharing !== 1) { %>
                         <div class="hidden-print">
                             <h3>Re-label baseline variables (optional):</h3>
                             <% for (index in baseline_vars) {
@@ -471,67 +581,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                             </div>
                         </div>
                 </div>
-                <div class="row no-page-break">
-                    <div class="col-xs-12">
-
-                        <% if (baseline_results_by_grade.length > 0 && baseline_vars && baseline_vars.length > 0) { %>
-                        <p> <strong> Table 1. Background Characteristics of the Evaluation Sample</strong> </p>
-                        <table id="table1">
-                            <thead>
-                                <tr>
-                                    <% if (baseline_by_grade) { %>
-                                    <th>Grade</th>
-                                    <% } %>
-                                    <th> Characteristic</th>
-                                    <th> Overall</th>
-                                    <th> Treatment</th>
-                                    <th> Comparison</th>
-                                    <th> Difference</th>
-                                    <th> Effect Size</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <% for (grade in baseline_results_by_grade) {
-
-                                try {
-                                var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
-                                var characteristics = Object.keys(baseline_var_means);
-
-                                for (index in characteristics) {
-                                var characteristic = characteristics[index]; %>
-                                <tr>
-                                    <% if (baseline_by_grade) { %>
-                                    <td> <%= grade %></td>
-                                    <% } %>
-                                    <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                    <td> <%= round3(baseline_var_means[characteristic].overall[0]) %></td>
-                                    <td> <%= round3(baseline_var_means[characteristic].intervention[0]) %></td>
-                                    <td> <%= round3(baseline_var_means[characteristic].comparison[0]) %></td>
-                                    <td> <%= round3(baseline_var_means[characteristic].difference[0]) %></td>
-                                    <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
-                                </tr>
-                                <% } %>
-                                <tr>
-                                    <% if (baseline_by_grade) { %>
-                                    <td></td>
-                                    <% } %>
-                                    <td> Number of <%= Basics_Users %></td>
-                                    <td> <%= n_overall %></td>
-                                    <td> <%= n_treatment %></td>
-                                    <td> <%= n_comparison %></td>
-                                    <td> --</td>
-                                    <td> --</td>
-                                </tr>
-                                <% } catch (e) { %>
-                               
-                                <% } %>
-                                <% } %>
-                            </tbody>
-                        </table>
-                        <% } %>
-                    </div>
-                </div>
+                
 
                 <div class="row no-page-break">
                     <div class="col-xs-12">
@@ -539,12 +589,12 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <h2> The evaluation period lasted <%= duration %>.</h2>
                         <p>
                             During this period, <%= Basics_Users %> in the treatment group were expected to use <%= Basics_Tech_Name %>
-                            <%= punctuate(Expected_Dosage) %>
+                            <%- punctuate(Expected_Dosage) %>
                             <%= capitalize(Basics_Users) %> in the comparison group did not have access to <%= Basics_Tech_Name %>.
                         </p>
                         <p>
                         <%
-                        console.log("display = " + display + " and sharing = " + query.sharing);
+                      //  console.log("display = " + display + " and sharing = " + query.sharing);
                             if (display === 'online' && query.sharing != 1) { %>
                             <label class="hidden-print"> Challenges/Limitations:</label>
                             <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
@@ -571,7 +621,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                         <p>
                             Analysis of <%= Basics_Tech_Name %>
                             <% if (baseline_vars_relabel.length > 0) { %>
-                            controls for: <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %>.</span>
+                            controls for: <span class="baseline-vars-wordlist"><%= control_vars_relabel_wordlist %>.</span>
                             <% } else { %>
                             did not control for baseline variables.
                             <% } %>
@@ -587,6 +637,29 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                             <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
                         </p>
                         <% } %>
+
+                        <% if (baseline_vars && baseline_vars.length > 0 && display === 'online' && query.sharing !== 1) { %>
+                        <div class="hidden-print col-offset-1">
+                            <h3>Re-label control variables (optional):</h3>
+                            <% for (index in control_vars) {
+                            var control_var = control_vars[index]; %>
+
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <label for="relabel-control-var-<%- index %>"> Re-label <%= control_var %>:</label>
+                                </div>
+                                <div class="col-xs-4">
+                                    <input type="text" name="relabel-control-var-<%- index %>" id="relabel-control-var-<%- index %>"class="relabel-baseline-var" value="<%= control_vars_relabel[index] %>" data-reset="<%= control_var %>" />
+                                </div>
+                            </div>
+                            <% } %>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <button type="button" class="btn btn-info" id="relabel-control-vars">Re-label</button>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
                     </div>
                 </div>
 
@@ -598,7 +671,7 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                        
                             <h3> Next steps</h3>
                             <p>
-                                <%= sentence(next_steps); %>
+                                <%= sentence(next_steps) %>
                             </p>
                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <div class="clearfix">
@@ -611,13 +684,14 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
                        
                         <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
                         <p class="visible-print-block print-conclusions-next-steps"><%= conclusions_next_steps %></p>
-                        <% } else if (display === 'download' || query.sharing == 1) {
-                        if(conclusions_next_steps != "") { %>
+                        <% } else if (display === 'download' || query.sharing == 1) { %>
+                      
                         <h2> Conclusions and Next Steps</h2>
                         <h3> Next steps</h3>
                         <p>
                             <%= sentence(next_steps); %>
                         </p>
+                        <%  if(conclusions_next_steps != "") { %>
                         <p class="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
                         <% }} %>
                     </div>
@@ -862,9 +936,9 @@ bodyclass = query.sharing == 1 ? "sharing" : "";
             // Since we have multiple buttons that can take actions, set the form action on button click.
             $('button[type=submit]').click(function () {
                 var action = $(this).attr('data-action');
-                console.log('action:', action);
+              
                 $('form').attr('action', action);
-                console.log('submitting');
+              
                 $('form').submit();
             });
 

@@ -918,6 +918,7 @@
             var outcome = $("#Basics_Outcome").val();
             if ($("#Basics_Outcome").val().toLowerCase() === "other") {
                 outcome = $("#Basics_Outcome_Other").val();
+                $('#Question_Outcome_Other').show();
             }
             $(".eval-outcome").text(outcome);
 

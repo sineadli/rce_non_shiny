@@ -389,7 +389,7 @@
                                 </div>
                                 <div class="step-action">
 
-                                    <label class="hidden" for="Action_Fail">Input what you would do if not sure of technology's impact on outcomes.</label><textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea>
+                                    <label class="hidden" for="Action_Inconclusive">Input what you would do if not sure of technology's impact on outcomes.</label><textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea>
                                 </div>
                             </div>
                             <div class="col-xs-5">
@@ -471,6 +471,9 @@
 
         $('#Outcome_Direction').change(function () {
             outcomeDirectionUpdate(this);
+        });
+        $('#Outcome_Measure').change(function () {
+            outcomeMeasureUpdate2(this);
         });
         $('#Measure_Units').change(function () {
             measureUnitsUpdate(this);
