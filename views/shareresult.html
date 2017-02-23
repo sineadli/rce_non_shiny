@@ -193,75 +193,129 @@ var tabcounter = 0; var figcounter = 0;
                         <%- error %>
                         console.log("error" + error);
                         <% }
-                      
-                        if(sample_created_using_coach ) {
+                            
                         if (analysis_results_clean) {
-                        var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
-                        var tableRows = "";
 
-                        if(path === 'path-matching') {
-                        console.log("in path-matching");
-                        console.log("samples");
-                        console.log(samples);
+                            // Try to get samples from analysis results, if not found, fall back to baseline analysis.
+                            analysis_samples_available = true;
+                            
+                            var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
+                            var tableRows = "";
 
-                        if ( baseline_results_by_grade) {
-                        initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
-                        } else {
-                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
-                        }
+                            if (analysis_results_by_grade) {
 
-                        if(samples && !baseline_results_by_grade) {
-                        console.log("in matching and not by grade");
-                        var N = samples.n_full_treat;
-                        var P = samples.n_matched_treat;
-                        var M = samples.n_full ;
-                        var Q = samples.n_matched ;
+                                if (analysis_by_grade) {
+                                    initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                } else {
+                                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                }
 
-                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
-                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + (M-N) + ' ' + Basics_Users +'</td><td>' + (Q-P) + ' ' + Basics_Users + '</td><td class="align-right">' + round10(((Q-P)/(M-N))*100,0) + '%</td></tr>';
-                        }
-                        for (grade in baseline_results_by_grade) {
-                        console.log("in matching and for loop by grade and grade = " + grade);
-                        gradesamples = baseline_results_by_grade[grade].samples;
-                        var N=0, P=0, M=0, Q=0;
-                        var grade_object = analysis_results_by_grade[grade];
-                        if(gradesamples) {
-                        console.log("in matching and by grade");
-                        var N = gradesamples.n_full_treat;
-                        var P = gradesamples.n_matched_treat;
-                        var M = gradesamples.n_full ;
-                        var Q = gradesamples.n_matched ;
-                        }
+                                tableRows = '';
 
-                        var matchedNonUsers = Q-P;
-                        var allNonUsers = M-N;
+                                if (path === 'path-random') {
+                                    
+                                    if (eval.prepareRandom.Individual_Group === 'users') {
+                                        var units = Basics_Users;
+                                    } else {
+                                        
+                                        if (eval.prepareRandom.Cluster_Group === 'other') {
+                                            var units = eval.prepareRandom.Cluster_Group_Other;
+                                        } else {
+                                            var units = eval.prepareRandom.Cluster_Group;
+                                        }
+                                    }
+                                } else {
+                                    var units = Basics_Users;                                
+                                }
 
+                                for (grade in analysis_results_by_grade) {
+                                    if (analysis_results_by_grade[grade].samples) {
 
+                                        var samples = analysis_results_by_grade[grade].samples;
 
-                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
-                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + Basics_Users +'</td><td>' + matchedNonUsers + ' ' + Basics_Users + '</td><td class="align-right">' + round10((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
-                        }  // end grade loop.
-                       // } //end if analysis by grade
-                        } // end if matching
+                                        var n_treat = samples.n_full_treat[0];
+                                        var n_comparison = samples.n_full[0] - samples.n_full_treat[0];
+                                        
+                                        if (analysis_by_grade) {
+                                            tableRows += '<tr><td>' + grade + '</td><td>Treatment</td><td>' + n_treat  + ' ' + units +  '</td></tr>';
+                                            tableRows += '<tr><td>' + grade + '</td><td>Comparison</td><td>' + n_comparison    + ' ' +  units + '</td></tr>';
+                                        } else {
+                                            tableRows += '<tr><td>Treatment</td><td>' + n_treat + ' ' + units +  '</td></tr>';
+                                            tableRows += '<tr><td>Comparison</td><td>' + n_comparison + ' ' +  units + '</td></tr>';
+                                        }
+                                    } else {
+                                        analysis_samples_available = false;
+                                    }
+                                }
+                            }
+                                
+                            if (!analysis_samples_available && sample_created_using_coach ) {
+                                var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
+                                var tableRows = "";
 
-                        if(path === 'path-random') {
-                        var n_overall = 0;
-                        var n_treatment = 0;
-                        for (grade in baseline_results_by_grade) {
-                        samples = baseline_results_by_grade[grade].samples;
+                                if(path === 'path-matching') {
+                                    console.log("in path-matching");
+                                    console.log("samples");
+                                    console.log(samples);
+
+                                    if ( baseline_results_by_grade) {
+                                        initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
+                                    } else {
+                                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
+                                    }
+
+                                    if(samples && !baseline_results_by_grade) {
+                                        console.log("in matching and not by grade");
+                                        var N = samples.n_full_treat;
+                                        var P = samples.n_matched_treat;
+                                        var M = samples.n_full ;
+                                        var Q = samples.n_matched ;
+
+                                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
+                                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + (M-N) + ' ' + Basics_Users +'</td><td>' + (Q-P) + ' ' + Basics_Users + '</td><td class="align-right">' + round10(((Q-P)/(M-N))*100,0) + '%</td></tr>';
+                                    }
+
+                                    for (grade in baseline_results_by_grade) {
+                                        console.log("in matching and for loop by grade and grade = " + grade);
+                                        gradesamples = baseline_results_by_grade[grade].samples;
+                                        var N=0, P=0, M=0, Q=0;
+                                        var grade_object = analysis_results_by_grade[grade];
+
+                                        if(gradesamples) {
+                                            console.log("in matching and by grade");
+                                            var N = gradesamples.n_full_treat;
+                                            var P = gradesamples.n_matched_treat;
+                                            var M = gradesamples.n_full ;
+                                            var Q = gradesamples.n_matched ;
+                                        }
+
+                                        var matchedNonUsers = Q-P;
+                                        var allNonUsers = M-N;
+
+                                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
+                                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + Basics_Users +'</td><td>' + matchedNonUsers + ' ' + Basics_Users + '</td><td class="align-right">' + round10((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
+                                    }  // end grade loop.
+                                } // end if matching
+
+                                if(path === 'path-random') {
+
+                                    var n_overall = 0;
+                                    var n_treatment = 0;
+                
+                                    for (grade in baseline_results_by_grade) {
+                                        samples = baseline_results_by_grade[grade].samples;
                        
-                        n_overall += samples.n_full[0];
-                        n_treatment += samples.n_treat[0];
+                                        n_overall += samples.n_full[0];
+                                        n_treatment += samples.n_treat[0];
+                                    }
 
-                        }
-                        n_comparison =  n_overall - n_treatment;
-                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
-                        tableRows = '<tr><td>Treatment</td><td>' +   n_treatment  + ' ' + Cluster_Group +  '</td></tr>';
-                        tableRows = tableRows + '<tr><td>Comparison</td><td>' +  n_comparison    + ' ' +  Cluster_Group + '</td></tr>';
+                                    n_comparison =  n_overall - n_treatment;
+                                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                    tableRows = '<tr><td>Treatment</td><td>' + n_treatment + ' ' + Basics + '</td></tr>';
+                                    tableRows = tableRows + '<tr><td>Comparison</td><td>' + n_comparison + ' ' + Cluster_Group + '</td></tr>';
 
-                        } // end path random
-                      
-                        } // end if clean analysis
+                                } // end path random
+                            } // end if sample_created_using_coach
                         %>
 
 
