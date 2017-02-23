@@ -18,7 +18,7 @@
     <% include ../views/partials/scriptHeader.html %>
 
     <% } else if (display === 'download') { %>
-    <% include ../views/partials/downloadStyle.html %>
+   
     <% } %>
     <style>
  
@@ -437,7 +437,7 @@ var tabcounter = 0; var figcounter = 0;
                                     <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
                                     <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
                                     <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
-                                    <td> <%= round10(baseline_var_means[characteristic].difference[0]) %></td>
+                                    <td> <%= round10(baseline_var_means[characteristic].difference[0],2) %></td>
                                     <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
                                 </tr>
                             <% } 

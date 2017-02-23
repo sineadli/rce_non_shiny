@@ -1406,7 +1406,7 @@ div.loading {
 label.chart , caption {
     color:#65614D;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: normal;
   font-size: .85em;
   margin-top:5px;
     font-weight: 600;
