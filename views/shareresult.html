@@ -202,6 +202,23 @@ var tabcounter = 0; var figcounter = 0;
                             var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
                             var tableRows = "";
 
+                            // Determine units for sample sizes
+                            if (path === 'path-random') {
+
+                                if (eval.prepareRandom.Individual_Group === 'users') {
+                                    var units = Basics_Users;
+                                } else {
+
+                                    if (eval.prepareRandom.Cluster_Group === 'other') {
+                                        var units = eval.prepareRandom.Cluster_Group_Other;
+                                    } else {
+                                        var units = eval.prepareRandom.Cluster_Group;
+                                    }
+                                }
+                            } else {
+                                var units = Basics_Users;
+                            }
+
                             if (analysis_results_by_grade) {
 
                                 if (analysis_by_grade) {
@@ -211,22 +228,6 @@ var tabcounter = 0; var figcounter = 0;
                                 }
 
                                 tableRows = '';
-
-                                if (path === 'path-random') {
-                                    
-                                    if (eval.prepareRandom.Individual_Group === 'users') {
-                                        var units = Basics_Users;
-                                    } else {
-                                        
-                                        if (eval.prepareRandom.Cluster_Group === 'other') {
-                                            var units = eval.prepareRandom.Cluster_Group_Other;
-                                        } else {
-                                            var units = eval.prepareRandom.Cluster_Group;
-                                        }
-                                    }
-                                } else {
-                                    var units = Basics_Users;                                
-                                }
 
                                 for (grade in analysis_results_by_grade) {
                                     if (analysis_results_by_grade[grade].samples) {
@@ -298,7 +299,6 @@ var tabcounter = 0; var figcounter = 0;
                                 } // end if matching
 
                                 if(path === 'path-random') {
-
                                     var n_overall = 0;
                                     var n_treatment = 0;
                 
@@ -311,8 +311,8 @@ var tabcounter = 0; var figcounter = 0;
 
                                     n_comparison =  n_overall - n_treatment;
                                     initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
-                                    tableRows = '<tr><td>Treatment</td><td>' + n_treatment + ' ' + Basics + '</td></tr>';
-                                    tableRows = tableRows + '<tr><td>Comparison</td><td>' + n_comparison + ' ' + Cluster_Group + '</td></tr>';
+                                    tableRows = '<tr><td>Treatment</td><td>' + n_treatment + ' ' + units + '</td></tr>';
+                                    tableRows = tableRows + '<tr><td>Comparison</td><td>' + n_comparison + ' ' + units + '</td></tr>';
 
                                 } // end path random
                             } // end if sample_created_using_coach
