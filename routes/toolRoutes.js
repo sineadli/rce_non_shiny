@@ -1447,16 +1447,24 @@ module.exports = function (app, passport) {
 
                 // Turn relabel inputs into an array rather than 
                 var relabel_index = 0;
-                var relabels = [];
+				var relabels = [];
+				var crelabel_index = 0;
+				var crelabels = [];
 
                 while (obj['relabel-baseline-var-' + relabel_index]) {
                     relabels.push(obj['relabel-baseline-var-' + relabel_index]);
                     delete obj['relabel-baseline-var-' + relabel_index];
                     relabel_index++;
-                }
+				}
+				while (obj['relabel-control-var-' + crelabel_index]) {
+					crelabels.push(obj['relabel-control-var-' + crelabel_index]);
+					delete obj['relabel-control-var-' + crelabel_index];
+					crelabel_index++;
+				}
 
                 var shareresult = obj;
-                shareresult.baseline_var_relabels = relabels;
+				shareresult.baseline_var_relabels = relabels;
+				shareresult.control_var_relabels = crelabels;
 
                 if (!eval.shareresult) {
                     shareresult.created_at = dt;

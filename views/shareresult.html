@@ -18,7 +18,7 @@
     <% include ../views/partials/scriptHeader.html %>
 
     <% } else if (display === 'download') { %>
-   
+    <% include ../views/partials/downloadStyle.html %>
     <% } %>
     <style>
  
@@ -48,7 +48,7 @@ var tabcounter = 0; var figcounter = 0;
         <% include ../views/partials/toolHeader.html %>
         <% }} %>
     </div>
-    <form action="" method="post">
+    <form action="/shareresult" method="post">
         <% } %>
     <% include('../views/partials/brief_appendix_evaluation_processing.html')
    
@@ -676,7 +676,7 @@ var tabcounter = 0; var figcounter = 0;
                         <p>
                             Analysis of <%= Basics_Tech_Name %>
                             <% if (baseline_vars_relabel.length > 0) { %>
-                            controls for: <span class="baseline-vars-wordlist"><%= control_vars_relabel_wordlist %>.</span>
+                            controls for: <span class="control-vars-wordlist"><%= control_vars_relabel_wordlist %>.</span>
                             <% } else { %>
                             did not control for baseline variables.
                             <% } %>
@@ -704,7 +704,7 @@ var tabcounter = 0; var figcounter = 0;
                                     <label for="relabel-control-var-<%- index %>"> Re-label <%= control_var %>:</label>
                                 </div>
                                 <div class="col-xs-4">
-                                    <input type="text" name="relabel-control-var-<%- index %>" id="relabel-control-var-<%- index %>"class="relabel-baseline-var" value="<%= control_vars_relabel[index] %>" data-reset="<%= control_var %>" />
+                                    <input type="text" name="relabel-control-var-<%- index %>" id="relabel-control-var-<%- index %>"class="relabel-control-var" value="<%= control_vars_relabel[index] %>" data-reset="<%= control_var %>" />
                                 </div>
                             </div>
                             <% } %>
@@ -897,8 +897,8 @@ var tabcounter = 0; var figcounter = 0;
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %>>NO, NOT READY</button>
-                                <button type="submit" id="Complete"  class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %>>YES, I AM READY TO SHARE MY RESULTS.</button>
+                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %> >NO, NOT READY</button>
+                                <button type="submit" data-action="/shareresult" id=Complete"  class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %> >YES, I AM READY TO SHARE MY RESULTS.</button>
                             </div>
                         </div>
                     </div>
@@ -979,6 +979,31 @@ var tabcounter = 0; var figcounter = 0;
 
                 // Replace baseline var wordlists with new labels.
                 $("span.baseline-vars-wordlist").text(wordList(newLabels));
+            });
+
+            $("#relabel-control-vars").click(function (e) {
+                // Prevent form submission
+                e.preventDefault();
+
+                var newLabels = [];
+
+                // Get value of all relabel inputs. For any blanks, revert to previous value.
+                $('.relabel-control-var').each(function (index) {
+                    var val = $(this).val();
+
+                    if (val === '') {
+                        val = $(this).attr('data-reset');
+                        $(this).val(val);
+                    }
+                    else {
+                        $(this).attr('data-reset', val);
+                    }
+
+                    newLabels.push(val);
+                });
+
+                // Replace baseline var wordlists with new labels.
+                $("span.control-vars-wordlist").text(wordList(newLabels));
             });
 
             // On textarea change on screen, update the p that will contain the text in the printed version.
