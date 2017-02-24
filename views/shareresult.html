@@ -48,7 +48,7 @@ var tabcounter = 0; var figcounter = 0;
         <% include ../views/partials/toolHeader.html %>
         <% }} %>
     </div>
-    <form action="/shareresult" method="post">
+    <form action="" method="post">
         <% } %>
     <% include('../views/partials/brief_appendix_evaluation_processing.html')
    
@@ -843,7 +843,7 @@ var tabcounter = 0; var figcounter = 0;
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %> >NO, NOT READY</button>
-                                <button type="submit" data-action="/shareresult" id=Complete"  class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %> >YES, I AM READY TO SHARE MY RESULTS.</button>
+                                <button type="submit" data-action="/shareresult" id="Complete"  class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %> >YES, I AM READY TO SHARE MY RESULTS.</button>
                             </div>
                         </div>
                     </div>
