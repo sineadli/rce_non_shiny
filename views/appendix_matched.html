@@ -42,7 +42,7 @@
                                         The Matching tool:
                                         <ul>
                                             <li>Determined the number of observations in the intervention and comparison groups</li>
-                                            <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
+                                            <% if (baseline_results && baseline_vars && baseline_vars.length > 0) { %>
                                             <% tabcounter = 1 + tabcounter;  %>
                                             <li>Generated a table of background statistics for users and non-users (Table <%= tabcounter %>)</li>
                                             <% } %>
@@ -51,7 +51,7 @@
                                     </p>
                                 </div>
 
-                                <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
+                                <% if (baseline_results && baseline_vars && baseline_vars.length > 0) { %>
                                 <div class="no-page-break">
                                     <br />
                                   
@@ -74,10 +74,10 @@
                                                 </thead>
                                                 <tbody>
 
-                                                    <% for (grade in baseline_results_by_grade) {
+                                                    <% for (grade in baseline_results) {
 
                                                     try {
-                                                    var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+                                                    var baseline_var_means = baseline_results[grade].baseline_var_means;
                                                     var characteristics = Object.keys(baseline_var_means);
 
                                                     for (index in characteristics) {

@@ -259,13 +259,13 @@ var tabcounter = 0; var figcounter = 0;
                                     console.log("samples");
                                     console.log(samples);
 
-                                    if ( baseline_results_by_grade) {
+                                    if ( baseline_by_grade) {
                                         initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
                                     } else {
                                         initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
                                     }
 
-                                    if(samples && !baseline_results_by_grade) {
+                                    if(samples && !baseline_by_grade) {
                                         console.log("in matching and not by grade");
                                         var N = samples.n_full_treat;
                                         var P = samples.n_matched_treat;
@@ -276,9 +276,9 @@ var tabcounter = 0; var figcounter = 0;
                                         tableRows = tableRows + '<tr><td>Comparison</td><td>' + (M-N) + ' ' + Basics_Users +'</td><td>' + (Q-P) + ' ' + Basics_Users + '</td><td class="align-right">' + round10(((Q-P)/(M-N))*100,0) + '%</td></tr>';
                                     }
 
-                                    for (grade in baseline_results_by_grade) {
+                                    for (grade in baseline_results) {
                                         console.log("in matching and for loop by grade and grade = " + grade);
-                                        gradesamples = baseline_results_by_grade[grade].samples;
+                                        gradesamples = baseline_results[grade].samples;
                                         var N=0, P=0, M=0, Q=0;
                                         var grade_object = analysis_results_by_grade[grade];
 
@@ -302,8 +302,8 @@ var tabcounter = 0; var figcounter = 0;
                                     var n_overall = 0;
                                     var n_treatment = 0;
                 
-                                    for (grade in baseline_results_by_grade) {
-                                        samples = baseline_results_by_grade[grade].samples;
+                                    for (grade in baseline_results) {
+                                        samples = baseline_results[grade].samples;
                        
                                         n_overall += samples.n_full[0];
                                         n_treatment += samples.n_treat[0];
@@ -438,7 +438,7 @@ var tabcounter = 0; var figcounter = 0;
                                 Baseline equivalence (or similarity across treatment and comparison) was not tested.
                                 <% } %>
                         </ul>
-                        <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
+                        <% if (baseline_results && baseline_vars && baseline_vars.length > 0) { %>
                         <% tabcounter = 1 + tabcounter;  %>
                         <table>
                             <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
@@ -457,30 +457,31 @@ var tabcounter = 0; var figcounter = 0;
                             </thead>
                             <tbody>
 
-                                <% for (grade in baseline_results_by_grade) {
+                                <% for (grade in baseline_results) {
 
                                 try {
-                                var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+                                    var baseline_var_means = baseline_results[grade].baseline_var_means;
 
-                            var samples = baseline_results_by_grade[grade].samples;
+                                    var samples = baseline_results[grade].samples;
 
-                                var n_overall = 0;
-                                var n_treatment = 0;
-                                if(path ==="path-matching") {
-                                n_overall = samples.n_matched[0];
-                                 n_treatment = samples.n_matched_treat[0];                               
-                                }
-                                else if (path === "path-random") {
-                                n_overall = samples.n_full[0];
-                                n_treatment = samples.n_treat[0];
-                                }
-                                var n_comparison = n_overall - n_treatment;
+                                    var n_overall = 0;
+                                    var n_treatment = 0;
 
-                                var characteristics = Object.keys(baseline_var_means);
-                                var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+                                    if(path ==="path-matching") {
+                                        n_overall = samples.n_matched[0];
+                                        n_treatment = samples.n_matched_treat[0];                               
+                                    }
+                                    else if (path === "path-random") {
+                                        n_overall = samples.n_full[0];
+                                        n_treatment = samples.n_treat[0];
+                                    }
+                                    var n_comparison = n_overall - n_treatment;
 
-                                for (index in characteristics) {
-                                var characteristic = characteristics[index];
+                                    var characteristics = Object.keys(baseline_var_means);
+                                    var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+
+                                    for (index in characteristics) {
+                                        var characteristic = characteristics[index];
 
                                 %>
                                 <tr>

@@ -190,7 +190,7 @@ n_full_treatment = 0;
 baseline_by_grade = false;
 baseline_vars = [];
 control_vars = [];
-baseline_results_by_grade = [];
+baseline_results = {};
 baseline_plot = '';
 
 // shareresult
@@ -605,10 +605,10 @@ if (eval.path) {
             pilot_type = 'matched';
             match_results = JSON.parse(eval.matching.Result);
             baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
-            baseline_results_by_grade = match_results.results_by_grade;
+            baseline_results = match_results.results_by_grade;
 
-            for (grade in baseline_results_by_grade) {
-                samples = baseline_results_by_grade[grade].samples;
+            for (grade in baseline_results) {
+                samples = baseline_results[grade].samples;
 
                 n_full_overall += samples.n_full[0];
                 n_full_treatment += samples.n_full_treat[0];
@@ -616,7 +616,7 @@ if (eval.path) {
                 n_overall += samples.n_matched[0];
                 n_treatment += samples.n_matched_treat[0];
 
-                baseline_plot = baseline_results_by_grade[grade].plot;
+                baseline_plot = baseline_results[grade].plot;
             }
 
             if (match_results.match_vars) {
@@ -634,15 +634,15 @@ if (eval.path) {
             pilot_type = 'randomized';
             results = JSON.parse(eval.random.Result);
             baseline_by_grade = Object.keys(results.results_by_block).length > 1;
-            baseline_results_by_grade = results.results_by_block;
+            baseline_results = results.results_by_block;
 
-            for (grade in baseline_results_by_grade) {
-            samples = baseline_results_by_grade[grade].samples;
+            for (grade in baseline_results) {
+            samples = baseline_results[grade].samples;
 
                 n_overall += samples.n_full[0];
                 n_treatment += samples.n_treat[0];
 
-                baseline_plot = baseline_results_by_grade[grade].plot;
+                baseline_plot = baseline_results[grade].plot;
             }
 
             if (results.baseline_vars) {
