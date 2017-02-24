@@ -109,9 +109,11 @@ round3 = function(x) {
 //Evaluation
  if (eval.published_at) {
  published_at = new Date(eval.published_at).toLocaleDateString();
-} else published_at = '[not published]';
+} else {
+ published_at = '[not published]';
  author = eval.author || '[ No author associated with evaluation ]';
  company = eval.company || '[ No organization associated with evaluation ]';
+}
                         
 
 // basics
@@ -254,7 +256,7 @@ if (eval.basics) {
         }
 Basics_User = Basics_Users.substr(0,Basics_Users.length -1 )
 
-if(eval.prepareRandom.Cluster_Group === '') {
+if(eval.prepareRandom.Cluster_Group === '' || (eval.prepareRandom.Cluster_Group.toLowerCase() === 'select an option')) {
      Cluster_Group = Basics_Users;
 } else if(eval.prepareRandom.Cluster_Group === 'other') {
     Cluster_Group = eval.prepareRandom.Cluster_Group_Other || Cluster_Group_Other;
@@ -593,7 +595,7 @@ sample_created_using_coach = false;
 console.log("was sample create in Coach?");
 console.log(eval.matching.s_treat_var);
 console.log(eval.random.s_unit_id);
-if(eval.matching.s_treat_var !== '' || eval.random.s_unit_id !== '' ) { sample_created_using_coach = true; }
+if(eval.matching.n_full !== '' || eval.random.s_unit_id !== '' ) { sample_created_using_coach = true; }
 
 if (eval.path) {
     path = eval.path;
