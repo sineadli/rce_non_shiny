@@ -164,9 +164,9 @@ module.exports = function (app, passport) {
             }
         });
     })
-    
+    //db.evaluations.update({ _id: eval._id, "toolsvisited.name":"Share Your Results" }, { $set: { "toolsvisited.$.status": "started" } });
     app.post('/api/unshared', isLoggedIn, function (req, res) {
-        Evaluation.update({ _id: req.body.id }, { $set: { status: "85" }},  function (err) {
+        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started" } },  function (err) {
             if (err)
                 console.log(err);
             else {
