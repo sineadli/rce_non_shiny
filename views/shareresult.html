@@ -492,6 +492,14 @@ var tabcounter = 0; var figcounter = 0;
                                 } %>
                             </tbody>
                         </table>
+                        <% } else { %>
+                            <h3>Evaluation Sample Baseline Analysis</h3>
+                            <p>We've improved the evaluation sample baseline analysis. To see the results here, please return to the Get Results tool and re-run it.
+                            </p>
+                            <p class="prev-answer hidden-print">
+                                <i class="fa fa-hand-o-right"></i> How do I re-run results?
+                                <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
+                            </p>
                         <% } %>
                         <% if (baseline_vars && baseline_vars.length > 0 && display === 'online' && query.sharing !== 1) { %>
                         <div class="hidden-print">
