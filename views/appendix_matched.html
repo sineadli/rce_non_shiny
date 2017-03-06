@@ -51,66 +51,90 @@
                                     </p>
                                 </div>
 
-                                <% if (baseline_results && baseline_vars && baseline_vars.length > 0) { %>
+                                <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
+                                <% tabcounter = 1 + tabcounter; %>
                                 <div class="no-page-break">
                                     <br />
                                   
                                     <table id="table1">
-                                        <caption>
-                                            Table <%= tabcounter %>. Background Characteristics of <%= capitalize(Basics_Users) %> in the Evaluation Sample</caption>
+                                        <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
                                           
-                                                <thead>
-                                                    <tr>
-                                                        <% if (baseline_by_grade) { %>
-                                                        <th>Grade</th>
-                                                        <% } %>
-                                                        <th> Characteristic</th>
-                                                        <th> Full Sample</th>
-                                                        <th> Treatment</th>
-                                                        <th> Comparison</th>
-                                                        <th> Difference</th>
-                                                        <th> Effect Size</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                        <thead>
+                                            <tr>
+                                                <% if (analysis_baseline_by_grade) { %>
+                                                <th>Grade</th>
+                                                <% } %>
+                                                <th> Characteristic</th>
+                                                <th> Overall</th>
+                                                <th> Treatment</th>
+                                                <th> Comparison</th>
+                                                <th> Difference</th>
+                                                <th> Effect Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                                    <% for (grade in baseline_results) {
+                                            <% for (grade in analysis_baseline_results) {
 
-                                                    try {
-                                                    var baseline_var_means = baseline_results[grade].baseline_var_means;
-                                                    var characteristics = Object.keys(baseline_var_means);
+                                            try {
+                                            var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
 
-                                                    for (index in characteristics) {
-                                                    var characteristic = characteristics[index]; %>
-                                                    <tr>
-                                                        <% if (baseline_by_grade) { %>
-                                                        <td> <%= grade %></td>
-                                                        <% } %>
-                                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                                        <td> <%= round3(baseline_var_means[characteristic].overall[0]) %></td>
-                                                        <td> <%= round3(baseline_var_means[characteristic].intervention[0]) %></td>
-                                                        <td> <%= round3(baseline_var_means[characteristic].comparison[0]) %></td>
-                                                        <td> <%= round3(baseline_var_means[characteristic].difference[0]) %></td>
-                                                        <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
-                                                    </tr>
-                                                    <% } %>
-                                                    <tr>
-                                                        <% if (baseline_by_grade) { %>
-                                                        <td></td>
-                                                        <% } %>
-                                                        <td> Number of <%= Basics_Users %></td>
-                                                        <td> <%= n_overall %></td>
-                                                        <td> <%= n_treatment %></td>
-                                                        <td> <%= n_comparison %></td>
-                                                        <td> --</td>
-                                                        <td> --</td>
-                                                    </tr>
-                                                    <% } catch (e) { %>
-                                                    </tr>
-                                                    <% } %>
-                                                    <% } %>
-                                                </tbody>
-                                            </table>
+                                            var samples = analysis_baseline_results[grade].samples;
+
+                                            var n_overall = 0;
+                                            var n_treatment = 0;
+
+                                            if (analysis_samples_available) {
+                                            n_overall = samples.n_full[0];
+                                            n_treatment = samples.n_full_treat[0];
+                                            }
+                                            else if(path ==="path-matching") {
+                                            n_overall = samples.n_matched[0];
+                                            n_treatment = samples.n_matched_treat[0];
+                                            }
+                                            else if (path === "path-random") {
+                                            n_overall = samples.n_full[0];
+                                            n_treatment = samples.n_treat[0];
+                                            }
+                                            var n_comparison = n_overall - n_treatment;
+
+                                            var characteristics = Object.keys(baseline_var_means);
+                                            var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+
+                                            for (index in characteristics) {
+                                            var characteristic = characteristics[index];
+
+                                            %>
+                                            <tr>
+                                                <% if (analysis_baseline_by_grade  && index == 0) { %>
+                                                <td rowspan="<%= growspan %>"> <%= grade %></td>
+                                                <% } %>
+                                                <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                                <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
+                                                <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
+                                                <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
+                                                <td> <%= round10(baseline_var_means[characteristic].difference[0],2) %></td>
+                                                <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
+                                            </tr>
+                                            <% }
+                                            if(sample_created_using_coach ) { %>
+                                            <tr>
+
+                                                <td> Number of <%= units %></td>
+                                                <td> <%= n_overall %></td>
+                                                <td> <%= n_treatment %></td>
+                                                <td> <%= n_comparison %></td>
+                                                <td> --</td>
+                                                <td> --</td>
+                                            </tr>
+                                            <% }} catch (e) {
+                                            var error = e;
+                                            console.log("baseline characteristics error");
+                                            console.log(error);
+                                            }
+                                            } %>
+                                        </tbody>
+                                    </table>
                                     <p class="pnote">
                                         Table <%= tabcounter %> summarizes key characteristics of your sample.
                                         If any of the characteristics have a large value in the "Difference" column, those are characteristics in which differences between users and non-users remain after matching.

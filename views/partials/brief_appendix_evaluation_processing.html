@@ -373,6 +373,13 @@ header = 'Results not available due to incomplete analysis.';
 inconclusive_qualifier = '';
 analysis_results_clean = false;
 analysis_by_grade = false;
+analysis_samples_available = true,
+analysis_baseline_available = true;
+
+analysis_baseline_results = {};
+analysis_baseline_vars = [];
+analysis_baseline_by_grade = analysis_by_grade;
+
    console.log("Action fail = " + Action_Fail);
 if (eval.getresult) {
     try {
@@ -384,14 +391,15 @@ if (eval.getresult) {
             analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
             control_vars = analysis_results.control_vars;
             control_vars_relabel =control_vars;
-
-
+            
             success_count = 0, failure_count = 0; inconclusive_count = 0;
 
             for (grade in analysis_results_by_grade) {
 
-                var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                var cutoff_probability = stripPercent(analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0]);
+                var grade_results = analysis_results_by_grade[grade];
+
+                var probability = stripPercent(grade_results.interpretation.probability[0]);
+                var cutoff_probability = stripPercent(grade_results.interpretation_cutoff_0.probability[0]);
                 var success = (probability > Pass_Probability);
                 var inconclusive = (cutoff_probability < Pass_Probability) && (cutoff_probability > Fail_Probability)
 
@@ -402,6 +410,9 @@ if (eval.getresult) {
                 } else {
                     failure_count++;
                 }
+
+                analysis_samples_available = analysis_samples_available && 'samples' in grade_results;
+                analysis_baseline_available = analysis_baseline_available && 'baseline_var_means' in grade_results;
             }
 
             if (inconclusive_count == (inconclusive_count + success_count + failure_count)) {
@@ -428,6 +439,13 @@ console.log("success count = " + success_count + " failure count = " + failure_c
                 header = capitalize(Basics_Tech_Name) + ' is' + needle_negate + ' moving the needle on ' + Basics_Outcome + grade_qualifier;
 
             }
+
+            if (analysis_baseline_available) {
+                analysis_baseline_results = analysis_results_by_grade;
+                analysis_baseline_vars = analysis_results.control_vars;
+                analysis_baseline_by_grade = analysis_by_grade;
+            }
+         
             analysis_results_clean = true;
 console.log("next steps set at = " + next_steps);
         }
@@ -604,11 +622,20 @@ if (eval.path) {
         try {
             pilot_type = 'matched';
             match_results = JSON.parse(eval.matching.Result);
-            baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
-            baseline_results = match_results.results_by_grade;
 
-            for (grade in baseline_results) {
-                samples = baseline_results[grade].samples;
+            baseline_results = match_results.results_by_grade;
+            baseline_by_grade = Object.keys(match_results.results_by_grade).length > 1;
+
+            if (match_results.match_vars) {
+                baseline_vars = match_results.match_vars;
+            } else if (match_results.args) {
+                baseline_vars = match_results.args.match_vars;
+            }
+  
+            for (grade in match_results.results_by_grade) {
+                grade_results = match_results.results_by_grade[grade];
+
+                samples = grade_results.samples;
 
                 n_full_overall += samples.n_full[0];
                 n_full_treatment += samples.n_full_treat[0];
@@ -616,14 +643,9 @@ if (eval.path) {
                 n_overall += samples.n_matched[0];
                 n_treatment += samples.n_matched_treat[0];
 
-                baseline_plot = baseline_results[grade].plot;
+                baseline_plot = grade_results.plot;
             }
-
-            if (match_results.match_vars) {
-                baseline_vars = match_results.match_vars;
-            } else if (match_results.args) {
-                baseline_vars = match_results.args.match_vars;
-            }
+            
         } catch(e) {
             data_issues.matching.push("Missing, invalid, or not saved data. Try completing this tool again.");
         }
@@ -633,23 +655,27 @@ if (eval.path) {
         try {
             pilot_type = 'randomized';
             results = JSON.parse(eval.random.Result);
+
             baseline_by_grade = Object.keys(results.results_by_block).length > 1;
             baseline_results = results.results_by_block;
-
-            for (grade in baseline_results) {
-            samples = baseline_results[grade].samples;
-
-                n_overall += samples.n_full[0];
-                n_treatment += samples.n_treat[0];
-
-                baseline_plot = baseline_results[grade].plot;
-            }
 
             if (results.baseline_vars) {
                 baseline_vars = results.baseline_vars;
             } else if (results.args) {
                 baseline_vars = results.args.baseline_vars;
             }
+
+            for (block in results.results_by_block) {
+                block_results = results.results_by_block[block];
+
+                samples = block_results.samples;
+
+                n_overall += samples.n_full[0];
+                n_treatment += samples.n_treat[0];
+
+                baseline_plot = block_results.plot;
+            }
+            
         } catch(e) {
             data_issues.random.push("Missing, invalid, or not saved data. Try completing this tool again.");
         }
@@ -680,6 +706,23 @@ else if (pilot_type === 'randomized') {
 }
 
 n_comparison = n_overall - n_treatment;
+
+// Determine units for sample sizes
+if (path === 'path-random') {
+
+    if (eval.prepareRandom.Individual_Group === 'users') {
+        units = Basics_Users;
+    } else {
+
+        if (eval.prepareRandom.Cluster_Group === 'other') {
+            units = eval.prepareRandom.Cluster_Group_Other;
+        } else {
+            units = eval.prepareRandom.Cluster_Group;
+        }
+    }
+} else {
+    units = Basics_Users;
+}
 
 if (eval.shareresult) {
     try {
