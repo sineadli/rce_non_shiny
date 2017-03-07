@@ -127,7 +127,7 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
         </div>
         <div class="step-action">
             <p>
-                I would consider any <%= eval.planQuestion.Outcome_Direction %> at least
+                I would consider any <span class='change-direction'><%= Outcome_Direction %></span> at least
                 <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="Success_Effect_Size" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px"/>
                 <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span> a success.
             </p>
@@ -415,6 +415,9 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
         });
         $("#outcome_var").change(function() {
             enablebuttons();
+        });
+        $('#Outcome_Direction').change(function () {
+            outcomeDirectionUpdate(this);
         });
 
             $("#chosenfile").change(function () {
