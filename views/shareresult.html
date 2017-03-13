@@ -31,23 +31,24 @@ var tabcounter = 0; var figcounter = 0;
 %>
 <body class="brief <%- bodyclass %>">
     <% if (display === 'online') { %>
-    <div class="hidden-print">
-        <% include ../views/partials/header.html %>
-        <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
-        if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists" }
-        if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard" } %>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
-        </ol>
-        <% if (message.length>0) { %>
-        <div class="alert alert-success"><%= message %></div>
-        <% }  %>
-      
+<div class="hidden-print">
+    <% include ../views/partials/header.html %>
+    <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
+    if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists" }
+    if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard" } %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
+    </ol>
+    <% if (message.length>0) { %>
+    <div class="alert alert-success"><%= message %></div>
+    <% } %>
 
-        <% if (query.sharing != 1) { %>
-        <% include ../views/partials/toolHeader.html %>
-        <% }} %>
-    </div>
+
+    <% if (query.sharing != 1) { %>
+    <% include ../views/partials/toolHeader.html %>
+    <% }} %>
+</div>
+    <div class="clearfix"></div>
     <form action="" method="post">
         <% } %>
     <% include('../views/partials/brief_appendix_evaluation_processing.html')
@@ -314,7 +315,7 @@ var tabcounter = 0; var figcounter = 0;
                                 <div class="char-content-div">
 
 
-                                    <%= capitalize(wordList(grades_used)) %> grade <%- wordList(classroom_types).toLowerCase() %> classrooms
+                                    <%= wordList(grades_used) %> grade <%- wordList(classroom_types).toLowerCase() %> classrooms
 
                                 </div>
                             </div>
@@ -460,7 +461,12 @@ var tabcounter = 0; var figcounter = 0;
                             </tbody>
                         </table>
                         <% } %>
-                        <% if (baseline_vars && baseline_vars.length > 0 && display === 'online' && query.sharing !== 1) { %>
+                        <%
+                        console.log("query.sharing = " + query.sharing)
+                        console.log("display = " + display)
+                        console.log("baseline_vars.length = " + baseline_vars.length)
+                        console.log("test = " + (baseline_vars && baseline_vars.length > 0 && display === "online" && query.sharing !== "1"))
+                        if (baseline_vars && baseline_vars.length > 0 && display === "online" && query.sharing !== "1") { %>
                         <div class="hidden-print">
                             <h3>Re-label baseline variables (optional):</h3>
                             <% for (index in baseline_vars) {
@@ -533,7 +539,7 @@ var tabcounter = 0; var figcounter = 0;
                                         Non-white
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= non_white %>%
+                                        <%= non_white %>
                                     </div>
                                 </div>
                                 <div class="char-row-div">
@@ -541,7 +547,7 @@ var tabcounter = 0; var figcounter = 0;
                                         Hispanic
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= Ethnicity_Hispanic %>%
+                                        <%= Ethnicity_Hispanic %>
                                     </div>
                                 </div>
                                 <div class="char-row-div">
@@ -549,7 +555,7 @@ var tabcounter = 0; var figcounter = 0;
                                         Female
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= Gender_Female %>%
+                                        <%= Gender_Female %>
                                     </div>
                                 </div>
                                 <div class="char-row-div">
@@ -558,7 +564,7 @@ var tabcounter = 0; var figcounter = 0;
                                         English Learners
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= English_Learners %>%
+                                        <%= English_Learners %>
                                     </div>
                                 </div>
                                 <div class="char-row-div">
@@ -566,7 +572,7 @@ var tabcounter = 0; var figcounter = 0;
                                         Students with IEPs
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= IEP %>%
+                                        <%= IEP %>
                                     </div>
                                 </div>
                             </div>
@@ -620,7 +626,7 @@ var tabcounter = 0; var figcounter = 0;
                         <h2><%= sentence(Basics_Outcome + ' was measured using ' + Outcome_Measure) %></h2>
                         <p>
                             Analysis of <%= Basics_Tech_Name %>
-                            <% if (baseline_vars_relabel.length > 0) { %>
+                            <% if (control_vars_relabel.length > 0) { %>
                             controls for: <span class="control-vars-wordlist"><%= control_vars_relabel_wordlist %>.</span>
                             <% } else { %>
                             did not control for baseline variables.
@@ -638,7 +644,7 @@ var tabcounter = 0; var figcounter = 0;
                         </p>
                         <% } %>
 
-                        <% if (baseline_vars && baseline_vars.length > 0 && display === 'online' && query.sharing !== 1) { %>
+                        <% if (baseline_vars && baseline_vars.length > 0 && display === 'online' && query.sharing !== "1") { %>
                         <div class="hidden-print col-offset-1">
                             <h3>Re-label control variables (optional):</h3>
                             <% for (index in control_vars) {
@@ -674,7 +680,8 @@ var tabcounter = 0; var figcounter = 0;
                                 <%= sentence(next_steps) %>
                             </p>
                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                            <div class="clearfix">
+                        <div class="clearfix"></div>
+                        <div>
                                 <p class="prev-answer hidden-print">
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See
                                     <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>

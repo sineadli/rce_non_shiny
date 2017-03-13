@@ -419,6 +419,9 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
         $('#Outcome_Direction').change(function () {
             outcomeDirectionUpdate(this);
         });
+        $('#Outcome_Measure').change(function () {
+            outcomeMeasureUpdate(this);
+        });
 
             $("#chosenfile").change(function () {
                 var formData = new FormData();
