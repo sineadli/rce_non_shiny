@@ -194,75 +194,103 @@ var tabcounter = 0; var figcounter = 0;
                         <%- error %>
                         console.log("error" + error);
                         <% }
-                      
-                        if(sample_created_using_coach ) {
+                            
                         if (analysis_results_clean) {
-                        var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
-                        var tableRows = "";
 
-                        if(path === 'path-matching') {
-                        console.log("in path-matching");
-                        console.log("samples");
-                        console.log(samples);
+                            var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
+                            var tableRows = "";
 
-                        if ( baseline_results_by_grade) {
-                        initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
-                        } else {
-                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
-                        }
+                            if (analysis_results_by_grade) {
 
-                        if(samples && !baseline_results_by_grade) {
-                        console.log("in matching and not by grade");
-                        var N = samples.n_full_treat;
-                        var P = samples.n_matched_treat;
-                        var M = samples.n_full ;
-                        var Q = samples.n_matched ;
+                                if (analysis_by_grade) {
+                                    initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                } else {
+                                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                }
 
-                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
-                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + (M-N) + ' ' + Basics_Users +'</td><td>' + (Q-P) + ' ' + Basics_Users + '</td><td class="align-right">' + round10(((Q-P)/(M-N))*100,0) + '%</td></tr>';
-                        }
-                        for (grade in baseline_results_by_grade) {
-                        console.log("in matching and for loop by grade and grade = " + grade);
-                        gradesamples = baseline_results_by_grade[grade].samples;
-                        var N=0, P=0, M=0, Q=0;
-                        var grade_object = analysis_results_by_grade[grade];
-                        if(gradesamples) {
-                        console.log("in matching and by grade");
-                        var N = gradesamples.n_full_treat;
-                        var P = gradesamples.n_matched_treat;
-                        var M = gradesamples.n_full ;
-                        var Q = gradesamples.n_matched ;
-                        }
+                                tableRows = '';
 
-                        var matchedNonUsers = Q-P;
-                        var allNonUsers = M-N;
+                                if (analysis_samples_available) {
+                                    for (grade in analysis_results_by_grade) {
 
+                                        var samples = analysis_results_by_grade[grade].samples;
 
+                                        var n_treat = samples.n_full_treat[0];
+                                        var n_comparison = samples.n_full[0] - samples.n_full_treat[0];
+                                        
+                                        if (analysis_by_grade) {
+                                            tableRows += '<tr><td>' + grade + '</td><td>Treatment</td><td>' + n_treat  + ' ' + units +  '</td></tr>';
+                                            tableRows += '<tr><td>' + grade + '</td><td>Comparison</td><td>' + n_comparison    + ' ' +  units + '</td></tr>';
+                                        } else {
+                                            tableRows += '<tr><td>Treatment</td><td>' + n_treat + ' ' + units +  '</td></tr>';
+                                            tableRows += '<tr><td>Comparison</td><td>' + n_comparison + ' ' +  units + '</td></tr>';
+                                        }
+                                    }
+                                }
+                            }
+                                
+                            if (!analysis_samples_available && sample_created_using_coach ) {
+                                var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
+                                var tableRows = "";
 
-                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + Basics_Users +'</td><td>' + P + ' ' + Basics_Users +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
-                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + Basics_Users +'</td><td>' + matchedNonUsers + ' ' + Basics_Users + '</td><td class="align-right">' + round10((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
-                        }  // end grade loop.
-                       // } //end if analysis by grade
-                        } // end if matching
+                                if(path === 'path-matching') {
+                                    if ( baseline_by_grade) {
+                                        initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
+                                    } else {
+                                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
+                                    }
 
-                        if(path === 'path-random') {
-                        var n_overall = 0;
-                        var n_treatment = 0;
-                        for (grade in baseline_results_by_grade) {
-                        samples = baseline_results_by_grade[grade].samples;
+                                    if(samples && !baseline_by_grade) {
+                                        console.log("in matching and not by grade");
+                                        var N = samples.n_full_treat;
+                                        var P = samples.n_matched_treat;
+                                        var M = samples.n_full ;
+                                        var Q = samples.n_matched ;
+
+                                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + units +'</td><td>' + P + ' ' + units +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
+                                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + (M-N) + ' ' + units +'</td><td>' + (Q-P) + ' ' + units + '</td><td class="align-right">' + round10(((Q-P)/(M-N))*100,0) + '%</td></tr>';
+                                    }
+
+                                    for (grade in baseline_results) {
+                                        console.log("in matching and for loop by grade and grade = " + grade);
+                                        gradesamples = baseline_results[grade].samples;
+                                        var N=0, P=0, M=0, Q=0;
+                                        var grade_object = analysis_results_by_grade[grade];
+
+                                        if(gradesamples) {
+                                            console.log("in matching and by grade");
+                                            var N = gradesamples.n_full_treat;
+                                            var P = gradesamples.n_matched_treat;
+                                            var M = gradesamples.n_full ;
+                                            var Q = gradesamples.n_matched ;
+                                        }
+
+                                        var matchedNonUsers = Q-P;
+                                        var allNonUsers = M-N;
+
+                                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + units +'</td><td>' + P + ' ' + units +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
+                                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + units +'</td><td>' + matchedNonUsers + ' ' + units + '</td><td class="align-right">' + round10((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
+                                    }  // end grade loop.
+                                } // end if matching
+
+                                if(path === 'path-random') {
+                                    var n_overall = 0;
+                                    var n_treatment = 0;
+                
+                                    for (grade in baseline_results) {
+                                        samples = baseline_results[grade].samples;
                        
-                        n_overall += samples.n_full[0];
-                        n_treatment += samples.n_treat[0];
+                                        n_overall += samples.n_full[0];
+                                        n_treatment += samples.n_treat[0];
+                                    }
 
-                        }
-                        n_comparison =  n_overall - n_treatment;
-                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
-                        tableRows = '<tr><td>Treatment</td><td>' +   n_treatment  + ' ' + Cluster_Group +  '</td></tr>';
-                        tableRows = tableRows + '<tr><td>Comparison</td><td>' +  n_comparison    + ' ' +  Cluster_Group + '</td></tr>';
+                                    n_comparison =  n_overall - n_treatment;
+                                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                    tableRows = '<tr><td>Treatment</td><td>' + n_treatment + ' ' + units + '</td></tr>';
+                                    tableRows = tableRows + '<tr><td>Comparison</td><td>' + n_comparison + ' ' + units + '</td></tr>';
 
-                        } // end path random
-                      
-                        } // end if clean analysis
+                                } // end path random
+                            } // end if sample_created_using_coach
                         %>
 
 
@@ -275,7 +303,7 @@ var tabcounter = 0; var figcounter = 0;
                         </p>
                         <% } %>
                         <% tabcounter = 1 + tabcounter;  %>
-                        <table><caption>Table <%= tabcounter %>. Number of <%= Basics_Users %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
+                        <table><caption>Table <%= tabcounter %>. Number of <%= units %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
                         <% } else { %>
                         <p>Since the intervention and comparison groups were created outside of the Coach, sample size information is not available.</p>
                         <% } %>
@@ -385,13 +413,13 @@ var tabcounter = 0; var figcounter = 0;
                                 Baseline equivalence (or similarity across treatment and comparison) was not tested.
                                 <% } %>
                         </ul>
-                        <% if (baseline_results_by_grade && baseline_vars && baseline_vars.length > 0) { %>
-                        <% tabcounter = 1 + tabcounter;  %>
+                        <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
+                        <% tabcounter = 1 + tabcounter; %>
                         <table>
                             <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
                             <thead>
                                 <tr>
-                                    <% if (baseline_by_grade) { %>
+                                    <% if (analysis_baseline_by_grade) { %>
                                     <th>Grade</th>
                                     <% } %>
                                     <th> Characteristic</th>
@@ -404,62 +432,75 @@ var tabcounter = 0; var figcounter = 0;
                             </thead>
                             <tbody>
 
-                                <% for (grade in baseline_results_by_grade) {
+                                <% for (grade in analysis_baseline_results) {
+                          
+                                    try {
+                                        var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
 
-                                try {
-                                var baseline_var_means = baseline_results_by_grade[grade].baseline_var_means;
+                                        var samples = analysis_baseline_results[grade].samples;
 
-                            var samples = baseline_results_by_grade[grade].samples;
+                                        var n_overall = 0;
+                                        var n_treatment = 0;
 
-                                var n_overall = 0;
-                                var n_treatment = 0;
-                                if(path ==="path-matching") {
-                                n_overall = samples.n_matched[0];
-                                 n_treatment = samples.n_matched_treat[0];                               
-                                }
-                                else if (path === "path-random") {
-                                n_overall = samples.n_full[0];
-                                n_treatment = samples.n_treat[0];
-                                }
-                                var n_comparison = n_overall - n_treatment;
+                                        if (analysis_samples_available) {
+                                            n_overall = samples.n_full[0];
+                                            n_treatment = samples.n_full_treat[0];
+                                        }
+                                        else if(path ==="path-matching") {
+                                            n_overall = samples.n_matched[0];
+                                            n_treatment = samples.n_matched_treat[0];                               
+                                        }
+                                        else if (path === "path-random") {
+                                            n_overall = samples.n_full[0];
+                                            n_treatment = samples.n_treat[0];
+                                        }
+                                        var n_comparison = n_overall - n_treatment;
 
-                                var characteristics = Object.keys(baseline_var_means);
-                                var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+                                        var characteristics = Object.keys(baseline_var_means);
+                                        var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
 
-                                for (index in characteristics) {
-                                var characteristic = characteristics[index];
+                                        for (index in characteristics) {
+                                            var characteristic = characteristics[index];
 
-                                %>
-                                <tr>
-                                    <% if (baseline_by_grade  && index == 0) { %>
-                                    <td rowspan="<%= growspan %>"> <%= grade %></td>
-                                    <% } %>
-                                    <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
-                                    <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
-                                    <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
-                                    <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
-                                    <td> <%= round10(baseline_var_means[characteristic].difference[0],2) %></td>
-                                    <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
-                                </tr>
-                            <% } 
-                                if(sample_created_using_coach ) { %>
-                                <tr>
+                                    %>
+                                    <tr>
+                                        <% if (analysis_baseline_by_grade  && index == 0) { %>
+                                        <td rowspan="<%= growspan %>"> <%= grade %></td>
+                                        <% } %>
+                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                        <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
+                                        <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
+                                        <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
+                                        <td> <%= round10(baseline_var_means[characteristic].difference[0],2) %></td>
+                                        <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
+                                    </tr>
+                                <% } 
+                                    if(sample_created_using_coach ) { %>
+                                    <tr>
 
-                                    <td> Number of <%= Cluster_Group %></td>
-                                    <td> <%= n_overall %></td>
-                                    <td> <%= n_treatment %></td>
-                                    <td> <%= n_comparison %></td>
-                                    <td> --</td>
-                                    <td> --</td>
-                                </tr>
-                                <% }} catch (e) {
-                                var error = e;
-                                console.log("baseline characteristics error");
-                                console.log(error);
-                                }
+                                        <td> Number of <%= units %></td>
+                                        <td> <%= n_overall %></td>
+                                        <td> <%= n_treatment %></td>
+                                        <td> <%= n_comparison %></td>
+                                        <td> --</td>
+                                        <td> --</td>
+                                    </tr>
+                                    <% }} catch (e) {
+                                        var error = e;
+                                        console.log("baseline characteristics error");
+                                        console.log(error);
+                                    }
                                 } %>
                             </tbody>
                         </table>
+                        <% } else { %>
+                            <h3>Evaluation Sample Baseline Analysis</h3>
+                            <p>We've improved the evaluation sample baseline analysis. To see the results here, please return to the Get Results tool and re-run it.
+                            </p>
+                            <p class="prev-answer hidden-print">
+                                <i class="fa fa-hand-o-right"></i> How do I re-run results?
+                                <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
+                            </p>
                         <% } %>
                         <%
                         console.log("query.sharing = " + query.sharing)
