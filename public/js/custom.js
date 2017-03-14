@@ -266,7 +266,10 @@ function outcomeDirectionUpdate(t) {
 	var value = $(t).val();
 	$('.change-direction').text(value);
 };
-
+function outcomeMeasureUpdate(t) {
+	var value = $(t).val();
+	$('.effect-measure').text(value);
+};
 function interventionGroupDescUpdate(t) {
 	var value = $(t).val();
 	$('.treatment-group').text(value);
@@ -370,7 +373,9 @@ function setWizardNav(step, stepvisited) {
 
 		if (index === step - 2) {
 			$(this).addClass("active");
+		    $("h1#p-title").html($(this).children("p").text());
 		}
+
 		if (index === step - 1) {
 			$("#Next-link").html($(this).children("p").text() + " <span class='fa fa-chevron-right fa-2x'></span> ");
 		}

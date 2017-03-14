@@ -148,7 +148,7 @@ Success_Effect_Size = 0;
 
 // planContext
 program_types = [''];
-delivery_types = [''];
+delivery_types = ['not reported'];
 classroom_types = [''];
 Outcomes = [];
 grades_used = [];
@@ -157,14 +157,15 @@ Tech_Purpose = '[purpose of technology]';
 Tech_Components = '';
 school_types = ['N/A'];
 urbanicity = [];
-non_white = 100;
-Total_Students = '';
-District_State = '';
+percentsign = '';
+non_white = 'not reported';
+Total_Students = 'not reported';
+District_State = 'not reported';
 frpl = '';
-Ethnicity_Hispanic = '';
-Gender_Female = '';
-English_Learners = '';
-IEP = '';
+Ethnicity_Hispanic = 'not reported';
+Gender_Female = 'not reported';
+English_Learners = 'not reported';
+IEP = 'not reported';
 duration = '[duration]';
 Expected_Dosage = '[expected usage]';
 Other_Notes = '[other notes]';
@@ -467,8 +468,8 @@ if (eval.planContext) {
         grades = ["PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PS"];
 
         grade_map = {
-            "PK" : "Pre-Kindergarten",
-            "K"  : "Kindergarten",
+            "PK" : "pre-kindergarten",
+            "K"  : "kindergarten",
             "1"  : "1st",
             "2"  : "2nd",
             "3"  : "3rd",
@@ -481,7 +482,7 @@ if (eval.planContext) {
             "10" : "10th",
             "11" : "11th",
             "12" : "12th",
-            "PS" : "Post-secondary"
+            "PS" : "post-secondary"
         }
 
         grades_used = [],
@@ -517,7 +518,10 @@ if (eval.planContext) {
         if (allBlank(program_types)) data_issues.planContext.push("No program types specified.");
 
         delivery_types  = [planContext.Delivered_School_Wide, planContext.Delivered_Whole_Class, planContext.Delivered_Small_Group, planContext.Delivered_Individually];
-        if (allBlank(delivery_types)) data_issues.planContext.push("No delivery types specified.");
+if (allBlank(delivery_types)){
+data_issues.planContext.push("No delivery types specified.");
+delivery_types =["not reported"];
+} 
 
         classroom_types = [planContext.ClassroomType_Inclusion, planContext.ClassroomType_General];
         if (allBlank(classroom_types)) data_issues.planContext.push("No classroom types specified.");
@@ -532,7 +536,10 @@ if (eval.planContext) {
         if (!planContext.Tech_Components) data_issues.planContext.push("Technology components not specified.");
 
         school_types    = [planContext.SchoolType_Charter, planContext.SchoolType_Private, planContext.SchoolType_Parochial, planContext.SchoolType_Public];
-        if (allBlank(school_types)) data_issues.planContext.push("No school type specified.");
+if (allBlank(school_types)) {
+data_issues.planContext.push("No school type specified.");
+school_types = ['not reported'];
+} 
 
         urbanicity      = [planContext.Urbanicity_Urban, planContext.Urbanicity_Suburban, planContext.Urbanicity_Rural];
         if (allBlank(urbanicity)) data_issues.planContext.push("No geographical setting specified.");
@@ -541,11 +548,16 @@ if (eval.planContext) {
         // and it's not possible to know whether that's true or not. If you sum the non-white categories, you still might get 0 from default values,
         // but it could be the true value also. Safest way to go is default to 100% and subtract explicit value of Race_White.
         if (typeof planContext.Race_White === 'number') {
-            non_white       = 100 - planContext.Race_White;
+non_white = 100 - planContext.Race_White + '%';
+
+        }
+        if (non_white === '100%') {
+             non_white = "not reported";
         }
 
-        if (planContext.Total_Students !== '') {
-            Total_Students = planContext.Total_Students;
+        if (planContext.Total_Students !== ''  && planContext.Total_Students != 0) {
+Total_Students = planContext.Total_Students;
+console.log("total students " + planContext.Total_Students);
         } else {
             data_issues.planContext.push("Total students not specified.");
         }
@@ -553,11 +565,11 @@ if (eval.planContext) {
         District_State      = planContext.District_State || District_State;
         if (!planContext.District_State) data_issues.planContext.push("State not specified.");
 
-        Ethnicity_Hispanic  = planContext.Ethnicity_Hispanic || Ethnicity_Hispanic;
-        frpl                = planContext.FRPL_Reduced + planContext.FRPL_Free || frpl;
-        Gender_Female       = planContext.Gender_Female || Gender_Female;
-        English_Learners    = planContext.English_Learners || English_Learners;
-        IEP                 = planContext.IEP;
+        Ethnicity_Hispanic  = planContext.Ethnicity_Hispanic ?  planContext.Ethnicity_Hispanic + '%' : Ethnicity_Hispanic;
+        frpl                = (planContext.FRPL_Reduced || planContext.FRPL_Free) ? planContext.FRPL_Reduced + planContext.FRPL_Free + '%' : frpl;
+        Gender_Female       = planContext.Gender_Female ? planContext.Gender_Female + '%' : Gender_Female;
+        English_Learners    = planContext.English_Learners ? planContext.English_Learners + '%' : English_Learners;
+        IEP                 = planContext.IEP ? planContext.IEP + '%' : 'not reported';
 
         /* We have begin and end datetimes, rather than a plain-English duration. The following
 		estimates the duration to the nearest day, and then converts that to the most appropriate
