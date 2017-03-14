@@ -302,7 +302,8 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
                             </h3>
                         </div>
                         <div id="consider1" class="panel-collapse collapse in">
-                            <% if(eval.path == "path-matching") { %>
+                            <% console.log("path = " + eval.path);
+                            if(eval.path == "path-matching") { %>
                             <p class="note matching-path">
                                 Upload the file you downloaded after creating your matched comparison groups.
                             </p>

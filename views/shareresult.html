@@ -624,6 +624,28 @@ var tabcounter = 0; var figcounter = 0;
                 <div class="row no-page-break">
                     <div class="col-xs-12">
                         <h2><%= sentence(Basics_Outcome + ' was measured using ' + Outcome_Measure) %></h2>
+                       <% if ( analysis_results_by_grade) {
+                        var initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Treatment Group Mean</th><th scope="col">Comparison Group Mean</th><th scope="col">Impact</th></tr>';
+                        var tableRows = '';
+
+
+
+                        for (grade in
+                        analysis_results_by_grade) {
+                        console.log("loop by grade and grade = " + grade);
+                        var means = analysis_results_by_grade[grade].outcome_means;
+                        var impact = analysis_results_by_grade[grade].impact;
+
+                        if(means) {
+
+                        tableRows = tableRows + '<tr><td>' + grade + '</td><td>' + means.intervention +'</td><td>' + means.comparison +'</td><td>' + impact +  '</td></tr>';
+
+                        }
+                        } // end grade loop.
+                         
+                        } //end if analysis by grade
+                        %>
+                        <table><%- initTableHeader %><%- tableRows %></table>
                         <p>
                             Analysis of <%= Basics_Tech_Name %>
                             <% if (control_vars_relabel.length > 0) { %>
