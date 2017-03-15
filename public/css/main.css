@@ -1432,8 +1432,14 @@ div.step-to-consider p.note {
 }
 div#results p.note {
     margin: 15px 0;
-    width: 80%;
+    width: 85%;
     border: none;
+}
+body.brief p.smallnote {
+    margin: 10px auto 25px;
+    width: 90%;
+    border: none;
+    font-size: .9em;
 }
 div#plotAll {
     margin: 15px;

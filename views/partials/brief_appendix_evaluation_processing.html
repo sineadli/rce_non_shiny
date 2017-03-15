@@ -154,13 +154,13 @@ Outcomes = [];
 grades_used = [];
 useGrades = '';
 Tech_Purpose = '[purpose of technology]';
-Tech_Components = '';
+Tech_Components = 'not reported';
 school_types = ['N/A'];
 urbanicity = [];
 percentsign = '';
 non_white = 'not reported';
 Total_Students = 'not reported';
-District_State = 'not reported';
+District_State = '';
 frpl = '';
 Ethnicity_Hispanic = 'not reported';
 Gender_Female = 'not reported';
@@ -527,14 +527,16 @@ delivery_types =["not reported"];
         if (allBlank(classroom_types)) data_issues.planContext.push("No classroom types specified.");
 
         Outcomes        = planContext.Outcomes;
-        if (allBlank(Outcomes)) data_issues.planContext.push("No outcome areas specified.");
+if (allBlank(Outcomes)){
+data_issues.planContext.push("No outcome areas specified.");
+Outcomes = ['not reported'];
+}
 
         Tech_Purpose    = planContext.Tech_Purpose || Tech_Purpose;
         if (!planContext.Tech_Purpose) data_issues.planContext.push("Technology purpose not specified.");
 
         Tech_Components = planContext.Tech_Components || Tech_Components;
         if (!planContext.Tech_Components) data_issues.planContext.push("Technology components not specified.");
-
         school_types    = [planContext.SchoolType_Charter, planContext.SchoolType_Private, planContext.SchoolType_Parochial, planContext.SchoolType_Public];
 if (allBlank(school_types)) {
 data_issues.planContext.push("No school type specified.");
@@ -542,7 +544,11 @@ school_types = ['not reported'];
 } 
 
         urbanicity      = [planContext.Urbanicity_Urban, planContext.Urbanicity_Suburban, planContext.Urbanicity_Rural];
-        if (allBlank(urbanicity)) data_issues.planContext.push("No geographical setting specified.");
+if (allBlank(urbanicity)) {
+data_issues.planContext.push("No geographical setting specified.");
+urbanicity = ['not reported'];
+
+}
 
         // No perfect way to do this. Race values default to 0, so if you use 100 - white and default values (0) are in place, you get 100% non-white,
         // and it's not possible to know whether that's true or not. If you sum the non-white categories, you still might get 0 from default values,
@@ -563,7 +569,10 @@ console.log("total students " + planContext.Total_Students);
         }
 
         District_State      = planContext.District_State || District_State;
-        if (!planContext.District_State) data_issues.planContext.push("State not specified.");
+if (!planContext.District_State) {
+    data_issues.planContext.push("State not specified.");
+    District_State = 'not reported';
+}
 
         Ethnicity_Hispanic  = planContext.Ethnicity_Hispanic ?  planContext.Ethnicity_Hispanic + '%' : Ethnicity_Hispanic;
         frpl                = (planContext.FRPL_Reduced || planContext.FRPL_Free) ? planContext.FRPL_Reduced + planContext.FRPL_Free + '%' : frpl;
@@ -735,7 +744,7 @@ if (path === 'path-random') {
 } else {
     units = Basics_Users;
 }
-
+if (units.toLowerCase() === 'select an option') { units = Basics_Users; }
 if (eval.shareresult) {
     try {
         shareresult = eval.shareresult;

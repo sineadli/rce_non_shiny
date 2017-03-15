@@ -202,12 +202,11 @@ var tabcounter = 0; var figcounter = 0;
 
                             if (analysis_results_by_grade) {
 
-                                if (analysis_by_grade) {
+                        if (analysis_by_grade) {
                                     initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
-                                } else {
-                                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
-                                }
-
+                        } else {
+                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                        }
                                 tableRows = '';
 
                                 if (analysis_samples_available) {
@@ -234,11 +233,10 @@ var tabcounter = 0; var figcounter = 0;
                                 var tableRows = "";
 
                                 if(path === 'path-matching') {
-                                    if ( baseline_by_grade) {
+                                  
                                         initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
-                                    } else {
-                                        initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
-                                    }
+                                   
+                                    
 
                                     if(samples && !baseline_by_grade) {
                                         console.log("in matching and not by grade");
@@ -665,16 +663,20 @@ var tabcounter = 0; var figcounter = 0;
                 <div class="row no-page-break">
                     <div class="col-xs-12">
                         <h2><%= sentence(Basics_Outcome + ' was measured using ' + Outcome_Measure) %></h2>
-                       <% if ( analysis_results_by_grade) {
-                        var initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Treatment Group Mean</th><th scope="col">Comparison Group Mean</th><th scope="col">Impact</th></tr>';
+                        <%
+                        var impactlabel = "Estimated effect";
+                        
+                        if(eval.path==="path-random") { impactlabel = "Estimated impact"; }
+                        if ( analysis_results_by_grade) {
+                        var initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Treatment Group Mean</th><th scope="col">Comparison Group Mean</th><th scope="col">' + impactlabel + '</th></tr>';
                         var tableRows = '';
-
+                        var impactfootnote = '<p class="smallnote"><strong>Note:</strong> The ' + impactlabel.toLowerCase() +' will not necessarily be equal to the difference between the treatment and comparison group means because the analysis applies statistical adjustments to control for other variables.</p>'
 
 
                         for (grade in
                         analysis_results_by_grade) {
                         console.log("loop by grade and grade = " + grade);
-                        var means = analysis_results_by_grade[grade].outcome_means;
+                        means = analysis_results_by_grade[grade].outcome_means;
                         var impact = analysis_results_by_grade[grade].impact;
 
                         if(means) {
@@ -683,10 +685,13 @@ var tabcounter = 0; var figcounter = 0;
 
                         }
                         } // end grade loop.
-                         
+
                         } //end if analysis by grade
+                        if(tableRows.length > 0) {
+                        <% tabcounter = 1 + tabcounter; %>
                         %>
-                        <table><%- initTableHeader %><%- tableRows %></table>
+                        <table><caption>Table <%=  tabcounter %>. Average outcomes for the treatment and comparison groups</caption><%- initTableHeader %><%- tableRows %></table><%- impactfootnote %>
+                        <% } %>
                         <p>
                             Analysis of <%= Basics_Tech_Name %>
                             <% if (control_vars_relabel.length > 0) { %>
