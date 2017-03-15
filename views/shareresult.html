@@ -399,20 +399,36 @@ var tabcounter = 0; var figcounter = 0;
                             <li>
                                 <%= sentence(assignment) %>
                             </li>
-
-                            <% if (baseline_vars_relabel.length > 0) { %>
-                            <li>
-                                Baseline equivalence (or similarity across treatment and comparison) was tested using: <span class="baseline-vars-wordlist">
-                                    <%= baseline_vars_relabel_wordlist %>
-                                </span> characteristics.
-                            </li>
+<% console.log("checkpoint 0.1"); %>
+                            <% if (baseline_vars_relabel.length > 0) { 
+                                    if (pilot_type === 'randomized') {
+                                        baseline_tool = 'randomization';
+                                    } else if (pilot_type === 'matched') {
+                                        baseline_tool = 'matching';
+                                    }
+                            %>
+                                <li>
+                                    Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was tested in the <%= baseline_tool %> tool using:
+                                        <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %></span>.
+                                </li>
                             <% } else { %>
-                            <li>
-                                Baseline equivalence (or similarity across treatment and comparison) was not tested.
-                                <% } %>
+                                <li>
+                                    Baseline equivalence (or similarity across treatment and comparison) was not tested.
+                                </li>
+                            <% } %>
+        
+                            <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { 
+                                tabcounter = 1 + tabcounter;
+                            } %>
+
+                            <% if (control_vars_relabel.length > 0) { %>
+                                <li>
+                                    The analysis controlled for <span class="control-vars-wordlist"><%= control_vars_relabel_wordlist %></span>.
+                                    Summary statistics from the evaluation sample are shown in Table <%= tabcounter %> below.
+                                </li>
+                            <% } %>
                         </ul>
                         <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
-                        <% tabcounter = 1 + tabcounter; %>
                         <table>
                             <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
                             <thead>
@@ -465,7 +481,7 @@ var tabcounter = 0; var figcounter = 0;
                                         <% if (analysis_baseline_by_grade  && index == 0) { %>
                                         <td rowspan="<%= growspan %>"> <%= grade %></td>
                                         <% } %>
-                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= control_vars_relabel[index] %></span></td>
                                         <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
                                         <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
                                         <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
