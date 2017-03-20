@@ -413,7 +413,7 @@ var tabcounter = 0; var figcounter = 0;
                                 </li>
                             <% } else { %>
                                 <li>
-                                    Baseline equivalence (or similarity across treatment and comparison) was not tested.
+                                    Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was not tested.
                                 </li>
                             <% } %>
         
@@ -704,7 +704,7 @@ var tabcounter = 0; var figcounter = 0;
 
                         } //end if analysis by grade
                         if(tableRows.length > 0) {
-                        <% tabcounter = 1 + tabcounter; %>
+                         tabcounter = 1 + tabcounter; 
                         %>
                         <table><caption>Table <%=  tabcounter %>. Average outcomes for the treatment and comparison groups</caption><%- initTableHeader %><%- tableRows %></table><%- impactfootnote %>
                         <% } %>
