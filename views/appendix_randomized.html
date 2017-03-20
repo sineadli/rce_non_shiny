@@ -103,7 +103,7 @@
                                                 <% if (analysis_baseline_by_grade  && index == 0) { %>
                                                 <td rowspan="<%= growspan %>"> <%= grade %></td>
                                                 <% } %>
-                                                <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= baseline_vars_relabel[index] %></span></td>
+                                                <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= control_vars_relabel[index] %></span></td>
                                                 <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
                                                 <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
                                                 <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
