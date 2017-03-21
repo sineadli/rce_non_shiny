@@ -202,12 +202,6 @@ var tabcounter = 0; var figcounter = 0;
 
                             if (analysis_results_by_grade) {
 
-                                if (analysis_by_grade) {
-                                    grade_th = '<th scope="col">Grade</th>';
-                                } else {
-                                    grade_th = '';
-                                }
-
                                 tableRows = '';
 
                                 if (analysis_samples_available) {
@@ -262,6 +256,12 @@ var tabcounter = 0; var figcounter = 0;
                                     } else {
                                         individual_th = '<th scope="col">Sample size</th>';
                                         cluster_th = '';
+                                    }
+
+                                    if (analysis_by_grade) {
+                                        grade_th = '<th scope="col">Grade</th>';
+                                    } else {
+                                        grade_th = '';
                                     }
 
                                     initTableHeader = '<tr>' + grade_th + '<th scope="col">Group</th>' + individual_th + cluster_th + '</tr>';
