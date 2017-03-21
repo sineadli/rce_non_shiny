@@ -468,6 +468,7 @@ var tabcounter = 0; var figcounter = 0;
                                 </li>
                             <% } %>
                         </ul>
+
                         <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
                         <table>
                             <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
@@ -485,9 +486,9 @@ var tabcounter = 0; var figcounter = 0;
                                 </tr>
                             </thead>
                             <tbody>
-
+ 
                                 <% for (grade in analysis_baseline_results) {
-                          
+                                
                                     try {
                                         var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
 
@@ -507,6 +508,7 @@ var tabcounter = 0; var figcounter = 0;
                                             if (analysis_clustered) {
                                                 n_clusters_overall = samples_cluster.n_full[0];
                                                 n_clusters_treatment = samples_cluster.n_full_treat[0];
+                                                var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
 
                                                 if (path === 'path-random') {
                                                     if (eval.prepareRandom.Individual_Group === 'Individuals') {
@@ -531,7 +533,7 @@ var tabcounter = 0; var figcounter = 0;
                                             n_treatment = samples.n_treat[0];
                                         }
                                         var n_comparison = n_overall - n_treatment;
-                                        var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
+                                        
 
                                         var characteristics = Object.keys(baseline_var_means);
                                         var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0) + (analysis_clustered ? 1 : 0);
@@ -554,6 +556,7 @@ var tabcounter = 0; var figcounter = 0;
                                 <% } 
                                     if(sample_created_using_coach ) { %>
                                     <tr>
+        
 
                                         <td> Number of <%= Basics_Users %></td>
                                         <td> <%= n_overall %></td>
