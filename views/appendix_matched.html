@@ -81,25 +81,34 @@
 
                                             var samples = analysis_baseline_results[grade].samples;
 
+                                            var samples_cluster = analysis_baseline_results[grade].samples_cluster;
+
+                                            var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
+
                                             var n_overall = 0;
                                             var n_treatment = 0;
 
                                             if (analysis_samples_available) {
-                                            n_overall = samples.n_full[0];
-                                            n_treatment = samples.n_full_treat[0];
+                                                n_overall = samples.n_full[0];
+                                                n_treatment = samples.n_full_treat[0];
+
+                                                if (analysis_clustered) {
+                                                    n_clusters_overall = samples_cluster.n_full[0];
+                                                    n_clusters_treatment = samples_cluster.n_full_treat[0];
+                                                }
                                             }
                                             else if(path ==="path-matching") {
-                                            n_overall = samples.n_matched[0];
-                                            n_treatment = samples.n_matched_treat[0];
+                                                n_overall = samples.n_matched[0];
+                                                n_treatment = samples.n_matched_treat[0];
                                             }
                                             else if (path === "path-random") {
-                                            n_overall = samples.n_full[0];
-                                            n_treatment = samples.n_treat[0];
+                                                n_overall = samples.n_full[0];
+                                                n_treatment = samples.n_treat[0];
                                             }
-                                            var n_comparison = n_overall - n_treatment;
+                                            var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
 
                                             var characteristics = Object.keys(baseline_var_means);
-                                            var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+                                            var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0) + (analysis_clustered ? 1 : 0);
 
                                             for (index in characteristics) {
                                             var characteristic = characteristics[index];
@@ -127,7 +136,19 @@
                                                 <td> --</td>
                                                 <td> --</td>
                                             </tr>
-                                            <% }} catch (e) {
+                                            <% }
+                                            if (analysis_clustered) { %>
+                                            <tr>
+
+                                                <td> Number of clusters</td>
+                                                <td> <%= n_clusters_overall %></td>
+                                                <td> <%= n_clusters_treatment %></td>
+                                                <td> <%= n_clusters_comparison %></td>
+                                                <td> --</td>
+                                                <td> --</td>
+                                            </tr>
+                                            <% }
+                                            } catch (e) {
                                             var error = e;
                                             console.log("baseline characteristics error");
                                             console.log(error);

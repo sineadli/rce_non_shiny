@@ -203,9 +203,9 @@ var tabcounter = 0; var figcounter = 0;
                             if (analysis_results_by_grade) {
 
                                 if (analysis_by_grade) {
-                                    initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                    grade_th = '<th scope="col">Grade</th>';
                                 } else {
-                                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
+                                    grade_th = '';
                                 }
 
                                 tableRows = '';
@@ -215,17 +215,56 @@ var tabcounter = 0; var figcounter = 0;
 
                                         var samples = analysis_results_by_grade[grade].samples;
 
+                                        var samples_cluster = analysis_baseline_results[grade].samples_cluster;
+
+                                        var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
+
                                         var n_treat = samples.n_full_treat[0];
                                         var n_comparison = samples.n_full[0] - samples.n_full_treat[0];
                                         
                                         if (analysis_by_grade) {
-                                            tableRows += '<tr><td>' + grade + '</td><td>Treatment</td><td>' + n_treat  + ' ' + units +  '</td></tr>';
-                                            tableRows += '<tr><td>' + grade + '</td><td>Comparison</td><td>' + n_comparison    + ' ' +  units + '</td></tr>';
+                                            grade_td = '<td>' + grade + '</td>';
                                         } else {
-                                            tableRows += '<tr><td>Treatment</td><td>' + n_treat + ' ' + units +  '</td></tr>';
-                                            tableRows += '<tr><td>Comparison</td><td>' + n_comparison + ' ' +  units + '</td></tr>';
+                                            grade_td = '';
                                         }
+
+                                        if (analysis_clustered) {
+                                            n_clusters_treat = samples_cluster.n_full_treat[0];
+                                            n_clusters_comparison = samples_cluster.n_full[0] - samples_cluster.n_full_treat[0];
+
+                                            if (path === 'path-random') {
+                                                if (eval.prepareRandom.Individual_Group === 'Individuals') {
+                                                    cluster_units = 'clusters';
+                                                } else if (eval.prepareRandom.Cluster_Group !== 'other') {
+                                                    cluster_units = eval.prepareRandom.Cluster_Group;
+                                                } else {
+                                                    cluster_units = eval.prepareRandom.Cluster_Group_Other;
+                                                }         
+
+                                                if (cluster_units === '' || cluster_units === 'Select an option') cluster_units = 'clusters';
+
+                                            } else cluster_units = 'clusters';
+    
+                                            cluster_treat_td = '<td>' + n_clusters_treat  + ' ' + cluster_units + '</td>';
+                                            cluster_comparison_td = '<td>' + n_clusters_comparison + ' ' + cluster_units + '</td>';
+                                        } else {
+                                            cluster_treat_td = '';
+                                            cluster_comparison_td = '';
+                                        }
+
+                                        tableRows += '<tr>' + grade_td + '<td>Treatment</td><td>' + n_treat  + ' ' + Basics_Users +  '</td>' + cluster_treat_td + '</tr>';
+                                        tableRows += '<tr>' + grade_td + '<td>Comparison</td><td>' + n_comparison    + ' ' +  Basics_Users + '</td>' + cluster_comparison_td + '</tr>';
                                     }
+
+                                    if (analysis_clustered) {
+                                        individual_th = '<th scope="col">Individual sample size</th>';
+                                        cluster_th = '<th scope="col">Cluster sample size</th>';
+                                    } else {
+                                        individual_th = '<th scope="col">Sample size</th>';
+                                        cluster_th = '';
+                                    }
+
+                                    initTableHeader = '<tr>' + grade_th + '<th scope="col">Group</th>' + individual_th + cluster_th + '</tr>';
                                 }
                             }
                                 
@@ -455,12 +494,34 @@ var tabcounter = 0; var figcounter = 0;
 
                                         var samples = analysis_baseline_results[grade].samples;
 
+                                        var samples_cluster = analysis_baseline_results[grade].samples_cluster;
+
+                                        var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
+
                                         var n_overall = 0;
                                         var n_treatment = 0;
 
                                         if (analysis_samples_available) {
                                             n_overall = samples.n_full[0];
                                             n_treatment = samples.n_full_treat[0];
+
+                                            if (analysis_clustered) {
+                                                n_clusters_overall = samples_cluster.n_full[0];
+                                                n_clusters_treatment = samples_cluster.n_full_treat[0];
+
+                                                if (path === 'path-random') {
+                                                    if (eval.prepareRandom.Individual_Group === 'Individuals') {
+                                                        cluster_units = 'clusters';
+                                                    } else if (eval.prepareRandom.Cluster_Group !== 'other') {
+                                                        cluster_units = eval.prepareRandom.Cluster_Group;
+                                                    } else {
+                                                        cluster_units = eval.prepareRandom.Cluster_Group_Other;
+                                                    }
+
+                                                    if (cluster_units === '' || cluster_units === 'Select an option') cluster_units = 'clusters';
+
+                                                } else cluster_units = 'clusters';
+                                            }
                                         }
                                         else if(path ==="path-matching") {
                                             n_overall = samples.n_matched[0];
@@ -471,9 +532,10 @@ var tabcounter = 0; var figcounter = 0;
                                             n_treatment = samples.n_treat[0];
                                         }
                                         var n_comparison = n_overall - n_treatment;
+                                        var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
 
                                         var characteristics = Object.keys(baseline_var_means);
-                                        var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+                                        var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0) + (analysis_clustered ? 1 : 0);
 
                                         for (index in characteristics) {
                                             var characteristic = characteristics[index];
@@ -494,14 +556,28 @@ var tabcounter = 0; var figcounter = 0;
                                     if(sample_created_using_coach ) { %>
                                     <tr>
 
-                                        <td> Number of <%= units %></td>
+                                        <td> Number of <%= Basics_Users %></td>
                                         <td> <%= n_overall %></td>
                                         <td> <%= n_treatment %></td>
                                         <td> <%= n_comparison %></td>
                                         <td> --</td>
                                         <td> --</td>
                                     </tr>
-                                    <% }} catch (e) {
+                                    <% }
+                                    if (analysis_clustered) { %>
+                                        <tr>
+
+                                            <td> Number of <%= cluster_units %></td>
+                                            <td> <%= n_clusters_overall %></td>
+                                            <td> <%= n_clusters_treatment %></td>
+                                            <td> <%= n_clusters_comparison %></td>
+                                            <td> --</td>
+                                            <td> --</td>
+                                        </tr>
+                                    <% }
+
+
+                                    } catch (e) {
                                         var error = e;
                                         console.log("baseline characteristics error");
                                         console.log(error);

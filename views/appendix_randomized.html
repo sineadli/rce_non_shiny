@@ -71,32 +71,55 @@
                                             <% for (grade in analysis_baseline_results) {
 
                                             try {
-                                            var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
+                                                var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
 
-                                            var samples = analysis_baseline_results[grade].samples;
+                                                var samples = analysis_baseline_results[grade].samples;
 
-                                            var n_overall = 0;
-                                            var n_treatment = 0;
+                                                var samples_cluster = analysis_baseline_results[grade].samples_cluster;
 
-                                            if (analysis_samples_available) {
-                                            n_overall = samples.n_full[0];
-                                            n_treatment = samples.n_full_treat[0];
-                                            }
-                                            else if(path ==="path-matching") {
-                                            n_overall = samples.n_matched[0];
-                                            n_treatment = samples.n_matched_treat[0];
-                                            }
-                                            else if (path === "path-random") {
-                                            n_overall = samples.n_full[0];
-                                            n_treatment = samples.n_treat[0];
-                                            }
-                                            var n_comparison = n_overall - n_treatment;
+                                                var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
 
-                                            var characteristics = Object.keys(baseline_var_means);
-                                            var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0);
+                                                var n_overall = 0;
+                                                var n_treatment = 0;
 
-                                            for (index in characteristics) {
-                                            var characteristic = characteristics[index];
+                                                if (analysis_samples_available) {
+                                                    n_overall = samples.n_full[0];
+                                                    n_treatment = samples.n_full_treat[0];
+
+                                                    if (analysis_clustered) {
+                                                        n_clusters_overall = samples_cluster.n_full[0];
+                                                        n_clusters_treatment = samples_cluster.n_full_treat[0];
+
+                                                        if (path === 'path-random') {
+                                                            if (eval.prepareRandom.Individual_Group === 'Individuals') {
+                                                                cluster_units = 'clusters';
+                                                            } else if (eval.prepareRandom.Cluster_Group !== 'other') {
+                                                                cluster_units = eval.prepareRandom.Cluster_Group;
+                                                            } else {
+                                                                cluster_units = eval.prepareRandom.Cluster_Group_Other;
+                                                            }
+
+                                                            if (cluster_units === '' || cluster_units === 'Select an option') cluster_units = 'clusters';
+
+                                                        } else cluster_units = 'clusters';
+                                                    }
+                                                }
+                                                else if(path ==="path-matching") {
+                                                    n_overall = samples.n_matched[0];
+                                                    n_treatment = samples.n_matched_treat[0];
+                                                }
+                                                else if (path === "path-random") {
+                                                    n_overall = samples.n_full[0];
+                                                    n_treatment = samples.n_treat[0];
+                                                }
+                                                var n_comparison = n_overall - n_treatment;
+                                                var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
+
+                                                var characteristics = Object.keys(baseline_var_means);
+                                                var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0) + (analysis_clustered ? 1 : 0);
+
+                                                for (index in characteristics) {
+                                                var characteristic = characteristics[index];
 
                                             %>
                                             <tr>
@@ -114,14 +137,26 @@
                                             if(sample_created_using_coach ) { %>
                                             <tr>
 
-                                                <td> Number of <%= units %></td>
+                                                <td> Number of <%= Basics_Users %></td>
                                                 <td> <%= n_overall %></td>
                                                 <td> <%= n_treatment %></td>
                                                 <td> <%= n_comparison %></td>
                                                 <td> --</td>
                                                 <td> --</td>
                                             </tr>
-                                            <% }} catch (e) {
+                                            <% }
+                                            if (analysis_clustered) { %>
+                                            <tr>
+
+                                                <td> Number of <%= cluster_units %></td>
+                                                <td> <%= n_clusters_overall %></td>
+                                                <td> <%= n_clusters_treatment %></td>
+                                                <td> <%= n_clusters_comparison %></td>
+                                                <td> --</td>
+                                                <td> --</td>
+                                            </tr>
+                                            <% }
+                                            } catch (e) {
                                             var error = e;
                                             console.log("baseline characteristics error");
                                             console.log(error);
