@@ -13,6 +13,8 @@
 
     if (publishlists[i].planContext.Outcomes) {
     outcomes = publishlists[i].planContext.Outcomes;
+    foutcomes = outcomes.join(', ');
+ 
     }
 
 
@@ -34,7 +36,7 @@
                 <div class="r_a"><%= author %> <%= " - " + company %></div>
                 <div class="r_d"><%=  d.getMonth() + 1+ '/' + d.getDate() + '/' + d.getFullYear()  %></div>
                 <div class="r_g"><strong>Grades: </strong><%= grades[0] + " - " + grades[last] %></div>
-                <div class="r_oc"><strong>Outcome areas:</strong> <%= outcomes %></div>
+                <div class="r_oc"><strong>Outcome areas:</strong> <%- foutcomes %></div>
             </div>
         </div>
     </div>
