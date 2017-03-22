@@ -99,7 +99,7 @@ var tabcounter = 0; var figcounter = 0;
 
                         <h3> Research Question</h3>
 
-                        Does <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> as measured by <%= Outcome_Measure %> among
+                        Does <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> as measured by <%= Outcome_Measure %> by <%= Success_Effect_Size %> or more <%= Measure_Units %> among
                         <%= Intervention_Group_Desc %>
                         compared to
                         <%= Comparison_Group_Desc %>?
@@ -117,7 +117,7 @@ var tabcounter = 0; var figcounter = 0;
                         if (analysis_results_clean) {
 
                         var findingsTableRows = "";
-                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + "</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th></tr>";
+                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + "</th></tr>";
 
 
                         for (grade in analysis_results_by_grade) {
@@ -126,27 +126,41 @@ var tabcounter = 0; var figcounter = 0;
 
 
                         var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                        var cutoff_probability = stripPercent(analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0]);
-                        var gsuccess = (probability > Pass_Probability);
-                        var ginconclusive = (cutoff_probability < Pass_Probability) && (cutoff_probability > Fail_Probability);
+                    var cutoff_probability = stripPercent(analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0]);
 
-                        var needle_decision = (gsuccess) ? 'Yes' : 'No';
-                        var needle_negate = (gsuccess) ? '' : ' not';
+                        var user_cutoff_success = (probability > Pass_Probability);
+                        var user_cutoff_inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability);
+                        var user_cutoff_fail = (probability < Fail_Probability);
 
-                        var findingsConclusion = (ginconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : ((gsuccess) ? Basics_Tech_Name + ' is moving the needle.' : Basics_Tech_Name + ' did not ' + Outcome_Direction + ' ' + Basics_Outcome + '.');
+                        var zero_cutoff_success = (cutoff_probability > Pass_Probability);
+                        var zero_cutoff_inconclusive = (cutoff_probability < Pass_Probability) && (cutoff_probability > Fail_Probability);
+                        var zero_cutoff_fail = (cutoff_probability < Fail_Probability);
 
-                        var interpretation_2 = "";
+                       var findings_but = (zero_cutoff_success && !user_cutoff_success) ? 'However, the size of the effect does not meet our goal' : '';
+
+                    var findingsConclusion = (user_cutoff_inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : ((user_cutoff_success) ? Basics_Tech_Name + ' is moving the needle.' : Basics_Tech_Name + ' did not ' + Outcome_Direction + ' ' + Basics_Outcome + '.');
+
+                        var interpret_2_conclusion = "Because that probability is ";
+                        interpret_2_conclusion = interpret_2_conclusion + ((zero_cutoff_inconclusive) ? 'between ' + Pass_Probability + '% and ' + Fail_Probability + '%, we are not confident drawing conclusions based on this result.' : ((zero_cutoff_success) ? ' greater than or equal to ' + Pass_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is moving the needle.' : ' less than  ' + Fail_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is most likely not causing the observed change.'));
+
+                    var interpretation_2 = "";
                       
                         if (Success_Effect_Size > 0) {
                         if (cutoff_probability || cutoff_probability === 0) {
-                        interpretation_2 = "There is a " + cutoff_probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ".";
+                        interpretation_2 = "There is a " + cutoff_probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ' by more than 0 ' + Measure_Units + '. ' 
                         }
                         }
 
-                        var interpretation_1 = "There is a " + probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more.";
+                        var interpret_1_conclusion = "Because that probability is ";
+                        interpret_1_conclusion = interpret_1_conclusion + ((user_cutoff_inconclusive) ? 'between ' + Pass_Probability + '% and ' + Fail_Probability + '%, we can not confidently draw conclusions based on these results.' : ((user_cutoff_success) ? ' greater than or equal to ' + Pass_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is having the desired effect on ' + Basics_Outcome + '.' : ' less than  ' + Fail_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is not having the desired effect on ' + Basics_Outcome + '.'));
+
+                    var interpretation_1 = "There is a " + probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more. " + interpret_1_conclusion;
+
+                    var interpretation_note = 
+                        'For this evaluation, a successful outcome is defined as an average ' + Outcome_Direction +  ' in ' + Basics_Outcome + ' as measured by ' + Outcome_Measure + ' of at least ' + Success_Effect_Size +  ' ' + Measure_Units + ' or more where the probability that the ' + Outcome_Direction +  ' is caused by ' + Basics_Tech_Name + ' is at least ' + Pass_Probability + '%. If the probability is less than ' + Fail_Probability + '%,  we would feel confident concluding that ' + Basics_Tech_Name + ' did not make a difference.  If the probability that ' + Basics_Tech_Name + ' caused the observed outcome is between ' + Pass_Probability + '% and ' + Fail_Probability + '% then we would not feel confident making any conclusions based on the results from this evaluation.';
 
 
-                        findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + cutoff_probability + "</td><td class='align-right'>" + probability + "</td></tr>";
+                    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + probability + "</td><td class='align-right'>" + cutoff_probability + "</td></tr>";
 
                         grade_results_clean = true;
                         } catch (e) {
@@ -166,23 +180,32 @@ var tabcounter = 0; var figcounter = 0;
                         <% if (grade_results_clean) { %>
 
                         <h3> Findings</h3>
-                        
+                        <p><%= interpretation_note %></p>
+                        <% if (display === 'online') { %>
+                        <p class="prev-answer hidden-print">
+                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a>
+                        </p>
+                        <% } %>
                         <% if (analysis_by_grade) { %>
                         <% tabcounter = 1 + tabcounter;  %>
                         <table><caption>Table <%= tabcounter %>. Summary of results by grade based on the data used in this analysis.</caption><thead><%- findingsTableHeader %></thead><tbody><%- findingsTableRows %></tbody></table>
 
                         <% } else { %>
-                        <p>Based on the data used in this analysis:
-                            <ol class="no-page-break">
-                                <li> <%= findingsConclusion %></li>
+                    <p>Based on the data used in this analysis:
+                        <ol class="no-page-break">
+                            <li> <%= findingsConclusion %></li>
+                            <li id="item_interp_1"> <%= interpretation_1 %></li>
+                            <% if (Success_Effect_Size > 0) { %>
+                            <li id="item_interp_2"> <%= interpretation_2 %></li>
+                            <% } %>
 
-                                <% if (Success_Effect_Size > 0) { %>
-                                <li id="item_interp_2"> <%= interpretation_2 %></li>
-                                <% } %>
-                                <li id="item_interp_1"> <%= interpretation_1 %></li>
-                            </ol>
-                        </p>
-                        <% } %>
+                        </ol>
+
+                    </p>
+
+                    <% } %>
+                       
 
 
 
