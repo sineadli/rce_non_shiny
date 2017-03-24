@@ -189,7 +189,7 @@ module.exports = function(app, passport) {
                     //}
                 });
                 var mailOptions = {
-                    to: "bgelhard@mathematica-mpr.com",
+                    to: "EdTechRCE@mathematica-mpr.com",
                     from: 'intrelay.mathematica-mpr.com',
                     subject: 'RCE Feedback',
                     text: 'Feedback from ' + req.body.user_email + ' viewing ' + req.body.page + '\n\n' + req.body.message
