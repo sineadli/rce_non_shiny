@@ -180,8 +180,8 @@ module.exports = function(app, passport) {
                 var transport = nodemailer.createTransport({
                     // service: '???',
                     port: 25, //confirm with company or 465?
-                    // host: 'edtechrce.org' //for qa server
-                    host: 'intrelay.mathematica-mpr.com' //for local
+                     host: 'localhost' //for qa server
+                    //host: 'intrelay.mathematica-mpr.com' //for local
                     // host: 'smtp.mathematica-mpr.com',
                     //auth: {
                     //    user: '???',    //get this from ITS?
