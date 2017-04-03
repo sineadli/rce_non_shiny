@@ -393,10 +393,10 @@ evaluationSchema.pre('save', function (next) {
             User.findById(this.userid, function (err, user) {
                 if (err) {
                     next(err);
-                } else if (user) {
-                    doc.author = user.profile.user_name;
-                    doc.company = user.profile.organization_name;
-                    next();
+            //    } else if (user) {
+            //        doc.author = user.profile.user_name;
+            //        doc.company = user.profile.organization_name;
+            //        next();
                 } else {
                     next();
                 }

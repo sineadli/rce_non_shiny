@@ -10,15 +10,30 @@
 <html>
 <head>
     <title>Share Your Results - Ed Tech RCE Coach</title>
+
+    <% if (display === undefined) display = 'online';
+
+
+    if (display === 'online') { %>
+    <% include ../views/partials/scriptHeader.html %>
+
+    <% } else if (display === 'download') { %>
     <% include ../views/partials/downloadStyle.html %>
-<% include('../views/partials/brief_appendix_evaluation_processing.html')
-    var tabcounter = 0; var figcounter = 0;
-%>            
+    <% } %>
+   
+
+</head>
+    <%
+    include('../views/partials/brief_appendix_evaluation_processing.html')
+var tabcounter = 0; var figcounter = 0;
+    console.log("tabcounter = " + tabcounter);
+%>      
     <body class="brief">
             <div class="container-fluid" > 
                 <div class="row" > 
                     <div class="col-xs-12" >
                     <h1 class="tool-title"> Findings Brief Appendix</h1 >
+                        <%= eval.title %><br />
                         <%= author %><br />
                         <%= company %><br />
                         <%= published_at %>
@@ -52,123 +67,23 @@
                                 </div>
 
                                 <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
-                                <% tabcounter = 1 + tabcounter; %>
+                               
                                 <div class="no-page-break">
                                     <br />
-                                  
-                                    <table id="table1">
-                                        <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
-                                          
-                                        <thead>
-                                            <tr>
-                                                <% if (analysis_baseline_by_grade) { %>
-                                                <th>Grade</th>
-                                                <% } %>
-                                                <th> Characteristic</th>
-                                                <th> Overall</th>
-                                                <th> Treatment</th>
-                                                <th> Comparison</th>
-                                                <th> Difference</th>
-                                                <th> Effect Size</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <% for (grade in analysis_baseline_results) {
-
-                                            try {
-                                            var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
-
-                                            var samples = analysis_baseline_results[grade].samples;
-
-                                            var samples_cluster = analysis_baseline_results[grade].samples_cluster;
-
-                                            var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
-
-                                            var n_overall = 0;
-                                            var n_treatment = 0;
-
-                                            if (analysis_samples_available) {
-                                                n_overall = samples.n_full[0];
-                                                n_treatment = samples.n_full_treat[0];
-
-                                                if (analysis_clustered) {
-                                                    n_clusters_overall = samples_cluster.n_full[0];
-                                                    n_clusters_treatment = samples_cluster.n_full_treat[0];
-                                                }
-                                            }
-                                            else if(path ==="path-matching") {
-                                                n_overall = samples.n_matched[0];
-                                                n_treatment = samples.n_matched_treat[0];
-                                            }
-                                            else if (path === "path-random") {
-                                                n_overall = samples.n_full[0];
-                                                n_treatment = samples.n_treat[0];
-                                            }
-                                            var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
-
-                                            var characteristics = Object.keys(baseline_var_means);
-                                            var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0) + (analysis_clustered ? 1 : 0);
-
-                                            for (index in characteristics) {
-                                            var characteristic = characteristics[index];
-
-                                            %>
-                                            <tr>
-                                                <% if (analysis_baseline_by_grade  && index == 0) { %>
-                                                <td rowspan="<%= growspan %>"> <%= grade %></td>
-                                                <% } %>
-                                                <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= control_vars_relabel[index] %></span></td>
-                                                <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
-                                                <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
-                                                <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
-                                                <td> <%= round10(baseline_var_means[characteristic].difference[0],2) %></td>
-                                                <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
-                                            </tr>
-                                            <% }
-                                            if(sample_created_using_coach ) { %>
-                                            <tr>
-
-                                                <td> Number of <%= units %></td>
-                                                <td> <%= n_overall %></td>
-                                                <td> <%= n_treatment %></td>
-                                                <td> <%= n_comparison %></td>
-                                                <td> --</td>
-                                                <td> --</td>
-                                            </tr>
-                                            <% }
-                                            if (analysis_clustered) { %>
-                                            <tr>
-
-                                                <td> Number of clusters</td>
-                                                <td> <%= n_clusters_overall %></td>
-                                                <td> <%= n_clusters_treatment %></td>
-                                                <td> <%= n_clusters_comparison %></td>
-                                                <td> --</td>
-                                                <td> --</td>
-                                            </tr>
-                                            <% }
-                                            } catch (e) {
-                                            var error = e;
-                                            console.log("baseline characteristics error");
-                                            console.log(error);
-                                            }
-                                            } %>
-                                        </tbody>
-                                    </table>
+                                    <% include ../views/partials/_backgroundCharsTable.html %>
                                     <p class="pnote">
                                         Table <%= tabcounter %> summarizes key characteristics of your sample.
                                         If any of the characteristics have a large value in the "Difference" column, those are characteristics in which differences between users and non-users remain after matching.
                                         Differences at baseline on important measures (like a baseline test) mean you should interpret the differences in outcomes with caution -
-                                        they may be caused in part by pre-existing differences between users and non-users.
-                                        You can also check this by comparing the effect size to the values indicated in Table 2.
+                                        they may be caused in part by pre-existing differences between users and non-users.  <% tabcounter = 1 + tabcounter;  %>
+                                        You can also check this by comparing the effect size to the values indicated in Table <%= tabcounter %>.
                                         You want the effect size to be less than 0.05.
                                     </p>
                                 </div>
                                 
                                 <div class="no-page-break">
 
-                                    <% tabcounter = 1 + tabcounter;  %>
+                                   
                                     <table id="table2">
                                         <caption>
                                             Table <%= tabcounter %>. WWC standards for baseline equivalence</caption>
@@ -255,7 +170,7 @@
                                 <div class="no-page-break">
                                     <% if (results_clean) { %>
                                     <div class="figdiv">
-                                        <label class="chart">Figure 2. Probability that the <%= Basics_Tech_Name %> <%= Outcome_Direction %> outcomes by <%= Success_Effect_Size %> units or more, given the uploaded data</label>
+                                        <label class="chart">Figure 2. Probability that  <%= Basics_Tech_Name %> <%= Outcome_Direction %>s outcomes by <%= Success_Effect_Size %> units or more, given the uploaded data</label>
 
                                         <img src="data:image/png;base64,<%- posterior_plot %>">
                                     </div>
@@ -265,7 +180,7 @@
                                     <ul>
                                         <li> <%= interpretation_1 %></li>
                                         <li> <%= interpretation_2 %></li>
-                                        <li> The point estimate (e.g., our best guess) of the effect of the educational technology on the outcome is <%= round3(impact) %>. This number is calculated as the mean of the posterior distribution.</li>
+                                        <li> The point estimate (e.g., our best guess) of the effect of the educational technology on the outcome is <%= round10(impact,2) %>. This number is calculated as the mean of the posterior distribution.</li>
                                     </ul>
                                     <% } else { %>
                                     <p>
@@ -285,8 +200,8 @@
                                     <ul>
                                         <li>This analysis was performed using a matched comparison design. Several assumptions were made to simplify the user's choices. The Matching Technical Appendix explains these assumptions in more detail.</li>
                                         <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table <%= tabcounter %> below. For more information on the Bayesian statistical analysis, refer to the Impact Estimation Technical Appendix.</li>
-                                        <li>This analysis was performed using the beta version ## of the RCE Coach. Please share your feedback here!</li>
-                                        <li>All the code for the RCE Coach is open-source under the GPL-V3 license, and available on our Github repository at <a href="https://github.com/mathematica-mpr/edtechrce">https://github.com/mathematica-mpr/edtechrce</a></li>
+                                        <!--<li>This analysis was performed using the beta version ## of the RCE Coach. Please share your feedback here!</li>
+                                        <li>All the code for the RCE Coach is open-source under the GPL-V3 license, and available on our Github repository at <a href="https://github.com/mathematica-mpr/edtechrce">https://github.com/mathematica-mpr/edtechrce</a></li>-->
                                     </ul>
                                 </div>
 

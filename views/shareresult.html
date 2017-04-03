@@ -62,30 +62,25 @@ var tabcounter = 0; var figcounter = 0;
                 <div class="row">
                     <div>
                         <h1 class="tool-title"> <%= capitalize(Basics_Tech_Name) %> Findings Brief</h1>
+                        <%= eval.title %><br />
 
-                        <% if (user != "NOAUTHENTICATED") {
-
-                        if (eval.published_at) {
-                        var date = new Date(eval.published_at).toLocaleDateString();
-                        var user_name = eval.author || '< No author associated with evaluation >';
-                        var organization_name = eval.company || '< No organization associated with evaluation >';
-                        } else {
-                        var user_name = user.profile.user_name || '< No name found in profile >';
-                        var organization_name = user.profile.organization_name || '< No organization name found in profile >';
-                        var date = new Date().toLocaleDateString();
-                        }
+                        <%
+                         if(query.sharing == 1) {
                         %>
+                        
+                        <%= author %><br />
+                        <%= company %><br/>
+                      
+                        <%= published_at %>
+                        <% } else { %>
+                        <label  for="author">Author:</label>  <input class="shiny-input-container" type="text" name='author' id="author" value="<%= author %>" />
+                        <br/>
+                        <label for="company">Organization:</label> <input class="shiny-input-container" type="text" name='company' id="company" value="<%= company %>"/><br/>
+                        <label>Published:</label> <%= published_at %>
+                        <% } %>
+                       
 
-                        <%= user_name %><br/>
-                        <%= organization_name %><br/>
-                        <%= date %>
-
-                        <% if (display === 'online') { %>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I add this? See
-                            <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
-                        </p>
-                        <% }} %>
+                      
                       
                     </div>
                     <hr />
@@ -114,7 +109,8 @@ var tabcounter = 0; var figcounter = 0;
                         <%
                         var grade_results_clean = true;
 
-                        if (analysis_results_clean) {
+                    if (analysis_results_clean) {
+
 
                         var findingsTableRows = "";
                         var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + "</th></tr>";
@@ -156,8 +152,7 @@ var tabcounter = 0; var figcounter = 0;
 
                     var interpretation_1 = "There is a " + probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more. " + interpret_1_conclusion;
 
-                    var interpretation_note = 
-                        'For this evaluation, a successful outcome is defined as an average ' + Outcome_Direction +  ' in ' + Basics_Outcome + ' as measured by ' + Outcome_Measure + ' of at least ' + Success_Effect_Size +  ' ' + Measure_Units + ' or more where the probability that the ' + Outcome_Direction +  ' is caused by ' + Basics_Tech_Name + ' is at least ' + Pass_Probability + '%. If the probability is less than ' + Fail_Probability + '%,  we would feel confident concluding that ' + Basics_Tech_Name + ' did not make a difference.  If the probability that ' + Basics_Tech_Name + ' caused the observed outcome is between ' + Pass_Probability + '% and ' + Fail_Probability + '% then we would not feel confident making any conclusions based on the results from this evaluation.';
+                 
 
 
                     findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + probability + "</td><td class='align-right'>" + cutoff_probability + "</td></tr>";
@@ -180,13 +175,8 @@ var tabcounter = 0; var figcounter = 0;
                         <% if (grade_results_clean) { %>
 
                         <h3> Findings</h3>
-                        <p><%= interpretation_note %></p>
-                        <% if (display === 'online') { %>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a>
-                        </p>
-                        <% } %>
+                       
+                       
                         <% if (analysis_by_grade) { %>
                         <% tabcounter = 1 + tabcounter;  %>
                         <table><caption>Table <%= tabcounter %>. Summary of results by grade based on the data used in this analysis.</caption><thead><%- findingsTableHeader %></thead><tbody><%- findingsTableRows %></tbody></table>
@@ -203,10 +193,15 @@ var tabcounter = 0; var figcounter = 0;
                         </ol>
 
                     </p>
-
+                      
                     <% } %>
                        
-
+                        <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                        <p class="prev-answer hidden-print">
+                            <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
+                            <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
+                        </p>
+                        <% } %>
 
 
                         <div class="clearfix"></div>
@@ -357,14 +352,21 @@ var tabcounter = 0; var figcounter = 0;
 
 
 
-                        <%  if(path === 'path-matching') { %>
-                        <p class="note" style="margin-top: 15px;">
-                            <strong>Interpreting these findings:</strong>
-                            This analysis relies on the validity of the comparison group. To see how the comparison group was created check our   Matching Overview. Table 1 summarizes the number of <%= Basics_Users %> in the treatment and comparison groups before and after matching. It is important to note that these findings only apply to <%= Basics_Users %> who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology
+                    
+                    <% tabcounter = 1 + tabcounter; %>
+
+                    <div class="note" style="margin-top: 15px;">
+                        <p><strong>Interpreting these findings:</strong></p>
+                        <p><%- interpretation_note %></p> 
+                        <% if (display === 'online' && user != "NOAUTHENTICATED") { %>
+                        <p class="prev-answer hidden-print">
+                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a>
                         </p>
                         <% } %>
-                        <% tabcounter = 1 + tabcounter;  %>
-                        <table><caption>Table <%= tabcounter %>. Number of <%= units %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
+                        <p><%- interpretation_matching_note %></p>
+                        </div>
+                    <table><caption>Table <%= tabcounter %>. Number of <%= units %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
                         <% } else { %>
                         <p>Since the intervention and comparison groups were created outside of the Coach, sample size information is not available.</p>
                         <% } %>
@@ -421,7 +423,7 @@ var tabcounter = 0; var figcounter = 0;
                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <div class="char-row-div">
                                 <p class="prev-answer hidden-print">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See
                                     <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
                                 </p>
                             </div>
@@ -452,9 +454,9 @@ var tabcounter = 0; var figcounter = 0;
                         <ul>
                             <li>
                                 <% if (pilot_type === 'randomized') { %>
-                                This evaluation used a randomized pilot.The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if <%= Basics_Tech_Name %> was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
+                                This evaluation used a randomized pilot. The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if <%= Basics_Tech_Name %> was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
                                 <% } else if (pilot_type === 'matched') { %>
-                                This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, this quasi-experimental design will identify a comparison group with similar characteristics to the <%= Basics_Users %> using the technology that you want to test.
+                                This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, <%= Basics_Users %> using <%= Basics_Tech_Name %> were compared to other <%= Basics_Users %>  with similar characteristics.
                                 <% } else { %>
                                 [Description of pilot type, either matched or randomized.]
                                 <% } %>
@@ -462,169 +464,51 @@ var tabcounter = 0; var figcounter = 0;
                             <li>
                                 <%= sentence(assignment) %>
                             </li>
-<% console.log("checkpoint 0.1"); %>
-                            <% if (baseline_vars_relabel.length > 0) { 
-                                    if (pilot_type === 'randomized') {
-                                        baseline_tool = 'randomization';
-                                    } else if (pilot_type === 'matched') {
-                                        baseline_tool = 'matching';
-                                    }
+                            <% console.log("checkpoint 0.1"); %>
+                            <% if (baseline_vars_relabel.length > 0) {
+                            if (pilot_type === 'randomized') {
+                            baseline_tool = 'randomization';
+                            } else if (pilot_type === 'matched') {
+                            baseline_tool = 'matching';
+                            }
                             %>
-                                <li>
-                                    Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was tested in the <%= baseline_tool %> tool using:
-                                        <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %></span>.
-                                </li>
+                            <li>
+                                Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was tested in the <%= baseline_tool %> tool using:
+                                <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %></span>.
+                            </li>
                             <% } else { %>
-                                <li>
-                                    Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was not tested.
-                                </li>
+                            <li>
+                                Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was not tested.
+                            </li>
                             <% } %>
-        
-                            <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { 
-                                tabcounter = 1 + tabcounter;
+
+                            <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) {
+                            tabcounter = 1 + tabcounter;
                             } %>
 
                             <% if (control_vars_relabel.length > 0) { %>
-                                <li>
-                                    The analysis controlled for <span class="control-vars-wordlist"><%= control_vars_relabel_wordlist %></span>.
-                                    Summary statistics from the evaluation sample are shown in Table <%= tabcounter %> below.
-                                </li>
+                            <li>
+                                The analysis controlled for <span class="control-vars-wordlist"><%= control_vars_relabel_wordlist %></span>.
+                                <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
+                                Summary statistics from the evaluation sample are shown in Table <%= tabcounter %> below.
+                                <% } else { %>
+                                We've improved the evaluation sample baseline analysis. To see summary statistics here, please return to and re-run the Get Results tool .
+                                <% } %>
+
+
+                            </li>
                             <% } %>
                         </ul>
-
-                        <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
-                        <table>
-                            <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
-                            <thead>
-                                <tr>
-                                    <% if (analysis_baseline_by_grade) { %>
-                                    <th>Grade</th>
-                                    <% } %>
-                                    <th> Characteristic</th>
-                                    <th> Overall</th>
-                                    <th> Treatment</th>
-                                    <th> Comparison</th>
-                                    <th> Difference</th>
-                                    <th> Effect Size</th>
-                                </tr>
-                            </thead>
-                            <tbody>
- 
-                                <% for (grade in analysis_baseline_results) {
-                                
-                                    try {
-                                        var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
-
-                                        var samples = analysis_baseline_results[grade].samples;
-
-                                        var samples_cluster = analysis_baseline_results[grade].samples_cluster;
-
-                                        var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
-
-                                        var n_overall = 0;
-                                        var n_treatment = 0;
-
-                                        if (analysis_samples_available) {
-                                            n_overall = samples.n_full[0];
-                                            n_treatment = samples.n_full_treat[0];
-
-                                            if (analysis_clustered) {
-                                                n_clusters_overall = samples_cluster.n_full[0];
-                                                n_clusters_treatment = samples_cluster.n_full_treat[0];
-                                                var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
-
-                                                if (path === 'path-random') {
-                                                    if (eval.prepareRandom.Individual_Group === 'Individuals') {
-                                                        cluster_units = 'clusters';
-                                                    } else if (eval.prepareRandom.Cluster_Group !== 'other') {
-                                                        cluster_units = eval.prepareRandom.Cluster_Group;
-                                                    } else {
-                                                        cluster_units = eval.prepareRandom.Cluster_Group_Other;
-                                                    }
-
-                                                    if (cluster_units === '' || cluster_units === 'Select an option') cluster_units = 'clusters';
-
-                                                } else cluster_units = 'clusters';
-                                            }
-                                        }
-                                        else if(path ==="path-matching") {
-                                            n_overall = samples.n_matched[0];
-                                            n_treatment = samples.n_matched_treat[0];                               
-                                        }
-                                        else if (path === "path-random") {
-                                            n_overall = samples.n_full[0];
-                                            n_treatment = samples.n_treat[0];
-                                        }
-                                        var n_comparison = n_overall - n_treatment;
-                                        
-
-                                        var characteristics = Object.keys(baseline_var_means);
-                                        var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0) + (analysis_clustered ? 1 : 0);
-
-                                        for (index in characteristics) {
-                                            var characteristic = characteristics[index];
-
-                                    %>
-                                    <tr>
-                                        <% if (analysis_baseline_by_grade  && index == 0) { %>
-                                        <td rowspan="<%= growspan %>"> <%= grade %></td>
-                                        <% } %>
-                                        <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= control_vars_relabel[index] %></span></td>
-                                        <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
-                                        <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
-                                        <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
-                                        <td> <%= round10(baseline_var_means[characteristic].difference[0],2) %></td>
-                                        <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
-                                    </tr>
-                                <% } 
-                                    if(sample_created_using_coach ) { %>
-                                    <tr>
-        
-
-                                        <td> Number of <%= Basics_Users %></td>
-                                        <td> <%= n_overall %></td>
-                                        <td> <%= n_treatment %></td>
-                                        <td> <%= n_comparison %></td>
-                                        <td> --</td>
-                                        <td> --</td>
-                                    </tr>
-                                    <% }
-                                    if (analysis_clustered) { %>
-                                        <tr>
-
-                                            <td> Number of <%= cluster_units %></td>
-                                            <td> <%= n_clusters_overall %></td>
-                                            <td> <%= n_clusters_treatment %></td>
-                                            <td> <%= n_clusters_comparison %></td>
-                                            <td> --</td>
-                                            <td> --</td>
-                                        </tr>
-                                    <% }
-
-
-                                    } catch (e) {
-                                        var error = e;
-                                        console.log("baseline characteristics error");
-                                        console.log(error);
-                                    }
-                                } %>
-                            </tbody>
-                        </table>
-                        <% } else { %>
-                            <h3>Evaluation Sample Baseline Analysis</h3>
-                            <p>We've improved the evaluation sample baseline analysis. To see the results here, please return to the Get Results tool and re-run it.
-                            </p>
-                            <p class="prev-answer hidden-print">
-                                <i class="fa fa-hand-o-right"></i> How do I re-run results?
-                                <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
-                            </p>
+                        <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                    <p class="prev-answer hidden-print">
+                        <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
+                        <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
+                    </p>
                         <% } %>
-                        <%
-                        console.log("query.sharing = " + query.sharing)
-                        console.log("display = " + display)
-                        console.log("baseline_vars.length = " + baseline_vars.length)
-                        console.log("test = " + (baseline_vars && baseline_vars.length > 0 && display === "online" && query.sharing !== "1"))
-                        if (baseline_vars && baseline_vars.length > 0 && display === "online" && query.sharing !== "1") { %>
+                      
+                        <% include ../views/partials/_backgroundCharsTable.html %>
+                       
+                        <%   if (baseline_vars && baseline_vars.length > 0 && display === "online" && query.sharing !== "1") { %>
                         <div class="hidden-print">
                             <h3>Re-label baseline variables (optional):</h3>
                             <% for (index in baseline_vars) {

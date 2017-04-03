@@ -1130,7 +1130,8 @@ module.exports = function (app, passport) {
         res.render('matching.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
-            });
+		}
+		);
     });
     app.post('/matching', function (req, res) {
         var toollist = { "name": "Matching", "status": req.body.status, "visited_at": new Date() };
@@ -1310,10 +1311,12 @@ module.exports = function (app, passport) {
         sess.step = 5;
         sess.eval.last_tool = "Get Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('getresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
-            });
+        res.render('getresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url } //,
+         
+        //    function (err, html) {
+        //        if (err) { res.redirect('/error'); } else { res.send(html); }
+		   //    }
+	);
     });
     app.post('/getresult', isLoggedIn, function (req, res) {
         var toollist = { "name": "Get Results", "status": req.body.status, "visited_at": new Date() };
@@ -1353,7 +1356,8 @@ module.exports = function (app, passport) {
 				
 				eval.markModified('planNext');
 				eval.planNext.Success_Effect_Size= obj.Success_Effect_Size;
-				eval.planNext.Pass_Probability= obj.Pass_Probability;
+				eval.planNext.Pass_Probability = obj.Pass_Probability;
+				eval.planNext.Fail_Probability = obj.Fail_Probability;
 				
 					var getresult = {				
                         "Result": obj.result
@@ -1406,10 +1410,11 @@ module.exports = function (app, passport) {
         var query = require('url').parse(req.url, true).query;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.publishlists  = eval;
-            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query, display: 'online' },
-                function (err, html) {
-                    if (err) { res.redirect('/error'); } else { res.send(html); }
-                });
+            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query, display: 'online' } //,
+             //   function (err, html) {
+              //      if (err) { res.redirect('/error'); } else { res.send(html); }
+              //  }
+			);
         });
     });
     app.post('/shareresult', isLoggedIn,function (req, res) {
@@ -1418,6 +1423,8 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.step = 6;
 		var obj = req.body;
+		console.log("in post ShareResult route");
+        console.log(obj);
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "shareresult";
         var dt = new Date();
@@ -1461,8 +1468,12 @@ module.exports = function (app, passport) {
 					delete obj['relabel-control-var-' + crelabel_index];
 					crelabel_index++;
 				}
-
-                var shareresult = obj;
+				eval.author = obj.author;
+				eval.company = obj.company;
+				console.log("in post ShareResult route");
+				console.log(obj);
+				console.log(eval.author);
+				var shareresult = obj;
 				shareresult.baseline_var_relabels = relabels;
 				shareresult.control_var_relabels = crelabels;
 
@@ -1474,7 +1485,7 @@ module.exports = function (app, passport) {
                 };
 
                 eval.shareresult = shareresult;
-
+			
                
                 eval.save(function (err) {
                     if (err) {

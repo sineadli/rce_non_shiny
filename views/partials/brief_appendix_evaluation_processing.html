@@ -110,11 +110,21 @@ round3 = function(x) {
  if (eval.published_at) {
  published_at = new Date(eval.published_at).toLocaleDateString();
 } else {
- published_at = '[not published]';
- author = eval.author || '[ No author associated with evaluation ]';
- company = eval.company || '[ No organization associated with evaluation ]';
+published_at = '[not published]';
 }
-                        
+
+if(query.sharing == 1) {
+    author = eval.author || '[ No author associated with evaluation ]';
+    company = eval.company || '[ No organization associated with evaluation ]';
+} else if (user != "NOAUTHENTICATED") {
+    author = eval.author ? eval.author : (user.profile.user_name || '< No author associated with evaluation >');
+    company = eval.company ? eval.company : (user.profile.organization_name || '< No organization associated with evaluation >');
+}
+
+
+                      
+                       
+                       
 
 // basics
 Basics_Tech_Name = '[technology name]';
@@ -145,6 +155,8 @@ Action_Success      = '[next step if moving the needle]';
 Action_Fail = '[next step if not moving the needle]';
 Action_Inconclusive = '[next step if results inconclusive]';
 Success_Effect_Size = 0;
+interpretation_note = '';
+
 
 // planContext
 program_types = [''];
@@ -197,6 +209,7 @@ baseline_plot = '';
 // shareresult
 challenges_limitations = '';
 conclusions_next_steps = '';
+interpretation_matching_note = '';
 
 tool_routes = {
     basics          : '/basics',
@@ -360,9 +373,11 @@ if (eval.planNext) {
         }
         else {
             data_issues.planNext.push("Success effect size is blank or undefined.");
-        }
+}
 
-    } catch (e) {
+ 
+
+} catch (e) {
         data_issues.planNext.push("Missing or invalid data.");
     }
 
@@ -372,6 +387,7 @@ if (eval.planNext) {
 
 header = 'Results not available due to incomplete analysis.';
 inconclusive_qualifier = '';
+
 analysis_results_clean = false;
 analysis_by_grade = false;
 analysis_samples_available = true,
@@ -392,17 +408,20 @@ if (eval.getresult) {
             analysis_by_grade = Object.keys(analysis_results_by_grade).length > 1;
             control_vars = analysis_results.control_vars;
             control_vars_relabel =control_vars;
-            
-            success_count = 0, failure_count = 0; inconclusive_count = 0;
 
-            for (grade in analysis_results_by_grade) {
+success_count = 0, failure_count = 0; inconclusive_count = 0;
+
+interpretation_note =
+                        'For this evaluation, a successful outcome is defined as an average ' + Outcome_Direction +  ' in ' + Basics_Outcome + ', as measured by ' + Outcome_Measure + ', of at least ' + Success_Effect_Size +  ' ' + Measure_Units + ' or more where the probability that the ' + Outcome_Direction +  ' is caused by ' + Basics_Tech_Name + ' is at least ' + Pass_Probability + '%. If the probability is less than ' + Fail_Probability + '%,  we would feel confident concluding that ' + Basics_Tech_Name + ' did not have the intended effect.  If the probability that ' + Basics_Tech_Name + ' caused the observed outcome is between ' + Pass_Probability + '% and ' + Fail_Probability + '% then we would not feel confident making any conclusions based on the results from this evaluation.';
+
+for (grade in analysis_results_by_grade) {
 
                 var grade_results = analysis_results_by_grade[grade];
 
                 var probability = stripPercent(grade_results.interpretation.probability[0]);
                 var cutoff_probability = stripPercent(grade_results.interpretation_cutoff_0.probability[0]);
                 var success = (probability > Pass_Probability);
-                var inconclusive = (cutoff_probability < Pass_Probability) && (cutoff_probability > Fail_Probability)
+                var inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability)
 
                 if (success) {
                     success_count++;
@@ -640,7 +659,13 @@ if (eval.path) {
     path = eval.path;
 
     if (path === 'path-matching') {
-        try {
+    try {
+
+ 
+                          interpretation_matching_note =
+                            "This analysis relies on the validity of the comparison group. To see how the comparison group was created check our <a href='/static/pdf/Matching%20Overview.pdf' target='_blank'>Matching Overview</a>. Table 1 summarizes the number of " + Basics_Users + " in the treatment and comparison groups before and after matching. It is important to note that these findings only apply to " + Basics_Users + " who were included in the final evaluation sample. You should consider this when deciding how to move forward with the technology";
+
+                      
             pilot_type = 'matched';
             match_results = JSON.parse(eval.matching.Result);
 

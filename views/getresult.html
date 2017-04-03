@@ -152,6 +152,9 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
 
                 <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px"/>% probability that <%= Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that the educational technology had the intended effect.
             </p>
+            <p>
+                If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
+            </p>
             <% if (user != "NOAUTHENTICATED") {%>
             <p class="prev-answer">
                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How You Will Use The Results</a>
@@ -179,6 +182,7 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
                             This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology is saving you a lot of money, you may be willing to consider any change that is greater than a small negative number a success.
                         </p>
                         <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. What likelihood (or probability) will you need to be comfortable concluding that the educational technology is moving the needle? You may want a higher level of certainty, and therefore a higher probability, if your results will impact a higher stakes decision, such as implementing a district-wide curriculum. But you may be comfortable with a lower probability for a lower stakes decision. </p>
+                        <p>The Coach will calculate the probability the differences found between the treatment and control group at the end of your evaluation are caused by <%= Basics_Tech_Name %> and compare that probability to those entered here to determine whether or not <%= Basics_Tech_Name %> had the intended effect.</p>
                     </div>
                 </div>
 

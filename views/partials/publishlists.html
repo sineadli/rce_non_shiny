@@ -9,6 +9,7 @@
     d = new Date(publishlists[i].published_at);
     tech_name = publishlists[i].basics.Basics_Tech_Name;
     author = publishlists[i].author;
+    title = publishlists[i].title;
     company = publishlists[i].company;
 
     if (publishlists[i].planContext.Outcomes) {
@@ -33,6 +34,7 @@
             </div>
             <div class="col-xs-10">
                 <div class="r_t"><%= tech_name %></div>
+                <div class="r_a"><%= title %></div>
                 <div class="r_a"><%= author %> <%= " - " + company %></div>
                 <div class="r_d"><%=  d.getMonth() + 1+ '/' + d.getDate() + '/' + d.getFullYear()  %></div>
                 <div class="r_g"><strong>Grades: </strong><%= grades[0] + " - " + grades[last] %></div>
