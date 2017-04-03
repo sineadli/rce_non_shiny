@@ -180,8 +180,8 @@ module.exports = function(app, passport) {
                 var transport = nodemailer.createTransport({
                     // service: '???',
                     port: 25, //confirm with company or 465?
-                    // host: 'edtechrce.org' //for qa server
-                    host: 'intrelay.mathematica-mpr.com' //for local
+                     host: 'localhost' //for qa server
+                    //host: 'intrelay.mathematica-mpr.com' //for local
                     // host: 'smtp.mathematica-mpr.com',
                     //auth: {
                     //    user: '???',    //get this from ITS?
@@ -189,7 +189,7 @@ module.exports = function(app, passport) {
                     //}
                 });
                 var mailOptions = {
-                    to: "bgelhard@mathematica-mpr.com",
+                    to: "EdTechRCE@mathematica-mpr.com",
                     from: 'intrelay.mathematica-mpr.com',
                     subject: 'RCE Feedback',
                     text: 'Feedback from ' + req.body.user_email + ' viewing ' + req.body.page + '\n\n' + req.body.message
