@@ -52,7 +52,8 @@ var tabcounter = 0; var figcounter = 0;
     <form action="" method="post">
         <% } %>
     <% include('../views/partials/brief_appendix_evaluation_processing.html')
-   
+       
+
     %>
      
 
@@ -65,7 +66,7 @@ var tabcounter = 0; var figcounter = 0;
                         <%= eval.title %><br />
 
                         <%
-                         if(query.sharing == 1) {
+                         if(query.sharing == 1 || display == 'download') {
                         %>
                         
                         <%= author %><br />
@@ -99,7 +100,7 @@ var tabcounter = 0; var figcounter = 0;
                         compared to
                         <%= Comparison_Group_Desc %>?
 
-                        <% if (display === 'online') { %>
+                        <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
                         <p class="prev-answer hidden-print">
                             <i class="fa fa-hand-o-right"></i> Where did I answer this? See
                             <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
@@ -113,7 +114,11 @@ var tabcounter = 0; var figcounter = 0;
 
 
                         var findingsTableRows = "";
-                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + "</th></tr>";
+                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th>";
+                        if(Success_Effect_Size != 0 ) {
+                                 findingsTableHeader = findingsTableHeader + "<th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + "</th>";
+                        }
+                        findingsTableHeader = findingsTableHeader + "</tr>";
 
 
                         for (grade in analysis_results_by_grade) {
@@ -152,10 +157,14 @@ var tabcounter = 0; var figcounter = 0;
 
                     var interpretation_1 = "There is a " + probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more. " + interpret_1_conclusion;
 
-                 
 
 
-                    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + probability + "</td><td class='align-right'>" + cutoff_probability + "</td></tr>";
+
+                    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + round10(probability,0) + "%</td>";
+                    if(Success_Effect_Size != 0 ) {
+                        findingsTableRows = findingsTableRows + "<td class='align-right'>" + round10(cutoff_probability,0) + "%</td>";
+                        }
+                     findingsTableRows = findingsTableRows +"</tr>";
 
                         grade_results_clean = true;
                         } catch (e) {
@@ -684,7 +693,7 @@ var tabcounter = 0; var figcounter = 0;
 
                         if(means) {
 
-                        tableRows = tableRows + '<tr><td>' + grade + '</td><td>' + means.intervention +'</td><td>' + means.comparison +'</td><td>' + impact +  '</td></tr>';
+                        tableRows = tableRows + '<tr><td>' + grade + '</td><td>' + round10(means.intervention,2) +'</td><td>' + round10(means.comparison,2) +'</td><td>' + round3(impact) +  '</td></tr>';
 
                         }
                         } // end grade loop.
@@ -694,6 +703,8 @@ var tabcounter = 0; var figcounter = 0;
                          tabcounter = 1 + tabcounter; 
                         %>
                         <table><caption>Table <%=  tabcounter %>. Average outcomes for the treatment and comparison groups</caption><%- initTableHeader %><%- tableRows %></table><%- impactfootnote %>
+                        <% } else { %>
+                        <p>We've improved the evaluation impact analysis. To see average outcomes for treatment and comparison groups, please return to and re-run the Get Results tool.</p>
                         <% } %>
                         <p>
                             Analysis of <%= Basics_Tech_Name %>
@@ -710,12 +721,12 @@ var tabcounter = 0; var figcounter = 0;
 
                         <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                         <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
-                            <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
+                            <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
+                            <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
                         </p>
                         <% } %>
 
-                        <% if (baseline_vars && baseline_vars.length > 0 && display === 'online' && query.sharing !== "1") { %>
+                        <% if (control_vars && control_vars.length > 0 && display === 'online' && query.sharing !== "1") { %>
                         <div class="hidden-print col-offset-1">
                             <h3>Re-label control variables (optional):</h3>
                             <% for (index in control_vars) {

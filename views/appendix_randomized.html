@@ -68,8 +68,8 @@
                                         If any of the characteristics have a large value in the "Difference" column, those are characteristics in which differences between users and non-users remain after matching.
                                         Differences at baseline on important measures (like a baseline test) mean you should interpret the differences in outcomes with caution -
                                         they may be caused in part by pre-existing differences between users and non-users.
-                                        You can also check this by comparing the effect size to the values indicated in Table 2.
-                                        You want the effect size to be less than 0.05.
+                                        You can also check this by comparing the standardized difference to the values indicated in Table 2.
+                                        You want the standardized difference to be less than 0.05.
                                     </p>
                                 </div>
                               
@@ -87,15 +87,15 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>effect size &le; 0.05</td>
+                                                <td>standardized difference &le; 0.05</td>
                                                 <td>Satisfies baseline equivalence requirement</td>
                                             </tr>	
                                             <tr>
-                                                <td>0.05 &lt; effect size &le; 0.25</td>
+                                                <td>0.05 &lt; standardized difference &le; 0.25</td>
                                                 <td>Requires statistical adjustment</td>
                                             </tr>
                                             <tr>
-                                                <td>0.25 &lt; effect size</td>
+                                                <td>0.25 &lt; standardized difference</td>
                                                 <td>Does not satisfy baseline equivalence requirement</td>
                                             </tr>
                                         </tbody>
@@ -177,7 +177,7 @@
                                             <ul>
                                                 <li> <%= interpretation_1 %></li>
                                                 <li> <%= interpretation_2 %></li>
-                                                <li> The point estimate (e.g., our best guess) of the effect of the educational technology on the outcome is <%= round3(impact) %>. This number is calculated as the mean of the posterior distribution.</li>
+                                                <li> The point estimate (e.g., our best guess) of the effect of the educational technology on the outcome is <%= round10(impact,2) %>. This number is calculated as the mean of the posterior distribution.</li>
                                             </ul>
                                         
                                             <% } else { %>
@@ -258,7 +258,7 @@
                                                             var ci = [impact - (1.96 * se), impact + (1.96 * se)];
                                                         }
 
-                                                        var ci_string = '[' + round3(ci[0]) + ', ' + round3(ci[1]) + ']';
+                                                        var ci_string = '[' + round10(ci[0],3) + ', ' + round10(ci[1],3) + ']';
 
                                                         var pvalue = grade_results.freq.pvalue;
                                                         var significant = (pvalue <= 0.05) ? '' : ' not';
@@ -313,8 +313,7 @@
                                         It is important to note that the impact estimate is not the true effect of the technology, just what could be estimated based on the study sample.
                                         The confidence interval allows us to estimate a plausible range of values for the true effect, which is unknown, based on the observed impact in the study sample.
                                         You might be tempted to think that values at the end of the interval are less likely than values in the middle, but this is not correct.
-                                        When interpreting the <%= ci_string %> confidence interval, you should keep in mind that all the values contained in the interval are equally likely to be the
-                                        true impact of the intervention. The 95% threshold for the confidence interval is commonly used, though you could calculate the interval for a different threshold.
+                                        The 95% threshold for the confidence interval is commonly used, though you could calculate the interval for a different threshold.
                                         What this means is that if you were to conduct your study 100 times, in 95 cases you would calculate an interval that includes the true effect of the technology.
                                     </p>
                                 <% } %>

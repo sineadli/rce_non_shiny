@@ -146,6 +146,9 @@ nav.navbar-default {
 body.homepage div.footer-row {
     background-color: #E3E1CE;
 }
+body.homepage .container-fluid {
+    margin-bottom: 150px;
+}
 body.homepage nav.navbar-default {
 	margin-left: 0px !important;
 	margin-right: 0px !important;
@@ -570,6 +573,10 @@ div.welcome-text, div.prev-tools {
     -webkit-box-shadow: none;
     box-shadow: none;
     background-color: #FBFAF7;
+    }
+
+    div.user-p {
+       display: none;
     }
 
 }
@@ -2016,6 +2023,23 @@ body.brief p.note {
     margin: 10px auto;
            
         }
+
+.relabel-div {
+        font-size: .8em;
+    border: 2px solid #B8B28F;
+    padding: 0 0px 20px 20px;
+    border-radius: 5px;
+    width: 45%;
+    min-width: 290px;
+    margin: 0 auto;
+
+}
+.relabel-row {
+    margin-top: 15px;
+}
+.relabel-row input {
+    width: 90%;
+}
 @media (max-width:450px) {
     body.brief .white-background-blue-border {
         font-size: .9em;
@@ -2029,7 +2053,7 @@ body.brief p.note {
 }
         body.brief .white-background-blue-border h3 {
             font-size: 1.2em;
-            margin-top: 0;
+            margin-top: 20px;
             padding: 0 0 10px 0;
             border-bottom: 1px solid #C1BEAE;
         }

@@ -410,9 +410,7 @@ if (eval.getresult) {
             control_vars_relabel =control_vars;
 
 success_count = 0, failure_count = 0; inconclusive_count = 0;
-
-interpretation_note =
-                        'For this evaluation, a successful outcome is defined as an average ' + Outcome_Direction +  ' in ' + Basics_Outcome + ', as measured by ' + Outcome_Measure + ', of at least ' + Success_Effect_Size +  ' ' + Measure_Units + ' or more where the probability that the ' + Outcome_Direction +  ' is caused by ' + Basics_Tech_Name + ' is at least ' + Pass_Probability + '%. If the probability is less than ' + Fail_Probability + '%,  we would feel confident concluding that ' + Basics_Tech_Name + ' did not have the intended effect.  If the probability that ' + Basics_Tech_Name + ' caused the observed outcome is between ' + Pass_Probability + '% and ' + Fail_Probability + '% then we would not feel confident making any conclusions based on the results from this evaluation.';
+ interpretation_note = 'For this evaluation, ' + Basics_Tech_Name + ' is considered successful if the probability is at least ' + Pass_Probability + '% that ' + Basics_Tech_Name + ' caused an average ' + Outcome_Direction + ' of at least ' + Success_Effect_Size +  ' ' + Measure_Units +  ' in ' + Basics_Outcome + ' as measured by ' + Outcome_Measure + '. If the probability is less than ' + Fail_Probability + '%, we would feel confident concluding that ' + Basics_Tech_Name + ' did not have the intended effect.  If the probability that ' + Basics_Tech_Name + ' caused the observed outcome is between ' + Pass_Probability + '% and ' + Fail_Probability + '% then we would not feel confident making any conclusions based on the results from this evaluation.';
 
 for (grade in analysis_results_by_grade) {
 
