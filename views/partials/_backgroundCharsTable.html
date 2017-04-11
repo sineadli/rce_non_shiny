@@ -82,11 +82,30 @@ Uses values set in brief_appendix_evaluation_processing.html
             <td rowspan="<%= growspan %>"> <%= grade %></td>
             <% } %>
             <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= control_vars_relabel[index] %></span></td>
-            <td> <%= round10(baseline_var_means[characteristic].overall[0],2) %></td>
-            <td> <%= round10(baseline_var_means[characteristic].intervention[0],2) %></td>
-            <td> <%= round10(baseline_var_means[characteristic].comparison[0],2) %></td>
-            <td> <%= round10(baseline_var_means[characteristic].difference[0],2) %></td>
-            <td> <%= round3(baseline_var_means[characteristic].effect_size[0]) %></td>
+
+            <% 
+                var overall      = baseline_var_means[characteristic].overall[0];
+                var intervention = baseline_var_means[characteristic].intervention[0];
+                var comparison   = baseline_var_means[characteristic].comparison[0];
+                var difference   = baseline_var_means[characteristic].difference[0];
+                var effect_size  = baseline_var_means[characteristic].effect_size[0];
+
+console.log(characteristic);
+console.log(JSON.stringify(baseline_var_means[characteristic]));
+
+
+                overall = overall      === null ? 'NA' : round10(overall, 2);
+                intervention = intervention === null ? 'NA' : round10(intervention, 2);
+                comparison = comparison   === null ? 'NA' : round10(comparison, 2);
+                difference = difference   === null ? 'NA' : round10(difference, 2);
+                effect_size = effect_size  === null ? 'NA' : round3(effect_size);
+            %>
+
+            <td> <%= overall %></td>
+            <td> <%= intervention %></td>
+            <td> <%= comparison %></td>
+            <td> <%= difference %></td>
+            <td> <%= effect_size %></td>
         </tr>
         <% }
         %>
