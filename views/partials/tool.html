@@ -51,7 +51,7 @@
         var current = eval.last_tool == tools[i].name ? "current" : "";
         var buttondivid = tools[i].name;
    
-        if ((peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) ) {btnText="PEEK"; lock="locked"; }
+        if (( eval.userid != user.id ||peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) ) {btnText="PEEK"; lock="locked"; }
         if (tools[i].coachStep===4 ) {
             tooltip= dyaMessage; 
             if ( tools[i].evalPath  &&  eval.path && tools[i].evalPath !== eval.path){

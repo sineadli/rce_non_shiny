@@ -1,0 +1,105 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Administration - Ed Tech RCE Coach</title>
+    <% include ../views/partials/scriptHeader.html %>
+    <style>
+
+    </style>
+</head>
+<body class="one-col">
+    <% include ../views/partials/header.html %>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Evaluation Dashboard</a></li>     
+    </ol>
+   
+    <div class="container-fluid">
+        
+        <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
+        <input type="hidden" id="user_email" value="<%= user.email %>" />
+        <% if(obj) {%>
+        <input type="hidden" id="obj_search" value="<%= obj.search %>" />
+        <input type="hidden" id="obj_sort" value="<%= obj.sort %>" />
+        <%}%>
+        
+            <div class="page-header">
+                <h1 class="page-title">Evaluation management</h1>
+                    <div class="row">
+                        <form id="s">
+
+                            <div class="fbar">
+                                <label class="hidden" for="keywords">Enter search keywords.</label>
+                                <input id="keywords" type="text" name="search" placeholder="Technology, outcome, grade, author or organization">
+                                <input type="submit" value="SEARCH" class="btn btn-primary" id="btnSearch">
+                            </div>
+
+                            <div class="sbar">
+
+                                <label for="sortby"> Sort by:&nbsp;&nbsp;</label>
+                                <select name="sort" id="sortby" onchange="this.form.submit(); ">
+                                    <option value="1">Tech Name (A-Z)</option>
+                                    <option value="-1">Tech Name (Z-A)</option>
+
+                                </select>
+                            </div>
+
+                        </form>
+                    </div>
+         
+            </div>
+             <div id="result">
+            <% include ../views/partials/evaluationListsforAdmin.html %>
+        </div>
+    </div>
+        
+
+        <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var sort = $("#obj_sort").val();
+            if (sort === undefined || sort == null || sort.length <= 0) sort = "1";
+            $("#sortby").val(sort);
+
+            $('#deleteConfirm').on('show.bs.modal', function (e) {
+
+                //get delete-id attribute of the clicked element
+                var deletedId = $(e.relatedTarget).data('delete-id');
+                console.log(deletedId);
+                var title = $(e.relatedTarget).data('delete-title');
+
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
+                $(e.currentTarget).find('label[id="evaltl"]').text(title);
+            });
+            $("#delEval").click(function (e) {
+                var idtobedeleted = $("#toDeleted").val();
+
+                var url = '/api/delEval';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({ "id": idtobedeleted }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+
+                    }
+                }
+                )
+                $(document).ajaxStop(function () { location.reload(true); });
+            });
+        });
+
+    </script>
+</body>
+</html>

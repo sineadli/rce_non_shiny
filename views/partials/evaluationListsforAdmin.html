@@ -1,0 +1,77 @@
+﻿<div class="col-xs-12 content">
+
+    <% if(evalLists.length>0){
+    var d, tech_name, outcomes, grades, id;
+
+    for (var i=0; i < evalLists.length; i++){
+    grades = []; outcomes=[];
+    id =evalLists[i]._id ;
+    d = new Date(evalLists[i].created_at);
+    tech_name = evalLists[i].basics.Basics_Tech_Name;
+   
+    title = evalLists[i].title;
+
+
+    if (evalLists[i].planContext.Outcomes) {
+    outcomes = evalLists[i].planContext.Outcomes;
+    foutcomes = outcomes.join(', ');
+
+    }
+
+
+    if (evalLists[i].planContext.Grades){
+    grades = evalLists[i].planContext.Grades;
+    }
+
+
+    var last = grades.length - 1;
+    %>
+
+    <div class="row dash-well r_i " id="<%= id %>">
+        <div class="row">
+            <div class="col-xs-2">
+                <div class="r_f "><a class="r_f btn btn-primary" href="/coach/<%= id %>" id="viewbrief">VIEW</a></div>
+                <div class="r_f "><a class="r_f btn btn-primary" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=title %>" >Delete</a></div>             
+             </div>
+            <div class="col-xs-10">              
+                <div class="r_t"><%= tech_name %></div>
+                <div class="r_a"><%= title %>
+                <p>
+                    <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
+                </p>
+                </div>
+                
+                <div class="r_g"><strong>Grades: </strong><%= grades[0] + " - " + grades[last] %></div>
+                <div class="r_oc"><strong>Outcome areas:</strong> <%- foutcomes %></div>
+            </div>
+        </div>
+    </div>
+  
+    <% }} else { %>
+    <p>No evalucations found.</p>
+    <% } %>
+
+</div>
+
+<div id="deleteConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Evaluation</h4>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Are you sure you want to delete <label id="evaltl"></label>?
+                </label>
+                <input type="hidden" id="toDeleted" />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                <button type="button" id="delEval" class="btn btn-primary btn-lg" data-dismiss="modal">DELETE</button>
+            </div>
+        </div>
+    </div>
+</div>

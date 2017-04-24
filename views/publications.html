@@ -33,14 +33,14 @@
             <div class="row">
 
                 <form id="s">
-                    <div id="fbar">
-                        <div>
+  
+                        <div class="fbar">
                             <label class="hidden" for="keywords">Enter search keywords.</label>
                             <input id="keywords" type="text" name="search" value="<%= obj.search %>" placeholder="Technology, outcome, grade, author or organization">
                             <input type="submit" value="SEARCH" class="btn btn-primary" id="btnSearch">
                         </div>
-                    </div>
-                    <div id="sbar">
+
+                    <div class="sbar">
                         <label for="sortby"> Sort by:&nbsp;&nbsp;</label>
                         <select name="sort" id="sortby" onchange="this.form.submit(); ">
                             <% var options = ["Publication Date (Newest First)", "Publication Date (Oldest First)","Tech Name (A-Z)","Tech Name (Z-A)" ];
