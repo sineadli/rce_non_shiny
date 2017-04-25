@@ -1,0 +1,50 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/partials/header.html -->
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/logout">
+            <h3 class="sec-label">
+                Ed Tech RCE Coach <!--<span style="text-transform: none;"><em>beta</em></span>-->
+            </h3>
+        </a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <% if (admin) { %>
+    <div class="collapse navbar-collapse" id="nav-collapse">
+        <ul class="nav navbar-nav pull-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <!-- The Profile picture inserted via div class below, with shaping provided by Bootstrap -->
+                    <span class="fa fa-user" style="color: #000;"></span>
+                    <%= admin.profile.user_name %> <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="/setting">Edit Profile</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <% } else { %>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="pull-right" id="home-access">
+        <span class="fa fa-user" style="color: #000;"></span>&nbsp;&nbsp;<a href="/login">Login</a> | <a href="/signup">Create Account</a>
+    </div>
+    <% } %>
+</nav>
+<ol class="breadcrumb" id="breadcrb" hidden>
+    <li class="breadcrumb-item"><a href="/PreviewTools"><span class="fa fa-caret-left"></span> Back to Preview Tools</a></li>
+</ol>

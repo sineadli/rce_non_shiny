@@ -12,7 +12,7 @@ var fs = require('fs');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var sess;
 var nodemailer = require('nodemailer');
-
+var User = require('../models/user');
 var async = require('async');
 
 module.exports = function(app, passport) {
@@ -134,36 +134,53 @@ module.exports = function(app, passport) {
     app.get('/setting', isLoggedIn, function(req, res) {
         //console.log('cookie: ' + JSON.stringify(req.headers['cookie']));
         res.render('profileAndSetting.html', {
-            user: req.user // get the user out of session and pass to template
+            user: req.user, admin:"" // get the user out of session and pass to template
         });
     });
     app.post('/setting', isLoggedIn, function(req, res) {
+        
+        console.log(req.body.id);
+        console.log(req.body.admId);
+        if (req.body.id) {
+            User.findOne({ _id: req.body.id }, function (err, user) {
+                if (err)
+                    console.log(err);
+                else {
+                    if (req.body.email) user.local.email = req.body.email
+                    if (req.body.password) user.local.password = req.user.generateHash(req.body.password);
+                    if (req.body.role) user.profile.role = req.body.role;
+                    if (req.body.role_other) user.profile.role_other = req.body.role_other;
+                    if (req.body.organization_name) user.profile.organization_name = req.body.organization_name;
+                    if (req.body.first_name) {
+                        user.profile.first_name = req.body.first_name;
+                        user.profile.user_name = req.body.first_name;
+                    }
+                    if (req.body.last_name) {
+                        user.profile.last_name = req.body.last_name;
+                        user.profile.user_name = req.body.last_name;
+                    }
+                    if (req.body.first_name && req.body.last_name) user.profile.user_name = req.body.first_name + " " + req.body.last_name;
 
-
-        if (req.body.email) req.user.local.email = req.body.email
-        if (req.body.password) req.user.local.password = req.user.generateHash(req.body.password);
-        if (req.body.role) req.user.profile.role = req.body.role;
-        if (req.body.role_other) req.user.profile.role_other = req.body.role_other;
-        if (req.body.organization_name) req.user.profile.organization_name = req.body.organization_name;
-        if (req.body.first_name) {
-            req.user.profile.first_name = req.body.first_name;
-            req.user.profile.user_name = req.body.first_name;
+                    if (req.body.receive_update) user.receive_update = req.body.receive_update;
+                    if (req.body.organiztion_type) user.profile.organiztion_type = req.body.organiztion_type;
+                    if (req.body.organiztion_type_other) user.profile.organiztion_type_other = req.body.organiztion_type_other;
+                    // req.user.profile.user_pic.data = fs.readFile('../50183_RCE/public/image/me.jpg');
+                    // req.user.profile.user_pic.contentType = 'image/jpg'=
+                    if (req.body.isAdmin && req.body.admId) user.isAdmin = req.body.isAdmin;
+                    user.save(function (err) {
+                        if (err) console.log(err);
+                        if (req.body.admId)
+                        {
+                            res.redirect('/api/setting/' + req.body.id)
+                        }
+                        else {
+                            res.redirect('/setting');
+                        }
+                    });
+                }
+            });
         }
-        if (req.body.last_name) {
-            req.user.profile.last_name = req.body.last_name;
-            req.user.profile.user_name = req.body.last_name;
-        }
-        if (req.body.first_name && req.body.last_name) req.user.profile.user_name = req.body.first_name + " " + req.body.last_name;
 
-        if (req.body.receive_update) req.user.receive_update = req.body.receive_update;
-        if (req.body.organiztion_type) req.user.profile.organiztion_type = req.body.organiztion_type;
-        if (req.body.organiztion_type_other) req.user.profile.organiztion_type_other = req.body.organiztion_type_other;
-        // req.user.profile.user_pic.data = fs.readFile('../50183_RCE/public/image/me.jpg');
-        // req.user.profile.user_pic.contentType = 'image/jpg'=
-        req.user.save(function(err) {
-            if (err) console.log(err);
-            res.redirect('/setting');
-        });
 
     });
     // =====================================

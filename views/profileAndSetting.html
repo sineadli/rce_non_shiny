@@ -50,7 +50,12 @@
 
 </head>
 <body>
+    <% if (admin) { %> 
+    <% include ../views/partials/adminHeader.html %>
+     <% } else { %>
     <% include ../views/partials/header.html %>
+    <% } %>
+
     <form action="/setting" method="post">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
@@ -59,6 +64,7 @@
             <div class="page-header">
                 <h1 class="page-title">Profile and Settings</h1>
             </div>
+            <input type="hidden" name="id" value="<%= user.id %>" />
             <div class="row">
                 <div class="col-sm-3">
                     <div class="dash-well">
@@ -152,6 +158,35 @@
                             </div>
 
                         </div>
+                        <% if (admin) { %>
+                        <input type="hidden" name="admId" value="<%= admin.id %>" />
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label class="label-one" style="text-align:left;">Is Admin </label>
+                                    <% var adm = "No"; if (user.isAdmin) {adm = "Yes";} %>
+                                    <label class="label-two"><%= adm %></label>
+                                    <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseAdmin">Update</a></label>
+                                </h4>
+
+                            </div>
+
+                            <div id="collapseAdmin" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="form-group col-sm-6 col-sm-offset-2">
+                                            <% var ad = ""; if (user.isAdmin) {ad=user.isAdmin?"checked":"";} %>
+                                            <input type="checkbox" id="chkadm" name="isAdmin" <%= ad %>> <label style="margin-top: 0;" for="chkRecUpdate">check this to make this user an administrator.</label>
+                                        </div>
+                                        <div class="col-sm-3 col-sm-offset-9 ">
+                                            <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <% } %>
                         <h2 style="margin-top: 45px;">Profile Information</h2>
                         <div class="panel panel-default">
                             <div class="panel-heading">

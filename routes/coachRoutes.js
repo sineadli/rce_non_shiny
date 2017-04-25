@@ -18,25 +18,33 @@ var noCache = require('../middleware/noCache.js');
 var getSelectedEvaluations = require('../middleware/getSelectedEvaluations.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
 var isAdmin = require('../middleware/isAdmin.js');
+var getAllUsers = require('../middleware/getAllUsers.js');
+var User = require('../models/user');
 var sess;
 
 
 
 module.exports = function (app, passport) {
     app.use(noCache);
-  
+
     //dashboard, require logged in and get current evaluation
-   // app.use(getCurrentEvaluation);
-    app.get('/dashboard', isLoggedIn, getAllEvaluations,  function (req, res) {
+    // app.use(getCurrentEvaluation);
+    app.get('/dashboard', isLoggedIn, getAllEvaluations, function (req, res) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, evals: sess.evals });
     });
     app.get('/admin', isAdmin, getSelectedEvaluations, function (req, res) {
         sess = req.session;
         query = require('url').parse(req.url, true).query;
-        res.render('AdminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: query  });
+        res.render('adminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: query });
     });
-  
+    app.get('/userAdmin', isAdmin, getAllUsers, function (req, res) {
+        sess = req.session;
+        query = require('url').parse(req.url, true).query;
+
+        res.render('userAdminDashboard.html', { user: req.user, userLists: sess.userLists, obj: query });
+    });
+
     app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
         sess = req.session;
         res.render('evaluations.html', { user: req.user, evals: sess.evals });
@@ -51,41 +59,42 @@ module.exports = function (app, passport) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
     });
-    
+
 
     app.get('/coach', isLoggedIn, getCurrentEvaluation, function (req, res) {
-		sess = req.session;
-		if (!sess.step) { sess.step = 2 }
-		if (!sess.last_tool) {sess.last_tool = "none"}
+        sess = req.session;
+        if (!sess.step) { sess.step = 2 }
+        if (!sess.last_tool) { sess.last_tool = "none" }
         console.log(req.user);
-        res.render('coach.html', { user: req.user, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step 
-            });
+        res.render('coach.html', {
+            user: req.user, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step
+        });
 
     });
     app.get('/coach/:id', isLoggedIn, function (req, res) {
         sess = req.session;
-		Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
-			console.log("in get coach with id: " + eval.title);
+        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
+            console.log("in get coach with id: " + eval.title);
             sess.eval = eval;
             sess.step = eval.last_step;
             if (!sess.step) sess.step = 2;
             sess.last_tool = "none";
-			req.user.evalid = eval._id;
-			eval.updated_at = new Date();
+            req.user.evalid = eval._id;
+            eval.updated_at = new Date();
             eval.save();
             req.user.save();
             res.render('coach.html', { user: req.user, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step });
         });
     });
 
-	// this is for returning the partial view tool.html on the coach.html
+    // this is for returning the partial view tool.html on the coach.html
     app.get('/tools/:coachStep', isLoggedIn, function (req, res) {
 
-		sess = req.session;
-        var coachStep = sess.coachsteps.filter(function (x) { return (x.step === req.params.coachStep) }); 
-        var tools = sess.tools.filter(function (x) { return (x.coachStep == req.params.coachStep) });     
+        sess = req.session;
+        var coachStep = sess.coachsteps.filter(function (x) { return (x.step === req.params.coachStep) });
+        var tools = sess.tools.filter(function (x) { return (x.coachStep == req.params.coachStep) });
         res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval, user: req.user });
-	});
+    });
 
     //this route is update evaluation object, it is called from dashboard.html and coach.html
     //new or change title only
@@ -93,40 +102,40 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.step = 2;
         if (!req.body.id) {
-			var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
-			// Pre-populate milestones. Moved from get current eval.
-			if (eval.evalPlan.Milestones.length == 0) {
-				for (var i = 0; i < 12; i++) {
-					var m = ({
-						Order:
- i + 1,
-						Milestone_Name:
- '',
-						Complete_Date:
- '',
-						Assigned_To:
- '',
-						Status:
- '',
-						Notes:
- '',
-						Hide:
- ''
-					});
-					
-					eval.evalPlan.Milestones.push(m);
-				}
-			}
+            var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
+            // Pre-populate milestones. Moved from get current eval.
+            if (eval.evalPlan.Milestones.length == 0) {
+                for (var i = 0; i < 12; i++) {
+                    var m = ({
+                        Order:
+                        i + 1,
+                        Milestone_Name:
+                        '',
+                        Complete_Date:
+                        '',
+                        Assigned_To:
+                        '',
+                        Status:
+                        '',
+                        Notes:
+                        '',
+                        Hide:
+                        ''
+                    });
+
+                    eval.evalPlan.Milestones.push(m);
+                }
+            }
 
             eval.save(function (err) {
                 if (err)
                     console.log(err);
-				else {
-					console.log("in post api eval");
+                else {
+                    console.log("in post api eval");
                     sess.eval = eval;
                     req.user.evalid = eval._id;
-					req.user.save();
-					eval.updated_at = new Date();
+                    req.user.save();
+                    eval.updated_at = new Date();
                     eval.save();
                     res.status(201).send(eval);
                 }
@@ -140,11 +149,11 @@ module.exports = function (app, passport) {
                 else {
                     if (!eval) {
                         eval = new Evaluation({ _id: req.body.id, userid: req.user._id });
-					}
-					console.log("in post eval find by id");
+                    }
+                    console.log("in post eval find by id");
                     eval.title = req.body.title;
-					sess.eval = eval;
-					eval.updated_at = new Date();
+                    sess.eval = eval;
+                    eval.updated_at = new Date();
                     eval.save(function (err) {
                         if (err)
                             console.log(err);
@@ -161,7 +170,7 @@ module.exports = function (app, passport) {
     });
 
     app.post('/api/delEval', isLoggedIn, function (req, res) {
-        Evaluation.remove({ _id: req.body.id}, function (err) {
+        Evaluation.remove({ _id: req.body.id }, function (err) {
             if (err)
                 console.log(err);
             else {
@@ -172,7 +181,7 @@ module.exports = function (app, passport) {
     })
     //db.evaluations.update({ _id: eval._id, "toolsvisited.name":"Share Your Results" }, { $set: { "toolsvisited.$.status": "started" } });
     app.post('/api/unshared', isLoggedIn, function (req, res) {
-        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started" } },  function (err) {
+        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started" } }, function (err) {
             if (err)
                 console.log(err);
             else {
@@ -181,7 +190,38 @@ module.exports = function (app, passport) {
             }
         });
     })
-};
+
+    app.post('/api/delUser', isAdmin, function (req, res) {
+        Evaluation.remove({ userid: req.body.id }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+                console.log("all evaluation for " + req.body.id + " deleted" );
+
+            }
+        });
+        User.remove({ _id: req.body.id }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+                console.log("Selected user deleted.");
+                res.status(201).send("Selected user deleted.");
+            }
+        });
+    })
+
+    app.get('/api/setting/:id', isAdmin, function (req, res) {
+        User.findOne({ _id: req.params.id }, function (err, user) {
+            if (err)
+                console.log(err);
+            else {
+                res.render('profileAndSetting.html', {
+                    user: user, admin: req.user
+                });
+            }
+        });
+    })
+}
 
 
 

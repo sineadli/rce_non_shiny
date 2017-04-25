@@ -8,50 +8,50 @@
 *   Contract No. ED-OOS-15-C-0053.
 *******************************************************************************/
 
-// middleware/getAllEvaluations.js
-//load the thing we need
-var Evaluation = require('../models/evaluation');
+var User = require('../models/user');
 
-var getSelectedEvaluations = function (req, res, next) {
+var getAllUsers = function (req, res, next) {
     sess = req.session;
     var sort = 1;
     var search = "";
     var query = require('url').parse(req.url, true).query;
     if (query.search) search = query.search;
     if (query.sort) sort = query.sort;
-
-    if (search) {
-        Evaluation.find({
-            $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
-                { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
-        }).sort({ "basics.Basics_Tech_Name": sort }).select("userid title status created_at basics.Basics_Tech_Name planContext").exec(function (err, evals) {
+    if (search)
+    {
+        User.find({
+            $or: [{ "profile.user_name": { $regex: new RegExp(search, "i") } }, { "local.email": { $regex: new RegExp(search, "i") } }
+                , { "profile.organization_name": { $regex: new RegExp(search, "i") } }
+            ]
+        }).sort({ "profile.user_name": 1 })
+            .select("local.email profile.user_name profile.organization_name created_at profile.first_name profile.last_name")
+            .exec(function (err, users) {
             if (err) {
                 console.log(err);
                 return next();
             } else {
 
-                if (evals) { sess.evalLists = evals; return next(); }
+                if (users) { sess.userLists = users; return next(); }
                 return next();
             }
         });
     }
-    else {
-        Evaluation.find().sort({ "basics.Basics_Tech_Name": sort }).select("userid title status created_at basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+    else
+    {
+        User.find().sort({ "profile.user_name": 1 })
+            .select("local.email profile.user_name profile.organization_name created_at profile.first_name profile.last_name")
+            .exec(function (err, users) {
             if (err) {
                 console.log(err);
                 return next();
             } else {
 
-                if (evals) { sess.evalLists = evals; return next(); }
+                if (users) { sess.userLists = users; return next(); }
                 return next();
             }
         });
     }
-
-
+   
 };
 
-module.exports = getSelectedEvaluations;
-
-
-
+module.exports = getAllUsers;
