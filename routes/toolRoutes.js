@@ -15,7 +15,7 @@ var async = require('async');
 var extend = require('util')._extend;
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
-var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
+//var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var configDB = require('../config/database.js');
 var sess;
 //please note that req.sess.step is for managing the active tab for coach.html
@@ -25,7 +25,7 @@ var sess;
 
 module.exports = function (app, passport) {
    // app.use(isLoggedIn);
-    app.use(getCurrentEvaluation);
+   // app.use(getCurrentEvaluation);
 		
 	function dynamicSort(property) {
 		var sortOrder = 1;

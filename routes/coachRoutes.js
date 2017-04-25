@@ -15,8 +15,9 @@ var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var getAllEvaluations = require('../middleware/getAllEvaluations.js');
 var getAllPublications = require('../middleware/getAllPublications.js');
 var noCache = require('../middleware/noCache.js');
-
+var getSelectedEvaluations = require('../middleware/getSelectedEvaluations.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
+var isAdmin = require('../middleware/isAdmin.js');
 var sess;
 
 
@@ -30,7 +31,12 @@ module.exports = function (app, passport) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, evals: sess.evals });
     });
-
+    app.get('/admin', isAdmin, getSelectedEvaluations, function (req, res) {
+        sess = req.session;
+        query = require('url').parse(req.url, true).query;
+        res.render('AdminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: query  });
+    });
+  
     app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
         sess = req.session;
         res.render('evaluations.html', { user: req.user, evals: sess.evals });
@@ -78,7 +84,7 @@ module.exports = function (app, passport) {
 		sess = req.session;
         var coachStep = sess.coachsteps.filter(function (x) { return (x.step === req.params.coachStep) }); 
         var tools = sess.tools.filter(function (x) { return (x.coachStep == req.params.coachStep) });     
-        res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval });
+        res.render('partials/tool.html', { coachStep: coachStep, tools: tools, eval: sess.eval, user: req.user });
 	});
 
     //this route is update evaluation object, it is called from dashboard.html and coach.html
