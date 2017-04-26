@@ -30,6 +30,16 @@
                     <li>
                         <a href="/setting">Edit Profile</a>
                     </li>
+                    <% if (user.isAdmin) { %>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="/admin">Evaluation Management</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="/userAdmin">User Management</a>
+                    </li>
+                    <% } %>
                     <li role="separator" class="divider"></li>
                     <li>
                         <a href="/logout">Logout</a>

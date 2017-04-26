@@ -41,7 +41,7 @@ module.exports = function (app, passport) {
     app.get('/userAdmin', isAdmin, getAllUsers, function (req, res) {
         sess = req.session;
         query = require('url').parse(req.url, true).query;
-
+        //res.render("test.html");
         res.render('userAdminDashboard.html', { user: req.user, userLists: sess.userLists, obj: query });
     });
 

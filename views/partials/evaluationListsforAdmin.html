@@ -1,5 +1,5 @@
 ﻿<div class="col-xs-12 content">
-
+    <div><p>Total count: <%= evalLists.length %></p></div>
     <% if(evalLists.length>0){
 
     var d, tech_name, outcomes, grades, id;
@@ -29,7 +29,7 @@
 
     var last = grades.length - 1;
     %>
-
+    
     <div class="row dash-well r_i " id="<%= id %>">
         <div class="row">
             <div class="col-xs-2">
