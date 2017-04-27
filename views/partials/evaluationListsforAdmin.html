@@ -8,8 +8,8 @@
     grades = []; outcomes=[];
     id =evalLists[i]._id ;
     d = new Date(evalLists[i].created_at);
-    tech_name = evalLists[i].basics.Basics_Tech_Name;
-   
+    if (evalLists[i].basics) tech_name = evalLists[i].basics.Basics_Tech_Name;
+
     title = evalLists[i].title;
     var status=parseInt(evalLists[i].status) + "% Completed";
     var statuslength = evalLists[i].status > 0 ? (200*(evalLists[i].status/100))  : 0;
@@ -22,37 +22,38 @@
     }
 
 
-    if (evalLists[i].planContext.Grades.length>0){
+    if (evalLists[i].planContext.Grades){
     var ln = evalLists[i].planContext.Grades.length
     grades = evalLists[i].planContext.Grades[0] +  " - " + evalLists[i].planContext.Grades[ln-1];
     }
 
     %>
-    
+
     <div class="row dash-well r_i " id="<%= id %>">
         <div class="row">
             <div class="col-xs-2">
                 <div class="r_f "><a class="r_f btn btn-primary" href="/coach/<%= id %>" id="viewbrief">VIEW</a></div>
-                <div class="r_f "><a class="r_f btn btn-primary" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=title %>" >Delete</a></div>             
-             </div>
-            <div class="col-xs-10">              
-                <div ><%= tech_name %></div>
-                <div ><%= title %><br />
-                   
-           
+                <div class="r_f "><a class="r_f btn btn-primary" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=title %>">Delete</a></div>
+            </div>
+            <div class="col-xs-10">
+                <div><strong><%= tech_name %></strong></div>
+                <div>
+                    <%= title %><br />
+
+
                     <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %><br />
-      
+
                     <div class="outer-status-bar">
                         <div class="status-bar" style="width: <%=statuslength + 'px'%>;">&nbsp;</div>
                     </div> <%= status %>
                 </div>
                 <div><strong>State district:</strong><%= state_district %></div>
-                <div ><strong>Grades: </strong><%= grades %></div>
-                <div ><strong>Outcome areas:</strong> <%- foutcomes %></div>
+                <div><strong>Grades: </strong><%= grades %></div>
+                <div><strong>Outcome areas:</strong> <%- foutcomes %></div>
             </div>
         </div>
     </div>
-  
+
     <% }} else { %>
     <p>No evalucations found.</p>
     <% } %>

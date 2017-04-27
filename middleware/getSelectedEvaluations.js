@@ -24,7 +24,8 @@ var getSelectedEvaluations = function (req, res, next) {
         Evaluation.find({
             $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                 { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }
-                , { "planContext.District_State": { $regex: new RegExp(search, "i") } }]
+                , { "planContext.District_State": { $regex: new RegExp(search, "i") } }
+                , { "title": { $regex: new RegExp(search, "i") } }]
         }).sort({ "basics.Basics_Tech_Name": sort }).select("userid title status created_at basics.Basics_Tech_Name planContext").exec(function (err, evals) {
             if (err) {
                 console.log(err);
