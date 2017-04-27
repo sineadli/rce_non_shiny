@@ -2,7 +2,7 @@
     <div><p>Total count: <%= evalLists.length %></p></div>
     <% if(evalLists.length>0){
 
-    var d, tech_name, outcomes, grades, id;
+    var d, tech_name, outcomes, grades, id, state_district;
 
     for (var i=0; i < evalLists.length; i++){
     grades = []; outcomes=[];
@@ -14,7 +14,7 @@
     var status=parseInt(evalLists[i].status) + "% Completed";
     var statuslength = evalLists[i].status > 0 ? (200*(evalLists[i].status/100))  : 0;
     var statusstyle = evalLists[i].status == 100 ? "completed" : "";
-
+    state_district =evalLists[i].planContext.District_State;
     if (evalLists[i].planContext.Outcomes) {
     outcomes = evalLists[i].planContext.Outcomes;
     foutcomes = outcomes.join(', ');
@@ -22,12 +22,11 @@
     }
 
 
-    if (evalLists[i].planContext.Grades){
-    grades = evalLists[i].planContext.Grades;
+    if (evalLists[i].planContext.Grades.length>0){
+    var ln = evalLists[i].planContext.Grades.length
+    grades = evalLists[i].planContext.Grades[0] +  " - " + evalLists[i].planContext.Grades[ln-1];
     }
 
-
-    var last = grades.length - 1;
     %>
     
     <div class="row dash-well r_i " id="<%= id %>">
@@ -37,19 +36,19 @@
                 <div class="r_f "><a class="r_f btn btn-primary" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=title %>" >Delete</a></div>             
              </div>
             <div class="col-xs-10">              
-                <div class="r_t"><%= tech_name %></div>
-                <div class="r_a"><%= title %>
+                <div ><%= tech_name %></div>
+                <div ><%= title %><br />
                    
-                <p>
-                    <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
-                </p>
+           
+                    <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %><br />
+      
                     <div class="outer-status-bar">
                         <div class="status-bar" style="width: <%=statuslength + 'px'%>;">&nbsp;</div>
                     </div> <%= status %>
                 </div>
-                
-                <div class="r_g"><strong>Grades: </strong><%= grades[0] + " - " + grades[last] %></div>
-                <div class="r_oc"><strong>Outcome areas:</strong> <%- foutcomes %></div>
+                <div><strong>State district:</strong><%= state_district %></div>
+                <div ><strong>Grades: </strong><%= grades %></div>
+                <div ><strong>Outcome areas:</strong> <%- foutcomes %></div>
             </div>
         </div>
     </div>

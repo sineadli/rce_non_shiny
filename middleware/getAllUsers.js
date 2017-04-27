@@ -24,7 +24,7 @@ var getAllUsers = function (req, res, next) {
                 , { "profile.organization_name": { $regex: new RegExp(search, "i") } }
             ]
         }).sort({ "profile.user_name": 1 })
-            .select("local.email profile.user_name profile.organization_name created_at profile.first_name profile.last_name")
+            .select("local.email profile.user_name receive_update profile.organization_name profile.role profile.role_other created_at profile.first_name profile.last_name")
             .exec(function (err, users) {
             if (err) {
                 console.log(err);
@@ -39,7 +39,7 @@ var getAllUsers = function (req, res, next) {
     else
     {
         User.find().sort({ "profile.user_name": 1 })
-            .select("local.email profile.user_name profile.organization_name created_at profile.first_name profile.last_name")
+            .select("local.email profile.user_name receive_update profile.organization_name profile.role profile.role_other created_at profile.first_name profile.last_name")
             .exec(function (err, users) {
             if (err) {
                 console.log(err);

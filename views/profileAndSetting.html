@@ -148,7 +148,8 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <input type="checkbox" id="chkRecUpdate" name="receive_update" checked="<%= user.receive_update %>"> <label style="margin-top: 0;" for="chkRecUpdate">I would like to receive e-mail notifications when this site is updated.</label>
+                                            <% var check = ""; if (user.receive_update ) {check=user.receive_update?"checked":"";} %>
+                                            <input type="checkbox" id="chkRecUpdate" name="receive_update" <%= check %> > <label style="margin-top: 0;" for="chkRecUpdate">I would like to receive e-mail notifications when this site is updated.</label>
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
                                             <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg">Save</button>

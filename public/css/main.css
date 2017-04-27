@@ -1718,7 +1718,7 @@ div.action-buttons {
 
 th, td {
     padding: 18px;
-    border: 1px solid black;
+    border: hidden;
     text-align: left;
     padding: 8px;
     vertical-align: top;
@@ -2185,5 +2185,10 @@ body.brief table td.align-right {
                 page-break-inside: avoid;
                 display: block;
             }
+            .dataTables_wrapper .dataTables_length {
+            float: left;
+            padding-top: 10px;
+        }
+        
         }
 
