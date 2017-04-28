@@ -14,11 +14,11 @@ your local machine for development and testing purposes. See deployment for note
 
 ### Setting Up Development Environment
 
-Clone the git repository: git clone https://github.com/mathematica-mpr/rce_non_shiny.git
+-Clone the git repository: git clone https://github.com/mathematica-mpr/rce_non_shiny.git
 
 Navigate to package.json and install the dependencies: npm install
 
-Start up MongoDB and NodeJS
+-Start up MongoDB and NodeJS
 
 Navigate to C:\Program Files\MongoDB\ in Windows Powershell and enter the following command:
 
