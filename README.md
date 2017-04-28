@@ -14,13 +14,9 @@ your local machine for development and testing purposes. See deployment for note
 
 ### Setting Up Development Environment
 
-1. Clone the git repository:
+1. Clone the git repository: git clone https://github.com/mathematica-mpr/rce_non_shiny.git
 
-git clone https://github.com/mathematica-mpr/rce_non_shiny.git
-
-Navigate to the package.json file in the project and install the dependencies:
-
-npm install
+Navigate to package.json and install the dependencies: npm install
 
 2. Start up MongoDB and NodeJS
 
