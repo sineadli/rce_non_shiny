@@ -4,7 +4,9 @@
     <table id="myTable" data-order='[[ 1, "asc" ]]' class="table table-striped">
         <thead>
             <tr>
+                <% if (user.isAdmin) { %>
                 <th>  </th>
+                <% } %>
                 <th>User name</th>
                 <th>Email</th>
                 <th>Receive update?</th>
@@ -27,12 +29,14 @@
             receive_update=userLists[i].receive_update?"Yes":"No";
             %>
             <tr>
+                <% if (user.isAdmin) { %>
                 <td>
                     <a class="btn-link sec-label " href="/api/setting/<%= id %>" id="viewbrief">UPDATE</a>
                     <% if (adminId != id)   { %>
-                    | <a class="btn-link sec-label " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=email %>">DELETE</a>
+                     <a class="btn-link sec-label " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=email %>">DELETE</a>
                     <% } %>
                 </td>
+                <% } %>
                 <td><%= username %> </td>
                 <td><%= email %></td>
                 <td><%= receive_update %></td>

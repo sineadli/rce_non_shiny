@@ -1,0 +1,102 @@
+﻿
+<table id="myTable" data-order='[[ 2, "asc" ]]' class="table table-striped">
+    <thead>
+        <tr>
+            <% if (user.isAdmin) { %>
+            <th><button class="btn btn-primary " href="#updateConfirm" data-toggle="modal" data-update-id="<%= '' %>" data-update-name="<%= '' %>" data-update-step="<%='' %>" data-update-intro="<%= '' %>">ADD</button>  </th>
+            <% } %>
+            <th>name</th>
+            <th>step</th>
+            <th>order</th>
+            <th>coachName</th>
+            <th>desc</th>
+            <th>type</th>
+            <th>path</th>
+            <th>prereq</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if(lists.length>0){
+        var id,  name, step, order, cname, desc, type, path, prereq;
+        for (var i=0; i < lists.length; i++){
+        id =lists[i]._id ;
+        name =lists[i].name;
+        step =lists[i].coachStep;
+        order = lists[i].order;
+        cname=lists[i].coachName;
+        desc =lists[i].desc;
+        type =lists[i].type;
+        path =lists[i].path;
+        prereq =lists[i].prereq;
+        console.log(prereq);
+        %>
+        <tr>
+            <% if (user.isAdmin) { %>
+            <td>
+                <a class="btn-link sec-label " href="#updateConfirm" data-toggle="modal" data-update-id="<%= id %>" data-update-name="<%= name %>" data-update-step="<%=step %>" data-update-order="<%= order %>"
+                   data-update-cname="<%= cname %>" data-update-type="<%=type %>" data-update-prereq="<%= prereq %>" data-update-path="<%= path %>" data-update-desc="<%= desc %>"  >UPDATE</a>
+                <a class="btn-link sec-label " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=step %>">DELETE</a>
+            </td>
+            <% } %>
+            <td><%= name %> </td>
+            <td><%= step %></td>
+            <td><%= order %></td>
+            <td><%= cname %> </td>         
+            <td><%= desc %></td>
+            <td><%= type %> </td>
+            <td><%= path %></td>
+            <td><%= prereq %></td>
+
+        </tr>
+        <% } } %>
+    </tbody>
+</table>
+
+<div id="deleteConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Account</h4>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Are you sure you want to delete step <label id="step"></label>?
+                </label>
+                <input type="hidden" id="toDeleted" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                <button type="button" id="delTool" class="btn btn-primary btn-lg" data-dismiss="modal">DELETE</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="updateConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update/Add coach step</h4>
+            </div>
+            <div class="modal-body">
+   
+               <label> Name:</label><br /><input type="text" id="tool_name" /><br />
+                <label>Step:</label><br /><input type="number" id="tool_step" /><br />
+                <label>Order:</label><br /><input type="number" id="tool_order" /><br />
+                <label> Coach Name:</label><br /><input type="text" id="tool_cname" /><br />
+                <label>Desc: </label><br /><textarea rows="5" id="tool_desc"></textarea><br />
+                <label>Type:</label><br /><input type="text" id="tool_type" /><br />
+                <label>Path:</label><br /><input type="text" id="tool_path" /><br />
+                <label>Pre req:</label><input type="checkbox" id="tool_prereq" /><br />
+                <input type="hidden" id="toUpdate" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                <button type="button" id="upsertTool" class="btn btn-primary btn-lg" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

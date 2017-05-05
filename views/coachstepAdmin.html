@@ -18,8 +18,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+ 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+    
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="/static/css/main.css" />
@@ -32,39 +35,14 @@
             <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Evaluation Dashboard</a></li>
         </ol>
     </div>
-    
-
-    <!--<div class="container-fluid">
-
-        <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
-        <input type="hidden" id="user_email" value="<%= user.email %>" />
-
-        <div class="page-header">
-            <p class="pull-right">
-                <a href="/userAdmin">User management <span class="fa" aria-hidden="true"></span></a>
-            </p>
-            <h1 class="page-title">Evaluation management</h1>
-
-            <div class="row">
-                <div class="fbar">
-                    <label class="hidden" for="keywords">Enter search keywords.</label>
-                    <input id="keywords" type="text" name="search" placeholder="Technology, outcome, grade, district state, publish author or organization">
-                    <input type="button" value="SEARCH" class="btn btn-primary" id="btnSearch">
-                </div>
-
-            </div>
-
-        </div>
-        
-    </div>-->
+ 
     <div id="result">
-        <!--<p>Enter keyword for technology, outcome, grade, district state, publish author or organization to search; click "SEARCH" with no keyword will show all evaluations in the system, it may take a bit more time.</p>-->
-        <% include ../views/partials/evaluationListsforAdmin.html %>
-     </div>
-
+        <% include ../views/partials/coachStepsTable.html %>
+    </div>
     <% include ../views/partials/footer.html %>
     <script type="text/javascript">
-        $(document).ready(function () {          
+        $(document).ready(function () {
+            
             var buttonCommon = {
                 exportOptions: {
                     format: {
@@ -86,19 +64,20 @@
                    })
                 ]
             });
-            $('#deleteConfirm').on('show.bs.modal', function (e) {
+          
 
+            $('#deleteConfirm').on('show.bs.modal', function (e) {
                 //get delete-id attribute of the clicked element
                 var deletedId = $(e.relatedTarget).data('delete-id');
                 var title = $(e.relatedTarget).data('delete-title');
-
                 //populate the textbox
                 $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
-                $(e.currentTarget).find('label[id="evaltl"]').text(title);
+                $(e.currentTarget).find('label[id="step"]').text(title);
             });
-            $("#delEval").click(function () {
+            
+            $("#delCoachStep").click(function () {
                 var idtobedeleted = $("#toDeleted").val();
-                var url = '/api/delEval';
+                var url = '/api/delCoachStep';
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -112,17 +91,38 @@
                 )
                 $(document).ajaxStop(function () { location.reload(true); });
             });
-            $('#btnSearch').click(function () {
-                var search = $('#keywords').val();
-                if (search == "") search = "all";
-                //$this = $(e.target);
-               
-                var url = "api/admin/" + search;
-                $.get(url, function (data) {
-                    $("#result").html("");
-                    $("#result").html(data);
-                });
+            $('#updateConfirm').on('show.bs.modal', function (e) {
+                //get delete-id attribute of the clicked element
+                var id = $(e.relatedTarget).data('update-id');
+                var name = $(e.relatedTarget).data('update-name');
+                var step = $(e.relatedTarget).data('update-step');
+                var intro = $(e.relatedTarget).data('update-intro');
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toUpdate"]').val(id);
+                $(e.currentTarget).find('input[id="step_name"]').val(name);
+                $(e.currentTarget).find('input[id="step_num"]').val(step);
+                $(e.currentTarget).find('textarea[id="step_intro"]').text(intro);
+            });
 
+            $("#upsertCoachStep").click(function () {
+                var idtobedeleted = $("#toUpdate").val();
+                var name = $("#step_name").val();
+                var step = $("#step_num").val();
+                var intro = $("#step_intro").val();
+                //alert($("textarea#step_intro").val());
+                var url = '/api/upsertCoachStep';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({ "id": idtobedeleted, "name": name, "step": step, "intro": intro }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+
+                    }
+                }
+                )
+                $(document).ajaxStop(function () { location.reload(true); });
             });
         });
 

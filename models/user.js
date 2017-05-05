@@ -42,7 +42,8 @@ var userSchema = mongoose.Schema({
     updated_at: Date,
     evalid: mongoose.Schema.ObjectId,
     last_url: String,
-    isAdmin: Boolean
+    isAdmin: Boolean,
+    isStaff: Boolean
 
 });
 //define index if needed

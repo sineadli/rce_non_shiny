@@ -30,7 +30,7 @@
                     <li>
                         <a href="/setting">Edit Profile</a>
                     </li>
-                    <% if (user.isAdmin) { %>
+                    <%  if ( user.isAdmin || user.isStaff) { %>
                     <li role="separator" class="divider"></li>
                     <li>
                         <a href="/admin">Evaluation Management</a>
@@ -38,6 +38,14 @@
                     <li role="separator" class="divider"></li>
                     <li>
                         <a href="/userAdmin">User Management</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="/coachstep">Coach Step Management</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="/tool">Tool Management</a>
                     </li>
                     <% } %>
                     <li role="separator" class="divider"></li>

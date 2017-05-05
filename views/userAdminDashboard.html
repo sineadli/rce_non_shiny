@@ -41,45 +41,45 @@
                     }
                 }
             };
-    $('#myTable').dataTable({
-        "iDisplayLength": 10,
-        "dom":"Bfrtlpi" ,
-        "buttons": [
-           $.extend(true, {}, buttonCommon, {
-               extend: 'excel'
-           })
-        ]
-    });
+            $('#myTable').dataTable({
+                "iDisplayLength": 10,
+                "dom":"Bfrtlpi" ,
+                "buttons": [
+                   $.extend(true, {}, buttonCommon, {
+                       extend: 'excel'
+                   })
+                ]
+            });
 
-    $('#deleteConfirm').on('show.bs.modal', function (e) {
+            $('#deleteConfirm').on('show.bs.modal', function (e) {
 
-        //get delete-id attribute of the clicked element
-        var deletedId = $(e.relatedTarget).data('delete-id');
-        console.log(deletedId);
-        var title = $(e.relatedTarget).data('delete-title');
+                //get delete-id attribute of the clicked element
+                var deletedId = $(e.relatedTarget).data('delete-id');
+                console.log(deletedId);
+                var title = $(e.relatedTarget).data('delete-title');
 
-        //populate the textbox
-        $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
-        $(e.currentTarget).find('label[id="evaltl"]').text(title);
-    });
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
+                $(e.currentTarget).find('label[id="evaltl"]').text(title);
+            });
 
-    $("#delUser").click(function (e) {
-        var idtobedeleted = $("#toDeleted").val();
+            $("#delUser").click(function (e) {
+                var idtobedeleted = $("#toDeleted").val();
 
-        var url = '/api/delUser';
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: JSON.stringify({ "id": idtobedeleted }),
-            dataType: "json",
-            contentType: "application/json",
-            success: function (data) {
+                var url = '/api/delUser';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({ "id": idtobedeleted }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
 
-            }
-        }
-        )
-        $(document).ajaxStop(function () { location.reload(true); });
-    });
+                    }
+                }
+                )
+                $(document).ajaxStop(function () { location.reload(true); });
+            });
 });
     </script>
 </body>

@@ -1,0 +1,78 @@
+﻿
+ <table id="myTable" data-order='[[ 2, "asc" ]]' class="table table-striped">
+        <thead>
+            <tr>
+                <% if (user.isAdmin) { %>
+                <th><button class="btn btn-primary " href="#updateConfirm" data-toggle="modal" data-update-id="<%= '' %>" data-update-name="<%= '' %>" data-update-step="<%='' %>" data-update-intro="<%= '' %>">ADD</button>  </th>
+                <% } %>
+                <th>Name</th>
+                <th>Step</th>
+                <th>Intro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if(lists.length>0){
+            var d, name, step, intro;
+            for (var i=0; i < lists.length; i++){
+            id =lists[i]._id ;
+            name =lists[i].name;
+            step =lists[i].step;
+            intro =lists[i].intro;
+            %>
+            <tr>
+                <% if (user.isAdmin) { %>
+                <td>
+                    <a class="btn-link sec-label " href="#updateConfirm" data-toggle="modal" data-update-id="<%= id %>" data-update-name="<%= name %>" data-update-step="<%=step %>" data-update-intro="<%= intro %>">UPDATE</a>
+                    <a class="btn-link sec-label " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=step %>">DELETE</a>
+                </td>
+                <% } %>
+                <td><%= name %> </td>
+                <td><%= step %></td>
+                <td><%= intro %></td>
+            </tr>
+            <% } } %>
+        </tbody>
+    </table>
+
+<div id="deleteConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Account</h4>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Are you sure you want to delete step <label id="step"></label>?
+                </label>
+                <input type="hidden" id="toDeleted" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                <button type="button" id="delCoachStep" class="btn btn-primary btn-lg" data-dismiss="modal">DELETE</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="updateConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update/Add coach step</h4>
+            </div>
+            <div class="modal-body">
+              <label> Name:</label> <input type="text" id="step_name" /><br />
+                <label>  Step:</label><input type="number" id="step_num" /><br />
+                <label>  Intro: </label><textarea rows="5" id="step_intro"></textarea><br />
+                <input type="hidden" id="toUpdate" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                <button type="button" id="upsertCoachStep" class="btn btn-primary btn-lg" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

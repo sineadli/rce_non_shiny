@@ -164,9 +164,9 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <label class="label-one" style="text-align:left;">Is Admin </label>
-                                    <% var adm = "No"; if (user.isAdmin) {adm = "Yes";} %>
-                                    <label class="label-two"><%= adm %></label>
+                                    <label class="label-one" style="text-align:left;">Is Staff </label>
+                                    <% var staff = "No"; if (user.isStaff) {staff = "Yes";} %>
+                                    <label class="label-two"><%= staff %></label>
                                     <label class="label-three" style="text-align:right;"> <a data-toggle="collapse" data-parent="#setting" href="#collapseAdmin">Update</a></label>
                                 </h4>
 
@@ -176,8 +176,8 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group col-sm-6 col-sm-offset-2">
-                                            <% var ad = ""; if (user.isAdmin) {ad=user.isAdmin?"checked":"";} %>
-                                            <input type="checkbox" id="chkadm" name="isAdmin" <%= ad %>> <label style="margin-top: 0;" for="chkRecUpdate">check this to make this user an administrator.</label>
+                                            <% var ad = ""; if (user.isStaff) {ad=user.isStaff?"checked":"";} %>
+                                            <input type="checkbox" id="chkadm" name="isStaff" <%= ad %>> <label style="margin-top: 0;" for="chkRecUpdate">check this to make this user a staff.</label>
                                         </div>
                                         <div class="col-sm-3 col-sm-offset-9 ">
                                             <button id="mpr-reset" type="submit" class="btn btn-primary btn-lg">Save</button>

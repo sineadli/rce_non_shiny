@@ -20,6 +20,9 @@ var Evaluation = require('../models/evaluation');   // the evaluation should go 
 var isAdmin = require('../middleware/isAdmin.js');
 var getAllUsers = require('../middleware/getAllUsers.js');
 var User = require('../models/user');
+var CoachStep = require('../models/coachStep.js');
+var Tool= require('../models/tool.js');
+var coachsteps = require('../middleware/coachsteps.js');
 var sess;
 
 
@@ -33,12 +36,15 @@ module.exports = function (app, passport) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, evals: sess.evals });
     });
-    app.get('/admin', isAdmin, getSelectedEvaluations, function (req, res) {
+    app.get('/admin', isLoggedIn, getSelectedEvaluations, function (req, res) {
         sess = req.session;
-        query = require('url').parse(req.url, true).query;
-        res.render('adminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: query });
+        res.render('adminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: '' });
     });
-    app.get('/userAdmin', isAdmin, getAllUsers, function (req, res) {
+    app.get('/api/admin/:search', isLoggedIn, getSelectedEvaluations, function (req, res) {
+        sess = req.session;
+        res.render('partials/evaluationListsforAdmin.html', { user: req.user, evalLists: sess.evalLists, obj: '' });
+    });
+    app.get('/userAdmin', isLoggedIn, getAllUsers, function (req, res) {
         sess = req.session;
         query = require('url').parse(req.url, true).query;
         //res.render("test.html");
@@ -221,6 +227,95 @@ module.exports = function (app, passport) {
             }
         });
     })
+
+
+    app.get('/coachstep', isAdmin, coachsteps, function (req, res) {
+        CoachStep.find(function (err, coachSteps) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render('coachstepAdmin.html', {
+                    user: req.user,
+                    lists: coachSteps
+                });
+            }
+        });
+       
+
+    });
+
+    app.post('/api/delCoachStep', isAdmin, function (req, res) {
+        CoachStep.remove({ _id: req.body.id }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                console.log("Selected coach step deleted.");
+                res.status(201).send("Selected coach step deleted.");
+            }
+        }
+        );
+    });
+
+    app.post('/api/upsertCoachStep', isAdmin, function (req, res) {
+
+        var query = { step: req.body.step };
+        CoachStep.findOneAndUpdate(query, req.body, { upsert: true }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                res.status(201).send("Selected coach step updated/added.");
+            }
+        }
+        );
+    });
+
+    //tool admin get, delet upsert
+    app.get('/tool', isAdmin,  function (req, res) {
+        sess = req.session;
+        Tool.find(function (err, tools) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render('toolAdmin.html', {
+                    user: req.user,
+                    lists: tools
+                });
+            }
+        });
+       
+
+    });
+
+    app.post('/api/delTool', isAdmin, function (req, res) {
+        Tool.remove({ _id: req.body.id }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                console.log("Selected tool deleted.");
+                res.status(201).send("Selected tool deleted.");
+            }
+        }
+        );
+    });
+
+    app.post('/api/upsertTool', isAdmin, function (req, res) {
+        console.log(req.body);
+        var query = { coachStep: req.body.coachStep, order: req.body.order };
+        Tool.findOneAndUpdate(query, req.body, { upsert: true }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                res.status(201).send("Selected tool updated/added.");
+            }
+        }
+        );
+    });
 }
 
 

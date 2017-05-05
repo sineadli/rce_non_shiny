@@ -15,10 +15,8 @@ var Evaluation = require('../models/evaluation');
 var getSelectedEvaluations = function (req, res, next) {
     sess = req.session;
     var sort = 1;
-    var search = "";
-    var query = require('url').parse(req.url, true).query;
-    if (query.search) search = query.search;
-    if (query.sort) sort = query.sort;
+    var search = req.params.search;
+    if (search == "all") search = "";
 
     if (search) {
         Evaluation.find({

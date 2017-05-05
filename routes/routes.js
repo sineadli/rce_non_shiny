@@ -147,27 +147,23 @@ module.exports = function(app, passport) {
                 if (err)
                     console.log(err);
                 else {
-                    if (req.body.email) user.local.email = req.body.email
-                    if (req.body.password) user.local.password = req.user.generateHash(req.body.password);
-                    if (req.body.role) user.profile.role = req.body.role;
-                    if (req.body.role_other) user.profile.role_other = req.body.role_other;
-                    if (req.body.organization_name) user.profile.organization_name = req.body.organization_name;
-                    if (req.body.first_name) {
-                        user.profile.first_name = req.body.first_name;
-                        user.profile.user_name = req.body.first_name;
-                    }
-                    if (req.body.last_name) {
-                        user.profile.last_name = req.body.last_name;
-                        user.profile.user_name = req.body.last_name;
-                    }
-                    if (req.body.first_name && req.body.last_name) user.profile.user_name = req.body.first_name + " " + req.body.last_name;
+                     user.local.email = req.body.email
+                     if (req.body.password) user.local.password = req.user.generateHash(req.body.password);
+                    user.profile.role = req.body.role;
+                    user.profile.role_other = req.body.role_other;
+                    user.profile.organization_name = req.body.organization_name;
+                    user.profile.first_name = req.body.first_name;
+                    user.profile.last_name = req.body.last_name;
 
-                    if (req.body.receive_update) user.receive_update = req.body.receive_update;
-                    if (req.body.organiztion_type) user.profile.organiztion_type = req.body.organiztion_type;
-                    if (req.body.organiztion_type_other) user.profile.organiztion_type_other = req.body.organiztion_type_other;
+                  
+                     user.profile.user_name = req.body.first_name + " " + req.body.last_name;
+
+                    user.receive_update = req.body.receive_update;
+                    user.profile.organiztion_type = req.body.organiztion_type;
+                     user.profile.organiztion_type_other = req.body.organiztion_type_other;
                     // req.user.profile.user_pic.data = fs.readFile('../50183_RCE/public/image/me.jpg');
                     // req.user.profile.user_pic.contentType = 'image/jpg'=
-                    if (req.body.isAdmin && req.body.admId) user.isAdmin = req.body.isAdmin;
+                     if (req.body.admId) user.isStaff = req.body.isStaff;
                     user.save(function (err) {
                         if (err) console.log(err);
                         if (req.body.admId)
