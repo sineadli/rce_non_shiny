@@ -1,0 +1,131 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Evaluation management</title>
+    <meta name="description" content="Evaluation management">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+</head>
+<body class="one-col">
+    <% include ../views/partials/header.html %>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Evaluation Dashboard</a></li>
+        </ol>
+    </div>
+    
+
+    <!--<div class="container-fluid">
+
+        <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
+        <input type="hidden" id="user_email" value="<%= user.email %>" />
+
+        <div class="page-header">
+            <p class="pull-right">
+                <a href="/userAdmin">User management <span class="fa" aria-hidden="true"></span></a>
+            </p>
+            <h1 class="page-title">Evaluation management</h1>
+
+            <div class="row">
+                <div class="fbar">
+                    <label class="hidden" for="keywords">Enter search keywords.</label>
+                    <input id="keywords" type="text" name="search" placeholder="Technology, outcome, grade, district state, publish author or organization">
+                    <input type="button" value="SEARCH" class="btn btn-primary" id="btnSearch">
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>-->
+    <div id="result">
+        <!--<p>Enter keyword for technology, outcome, grade, district state, publish author or organization to search; click "SEARCH" with no keyword will show all evaluations in the system, it may take a bit more time.</p>-->
+        <% include ../views/partials/evaluationListsforAdmin.html %>
+     </div>
+
+    <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function () {          
+            var buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function (data, row, column, node) {
+                            var dt;
+                            return column === 0 ?
+                                '' :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#myTable').dataTable({
+                "iDisplayLength": 10,
+                "dom": "Bfrtlpi",
+                "buttons": [
+                   $.extend(true, {}, buttonCommon, {
+                       extend: 'excel'
+                   })
+                ]
+            });
+            $('#deleteConfirm').on('show.bs.modal', function (e) {
+
+                //get delete-id attribute of the clicked element
+                var deletedId = $(e.relatedTarget).data('delete-id');
+                var title = $(e.relatedTarget).data('delete-title');
+
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
+                $(e.currentTarget).find('label[id="evaltl"]').text(title);
+            });
+            $("#delEval").click(function () {
+                var idtobedeleted = $("#toDeleted").val();
+                var url = '/api/delEval';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({ "id": idtobedeleted }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+
+                    }
+                }
+                )
+                $(document).ajaxStop(function () { location.reload(true); });
+            });
+            $('#btnSearch').click(function () {
+                var search = $('#keywords').val();
+                if (search == "") search = "all";
+                //$this = $(e.target);
+               
+                var url = "api/admin/" + search;
+                $.get(url, function (data) {
+                    $("#result").html("");
+                    $("#result").html(data);
+                });
+
+            });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Account management</title>
+    <meta name="description" content="Account management">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+</head>
+<body>
+    <% include ../views/partials/header.html %>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+        </ol>
+    </div>
+    <div class="container-fluid">
+        <h2 class="page-title ">User management</h2>
+        <table id="myTable" data-order='[[ 1, "asc" ]]' class="table table-striped">
+            <thead>
+                <tr>
+                    <th>  </th>
+                    <th>User name</th>
+                    <th>Email</th>
+                    <th>Receive update?</th>
+                    <th>Organization and role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(userLists.length>0){
+                var adminId =user.id;
+                var d, username, company, email, id,  receive_update, role;
+                for (var i=0; i < userLists.length; i++){
+                grades = []; outcomes=[];
+                id =userLists[i]._id ;
+                d = new Date(userLists[i].created_at);
+                username = userLists[i].profile.user_name;
+                email =userLists[i].local.email;
+                company = userLists[i].profile.organization_name ;
+                role = userLists[i].profile.role_other? " -" + userLists[i].profile.role_other:
+                 (userLists[i].profile.role?" -" +userLists[i].profile.role:"");
+                receive_update=userLists[i].receive_update?"Yes":"No";  
+                %>
+                <tr>
+                    <td><a class="btn-link sec-label " href="/api/setting/<%= id %>" id="viewbrief">UPDATE</a>
+                        <% if (adminId != id)   { %>
+                       | <a class="btn-link sec-label " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%=email %>">DELETE</a>
+                        <% } %> </td>
+                    <td ><%= username %> </td>
+                    <td ><%= email %></td>
+                    <td ><%= receive_update %></td>
+                    <td ><%= company %><%= role %></td>
+                </tr>
+                <% } } %>
+            </tbody>
+        </table>
+        <div id="deleteConfirm" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete Account</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label>
+                            Are you sure you want to delete account with email of  <label id="evaltl"></label>?
+                        </label>
+                        <input type="hidden" id="toDeleted" />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                        <button type="button" id="delUser" class="btn btn-primary btn-lg" data-dismiss="modal">DELETE</button>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <% include ../views/partials/footer.html %>
+    <script>
+        $(document).ready(function () {
+            var buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function (data, row, column, node) {
+                            return column === 0 ?
+                                '' :
+                                data;
+                        }
+                    }
+                }
+            };
+    $('#myTable').dataTable({
+        "iDisplayLength": 10,
+        "dom":"Bfrtlpi" ,
+        "buttons": [
+           $.extend(true, {}, buttonCommon, {
+               extend: 'excel'
+           })
+        ]
+    });
+
+    $('#deleteConfirm').on('show.bs.modal', function (e) {
+
+        //get delete-id attribute of the clicked element
+        var deletedId = $(e.relatedTarget).data('delete-id');
+        console.log(deletedId);
+        var title = $(e.relatedTarget).data('delete-title');
+
+        //populate the textbox
+        $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
+        $(e.currentTarget).find('label[id="evaltl"]').text(title);
+    });
+
+    $("#delUser").click(function (e) {
+        var idtobedeleted = $("#toDeleted").val();
+
+        var url = '/api/delUser';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify({ "id": idtobedeleted }),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+
+            }
+        }
+        )
+        $(document).ajaxStop(function () { location.reload(true); });
+    });
+});
+    </script>
+</body>
+
+</html>  

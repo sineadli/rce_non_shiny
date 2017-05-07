@@ -1718,7 +1718,7 @@ div.action-buttons {
 
 th, td {
     padding: 18px;
-    border: 1px solid black;
+    border: hidden;
     text-align: left;
     padding: 8px;
     vertical-align: top;
@@ -1929,7 +1929,7 @@ div.r_f, div#r_colR div.r_f {
     margin: 5px 0 3px 10px;
     font-size: .9em;
 }
-div#fbar {   
+div .fbar {   
     width: 54%;
     font-size: 1em;
     line-height: .9em;
@@ -1938,7 +1938,7 @@ div#fbar {
            display:inline;
 }
 
-#fbar  input[type=submit] {
+.fbar  input[type=submit] {
     width: auto;
     position: relative;
     /*color: #fff;
@@ -1947,12 +1947,12 @@ div#fbar {
     background-color: #006982;
     margin-right:17px;*/
 }
-#fbar input[type=text] {
+.fbar input[type=text] {
     width: 80%;
     height: 30px;
 
 }
-div#sbar {   
+div .sbar {   
     float: right;
     clear:right;
     width: 45%;
@@ -1960,7 +1960,7 @@ div#sbar {
     line-height: 1.8em;
     text-align:right;
 }
-#sbar > select {
+.sbar > select {
     float: right;
     clear: right;
     margin-right:15px;
@@ -2185,5 +2185,10 @@ body.brief table td.align-right {
                 page-break-inside: avoid;
                 display: block;
             }
+            .dataTables_wrapper .dataTables_length {
+            float: left;
+            padding-top: 10px;
+        }
+        
         }
 

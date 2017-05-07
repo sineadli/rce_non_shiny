@@ -136,9 +136,6 @@
                             <p>
                                 <span class="sec-label">Started</span>: <%= startdate.getMonth() + 1 + '/' + startdate.getDate() + '/' + startdate.getFullYear() %>
                             </p>
-
-
-
                             <span class="sec-label">Status</span>:
                             <div class="outer-status-bar">
                                 <div class="status-bar" style="width: <%=statuslength + 'px'%>;">&nbsp;</div>
@@ -154,7 +151,7 @@
 
                     <div style="float: right; height: 100%;">
                         <% if (eval.length>0) { %>
-                        <a class="text-right btn btn-primary" href="/coach" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br/>
+                        <a class="text-right btn btn-primary" href="/coach/<%= eval[0]._id %>" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br/>
                         <div style="float: right; margin: 16px 10px 0 0;">
                             <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (eval[0].status ==='100') { %>
