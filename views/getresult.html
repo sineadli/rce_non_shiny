@@ -11,6 +11,8 @@
 <head>
     <title>Get Results - Ed Tech RCE Coach</title>
     <% include ../views/partials/scriptHeader.html %>
+   
+
 </head>
 <% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
 <body class="<%- peekingThis %>">
@@ -25,26 +27,21 @@
     <% include ../views/partials/toolHeader.html %>
     <% } %>
 <form action="/getresult" method="post">
+    <% include('../views/partials/_basicsFields.html')%> 
 <%
 var Result="";
 
 if (user != "NOAUTHENTICATED"){
 if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
 }
-var Basics_Users_Other = eval.basics.Basics_Users_Other;
-var Basics_Users = eval.basics.Basics_Users;
-var Singular_User = Basics_Users.substring(0, Basics_Users.length-1);
-if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
-var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-var Basics_Outcome = eval.basics.Basics_Outcome;
-if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+
 var Outcome_Direction = eval.planQuestion.Outcome_Direction;
 var Measure_Units_Other = eval.planNext.Measure_Units_Other;
 var Measure_Units = eval.planNext.Measure_Units;
 if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
 if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") { Measure_Units = "units"; }
 %>
+
 <input type="hidden" id="coreurl" value="<%= shiny_url %>"/>
 <div class="container-fluid">
 <div class="row">
@@ -153,7 +150,7 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
                 <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px"/>% probability that <%= Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that the educational technology had the intended effect.
             </p>
             <p>
-                If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
+                If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px"/>% probability that <%= Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
             </p>
             <% if (user != "NOAUTHENTICATED") {%>
             <p class="prev-answer">
@@ -342,7 +339,7 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
         </div>
         <div class="clearfix"></div>
         <div id="Step_Conclusion" class="container">
-          
+
             <div id="results" class="shiny-html-output shiny-bound-output"></div>
         </div>
         <div id='loadingmessage' hidden>

@@ -1,0 +1,18 @@
+﻿<%
+ var Basics_Users = "the technology users";
+ var Singular_User = "user";
+ var Basics_Tech_Name = "the technology";
+ var Basics_Outcome = "Outcome";
+
+if (eval.basics){
+console.log(eval.basics);
+  Basics_Users = eval.basics.Basics_Users;
+  Singular_User = Basics_Users.substring(0, Basics_Users.length-1);
+if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
+  Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
+var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
+  Basics_Outcome = eval.basics.Basics_Outcome;
+if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
+}
+
+%>

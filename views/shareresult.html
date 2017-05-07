@@ -92,20 +92,7 @@ var tabcounter = 0; var figcounter = 0;
                 <div class="row">
                     <div class="col-xs-12">
                         <h2> <%= header %><%= inconclusive_qualifier %>.</h2>
-
-                        <h3> Research Question</h3>
-
-                        Does <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> as measured by <%= Outcome_Measure %> by <%= Success_Effect_Size %> or more <%= Measure_Units %> among
-                        <%= Intervention_Group_Desc %>
-                        compared to
-                        <%= Comparison_Group_Desc %>?
-
-                        <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                            <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
-                        </p>
-                        <% } %>
+                        <% include ../views/partials/_researchQuestion.html %>
 
                         <%
                         var grade_results_clean = true;
