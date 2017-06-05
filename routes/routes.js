@@ -140,8 +140,8 @@ module.exports = function(app, passport) {
     });
     app.post('/setting', isLoggedIn, function(req, res) {
         
-        console.log(req.body.id);
-        console.log(req.body.admId);
+    //    console.log(req.body.id);
+   //     console.log(req.body.admId);
         if (req.body.id) {
             User.findOne({ _id: req.body.id }, function (err, user) {
                 if (err)

@@ -26,7 +26,7 @@ var configDB = require('./config/database.js');
 var preventClickjacking = require('./middleware/preventClickjacking.js');
 var coachsteps = require('./middleware/coachsteps.js');
 
-app.disable('x-powered-by')
+app.disable('x-powered-by');
 // configuration ===============================================================
 mongoose.connect(configDB.url, configDB.config); // connect to our database
 

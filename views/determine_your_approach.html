@@ -17,7 +17,10 @@
 %>
 <body class="<%- peekingThis %>">
     <% include ../views/partials/header.html %>
-    <% if (user != "NOAUTHENTICATED") { %>
+<% if (user != "NOAUTHENTICATED") {
+//console.log("In determine approach");
+//console.log(eval);
+%>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
     </ol>
@@ -29,15 +32,8 @@
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
         <% } %>
-        <%
-
-        var  Basics_Users_Other = eval.basics.Basics_Users_Other;
-        var Basics_Users = eval.basics.Basics_Users != "Select an option" ? eval.basics.Basics_Users : "users";
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
-        console.log(Basics_Users);
-        %>
-        <input type="hidden" id="Basics_Users" value="<%= Basics_Users %>" />
+       
+        <input type="hidden" id="Basics_Users" value="<%= defs.Basics_Users %>" />
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -75,14 +71,14 @@
                                 <div data-toggle="collapse" data-target="#D">
                                     <h2 class="clickable">
                                         <i class="fa fa-caret-down" aria-hidden="false"></i>
-                                        Can you create two similar groups, one of <%= Basics_Users %> using <%= Basics_Tech_Name %> and one of <%= Basics_Users %> who have yet to use <%= Basics_Tech_Name %>?
+                                        Can you create two similar groups, one of <%= defs.Basics_Users %> using <%= defs.Basics_Tech_Name %> and one of <%= defs.Basics_Users %> who have yet to use <%= defs.Basics_Tech_Name %>?
                                     </h2>
                                 </div>
                             </div>
                             <div id="D" class="row  collapse in q-row">
                                 <div class="col-xs-6">
                                     <div class="step-subquestion" id="Expanding">
-                                        <p class="all-using">Will you conduct this evaluation with current users of <%= Basics_Tech_Name %>, or do you plan to conduct it with new users (as part of either an expansion or new implementation of <%= Basics_Tech_Name %>)?</p>
+                                        <p class="all-using">Will you conduct this evaluation with current users of <%= defs.Basics_Tech_Name %>, or do you plan to conduct it with new users (as part of either an expansion or new implementation of <%= defs.Basics_Tech_Name %>)?</p>
                                     </div>
                                     <div class="step-action">
                                         <select name="Appr_Current_or_New" id="Appr_Current_or_New">
@@ -101,7 +97,7 @@
                                     </div>
                                     <div id="All-Using">
                                         <div class="step-subquestion">
-                                            <p class="all-using">Are all <%= Basics_Users %> currently using <%= Basics_Tech_Name %>? </p>
+                                            <p class="all-using">Are all <%= defs.Basics_Users %> currently using <%= defs.Basics_Tech_Name %>? </p>
                                         </div>
                                         <div class="step-action">
                                             <select name="Appr_All_Using" id="Appr_All_Using">
@@ -121,7 +117,7 @@
                                     </div>
                                     <div id="New_Users">
                                         <div class="step-subquestion">
-                                            <p> Can you offer <%= Basics_Tech_Name %> to just a portion of new users, leaving you with a similar group of <%= Basics_Users %> who have never used <%= Basics_Tech_Name %>? </p>
+                                            <p> Can you offer <%= defs.Basics_Tech_Name %> to just a portion of new users, leaving you with a similar group of <%= defs.Basics_Users %> who have never used <%= defs.Basics_Tech_Name %>? </p>
                                         </div>
                                         <div class="step-action">
                                             <select name="Appr_Can_Group" id="Appr_Can_Group">
@@ -152,7 +148,7 @@
                                                     </h3>
                                                 </div>
                                                 <div id="consider4" class="panel-collapse collapse in">
-                                                    <p>If you are targeting a specific group of <%= Basics_Users %> (for example English learners or Title 1 schools) answer this question only for those <%= Basics_Users %>.</p>
+                                                    <p>If you are targeting a specific group of <%= defs.Basics_Users %> (for example English learners or Title 1 schools) answer this question only for those <%= defs.Basics_Users %>.</p>
                                                     <p> The more similar the two groups are at the start of the evaluation, the more confident you can be at the end of the evaluation that the measured differences found can be attributed to using the technology.</p>
                                                     <p>The Coach does not recommend comparing volunteers to non-volunteers because those that volunteer are inherently different from those that do not. If you must ask for volunteers, the Coach recommends selecting users and non-users from your pool of volunteers.</p>
                                                 </div>
@@ -167,14 +163,14 @@
                                 <div data-toggle="collapse" data-target="#E">
                                     <h2 class="clickable">
                                         <i class="fa fa-caret-down" aria-hidden="false"></i>
-                                        How will you determine which <%= Basics_Users %> get access to <%= Basics_Tech_Name %> and which <%= Basics_Users %> do not?
+                                        How will you determine which <%= defs.Basics_Users %> get access to <%= defs.Basics_Tech_Name %> and which <%= defs.Basics_Users %> do not?
                                     </h2>
                                 </div>
                             </div>
                             <div id="E" class="row  collapse in q-row">
                                 <div class="col-xs-12">
                                     <div class="step-subquestion">
-                                        <p>The method you choose, will affect how confident you can be that your technology  causes the outcomes you observe and how your findings will apply to a broader population of <%= Basics_Users %>.</p>
+                                        <p>The method you choose, will affect how confident you can be that your technology  causes the outcomes you observe and how your findings will apply to a broader population of <%= defs.Basics_Users %>.</p>
 
 
 
@@ -206,18 +202,18 @@
 
                                                 <div id="randon-1" class="panel-collapse collapse in">
                                                     <p>
-                                                        Random assignment is similar to putting the names of your <%= Basics_Users %> in a hat and randomly picking some of the names. If you put in 10 names and select 5, those you pick would get to pilot (or try) the technology,and those not selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups. This process can also work with teachers, classes, or even schools.
+                                                        Random assignment is similar to putting the names of your <%= defs.Basics_Users %> in a hat and randomly picking some of the names. If you put in 10 names and select 5, those you pick would get to pilot (or try) the technology,and those not selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups. This process can also work with teachers, classes, or even schools.
                                                     </p>
 
                                                     <h4 class="list-header">Advantages</h4>
                                                     <ul>
-                                                        <li>Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving you the most confidence that any differences in outcomes between the groups are due to using <%= Basics_Tech_Name %>. </li>
+                                                        <li>Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving you the most confidence that any differences in outcomes between the groups are due to using <%= defs.Basics_Tech_Name %>. </li>
                                                         <li>A fair way to decide who gets to use a technology first, because everyone has the same chance of being chosen.</li>
                                                         <li>Findings are relevant for the overall population you are working with (that is, everyone in the hat).</li>
                                                     </ul>
                                                     <h4 class="list-header">Disadvantage</h4>
                                                     <ul>
-                                                        <li>Some <%= Basics_Users %> get to use the technology earlier than others, which might be problematic for some stakeholders.</li>
+                                                        <li>Some <%= defs.Basics_Users %> get to use the technology earlier than others, which might be problematic for some stakeholders.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -242,7 +238,7 @@
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div id="cutoff-2" class="panel-collapse collapse">
-                                                    <p>Using a cutoff means selecting who uses the technology based on where <%= Basics_Users %> rank in relation to an existing threshold. For example, students just below a &ldquo;low score&rdquo; threshold are assigned to use <%= Basics_Tech_Name %>. We assume that students close to a cutoff are very similar, therefore, you can compare those just below the cutoff to those just above it. </p>
+                                                    <p>Using a cutoff means selecting who uses the technology based on where <%= defs.Basics_Users %> rank in relation to an existing threshold. For example, students just below a &ldquo;low score&rdquo; threshold are assigned to use <%= defs.Basics_Tech_Name %>. We assume that students close to a cutoff are very similar, therefore, you can compare those just below the cutoff to those just above it. </p>
                                                     <h4 class="list-header">Advantage</h4>
                                                     <ul>
                                                         <li>It allows for comparison of similar users without using random assignment.</li>
@@ -250,8 +246,8 @@
                                                     </ul>
                                                     <h4 class="list-header">Disadvantages</h4>
                                                     <ul>
-                                                        <li>Findings apply only to <%= Basics_Users %> near the cutoff, not to the whole population.</li>
-                                                        <li>Might be less fair than random assignment. With this method, scoring 1 point below the cutoff gives you a 100% chance of using <%= Basics_Tech_Name %>, whereas scoring 1 point above the cutoff means you have a 0% chance of using <%= Basics_Tech_Name %>, even though both groups of <%= Basics_Users %> might equally in need of it.</li>
+                                                        <li>Findings apply only to <%= defs.Basics_Users %> near the cutoff, not to the whole population.</li>
+                                                        <li>Might be less fair than random assignment. With this method, scoring 1 point below the cutoff gives you a 100% chance of using <%= defs.Basics_Tech_Name %>, whereas scoring 1 point above the cutoff means you have a 0% chance of using <%= defs.Basics_Tech_Name %>, even though both groups of <%= defs.Basics_Users %> might equally in need of it.</li>
                                                         <li>Not currently supported by the RCE Coach. <a href="mailto:EdTechRCE@mathematica-mpr.com">Contact us</a> if you&rsquo;d like to discuss testing this new method. </li>
                                                     </ul>
 
@@ -288,8 +284,8 @@
                                                     </ul>
                                                     <h4 class="list-header">Disadvantage</h4>
                                                     <ul>
-                                                        <li>Might not be considered fair to stakeholders. The group that meets the criteria might already have advantages over other <%= Basics_Users %>. </li>
-                                                        <li>It might not align with need. Those who need <%= Basics_Tech_Name %> more or would gain more from using it might be less likely to receive access than if you used random assignment.</li>
+                                                        <li>Might not be considered fair to stakeholders. The group that meets the criteria might already have advantages over other <%= defs.Basics_Users %>. </li>
+                                                        <li>It might not align with need. Those who need <%= defs.Basics_Tech_Name %> more or would gain more from using it might be less likely to receive access than if you used random assignment.</li>
                                                         <li>It&rsquo;s not always possible to create a good comparison group. If the Coach fails to create similar groups of users and non-users, you will not be able to determine whether the educational technology is moving the needle. It&rsquo;s possible that groups appear similar, but unobserved differences, not included in  your data, are driving outcomes. </li>
 
                                                     </ul>
@@ -312,12 +308,12 @@
                                     <div class="col-xs-6">
 
                                         <div class="step-subquestion">
-                                            <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (for example, classes or schools) to the treatment and comparison groups?</label></h4>
+                                            <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= defs.Basics_Users %></span> or groups of <span class="tech_users"><%= defs.Basics_Users %></span> (for example, classes or schools) to the treatment and comparison groups?</label></h4>
                                         </div>
                                         <div class="step-action">
                                             <select name="Individual_Group" id="Individual_Group">
                                                 <%
-                                                var options = ["Select an option", "Individual " + Basics_Users , "Groups of " + Basics_Users ];
+                                                var options = ["Select an option", "Individual " + defs.Basics_Users , "Groups of " + defs.Basics_Users ];
                                                 var ovals = ["Select an option", "users" , "groups" ];
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
@@ -330,7 +326,7 @@
 
                                             <div id="Question_Cluster" hidden="true">
                                                 <div class="step-subquestion">
-                                                    <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= Basics_Users %></span>?</label></h4>
+                                                    <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= defs.Basics_Users %></span>?</label></h4>
                                                 </div>
                                                 <div class="step-action">
                                                     <select name="Cluster_Group" id="Cluster_Group">
@@ -374,10 +370,10 @@
                                                         <div id="consider5" class="panel-collapse collapse in">
 
                                                             <p>
-                                                                It might be more feasible to randomly assign <%Basics_Users %> by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
+                                                                It might be more feasible to randomly assign <%= defs.Basics_Users %> by classroom or by school. However, your ability to learn whether <%= defs.Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
                                                             </p>
                                                             <p>
-                                                                Bigger is better. With only a few <span class="indivs-or-groups"><%= Basics_Users %></span> in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples enable you to detect smaller effects.
+                                                                Bigger is better. With only a few <span class="indivs-or-groups"><%= defs.Basics_Users %></span> in your treatment and comparison groups, your results are more likely to be inconclusive. Larger samples enable you to detect smaller effects.
                                                             </p>
                                                             <p>Remember, you can always come back and revise your answers here. The Coach will also revisit some of these questions in other tools.</p>
                                                         </div>
@@ -414,7 +410,7 @@
                             <div id="Con_Random">
 
                                 <h2>Great, based on your answers, the Coach will guide you through a randomized pilot.</h2>
-                                <p>The Coach will use the Random Assignment tool to select <span class="indivs-or-groups"><%= Basics_Users %></span> to be in your treatment and comparison groups.</p>
+                                <p>The Coach will use the Random Assignment tool to select <span class="indivs-or-groups"><%= defs.Basics_Users %></span> to be in your treatment and comparison groups.</p>
 
                             </div>
                             <div id="Con_Cutoff">
@@ -427,7 +423,7 @@
                             <div id="Con_NoGroups">
                                 <h2 class="stop-warning">Caution, it will not be possible to create a comparison group of non-users for your evaluation.</h2>
                                 <p>
-                                    In order to evaluate whether the educational technology is moving the needle, you&#39;ll need to be able to compare <%= Basics_Users %> using the technology to similar <%= Basics_Users %> not using the technology. Your answers indicate that all <%= Basics_Users %> will be using the technology.
+                                    In order to evaluate whether the educational technology is moving the needle, you&#39;ll need to be able to compare <%= defs.Basics_Users %> using the technology to similar <%= defs.Basics_Users %> not using the technology. Your answers indicate that all <%= defs.Basics_Users %> will be using the technology.
                                 </p>
                                 <p>
                                   You might be able to test options for improving implementation of the technology. Contact us at EdTechRCE@mathematica-mpr.com if you wish to discuss alternative options.
@@ -436,7 +432,7 @@
                             <div id="Con_Matched_Current">
                                 <h2>Great, based on your answers, the Coach will guide you through an evaluation using a matched comparison design.</h2>
                                 <p>
-                                    Use the Coach&rsquo;s Matching tool to create two groups that are similar in terms of observed characteristics for which you have data.  For this tool to work you will need to collect pretest and background characteristic data for your <%= Basics_Users %>.
+                                    Use the Coach&rsquo;s Matching tool to create two groups that are similar in terms of observed characteristics for which you have data.  For this tool to work you will need to collect pretest and background characteristic data for your <%= defs.Basics_Users %>.
 
                                 </p>
 
@@ -444,7 +440,7 @@
                             <div id="Con_Matched_Selected">
                                 <h2> Great, based on your answers, the Coach will guide you through an evaluation using a matched comparison design.</h2>
                                 <p>
-                                    Since you are selecting your users, a matched comparison will allow you to compare those you select to a similar group of non&#45;users that you can create using the RCE Coach Matching tool. For this method to work, you&#39;ll want to be sure that some similar <%= Basics_Users %> are not pilot users.
+                                    Since you are selecting your users, a matched comparison will allow you to compare those you select to a similar group of non&#45;users that you can create using the RCE Coach Matching tool. For this method to work, you&#39;ll want to be sure that some similar <%= defs.Basics_Users %> are not pilot users.
                                 </p>
 
                             </div>

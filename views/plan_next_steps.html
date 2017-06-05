@@ -28,20 +28,7 @@
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
         <% } %>
-        <%
-        Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-        Basics_Outcome = eval.basics.Basics_Outcome;
-        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-        if (Basics_Outcome.toLowerCase() === "") { Basics_Outcome = "outcomes"; }
-
-        Basics_Users_Other = eval.basics.Basics_Users_Other;
-        Basics_Users = eval.basics.Basics_Users;
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-
-        var Outcome_Direction = eval.planQuestion.Outcome_Direction !== "" ? eval.planQuestion.Outcome_Direction : "improve";
-        var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name ? eval.basics.Basics_Tech_Name : "the educational technology";
-        %>
+      
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -85,7 +72,7 @@
                                 <h2 class="clickable">
                                     <i class="fa fa-caret-down" aria-hidden="false"></i>
                                     A. What is the cost of
-                                    <%= Basics_Tech_Name %>?
+                                    <%= defs.Basics_Tech_Name %>?
                                 </h2>
                             </div>
                         </div>
@@ -123,7 +110,7 @@
                                             %>
 
                                         </select>
-                                        to use <%= Basics_Tech_Name %>.
+                                        to use <%= defs.Basics_Tech_Name %>.
                                     </p>
                                     <div data-toggle="collapse" data-target="#Tech_Cost_Desc">
                                         <p class="clickable">
@@ -182,14 +169,14 @@
                                     <i class="fa fa-caret-down" aria-hidden="false"></i> B. What would success look like?
                                 </h2>
                                 <p>
-                                    The Coach will calculate the probability that <%= Basics_Tech_Name %> has an effect at least as large as the number you choose here. The Coach uses the units of whatever you are using to measure outcomes. This could be points on a test if you&rsquo;re trying to improve math achievement or days absent if you are trying to improve school attendance.
+                                    The Coach will calculate the probability that <%= defs.Basics_Tech_Name %> has an effect at least as large as the number you choose here. The Coach uses the units of whatever you are using to measure outcomes. This could be points on a test if you&rsquo;re trying to improve math achievement or days absent if you are trying to improve school attendance.
                                 </p>
                             </div>
                         </div>
                         <div id="B" class="row collapse in q-row">
                             <div class="col-xs-7">
                                 <div class="step-subquestion">
-                                    <p>What is the direction of intended change in <%= Basics_Outcome %>?</p>
+                                    <p>What is the direction of intended change in <%= defs.Basics_Outcome %>?</p>
                                 </div>
                                 <div class="step-action">
                                     <label class="hidden" for="Outcome_Direction">Select direction of intended change.</label><select required name="Outcome_Direction" id="Outcome_Direction">
@@ -230,7 +217,7 @@
 
                                 <div class="step-subquestion">
                                     <p>
-                                        What unit of measurement does <span class="effect-measure"><%= Outcome_Measure %></span> use to measure <%= Basics_Outcome %>?
+                                        What unit of measurement does <span class="effect-measure"><%= Outcome_Measure %></span> use to measure <%= defs.Basics_Outcome %>?
                                     </p>
                                 </div>
                                 <div class="step-action">
@@ -303,20 +290,20 @@
                         <div id="C" class="row collapse in q-row">
                             <div class="col-xs-7">
                                 <div class="step-subquestion">
-                                    <p>&hellip; <%= Basics_Tech_Name %> moved the needle?</p>
+                                    <p>&hellip; <%= defs.Basics_Tech_Name %> moved the needle?</p>
                                 </div>
                                 <div class="step-action">
                                     <p>
                                         If I learned that there was a
 
-                                        <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <span class='change-direction'><%= Outcome_Direction %></span>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> had the intended effect.
+                                        <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% probability that <%= defs.Basics_Tech_Name %> <span class='change-direction'><%= Outcome_Direction %></span>s <%= defs.Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> had the intended effect.
                                     </p>
                                 </div>
                                 <div class="step-subquestion">
                                     <p>&hellip; <%= Basics_Tech_Name %> did not move the needle?</p>
 
                                     <p>
-                                        If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= Basics_Tech_Name %> <span class='change-direction'><%= Outcome_Direction %></span>s <%= Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= Basics_Tech_Name %> did not have the intended effect.
+                                        If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= defs.Basics_Tech_Name %> <span class='change-direction'><%= defs.Outcome_Direction %></span>s <%= defs.Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> did not have the intended effect.
                                     </p>
                                 </div>
                             </div>
@@ -358,7 +345,7 @@
 
 
                                         <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= Outcome_Direction %></span>s <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= Outcome_Direction %></span>s <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
                                         <% } %>
                                         <% if (user == "NOAUTHENTICATED") { %>
                                         A does B among C compared to D?
@@ -373,7 +360,7 @@
                                     <p>
                                         &hellip; the evidence suggests that it is not likely that
                                         <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= Outcome_Direction  %></span>s <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
+                                        <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= Outcome_Direction  %></span>s <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
                                         <% } %>
                                         <% if (user == "NOAUTHENTICATED") { %>
                                         A does B among C compared to D?
@@ -408,15 +395,10 @@
                                                 </div>
                                                 <div id="consider7" class="panel-collapse collapse in">
                                                     <p>
-                                                        <b>Your research question:</b> <br />
-                                                        <% if (user != "NOAUTHENTICATED") { %>
-                                                        Does
-                                                        <span class='tech-name'><%= Basics_Tech_Name  %></span>  <span class='change-direction'><%= Outcome_Direction %></span> <span class='eval-outcome'><%= Basics_Outcome !='' ? Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? eval.planQuestion.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? eval.planQuestion.Comparison_Group_Desc :  "D" %></span>?
-                                                        <% } %>
-                                                        <% if (user == "NOAUTHENTICATED") { %>
-                                                        A does B among C compared to D?
-                                                        <% } %>
+                                                        <b>Your research question:</b> <br/>
+                                                        <% include ../views/partials/_researchQuestion.html %>
 
+                                                      
                                                     </p>
                                                     <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you have to make.</p>
                                                 </div>

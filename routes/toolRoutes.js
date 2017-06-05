@@ -56,11 +56,14 @@ module.exports = function (app, passport) {
 	} 
 	
 	//02.03 The Basics
-    app.get('/basics', isLoggedIn, function (req, res) {
+	app.get('/basics', isLoggedIn, function (req, res) {
+		
 		sess = req.session;
         sess.eval.last_step = 2;
         sess.step = 2;
 		sess.eval.last_tool = "The Basics";
+		console.log("in get basics and sess length = ");
+		console.log(sess.length);
         var query = require('url').parse(req.url, true).query;
         res.render('basics.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, valerrs: sess.valerrs  },
             function (err, html) {
@@ -204,11 +207,17 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 2;
         sess.step = 2;
         sess.eval.last_tool = "Determine Your Approach";
-        var query = require('url').parse(req.url, true).query;
-        res.render('determine_your_approach.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
-            } );
+		var query = require('url').parse(req.url, true).query;
+		console.log("In route for determine approach");
+		console.log(query);
+		console.log(sess.eval);
+        res.render('determine_your_approach.html', {
+            user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query }
+           //,
+            //function (err, html) {
+            //    if (err) { res.redirect('/error'); } else { res.send(html); }
+            //}
+		);
     });
     app.post('/determine_your_approach', isLoggedIn,  function (req, res) {
         sess = req.session;
@@ -335,10 +344,12 @@ module.exports = function (app, passport) {
 		console.log("In craft question.");
         console.log(sess.valerrs);
         var query = require('url').parse(req.url, true).query;
-        res.render('craft_your_research_q.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, valerrs: sess.valerrs },
-            function (err, html) {
-                if (err) { res.redirect('/error'); } else { res.send(html); }
-            });
+		res.render('craft_your_research_q.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query, valerrs: sess.valerrs }
+			//,
+         //   function (err, html) {
+              //  if (err) { res.redirect('/error'); } else { res.send(html); }
+           // }
+		);
     });
     //03.01 crafting a research question
     app.post('/craft_your_research_q', isLoggedIn,  function (req, res) {
@@ -424,7 +435,7 @@ module.exports = function (app, passport) {
         sess.step = 3;
         sess.eval.last_tool = "Think About How to Use Your Result";
         var query = require('url').parse(req.url, true).query;
-        res.render('plan_next_steps.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('plan_next_steps.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -515,7 +526,7 @@ module.exports = function (app, passport) {
         sess.step = 3;
 		sess.eval.last_tool = "Working with Ed Tech Providers";
 		var query = require('url').parse(req.url, true).query;
-        res.render('working_with_provider.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('working_with_provider.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -575,7 +586,7 @@ module.exports = function (app, passport) {
         sess.step = 3;
         sess.eval.last_tool = "Summarize Context";
         var query = require('url').parse(req.url, true).query;
-        res.render('context_and_usage.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query }
+        res.render('context_and_usage.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query }
 			//,
             //function (err, html) {
             //    if (err) { res.redirect('/error'); } else { res.send(html); }
@@ -733,7 +744,7 @@ module.exports = function (app, passport) {
         sess.step = 4;
 		sess.eval.last_tool = "Prepare for Random Assignment";
 		var query = require('url').parse(req.url, true).query;
-        res.render('prepare_data_random.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('prepare_data_random.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -818,7 +829,7 @@ module.exports = function (app, passport) {
         sess.step = 4;
 		sess.eval.last_tool = "Prepare Your Data for Analysis";
 		var query = require('url').parse(req.url, true).query;
-        res.render('prepare_data.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query },
+        res.render('prepare_data.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -926,7 +937,7 @@ module.exports = function (app, passport) {
         sess.eval.evalPlan.Milestones.sort(dynamicSort("Order"));
 
 		var query = require('url').parse(req.url, true).query;
-        res.render('evaluation_plan.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online'})
+        res.render('evaluation_plan.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query, display: 'online'})
         
     });
 
@@ -1127,7 +1138,7 @@ module.exports = function (app, passport) {
         sess.step  =4;
         sess.eval.last_tool = "Matching";
         var query = require('url').parse(req.url, true).query;
-        res.render('matching.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
+        res.render('matching.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
 		}
@@ -1218,7 +1229,7 @@ module.exports = function (app, passport) {
         sess.step = 4;
         sess.eval.last_tool = "Randomization";
         var query = require('url').parse(req.url, true).query;
-        res.render('randomization.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
+        res.render('randomization.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             });
@@ -1311,7 +1322,7 @@ module.exports = function (app, passport) {
         sess.step = 5;
         sess.eval.last_tool = "Get Results";
         var query = require('url').parse(req.url, true).query;
-        res.render('getresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url } //,
+        res.render('getresult.html', { user: req.user, eval: sess.eval, defs: sess.defaults,  message: req.flash('saveMessage'), query: query, shiny_url: configDB.shiny_url } //,
          
         //    function (err, html) {
         //        if (err) { res.redirect('/error'); } else { res.send(html); }
@@ -1399,7 +1410,7 @@ module.exports = function (app, passport) {
         sess.step = 6;
         sess.eval.last_tool = "Share Your Results";
         var query = require('url').parse(req.url, true).query;
-       res.render('shareresult.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, display: 'online' } //,
+       res.render('shareresult.html', { user: req.user, eval: sess.eval, defs: sess.defaults,  message: req.flash('saveMessage'), query: query, display: 'online' } //,
         //    function (err, html) {
         //        if (err) { res.redirect('/error'); } else { res.send(html); }
 		   //    }
@@ -1410,7 +1421,7 @@ module.exports = function (app, passport) {
         var query = require('url').parse(req.url, true).query;
         Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
             sess.publishlists  = eval;
-            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, message: req.flash('saveMessage'), query: query, display: 'online' } //,
+            res.render('shareresult.html', { user: req.user, eval: sess.publishlists, defs: sess.defaults, message: req.flash('saveMessage'), query: query, display: 'online' } //,
              //   function (err, html) {
               //      if (err) { res.redirect('/error'); } else { res.send(html); }
               //  }

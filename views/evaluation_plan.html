@@ -49,39 +49,8 @@
         var stripPercent = function(x) {
         return parseInt(x.replace(/%/g, ''));
         }
-        console.log("In Eval Plan");
-        //   console.log(eval);
-        var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-        var Basics_Outcome = eval.basics.Basics_Outcome;
-        if (eval.basics.Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-        if (eval.basics.Basics_Outcome.toLowerCase() === "") { Basics_Outcome = "outcomes"; }
-
-        var Basics_Users_Others = eval.basics.Basics_Users_Other;
-        var Basics_Users = (eval.basics.Basics_Users === "") ? "users" : eval.basics.Basics_Users;
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-        if(Basics_Tech_Name === ''){ Basics_Tech_Name = "the educational technology"; }
-
-        var Outcome_Direction = eval.planQuestion.Outcome_Direction !== "" ? eval.planQuestion.Outcome_Direction : "improve";
-        var Outcome_Milestone_Note = (eval.planQuestion.Outcome_Measure == "") ? "" : "Using " + eval.planQuestion.Outcome_Measure + " to measure outcomes";
-        var Outcome_Measure = (eval.planQuestion.Outcome_Measure == "") ? "as measured by my outcome measure" : "as measured by " + eval.planQuestion.Outcome_Measure ;
-
-        var Units = (eval.planNext.Measure_Units.toLowerCase() == "other") ? eval.planNext.Measure_Units_Other : eval.planNext.Measure_Units;
-
-        var Comparison_Group = eval.planQuestion.Comparison_Group_Desc ;
-        if (Comparison_Group === '') { Comparison_Group = "the comparison group";}
-
-        var Intervention_Group = eval.planQuestion.Intervention_Group_Desc ;
-        if (Intervention_Group === '') { Intervention_Group = "the treatment group";}
-
-        var Random_Level = Basics_Users;
-        if (eval.prepareRandom.Individual_Group.toLowerCase() == "groups"){
-        var cluster = eval.prepareRandom.Cluster_Group == "other" ? eval.prepareRandom.Cluster_Group_Other : eval.prepareRandom.Cluster_Group;
-        Random_Level = (cluster == "") ? "groups of " + Basics_Users : cluster;
-        }
-        Random_Level = Random_Level.charAt(0).toUpperCase() + Random_Level.slice(1);
-
+        
+      
         %>
         <div class="container-fluid">
 
@@ -176,18 +145,7 @@
                     <div id="A" class="row collapse in  q-row">
                         <div class="col-xs-10">
                             <div class="step-subquestion">
-                                Does <% if (user != "NOAUTHENTICATED") { %>
-                                <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> <%= Outcome_Measure %> among <%= Intervention_Group %> compared to <%= Comparison_Group %>?
-                                <% } %>
-                                <% if (user == "NOAUTHENTICATED") { %>
-                                Does A do B among C compared to D?
-                                <% } %>
-
-                                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                                <p class="prev-answer">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=evaluation_plan">Craft Your Research Question</a>
-                                </p>
-                                <% } %>
+                                <% include ../views/partials/_researchQuestion.html %>
                             </div>
                         </div>
                     </div>
@@ -206,9 +164,9 @@
                         <div class="col-xs-10">
                             <div class="step-subquestion">
                                 <ul>
-                                    <li>This evaluation will test the effectiveness of <%= Basics_Tech_Name %>.</li>
+                                    <li>This evaluation will test the effectiveness of <%= defs.Basics_Tech_Name %>.</li>
                                     <li>
-                                        <span class="capitalize-one"><%= Basics_Tech_Name %></span> is
+                                        <span class="capitalize-one"><%= defs.Basics_Tech_Name %></span> is
                                         <% if (display === 'online') { %>
 
                                         <br /><textarea name="Tech_Purpose" id="Tech_Purpose" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Tech_Purpose %></textarea>
@@ -252,9 +210,9 @@
                             <div class="step-subquestion">
 
                                 <% if(eval.path === "path-random") { %>
-                                <p>This evaluation will use a randomized pilot. The choice of who will pilot the technology will be determined by chance, like a coin flip. This design is the best way to determine if <%= Basics_Tech_Name %> is moving the needle because it creates two groups that are similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This means that we can be confident that any differences we see in outcomes are due to the technology and not other factors.</p>
+                                <p>This evaluation will use a randomized pilot. The choice of who will pilot the technology will be determined by chance, like a coin flip. This design is the best way to determine if <%= defs.Basics_Tech_Name %> is moving the needle because it creates two groups that are similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This means that we can be confident that any differences we see in outcomes are due to the technology and not other factors.</p>
                                 <p>
-                                    <div class="sentence-case"><%= Random_Level %></div> will be randomly selected to use the technology.
+                                    <div class="sentence-case"><%= defs.Random_Level %></div> will be randomly selected to use the technology.
                                     <ul><li>Why does this matter? There are multiple ways to randomly assign individuals: we could randomly select individuals to use the technology, or we could randomly select groups of individuals (such as schools) to use the technology. In general, the lower the level of randomization, the stronger ones ability to make conclusions, but it is not always feasible to randomly assign at the individual level.</li></ul>
                                 </p>
 
@@ -280,7 +238,7 @@
                                 <% if (display === 'online') { %>
                                 <i class="fa fa-caret-down" aria-hidden="false"></i>
                                 <% } %>
-                                How <%= Basics_Tech_Name %> is intended to be used
+                                How <%= defs.Basics_Tech_Name %> is intended to be used
                             </h2>
                         </div>
                     </div>
@@ -301,7 +259,7 @@
                                     <% if (display === 'online') { %>
                                         <label for="Expected_Dosage">
                                     <% } %>
-                                        During the evaluation, <%= Basics_Users %> in the treatment group <%= verb1 %> <%= Basics_Tech_Name %>
+                                        During the evaluation, <%= defs.Basics_Users %> in the treatment group <%= verb1 %> <%= defs.Basics_Tech_Name %>
                                     <% if (display === 'online') { %>
                                         </label>
                                     <% } %>
@@ -312,10 +270,10 @@
                                     <% } else { %>
                                     <%= eval.planContext.Expected_Dosage %>
                                     <% } %>
-                                    Usage data can be reviewed to verify that <%= Basics_Users %> in the treatment group <%= verb3 %> the technology as planned.
+                                    Usage data can be reviewed to verify that <%= defs.Basics_Users %> in the treatment group <%= verb3 %> the technology as planned.
                                 </p>
                                 <p>
-                                    <span class="capitalize-one"><%= Basics_Users %></span> in the comparison group <%= verb2 %> have access to <%= Basics_Tech_Name %>.
+                                    <span class="capitalize-one"><%= defs.Basics_Users %></span> in the comparison group <%= verb2 %> have access to <%= defs.Basics_Tech_Name %>.
                                 </p>
 
                                 <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
@@ -345,17 +303,11 @@
                         <div class="col-xs-12">
 
                             <div class="step-subquestion">
-                                <%
-
-                                var  Pass_Prob = eval.planNext.Pass_Probability == "" ? '75' : eval.planNext.Pass_Probability;
-
-                                var  Fail_Prob = eval.planNext.Fail_Probability == "" ? '50' : eval.planNext.Fail_Probability;
-
-                                %>
-                                <p>The evaluation will result in one of three answers&mdash;<%= Basics_Tech_Name %> has the intended effect, it does not have the intended effect, or we're not sure. This section summarizes how we plan to use the results to inform decisions in each scenario. </p>
+                               
+                                <p>The evaluation will result in one of three answers&mdash;<%= defs.Basics_Tech_Name %> has the intended effect, it does not have the intended effect, or we're not sure. This section summarizes how we plan to use the results to inform decisions in each scenario. </p>
                                 <ul>
                                     <li>
-                                        If there is a more than a <%= stripPercent(Pass_Prob) %>% probability that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I would conclude that <%= Basics_Tech_Name %> had the intended effect. In this case I plan to
+                                        If there is a more than a <%= stripPercent(defs.Pass_Prob) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%=  defs.Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> had the intended effect. In this case I plan to
 
 
                                         <% if (display === 'online') { %>
@@ -365,7 +317,7 @@
                                         <% } %>
                                     </li>
                                     <li>
-                                        If there is a less than a <%= stripPercent(Fail_Prob) %>% probability that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I would conclude that <%= Basics_Tech_Name %> did not have the intended effect. In this case I plan to
+                                        If there is a less than a <%= stripPercent(defs.Fail_Prob) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> did not have the intended effect. In this case I plan to
                                         <% if (display === 'online') { %>
                                         <br /><textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
                                     </li>
@@ -373,7 +325,7 @@
                                     <%= eval.planNext.Action_Fail %>
                                     <% } %>
                                     <li>
-                                        If the probability is between <%= stripPercent(Pass_Prob) %>% and <%= stripPercent(Fail_Prob) %>% that the intervention improves <%= Basics_Outcome %> <%= Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= Units %> or more, I plan to
+                                        If the probability is between <%= stripPercent(defs.Pass_Prob) %>% and <%= stripPercent(defs.Fail_Prob) %>% that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Units %> or more, I plan to
                                         <% if (display === 'online') { %>
                                         <br /><textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea>
                                     </li>
