@@ -1,5 +1,5 @@
 ﻿
-<table id="myTable" data-order='[[ 2, "asc" ]]' class="table table-striped">
+<table id="myTable" data-order='[[ 2, "asc" ], [3, "asc"]]' class="table table-striped">
     <thead>
         <tr>
             <% if (user.isAdmin) { %>
@@ -28,7 +28,6 @@
         type =lists[i].type;
         path =lists[i].path;
         prereq =lists[i].prereq;
-        console.log(prereq);
         %>
         <tr>
             <% if (user.isAdmin) { %>
