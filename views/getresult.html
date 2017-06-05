@@ -27,19 +27,17 @@
     <% include ../views/partials/toolHeader.html %>
     <% } %>
 <form action="/getresult" method="post">
-    <% include('../views/partials/_basicsFields.html')%> 
+
 <%
+
+console.log("The defaults");
+    console.log(defs);
 var Result="";
 
 if (user != "NOAUTHENTICATED"){
 if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
 }
 
-var Outcome_Direction = eval.planQuestion.Outcome_Direction;
-var Measure_Units_Other = eval.planNext.Measure_Units_Other;
-var Measure_Units = eval.planNext.Measure_Units;
-if (Measure_Units.toLowerCase() === "other") { Measure_Units = Measure_Units_Other; }
-if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") { Measure_Units = "units"; }
 %>
 
 <input type="hidden" id="coreurl" value="<%= shiny_url %>"/>
@@ -147,10 +145,10 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
             <p>
                 If I learned that there was a
 
-                <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px"/>% probability that <%= defs.Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units"><%= Measure_Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that the educational technology had the intended effect.
+                <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="Pass_Probability" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px"/>% probability that <%= defs.Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units"><%= defs.Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that the educational technology had the intended effect.
             </p>
             <p>
-                If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px"/>% probability that <%= defs.Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> did not have the intended effect.
+                If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="Fail_Probability" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px"/>% probability that <%= defs.Basics_Tech_Name %> improved outcomes by <span class='success-effect-size'>0</span> or more <span class="measure-units"><%= defs.Units %></span> on <span class="effect-measure"><%= eval.planQuestion.Outcome_Measure %></span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> did not have the intended effect.
             </p>
             <% if (user != "NOAUTHENTICATED") {%>
             <p class="prev-answer">
@@ -389,7 +387,7 @@ if (Measure_Units === "" || Measure_Units.toLowerCase() === "select an option") 
     <input type="hidden" id="techName" value="<%= defs.Basics_Tech_Name %>"/>
     <input type="hidden" id="evalOutcome" value="<%= defs.Basics_Outcome %>"/>
     <input type="hidden" id="outDirection" value="<%= defs.Outcome_Direction %>"/>
-    <input type="hidden" id="measureUnits" value="<%= defs.Measure_Units %>"/>
+    <input type="hidden" id="measureUnits" value="<%= defs.Units %>"/>
     <input type="hidden" name="result" id="gresult" value="<%= Result %>"/>
 </div>
 <% include ../views/partials/toolButtons.html %>

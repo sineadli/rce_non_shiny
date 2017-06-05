@@ -105,7 +105,7 @@ function setResearchQ(sess) {
 		sess.defaults.Intervention_Group_Desc = interventionGroupDesc;
 		sess.defaults.Comparison_Group_Desc = comparisonGroupDesc;
 		console.log('in set research Q');
-		console.log(sess.defaults.Outcome_Measure);
+		console.log(sess.defaults.Outcome_Direction);
   
     return;
 };

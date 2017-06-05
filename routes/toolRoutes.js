@@ -15,7 +15,7 @@ var async = require('async');
 var extend = require('util')._extend;
 var Evaluation = require('../models/evaluation.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
-//var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
+var getEvalDefaults = require('../middleware/getEvalDefaults.js');
 var configDB = require('../config/database.js');
 var sess;
 //please note that req.sess.step is for managing the active tab for coach.html
@@ -25,7 +25,7 @@ var sess;
 
 module.exports = function (app, passport) {
    // app.use(isLoggedIn);
-   // app.use(getCurrentEvaluation);
+    app.use(getEvalDefaults);
 		
 	function dynamicSort(property) {
 		var sortOrder = 1;
@@ -65,7 +65,7 @@ module.exports = function (app, passport) {
 		console.log("in get basics and sess length = ");
 		console.log(sess.length);
         var query = require('url').parse(req.url, true).query;
-        res.render('basics.html', { user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query, valerrs: sess.valerrs  },
+        res.render('basics.html', { user: req.user, eval: sess.eval,  defs: sess.defaults, message: req.flash('saveMessage'), query: query, valerrs: sess.valerrs  },
             function (err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html);}
             });
@@ -155,7 +155,7 @@ module.exports = function (app, passport) {
         sess.step = 2;
 		sess.eval.last_tool = "Who Is Using Your Technology and How?";
 		var query = require('url').parse(req.url, true).query;
-        res.render('who_and_how.html', {user: req.user, eval: sess.eval, message: req.flash('saveMessage'), query: query},
+        res.render('who_and_how.html', { user: req.user, eval: sess.eval, defs: sess.defaults, message: req.flash('saveMessage'), query: query},
             function(err, html) {
                 if (err) { res.redirect('/error'); } else { res.send(html); }
             } );
