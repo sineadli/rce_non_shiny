@@ -30,7 +30,9 @@ var getCurrentEvaluation = function (req, res, next) {
                     sess.eval = eval;
                     if (!sess.step) { sess.step = eval.last_step; }
                     req.user.evalid = eval._id;
-                    req.user.save();
+                    if (req.user._id == eval.userid) {
+                        req.user.save();
+                    }
                     console.log("updating udate date for evaluation:" + eval.title);
 					eval.updated_at = new Date();
                     eval.save();
