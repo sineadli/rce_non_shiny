@@ -17,8 +17,8 @@
 </head>
 <% 
 var peekingThis = query.peeking == 1 ? "peeking" : "";
-
 var valerrors = [];
+var display = "online";
 var validationMessage = "<p class='alert-danger'>Please use only letters, numbers and basic punctuation.</p>";
 if(valerrs) valerrors = valerrs;
 
@@ -40,17 +40,7 @@ if(valerrs) valerrors = valerrs;
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
         <% } %>
-        <%
-
-        var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-        var Basics_Outcome = eval.basics.Basics_Outcome;
-        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-        var Basics_Users_Others = eval.basics.Basics_Users_Other;
-        var Basics_Users = eval.basics.Basics_Users;
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Others; }
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name == '' ? 'the educational technology' : eval.basics.Basics_Tech_Name
-
-        %>
+       
         <input type="hidden" id="user_email" value="<%= user %>" />
         <div class="container-fluid">
             <div class="row">
@@ -111,12 +101,7 @@ if(valerrs) valerrors = valerrs;
                     <div id="A" class="row collapse in  q-row">
                         <div class="col-xs-7">
                             <div class="step-action">
-                                <% var Basics_Tech_Name ='';
-                                if (user != "NOAUTHENTICATED") {
-                                if (eval.basics) {
-                                Basics_Tech_Name = eval.basics.Basics_Tech_Name
-                                }
-                                } %>
+                               
                                 <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
                                 <% if (user != "NOAUTHENTICATED") {%>
                                 <p class="prev-answer">
@@ -367,7 +352,7 @@ if(valerrs) valerrors = valerrs;
                     </div>
                     <div class="row">
                         <div class="col-xs-7">
-                            <em> Does <strong><span class="tech-name"><%= Basics_Tech_Name %></span></strong> <span class='change-direction'>do</span> <strong><span class='eval-outcome'></span> <span class="effect-measure"></span></strong> among <strong><span class='treatment-group'>C</span></strong> compared to <strong><span class='comparison-group'>D</span></strong>?</em>
+                            <em>   <% include ../views/partials/_researchQuestion.html %></em>
                         </div>
                         <div class="col-xs-5">
                             <div class="step-to-consider">

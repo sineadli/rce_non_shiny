@@ -24,6 +24,8 @@
     "jquery-accessible-dialog-tooltip-aria": "1.0.4"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "nodemon": "^1.11.0"
   }
 }

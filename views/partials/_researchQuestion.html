@@ -1,88 +1,29 @@
 ﻿
-<h3> Research Question</h3>
 
 <%
-// basics
-Basics_Tech_Name = '[technology name]';
-Basics_Outcome = '[outcome of interest]';
-Basics_Outcome_Other   = '[outcome of interest]';
-Basics_Users     = '[users]';
-Basics_Users_Other = '[users]';
-Basics_User = [user];
-
-// planQuestion
-Outcome_Direction       = '[outcome direction]';
-Outcome_Measure         = '[outcome measure]';
-Intervention_Group_Desc = '[the intervention group]';
-Comparison_Group_Desc = '[the comparison group]';
-
-if (eval.planQuestion) {
-
-        planQuestion    = eval.planQuestion;
-
-        if (!planQuestion.Outcome_Direction) {
-      
-        } else if (planQuestion.Outcome_Direction.toLowerCase() === 'select an option') {
-          
-        } else {
-            Outcome_Direction = planQuestion.Outcome_Direction || Outcome_Direction;
-        }
-
-        Outcome_Measure = planQuestion.Outcome_Measure || Outcome_Measure;
-      
-
-        Intervention_Group_Desc = planQuestion.Intervention_Group_Desc || Intervention_Group_Desc;
-      
-
-        Comparison_Group_Desc = planQuestion.Comparison_Group_Desc || Comparison_Group_Desc;
-       
-
-    }
-if (eval.basics) {
-  
-        basics = eval.basics;
-
-        Basics_Tech_Name    = basics.Basics_Tech_Name || Basics_Tech_Name;
-       
-
-        if (!basics.Basics_Outcome) {
-           
-        } else if (basics.Basics_Outcome.toLowerCase() === 'select an option') {
-           
-        } else {
-            Basics_Outcome = basics.Basics_Outcome || Basics_Outcome;
-        }
-
-if (Basics_Outcome === 'other') {
-            Basics_Outcome = basics.Basics_Outcome_Other || Basics_Outcome_Other;
-           
-        }
-        if (!basics.Basics_Users ||basics.Basics_Users == "Select an option") {
-          
-        } else {
-            Basics_Users = basics.Basics_Users || Basics_Users;
-        }
-
-        if (Basics_Users === 'other') {
-            Basics_Users = basics.Basics_Users_Other || Basics_Users_Other;
-           
-        }
-    Basics_User = Basics_Users.substr(0,Basics_Users.length -1 )
+var useMeasure = '';
+if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Result") {
+useMeasure = " as measured by " + defs.Outcome_Measure + " by " + defs.Success_Effect_Size + " or more " + defs.Units ;
 }
 
-%>
 
 
+if (user != "NOAUTHENTICATED") { %>
+  Does
+<span class='tech-name'><%= defs.Basics_Tech_Name  %></span>  <span class='change-direction'><%= defs.Outcome_Direction %></span> <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span> <%- useMeasure %> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
 
 
-                        Does <%= Basics_Tech_Name %> <%= Outcome_Direction %> <%= Basics_Outcome %> as measured by <%= Outcome_Measure %> by <%= Success_Effect_Size %> or more <%= Measure_Units %> among
-                        <%= Intervention_Group_Desc %>
-                        compared to
-                        <%= Comparison_Group_Desc %>?
+<% }
+ if (user == "NOAUTHENTICATED") { %>
+          Does A do B among C compared to D?
+ <% } %>
 
-                        <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
+<%
+
+
+if (user != "NOAUTHENTICATED" && display  == 'online' && eval.last_tool != "Craft Your Research Question") { %>
 <p class="prev-answer hidden-print">
     <i class="fa fa-hand-o-right"></i> Where did I answer this? See
     <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
 </p>
-                        <% } %>
+<% } %>
