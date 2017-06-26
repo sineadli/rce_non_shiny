@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
@@ -15,7 +15,9 @@
     <title>Prepare Your Data for Analysis</title>
     <% include ../views/partials/scriptHeader.html %>
 </head>
-<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<% var peekingThis = query.peeking == 1 ? "peeking" : "";
+var path = eval.path;
+%>
 <body class="<%- peekingThis %>">
     <% include ../views/partials/header.html %>
     <% if (user != "NOAUTHENTICATED") { %>
@@ -26,609 +28,601 @@
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
 
-    <form action="/prepare_data" method="post" novalidate>
-        <% if (user != "NOAUTHENTICATED") { %>
-        <% include ../views/partials/toolHeader.html %>
-        <% } %>
+<form action="/prepare_data" method="post" novalidate>
+    <input type="hidden" name="_id" value="<%= eval._id %>">
+<% if (user != "NOAUTHENTICATED") { %>
+<% include ../views/partials/toolHeader.html %>
+<% } %>
 
-        <%
-        var Basics_Users_Other = eval.basics.Basics_Users_Other;
-        var Basics_Users = eval.basics.Basics_Users;
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-        if (Basics_Tech_Name == "") { Basics_Tech_Name = "the educational technology"; }
-        var path = eval.path;
-        Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-        Basics_Outcome = eval.basics.Basics_Outcome;
-        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-        if (Basics_Outcome === "") { Basics_Outcome = "Outcomes"}
-        var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
-        if (Outcome_Measure == "") { Outcome_Measure = "your outcome measure (e.g. test scores);"}
-        %>
-        <input type="hidden" name="users" id="users" value="<%= eval.basics.Basics_Users %>" />
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="tool-top">
-                        <div class="dl-guide">
-                            <% if (eval.path === "path-random") {  %>
-                            <a onclick="window.open('/static/pdf/Prepare your data for analysis_randomized pilot.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
-                            <% } %> 
-                            <% if (eval.path === "path-matching") { %>
-                            <a onclick="window.open('/static/pdf/Prepare your data for analysis_matching.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
-                            <% } %> 
-                        </div>
 
-                        <div class="tool-header">
-                            <h1 class="tool-title">
-                                <% if(query.peeking == 1) {
-                                var peekingnote = eval.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "Based on your answers in &ldquo;Determine Your Approach,&rdquo; you do not need to use this tool to complete your evaluation.";
-                                %>
-                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
-                                <% } %>
-                                Prepare Your Data for Analysis
-                            </h1>
 
-                            <div class="tool-intro">
-                                <p>
-                                    You will need data from multiple sources to answer your research question. This tool will guide you through collecting, formatting, and checking the data you need to complete your evaluation. It provides a series of checklists to help you determine if your data are ready for use by the Coach. <% if (eval.path === "path-random") { %> If you created a data set to use with the Random Assignment tool, you should be familiar with many of these data preparation steps. <% } %>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="tool-top">
+            <div class="dl-guide">
+                <% if (eval.path === "path-random") { %>
+                <a onclick=" window.open('/static/pdf/Prepare your data for analysis_randomized pilot.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                <% } %>
+                <% if (eval.path === "path-matching") { %>
+                <a onclick=" window.open('/static/pdf/Prepare your data for analysis_matching.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                <% } %>
+            </div>
 
-                                </p>
-                                <% if (eval.path === "path-random") { %>
-                                <p class="note"><strong>Note:</strong> The data set created by the &ldquo;Random Assignment&rdquo; tool will be one of your data sources as it will contain your treatment status information.
-                                </p>
-                                <% } %>
-                            </div>
-                        </div>
-                        <div class="clearfix">&nbsp;</div>
-                    </div>
+            <div class="tool-header">
+                <h1 class="tool-title">
+                    <% if(query.peeking == 1) {
+                    
+                    %>
+                    <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br/>
+                    <% } %>
+                    Prepare Your Data for Analysis
+                </h1>
+
+                <div class="tool-intro">
+                    <p>
+                        You will need data from multiple sources to answer your research question. This tool will guide you through collecting, formatting, and checking the data you need to complete your evaluation. It provides a series of checklists to help you determine if your data are ready for use by the Coach. <% if (eval.path === "path-random") { %> If you created a data set to use with the Random Assignment tool, you should be familiar with many of these data preparation steps. <% } %>
+
+                    </p>
+                    <% if (eval.path === "path-random") { %>
+                    <p class="note"><strong>Note:</strong> The data set created by the &ldquo;Random Assignment&rdquo; tool will be one of your data sources as it will contain your treatment status information.
+                    </p>
+                    <% } %>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="tool-questions">
-
-
-                    <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#D">
-                            <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> Required and recommended data elements.
-                            </h2>
-                        </div>
-
-                    </div>
-                    <div id="D" class="row collapse in q-row">
-                        <div class="col-xs-12">
-                            <div class="step-subquestion">
-                                <p>
-                                    You will use multiple types of data to build your treatment and comparison groups and run your analysis.
-                                </p>
-                            </div>
-
-                            <div class="step-action check-list">
-
-
-
-                                <%
-                                var checked = ( eval.prepare.Check_Treatment == "Treatment_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Treatment" name="Prepare[Check_Treatment]" value="Treatment_Checked" <%- checked %>/><label class="sec-label" for="Check_Treatment">
-                                    Treatment status&mdash;<em class="recommendation">Required</em>
-                                </label><br />
-
-                                <p class="sub-label">
-                                    Data that indicates which <span class="tech_users"><%= Basics_Users %></span> received access to <%= Basics_Tech_Name %> and which did not. Valid values are 1 (had access) or 0 (no access).
-                                </p>
-
-
-
-
-
-                                <% if (path === "path-random") {
-
-                                %>
-
-
-                                <p class="sub-label">
-                                    This variable is in the dataset that you downloaded from the Coach
-                                    after your technology users and your comparison group were randomly selected.
-
-                                </p>
-                                <p class="note">
-                                    You must use the original file with the original treatment status variable, even if
-                                    someone in your comparison group found a way to use the technology. The Coach will
-                                    calculate the effect of being randomly assigned to use the technology on your outcome of
-                                    interest. If you move participants from one group to another after random assignment, your
-                                    groups may be unbalanced, and you will not be able to make reliable conclusions about the
-                                    technology&rsquo;s effect.
-                                </p>
-
-                                <% } %>
-
-
-                                <%
-                                var checked = ( eval.prepare.Check_Outcome == "Outcome_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Outcome" name="Prepare[Check_Outcome]" value="Outcome_Checked" <%- checked %>/><label class="sec-label" for="Check_Outcome">
-                                    Outcome data&mdash;<em class="recommendation">Required</em>
-                                </label><br />
-
-
-                                <p class="sub-label"> Data on <%= Basics_Outcome %> as measured by <%= Outcome_Measure %> that you will use to determine the effect of <%= Basics_Tech_Name %>. </p>
-
-                                <%
-                                var required = "Recommended";
-                                var ptpathnote ="The Coach will use pretest information to check the equivalence of the treatment and comparison groups at the start of your evaluation."
-                                if (path === "path-matching") {
-                                required = "Required";
-                                ptpathnote = "Pretest data are necessary to create similar groups.";
-                                }
-
-                                var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Pretest" name="Prepare[Check_Pretest]" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
-                                    Pretest data&mdash;<em class="recommendation"><%= required %></em>
-                                </label><br />
-
-                                <p class="sub-label"> This is a measure of <%= Basics_Outcome %> just before the introduction of <%= Basics_Tech_Name %> (such as an assessment from the beginning of the school year). <%- ptpathnote %></p>
-
-                                <%
-                                var required = "Recommended";
-                                var bcpathnote ="If you include background characteristics in your dataset, the Coach will check that your treatment and comparison groups are well balanced on these characteristics.";
-
-                                if (path === "path-matching") {
-
-                                bcpathnote = "Background traits are particularly important for matched comparison evaluations because you can use them to make sure your treatment and comparison groups are well matched or balanced.";
-                                }
-
-                                var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Background" name="Prepare[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
-                                    Background characteristics &mdash;<em class="recommendation"><%= required %></em>
-                                </label><br />
-
-                                <p class="sub-label">
-                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, individualized education plan  status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
-                                </p>
-                                <p class="note">It is preferable to measure all background characteristics before introducting <%= Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= Basics_Tech_Name %>. </p>
-                                <p class="sub-label"> <%- bcpathnote %></p>
-                                <p class='sub-label'><span class='group-data-prep-note'></span></p>
-
-
-                                <%
-                                var required = "Recommended";
-                                var upathnote ="Collecting and referring to usage data throughout your evaluation will help you determine if " + Basics_Tech_Name + " is being implemented and used as expected, making it possible for you to correct any issues as they arise.";
-
-                                if (path === "path-matching") {
-
-                                upathnote = "Usage information can be used to assign <span class='tech_users'>"+ Basics_Users +" </span> to treatment and comparison groups.";
-                                }
-
-                                var checked = ( eval.prepare.Check_Usage == "Usage_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Usage" name="Prepare[Check_Usage]" value="Usage_Checked" <%- checked %> /><label class="sec-label" for="Check_Usage">
-                                    Usage data &mdash;<em class="recommendation"><%= required %></em>
-                                </label><br />
-
-                                <p class="sub-label">
-                                    This includes data on how often <%= Basics_Tech_Name %> was used, patterns of use over time, and how <span class="tech_users"><%= Basics_Users %></span> scored on assessments. This information will help you interpret your evaluation findings.
-                                </p>
-                                <p class="sub-label"> <%- upathnote %></p>
-                                <p class="sub-label">
-                                    Please see <a href="/static/pdf/Who used your technology and how.pdf" target="_blank">Who Used Your Technology and How</a> for more information.
-                                </p>
-
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#E">
-                            <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> Creating your dataset
-                            </h2>
-                        </div>
-
-                    </div>
-                    <div id="E" class="row  collapse in q-row">
-                        <div class="col-xs-12">
-
-
-                            <div class="step-subquestion">
-                                <p>After you have identified the data elements and data sources, the next step is to combine all data elements into one tidy dataset. We recommend generating tidy datasets not only because it is a requirement to use the RCE Coach and most statistical software packages, but also because a tidy dataset is easy to manipulate, model, and visualize. </p>
-                                <p>If you do not have access to statistical software, you can use Microsoft Excel to prepare your data. An <a href="/static/pdf/RCE Coach Data Template.xlsx" target="_blank">Excel template</a> is available to help you organize your data. </p>
-                                <p>Uploading a dataset that does not follow the guidelines outlined below could lead to problems in running your analysis. Please read our 
-                                <% if (eval.path === "path-random") {  %>
-<a href="/static/pdf/Prepare your data for analysis_randomized pilot.pdf" target="_blank">Prepare Your Data for Analysis</a>
-                            <% } %>
-                            <% if (eval.path === "path-matching") { %>
-                                    <a href="/static/pdf/Prepare your data for analysis_matching.pdf" target="_blank">Prepare Your Data for Analysis</a>
-                            <% } %>  guide for more information</p>
-                            </div>
-                            <div class="step-subquestion">
-                                <p> When you finish this step, your data set should look similar to the one below. </p>
-
-                                <div id="annoCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators">
-                                        <li data-target="#annoCarousel" data-slide-to="0" class="active"></li>
-                                        <li data-target="#annoCarousel" data-slide-to="1"></li>
-                                        <li data-target="#annoCarousel" data-slide-to="2"></li>
-                                        <li data-target="#annoCarousel" data-slide-to="3"></li>
-                                    </ol>
-
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox">
-
-
-                                        <div class="item  active">
-
-                                            <p>Each row represents a single observation. <span id="row-note">For example, the current highlighted row is for the student with id 834305.</span></p>
-
-                                        </div>
-                                        <div class="item">
-
-                                            <p> Each variable has its own column (for example, treatment, spring score, school id).</p>
-
-                                        </div>
-                                        <div class="item">
-
-                                            <p> Valid values for categorical variables are 1 (yes or true) and 0 (no or false).</p>
-
-                                        </div>
-                                        <div class="item">
-
-                                            <p>Missing data is replaced with NA (not available) so that the Coach skips that cell.</p>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Left and right controls -->
-                                    <a class="left carousel-control" href="#annoCarousel" role="button" data-slide="prev">
-                                        <span style="font-size: 3em; color: #194F81;" aria-hidden="true">&lsaquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="right carousel-control" href="#annoCarousel" role="button" data-slide="next">
-                                        <span style="font-size: 3em; color: #194F81;" aria-hidden="true">&rsaquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div>
-                                <table class="table-responsive table example table-bordered table-striped">
-                                    <colgroup>
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-                                        <col class="anno1" />
-
-                                    </colgroup>
-
-                                    <thead>
-                                        <tr>
-                                            <th>AnonStudentID</th>
-                                            <th>Treatment</th>
-                                            <th>Fall<br /> Score</th>
-                                            <th> Spring<br /> Score </th>
-                                            <th>SchoolID</th>
-                                            <th>Female</th>
-                                            <th>Male</th>
-                                            <th>ELL</th>
-                                            <th>NotELL</th>
-                                            <th>Free<br />Lunch</th>
-                                            <th>Reduced<br />Lunch</th>
-                                            <th>Paid<br />Lunch</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="anno5">159508</td>
-                                            <td class="anno2">1</td>
-                                            <td>320</td>
-                                            <td>35</td>
-                                            <td>100</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="anno5">694677</td>
-                                            <td class="anno2">0</td>
-                                            <td>450</td>
-                                            <td>52</td>
-                                            <td>100</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">807588</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno3">NA</td>
-                                            <td>37</td>
-                                            <td>100</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">482489</td>
-                                            <td class="anno2">1</td>
-                                            <td>410</td>
-                                            <td>89</td>
-                                            <td>100</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">555123</td>
-                                            <td class="anno2">0</td>
-                                            <td>534</td>
-                                            <td>34</td>
-                                            <td>100</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">124226</td>
-                                            <td class="anno2">1</td>
-                                            <td>604</td>
-                                            <td>67</td>
-                                            <td>200</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">232721</td>
-                                            <td class="anno2">1</td>
-                                            <td>378</td>
-                                            <td>59</td>
-                                            <td>200</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                        </tr>
-
-                                        <tr class="anno0">
-                                            <td class="anno5">834305</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno3">NA</td>
-                                            <td>58</td>
-                                            <td>200</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno2">1</td>
-                                            <td class="anno2">0</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">490514</td>
-                                            <td class="anno2">0</td>
-                                            <td>380</td>
-                                            <td>35</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">573401</td>
-                                            <td class="anno2">0</td>
-                                            <td>468</td>
-                                            <td>45</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">275321</td>
-                                            <td class="anno3">NA</td>
-                                            <td>523</td>
-                                            <td>78</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="anno5">288475</td>
-                                            <td class="anno3">NA</td>
-                                            <td>375</td>
-                                            <td>37</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                            <td class="anno3">NA</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-
-                            </div>
-                            <div class="step-subquestion">
-
-                            </div>
-
-                            <div class="step-action check-list">
-                                <%
-                                var checked = ( eval.prepare.Check_OneSet == "OneSet_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_OneSet" name="Check_OneSet" value="OneSet_Checked" <%- checked %>/><label class="sec-label" for="Check_OneSet">
-                                    I have one dataset containing all my data.
-                                </label><br />
-
-
-                                <p class="sub-label">
-                                    You will have to merge your existing datasets into one complete dataset. Your dataset should have one row for each of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
-                                </p><p class="note">If you are using Excel to manage your data you can do this using a VLOOKUP function. </p>
-
-                            </div>
-
-                            <div class="step-action check-list">
-                                <%
-                                var checked = ( eval.prepare.Check_Numeric == "Numeric_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Numeric" name="Check_Numeric" value="Numeric_Checked" <%- checked %>/><label class="sec-label" for="Check_Numeric">
-                                    All categorical variables have been converted to dummy numeric variables.
-                                </label><br />
-
-
-                                <p class="sub-label">
-                                    You will have to convert all categorical variables to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
-                                    For example, if your background characteristics include gender as a variable, you might have M or F in each cell of that column. Instead, you should change the variable from Gender to Female, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
-                                </p>
-                                <p class="sub-label">If your categorical variable contains more than two options, such as Race&mdash;where the options are Asian,  Black,  White, and Other&mdash;you will have to create a binary or dummy variable for each option. For example, Asian would be one column (with 0 representing non-Asians and 1 representing Asians), Black would be a second column, White would be a third column, and Other would be a fourth column. </p>
-
-                            </div>
-
-                            <div class="step-action check-list">
-                                <%
-                                var checked = ( eval.prepare.Check_Missing == "Missing_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Missing" name="Check_Missing" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
-                                    All missing data is consistently coded as NA (not available).
-                                </label><br />
-
-
-                                <p class="sub-label">
-
-                                    If you have merged datasets and there are missing data, make sure you are consistently coding missing values as NA.  You want to be extra careful that missing data does not have a number value, such as 0 or 999. These values will get incorporated into the analysis.
-                                </p>
-
-                            </div>
-
-
-
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#D">
-                            <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> Checking the quality of your data
-                            </h2>
-                        </div>
-
-                    </div>
-                    <div id="D" class="row  collapse in q-row">
-                        <div class="col-xs-12">
-                            <div class="step-subquestion">
-                                <p>
-                                    After constructing your data file and converting your variables, the final step is to check the quality of your data. The following checks can identify potential data issues that warrant additional investigation:
-
-                                </p>
-
-
-                            </div>
-
-                            <div class="step-action check-list">
-                                <%
-                                var checked = ( eval.prepare.Check_Min_Max == "Min_Max_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Min_Max" name="Check_Min_Max" value="Min_Max_Checked" <%- checked %>/><label class="sec-label" for="Check_Min_Max">
-                                    Check the minimum and maximum values of variables.
-                                </label><br />
-
-
-                                <p class="sub-label">This check can identify extremely low or high values that are outliers in your distribution or could signal a special missing code that has to be converted to NA. You might want to check with someone who is familiar with the data to confirm the value range makes sense. </p>
-                                <p class="note">If you are working in Excel you can use MIN and MAX functions to easily find these values.</p>
-                            </div>
-                            <div class="step-action check-list">
-                                <%
-                                var checked = ( eval.prepare.Check_Miss_Impact == "Miss_Impact_Checked" ) ? "checked" : "";
-                                %>
-                                <input type="checkbox" id="Check_Miss_Impact" name="Check_Miss_Impact" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
-                                    Consider the impact of missing data.
-                                </label><br />
-
-
-                                <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations that contain missing data. You should try to understand why data are missing and how excluding <span class="tech_users"><%= Basics_Users %></span> with incomplete data will affect your results. </p>
-                                <p class="note">If you are working in Excel you can sort and filter your data to view missing values. To determine exactly how many values are missing for a single variable you can use the COUNTIF function, and to determine how many observations have at least one missing value you can use a nested COUNTIF with OR function.</p>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div>
-            </div>
-
-            <% include ../views/partials/toolButtons.html %>
+            <div class="clearfix">&nbsp;</div>
         </div>
-    </form>
+    </div>
+</div>
+
+<div class="row">
+<div class="tool-questions">
+
+
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#D">
+        <h2 class="clickable">
+            <i class="fa fa-caret-down" aria-hidden="false"></i> Required and recommended data elements.
+        </h2>
+    </div>
+
+</div>
+<div id="D" class="row collapse in q-row">
+    <div class="col-xs-12">
+        <div class="step-subquestion">
+            <p>
+                You will use multiple types of data to build your treatment and comparison groups and run your analysis.
+            </p>
+        </div>
+
+        <div class="step-action check-list">
+
+
+
+            <%
+            var checked = ( eval.prepare.Check_Treatment == "Treatment_Checked" ) ? "checked" : "";
+            %>
+            <input type="checkbox" id="Check_Treatment" name="prepare[Check_Treatment]" value="Treatment_Checked" <%- checked %>/><label class="sec-label" for="Check_Treatment">
+                Treatment status&mdash;<em class="recommendation">Required</em>
+            </label><br/>
+
+            <p class="sub-label">
+                Data that indicates which <span class="tech_users"><%= defs.Basics_Users %></span> received access to <%= defs.Basics_Tech_Name %> and which did not. Valid values are 1 (had access) or 0 (no access).
+            </p>
+
+
+
+
+
+            <% if (path === "path-random") {
+
+            %>
+
+
+            <p class="sub-label">
+                This variable is in the dataset that you downloaded from the Coach
+                after your technology users and your comparison group were randomly selected.
+
+            </p>
+            <p class="note">
+                You must use the original file with the original treatment status variable, even if
+                someone in your comparison group found a way to use the technology. The Coach will
+                calculate the effect of being randomly assigned to use the technology on your outcome of
+                interest. If you move participants from one group to another after random assignment, your
+                groups may be unbalanced, and you will not be able to make reliable conclusions about the
+                technology&rsquo;s effect.
+            </p>
+
+            <% } %>
+
+
+            <%
+            var checked = ( eval.prepare.Check_Outcome == "Outcome_Checked" ) ? "checked" : "";
+            %>
+            <input type="checkbox" id="Check_Outcome" name="prepare[Check_Outcome]" value="Outcome_Checked" <%- checked %>/><label class="sec-label" for="Check_Outcome">
+                Outcome data&mdash;<em class="recommendation">Required</em>
+            </label><br/>
+
+
+            <p class="sub-label"> Data on <%= defs.Basics_Outcome %> as measured by <%= defs.Outcome_Measure %> that you will use to determine the effect of <%= defs.Basics_Tech_Name %>. </p>
+
+            <%
+            var required = "Recommended";
+            var ptpathnote ="The Coach will use pretest information to check the equivalence of the treatment and comparison groups at the start of your evaluation."
+            if (path === "path-matching") {
+            required = "Required";
+            ptpathnote = "Pretest data are necessary to create similar groups.";
+            }
+
+            var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
+            %>
+            <input type="checkbox" id="Check_Pretest" name="prepare[Check_Pretest]" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
+                Pretest data&mdash;<em class="recommendation"><%= required %></em>
+            </label><br/>
+
+            <p class="sub-label"> This is a measure of <%= defs.Basics_Outcome %> just before the introduction of <%= defs.Basics_Tech_Name %> (such as an assessment from the beginning of the school year). <%- ptpathnote %></p>
+
+            <%
+            var required = "Recommended";
+            var bcpathnote ="If you include background characteristics in your dataset, the Coach will check that your treatment and comparison groups are well balanced on these characteristics.";
+
+            if (path === "path-matching") {
+
+            bcpathnote = "Background traits are particularly important for matched comparison evaluations because you can use them to make sure your treatment and comparison groups are well matched or balanced.";
+            }
+
+            var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
+            %>
+           <input type="checkbox" id="Check_Background" name="prepare[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
+                Background characteristics &mdash;<em class="recommendation"><%= required %></em>
+            </label><br/>
+
+            <p class="sub-label">
+                Provide data on the background characteristics of your <span class="tech_users"><%= defs.Basics_Users %></span>, such as gender, ethnicity, individualized education plan status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
+            </p>
+            <p class="note">It is preferable to measure all background characteristics before introducting <%= defs.Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software), it is important to know if characteristics were recorded before or after the introduction of <%= defs.Basics_Tech_Name %>. </p>
+            <p class="sub-label"> <%- bcpathnote %></p>
+            <p class='sub-label'><span class='group-data-prep-note'></span></p>
+
+
+            <%
+            var required = "Recommended";
+            var upathnote ="Collecting and referring to usage data throughout your evaluation will help you determine if " + defs.Basics_Tech_Name + " is being implemented and used as expected, making it possible for you to correct any issues as they arise.";
+
+            if (path === "path-matching") {
+
+            upathnote = "Usage information can be used to assign <span class='tech_users'>"+ defs.Basics_Users +" </span> to treatment and comparison groups.";
+            }
+
+            var checked = ( eval.prepare.Check_Usage == "Usage_Checked" ) ? "checked" : "";
+            %>
+            <input type="checkbox" id="Check_Usage" name="prepare[Check_Usage]" value="Usage_Checked" <%- checked %> /><label class="sec-label" for="Check_Usage">
+                Usage data &mdash;<em class="recommendation"><%= required %></em>
+            </label><br/>
+
+            <p class="sub-label">
+                This includes data on how often <%= defs.Basics_Tech_Name %> was used, patterns of use over time, and how <span class="tech_users"><%= defs.Basics_Users %></span> scored on assessments. This information will help you interpret your evaluation findings.
+            </p>
+            <p class="sub-label"> <%- upathnote %></p>
+            <p class="sub-label">
+                Please see <a href="/static/pdf/Who used your technology and how.pdf" target="_blank">Who Used Your Technology and How</a> for more information.
+            </p>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#E">
+        <h2 class="clickable">
+            <i class="fa fa-caret-down" aria-hidden="false"></i> Creating your dataset
+        </h2>
+    </div>
+
+</div>
+<div id="E" class="row  collapse in q-row">
+<div class="col-xs-12">
+
+
+<div class="step-subquestion">
+    <p>After you have identified the data elements and data sources, the next step is to combine all data elements into one tidy dataset. We recommend generating tidy datasets not only because it is a requirement to use the RCE Coach and most statistical software packages, but also because a tidy dataset is easy to manipulate, model, and visualize. </p>
+    <p>If you do not have access to statistical software, you can use Microsoft Excel to prepare your data. An <a href="/static/pdf/RCE Coach Data Template.xlsx" target="_blank">Excel template</a> is available to help you organize your data.
+    </p>
+    <p>Uploading a dataset that does not follow the guidelines outlined below could lead to problems in running your analysis. Please read our
+        <% if (eval.path === "path-random") { %>
+        <a href="/static/pdf/Prepare your data for analysis_randomized pilot.pdf" target="_blank">Prepare Your Data for Analysis</a>
+        <% } %>
+        <% if (eval.path === "path-matching") { %>
+        <a href="/static/pdf/Prepare your data for analysis_matching.pdf" target="_blank">Prepare Your Data for Analysis</a>
+        <% } %> guide for more information
+    </p>
+</div>
+<div class="step-subquestion">
+<p> When you finish this step, your data set should look similar to the one below. </p>
+
+<div id="annoCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#annoCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#annoCarousel" data-slide-to="1"></li>
+        <li data-target="#annoCarousel" data-slide-to="2"></li>
+        <li data-target="#annoCarousel" data-slide-to="3"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+
+
+        <div class="item  active">
+
+            <p>Each row represents a single observation. <span id="row-note">For example, the current highlighted row is for the student with id 834305.</span></p>
+
+        </div>
+        <div class="item">
+
+            <p> Each variable has its own column (for example, treatment, spring score, school id).</p>
+
+        </div>
+        <div class="item">
+
+            <p> Valid values for categorical variables are 1 (yes or true) and 0 (no or false).</p>
+
+        </div>
+        <div class="item">
+
+            <p>Missing data is replaced with NA (not available) so that the Coach skips that cell.</p>
+
+        </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#annoCarousel" role="button" data-slide="prev">
+        <span style="font-size: 3em; color: #194F81;" aria-hidden="true">&lsaquo;</span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#annoCarousel" role="button" data-slide="next">
+        <span style="font-size: 3em; color: #194F81;" aria-hidden="true">&rsaquo;</span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<table class="table-responsive table example table-bordered table-striped">
+<colgroup>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+    <col class="anno1"/>
+
+</colgroup>
+
+<thead>
+<tr>
+    <th>AnonStudentID</th>
+    <th>Treatment</th>
+    <th>Fall<br/> Score</th>
+    <th> Spring<br/> Score </th>
+    <th>SchoolID</th>
+    <th>Female</th>
+    <th>Male</th>
+    <th>ELL</th>
+    <th>NotELL</th>
+    <th>Free<br/>Lunch</th>
+    <th>Reduced<br/>Lunch</th>
+    <th>Paid<br/>Lunch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td class="anno5">159508</td>
+    <td class="anno2">1</td>
+    <td>320</td>
+    <td>35</td>
+    <td>100</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+</tr>
+<tr>
+    <td class="anno5">694677</td>
+    <td class="anno2">0</td>
+    <td>450</td>
+    <td>52</td>
+    <td>100</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+</tr>
+
+<tr>
+    <td class="anno5">807588</td>
+    <td class="anno2">0</td>
+    <td class="anno3">NA</td>
+    <td>37</td>
+    <td>100</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+</tr>
+
+<tr>
+    <td class="anno5">482489</td>
+    <td class="anno2">1</td>
+    <td>410</td>
+    <td>89</td>
+    <td>100</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+</tr>
+
+<tr>
+    <td class="anno5">555123</td>
+    <td class="anno2">0</td>
+    <td>534</td>
+    <td>34</td>
+    <td>100</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+</tr>
+
+<tr>
+    <td class="anno5">124226</td>
+    <td class="anno2">1</td>
+    <td>604</td>
+    <td>67</td>
+    <td>200</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+</tr>
+
+<tr>
+    <td class="anno5">232721</td>
+    <td class="anno2">1</td>
+    <td>378</td>
+    <td>59</td>
+    <td>200</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+</tr>
+
+<tr class="anno0">
+    <td class="anno5">834305</td>
+    <td class="anno2">1</td>
+    <td class="anno3">NA</td>
+    <td>58</td>
+    <td>200</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno2">1</td>
+    <td class="anno2">0</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+</tr>
+
+<tr>
+    <td class="anno5">490514</td>
+    <td class="anno2">0</td>
+    <td>380</td>
+    <td>35</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+</tr>
+
+<tr>
+    <td class="anno5">573401</td>
+    <td class="anno2">0</td>
+    <td>468</td>
+    <td>45</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+</tr>
+
+<tr>
+    <td class="anno5">275321</td>
+    <td class="anno3">NA</td>
+    <td>523</td>
+    <td>78</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+</tr>
+
+<tr>
+    <td class="anno5">288475</td>
+    <td class="anno3">NA</td>
+    <td>375</td>
+    <td>37</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+    <td class="anno3">NA</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div class="step-subquestion">
+
+</div>
+
+<div class="step-action check-list">
+    <%
+    var checked = ( eval.prepare.Check_OneSet == "OneSet_Checked" ) ? "checked" : "";
+    %>
+    <input type="checkbox" id="Check_OneSet" name="prepare[Check_OneSet]" value="OneSet_Checked" <%- checked %>/><label class="sec-label" for="Check_OneSet">
+        I have one dataset containing all my data.
+    </label><br/>
+
+
+    <p class="sub-label">
+        You will have to merge your existing datasets into one complete dataset. Your dataset should have one row for each of your <span class="tech_users"><%= defs.Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
+    </p>
+    <p class="note">If you are using Excel to manage your data you can do this using a VLOOKUP function. </p>
+
+</div>
+
+<div class="step-action check-list">
+    <%
+    var checked = ( eval.prepare.Check_Numeric == "Numeric_Checked" ) ? "checked" : "";
+    %>
+    <input type="checkbox" id="Check_Numeric" name="prepare[Check_Numeric]" value="Numeric_Checked" <%- checked %>/><label class="sec-label" for="Check_Numeric">
+        All categorical variables have been converted to dummy numeric variables.
+    </label><br/>
+
+
+    <p class="sub-label">
+        You will have to convert all categorical variables to numerical dummy variables with values of 1 for yes or true and 0 for no or false.
+        For example, if your background characteristics include gender as a variable, you might have M or F in each cell of that column. Instead, you should change the variable from Gender to Female, and change each cell that indicates the participant is a female to 1, and each cell that indicates the participant is male to 0.
+    </p>
+    <p class="sub-label">If your categorical variable contains more than two options, such as Race&mdash;where the options are Asian, Black, White, and Other&mdash;you will have to create a binary or dummy variable for each option. For example, Asian would be one column (with 0 representing non-Asians and 1 representing Asians), Black would be a second column, White would be a third column, and Other would be a fourth column. </p>
+
+</div>
+
+<div class="step-action check-list">
+    <%
+    var checked = ( eval.prepare.Check_Missing == "Missing_Checked" ) ? "checked" : "";
+    %>
+    <input type="checkbox" id="Check_Missing" name="prepare[Check_Missing]" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
+        All missing data is consistently coded as NA (not available).
+    </label><br/>
+
+
+    <p class="sub-label">
+
+        If you have merged datasets and there are missing data, make sure you are consistently coding missing values as NA. You want to be extra careful that missing data does not have a number value, such as 0 or 999. These values will get incorporated into the analysis.
+    </p>
+
+</div>
+
+
+
+</div>
+</div>
+
+
+
+
+<div class="step-header container">
+    <div data-toggle="collapse" data-target="#D">
+        <h2 class="clickable">
+            <i class="fa fa-caret-down" aria-hidden="false"></i> Checking the quality of your data
+        </h2>
+    </div>
+
+</div>
+<div id="D" class="row  collapse in q-row">
+    <div class="col-xs-12">
+        <div class="step-subquestion">
+            <p>
+                After constructing your data file and converting your variables, the final step is to check the quality of your data. The following checks can identify potential data issues that warrant additional investigation:
+
+            </p>
+
+
+        </div>
+
+        <div class="step-action check-list">
+            <%
+            var checked = ( eval.prepare.Check_Min_Max == "Min_Max_Checked" ) ? "checked" : "";
+            %>
+            <input type="checkbox" id="Check_Min_Max" name="prepare[Check_Min_Max]" value="Min_Max_Checked" <%- checked %>/><label class="sec-label" for="Check_Min_Max">
+                Check the minimum and maximum values of variables.
+            </label><br/>
+
+
+            <p class="sub-label">This check can identify extremely low or high values that are outliers in your distribution or could signal a special missing code that has to be converted to NA. You might want to check with someone who is familiar with the data to confirm the value range makes sense. </p>
+            <p class="note">If you are working in Excel you can use MIN and MAX functions to easily find these values.</p>
+        </div>
+        <div class="step-action check-list">
+            <%
+            var checked = ( eval.prepare.Check_Miss_Impact == "Miss_Impact_Checked" ) ? "checked" : "";
+            %>
+            <input type="checkbox" id="Check_Miss_Impact" name="prepare[Check_Miss_Impact]" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
+                Consider the impact of missing data.
+            </label><br/>
+
+
+            <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations that contain missing data. You should try to understand why data are missing and how excluding <span class="tech_users"><%= defs.Basics_Users %></span> with incomplete data will affect your results.
+            </p>
+            <p class="note">If you are working in Excel you can sort and filter your data to view missing values. To determine exactly how many values are missing for a single variable you can use the COUNTIF function, and to determine how many observations have at least one missing value you can use a nested COUNTIF with OR function.</p>
+
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+<div>
+</div>
+
+<% include ../views/partials/toolButtons.html %>
+</div>
+</form>
 
     <% include ../views/partials/footer.html %>
 

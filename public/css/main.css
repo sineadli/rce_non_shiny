@@ -705,6 +705,7 @@ a#prev:hover, a#prev:focus,
 a#next:hover, a#next:focus {
   color: #4081A8;
   text-shadow: .5px 0px #4081A8;
+
 }
 
 .quote-phrase,
@@ -1501,6 +1502,7 @@ div.step-example-box {
 div.bottom-buttons {
     margin-top: 35px;
     text-align: center;
+    margin-bottom: 65px;
     /*margin-right: 20px;*/
 }
 div.action-buttons {
@@ -1716,6 +1718,23 @@ div.action-buttons {
     width: 100%;
 }
 
+table.resultsFig {
+    background-color: #ffffff;
+}
+
+table.resultsFig tr {
+    background-color: #ffffff;
+    border-bottom: 1px solid #aaa;
+}
+table.resultsFig tr td, table.resultsFig tr th {
+    border: #aaa;
+    vertical-align: middle;
+}
+    table.resultsFig tr th {
+        font-size: .8em;
+        vertical-align: bottom;
+        padding: 8px;
+    }
 th, td {
     padding: 18px;
     border: hidden;
@@ -1738,8 +1757,8 @@ div.context-tag {
     width: 85%;
 }
 div.context-tag input[type="checkbox"] {
-    visibility: hidden;
-    width: 1px;
+    /*visibility: hidden;*/
+    width: 0px;
 }
 
 div.context-tag label {
@@ -1747,7 +1766,7 @@ div.context-tag label {
     color: #000;
 }
 
-div.context-tag input[type="checkbox"] + label {
+div.context-tag input[type="checkbox"] + label  {
     display: inline-block;
     vertical-align: middle;
     width: 155px;
@@ -1761,12 +1780,15 @@ div.context-tag input[type="checkbox"] + label {
     border-radius: 5px;
     margin-top: 1px;
 }
-    div.context-tag input[type="checkbox"] + label.tall-box {
+    div.context-tag input[type="checkbox"] + label.tall-box, div.context-tag  label.tall-box   {
 
         padding-top: 9px;
 
     }
-
+.pseudo-focus,div.context-tag input[type="checkbox"]:focus + label, div.context-tag  label:focus {
+   
+            box-shadow: 0 0 3pt 1pt  #56ACE0;
+    }
 
 div.context-tag input.cus-input {
     width: 0;

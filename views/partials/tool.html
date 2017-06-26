@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
 *   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
@@ -21,8 +21,8 @@
         <% var toolindropdown=[{}];
         
         for (var i=0; i< tools.length; i++) {
-            var divid = "ToolDiv-"+tools[i].step;
-            var statusdivid = "StatusDiv" + tools[i].step;
+            var divid = "ToolDiv-"+i;
+            var statusdivid = "StatusDiv-" + i;
             var tool =[], status = "NOT STARTED", d = "", btnText = "START";
             var peeking=false, firstTool =false;
 
@@ -47,8 +47,9 @@
          }
         }       //tool visited
 
-        
+       
         var current = eval.last_tool == tools[i].name ? "current" : "";
+         console.log("current = " + current);
         var buttondivid = tools[i].name;
    
         if (( eval.userid != user.id ||peeking && !firstTool || ( status.toLowerCase() ==="not started" && tools[i].coachStep===4 && tools[i].evalPath && tools[i].evalPath !== eval.path )) ) {btnText="PEEK"; lock="locked"; }

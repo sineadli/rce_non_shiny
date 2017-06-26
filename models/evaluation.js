@@ -11,12 +11,11 @@
 // app/models/evaluation.js
 // load the things we need
 var mongoose = require('mongoose');
+Schema = mongoose.Schema;
 var User = require('./user');
+var textHelpers = require('../public/js/textHelpers.js');
 
-function getSingular(v) {
-    if (v === 'users') v = 'members';
-	return v.substring(0, v.length-1);
-}
+
 function useOther(v,o) {
     if (v === 'other') {
         if (o === '') return v;
@@ -24,21 +23,51 @@ function useOther(v,o) {
     }
 	else return v;
 }
-function stripPercent(x) {
-	return parseInt(x.replace(/%/g, ''));
+
+
+function populateDefaults(defstocheck, tool, sess, incomplete) {
+    for (var check in defstocheck) {
+        if (defstocheck.hasOwnProperty(check)) {
+            //console.log("In loop in check defaults for " + check + " and set defaults");
+            //console.log(defstocheck[check]);
+            //console.log(check);
+         
+          //  console.log(tool[check]);
+          //  console.log(tool);
+            if (typeof tool[check] == "number") {
+                sess.defaults[check] = tool[check];
+            } else if (tool[check] === "" || tool[check] === 'Select an option') {
+                incomplete = true;
+                sess.defaults[check] = defstocheck[check];
+            } else if (tool[check].toLowerCase() === "other") {
+                var ocheck = check + "_Other";
+                if (tool[ocheck] === "") {
+                    incomplete = true;
+                    sess.defaults[check] = defstocheck[check];
+                }
+            } else {
+                sess.defaults[check] = tool[check];
+            }
+        }
+    }
+//	console.log("In set defaults and so far defaults = ");
+//	console.log(sess.defaults);
+    return incomplete;
+	
 }
+
+
+
+
 
 
 //define enums:
-var units = ["students", "schools", "teachers", "parents", "others"];
-var achievement = ["Student academic achievement", "Student non-academic achievement", "Teacher performance", "other"];
-var direction = ["increase", "decrease"];
+var users = ["Select an option", "Students", "Teachers", "Other"];
+var mainoutcome = ["Select an option", "Student academic achievement", "Student non-academic achievement", "Teacher performance", "Parental engagement", "Other", "Not sure" ];
+var direction = ["Select an option", "Increase", "Decrease"];
 var spendresults = ["costs", "saves"];
-var unitmeasured = ["student", "teacher", "school"];
-var yesno  = {
-	values: ["yes", "no"],
-		message: 'Invalid response for `{PATH}` with value `{VALUE}`'
-}
+var yesno = ["Select an option","Yes", "No",""];
+
 var validateChar = function (intext)
 {
 	var re = /^$|^[A-Za-z0-9 _.,]{5,35}$/;
@@ -58,9 +87,9 @@ var Basics = mongoose.Schema({
     Basics_Have: { type: String,  default: '' },
     Basics_Tech_Name: { type: String, default: '', validate: validateChar  }, // was Plan_Question_A
     Basics_Using: { type: String, default: '' }, // was Prob_Appr_A This is not used.  Replaced by Prob_Appr_Current_or_New
-    Basics_Users: { type: String, default: 'users' }, // Was Prob_Appr_B
+    Basics_Users: { type: String, default: 'users'}, // Was Prob_Appr_B
 	Basics_Users_Other: { type: String, default: '', validate: validateChar }, // Was Prob_Appr_B_other	 
-    Basics_Outcome: { type: String, default: '' }, 
+    Basics_Outcome: { type: String, default: '', help: 'what you hope to change' }, 
 	Basics_Outcome_Other: { type: String, default: '', validate: validateChar },   
     created_at: { type: Date, default: Date.now },
     updated_at: Date
@@ -222,10 +251,8 @@ var Random = mongoose.Schema({
 
 //05.01 matching
 var Matching = mongoose.Schema({
-   // Q_M_1: { type: String, default: '' }, replaced by planQuestion.Intervention_Group_Desc
-   // Q_M_2: { type: String, default: '' }, replaced by planQuestion.Comparison_Group_Desc
 	Targeted_Access: { type: String, default: '' },
-	Target_Group_Desc: { type: String, default: '' }, // was Q_9
+	Target_Group_Desc: { type: String, default: '' }, 
     s_treat_var: { type: String, default: '' },
     s_match_vars: { type: String, default: '' },
     s_grade_var: { type: String, default: '' },
@@ -322,22 +349,253 @@ var evaluationSchema = mongoose.Schema({
 });
 
 
-//evaluationSchema.methods.findToolList = function findToolList(name, cb) {
-// return this.toolsvisited.filter(x => x.name === name);
-///};
+
+
+evaluationSchema.methods.setBasics = function(sess) {
+
+    var defstocheck = {
+        Basics_Users : "the technology users",
+		Basics_Tech_Name : "the educational technology",
+		Basics_Outcome : "Outcome"
+}
+
+	sess.defaults.BasicsIncomplete = populateDefaults(defstocheck, this.basics, sess, false);
+	sess.defaults.Singular_User = sess.defaults.Basics_Users.substring(0, sess.defaults.Basics_Users.length - 1);
+	
+
+    return;
+};
+
+evaluationSchema.methods.setApproach = function(sess) {
+    var probAppr = this.probAppr;
+
+    var currentNew = probAppr.Appr_Current_or_New;
+    var verb = currentNew === "Current" ? "did" : "will";
+    var verb2 = currentNew === "Current" ? "is" : "was";
+
+    sess.defaults.VerbDidWill = verb;
+    sess.defaults.VerbIsWas = verb2;
+
+    return;
+}
+
+evaluationSchema.methods.setPrepareRandom = function (sess) {
+    var prepareRandom = this.prepareRandom;
+
+if (this.path == "path-random") {
+		var defstocheck = {
+			Individual_Group: "[individuals/groups]",
+			Cluster_Group: "[assignment group]"
+		}
+		sess.defaults.prepareRandomIncomplete = populateDefaults(defstocheck, prepareRandom, sess, false);
+}
+sess.defaults.Random_Level = sess.defaults.Basics_Users.charAt(0).toUpperCase() + sess.defaults.Basics_Users.slice(1);
+
+    return;
+};
+
+evaluationSchema.methods.setResearchQ = function(sess) {
+	var defstocheck = {
+        Outcome_Direction: "improve",
+        Outcome_Measure:"outcome measure",
+        Intervention_Group_Desc: "group using technology",
+        Comparison_Group_Desc: "non-users"
+    }
+
+	sess.defaults.planQuestionIncomplete = populateDefaults(defstocheck, this.planQuestion, sess, false);
+   
+    return;
+};
+evaluationSchema.methods.setPlanNext =function(sess) {
+	// planNext
+    var defstocheck = {
+		Measure_Units: "units",
+		Success_Effect_Size: '0',
+		Pass_Probability: '75',
+		Fail_Probability: '50',
+        Tech_Cost_Saves: '[Saves/Costs]',
+        Tech_Amount: '[amount]',
+		Tech_Cost_User: '[user]',
+		Action_Success: '[next step if moving the needle]',
+		Action_Fail: '[next step if not moving the needle]',
+		Action_Inconclusive: '[next step if results inconclusive]'
+	}
+	
+    sess.defaults.planNextIncomplete = populateDefaults(defstocheck, this.planNext, sess, false);
+
+    return;
+};
+
+evaluationSchema.methods.setPlanContext = function(sess) {
+    var planContext = this.planContext;
+    var planContextIncomplete = false;
+
+	var defstocheck = {
+        Tech_Purpose: 'Not reported',
+        Tech_Components: 'Not reported',
+        Total_Students: "Not reported",
+        District_State: "Not reported",
+        Ethnicity_Hispanic: "Not reported",
+        Gender_Female: "Not reported",
+        English_Learners: "Not reported",
+        IEP: "Not reported",
+		Expected_Dosage: "No information was provided regarding the usage of the technology by the treatment group.",
+		Developer_Guidelines: "No information was provided regarding the recommended usage provided by the developer of the technology.",
+		Other_Notes: "No other factors or initiatives were identified as potentially contributing to the results."
+	}
+
+    sess.defaults.planContextIncomplete = populateDefaults(defstocheck, this.planContext, sess, false);
+
+    var checkArrays = {
+        Program_Types: [planContext.Type_Curriculum, planContext.Type_Practice, planContext.Type_Supplement, planContext.Type_Assessment, planContext.Type_Professional_Learning, planContext.Type_Information_Management],
+        Delivery_Types: [planContext.Delivered_School_Wide, planContext.Delivered_Whole_Class, planContext.Delivered_Small_Group, planContext.Delivered_Individually],
+        School_Types: [planContext.SchoolType_Charter, planContext.SchoolType_Private, planContext.SchoolType_Parochial, planContext.SchoolType_Public],
+        Urbanicity: [planContext.Urbanicity_Urban, planContext.Urbanicity_Suburban, planContext.Urbanicity_Rural],
+        Classroom_Types: [planContext.ClassroomType_General, planContext.ClassroomType_Inclusion],
+        Outcomes: planContext.Outcomes
+}
+
+for (var array in checkArrays)
+    {
+	if (textHelpers.allBlank(checkArrays[array])) {
+            planContextIncomplete = true;
+            sess.defaults[array] = "Not reported";
+        } else {
+		sess.defaults[array] = checkArrays[array].toString();
+        }
+    }
+
+var nonWhite = [planContext.Race_Asian, planContext.Race_Black, planContext.Race_Native_American, planContext.Race_Other, planContext.Race_Pacific_Islander];
+
+    var addNonWhiteper = 0;
+    var nonwhiteper = 0;
+	for (var i = 0; i < nonWhite.length; i++) {
+		if (typeof nonWhite[i] === 'number') {
+			addNonWhiteper = nonWhite[i] + addNonWhiteper;
+		}
+	}
+
+	if (typeof planContext.Race_White === 'number' && planContext.Race_White > 0) {
+		nonwhiteper = 100 - planContext.Race_White;
+	} else if (addNonWhiteper  > 0) {
+		nonwhiteper = addNonWhiteper;
+	} else {nonwhiteper = null;}
+
+    sess.defaults.Non_White = nonwhiteper ? nonwhiteper + "%" : "Not reported";
+	
+
+    sess.defaults.Eval_Duration = textHelpers.calculateDuration(planContext.Eval_Begin_Date, planContext.Eval_End_Date);
+
+	sess.defaults.Grades_Used = this.planContext.Grades.length == 0 ? "" : textHelpers.createGradeString(this.planContext.Grades);
+
+	sess.defaults.planContextIncomplete = (sess.defaults.Eval_Duration == "Not reported") || (sess.defaults.Grades_Used == "Not reported") || (sess.defaults.Non_White == "Not reported") ? true : sess.defaults.planContextIncomplete;
+
+
+
+    return;
+};
+
+evaluationSchema.methods.setMatching = function (sess) {
+
+	var matching = this.matching;
+	//var defstocheck = {
+	//	s_treat_var: "[Not selected]",
+	//	s_match_vars: "[Not selected]",
+	//	s_grade_var: "[Not selected]",
+	//	n_matched: "[Not calculated]",
+	//	n_full_treat: "[Not calculated]",
+	//	n_matched_treat: "[Not calculated]"
+	
+ //   }
+
+	//sess.defaults.matchingIncomplete = populateDefaults(defstocheck, this.matching, sess, false);
+    sess.defaults.wasMatched = matching.Result === "" ? false : true;
+	if (matching.Targeted_Access === "" || matching.Targeted_Access === 'Select an option') {
+		sess.defaults.matchingIncomplete = true;
+		sess.defaults.Targeted_Access = "[Not Specified]";
+	} else if (matching.Targeted_Access.toLowerCase() === "yes") {
+	    if (matching.Target_Group_Desc === "") {
+	        sess.defaults.matchingIncomplete = true;
+	        sess.defaults.Targeted_Access = "[Not Specified]";
+	    }
+	} else {
+		sess.defaults.Targeted_Access = matching.Targeted_Access.toLowerCase() == "no" ? "None" : matching.Target_Group_Desc;
+	}
+
+    return;
+};
+
+evaluationSchema.methods.setRandom = function (sess) {
+    var random = this.random;
+    sess.defaults.wasRandomized = random.Result === "" ? false : true;
+    return;
+}
+
+evaluationSchema.methods.setGetResults = function(sess) {
+    var eval = this;
+	var result = JSON.parse(eval.getresult.Result);
+	console.log("In set get results");
+	console.log(result.args);
+    if (result.args) {
+
+           sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
+       
+    }
+    sess.defaults.haveResults = (result == "") ? false : true;
+	return;
+};
+
+evaluationSchema.methods.setShareResults = function(sess) {
+    var eval = this;
+	var publishedAt = eval.published_at;
+
+    sess.defaults.pilot_type = eval.path === "path-random" ? "randomized" : "matched";
+
+	/// Not using this right now
+    var prof_name = eval.author;
+    var prof_company = eval.company;
+    User.findById(sess.eval.userid, function (err, user) {
+        if (user) {
+            //Replace current evaluation values with updates 
+            prof_name = user.profile.user_name;
+            prof_company = user.profile.organization_name;
+
+        }
+        sess.defaults.author = this.author == "" ? prof_name : this.author;
+        sess.defaults.company = this.company == "" ? prof_company : this.company;
+        
+    });
+	/////
+	//Evaluation
+	if (publishedAt) {
+		publishedAt = new Date(eval.published_at).toLocaleDateString();
+	} else {
+		publishedAt = '[not published]';
+	}
+	this.published_at = publishedAt;
+
+    var haveResults = (eval.getresult.Result === "") ? false : true;
+
+	if (haveResults) {
+	    
+	}
+	    sess.defaults.haveResults = haveResults;
+}
+
 
 evaluationSchema.pre('save', function (next) {
-    //this.flag = '';
-    var tool1 = 'Determine Your Approach', tool2 = 'Summarize Context', tool3 = 'Prepare Your Data for Analysis';
+ 
+
     var currentDate = new Date();
     this.updated_at = currentDate;
     if (!this.created_at)
         this.created_at = currentDate;
+
     if (this.toolsvisited.length > 0) {
 
         if (this.toolsvisited[this.toolsvisited.length - 1].status === "completed") {
             this.flag = 0;
-            // if (this.toolsvisited[this.toolsvisited.length - 1].name === tool1 || this.toolsvisited[this.toolsvisited.length - 1].name === tool2 || this.toolsvisited[this.toolsvisited.length - 1].name === tool3) { this.flag = this.last_step + 1; }
+   
         }
         var per = this.toolsvisited.filter(function (x) { return x.status.toLowerCase() === "completed" }).length / 14 * 100;
         this.status = parseInt(per);
@@ -393,10 +651,7 @@ evaluationSchema.pre('save', function (next) {
             User.findById(this.userid, function (err, user) {
                 if (err) {
                     next(err);
-            //    } else if (user) {
-            //        doc.author = user.profile.user_name;
-            //        doc.company = user.profile.organization_name;
-            //        next();
+          
                 } else {
                     next();
                 }

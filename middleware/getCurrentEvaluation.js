@@ -10,16 +10,14 @@
 
 // middleware/getCurrentEvaluation.js
 //load the thing we need
-var Evaluation = require('../models/evaluation')
+var Evaluation = require('../models/evaluation');
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 
 
 var getCurrentEvaluation = function (req, res, next) {
 	console.log("getting current eval");
     sess = req.session;
-    sess.defaults = {};
-    console.log("in get current eval and sess length = ");
-	console.log(sess.length);
+
         Evaluation.findOne({ _id: req.user.evalid }).exec(function (err, eval) {
             if (err) {
                 console.log(err);
@@ -35,18 +33,22 @@ var getCurrentEvaluation = function (req, res, next) {
                     if (req.user._id == eval.userid) {
                         req.user.save();
                     }
-                    console.log("updating udate date for evaluation:" + eval.title);
-					eval.updated_at = new Date();
-                    eval.save();
+     //               console.log("updating udate date for evaluation:" + eval.title);
+					//eval.updated_at = new Date();
+     //               eval.save();
 
 					// Set values that are used in other tools.
-                    setBasics(sess);
-					setResearchQ(sess);
-                    setPlanNext(sess);
-					setPrepareRandom(sess);
-					console.log("in get current eval after setBasics and sess defaults = ");
-					
-					console.log(sess.defaults);
+                    sess.defaults = {};
+					eval.setBasics(sess);
+					eval.setResearchQ(sess);
+					eval.setPlanNext(sess);
+					eval.setPrepareRandom(sess);
+					eval.setGetResults(sess);
+					eval.setApproach(sess);
+					eval.setPlanContext(sess);
+					eval.setShareResults(sess);
+                    eval.setRandom(sess);
+		
                     return next();
                 }
                 return next();
@@ -63,7 +65,7 @@ function setBasics(sess) {
 	 var basicsOutcome = "Outcome";
      var eval = sess.eval;
     console.log("in set Basics in get current eval");
-	console.log(eval.basics);
+	//console.log(eval.basics);
 	basicsUsers = eval.basics.Basics_Users;
 	singularUser = basicsUsers.substring(0, basicsUsers.length - 1);
 	if (basicsUsers.toLowerCase() === "other") { basicsUsers = eval.basics.Basics_Users_Other; }
@@ -77,7 +79,7 @@ function setBasics(sess) {
 		sess.defaults.Basics_Outcome = basicsOutcome;
     
 		console.log("in set Basics in get current eval");
-		console.log(sess.defaults);
+		//console.log(sess.defaults);
     return;
 };
 function setResearchQ(sess) {

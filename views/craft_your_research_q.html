@@ -53,10 +53,8 @@ if(valerrs) valerrors = valerrs;
                         <div class="tool-header">
 
                             <h1 class="tool-title">
-                                <% if(query.peeking == 1) {
-                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool." ;
-                                %>
-                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% if(query.peeking == 1) {  %>                            
+                                <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
                                 <% } %> Craft Your Research Question
                             </h1>
 
@@ -102,7 +100,7 @@ if(valerrs) valerrors = valerrs;
                         <div class="col-xs-7">
                             <div class="step-action">
                                
-                                <textarea name="Basics_Tech_Name" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
+                                <textarea name="basics[Basics_Tech_Name]" id="Basics_Tech_Name" placeholder="Ex., eZumi Learning"><%= eval.basics.Basics_Tech_Name %></textarea>
                                 <% if (user != "NOAUTHENTICATED") {%>
                                 <p class="prev-answer">
                                     <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/basics?return=craft_your_research_q">The Basics</a>
@@ -126,7 +124,7 @@ if(valerrs) valerrors = valerrs;
                                 </p>
                             </div>
                             <div class="step-action">
-                                <select required name="Basics_Outcome" id="Basics_Outcome">
+                                <select required name="basics[Basics_Outcome]" id="Basics_Outcome">
                                     <%
                                     var options = ["Student academic achievement", "Student non-academic achievement","Teacher performance","Parental engagement","Other" ];
                                     var ovalues = ["student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other" ];
@@ -152,7 +150,7 @@ if(valerrs) valerrors = valerrs;
                                         valueToUse = valerrors['basics.Basics_Outcome_Other'].value;
                                         }
                                         %>
-                                        <input type="text" name='Basics_Outcome_Other' id="Basics_Outcome_Other" value="<%= valueToUse %>"/>
+                                        <input type="text" name='basics[Basics_Outcome_Other]' id="Basics_Outcome_Other" value="<%= valueToUse %>"/>
                                         <div class="error">
                                             <%
                                             if(valerrors['basics.Basics_Outcome_Other']) {
@@ -173,7 +171,7 @@ if(valerrs) valerrors = valerrs;
                                 <p><label for="Outcome_Direction">What is the direction of intended change?</label> </p>
                             </div>
                             <div class="step-action">
-                                <select required name="Outcome_Direction" id="Outcome_Direction">
+                                <select required name="planQuestion[Outcome_Direction]" id="Outcome_Direction">
                                     <%
                                     var options = ["Select an option", "Increase", "Decrease" ];
                                     var ovalues = ["Select an option", "increase", "decrease" ];
@@ -192,7 +190,7 @@ if(valerrs) valerrors = valerrs;
                             </div>
                             <div class="step-action">
 
-                                <textarea name="Outcome_Measure" id="Outcome_Measure" placeholder="Ex., a midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
+                                <textarea name="planQuestion[Outcome_Measure]" id="Outcome_Measure" placeholder="Ex., a midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
                             </div>
 
                         </div>
@@ -253,7 +251,7 @@ if(valerrs) valerrors = valerrs;
                         <div class="col-xs-7">
                             <div class="step-action">
 
-                                <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" placeholder="Ex., 5th grade English learners"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
+                                <textarea name="planQuestion[Intervention_Group_Desc]" id="Intervention_Group_Desc" placeholder="Ex., 5th grade English learners"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
                             </div>
                         </div>
                         <div class="col-xs-5">
@@ -307,7 +305,7 @@ if(valerrs) valerrors = valerrs;
                         <div class="col-xs-7">
                             <div class="step-action">
 
-                                <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" placeholder="Ex., other 5th grade English Learners with no access to eZumi Learning"><%= eval.planQuestion.Comparison_Group_Desc  %></textarea>
+                                <textarea name="planQuestion[Comparison_Group_Desc]" id="Comparison_Group_Desc" placeholder="Ex., other 5th grade English Learners with no access to eZumi Learning"><%= eval.planQuestion.Comparison_Group_Desc  %></textarea>
                             </div>
                         </div>
                         <div class="col-xs-5">

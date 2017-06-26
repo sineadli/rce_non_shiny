@@ -17,10 +17,7 @@
 %>
 <body class="<%- peekingThis %>">
     <% include ../views/partials/header.html %>
-<% if (user != "NOAUTHENTICATED") {
-//console.log("In determine approach");
-//console.log(eval);
-%>
+<% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Getting Started</a></li>
     </ol>
@@ -29,9 +26,9 @@
     <% }} %>
 
     <form action="/determine_your_approach" method="post" novalidate>
-        <% if (user != "NOAUTHENTICATED") { %>
+      
         <% include ../views/partials/toolHeader.html %>
-        <% } %>
+     
        
         <input type="hidden" id="Basics_Users" value="<%= defs.Basics_Users %>" />
         <div class="container-fluid">
@@ -43,10 +40,8 @@
                         </div>
                         <div class="tool-header">
                             <h1 class="tool-title">
-                                <% if(query.peeking == 1) {
-                                var peekingnote = "You need to complete &ldquo;The Basics&rdquo; before you can use this tool." ;
-                                %>
-                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% if(query.peeking == 1) {%>
+                                <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
                                 <% } %>
                                 Determine Your Approach
                             </h1>
@@ -81,7 +76,7 @@
                                         <p class="all-using">Will you conduct this evaluation with current users of <%= defs.Basics_Tech_Name %>, or do you plan to conduct it with new users (as part of either an expansion or new implementation of <%= defs.Basics_Tech_Name %>)?</p>
                                     </div>
                                     <div class="step-action">
-                                        <select name="Appr_Current_or_New" id="Appr_Current_or_New">
+                                        <select name="probAppr[Appr_Current_or_New]" id="Appr_Current_or_New">
                                             <%
                                             var options = ["Select an option", "Current", "New"];
                                             for ( var i = 0; i < options.length; i++ )
@@ -100,16 +95,16 @@
                                             <p class="all-using">Are all <%= defs.Basics_Users %> currently using <%= defs.Basics_Tech_Name %>? </p>
                                         </div>
                                         <div class="step-action">
-                                            <select name="Appr_All_Using" id="Appr_All_Using">
+                                            <select name="probAppr[Appr_All_Using]" id="Appr_All_Using">
                                                 <%
                                                 var options = ["Select an option", "Yes", "No"];
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
                                                 var selected;
-                                                if (user != "NOAUTHENTICATED"){ if (eval.probAppr) { selected = ( eval.probAppr.Appr_All_Using == options[i] ) ? "selected" : "";}}
+                                             selected = ( eval.probAppr.Appr_All_Using == options[i] ) ? "selected" : "";
 
                                                 %>
-                                                <option value="<%=options[ i ] %>" <%=selected %> ><%=options[ i ] %></option><%
+                                                <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option><%
                                                 }
                                                 %>
                                             </select>
@@ -120,7 +115,7 @@
                                             <p> Can you offer <%= defs.Basics_Tech_Name %> to just a portion of new users, leaving you with a similar group of <%= defs.Basics_Users %> who have never used <%= defs.Basics_Tech_Name %>? </p>
                                         </div>
                                         <div class="step-action">
-                                            <select name="Appr_Can_Group" id="Appr_Can_Group">
+                                            <select name="probAppr[Appr_Can_Group]" id="Appr_Can_Group">
                                                 <%
                                                 var options = ["Select an option", "Yes", "No"];
                                                 for ( var i = 0; i < options.length; i++ )
@@ -188,7 +183,7 @@
                                                 <div class="panel-heading for-how-group <%= selected %>">
 
 
-                                                    <input type="radio" id="Choose-Random" name="Appr_How_Choose" value="random" class="radio" <%= checked %>/>
+                                                    <input type="radio" id="Choose-Random" name="probAppr[Appr_How_Choose]" value="random" class="radio" <%= checked %>/>
                                                     <label class="panel-title" for="Choose-Random">
 
                                                         Random Assignment&mdash;<em class="recommendation">Recommended</em>
@@ -227,7 +222,7 @@
 
 
 
-                                                    <input type="radio" id="Choose-Cutoff" name="Appr_How_Choose" class="radio" value="cutoff" <%= checked %>/>
+                                                    <input type="radio" id="Choose-Cutoff" name="probAppr[Appr_How_Choose]" class="radio" value="cutoff" <%= checked %>/>
                                                     <label class="panel-title  clickable" for="Choose-Cutoff">
                                                         Cutoff
 
@@ -263,7 +258,7 @@
 
 
 
-                                                    <input type="radio" id="Choose-Other" name="Appr_How_Choose" class="radio" value="other" <%= checked %>/>
+                                                    <input type="radio" id="Choose-Other" name="probAppr[Appr_How_Choose]" class="radio" value="other" <%= checked %>/>
                                                     <label class="panel-title  clickable" for="Choose-Other">
                                                         Other Approach
 
@@ -311,7 +306,7 @@
                                             <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= defs.Basics_Users %></span> or groups of <span class="tech_users"><%= defs.Basics_Users %></span> (for example, classes or schools) to the treatment and comparison groups?</label></h4>
                                         </div>
                                         <div class="step-action">
-                                            <select name="Individual_Group" id="Individual_Group">
+                                            <select name="prepareRandom[Individual_Group]" id="Individual_Group">
                                                 <%
                                                 var options = ["Select an option", "Individual " + defs.Basics_Users , "Groups of " + defs.Basics_Users ];
                                                 var ovals = ["Select an option", "users" , "groups" ];
@@ -329,7 +324,7 @@
                                                     <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= defs.Basics_Users %></span>?</label></h4>
                                                 </div>
                                                 <div class="step-action">
-                                                    <select name="Cluster_Group" id="Cluster_Group">
+                                                    <select name="prepareRandom[Cluster_Group]" id="Cluster_Group">
                                                         <%
                                                         var options = ["Select an option", "By class", "By school", "Other" ];
                                                         var ovals = ["Select an option", "classes", "schools", "other" ];
@@ -346,7 +341,7 @@
                                                         <div class="step-subquestion">
                                                             <h4><label for="Cluster_Group_Other">Please specify:</label></h4>
                                                         </div><div class="step-action">
-    <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
+    <input type="text" name='prepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
     </div>
 </div>
                                                 </div>

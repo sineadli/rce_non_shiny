@@ -25,20 +25,7 @@
     <% include ../views/partials/toolHeader.html %>
     <% } %>
     <form action="/randomization" method="post">
-        <%
-        var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-        var Basics_Outcome = eval.basics.Basics_Outcome;
-        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-        var Basics_Users_Other = eval.basics.Basics_Users_Other;
-        var Basics_Users = eval.basics.Basics_Users;
-        var Singular_User = Basics_Users.substr(0,Basics_Users.length-1)
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name == '' ? 'the technology' : eval.basics.Basics_Tech_Name;
-        var Outcome_Direction = eval.planQuestion.Outcome_Direction;
-    var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
-    var Cluster_Group = eval.prepareRandom.Cluster_Group = "" ? "individuals or groups" : eval.prepareRandom.Cluster_Group;
-        var Cluster_Group = Cluster_Group = "other" ? "groups" : Cluster_Group;
-        %>
+
         <input type="hidden" id="coreurl" value="<%= shiny_url %>" />
     <div class="container-fluid">
     <div class="row">
@@ -49,10 +36,8 @@
                 </div>
                 <div class="tool-header">
                     <h1 class="tool-title">
-                        <% if(query.peeking == 1) {
-                        var peekingnote = eval.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "Based on your answers in &ldquo;Determine Your Approach,&rdquo; you do not need to use this tool to complete your evaluation.";
-                        %>
-                        <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br/>
+                        <% if(query.peeking == 1) { %>
+                        <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br/>
                         <% } %>
                         Build Your Evaluation Sample Using Random Assignment
                     </h1>
@@ -78,7 +63,7 @@
     <div class="step-header container">
         <div data-toggle="collapse" data-target="#A">
             <h2 class="clickable">
-                <i class="fa fa-caret-down" aria-hidden="false"></i> First the Coach needs some details about your plans to roll-out <%= Basics_Tech_Name %>.
+                <i class="fa fa-caret-down" aria-hidden="false"></i> First the Coach needs some details about your plans to roll-out <%= defs.Basics_Tech_Name %>.
             </h2>
         </div>
     </div>
@@ -87,12 +72,12 @@
             <div class="step-subquestion">
                 <h4>
                     <label for="Basics_Users">
-                        Who is using <%= Basics_Tech_Name %>?
+                        Who is using <%= defs.Basics_Tech_Name %>?
                     </label>
                 </h4>
             </div>
             <div class="step-action">
-                <select required name="Basics_Users" id="Basics_Users">
+                <select required name="basics[Basics_Users]" id="Basics_Users">
 
                     <%
                     var options = ["Select an option", "Students", "Teachers", "Other"];
@@ -115,7 +100,7 @@
                         <label for="Basics_Users_Other">Please specify:</label>
                     </div>
 
-                    <input type="text" name='Basics_Users_Other' id="Basics_Users_Other" value="<%= eval.basics.Basics_Users_Other %>"/>
+                    <input type="text" name='basics[Basics_Users_Other]' id="Basics_Users_Other" value="<%= eval.basics.Basics_Users_Other %>"/>
                 </div>
 
                 <% if (user != "NOAUTHENTICATED") { %>
@@ -125,10 +110,10 @@
                 <% } %>
             </div>
             <div class="step-subquestion">
-                <h4><label for="Individual_Group">Do you want to randomly assign individual <%= Basics_Users %> or groups of <%= Basics_Users %> (for example, classes or schools) to the treatment and comparison groups?</label></h4>
+                <h4><label for="Individual_Group">Do you want to randomly assign individual <%= defs.Basics_Users %> or groups of <%= defs.Basics_Users %> (for example, classes or schools) to the treatment and comparison groups?</label></h4>
             </div>
             <div class="step-action">
-                <select name="Individual_Group" id="Individual_Group">
+                <select name="prepareRandom[Individual_Group]" id="Individual_Group">
                     <%
                     var options = ["Select an option", "Individuals " , "Groups"];
                     var ovals = ["Select an option", "users" , "groups" ];
@@ -144,10 +129,10 @@
 
                 <div id="Question_Cluster" hidden="true" class="other-div">
 
-                    <h4><label for="Cluster_Group">How will you group your <%= Basics_Users %>?</label></h4>
+                    <h4><label for="Cluster_Group">How will you group your <%= defs.Basics_Users %>?</label></h4>
 
 
-                    <select name="Cluster_Group" id="Cluster_Group">
+                    <select name="prepareRandom[Cluster_Group]" id="Cluster_Group">
                         <%
                         var options = ["Select an option", "By class", "By school", "Other" ];
                         var ovals = ["Select an option", "classes", "schools", "other" ];
@@ -164,7 +149,7 @@
                     <div id="Question_Cluster_Other" hidden="true" class="other-div">
                         <p>
                             <label for="Cluster_Group_Other">Please specify:</label>
-                            <input type="text" name='Cluster_Group_Other' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>"/>
+                            <input type="text" name='prepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>"/>
                         </p>
                     </div>
 
@@ -178,12 +163,12 @@
                 <% } %>
             </div>
             <div class="step-subquestion">
-                <h4><label for="User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups"><%= Cluster_Group %></span> that can be given access to the technology?</label></h4>
+                <h4><label for="User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups"><%= defs.Cluster_Group %></span> that can be given access to the technology?</label></h4>
 
 
             </div>
             <div class="step-action">
-                <select name="User_Limit_Exist" id="User_Limit_Exist">
+                <select name="random[User_Limit_Exist]" id="User_Limit_Exist">
                     <%
                     var options = ["Select an option", "Yes", "No" ];
                     var ovals = ["Select an option", "yes", "no" ];
@@ -204,8 +189,8 @@
 
                             No more than
                             <label class="hidden" for="intervention_quantity">Input limit amount</label>
-                            <input type="number" style="width: 40px;" name='intervention_quantity' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>" step="any"/>
-                            <label class="hidden" for="intervention_type">Select limit amount unit</label><select name="intervention_type" id="intervention_type">
+                            <input type="number" style="width: 40px;" name='random[intervention_quantity]' id="intervention_quantity" value="<%= eval.random.intervention_quantity %>" step="any"/>
+                            <label class="hidden" for="intervention_type">Select limit amount unit</label><select name="random[intervention_type]" id="intervention_type">
                                 <%
 
                                 var options = ["Select an option", "Percent of individuals or groups", "Individuals or groups" ];
@@ -216,7 +201,7 @@
                                 %>
                                 <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option>
                                 <% }%>
-                            </select> can access <%= Basics_Tech_Name %>.
+                            </select> can access <%= defs.Basics_Tech_Name %>.
 
                         </p>
 
@@ -245,7 +230,7 @@
                             <div id="consider5" class="panel-collapse collapse in">
 
                                 <p>
-                                    You do not have to randomly select <%= Basics_Users %> at the individual level. It might be more feasible to select by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
+                                    You do not have to randomly select <%= defs.Basics_Users %> at the individual level. It might be more feasible to select by classroom or by school. However, your ability to learn whether <%= defs.Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
                                 </p>
                                 <p>Do you have any resource constraints (such as computer or software availability, or time constraints) that would affect the size of your treatment group? Treatment and comparison group sizes should be as similar as possible, but do not have to be equal.</p>
                                 <p>

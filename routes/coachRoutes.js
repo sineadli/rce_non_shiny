@@ -1,4 +1,4 @@
-﻿
+
 /*****************************************************************************
 * RCE Coach software is available through a GLPv3 open-source software license.
 * Any attribution should include the following:
@@ -69,20 +69,40 @@ module.exports = function (app, passport) {
 
     app.get('/coach', isLoggedIn, getCurrentEvaluation, function (req, res) {
         sess = req.session;
-        if (!sess.step) { sess.step = 2 }
+        if (!sess.step) { sess.step = 2; }
         if (!sess.last_tool) { sess.last_tool = "none" }
         res.render('coach.html', {
             user: req.user, coachSteps: sess.coachsteps, eval: sess.eval, step: sess.step
         });
 
     });
-    app.get('/coach/:id', isLoggedIn, function (req, res) {
+    app.get('/coach/:id', isLoggedIn, function(req, res) {
         sess = req.session;
-        Evaluation.findOne({ _id: req.params.id }, function (err, eval) {
-            sess.eval = eval;
+      
+        Evaluation.findOne({ _id: req.params.id }, function(err, eval) {
+            //var eval = Evaluation.getById(req.params.id);
+            console.log("In get Coach for specific evaluation");
+           
+			sess.eval = eval;
+			
+			
+			// Set the default values and other computed values re-used in Coach
+			sess.defaults = {};
+			eval.setBasics(sess);
+			eval.setResearchQ(sess);
+			eval.setPlanNext(sess);
+			eval.setPrepareRandom(sess);
+			eval.setGetResults(sess);
+			eval.setApproach(sess);
+			eval.setPlanContext(sess);
+			eval.setShareResults(sess);
+			eval.setRandom(sess);
+           
+			
+
             sess.step = eval.last_step;
             if (!sess.step) sess.step = 2;
-            sess.last_tool = "none";
+            sess.last_tool = eval.last_tool;
             req.user.evalid = eval._id;
             eval.updated_at = new Date();
             eval.save();

@@ -12,965 +12,628 @@
     <title>Share Your Results - Ed Tech RCE Coach</title>
 
     <% if (display === undefined) display = 'online';
-   
-
-    if (display === 'online') { %>
+        if (display === 'online') { %>
     <% include ../views/partials/scriptHeader.html %>
 
     <% } else if (display === 'download') { %>
     <% include ../views/partials/downloadStyle.html %>
-    <% } %>
-    <style>
- 
-    </style>
+    <% }
+    var bodyclass = query.peeking == 1 ? "peeking" : "";
+    bodyclass = query.sharing == 1 ? "sharing" : "";
+    var tabcounter = 0; var figcounter = 0;
 
+    var Result = JSON.parse(eval.getresult.Result);
+
+    var MatchedResult = eval.matching.Result;
+    var RandomResult = eval.random.Result;
+
+    if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
+    if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists" }
+    if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard" } 
+    %>
+    
 </head>
-<% var bodyclass = query.peeking == 1 ? "peeking" : "";
-bodyclass = query.sharing == 1 ? "sharing" : "";
-var tabcounter = 0; var figcounter = 0;
-%>
+
 <body class="brief <%- bodyclass %>">
     <% if (display === 'online') { %>
-<div class="hidden-print">
-    <% include ../views/partials/header.html %>
-    <% if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings";
-    if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists" }
-    if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard" } %>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
-    </ol>
-    <% if (message.length>0) { %>
-    <div class="alert alert-success"><%= message %></div>
-    <% } %>
+    <div class="hidden-print">
+        <% include ../views/partials/header.html %>
 
 
-    <% if (query.sharing != 1) { %>
-    <% include ../views/partials/toolHeader.html %>
-    <% }} %>
-</div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
+        </ol>
+        <% if (message.length>0) { %>
+        <div class="alert alert-success"><%= message %></div>
+        <% } %>
+
+
+        <% if (query.sharing != 1) { %>
+        <% include ../views/partials/toolHeader.html %>
+        <% }
+        } // display on line %>
+    </div>
     <div class="clearfix"></div>
     <form action="" method="post">
-        <% } %>
-    <% include('../views/partials/brief_appendix_evaluation_processing.html')
-       
-
-    %>
-     
-
-    
-        <div class="container-fluid">
-            <div class="no-page-break">
-                <div class="row">
-                    <div>
-                        <h1 class="tool-title"> <%= capitalize(Basics_Tech_Name) %> Findings Brief</h1>
-                        <%= eval.title %><br />
-
-                        <%
-                         if(query.sharing == 1 || display == 'download') {
-                        %>
-                        
-                        <%= author %><br />
-                        <%= company %><br/>
-                      
-                        <%= published_at %>
-                        <% } else { %>
-                        <label  for="author">Author:</label>  <input class="shiny-input-container" type="text" name='author' id="author" value="<%= author %>" />
-                        <br/>
-                        <label for="company">Organization:</label> <input class="shiny-input-container" type="text" name='company' id="company" value="<%= company %>"/><br/>
-                        <label>Published:</label> <%= published_at %>
-                        <% } %>
-                       
-
-                      
-                      
-                    </div>
-                    <hr />
-                </div>
-
-           
-
-                <div class="row">
-                    <div class="col-xs-12">
-                    <h2> <%= header %><%= inconclusive_qualifier %>.</h2>
-                        <h3> Research Question</h3>
-                        <% include ../views/partials/_researchQuestion.html %>
-
-                        <%
-                        var grade_results_clean = true;
-
-                    if (analysis_results_clean) {
-
-
-                        var findingsTableRows = "";
-                        var findingsTableHeader = "<tr><th>Grade</th><th style='width: 50%;'>Conclusion</th><th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more</th>";
-                        if(Success_Effect_Size != 0 ) {
-                                 findingsTableHeader = findingsTableHeader + "<th style='width: 20%;'>Probability " + Outcome_Direction + "s " + Basics_Outcome + "</th>";
-                        }
-                        findingsTableHeader = findingsTableHeader + "</tr>";
-
-
-                        for (grade in analysis_results_by_grade) {
-                      
-                        try {
-
-
-                        var probability = stripPercent(analysis_results_by_grade[grade].interpretation.probability[0]);
-                    var cutoff_probability = stripPercent(analysis_results_by_grade[grade].interpretation_cutoff_0.probability[0]);
-
-                        var user_cutoff_success = (probability > Pass_Probability);
-                        var user_cutoff_inconclusive = (probability < Pass_Probability) && (probability > Fail_Probability);
-                        var user_cutoff_fail = (probability < Fail_Probability);
-
-                        var zero_cutoff_success = (cutoff_probability > Pass_Probability);
-                        var zero_cutoff_inconclusive = (cutoff_probability < Pass_Probability) && (cutoff_probability > Fail_Probability);
-                        var zero_cutoff_fail = (cutoff_probability < Fail_Probability);
-
-                       var findings_but = (zero_cutoff_success && !user_cutoff_success) ? 'However, the size of the effect does not meet our goal' : '';
-
-                    var findingsConclusion = (user_cutoff_inconclusive) ? 'Results are inconclusive. More evidence is needed to determine if ' + Basics_Tech_Name + ' is moving the needle.' : ((user_cutoff_success) ? Basics_Tech_Name + ' is moving the needle.' : Basics_Tech_Name + ' did not ' + Outcome_Direction + ' ' + Basics_Outcome + '.');
-
-                        var interpret_2_conclusion = "Because that probability is ";
-                        interpret_2_conclusion = interpret_2_conclusion + ((zero_cutoff_inconclusive) ? 'between ' + Pass_Probability + '% and ' + Fail_Probability + '%, we are not confident drawing conclusions based on this result.' : ((zero_cutoff_success) ? ' greater than or equal to ' + Pass_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is moving the needle.' : ' less than  ' + Fail_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is most likely not causing the observed change.'));
-
-                    var interpretation_2 = "";
-                      
-                        if (Success_Effect_Size > 0) {
-                        if (cutoff_probability || cutoff_probability === 0) {
-                        interpretation_2 = "There is a " + cutoff_probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + ' by more than 0 ' + Measure_Units + '. ' 
-                        }
-                        }
-
-                        var interpret_1_conclusion = "Because that probability is ";
-                        interpret_1_conclusion = interpret_1_conclusion + ((user_cutoff_inconclusive) ? 'between ' + Pass_Probability + '% and ' + Fail_Probability + '%, we can not confidently draw conclusions based on these results.' : ((user_cutoff_success) ? ' greater than or equal to ' + Pass_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is having the desired effect on ' + Basics_Outcome + '.' : ' less than  ' + Fail_Probability + '%, we conclude that ' + Basics_Tech_Name + ' is not having the desired effect on ' + Basics_Outcome + '.'));
-
-                    var interpretation_1 = "There is a " + probability + "% probability that  " + Basics_Tech_Name + " " + Outcome_Direction + "s " + Basics_Outcome + " by " + Success_Effect_Size + " " + Measure_Units + " or more. " + interpret_1_conclusion;
+        <% } // End authenticated user? %>
 
 
 
 
-                    findingsTableRows = findingsTableRows + "<tr><td>" + grade + "</td><td>" + findingsConclusion + "</td><td class='align-right'>" + round10(probability,0) + "%</td>";
-                    if(Success_Effect_Size != 0 ) {
-                        findingsTableRows = findingsTableRows + "<td class='align-right'>" + round10(cutoff_probability,0) + "%</td>";
-                        }
-                     findingsTableRows = findingsTableRows +"</tr>";
 
-                        grade_results_clean = true;
-                        } catch (e) {
-                        grade_results_clean = false;
-                        var error = e;
-                        console.log("grade results not clean");
-                        console.log(error);
-                        }
+    <div class="container-fluid">
 
-                        var findingsAddText = "";
-                        }  //End for each grade
-                        }// End if (grade_results_clean)
+        <div class="no-page-break">
+            <div class="row">
+                <div>
+                    <h1 class="tool-title">
+                        <script>
+                        document.write(textHelpers.capitalize("<%= defs.Basics_Tech_Name %>"))
+                        </script>
+                        Findings Brief
+                    </h1>
+                    <h3><%= eval.title %></h3>
 
+                    <%
+                    if(query.sharing == 1 || display == 'download') {
+                    %>
 
-                        %>
+                    <%= defs.author %><br />
+                    <%= defs.company %><br />
 
-                        <% if (grade_results_clean) { %>
-
-                        <h3> Findings</h3>
-                       
-                       
-                        <% if (analysis_by_grade) { %>
-                        <% tabcounter = 1 + tabcounter;  %>
-                        <table><caption>Table <%= tabcounter %>. Summary of results by grade based on the data used in this analysis.</caption><thead><%- findingsTableHeader %></thead><tbody><%- findingsTableRows %></tbody></table>
-
-                        <% } else { %>
-                    <p>Based on the data used in this analysis:
-                        <ol class="no-page-break">
-                            <li> <%= findingsConclusion %></li>
-                            <li id="item_interp_1"> <%= interpretation_1 %></li>
-                            <% if (Success_Effect_Size > 0) { %>
-                            <li id="item_interp_2"> <%= interpretation_2 %></li>
-                            <% } %>
-
-                        </ol>
-
-                    </p>
-                      
+                    <%= defs.published_at %>
+                    <% } else { %>
+                    <label for="author">Author:</label> <input class="shiny-input-container" type="text" name='author' id="author" value="<%= defs.author %>" />
+                    <br />
+                    <label for="company">Organization:</label> <input class="shiny-input-container" type="text" name='company' id="company" value="<%= defs.company %>" /><br />
+                    <label>Published:</label> <%= defs.published_at %>
                     <% } %>
-                       
-                        <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
-                            <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
-                        </p>
-                        <% } %>
-
-
-                        <div class="clearfix"></div>
-
-                        <% } else { %>
-
-                        Problem detected in analysis results. Try re-running the analysis tool.
-                        <%- error %>
-                        console.log("error" + error);
-                        <% }
-                            
-                        if (analysis_results_clean) {
-
-                            var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
-                            var tableRows = "";
-
-                            if (analysis_results_by_grade) {
-
-                                tableRows = '';
-
-                                if (analysis_samples_available) {
-                                    for (grade in analysis_results_by_grade) {
-
-                                        var samples = analysis_results_by_grade[grade].samples;
-
-                                        var samples_cluster = analysis_baseline_results[grade].samples_cluster;
-
-                                        var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
-
-                                        var n_treat = samples.n_full_treat[0];
-                                        var n_comparison = samples.n_full[0] - samples.n_full_treat[0];
-                                        
-                                        if (analysis_by_grade) {
-                                            grade_td = '<td>' + grade + '</td>';
-                                        } else {
-                                            grade_td = '';
-                                        }
-
-                                        if (analysis_clustered) {
-                                            n_clusters_treat = samples_cluster.n_full_treat[0];
-                                            n_clusters_comparison = samples_cluster.n_full[0] - samples_cluster.n_full_treat[0];
-
-                                            if (path === 'path-random') {
-                                                if (eval.prepareRandom.Individual_Group === 'Individuals') {
-                                                    cluster_units = 'clusters';
-                                                } else if (eval.prepareRandom.Cluster_Group !== 'other') {
-                                                    cluster_units = eval.prepareRandom.Cluster_Group;
-                                                } else {
-                                                    cluster_units = eval.prepareRandom.Cluster_Group_Other;
-                                                }         
-
-                                                if (cluster_units === '' || cluster_units === 'Select an option') cluster_units = 'clusters';
-
-                                            } else cluster_units = 'clusters';
-    
-                                            cluster_treat_td = '<td>' + n_clusters_treat  + ' ' + cluster_units + '</td>';
-                                            cluster_comparison_td = '<td>' + n_clusters_comparison + ' ' + cluster_units + '</td>';
-                                        } else {
-                                            cluster_treat_td = '';
-                                            cluster_comparison_td = '';
-                                        }
-
-                                        tableRows += '<tr>' + grade_td + '<td>Treatment</td><td>' + n_treat  + ' ' + Basics_Users +  '</td>' + cluster_treat_td + '</tr>';
-                                        tableRows += '<tr>' + grade_td + '<td>Comparison</td><td>' + n_comparison    + ' ' +  Basics_Users + '</td>' + cluster_comparison_td + '</tr>';
-                                    }
-
-                                    if (analysis_clustered) {
-                                        individual_th = '<th scope="col">Individual sample size</th>';
-                                        cluster_th = '<th scope="col">Cluster sample size</th>';
-                                    } else {
-                                        individual_th = '<th scope="col">Sample size</th>';
-                                        cluster_th = '';
-                                    }
-
-                                    if (analysis_by_grade) {
-                                        grade_th = '<th scope="col">Grade</th>';
-                                    } else {
-                                        grade_th = '';
-                                    }
-
-                                    initTableHeader = '<tr>' + grade_th + '<th scope="col">Group</th>' + individual_th + cluster_th + '</tr>';
-                                }
-                            }
-                                
-                            if (!analysis_samples_available && sample_created_using_coach ) {
-                                var initTableHeader = '<tr><th scope="col">Grade</th></tr>';
-                                var tableRows = "";
-
-                                if(path === 'path-matching') {
-                                  
-                                        initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Group</th><th scope="col">Before matching</th><th scope="col">After matching</th><th scope="col" style="width: 10%;">Percentage</th></tr>';
-                                   
-                                    
-
-                                    if(samples && !baseline_by_grade) {
-                                        console.log("in matching and not by grade");
-                                        var N = samples.n_full_treat;
-                                        var P = samples.n_matched_treat;
-                                        var M = samples.n_full ;
-                                        var Q = samples.n_matched ;
-
-                                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + units +'</td><td>' + P + ' ' + units +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
-                                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + (M-N) + ' ' + units +'</td><td>' + (Q-P) + ' ' + units + '</td><td class="align-right">' + round10(((Q-P)/(M-N))*100,0) + '%</td></tr>';
-                                    }
-
-                                    for (grade in baseline_results) {
-                                        console.log("in matching and for loop by grade and grade = " + grade);
-                                        gradesamples = baseline_results[grade].samples;
-                                        var N=0, P=0, M=0, Q=0;
-                                        var grade_object = analysis_results_by_grade[grade];
-
-                                        if(gradesamples) {
-                                            console.log("in matching and by grade");
-                                            var N = gradesamples.n_full_treat;
-                                            var P = gradesamples.n_matched_treat;
-                                            var M = gradesamples.n_full ;
-                                            var Q = gradesamples.n_matched ;
-                                        }
-
-                                        var matchedNonUsers = Q-P;
-                                        var allNonUsers = M-N;
-
-                                        tableRows = tableRows + '<tr><td rowspan="2">' + grade + '</td><td>Treatment</td><td>' + N + ' ' + units +'</td><td>' + P + ' ' + units +  '</td><td class="align-right">' + round10((P/N)*100,0)+ '%</td></tr>';
-                                        tableRows = tableRows + '<tr><td>Comparison</td><td>' + allNonUsers + ' ' + units +'</td><td>' + matchedNonUsers + ' ' + units + '</td><td class="align-right">' + round10((matchedNonUsers/allNonUsers)*100,0) + '%</td></tr>';
-                                    }  // end grade loop.
-                                } // end if matching
-
-                                if(path === 'path-random') {
-                                    var n_overall = 0;
-                                    var n_treatment = 0;
-                
-                                    for (grade in baseline_results) {
-                                        samples = baseline_results[grade].samples;
-                       
-                                        n_overall += samples.n_full[0];
-                                        n_treatment += samples.n_treat[0];
-                                    }
-
-                                    n_comparison =  n_overall - n_treatment;
-                                    initTableHeader = '<tr><th scope="col">Group</th><th scope="col">Sample size</th></tr>';
-                                    tableRows = '<tr><td>Treatment</td><td>' + n_treatment + ' ' + units + '</td></tr>';
-                                    tableRows = tableRows + '<tr><td>Comparison</td><td>' + n_comparison + ' ' + units + '</td></tr>';
-
-                                } // end path random
-                            } // end if sample_created_using_coach
-                        %>
 
 
 
 
-                    
-                    <% tabcounter = 1 + tabcounter; %>
-
-                    <div class="note" style="margin-top: 15px;">
-                        <p><strong>Interpreting these findings:</strong></p>
-                        <p><%- interpretation_note %></p> 
-                        <% if (display === 'online' && user != "NOAUTHENTICATED") { %>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a>
-                        </p>
-                        <% } %>
-                        <p><%- interpretation_matching_note %></p>
-                        </div>
-                    <table><caption>Table <%= tabcounter %>. Number of <%= units %> in treatment and comparison groups </caption><thead><%- initTableHeader %></thead><tbody><%- tableRows %></tbody></table>
-                        <% } else { %>
-                        <p>Since the intervention and comparison groups were created outside of the Coach, sample size information is not available.</p>
-                        <% } %>
-                    </div>
                 </div>
-
-                <div class="row no-page-break">
-                    <div class="col-xs-12">
-                        <h2> This evaluation tested the effectiveness of <%= Basics_Tech_Name %>.</h2>
-                        
-                       
-
-                        <p> <%= capitalize(Basics_Tech_Name) %> is
-                        <%= punctuate(Tech_Purpose) %></p>
-
-                        <div class="white-background-blue-border">
-                            <h3> The Basics of <%= Basics_Tech_Name %></h3>
-                            <div class="char-row-div">
-                                <div class="char-label-div"> Program Type</div>
-                                <div class="char-content-div"><%= wordList(program_types).toLowerCase() %></div>
-                            </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div"> Key Components</div>
-                                    <div class="char-content-div">
-                                        <%= Tech_Components %>
-                                    </div>
-                                </div>
-                            <div class="char-row-div">
-                                <div class="char-label-div"> Delivery Type</div>
-                                <div class="char-content-div">
-                                    <%= wordList(delivery_types).toLowerCase() %>
-                                </div>
-                            </div>
-                            <% if (grades_used.length > 0) { %>
-                            <div class="char-row-div">
-                                <div class="char-label-div"> Used in</div>
-                                <div class="char-content-div">
-
-
-                                    <%= wordList(grades_used) %> grade <%- wordList(classroom_types).toLowerCase() %> classrooms
-
-                                </div>
-                            </div>
-                            <% } %>
-                                <%
-                                var OutcomesList = wordList(Outcomes).toLowerCase(); %>
-                            <div class="char-row-div">
-                                <div class="char-label-div">Target Outcomes</div>
-                                <div class="char-content-div">
-                                    <%- OutcomesList %>
-                                </div>
-                            </div>
-
-                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                            <div class="char-row-div">
-                                <p class="prev-answer hidden-print">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                                    <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
-                                </p>
-                            </div>
-                                <% } %>
-
-                                <div class="char-row-div">
-                                    <div class="char-label-div"><%= capitalize(Tech_Cost_Saves) %></div>
-                            <div class="char-content-div">
-                                        $<%= Tech_Amount %> per <%= Tech_Cost_User %>
-                                    </div>
-                                </div><% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-
-                                <div class="char-row-div">
-                                    <p class="prev-answer hidden-print">
-                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                                        <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
-                                    </p>
-                                </div>
-                            <% } %>
-                            <div class="clearfix"></div>
-                            </div>
-                    </div>
-                </div>
-
-                <div class="row no-page-break">
-                    <div class="col-xs-12">
-                        <h2> <%= capitalize(Basics_Tech_Name) %> was tested using a <%= pilot_type %> pilot.</h2>
-                        <ul>
-                            <li>
-                                <% if (pilot_type === 'randomized') { %>
-                                This evaluation used a randomized pilot. The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if <%= Basics_Tech_Name %> was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
-                                <% } else if (pilot_type === 'matched') { %>
-                                This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, <%= Basics_Users %> using <%= Basics_Tech_Name %> were compared to other <%= Basics_Users %>  with similar characteristics.
-                                <% } else { %>
-                                [Description of pilot type, either matched or randomized.]
-                                <% } %>
-                            </li>
-                            <li>
-                                <%= sentence(assignment) %>
-                            </li>
-                            <% console.log("checkpoint 0.1"); %>
-                            <% if (baseline_vars_relabel.length > 0) {
-                            if (pilot_type === 'randomized') {
-                            baseline_tool = 'randomization';
-                            } else if (pilot_type === 'matched') {
-                            baseline_tool = 'matching';
-                            }
-                            %>
-                            <li>
-                                Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was tested in the <%= baseline_tool %> tool using:
-                                <span class="baseline-vars-wordlist"><%= baseline_vars_relabel_wordlist %></span>.
-                            </li>
-                            <% } else { %>
-                            <li>
-                                Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= Basics_Tech_Name %>) was not tested.
-                            </li>
-                            <% } %>
-
-                            <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) {
-                            tabcounter = 1 + tabcounter;
-                            } %>
-
-                            <% if (control_vars_relabel.length > 0) { %>
-                            <li>
-                                The analysis controlled for <span class="control-vars-wordlist"><%= control_vars_relabel_wordlist %></span>.
-                                <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
-                                Summary statistics from the evaluation sample are shown in Table <%= tabcounter %> below.
-                                <% } else { %>
-                                We've improved the evaluation sample baseline analysis. To see summary statistics here, please return to and re-run the Get Results tool .
-                                <% } %>
-
-
-                            </li>
-                            <% } %>
-                        </ul>
-                        <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                    <p class="prev-answer hidden-print">
-                        <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
-                        <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
-                    </p>
-                        <% } %>
-                      
-                        <% include ../views/partials/_backgroundCharsTable.html %>
-                       
-                        <%   if (baseline_vars && baseline_vars.length > 0 && display === "online" && query.sharing !== "1") { %>
-                        <div class="hidden-print">
-                            <h3>Re-label baseline variables (optional):</h3>
-                            <% for (index in baseline_vars) {
-                            var baseline_var = baseline_vars[index]; %>
-
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    Re-label <%= baseline_var %>:
-                                </div>
-                                <div class="col-xs-4">
-                                    <input type="text" name="relabel-baseline-var-<%- index %>" class="relabel-baseline-var" value="<%= baseline_vars_relabel[index] %>" data-reset="<%= baseline_var %>" />
-                                </div>
-                            </div>
-                            <% } %>
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <button type="button" class="btn btn-info" id="relabel-baseline-vars">Re-label</button>
-                                </div>
-                            </div>
-                        </div>
-                        <% } %>
-                    </div>
-                </div>
-
-                <div class="row no-page-break">
-                    <div class="col-xs-12">
-                        <h2> This evaluation studied <%= Basics_Tech_Name %>'s impact on <%= wordList(grades_used) %> <%= useGrades %> <%= Basics_Users %>.</h2>
-
-                    <div class="col-xs-12">
-                        <div class="white-background-blue-border">
-                            <div class="col-xs-5">
-                                <h3> Evaluation Context</h3>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        School Type
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= wordList(school_types) %>
-                                    </div>
-                                </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        District Size
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= Total_Students %>
-                                    </div>
-                                </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        Setting
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= wordList(urbanicity) %>
-                                    </div>
-                                </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        Location
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= District_State %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-7">
-                                <h3> Overall Student Population</h3>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        Non-white
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= non_white %>
-                                    </div>
-                                </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        Hispanic
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= Ethnicity_Hispanic %>
-                                    </div>
-                                </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        Female
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= Gender_Female %>
-                                    </div>
-                                </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        <!--<em> Free or Reduced Price Lunch</em> : <%= frpl %>%<br>-->
-                                        English Learners
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= English_Learners %>
-                                    </div>
-                                </div>
-                                <div class="char-row-div">
-                                    <div class="char-label-div-wide">
-                                        Students with IEPs
-                                    </div>
-                                    <div class="char-content-div-narrow">
-                                        <%= IEP %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                                <p class="prev-answer hidden-print">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
-                                    <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
-                                </p>
-                                <% } %>
-                            </div>
-                            </div>
-                        </div>
-                </div>
-                
-
-                <div class="row no-page-break">
-                    <div class="col-xs-12">
-
-                        <h2> The evaluation period lasted <%= duration %>.</h2>
-                        <p>
-                            During this period, <%= Basics_Users %> in the treatment group were expected to use <%= Basics_Tech_Name %>
-                            <%- punctuate(Expected_Dosage) %>
-                            <%= capitalize(Basics_Users) %> in the comparison group did not have access to <%= Basics_Tech_Name %>.
-                        </p>
-                        <p>
-                        <%
-                      //  console.log("display = " + display + " and sharing = " + query.sharing);
-                            if (display === 'online' && query.sharing != 1) { %>
-                            <label class="hidden-print"> Challenges/Limitations:</label>
-                            <textarea name="challenges_limitations" id='challenges-limitations' class="hidden-print" placeholder="Describe any challenges or limitations experienced during the pilot period."><%= challenges_limitations %></textarea>
-                        <p class="visible-print-block print-challenges-limitations"><%= challenges_limitations %></p>
-                        <% } else if (display === 'download' || query.sharing == 1) { %>
-                        <p class="print-challenges-limitations"><%= challenges_limitations %></p>
-                        <% } %>
-                        <p>
-                            Other contextual factors or initiatives might have contributed to results. Other factors include:
-                            <%= Other_Notes %>
-                        </p>
-                        <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
-                            <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
-                        </p>
-                        <% } %>
-                    </div>
-                </div>
-
-                <div class="row no-page-break">
-                    <div class="col-xs-12">
-                        <h2><%= sentence(Basics_Outcome + ' was measured using ' + Outcome_Measure) %></h2>
-                        <%
-                        var impactlabel = "Estimated effect";
-                        
-                        if(eval.path==="path-random") { impactlabel = "Estimated impact"; }
-                        if ( analysis_results_by_grade) {
-                        var initTableHeader = '<tr><th scope="col">Grade</th><th scope="col">Treatment Group Mean</th><th scope="col">Comparison Group Mean</th><th scope="col">' + impactlabel + '</th></tr>';
-                        var tableRows = '';
-                        var impactfootnote = '<p class="smallnote"><strong>Note:</strong> The ' + impactlabel.toLowerCase() +' will not necessarily be equal to the difference between the treatment and comparison group means because the analysis applies statistical adjustments to control for other variables.</p>'
-
-
-                        for (grade in
-                        analysis_results_by_grade) {
-                        console.log("loop by grade and grade = " + grade);
-                        means = analysis_results_by_grade[grade].outcome_means;
-                        var impact = analysis_results_by_grade[grade].impact;
-
-                        if(means) {
-
-                        tableRows = tableRows + '<tr><td>' + grade + '</td><td>' + round10(means.intervention,2) +'</td><td>' + round10(means.comparison,2) +'</td><td>' + round3(impact) +  '</td></tr>';
-
-                        }
-                        } // end grade loop.
-
-                        } //end if analysis by grade
-                        if(tableRows.length > 0) {
-                         tabcounter = 1 + tabcounter; 
-                        %>
-                        <table><caption>Table <%=  tabcounter %>. Average outcomes for the treatment and comparison groups</caption><%- initTableHeader %><%- tableRows %></table><%- impactfootnote %>
-                        <% } else { %>
-                        <p>We've improved the evaluation impact analysis. To see average outcomes for treatment and comparison groups, please return to and re-run the Get Results tool.</p>
-                        <% } %>
-                        <p>
-                            Analysis of <%= Basics_Tech_Name %>
-                            <% if (control_vars_relabel.length > 0) { %>
-                            controls for: <span class="control-vars-wordlist"><%= control_vars_relabel_wordlist %>.</span>
-                            <% } else { %>
-                            did not control for baseline variables.
-                            <% } %>
-
-                            <% if (analysis_by_grade) { %>
-                            Analysis was conducted by grade.
-                            <% } %>
-                        </p>
-
-                        <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
-                            <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
-                        </p>
-                        <% } %>
-
-                        <% if (control_vars && control_vars.length > 0 && display === 'online' && query.sharing !== "1") { %>
-                        <div class="hidden-print col-offset-1">
-                            <h3>Re-label control variables (optional):</h3>
-                            <% for (index in control_vars) {
-                            var control_var = control_vars[index]; %>
-
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <label for="relabel-control-var-<%- index %>"> Re-label <%= control_var %>:</label>
-                                </div>
-                                <div class="col-xs-4">
-                                    <input type="text" name="relabel-control-var-<%- index %>" id="relabel-control-var-<%- index %>"class="relabel-control-var" value="<%= control_vars_relabel[index] %>" data-reset="<%= control_var %>" />
-                                </div>
-                            </div>
-                            <% } %>
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <button type="button" class="btn btn-info" id="relabel-control-vars">Re-label</button>
-                                </div>
-                            </div>
-                        </div>
-                        <% } %>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12">
-
-                        <% if (display === 'online' && query.sharing != 1) { %>
-                        <h2> Conclusions and Next Steps</h2>
-                       
-                            <h3> Next steps</h3>
-                            <p>
-                                <%= sentence(next_steps) %>
-                            </p>
-                            <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                        <div class="clearfix"></div>
-                        <div>
-                                <p class="prev-answer hidden-print">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                                    <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
-                                </p>
-                            </div>
-                            <% } %>
-                       
-                        <textarea name="conclusions_next_steps" id='conclusions-next-steps' class="hidden-print" rows="6" placeholder="EXAMPLE: Based on the results I will expand use of <%- Basics_Tech_Name %> to all students and will look into piloting the technology in other grades. I will set up the pilots in a manner that allows me to conduct similar evaluations."><%= conclusions_next_steps %></textarea>
-                        <p class="visible-print-block print-conclusions-next-steps"><%= conclusions_next_steps %></p>
-                        <% } else if (display === 'download' || query.sharing == 1) { %>
-                      
-                        <h2> Conclusions and Next Steps</h2>
-                        <h3> Next steps</h3>
-                        <p>
-                            <%= sentence(next_steps); %>
-                        </p>
-                        <%  if(conclusions_next_steps != "") { %>
-                        <p class="print-conclusions-next-steps"><%= conclusions_next_steps %></p>
-                        <% }} %>
-                    </div>
-                </div>
-
-                <% if (display === 'online') { %>
-                <!-- Modal -->
-                <%  var display_data_issues_modal = false;
-            if (query.sharing === 1 || query.peeking === 1) {display_data_issues_modal = false;
-            }
-             else {
-                for (tool in data_issues) {
-                if (data_issues[tool].length > 0) {
-                display_data_issues_modal = true;
-                break;
-                }
-            }
-                }
-
-                if (display_data_issues_modal) { %>
-
-                <div id="data-issues-modal" class="modal fade hidden-print" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Data Issues Found</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <p>The following issues were found that indicate invalid or inconsistent evaluation data, and may prevent creating a full findings brief.</p>
-                                        <p>Please return to and complete the appropriate tools. Until then, this brief will use placeholder values for all missing or invalid data.</p>
-                                        <p>If this message persists after addressing each item, please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a>.</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12">
-
-                                        <% for (tool in data_issues) {
-                                        var issues = data_issues[tool];
-
-                                        if (issues.length > 0) {
-
-                                        var tool_name = tool_names[tool];
-                                        var tool_route = tool_routes[tool]; %>
-
-                                        <h4><%= tool_name %></h4>
-                                        <ul>
-                                            <% for (index in issues) { %>
-                                            <li><%= issues[index] %></li>
-                                            <% } %>
-                                        </ul>
-
-                                        <% if (user != "NOAUTHENTICATED") {%>
-                                        <p class="prev-answer hidden-print">
-                                            <i class="fa fa-hand-o-right"></i> Where can I address this? See
-                                            <a class="redirect-link" href="<%- tool_route %>?return=shareresult"><%= tool_name %></a>
-                                        </p>
-                                        <% }
-                                        }
-                                        } %>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% } %>
-
-                <!-- Modal -->
-                <div id="download-modal" class="modal fade hidden-print" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Download</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <% if (query.sharing != 1) { %>
-                                        <p>You can select from the following options to export your findings brief. We suggest exporting this brief and reviewing it with others before you share it and complete your evaluation.  Shared briefs can be viewed by all of the Coach's registered users.</p>
-                                        <% } %>
-                                        <% if (query.sharing == 1) { %>
-                                        <p>Select which document to download and your prefered document format.</p>
-                                        <% } %>
-                                    </div>
-                                  
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <label>Document</label><br />
-                                        <input type="radio" name="download_route" value="shareresult" checked> Findings Brief<br>
-                                        <input type="radio" name="download_route" value="appendix_<%- pilot_type %>"> Technical Appendix<br>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <label>File Format</label><br />
-                                        <input type="radio" name="file_format" value="pdf" checked> PDF<br>
-                                        <input type="radio" name="file_format" value="html"> HTML
-                                            <span data-toggle="tooltip" title="The HTML version can be viewed in any browser, with or without an internet connection." class="tooltip-gr"><i class="fa fa-question-circle"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <% var route="/download/" +eval._id %>
-                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                <button type="submit" id="Download" data-action=<%= route %> class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal -->
-
-
-                <div id="complete-evaluation-modal" class="modal fade hidden-print" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Complete Evaluation</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <% if (!eval.published_at && (!user.profile.user_name || !user.profile.organization_name)) {
-                                        var share_disabled = 'disabled'; %>
-
-                                        <p>You must enter your name and organization before you can share an evaluation.</p>
-                                        <p class="prev-answer hidden-print">
-                                            <i class="fa fa-hand-o-right"></i> Where can I answer this? See
-                                            <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
-                                        </p>
-                                        <% } else {
-                                        var share_disabled = ''; %>
-                                        <p>Congratulations! You're ready to share your results with other registered users and complete your evaluation. Please confirm below.</p>
-                                        <% } %>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %> >NO, NOT READY</button>
-                                <button type="submit" data-action="/shareresult" id="Complete"  class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %> >YES, I AM READY TO SHARE MY RESULTS.</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% } %>
+                <hr />
             </div>
         </div>
-      
-        <% if (display === 'online') { %>
+
+
+
+    <div class="row no-page-break">
+        <div class="col-xs-12">
+            <h2>Summary of results</h2>
+            <p></p>
+            <h2> Research Question</h2>
+            <% include ../views/partials/_researchQuestion.html %>
+            <h2> Findings</h2>
+            <p>For this evaluation, a successful result was defined as a greater than <%= defs.Pass_Probability %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %> <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <% defs.Measure_Units %> or more.</p>
+            <% if (display === 'online' && user != "NOAUTHENTICATED") { %>
+            <p class="prev-answer hidden-print">
+                <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a>
+            </p>
+            <% } %>
+
+            <% if (defs.haveResults) { %>
+
+            <table class="resultsFig">
+                <caption>
+                    Figure 1 shows the results [by grade], as measured by the [midyear MAP reading assessment]. It indicates the probability that iReady had the intended effect, the estimated size of the effect in [units], the average outcome for [students] in the comparison group ([students who are using Lexia]), and the sample sizes for the intervention and comparison groups.
+
+                </caption>
+                <tr><th scope="col">Grade</th><th scope="col">Meeting your goal?</th><th scope="col">Probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> or more</th><th scope="col">Estimated effect</th><th scope="col">Comparison group average</th><th scope="col">Number of <%- defs.Basics_Users %> in intervention group</th><th scope="col">Number of <%- defs.Basics_Users %> in comparison group</th></tr>
+
+                <% for (grade in Result.results_by_grade) {
+
+               
+                var thisgrade = Result.results_by_grade[grade];
+                var meetGoal = thisgrade.interpretation.probability >= defs.Pass_Probability ? "Yes" :"No";
+
+                var thresholdStyle = "background:linear-gradient(to right, #C7C7C7 " + defs.Fail_Probability + "%, #D5D5D5 " + defs.Fail_Probability + "%, #D5D5D5 " + defs.Pass_Probability + "%, #f2f2f2 " + defs.Pass_Probability + "%)";
+     
+                var barStyle = "style='background-color: #5B9BD5; display:block;width:" + thisgrade.interpretation.probability + "'";  
+                %>
+                <tr>
+                    <td><%= grade %></td>
+                    <td><%= meetGoal %></td>
+                    <td class="prob-bar" style="width: 300px; padding: 0; <%=thresholdStyle %>">
+                       
+                       <span <%- barStyle %>>&nbsp;&nbsp;<script> document.write(textHelpers.round10("<%- thisgrade.interpretation.probability %>", 0)) </script>%</span>
+                    </td>
+                    <td><script>
+                            document.write(textHelpers.round10("<%= thisgrade.impact %>", 0))
+                        </script>
+                    </td>
+                    <td><script>
+                            document.write(textHelpers.round10("<%= thisgrade.outcome_means.comparison %>", 0))
+                        </script>
+                    </td>
+                    <td><script>
+                            document.write(textHelpers.round10("<%= thisgrade.samples.n_full_treat %>", 0))
+                        </script>
+                    </td>
+                    <td><script>
+                            document.write(textHelpers.round10("<%= thisgrade.samples.n_full -thisgrade.samples.n_full_treat %>", 0))
+                        </script>
+                    </td>
+                </tr>
+                <% } %>
+                <tr><td></td><td></td><td style="width: 300px; padding: 0;">
+                                          <div style="display: block;padding:8px 0; width:300px;">
+                                              <div style="margin-left:-10px; padding:0; display: inline;">0%</div>
+                                              <div style="display:inline; padding: 0; margin-left: <%-defs.Fail_Probability-8 %>%;"><%= defs.Fail_Probability %>%</div>
+                                              <div style="display: inline;padding:0; margin-left: <%- defs.Pass_Probability- defs.Fail_Probability - 11 %>%;"><%= defs.Pass_Probability %>%</div>
+                                              <div style="display: inline; padding:0;margin-right: -25px; margin-left: <%- 89 - defs.Pass_Probability %>%;">100%</div>
+                                          </div>
+                    </td><td></td>
+<td></td><td></td>
+<td></td></tr>
+            </table>
+
+            <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
+            <p class="prev-answer hidden-print">
+                <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
+                <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
+            </p>
+            <% } %>
+
+            <div class="note" style="margin-top: 15px;">
+                <p>The sample sizes in Figure 1 represent the number of [students] in each group. However, the intervention was implemented at the [classroom/school] level. Table 3 in the appendix shows the number of [classroom/school]s in each group.</p>
+
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="white-background-blue-border">
+                <h3 class="warning">Warning</h3>
+
+                <ul>
+                    <li>These findings apply only to <% defs.Basics_Users %> who were included in the final evaluation sample. Table 1 in the appendix summarizes the number of <% defs.Basics_Users %> in each group. </li>
+                    <li>Since all [students] [not] using iReady belonged to one [class or school], the effect of iReady cannot be separated from other factors that may be unique to that [class or school].</li>
+                    <li>The comparison and treatment groups do not meet the most rigorous similarity standards. Table 3 in the appendix summarizes the similarity between the comparison group and the treatment group on selected variables.</li>
+                </ul>
+            </div>
+
+            <% } else { %>
+
+            <p class="Warning">
+                Problem detected in analysis results. Try re-running the analysis tool.
+            </p>
+
+            <% } %>
+
+
+
+
+        </div>
+    </div>
+
+    <div class="row no-page-break">
+        <div class="col-xs-12">
+            <h2>About the evaluation</h2>
+            <h3>What is being evaluated</h3>
+            <p>
+                This evaluation tested the effectiveness of <%= defs.Basics_Tech_Name %>.
+                <script> document.write(textHelpers.capitalize("<%= defs.Basics_Tech_Name %>")) </script> is
+                <script> document.write(textHelpers.punctuate("<%= defs.Tech_Purpose %>")) </script>
+            </p>
+
+            <div class="white-background-blue-border">
+                <h3> The Basics of <%= defs.Basics_Tech_Name %></h3>
+                <div class="char-row-div">
+                    <div class="char-label-div"> Program Type</div>
+                    <div class="char-content-div"><%= defs.Program_Types %></div>
+                </div>
+                <div class="char-row-div">
+                    <div class="char-label-div"> Key Components</div>
+                    <div class="char-content-div">
+                        <%= defs.Tech_Components %>
+                    </div>
+                </div>
+
+
+
+                <div class="char-row-div">
+                    <div class="char-label-div">Target Outcomes</div>
+                    <div class="char-content-div">
+                        <%- defs.Outcomes %>
+                    </div>
+                </div>
+
+                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                <div class="char-row-div">
+                    <p class="prev-answer hidden-print">
+                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                        <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                    </p>
+                </div>
+                <% } %>
+
+                <div class="char-row-div">
+                    <div class="char-label-div">
+                        <script>
+                            document.write(textHelpers.capitalize("<%= defs.Tech_Cost_Saves %>"))
+                        </script>
+                    </div>
+                    <div class="char-content-div">
+                        $<%= defs.Tech_Amount %> per <%= defs.Tech_Cost_User %>
+                    </div>
+                </div><% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+
+                <div class="char-row-div">
+                    <p class="prev-answer hidden-print">
+                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                        <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                    </p>
+                </div>
+                <% } %>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row no-page-break">
+        <div class="col-xs-12">
+            <h3>Evaluation approach</h3>
+            <h2>
+                <script> document.write(textHelpers.capitalize("<%= defs.Basics_Tech_Name  %>")) </script> was tested using a <%= defs.pilot_type %> pilot.
+            </h2>
+            <ul>
+                <li>
+                    <% if (defs.pilot_type === 'randomized') { %>
+                    This evaluation used a randomized pilot. The choice of who piloted the technology was determined by chance, like a coin flip. This design was the best way to determine if <%= defs.Basics_Tech_Name %> was moving the needle because it allowed us to create two groups that were similar on both observed characteristics (such as prior achievement) and unobserved characteristics (such as motivation). This allows us to be confident that any differences seen in outcomes are due to the technology and not other factors.
+                    <% } else if (defs.pilot_type === 'matched') { %>
+                    This study used a matched comparison design. This is a quasi-experimental design. To compare apples to apples, <%= defs.Basics_Users %> using <%= defs.Basics_Tech_Name %> were compared to other <%= defs.Basics_Users %> with similar characteristics.
+                    <% } else { %>
+                    [Description of pilot type, either matched or randomized.]
+                    <% } %>
+                </li>
+                <% if(defs.wasMatched){ %>
+                <li>
+                    Students were matched by grade.
+                </li>
+
+                <% }
+                if (defs.wasMatched || defs.wasRandomized) {
+                if (eval.path === 'path-random') {
+                baseline_tool = 'randomization';
+                } else if (eval.path === 'path-matching') {
+                baseline_tool = 'matching';
+                }
+                %>
+                <li>
+                    Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= defs.Basics_Tech_Name %>) was tested in the <%= baseline_tool %> tool using:
+                    <span class="baseline-vars-wordlist"></span>.
+                </li>
+                <% } else { %>
+                <li>
+                    Baseline equivalence (or similarity between treatment and comparison groups before the treatment group started using <%= defs.Basics_Tech_Name %>) was not tested.
+                </li>
+                <% } %>
+
+                <% if (defs.haveResults) {
+
+                if (Result.args.control_vars.length > 0) { %>
+                <li>
+                    The analysis controlled for <span class="control-vars-wordlist"><%= Result.args.control_vars.join() %></span>.
+
+
+                </li>
+                <% } %>
+                <% if (Result.results_by_grade.length > 1) { %>
+                <li>
+                    The analysis was conducted by grade.
+                </li>
+                <% } %>
+            </ul>
+            <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
+            <p class="prev-answer hidden-print">
+                <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
+                <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
+            </p>
+            <% }
+            } // end has results %>
+
+
+            <h3>iReady usage</h3>
+
+            <ul>
+                <li><% defs.Basics_Tech_Name %> was used in <%= defs.Grades_Used %> grade <%-defs.Classroom_Types.toLowerCase() %> classrooms</li>
+                <li>The method of delivery was <%= defs.Delivery_types %> </li>
+                <li><%= defs.Expected_Dosage %></li>
+                <li><%= defs.Developer_Guidelines %></li>
+            </ul>
+
+            <h3>Outcomes</h3>
+
+            <ul>
+                <li><% defs.Basics_Outcome %> was measured using <%= defs.Outcome_Measure %>.</li>
+                <li>In the dataset used for analysis, the <%= defs.Outcome_Measure %> ranged from ranged from a minimum of [min] to a maximum of [max].</li>
+                <li>Table 3 in the appendix shows the average outcomes for the treatment and comparison groups without statistical adjustments. </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="row no-page-break">
+        <div class="col-xs-12">
+            <h2>Context for the intervention</h2>
+
+            <ul>
+                <li>This evaluation studied <%= defs.Basics_Tech_Name %>'s impact on <%= defs.Grades_Used %> <%= defs.Basics_Users %>.</li>
+                <li>The evaluation period lasted <%= defs.Eval_Duration %>.</li>
+                <li><%= defs.Other_Notes %></li>
+            </ul>
+
+            <div class="col-xs-12">
+                <div class="white-background-blue-border">
+                    <div class="col-xs-5">
+                        <h3> Evaluation Context</h3>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                School Type
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.School_Types %>
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                District Size
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.Total_Students %>
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                Setting
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.Urbanicity %>
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                Location
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.District_State %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-7">
+                        <h3> Overall Student Population</h3>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                Non-white
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.Non_White %>
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                Hispanic
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.Ethnicity_Hispanic %>%
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                Female
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.Gender_Female %>%
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                English Learners
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.English_Learners %>%
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div-wide">
+                                Students with IEPs
+                            </div>
+                            <div class="char-content-div-narrow">
+                                <%= defs.IEP %>%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                    <p class="prev-answer hidden-print">
+                        <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
+                        <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                    </p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row no-page-break">
+            <div class="col-xs-12">
+
+                <h2> Conclusion</h2>
+                <h3>Next Steps</h3>
+
+                <p>
+                    <%= defs.Action_Success %>
+                </p>
+                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                <div class="clearfix"></div>
+                <div>
+                   <p class="prev-answer hidden-print">
+                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                        <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                    </p>
+                </div>
+                <% } %>
+
+
+            </div>
+        </div>
+    </div>
+
+        <div id="data-issues-modal" class="modal fade hidden-print" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Data Issues Found</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4>Missing Data</h4>
+                                <p>This report uses the information you entered as you completed your evaluation using the Coach. Information is missing from the tools listed below, which may prevent creating a full findings brief. You might want to return to these tools and enter any missing information.</p>
+                                <p>If this message persists after addressing each item, please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a>.</p>
+                                <ul>
+                                    <% if(defs.BasicsIncomplete) { %>
+                                    <li><a class="redirect-link" href="/basics?return=shareresult">Basics</a></li>
+                                    <% }
+                                    if(defs.planQuestionIncomplete) { %>
+                                    <li><a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a></li>
+                                    <% }
+                                    if(defs.planNextIncomplete) { %>
+                                    <li><a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a></li>
+                                    <% }
+                                    if(defs.planContextIncomplete) { %>
+                                    <li><a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a></li>
+                                    <% }
+                                    if(defs.matchingIncomplete && eval.path === "path-matching") { %>
+                                    <li><a class="redirect-link" href="/matching?return=shareresult">Matching</a></li>
+                                    <% }
+                                    if(defs.prepareRandomIncomplete && eval.path === "path-random") { %>
+                                    <li><a class="redirect-link" href="/prepare_data_random?return=shareresult">Prepare for Randomization</a></li>
+                                    <% }
+                                    if(!defs.haveResults) { %>
+                                    <li><a class="redirect-link" href="/getresult?return=shareresult">Get Results</a></li>
+                                     <% } %>
+                                </ul>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="download-modal" class="modal fade hidden-print" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Download</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <% if (query.sharing != 1) { %>
+                                <p>You can select from the following options to export your findings brief. We suggest exporting this brief and reviewing it with others before you share it and complete your evaluation.  Shared briefs can be viewed by all of the Coach's registered users.</p>
+                                <% } %>
+                                <% if (query.sharing == 1) { %>
+                                <p>Select which document to download and your prefered document format.</p>
+                                <% } %>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label>Document</label><br />
+                                <input type="radio" name="download_route" value="shareresult" checked> Findings Brief<br>
+                                <input type="radio" name="download_route" value="appendix_<%- defs.pilot_type %>"> Technical Appendix<br>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>File Format</label><br />
+                                <input type="radio" name="file_format" value="pdf" checked> PDF<br>
+                                <input type="radio" name="file_format" value="html"> HTML
+                                <span data-toggle="tooltip" title="The HTML version can be viewed in any browser, with or without an internet connection." class="tooltip-gr"><i class="fa fa-question-circle"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <% var route="/download/" +eval._id %>
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                        <button type="submit" id="Download" data-action=<%= route %> class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+
+        <div id="complete-evaluation-modal" class="modal fade hidden-print" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Complete Evaluation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <% if (!eval.published_at && (!user.profile.user_name || !user.profile.organization_name)) {
+                                var share_disabled = 'disabled'; %>
+
+                                <p>You must enter your name and organization before you can share an evaluation.</p>
+                                <p class="prev-answer hidden-print">
+                                    <i class="fa fa-hand-o-right"></i> Where can I answer this? See
+                                    <a class="redirect-link" href="/setting?return=shareresult">Profile</a>
+                                </p>
+                                <% } else {
+                                var share_disabled = ''; %>
+                                <p>Congratulations! You're ready to share your results with other registered users and complete your evaluation. Please confirm below.</p>
+                                <% } %>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal" <%- share_disabled %> >NO, NOT READY</button>
+                        <button type="submit" data-action="/shareresult" id="Complete" class="btn btn-primary btn-lg" data-dismiss="modal" <%- share_disabled %> >YES, I AM READY TO SHARE MY RESULTS.</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+        <% if (display === 'online' && query.sharing != 1) { %>
         <div class="hidden-print">
             <% include ../views/partials/shareresultButtons.html %>
         </div>
+
+
+        <div class="hidden-print">
+            <% include ../views/partials/footer.html %>
+        </div>
+
+
+        <% } %>
+
+
+
+
+
+
+
+
     </form>
 
-    <div class="hidden-print">
-        <% include ../views/partials/footer.html %>
-    </div>
-
-
     <script>
-        // Function to convert array into word list (e.g. ["word1", "word2", "word3"] -> "word1, word2, and word3")
-
-      
-
-        var wordList = function (x) {
-            var out;
-
-            if (x === undefined) {
-                out = '';
-            }
-            else {
-                x = x.filter(function(x) { return x !== '' && x !== undefined });
-
-                if (x.length === 0) {
-                    out = '';
-                }
-                else if (x.length === 1) {
-                    out = x[0];
-                }
-                else if (x.length === 2) {
-                    out = x[0] + ' and ' + x[1];
-                }
-                else {
-                    out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
-                }
-            }
-
-            return out;
-        }
-
         $(document).ready(function () {
 
             $('#header, .wizard-header-row, .breadcrumb, .bottom-buttons, .footer').addClass('hidden-print');
@@ -1038,9 +701,9 @@ var tabcounter = 0; var figcounter = 0;
             // Since we have multiple buttons that can take actions, set the form action on button click.
             $('button[type=submit]').click(function () {
                 var action = $(this).attr('data-action');
-              
+
                 $('form').attr('action', action);
-              
+
                 $('form').submit();
             });
 
@@ -1053,11 +716,11 @@ var tabcounter = 0; var figcounter = 0;
             } else {
                 $('#data-issues-modal').modal();
             }
-       
+
 
         });
 
-    </script>
-    <% } %>
+</script>
+
 </body>
 </html>

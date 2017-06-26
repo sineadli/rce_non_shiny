@@ -258,7 +258,8 @@ function outcomeOtherUpdate(t) {
 /* Outcome Measure */
 function outcomeMeasureUpdate(t) {
 	var value = $(t).val();
-	$('.effect-measure').text("as measured by " + value);
+	var newtext = value === "" ? "" : " as measured by " + value;
+	$('.effect-measure').text(newtext);
 };
 
 
@@ -266,10 +267,7 @@ function outcomeDirectionUpdate(t) {
 	var value = $(t).val();
 	$('.change-direction').text(value);
 };
-function outcomeMeasureUpdate(t) {
-	var value = $(t).val();
-	$('.effect-measure').text(value);
-};
+
 function interventionGroupDescUpdate(t) {
 	var value = $(t).val();
 	$('.treatment-group').text(value);

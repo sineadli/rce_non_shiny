@@ -25,6 +25,9 @@ var crypto = require('crypto');
 var configDB = require('./config/database.js');
 var preventClickjacking = require('./middleware/preventClickjacking.js');
 var coachsteps = require('./middleware/coachsteps.js');
+var textHelpers = require('./public/js/textHelpers.js');
+
+exports.TextHelpers = textHelpers;
 
 app.disable('x-powered-by');
 // configuration ===============================================================

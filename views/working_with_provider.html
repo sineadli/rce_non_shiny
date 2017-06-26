@@ -31,15 +31,6 @@
         <% include ../views/partials/toolHeader.html %>
         <% } %>
 
-
-        <%
-        var Basics_Users_Other = eval.basics.Basics_Users_Other;
-        var Basics_Users = eval.basics.Basics_Users;
-        if (Basics_Users === "") {Basics_Users = "users";}
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name
-
-        %>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
@@ -50,10 +41,8 @@
 
                         <div class="tool-header">
                             <h1 class="tool-title">
-                                <% if(query.peeking == 1) {
-                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool." ;
-                                %>
-                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% if(query.peeking == 1) {  %>
+                                <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
                                 <% } %> Working with Ed Tech Providers
                             </h1>
 

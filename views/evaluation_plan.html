@@ -12,7 +12,7 @@
 
 <html lang="en">
 <head>
-    <title>Prepare Evaluation Plan </title>
+    <title>Create an Evaluation Plan</title>
     <% if (display === 'online') { %>
         <% include ../views/partials/scriptHeader.html %>        
         <script src='/static/js/autosize.js'></script>       
@@ -122,7 +122,7 @@
                             </div>
                             <div class="step-action">
 
-                                <textarea name="EvalPlan[Evaluation_Why]" id="Evaluation_Why" rows="8" placeholder="Ex., The district is investing resources (both time and money) in educational technologies, so it is important to assess whether each technology is meeting the district&rsquo;s needs. This document gives an overview of the planned pilot study of the effectiveness of one technology, <%- Basics_Tech_Name %>.  "><%= eval.evalPlan.Evaluation_Why %></textarea>
+                                <textarea name="evalPlan[Evaluation_Why]" id="Evaluation_Why" rows="8" placeholder="Ex., The district is investing resources (both time and money) in educational technologies, so it is important to assess whether each technology is meeting the district&rsquo;s needs. This document gives an overview of the planned pilot study of the effectiveness of one technology, <%- defs.Basics_Tech_Name %>.  "><%= eval.evalPlan.Evaluation_Why %></textarea>
                             </div>
                             <% } else if (display === 'download') { %>
                             <div class="step-subquestion">
@@ -499,49 +499,49 @@
                                                         <tr id="addr<%= i %>">
                                                             <td class="index">
                                                                 <% if (display === 'online') { %>
-                                                                <input type="text" name="EvalPlan[Milestones][<%= i %>][Order]"   id="Order_<%= i %>" value="<%= ev.Milestones[i].Order %>" />
+                                                                <input type="text" name="evalPlan[Milestones][<%= i %>][Order]"   id="Order_<%= i %>" value="<%= ev.Milestones[i].Order %>" />
                                                                 <% } else { %>
                                                                 <%= ev.Milestones[i].Order %>
                                                                 <% } %>
                                                             </td>
                                                             <td>
                                                                 <% if (display === 'online') { %>
-                                                                <textarea name="EvalPlan[Milestones][<%= i %>][Milestone_Name]" id="Milestone_Name_<%= i %>" class="autosizejs"><%= ms[i] %></textarea>
+                                                                <textarea name="evalPlan[Milestones][<%= i %>][Milestone_Name]" id="Milestone_Name_<%= i %>" class="autosizejs"><%= ms[i] %></textarea>
                                                                 <% } else { %>
                                                                 <%= ms[i] %>
                                                                 <% } %>
                                                             </td>
                                                             <td>
                                                                 <% if (display === 'online') { %>
-                                                                <input type="text" style="width:125px;font-size:.9em;" class="datepicker" name="EvalPlan[Milestones][<%= i %>][Complete_Date]" id="Complete_Date_<%= i %>" value="<%= dates[i] %>" placeholder="mm/dd/yyyy" />
+                                                                <input type="text" style="width:125px;font-size:.9em;" class="datepicker" name="evalPlan[Milestones][<%= i %>][Complete_Date]" id="Complete_Date_<%= i %>" value="<%= dates[i] %>" placeholder="mm/dd/yyyy" />
                                                                 <% } else { %>
                                                                 <%= dates[i] %>
                                                                 <% } %>
                                                             </td>
                                                             <td>
                                                                 <% if (display === 'online') { %>
-                                                                <input type="text" name="EvalPlan[Milestones][<%= i %>][Assigned_To]" id="Assigned_To_<%= i %>" value="<%= ev.Milestones[i].Assigned_To %>" />
+                                                                <input type="text" name="evalPlan[Milestones][<%= i %>][Assigned_To]" id="Assigned_To_<%= i %>" value="<%= ev.Milestones[i].Assigned_To %>" />
                                                                 <% } else { %>
                                                                 <%= ev.Milestones[i].Assigned_To %>
                                                                 <% } %>
                                                             </td>
                                                             <td>
                                                                 <% if (display === 'online') { %>
-                                                                <input type="text" name="EvalPlan[Milestones][<%= i %>][Status]" id="Status_<%= i %>" value="<%= ev.Milestones[i].Status %>" />
+                                                                <input type="text" name="evalPlan[Milestones][<%= i %>][Status]" id="Status_<%= i %>" value="<%= ev.Milestones[i].Status %>" />
                                                                 <% } else { %>
                                                                 <%= ev.Milestones[i].Status %>
                                                                 <% } %>
                                                             </td>
                                                             <td>
                                                                 <% if (display === 'online') { %>
-                                                                <textarea name="EvalPlan[Milestones][<%= i %>][Notes]" id="Notes_<%= i %>" class="autosizejs"> <%= notes[i]  %></textarea>
+                                                                <textarea name="evalPlan[Milestones][<%= i %>][Notes]" id="Notes_<%= i %>" class="autosizejs"> <%= notes[i]  %></textarea>
                                                                 <% } else { %>
                                                                 <%= notes[i]  %>
                                                                 <% } %>
                                                             </td>
                                                             <% if (display === 'online') { %>
                                                             <td>
-                                                                <label for="Hide_<%= i %>"><input type="checkbox" class="cus-input hide-row" value="hide" name="EvalPlan[Milestones][<%= i %>][Hide]" id="Hide_<%= i %>" <%- hidechecked  %> />Hide</label>
+                                                                <label for="Hide_<%= i %>"><input type="checkbox" class="cus-input hide-row" value="hide" name="evalPlan[Milestones][<%= i %>][Hide]" id="Hide_<%= i %>" <%- hidechecked  %> />Hide</label>
                                                             </td>
                                                             <% } %>
                                                         </tr>

@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Matching - Ed Tech RCE Coach</title>
+    <title>Matching</title>
 
     <% include ../views/partials/scriptHeader.html %>
    
@@ -33,35 +33,25 @@
 <form action="/matching" method="post">
     <%
 
-    var Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-    var Basics_Outcome = eval.basics.Basics_Outcome;
-    if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-    var Basics_Users_Other = eval.basics.Basics_Users_Other;
-    var Basics_Users = eval.basics.Basics_Users;
-    if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-    var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-
     if (eval.matching) {
 
     if (eval.matching.Result) Result = eval.matching.Result;
     }
     %>
 <input type="hidden" id="user_email" value="<%= user %>"/>
-    <input type="hidden" id="coreurl" value="<%= shiny_url %>" />
+<input type="hidden" id="coreurl" value="<%= shiny_url %>" />
 <div class="container-fluid">
 
 <div class="row">
     <div class="col-xs-12">
         <div class="tool-top">
             <div class="dl-guide">
-                <a onclick=" window.open('/static/pdf/Matching Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                <a onclick="window.open('/static/pdf/Matching Overview.pdf', ''); return false;" href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
             </div>
             <div class="tool-header">
                 <h1 class="tool-title">
-                    <% if(query.peeking == 1) {
-                    var peekingnote = eval.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "Based on your answers in &ldquo;Determine Your Approach,&rdquo; you do not need to use this tool to complete your evaluation.";
-                    %>
-                    <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br/>
+                    <% if(query.peeking == 1) { %>
+                    <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br/>
                     <% } %>
                     Build Your Evaluation Sample Using Matching
                 </h1>
@@ -96,12 +86,12 @@
     <div class="col-xs-7">
         <div class="step-subquestion">
 
-            <h4> <label for="Intervention_Group_Desc">The group that used <%= Basics_Tech_Name %> (the treatment group) includes:</label></h4>
+            <h4> <label for="Intervention_Group_Desc">The group that used <%= defs.Basics_Tech_Name %> (the treatment group) includes:</label></h4>
 
         </div>
         <div class="step-action">
 
-            <textarea name="Intervention_Group_Desc" id="Intervention_Group_Desc" rows="2" placeholder="Ex. 5th grade English learners who used eZumi Learning in their classrooms" class="shiny-bound-input"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
+            <textarea name="planQuestion[Intervention_Group_Desc]" id="Intervention_Group_Desc" rows="2" placeholder="Ex. 5th grade English learners who used eZumi Learning in their classrooms" class="shiny-bound-input"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
             <% if (user != "NOAUTHENTICATED") { %>
             <p class="prev-answer">
                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=matching">Craft Your Research Question</a>
@@ -111,13 +101,13 @@
         </div>
         <div class="step-subquestion">
             <h4>
-                <label for="Comparison_Group_Desc">The group that did not use <%= Basics_Tech_Name %> (the potential members of the comparison group) includes:</label>
+                <label for="Comparison_Group_Desc">The group that did not use <%= defs.Basics_Tech_Name %> (the potential members of the comparison group) includes:</label>
             </h4>
 
         </div>
         <div class="step-action">
 
-            <textarea name="Comparison_Group_Desc" id="Comparison_Group_Desc" rows="2" placeholder="Ex. similar 5th grade English Learners with no access to eZumi Learning" class="shiny-bound-input"><%= eval.planQuestion.Comparison_Group_Desc %></textarea>
+            <textarea name="planQuestion[Comparison_Group_Desc]" id="Comparison_Group_Desc" rows="2" placeholder="Ex. similar 5th grade English Learners with no access to eZumi Learning" class="shiny-bound-input"><%= eval.planQuestion.Comparison_Group_Desc %></textarea>
             <% if (user != "NOAUTHENTICATED") { %>
             <p class="prev-answer">
                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=matching">Craft Your Research Question</a>
@@ -129,12 +119,12 @@
 
 
             <h4>
-                <label for="Targeted_Access">Was use of <%= Basics_Tech_Name %> targeted in any way, for example, to low performing students, or English learners? </label>
+                <label for="Targeted_Access">Was use of <%= defs.Basics_Tech_Name %> targeted in any way, for example, to low performing students, or English learners? </label>
 
             </h4>
         </div>
         <div class="step-action">
-            <select name="Targeted_Access" id="Targeted_Access">
+            <select name="matching[Targeted_Access]" id="Targeted_Access">
                 <%
                 var options = ["Select an option", "Yes", "No" ];
                 var ovals = ["Select an option", "yes", "no" ];
@@ -148,7 +138,7 @@
             </select>
             <div id="Question_Targeted_Desc" hidden="true">
                 <p>
-                    <label for="Target_Group_Desc">What were the characteristics of the group selected to use <%= Basics_Tech_Name %>?</label>
+                    <label for="Target_Group_Desc">What were the characteristics of the group selected to use <%= defs.Basics_Tech_Name %>?</label>
                     <textarea name="Target_Group_Desc" rows="2" placeholder="Ex. In intervention group, all 5th grade English Learners were given access to the eZumi technology." class="shiny-bound-input"><%= eval.matching.Target_Group_Desc %></textarea>
                 </p>
             </div>
@@ -213,7 +203,7 @@
             <div class="step-subquestion">
                 <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
                 <p>
-                    Your data file should have one row for each one of the <%= Basics_Users %> in your sample and one column for each data field (for example, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and an indicator of who used the technology. For more information, please read <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a>.
+                    Your data file should have one row for each one of the <%= defs.Basics_Users %> in your sample and one column for each data field (for example, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and an indicator of who used the technology. For more information, please read <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a>.
                 </p>
             </div>
             <div class="step-action">
@@ -232,8 +222,8 @@
 
             <div class="before-upload">
                 <div class="step-subquestion">
-                    <h4><label for="treat_var">Who is using <%= Basics_Tech_Name %>?</label></h4>
-                    <p>Choose the name of the data field that distinguishes who is using <%= Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                    <h4><label for="treat_var">Who is using <%= defs.Basics_Tech_Name %>?</label></h4>
+                    <p>Choose the name of the data field that distinguishes who is using <%= defs.Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
                     <p><em class="stronger"><i class="fa fa-asterisk red"></i> Required</em>
                     </p>
                 </div>
@@ -258,7 +248,7 @@
                 </div>
                 <div class="step-subquestion">
                     <h4> Which characteristics matter when matching users to similar non-users? </h4>
-                    <p><label for="match_vars">Select characteristics of your <%= Basics_Users %> that could affect <%= Basics_Outcome %>.</label>
+                    <p><label for="match_vars">Select characteristics of your <%= defs.Basics_Users %> that could affect <%= defs.Basics_Outcome %>.</label>
                     </p>
                     <p>
                         <em class="stronger"><i class="fa fa-asterisk"></i> More than one is recommended.</em>
@@ -270,7 +260,7 @@
                     </select>
                 </div>
                 <div class="step-subquestion">
-                    <h4>Should matched <%= Basics_Users %> always be in the same grade?</h4>
+                    <h4>Should matched <%= defs.Basics_Users %> always be in the same grade?</h4>
                     <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the data field that indicates student grade. </p>
                 </div>
                 <div class="step-action ">
@@ -301,7 +291,7 @@
                             </p>
                             <div class="before-upload">
                                 <p>
-                                    It is most important that users and non-users had similar <%= Basics_Outcome %> levels before they started using <%= Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
+                                    It is most important that users and non-users had similar <%= defs.Basics_Outcome %> levels before they started using <%= defs.Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
                                 </p>
                                 <p> You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology.
                                 </p>
@@ -371,7 +361,7 @@
         </div>
     </div>
 <div class="hidden">
-    <input type="hidden" name="basicsUsers" id="basicsUsers" value="<%= Basics_Users %>" />
+    <input type="hidden" name="basicsUsers" id="basicsUsers" value="<%= defs.Basics_Users %>" />
     <input type="hidden" name="s_treat_var" id="s_treat_var"/>
     <input type="hidden" name="s_match_vars" id="s_match_vars"/>
     <input type="hidden" name="s_grade_var" id="s_grade_var"/>

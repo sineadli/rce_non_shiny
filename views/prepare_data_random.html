@@ -15,7 +15,8 @@
     <title>Prepare for Random Assignment</title>
     <% include ../views/partials/scriptHeader.html %>
 </head>
-<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; 
+  var path = query.peeking == 1 ? "path-random" : eval.path %>
 <body class="<%- peekingThis %>">
     <% include ../views/partials/header.html %>
     <% if (user != "NOAUTHENTICATED") { %>
@@ -31,20 +32,7 @@
         <% include ../views/partials/toolHeader.html %>
         <% } %>
 
-        <%
-        var Basics_Users_Other = eval.basics.Basics_Users_Other;
-        var Basics_Users = eval.basics.Basics_Users;
-        if (Basics_Users.toLowerCase() === "other") { Basics_Users = Basics_Users_Other; }
-        var Basics_Tech_Name = eval.basics.Basics_Tech_Name;
-        if (Basics_Tech_Name == "") { Basics_Tech_Name = "the educational technology"; }
-        var path = eval.path;
-        Basics_Outcome_Other = eval.basics.Basics_Outcome_Other;
-        Basics_Outcome = eval.basics.Basics_Outcome;
-        if (Basics_Outcome.toLowerCase() === "other") { Basics_Outcome = Basics_Outcome_Other; }
-        if (Basics_Outcome === "") { Basics_Outcome = "outcomes"}
-        var Outcome_Measure = eval.planQuestion.Outcome_Measure ;
-        if (Outcome_Measure == "") { Outcome_Measure = "your outcome measure (e.g. test scores);"}
-        %>
+       
        
         <div class="container-fluid">
             <div class="row">
@@ -56,16 +44,14 @@
 
                         <div class="tool-header">
                             <h1 class="tool-title">
-                                <% if(query.peeking == 1) {
-                                var peekingnote = eval.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "Based on your answers in &ldquo;Determine Your Approach,&rdquo; you do not need to use this tool to complete your evaluation.";
-                                %>
-                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% if(query.peeking == 1) {%>
+                                <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
                                 <% } %> Prepare for Random Assignment
                             </h1>
 
                             <div class="tool-intro">
                                 <p>
-                                    To randomly assign your <%= Basics_Users %> to treatment and comparison groups you might need data from multiple sources. This tool will guide you through collecting, formatting, and checking your data. It provides a series of checklists to help you determine if your data is ready for randomization.
+                                    To randomly assign your <%= defs.Basics_Users %> to treatment and comparison groups you might need data from multiple sources. This tool will guide you through collecting, formatting, and checking your data. It provides a series of checklists to help you determine if your data is ready for randomization.
 
                                 </p>
                             </div>
@@ -82,7 +68,7 @@
                     <div class="step-header container">
                         <div data-toggle="collapse" data-target="#B">
                             <h2 class="clickable">
-                                <i class="fa fa-caret-down" aria-hidden="false"></i> First let's review some details about your plans to roll-out <%= Basics_Tech_Name %>.
+                                <i class="fa fa-caret-down" aria-hidden="false"></i> First let's review some details about your plans to roll-out <%= defs.Basics_Tech_Name %>.
                             </h2>
                         </div>
                     </div>
@@ -91,12 +77,12 @@
                             <div class="step-subquestion">
                                 <h4>
                                     <label for="Basics_Users">
-                                        Who is using <%= Basics_Tech_Name %>?
+                                        Who is using <%= defs.Basics_Tech_Name %>?
                                     </label>
                                 </h4>
                             </div>
                             <div class="step-action">
-                                <select name="Basics_Users" id="Basics_Users">
+                                <select name="basics[Basics_Users]" id="Basics_Users">
 
                                     <%
                                     var options = ["Select an option", "Students", "Teachers", "Other"];
@@ -119,7 +105,7 @@
                                         <label for="Basics_User_Other">Please specify:</label>
                                     </div>
 
-                                    <input type="text" name='Basics_Users_Other' id="Basics_Users_Other" value="<%= eval.basics.Basics_Users_Other %>" />
+                                    <input type="text" name='basics[Basics_Users_Other]' id="Basics_Users_Other" value="<%= eval.basics.Basics_Users_Other %>" />
                                 </div>
 
                                 <% if (user != "NOAUTHENTICATED") { %>
@@ -129,10 +115,10 @@
                                 <% } %>
                             </div>
                             <div class="step-subquestion">
-                                <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= Basics_Users %></span> or groups of <span class="tech_users"><%= Basics_Users %></span> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
+                                <h4><label for="Individual_Group">Do you want to randomly assign individual <span class="tech_users"><%= defs.Basics_Users %></span> or groups of <span class="tech_users"><%= defs.Basics_Users %></span> (e.g. classes or schools) to the treatment and comparison groups?</label></h4>
                             </div>
                             <div class="step-action">
-                                <select name="PrepareRandom[Individual_Group]" id="Individual_Group">
+                                <select name="prepareRandom[Individual_Group]" id="Individual_Group">
                                     <%
                                     var options = ["Select an option", "Individuals"  , "Groups" ];
                                     var ovals = ["Select an option", "users" , "groups" ];
@@ -147,10 +133,10 @@
 
                                 <div id="Question_Cluster" hidden="true" style="margin-left: 20px;">
 
-                                    <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= Basics_Users %></span>?</label></h4>
+                                    <h4><label for="Cluster_Group">How will you group your <span class="tech_users"><%= defs.Basics_Users %></span>?</label></h4>
 
 
-                                    <select name="PrepareRandom[Cluster_Group]" id="Cluster_Group">
+                                    <select name="prepareRandom[Cluster_Group]" id="Cluster_Group">
                                         <%
                                         var options = ["Select an option", "By class", "By school", "Other" ];
                                         var ovals = ["Select an option", "classes", "schools", "other" ];
@@ -168,7 +154,7 @@
                                         <h4>
                                             <label for="Cluster_Group_Other">Please specify:</label>
                                         </h4>
-                                        <input type="text" name='PrepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
+                                        <input type="text" name='prepareRandom[Cluster_Group_Other]' id="Cluster_Group_Other" value="<%= eval.prepareRandom.Cluster_Group_Other %>" />
 
                                     </div>
 
@@ -199,7 +185,7 @@
                                             <div id="consider5" class="panel-collapse collapse in">
 
                                                 <p>
-                                                    You do not need to randomly select <span class="tech_users"><%= Basics_Users %></span> at the individual level. It may be more feasible to select by classroom or by school. However, your ability to learn whether <%= Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
+                                                    You do not need to randomly select <span class="tech_users"><%= defs.Basics_Users %></span> at the individual level. It may be more feasible to select by classroom or by school. However, your ability to learn whether <%= defs.Basics_Tech_Name %> is effective will be stronger if you can choose at the individual level.
                                                 </p>
 
                                                 <p>
@@ -239,12 +225,12 @@
                                 var checked = ( eval.prepareRandom.Check_Sample == "Sample_Checked" ) ? "checked" : "";
                                 
                                 %>
-                                <input type="checkbox" <%= checked %> id="Check_Sample" name="PrepareRandom[Check_Sample]" value="Sample_Checked" /><label class="sec-label" for="Check_Sample">
-                                    List of <span class="tech_users"><%= Basics_Users %></span>&mdash;<em class="recommendation">Required</em>
+                                <input type="checkbox" <%= checked %> id="Check_Sample" name="prepareRandom[Check_Sample]" value="Sample_Checked" /><label class="sec-label" for="Check_Sample">
+                                    List of <span class="tech_users"><%= defs.Basics_Users %></span>&mdash;<em class="recommendation">Required</em>
                                 </label><br />
 
                                 <p class="sub-label">
-                                    You indicated that you will randomly assign <span class="assign-level"><%= Basics_Users %></span> to the treatment and comparison groups. This means you will have to compile a list of <span class="compile"><%= Basics_Users %>. Include a unique identifier for each of your <span class="tech_users"><%= Basics_Users %></span>. Also include associated identifiers for groups of <span class="tech_users"><%= Basics_Users %></span> (for example, classrooms or schools)</span>.  Please read the <a href="/static/pdf/Prepare your data for randomization.pdf" target="_blank">Prepare Your Data for Randomization</a> guide for more information.
+                                    You indicated that you will randomly assign <span class="assign-level"><%= defs.Basics_Users %></span> to the treatment and comparison groups. This means you will have to compile a list of <span class="compile"><%= defs.Basics_Users %>. Include a unique identifier for each of your <span class="tech_users"><%= defs.Basics_Users %></span>. Also include associated identifiers for groups of <span class="tech_users"><%= defs.Basics_Users %></span> (for example, classrooms or schools)</span>.  Please read the <a href="/static/pdf/Prepare your data for randomization.pdf" target="_blank">Prepare Your Data for Randomization</a> guide for more information.
                                 </p>
 
 
@@ -262,11 +248,11 @@
 
                                 var checked = ( eval.prepare.Check_Pretest == "Pretest_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Pretest" name="Check_Pretest" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
+                                <input type="checkbox" id="Check_Pretest" name="prepare[Check_Pretest]" value="Pretest_Checked" <%- checked %> /><label class="sec-label" for="Check_Pretest">
                                     Pretest data&mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
-                                <p class="sub-label"> This is a measure of <%= Basics_Outcome %> just before <%= Basics_Tech_Name %> is introduced. <%- ptpathnote %></p>
+                                <p class="sub-label"> This is a measure of <%= defs.Basics_Outcome %> just before <%= defs.Basics_Tech_Name %> is introduced. <%- ptpathnote %></p>
                                 <p class='sub-label'><span class='group-pretest-prep-note'></span></p>
 
                                 <%
@@ -277,14 +263,14 @@
 
                                 var checked = ( eval.prepare.Check_Background == "Background_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Background" name="Check_Background" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
+                                <input type="checkbox" id="Check_Background" name="prepare[Check_Background]" value="Background_Checked" <%- checked %> /><label class="sec-label" for="Check_Background">
                                     Background characteristics&mdash;<em class="recommendation"><%= required %></em>
                                 </label><br />
 
                                 <p class="sub-label">
-                                    Provide data on the background characteristics of your <span class="tech_users"><%= Basics_Users %></span>, such as gender, ethnicity, individualized education plan status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
+                                    Provide data on the background characteristics of your <span class="tech_users"><%= defs.Basics_Users %></span>, such as gender, ethnicity, individualized education plan status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
                                 </p>
-                                <p class="sub-label">It is preferable to measure all background characteristics before introducing <%= Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software), it is important to know if characteristics were recorded before or after introducing <%= Basics_Tech_Name %>. </p>
+                                <p class="sub-label">It is preferable to measure all background characteristics before introducing <%= defs.Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software), it is important to know if characteristics were recorded before or after introducing <%= defs.Basics_Tech_Name %>. </p>
                                 <p class="sub-label"> <%- bcpathnote %></p>
                                 <p class='sub-label'><span class='group-data-prep-note'></span></p>
 
@@ -587,13 +573,13 @@
                                 <%
                                 var checked = ( eval.prepareRandom.Check_OneSet == "OneSet_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_OneSet" name="PrepareRandom[Check_OneSet]" value="OneSet_Checked" <%- checked %>/><label class="sec-label" for="Check_OneSet">
+                                <input type="checkbox" id="Check_OneSet" name="prepareRandom[Check_OneSet]" value="OneSet_Checked" <%- checked %>/><label class="sec-label" for="Check_OneSet">
                                     I have one dataset containing all my data.
                                 </label><br />
 
 
                                 <p class="sub-label">
-                                    You will have to merge your existing datasets into one complete dataset. Your dataset should have one row for each of your <span class="tech_users"><%= Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
+                                    You will have to merge your existing datasets into one complete dataset. Your dataset should have one row for each of your <span class="tech_users"><%= defs.Basics_Users %></span> and one column for each data field or variable. This will be easy to do using the unique identifiers.
                                 </p><p class="note">If you use Excel to manage your data you can do this using a VLOOKUP function. </p>
 
                             </div>
@@ -602,7 +588,7 @@
                                 <%
                                 var checked = ( eval.prepareRandom.Check_Numeric == "Numeric_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Numeric" name="PrepareRandom[Check_Numeric]" value="Numeric_Checked" <%- checked %>/><label class="sec-label" for="Check_Numeric">
+                                <input type="checkbox" id="Check_Numeric" name="prepareRandom[Check_Numeric]" value="Numeric_Checked" <%- checked %>/><label class="sec-label" for="Check_Numeric">
                                     All categorical variables have been converted to dummy numeric variables.
                                 </label><br />
 
@@ -619,7 +605,7 @@
                                 <%
                                 var checked = ( eval.prepareRandom.Check_Missing == "Missing_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Missing" name="PrepareRandom[Check_Missing]" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
+                                <input type="checkbox" id="Check_Missing" name="repareRandom[Check_Missing]" value="Missing_Checked" <%- checked %>/><label class="sec-label" for="Check_Missing">
                                     All missing data are consistently coded as NA.
                                 </label><br />
 
@@ -662,7 +648,7 @@
                                 <%
                                 var checked = ( eval.prepareRandom.Check_Min_Max == "Min_Max_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Min_Max" name="PrepareRandom[Check_Min_Max]" value="Min_Max_Checked" <%- checked %>/><label class="sec-label" for="Check_Min_Max">
+                                <input type="checkbox" id="Check_Min_Max" name="prepareRandom[Check_Min_Max]" value="Min_Max_Checked" <%- checked %>/><label class="sec-label" for="Check_Min_Max">
                                     Check the minimum and maximum values of variables.
                                 </label><br />
 
@@ -674,12 +660,12 @@
                                 <%
                                 var checked = ( eval.prepareRandom.Check_Miss_Impact == "Miss_Impact_Checked" ) ? "checked" : "";
                                 %>
-                                <input type="checkbox" id="Check_Miss_Impact" name="PrepareRandom[Check_Miss_Impact]" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
+                                <input type="checkbox" id="Check_Miss_Impact" name="prepareRandom[Check_Miss_Impact]" value="Miss_Impact_Checked" <%- checked %>/><label class="sec-label" for="Check_Miss_Impact">
                                     Consider the impact of missing data.
                                 </label><br />
 
 
-                                <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations missing key data. You should try to understand why data are missing and how excluding <span class="tech_users"><%= Basics_Users %></span> with incomplete data will affect your results. </p>
+                                <p class="sub-label">The tools, and some statistical software packages, will automatically drop observations missing key data. You should try to understand why data are missing and how excluding <span class="tech_users"><%= defs.Basics_Users %></span> with incomplete data will affect your results. </p>
                                 <p class="note">If you are working in Excel you can sort and filter your data to view missing values. To determine exactly how many values are missing for a single variable you can use the COUNTIF function; to determine how many observations have at least one missing value you can use a nested COUNTIF with OR function.</p>
 
                             </div>
