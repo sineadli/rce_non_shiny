@@ -455,13 +455,14 @@ evaluationSchema.methods.setPlanContext = function(sess) {
         Outcomes: planContext.Outcomes
 }
 
-for (var array in checkArrays)
-    {
+for (var array in checkArrays) {
+    var tempArray = [];
 	if (textHelpers.allBlank(checkArrays[array])) {
             planContextIncomplete = true;
             sess.defaults[array] = "Not reported";
-        } else {
-		sess.defaults[array] = checkArrays[array].toString();
+	} else {
+		
+		sess.defaults[array] = checkArrays[array].filter(function (n) { return n != "" }).join(); 
         }
     }
 
