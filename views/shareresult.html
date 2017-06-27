@@ -102,11 +102,11 @@
     <div class="row no-page-break">
         <div class="col-xs-12">
             <h2>Summary of results</h2>
-            <p></p>
+            <p><%= defs.ResultSummary %></p>
             <h2> Research Question</h2>
             <% include ../views/partials/_researchQuestion.html %>
             <h2> Findings</h2>
-            <p>For this evaluation, a successful result was defined as a greater than <%= defs.Pass_Probability %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %> <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <% defs.Measure_Units %> or more.</p>
+            <p>For this evaluation, a successful result was defined as a greater than <%= defs.Pass_Probability %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %> <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> or more.</p>
             <% if (display === 'online' && user != "NOAUTHENTICATED") { %>
             <p class="prev-answer hidden-print">
                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See
@@ -118,14 +118,19 @@
 
             <table class="resultsFig">
                 <caption>
-                    Figure 1 shows the results [by grade], as measured by the [midyear MAP reading assessment]. It indicates the probability that iReady had the intended effect, the estimated size of the effect in [units], the average outcome for [students] in the comparison group ([students who are using Lexia]), and the sample sizes for the intervention and comparison groups.
+                    Figure 1 shows the results <%= defs.Results_By_Grade_Flag %>, as measured by the <%= defs.Outcome_Measure %>. It indicates the probability that <%= defs.Basics_Tech_Name %> had the intended effect, the estimated size of the effect in <%= defs.Measure_Units %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the intervention and comparison groups.
 
                 </caption>
                 <tr><th scope="col">Grade</th><th scope="col">Meeting your goal?</th><th scope="col">Probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> or more</th><th scope="col">Estimated effect</th><th scope="col">Comparison group average</th><th scope="col">Number of <%- defs.Basics_Users %> in intervention group</th><th scope="col">Number of <%- defs.Basics_Users %> in comparison group</th></tr>
 
                 <% for (grade in Result.results_by_grade) {
 
-               
+                if (Result.args.cluster_var != "") {
+                if (Result.results_by_grade[grade].samples_cluster.n_full_treat == 1 || (Result.results_by_grade[grade].samples_cluster.n_full- Result.results_by_grade[grade].samples_cluster.n_full_treat === 1)) {
+                var group1 = true;
+                var negative1 = (Result.results_by_grade[grade].samples_cluster.n_full- Result.results_by_grade[grade].samples_cluster.n_full_treat === 1) ? "not" : "";
+                }}
+
                 var thisgrade = Result.results_by_grade[grade];
                 var meetGoal = thisgrade.interpretation.probability >= defs.Pass_Probability ? "Yes" :"No";
 
@@ -176,19 +181,25 @@
                 <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
             </p>
             <% } %>
-
+<% if (Result.args.cluster_var != "") { %>
             <div class="note" style="margin-top: 15px;">
-                <p>The sample sizes in Figure 1 represent the number of [students] in each group. However, the intervention was implemented at the [classroom/school] level. Table 3 in the appendix shows the number of [classroom/school]s in each group.</p>
+                <p>The sample sizes in Figure 1 represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= Result.args.cluster_var %> level. Table 3 in the appendix shows the number of <%= Result.args.cluster_var %>s in each group.</p>
 
             </div>
+            <% } %>
 
             <div class="clearfix"></div>
             <div class="white-background-blue-border">
                 <h3 class="warning">Warning</h3>
 
                 <ul>
-                    <li>These findings apply only to <% defs.Basics_Users %> who were included in the final evaluation sample. Table 1 in the appendix summarizes the number of <% defs.Basics_Users %> in each group. </li>
-                    <li>Since all [students] [not] using iReady belonged to one [class or school], the effect of iReady cannot be separated from other factors that may be unique to that [class or school].</li>
+                    <li>These findings apply only to <%= defs.Basics_Users %> who were included in the final evaluation sample. Table 1 in the appendix summarizes the number of <%= defs.Basics_Users %> in each group. </li>
+                    <%
+                    if (group1) {
+                      var ByGrades = defs.Results_By_Grade_Flag == "by grade" ? " for some grades " : "";
+                    %>
+                    <li>Since <%= ByGrades %> all <%= defs.Basics_Users %> <%= negative %> using <%= defs.Basics_Tech_Name %> belonged to one <%= Result.args.cluster_var %>, the effect of <%= defs.Basics_Tech_Name %> cannot be separated from other factors that may be unique to that <%= Result.args.cluster_var %>.</li>
+                    <% } %>
                     <li>The comparison and treatment groups do not meet the most rigorous similarity standards. Table 3 in the appendix summarizes the similarity between the comparison group and the treatment group on selected variables.</li>
                 </ul>
             </div>
@@ -226,7 +237,8 @@
                 <div class="char-row-div">
                     <div class="char-label-div"> Key Components</div>
                     <div class="char-content-div">
-                        <%= defs.Tech_Components %>
+                        <script>
+ document.write(textHelpers.capitalize("<%= defs.Tech_Components %>")) </script> 
                     </div>
                 </div>
 
@@ -274,9 +286,7 @@
     <div class="row no-page-break">
         <div class="col-xs-12">
             <h3>Evaluation approach</h3>
-            <h2>
-                <script> document.write(textHelpers.capitalize("<%= defs.Basics_Tech_Name  %>")) </script> was tested using a <%= defs.pilot_type %> pilot.
-            </h2>
+     
             <ul>
                 <li>
                     <% if (defs.pilot_type === 'randomized') { %>
@@ -314,12 +324,15 @@
 
                 if (Result.args.control_vars.length > 0) { %>
                 <li>
-                    The analysis controlled for <span class="control-vars-wordlist"><%= Result.args.control_vars.join() %></span>.
+                    The analysis controlled for <span class="control-vars-wordlist"><%= Result.args.control_vars.join(", ") %></span>.
 
 
                 </li>
-                <% } %>
-                <% if (Result.results_by_grade.length > 1) { %>
+                <% }
+                console.log("defs = ");
+                console.log(defs);
+                console.log(Result.results_by_grade.length);
+                 if (defs.Results_By_Grade_Flag === "by grade") { %>
                 <li>
                     The analysis was conducted by grade.
                 </li>
@@ -337,16 +350,31 @@
             <h3>iReady usage</h3>
 
             <ul>
-                <li><% defs.Basics_Tech_Name %> was used in <%= defs.Grades_Used %> grade <%-defs.Classroom_Types.toLowerCase() %> classrooms</li>
-                <li>The method of delivery was <%= defs.Delivery_Types %> </li>
+                <% if(defs.Grades_Used.length > 1 || defs.Classroom_Types.length > 1) {
+                var saygrade = defs.Grades_Used.length > 1 ? "grade" : "";
+                var sayclassroom = defs.Classroom_Types.length > 1 ? "classrooms" : "";
+                %>
+
+                <li><%= defs.Basics_Tech_Name %> was used in <%= defs.Grades_Used %> <%= saygrade %> <%-defs.Classroom_Types.toLowerCase() %> <%= sayclassroom %>.</li>
+                <% } %>
+                <li>The method of delivery was <%= defs.Delivery_Types.toLowerCase() %> </li>
                 <li><%= defs.Expected_Dosage %></li>
                 <li><%= defs.Developer_Guidelines %></li>
             </ul>
+            <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
+            <p class="prev-answer hidden-print">
+                <i class="fa fa-hand-o-right"></i> Where did I enter this information? See
+                <a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a>
+            </p>
+            <% } %>
 
             <h3>Outcomes</h3>
 
             <ul>
-                <li><% defs.Basics_Outcome %> was measured using <%= defs.Outcome_Measure %>.</li>
+                <li>
+                    <script>
+                        document.write(textHelpers.capitalize("<%= defs.Basics_Outcome %>"))</script> was measured using <%= defs.Outcome_Measure %>.
+                </li>
                 <li>In the dataset used for analysis, the <%= defs.Outcome_Measure %> ranged from ranged from a minimum of [min] to a maximum of [max].</li>
                 <li>Table 3 in the appendix shows the average outcomes for the treatment and comparison groups without statistical adjustments. </li>
             </ul>
@@ -463,7 +491,7 @@
                 <h3>Next Steps</h3>
 
                 <p>
-                    <%= defs.Action_Success %>
+                    <%= defs.Result_Next_Steps %>
                 </p>
                 <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                 <div class="clearfix"></div>
@@ -610,7 +638,7 @@
             </div>
         </div>
 
-    
+
         <% if (display === 'online' && query.sharing != 1) { %>
         <div class="hidden-print">
             <% include ../views/partials/shareresultButtons.html %>
@@ -720,7 +748,7 @@
 
         });
 
-</script>
+                    </script>
 
 </body>
 </html>

@@ -128,6 +128,7 @@ exports.stripPercent = function (x) {
              if (d < 49) {
 				 duration.length = Math.ceil(d / 7);
                  duration.unit = 'week';
+		
 			 } else if (d < 335) {
 				 duration.length = Math.ceil(d / 30);
                 duration.unit = 'month';
@@ -137,7 +138,7 @@ exports.stripPercent = function (x) {
             }
 
             var durationPlural = (duration.length > 1) ? 's' : '';
-            var durationString = duration.length === 0 ? "Not Reported" : duration.length.toString() + ' ' + duration.unit + duration.Plural;
+            var durationString = duration.length === 0 ? "Not Reported" : duration.length.toString() + ' ' + duration.unit + durationPlural;
 
             return durationString;
 
