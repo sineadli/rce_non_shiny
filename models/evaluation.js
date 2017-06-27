@@ -536,9 +536,9 @@ evaluationSchema.methods.setRandom = function (sess) {
 
 evaluationSchema.methods.setGetResults = function(sess) {
     var eval = this;
-	var result = JSON.parse(eval.getresult.Result);
-	console.log("In set get results");
-	console.log(result.args);
+    if (eval.getresult.Result) {
+        var result = JSON.parse(eval.getresult.Result);
+    } else { result = ""}
     if (result.args) {
            sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
     }
@@ -595,7 +595,12 @@ evaluationSchema.methods.setGetResults = function(sess) {
 	}
     sess.defaults.ResultSummary = header;
     sess.defaults.Result_Next_Steps = next_steps;
-    sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? "by grade" : "";
+    if (typeof result == "object") {
+        sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? "by grade" : "";
+
+    } else {
+        sess.defaults.Results_By_Grade_Flag = "";
+    }
 
 	return;
 };
