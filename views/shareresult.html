@@ -199,8 +199,11 @@
                       var ByGrades = defs.Results_By_Grade_Flag == "by grade" ? " for some grades " : "";
                     %>
                     <li>Since <%= ByGrades %> all <%= defs.Basics_Users %> <%= negative %> using <%= defs.Basics_Tech_Name %> belonged to one <%= Result.args.cluster_var %>, the effect of <%= defs.Basics_Tech_Name %> cannot be separated from other factors that may be unique to that <%= Result.args.cluster_var %>.</li>
-                    <% } %>
+                    <% }
+                    if (!defs.Balanced) {
+                    %>
                     <li>The comparison and treatment groups do not meet the most rigorous similarity standards. Table 3 in the appendix summarizes the similarity between the comparison group and the treatment group on selected variables.</li>
+                    <% } %>
                 </ul>
             </div>
 

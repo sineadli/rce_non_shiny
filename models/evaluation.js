@@ -24,6 +24,17 @@ function useOther(v,o) {
 	else return v;
 }
 
+function isBalanced(baselines) {
+    var balanced = true;
+    for (var blvar in baselines) {
+        if (baselines.hasOwnProperty(blvar)) {
+            if (baselines[blvar].effect_size > 0.25) {
+                balanced = false;
+            }
+        }
+    }
+    return balanced;
+}
 
 function populateDefaults(defstocheck, tool, sess, incomplete) {
     for (var check in defstocheck) {
@@ -538,69 +549,74 @@ evaluationSchema.methods.setGetResults = function(sess) {
     var eval = this;
     if (eval.getresult.Result) {
         var result = JSON.parse(eval.getresult.Result);
-    } else { result = ""}
-    if (result.args) {
-           sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
-    }
-    sess.defaults.haveResults = (result == "") ? false : true;
+  
+      if (result.args) {
+            sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
+		 }
 
-	
-	var header = "";
-	var start = "";
-	var grade_qualifier = "";
-	var inconclusive_qualifier = "";
-	var next_steps = "";
-	var success_count = 0;
-	var inconclusive_count = 0;
-	var failure_count = 0;
+			var header = "";
+			var start = "";
+			var grade_qualifier = "";
+			var inconclusive_qualifier = "";
+			var next_steps = "";
+			var success_count = 0;
+			var inconclusive_count = 0;
+			var failure_count = 0;
+        var balanced = true;
 
 
-	for (grade in result.results_by_grade) {
+			for (grade in result.results_by_grade) {
 
-		var probability = textHelpers.stripPercent(result.results_by_grade[grade].interpretation.probability[0]);
-		var success = (probability > eval.planNext.Pass_Probability);
-		var inconclusive = (probability < eval.planNext.Pass_Probability) && (probability > eval.planNext.Fail_Probability);
+				var probability = textHelpers.stripPercent(result.results_by_grade[grade].interpretation.probability[0]);
+				var success = (probability > eval.planNext.Pass_Probability);
+				var inconclusive = (probability < eval.planNext.Pass_Probability) && (probability > eval.planNext.Fail_Probability);
 
-		if (success) {
-			success_count++;
-		} else if (inconclusive) {
-			inconclusive_count++;
-		} else {
-			failure_count++;
-		}
-	}
+				if (success) {
+					success_count++;
+				} else if (inconclusive) {
+					inconclusive_count++;
+				} else {
+					failure_count++;
+				}
 
-	if (inconclusive_count == (inconclusive_count + success_count + failure_count)) {
-		header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive";
-		next_steps = eval.planNext.Action_Inconclusive;
-		console.log("success count = " + success_count + " failure count = " + failure_count + " inconclusive count = " + inconclusive_count);
-	}
-	else {
-		if (success_count === 0) {
-			start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " did not have the intended effect.";
-			next_steps = eval.planNext.Action_Fail;
-		}
-		if (success_count > 0 && failure_count > 0) {
-			start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " had the intended effect";
-			grade_qualifier = ' for some grades, but not for others';
-			next_steps = eval.planNext.Action_Inconclusive;
-		}
-		if (inconclusive_count > 0) inconclusive_qualifier = ' For some grades, results were inconclusive.';
-		if (success_count > 0 && failure_count === 0 && success_count > inconclusive_count) {
-			next_steps = eval.planNext.Action_Success;
-			start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle";
-		}
 
-		header = start + ' on ' + eval.basics.Basics_Outcome + grade_qualifier + inconclusive_qualifier + '.';
-	}
-    sess.defaults.ResultSummary = header;
-    sess.defaults.Result_Next_Steps = next_steps;
-    if (typeof result == "object") {
-        sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? "by grade" : "";
+			    balanced = isBalanced(result.results_by_grade[grade].baseline_var_means);
+			}
 
-    } else {
-        sess.defaults.Results_By_Grade_Flag = "";
-    }
+			if (inconclusive_count == (inconclusive_count + success_count + failure_count)) {
+				header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive";
+				next_steps = eval.planNext.Action_Inconclusive;
+				console.log("success count = " + success_count + " failure count = " + failure_count + " inconclusive count = " + inconclusive_count);
+			}
+			else {
+				if (success_count === 0) {
+					start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " did not have the intended effect.";
+					next_steps = eval.planNext.Action_Fail;
+				}
+				if (success_count > 0 && failure_count > 0) {
+					start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " had the intended effect";
+					grade_qualifier = ' for some grades, but not for others';
+					next_steps = eval.planNext.Action_Inconclusive;
+				}
+				if (inconclusive_count > 0) inconclusive_qualifier = ' For some grades, results were inconclusive.';
+				if (success_count > 0 && failure_count === 0 && success_count > inconclusive_count) {
+					next_steps = eval.planNext.Action_Success;
+					start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle";
+				}
+
+				header = start + ' on ' + eval.basics.Basics_Outcome + grade_qualifier + inconclusive_qualifier + '.';
+			}
+			sess.defaults.ResultSummary = header;
+        sess.defaults.isBalanced = balanced;
+			sess.defaults.Result_Next_Steps = next_steps;
+			if (typeof result == "object") {
+				sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? "by grade" : "";
+
+			} else {
+				sess.defaults.Results_By_Grade_Flag = "";
+			}
+	} else { result = "" }
+	sess.defaults.haveResults = (result == "") ? false : true;
 
 	return;
 };
