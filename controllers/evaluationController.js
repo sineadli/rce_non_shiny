@@ -203,13 +203,16 @@ module.exports.postByTool = function(req, res, display) {
         Evaluation.findById(sess.eval._id, function(err, eval) {
             if (eval) {
 			//Replace current evaluation values with updates 
+           
                 for (var key in evalup) {
+                   
                     if (evalup.hasOwnProperty(key)) {
                         if (typeof evalup[key] == "object")
-                            for (var nkey in evalup[key]) {
+                            for (var nkey in evalup[key]) {                           
                                 eval[key][nkey] = evalup[key][nkey];
                             };
                     }
+                    eval.markModified(key);
                 }
             };
             eval.last_step = tool.coachStep;
@@ -219,7 +222,6 @@ module.exports.postByTool = function(req, res, display) {
 
             eval.save(function(err, savedeval) {
                 if (savedeval) {
-                   
                     sess.eval = savedeval;
                     if (req.body.status === "started" || display==="online") {
                         req.flash('saveMessage', 'Changes Saved.');

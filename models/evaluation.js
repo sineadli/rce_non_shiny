@@ -100,8 +100,8 @@ var Basics = mongoose.Schema({
     Basics_Have: { type: String,  default: '' },
     Basics_Tech_Name: { type: String, default: '', validate: validateChar  }, // was Plan_Question_A
     Basics_Using: { type: String, default: '' }, // was Prob_Appr_A This is not used.  Replaced by Prob_Appr_Current_or_New
-    Basics_Users: { type: String, default: 'users'}, // Was Prob_Appr_B
-	Basics_Users_Other: { type: String, default: '', validate: validateChar }, // Was Prob_Appr_B_other	 
+    Basics_Users: { type: String, default: ''}, // Was Prob_Appr_B
+	Basics_Users_Other: { type: String, default: ''}, // Was Prob_Appr_B_other	 
     Basics_Outcome: { type: String, default: '', help: 'what you hope to change' }, 
 	Basics_Outcome_Other: { type: String, default: '', validate: validateChar },   
     created_at: { type: Date, default: Date.now },
@@ -372,7 +372,8 @@ evaluationSchema.methods.setBasics = function(sess) {
 		Basics_Outcome : "Outcome"
 }
 
-	sess.defaults.BasicsIncomplete = populateDefaults(defstocheck, this.basics, sess, false);
+    sess.defaults.BasicsIncomplete = populateDefaults(defstocheck, this.basics, sess, false);
+    if (sess.defaults.Basics_Users)
 	sess.defaults.Singular_User = sess.defaults.Basics_Users.substring(0, sess.defaults.Basics_Users.length - 1);
 	
 
@@ -401,7 +402,8 @@ if (this.path == "path-random") {
 			Cluster_Group: "[assignment group]"
 		}
 		sess.defaults.prepareRandomIncomplete = populateDefaults(defstocheck, prepareRandom, sess, false);
-}
+    }
+if (sess.defaults.Basics_Users)
 sess.defaults.Random_Level = sess.defaults.Basics_Users.charAt(0).toUpperCase() + sess.defaults.Basics_Users.slice(1);
 
     return;
