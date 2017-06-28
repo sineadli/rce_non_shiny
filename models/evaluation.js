@@ -39,12 +39,7 @@ function isBalanced(baselines) {
 function populateDefaults(defstocheck, tool, sess, incomplete) {
     for (var check in defstocheck) {
         if (defstocheck.hasOwnProperty(check)) {
-            //console.log("In loop in check defaults for " + check + " and set defaults");
-            //console.log(defstocheck[check]);
-            //console.log(check);
          
-            console.log(tool[check]);
-          //  console.log(tool);
 			if (tool[check] == null) {
 			    sess.defaults[check] = "";
 			} else if (typeof tool[check] == "number") {
@@ -54,17 +49,21 @@ function populateDefaults(defstocheck, tool, sess, incomplete) {
                 sess.defaults[check] = defstocheck[check];
             } else if (tool[check].toLowerCase() === "other") {
                 var ocheck = check + "_Other";
+  
                 if (tool[ocheck] === "") {
                     incomplete = true;
                     sess.defaults[check] = defstocheck[check];
                 }
+                else {
+                    sess.defaults[check] = tool[ocheck];
+                }
+          
             } else {
                 sess.defaults[check] = tool[check];
             }
         }
     }
-//	console.log("In set defaults and so far defaults = ");
-//	console.log(sess.defaults);
+
     return incomplete;
 	
 }
@@ -83,8 +82,9 @@ var yesno = ["Select an option","Yes", "No",""];
 
 var validateChar = function (intext)
 {
-	var re = /^$|^[A-Za-z0-9 _.,]{5,35}$/;
-		return re.test(intext);
+	//var re = /^$|^[A-Za-z0-9 _.,]{5,35}$/;
+		//return re.test(intext);
+    return true;
 }
 var charval = [/^[A-Za-z0-9\s]+$/, "Invalid input. Ony letters, numbers, and basic punctuation are allowed."];
 
@@ -373,7 +373,7 @@ evaluationSchema.methods.setBasics = function(sess) {
 }
 
     sess.defaults.BasicsIncomplete = populateDefaults(defstocheck, this.basics, sess, false);
-    if (sess.defaults.Basics_Users)
+   if (sess.defaults.Basics_Users)
 	sess.defaults.Singular_User = sess.defaults.Basics_Users.substring(0, sess.defaults.Basics_Users.length - 1);
 	
 
