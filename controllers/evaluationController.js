@@ -214,6 +214,7 @@ module.exports.postByTool = function(req, res, display) {
                                 eval[key][nkey] = evalup[key][nkey];
                             };
                     }
+					eval.markModified(key);
                 }
             };
             eval.last_step = tool.coachStep;
