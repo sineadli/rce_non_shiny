@@ -34,7 +34,7 @@ function updateLastTool(sess, toollist) {
 var renderDownloadVersion = function (req, res, thispath) {
 	var query = require('url').parse(req.url, true).query;
     var obj = req.body;
-    console.log("in download the page = "+ thispath);
+
 
 	res.render(thispath.substring(1) + ".html", {
 		user: req.user,
@@ -48,17 +48,14 @@ var renderDownloadVersion = function (req, res, thispath) {
 			    console.log(err);
 			    res.redirect('/error');
 			} else {
-				console.log('hi');
-
+		
 				if (obj.file_format === 'html') {
-					console.log('in html block');
 					res.setHeader('Content-disposition', 'attachment; filename="evaluation-plan.html"');
 					res.setHeader('Content-type', 'text/html');
 					res.write(html);
 					res.send();
 
 				} else if (obj.file_format === 'pdf') {
-					console.log('in pdf block');
 					// Try to convert to PDF, and if it fails, revert to HTML;
 					try {
 						var wkhtmltopdf = require('wkhtmltopdf');
@@ -85,7 +82,7 @@ module.exports.getByEvalId = function(req, res, display) {
 
     //Geth this tools info
     var thispath = url.parse(req.url, true).pathname;
-    console.log("In get by tool and thispath = " + thispath);
+
 
 
     Evaluation.findOne({ _id: req.params.id }, function(err, eval) {
@@ -119,7 +116,7 @@ module.exports.getByTool = function (req, res, display) {
 
 		//Geth this tools info
 		var thispath = url.parse(req.url, true).pathname;
-		console.log("In get by tool and thispath = " + thispath);
+
     Tool.findOne({ path: thispath }).exec(function(err, tool) {
         if (err) {
             console.log(err);
@@ -147,7 +144,7 @@ module.exports.getByTool = function (req, res, display) {
 
 					var thisurl = thispath.substring(1) + '.html';
 					var query = url.parse(req.url, true).query;
-                    console.log(query);
+
 					res.render(thisurl, {
 						user: req.user,
 						eval: req.session.eval,
@@ -184,7 +181,7 @@ module.exports.postByTool = function(req, res, display) {
 		thispath = thispath.substring(0, thispath.indexOf("_download"));
 
 	}
-    console.log("thispath = " + thispath);
+
 	// There will be a return path if came to tool from a where did I update this link
     var returnpath = req.body.returnpath;
     if (returnpath === '') returnpath = thispath.substring(1);
@@ -206,7 +203,6 @@ module.exports.postByTool = function(req, res, display) {
         Evaluation.findById(sess.eval._id, function(err, eval) {
             if (eval) {
 			//Replace current evaluation values with updates 
-                console.log("Looping through eval up");
                 for (var key in evalup) {
                     if (evalup.hasOwnProperty(key)) {
                         if (typeof evalup[key] == "object")
@@ -223,9 +219,9 @@ module.exports.postByTool = function(req, res, display) {
 
             eval.save(function(err, savedeval) {
                 if (savedeval) {
-                    console.log("in post and ready to display " + display + " and tool status = " + req.body.status);
+                   
                     sess.eval = savedeval;
-                    if (req.body.status === "started"  && display==="online") {
+                    if (req.body.status === "started" || display==="online") {
                         req.flash('saveMessage', 'Changes Saved.');
                         return res.redirect('/' + returnpath);
                     }
