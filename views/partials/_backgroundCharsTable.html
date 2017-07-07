@@ -1,17 +1,10 @@
-﻿<!--
-//This file contains the partial view for the background characteristics table used in the brief and the appendix.
-
-Uses values set in brief_appendix_evaluation_processing.html
--->
- 
- <% if (analysis_baseline_results && analysis_baseline_vars.length > 0) { %>
+﻿
 <table>
     <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
     <thead>
         <tr>
-            <% if (analysis_baseline_by_grade) { %>
+           
             <th>Grade</th>
-            <% } %>
             <th> Characteristic</th>
             <th> Overall</th>
             <th> Treatment</th>
@@ -22,123 +15,85 @@ Uses values set in brief_appendix_evaluation_processing.html
     </thead>
     <tbody>
 
-        <% for (grade in analysis_baseline_results) {
+        <% for (grade in Result.results_by_grade) {
 
-        try {
-        var baseline_var_means = analysis_baseline_results[grade].baseline_var_means;
+        var thisgrade = Result.results_by_grade[grade];
 
-        var samples = analysis_baseline_results[grade].samples;
+        var means = thisgrade.baseline_var_means;
 
-        var samples_cluster = analysis_baseline_results[grade].samples_cluster;
+        var samples = thisgrade.samples;
 
-        var analysis_clustered = (samples_cluster && samples_cluster.n_full && samples_cluster.n_full_treat);
+        var samples_cluster = thisgrade.samples_cluster;
 
-        var n_overall = 0;
-        var n_treatment = 0;
-
-        if (analysis_samples_available) {
-        n_overall = samples.n_full[0];
-        n_treatment = samples.n_full_treat[0];
-
-        if (analysis_clustered) {
-        n_clusters_overall = samples_cluster.n_full[0];
-        n_clusters_treatment = samples_cluster.n_full_treat[0];
-        var n_clusters_comparison = n_clusters_overall - n_clusters_treatment;
-
-        if (path === 'path-random') {
-        if (eval.prepareRandom.Individual_Group === 'Individuals') {
-        cluster_units = 'clusters';
-        } else if (eval.prepareRandom.Cluster_Group !== 'other') {
-        cluster_units = eval.prepareRandom.Cluster_Group;
-        } else {
-        cluster_units = eval.prepareRandom.Cluster_Group_Other;
+        var char = Object.keys(means);
+         var growspan =char.length + 1;
+         if (samples_cluster) {
+             growspan =char.length + 2;
         }
 
-        if (cluster_units === '' || cluster_units === 'Select an option') cluster_units = 'clusters';
-
-        } else cluster_units = 'clusters';
-        }
-        }
-        else if(path ==="path-matching") {
-        n_overall = samples.n_matched[0];
-        n_treatment = samples.n_matched_treat[0];
-        }
-        else if (path === "path-random") {
-        n_overall = samples.n_full[0];
-        n_treatment = samples.n_treat[0];
-        }
-        var n_comparison = n_overall - n_treatment;
-
-
-        var characteristics = Object.keys(baseline_var_means);
-        var growspan =characteristics.length + (sample_created_using_coach ? 1 : 0) + (analysis_clustered ? 1 : 0);
-
-        for (index in characteristics) {
-        var characteristic = characteristics[index];
+    for (var index in char) {
+        console.log("baseline vars");
+        console.log(index);
+        var thischar = char[index];
 
         %>
         <tr>
-            <% if (analysis_baseline_by_grade  && index == 0) { %>
-            <td rowspan="<%= growspan %>"> <%= grade %></td>
+            <% if (defs.hasResults  && index == 0) { %>
+            <td rowspan="<%- growspan %>"> <%= grade %></td>
             <% } %>
-            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= control_vars_relabel[index] %></span></td>
-
-            <% 
-                var overall      = baseline_var_means[characteristic].overall[0];
-                var intervention = baseline_var_means[characteristic].intervention[0];
-                var comparison   = baseline_var_means[characteristic].comparison[0];
-                var difference   = baseline_var_means[characteristic].difference[0];
-                var effect_size  = baseline_var_means[characteristic].effect_size[0];
-
-console.log(characteristic);
-console.log(JSON.stringify(baseline_var_means[characteristic]));
+            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= thischar %></span></td>
 
 
-                overall = overall      === null ? 'NA' : round10(overall, 2);
-                intervention = intervention === null ? 'NA' : round10(intervention, 2);
-                comparison = comparison   === null ? 'NA' : round10(comparison, 2);
-                difference = difference   === null ? 'NA' : round10(difference, 2);
-                effect_size = effect_size  === null ? 'NA' : round3(effect_size);
-            %>
-
-            <td> <%= overall %></td>
-            <td> <%= intervention %></td>
-            <td> <%= comparison %></td>
-            <td> <%= difference %></td>
-            <td> <%= effect_size %></td>
+            <td>
+                <script>
+                     document.write(textHelpers.round10("<%= means[thischar].overall[0] %>", 0))
+                </script>
+            </td>
+            <td>
+                <script>
+                     document.write(textHelpers.round10("<%= means[thischar].intervention[0]; %>", 0))
+                </script>
+            </td>
+            <td>
+                <script>
+                     document.write(textHelpers.round10("<%= means[thischar].comparison[0] %>", 0))
+                </script>
+            </td>
+            <td>
+                <script>
+                     document.write(textHelpers.round10("<%= means[thischar].difference[0] %>", 0))
+                </script>
+            </td>
+            <td>
+                <script>
+                     document.write(textHelpers.round10("<%= means[thischar].effect_size[0] %>", 0))
+                </script>
+            </td>
         </tr>
-        <% }
-        %>
+        <% } %>
         <tr>
 
 
-            <td> Number of <%= Basics_Users %></td>
-            <td> <%= n_overall %></td>
-            <td> <%= n_treatment %></td>
-            <td> <%= n_comparison %></td>
+            <td> Number of <%= defs.Basics_Users %></td>
+            <td> <%= samples.n_full %></td>
+            <td> <%= samples.n_full_treat %></td>
+            <td> <%= samples.n_full - samples.n_full_treat %></td>
             <td> --</td>
             <td> --</td>
         </tr>
         <%
-        if (analysis_clustered) { %>
+   if (Result.args.cluster_var.indexOf("no cluster") === -1) {
+        %>
         <tr>
 
-            <td> Number of <%= cluster_units %></td>
-            <td> <%= n_clusters_overall %></td>
-            <td> <%= n_clusters_treatment %></td>
-            <td> <%= n_clusters_comparison %></td>
-            <td> --</td>
+            <td> Number of <%= Result.args.cluster_var %></td>
+            <td> <%= samples_cluster.n_full %></td>
+            <td> <%= samples_cluster.n_full_treat %></td>
+            <td> <%= samples_cluster.n_full - samples_cluster.n_full_treat %> </td>
+<td> --</td>
             <td> --</td>
         </tr>
-        <% }
-
-
-        } catch (e) {
-        var error = e;
-        console.log("baseline characteristics error");
-        console.log(error);
-        }
-        } %>
+    <% } %>
+ <% } %>
     </tbody>
 </table>
-                        <% } %>

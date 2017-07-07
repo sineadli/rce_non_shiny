@@ -9,7 +9,7 @@ body {
     font-size: 1.6em;
     line-height: 1.5em;
     margin: 0 auto;
-    min-height: 100%;
+    min-height: 95%;
     background-color: #FBFAF7;
     color: #000;
     padding: 0 15px 180px 15px;
@@ -298,10 +298,10 @@ div.tool-header {
     margin-top: 8px;
     color: #222;
           margin: 15px auto;
-    border: solid 2px /*#006982*/ #666;
+    /*border: solid 2px  #666;*/
     padding: 15px;
-    border-radius: 8px;
-    width: 85%;
+    /*border-radius: 8px;*/
+    width: 95%;
 }
 .prev-answer, body.brief p.prev-answer{
     font-style: italic;
@@ -1718,23 +1718,26 @@ div.action-buttons {
     width: 100%;
 }
 
-table.resultsFig {
+body.brief table.resultsFig {
     background-color: #ffffff;
+    margin-top: 10px;
+    width: 99%;
 }
 
-table.resultsFig tr {
+body.brief table.resultsFig tr {
     background-color: #ffffff;
     border-bottom: 1px solid #aaa;
 }
-table.resultsFig tr td, table.resultsFig tr th {
+body.brief table.resultsFig tr td, table.resultsFig tr th {
     border: #aaa;
     vertical-align: middle;
 }
-    table.resultsFig tr th {
+ body.brief table.resultsFig tr th {
         font-size: .8em;
         vertical-align: bottom;
         padding: 8px;
     }
+
 th, td {
     padding: 18px;
     border: hidden;
@@ -1746,7 +1749,9 @@ th, td {
 
      tr:nth-child(even), table#timeline tr:nth-child(even) td.index input{background-color: #F4F2EB}
 
-
+body.brief table tr th {
+    vertical-align: bottom;
+}
 tr.hide-row {
     display: none;
 }
@@ -1995,6 +2000,7 @@ div .sbar {
         body.brief h2 {
             color: #006982;
             font-size: 1.55em;
+            margin-top: 30px;
           
         }
 
@@ -2015,12 +2021,12 @@ div .sbar {
 
        body.brief p {
            font-size: 1em;
-            margin: 0 0 15px;
+            margin: 0 0 20px;
         }
 
        body.brief .row {
             padding-top: 0;
-           margin-bottom: 35px;
+          /*margin-bottom: 35px;*/
         }
 body.brief p.note {
     width: 85%;
@@ -2041,7 +2047,7 @@ body.brief p.note {
             line-height: 1.5em;
             padding: 15px;
            background-color: #ffffff;
-           width: 95%;
+           width: 99%;
     margin: 10px auto;
            
         }
@@ -2092,9 +2098,12 @@ body.brief p.note {
         }
 
       body.brief  table {
-            width: 90%;
+            width: 99%;
     font-size: .9em;
-    margin: 0 auto 25px auto;
+    margin: 30px auto 30px auto;
+        }
+        body.brief table.results-fig {
+            margin-top: 0px;
         }
 
        body.brief #table1 td, body.brief #table1 th {

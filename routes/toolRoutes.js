@@ -118,26 +118,8 @@ module.exports = function (app, passport) {
 	});
 
 	//02. Evaluation Plan   
-	app.get('/evaluation_plan', function (req, res) {
-		if (req.session.eval.evalPlan.Milestones.length == 0) {
-			for (var i = 0; i < 12; i++) {
-				var m = ({
-					Order: i + 1,
-					Milestone_Name: '',
-					Complete_Date: '',
-					Assigned_To: '',
-					Status: '',
-					Notes: '',
-					Hide: ''
-				});
-				
-				sess.eval.evalPlan.Milestones.push(m);
-			}
-		}
-        req.session.eval.evalPlan.Milestones.sort(textHelpers.dynamicSort("Order"));
-
-		return evaluationController.getByTool(req, res, "online");
-        
+	app.get('/evaluation_plan', function (req, res) {		
+		return evaluationController.getByTool(req, res, "online");        
     });
 	app.post('/evaluation_plan', function (req, res) {
 		return evaluationController.postByTool(req, res);	
@@ -169,7 +151,9 @@ module.exports = function (app, passport) {
 	    console.log(req.body);
 		return evaluationController.postByTool(req, res);
     });
-    
+	app.get('/appendix_matching', isLoggedIn, function (req, res) {
+		return evaluationController.getByEval(req, res, "download");
+	});
     app.get('/shareresult', isLoggedIn, function (req, res) {
        return evaluationController.getByTool(req, res, "online");
     });

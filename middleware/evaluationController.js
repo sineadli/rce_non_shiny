@@ -82,7 +82,7 @@ module.exports.getByEvalId = function(req, res, display) {
   
     var thispath = url.parse(req.url, true).pathname;
 	// remove id from path
-	thispath = thispath.toString().replace("/" + req.params.id.toString(), "");
+	 thispath = thispath.toString().replace("/" + req.params.id.toString(), "");
 
 
     Evaluation.findOne({ _id: req.params.id }, function (err, eval) {

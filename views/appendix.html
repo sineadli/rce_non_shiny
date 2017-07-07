@@ -1,0 +1,301 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+<html>
+<head>
+    <title>Share Your Results - Ed Tech RCE Coach</title>
+
+    <% if (display === undefined) display = 'online';
+
+
+    if (display === 'online') { %>
+    <% include ../views/partials/scriptHeader.html %>
+
+    <% } else if (display === 'download') { %>
+    <% include ../views/partials/downloadStyle.html %>
+    <% }
+
+    var Result = "";
+    if (defs.hasResults) Result = JSON.parse(eval.getresult.Result);
+    var MResult = "";
+    if (defs.wasMatched) MResult = JSON.parse(eval.matching.Result);
+    var RResult = "";
+    if (defs.wasRandomized) RResult = JSON.parse(eval.random.Result);
+    %>
+
+
+</head>
+    <%
+    include('../views/partials/brief_appendix_evaluation_processing.html')
+    var tabcounter = 0; var figcounter = 0;
+
+%>
+<body class="brief">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="tool-title"> Findings Brief Appendix</h1>
+                <%= eval.title %><br />
+                <%= defs.author %><br />
+                <%= defs.company %><br />
+                <%= defs.published_at %>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+                    This document provides a technical overview of how the RCE Coach determines the analytical portions of your Findings Brief.
+                </p>
+
+                <div class="no-page-break">
+                    <h2>Creating Comparable Groups</h2>
+                    <% if (eval.path == "path-matching") { %>
+                    <p> This evaluation used matching to create treatment and comparison groups that are similar on observable characteristics. The Coach matches users to non-users by minimizing the net difference for each selected matching characteristic. For example, if pre-test scores were selected, the Coach would calculate the absolute value of the difference between each user and non-user&rsquo;s pre-test scores in different combinations until it finds the combination that yields the lowest overall value. To learn more about how the Coach conducts matching, refer to the Matching Technical Appendix.
+                    </p>
+                    <% } %>
+                    <% if (defs.wasMatched) { %>
+                    <p>
+                        Because the matching tool uses 1 to 1 matching, some students may not have matches. Table 1 presents the number of students in each group before and after matching.
+                    </p>
+
+                  
+
+                    <% include ../views/partials/_matchingResultSummaryTable.html %>
+
+                </div>
+                <div class="no-page-break">
+                    <p>The Matching tool reports the similarity between the treatment and comparison groups before and after matching. Figure 1 shows the difference <%= defs.Results_By_Grade_Flag %> between the two groups on selected characteristics and displays the extent to which the groups are balanced (similar on each characteristic). If the matched sample has good balance, then we can be more confident that the observed differences in outcomes are caused by <%= defs.Basics_Tech_Name %>. The levels of balance follow the WWC standards shown below.</p>
+
+                    <label class="chart" style="clear:both;display:block;">Figure 1. Similarity (Balance) of users and non-Users in matched sample</label>
+
+                    <% for (grade in MResult.results_by_grade) {
+
+                    var thisgrade = MResult.results_by_grade[grade];
+
+                    %>
+                    <div class="figdiv" style="width:45%; float:left; display:inline; margin-left: 20px;">
+                        <label class="chart">Grade <%= grade %></label>
+                        <img src="data:image/png;base64,<%- thisgrade.plot %>">
+
+
+                    </div>
+
+                    <% } // end for each grade %>
+                    <div class="clearfix">&nbsp;</div>
+                    <p>
+                        The Coach also checks the final dataset used by the Get Results tool to check if the treatment and comparison groups are balanced.
+
+                        <% } // End has matched results
+                        if (eval.path == "path-random")
+                        {
+                        %>
+                    <p>
+                        For this evaluation we randomly assigned <%= defs.Cluster_Group %> to the treatment and comparison groups. Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving us the most confidence that any differences in outcomes between the groups are due to using BrandNew. 
+                        For random assignmen, the Coach takes advantage of the base R function "sample.int." You can think of this process as flipping a digital, fair,
+                        coin to assign <%= defs.Cluster_Group %>s to either pilot the technology or not.
+                    </p>
+                    <p>
+                        The Coach performs checks to verify that the randomization process worked as expected. The Coach will check the treatment and comparison groups&rsquo; baseline equivalence, or their similarity before the technology was introduced.
+
+
+                        <% } // End path random 
+
+
+                        if (defs.hasResults && Object.keys(Result.control_vars).length > 0) {
+                        tabcounter++;
+                        %>
+
+
+                        Large differences on important characteristics (like a baseline test) mean you should interpret the estimated effect of the intervention with caution. Differences in the outcome may be caused in part by pre-existing differences between the two groups. Table <%= tabcounter %> summarizes key characteristics of the final sample and presents the difference between the two groups. You can check if the final sample is balanced by comparing the absolute value of the standardized difference from Table <%= tabcounter %> to the values indicated in Table <%= tabcounter+1 %>.
+                    </p>
+
+                    <% include ../views/partials/_backgroundCharsTable.html %>
+
+                    <% } // has results and control vars
+                    else { %>
+                
+                    <p>
+                        We've improved the Coach's Get Results tool. To see the updated results here, please return to the Get Results tool and re-run the analysis.
+                    </p>
+                    <% } %>
+                    <% include ../views/partials/_WWCStandards.html %>
+                </div>
+             
+                <div class="no-page-break">
+                    <h2> Estimating the Effect of <%= defs.Basics_Tech_Name %></h2>
+
+                    <p>
+                        The RCE Coach calculates the probability that the effect of an educational technology is above or below a threshold selected by the user, given the data. The threshold chosen for this evaluation was <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> (as indicated by the vertical line in Figure 2).
+                    </p><% if (user != "NOAUTHENTICATED") {%>
+                    <p class="prev-answer">
+                        <i class="fa fa-hand-o-right"></i> Where did I select the thresholds? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How You Will Use The Results</a>
+                    </p>
+                    <% } %>
+
+                    <p>
+                        Figure 2 displays the posterior distribution of the effect of <%= defs.Basics_Tech_Name %> <%= defs.Results_By_Grade_Flag %>. The green shaded area in the figure represents the probability that the educational technology has an effect greater than or equal to the selected threshold.
+
+                    </p>
+
+                    <%  if (defs.hasResults){
+                    for (grade in Result.results_by_grade) {
+                    var thisgrade = Result.results_by_grade[grade];
+                    
+                    var Interpretation_1 = thisgrade.interpretation.texts[1].toString().replace("units", defs.Measure_Units);
+                    var Interpretation_0 = thisgrade.interpretation.texts[0].toString().replace("units", defs.Measure_Units);
+
+                    %>
+
+
+                    <div class="figdiv" style="width: 45%; float: left; display: inline; margin-left: 20px;">
+                        <label class="chart">Grade <%= grade %></label>
+
+                        <img src="data:image/png;base64,<%- thisgrade.posterior_plot %>">
+
+                        <ul>
+                            <li> <%= Interpretation_1 %></li>
+                            <li> <%= Interpretation_0 %></li>
+                            <li>
+                                The point estimate (e.g., our best guess) of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is
+                                <script> document.write(textHelpers.round10("<%= thisgrade.impact %>", 2)); </script>.
+                            </li>
+                        </ul>
+                    </div>
+                   
+                    <% } // End by grade %>
+                    <% } else { %>
+                    <p>
+                        Analysis results are missing or incomplete.
+                    </p>
+                    <% } %>
+
+                    <div class="clearfix"></div>
+
+                    
+                </div>
+                <div class="no-page-break">
+                    <h3> Notes</h3>
+                    <% tabcounter = 1 + tabcounter;  %>
+                    <ul>
+                        <li>The distribution of posterior probability describes our understanding of <%= defs.Basics_Tech_Name %>’s effect, based on the available data. The area under the curve represents the likelihood that the effect is between any two values on the horizontal axis. The point estimate or best guess of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is calculated as the mean of the posterior distribution.</li>
+
+                        <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table <%= tabcounter %> below. For more information on the Bayesian statistical analysis, refer to the Impact Estimation Technical Appendix.</li>
+
+                        <% if (eval.path == "path-matching") { %>
+                        <li>This analysis was performed using a matched comparison design. Several assumptions were made to simplify the user's choices. The Matching Technical Appendix explains these assumptions in more detail.</li>
+                        <% } %>
+
+                    </ul>
+                </div>
+
+                <div class="no-page-break">
+                    <h2> An Alternative Approach to Calculating Impacts</h2>
+
+                    <p>
+                        The Coach uses a Bayesian approach to calculate impacts, which allows us to report findings using probability statements such as &ldquo;There was a 87% probability that the educational technology is moving the needle.&rdquo; Another approach would be the frequentist approach, which would classify the effect of the technology as statistically significant or not.
+                    </p>
+
+                    <%
+                    if (defs.hasResults && Result.args.outcome_var) {
+                    tabcounter = tabcounter +1 %>
+
+                    <p>The following table summarizes the findings using the frequentist approach:<p>
+
+
+                        <table id="table3">
+                            <caption>
+                                Table <%= tabcounter %>. Impact Results Obtained Using the Frequentist Approach
+                            </caption>
+
+                            <thead>
+                                <tr>
+
+                                    <th>Grade</th>
+
+                                    <th>Outcome</th>
+                                    <th>Impact Estimate<br />(Standard Error)</th>
+                                    <th>Effect size</th>
+                                    <th>p-value</th>
+                                    <th>95% confidence interval</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (grade in Result.results_by_grade) {
+
+                                var thisgrade = Result.results_by_grade[grade];
+                                var outcome_var = Result.args.outcome_var;
+
+
+                                var impact = parseFloat(thisgrade.freq.impact);
+                                var se = parseFloat(thisgrade.freq.se);
+                                var effect_size = thisgrade.freq.effect_size;
+                                var pvalue = thisgrade.freq.pvalue;
+
+                                if (thisgrade.freq.ub && thisgrade.freq.lb) {
+                                var lb = parseFloat(thisgrade.freq.lb);
+                                var ub = parseFloat(thisgrade.freq.ub);
+                                var ci = [lb, ub];
+                                } else {
+                                var ci = [impact - (1.96 * se), impact + (1.96 * se)];
+                                }
+
+                                var ci_string = '[' + round10(ci[0],3) + ', ' + round10(ci[1],3) + ']';
+
+                                var significant = (pvalue <= 0.05) ? '' : ' not';
+
+                                var pvalue_comparison_sign = (pvalue <= 0.05) ? '<=' : '>';
+                                %>
+                                <tr>
+
+                                    <td><%= grade %></td>
+
+                                    <td><%= outcome_var %></td>
+                                    <td><%= round3(impact) %> <br /> (<%= round3(se) %>)</td>
+                                    <td><%= round3(effect_size) %></td>
+                                    <td><%= round3(pvalue) %></td>
+                                    <td><%= ci_string %></td>
+                                </tr>
+
+                                <% } // End for loop
+                                } // End has results and outcome var
+                                else { %>
+                                <tr>
+                                    <td>Frequentist analysis results missing or incomplete.</td>
+                                </tr>
+                                <% } %>
+
+                            </tbody>
+                        </table>
+
+                        <p>
+                            With the frequentist approach, a statistical analysis begins with a null hypothesis stating that the true impact of the technology on the outcome is 0, or in other words, it has no impact. Using the evaluation's data, an impact estimate is calculated and tested to determine the likelihood that the actual impact is greater than or equal to the impact estimate instead of 0. This likelihood is the p-value. By comparing the p-value to a designated cutoff, one can test whether or not the null hypothesis can be rejected. Traditionally researchers have used 0.05 as the cutoff. </p>
+                        <p>For every row in table <%= tabcounter %> where the p-value &le; 0.05, we reject the null hypothesis, and instead conclude the calculated impact estimate is a reliable estimate of <%= defs.Basics_Tech_Name %>’s impact.
+                    </p>
+                    <p>
+                        It is important to note that the calculated impact estimate is not the true effect of <%= defs.Basics_Tech_Name %>, just what could be estimated based on the evaluation&rsquo;s sample. The true effect is unknown. The confidence interval shown in Table <%= tabcounter %> is the plausible range for the true effect based on the observed effect. A 95% threshold for the confidence interval is commonly used, though one could calculate the interval for a different threshold. A 95% confidence interval means that if we were to conduct our evaluation 100 times, in 95 cases we would calculate an interval that includes the true effect of the technology.
+                    </p>
+                </div>
+
+                <p class="text-muted">
+                    <em>
+                        <small>
+                            &copy; 2017, Mathematica Policy Research, Inc.  This document carries a Creative Commons (CC BY) license which permits re-use of content with attribution as follows:
+                            Developed by Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded by the U.S. Department of Education's Office of Educational Technology through Contract No. ED-OOS-15-C-0053.
+                        </small>
+                    </em>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

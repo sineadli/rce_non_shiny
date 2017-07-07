@@ -17,6 +17,7 @@ var getAllPublications = require('../middleware/getAllPublications.js');
 var noCache = require('../middleware/noCache.js');
 var getSelectedEvaluations = require('../middleware/getSelectedEvaluations.js');
 var Evaluation = require('../models/evaluation');   // the evaluation should go away to middleware
+var getEvalDefaults = require('../middleware/getEvalDefaults.js');
 var isAdmin = require('../middleware/isAdmin.js');
 var getAllUsers = require('../middleware/getAllUsers.js');
 var User = require('../models/user');
@@ -87,19 +88,8 @@ module.exports = function (app, passport) {
 			
 			
 			// Set the default values and other computed values re-used in Coach
-			sess.defaults = {};
-			eval.setBasics(sess);
-			eval.setResearchQ(sess);
-			eval.setPlanNext(sess);
-			eval.setPrepareRandom(sess);
-			eval.setGetResults(sess);
-			eval.setApproach(sess);
-			eval.setPlanContext(sess);
-			eval.setShareResults(sess);
-			eval.setRandom(sess);
-           
-			
-
+			getEvalDefaults(sess, req.user);
+    
             sess.step = eval.last_step;
             if (!sess.step) sess.step = 2;
             sess.last_tool = eval.last_tool;
@@ -127,30 +117,7 @@ module.exports = function (app, passport) {
         sess.step = 2;
         if (!req.body.id) {
             var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
-            // Pre-populate milestones. Moved from get current eval.
-            if (eval.evalPlan.Milestones.length == 0) {
-                for (var i = 0; i < 12; i++) {
-                    var m = ({
-                        Order:
-                        i + 1,
-                        Milestone_Name:
-                        '',
-                        Complete_Date:
-                        '',
-                        Assigned_To:
-                        '',
-                        Status:
-                        '',
-                        Notes:
-                        '',
-                        Hide:
-                        ''
-                    });
-
-                    eval.evalPlan.Milestones.push(m);
-                }
-            }
-
+			  eval.updated_at = new Date();
             eval.save(function (err) {
                 if (err)
                     console.log(err);
@@ -158,8 +125,6 @@ module.exports = function (app, passport) {
                     sess.eval = eval;
                     req.user.evalid = eval._id;
                     req.user.save();
-                    eval.updated_at = new Date();
-                    eval.save();
                     res.status(201).send(eval);
                 }
             });
@@ -191,8 +156,8 @@ module.exports = function (app, passport) {
 
     });
 
-    app.post('/api/delEval', isLoggedIn, function (req, res) {
-        Evaluation.remove({ _id: req.body.id }, function (err) {
+    app.post('/api/delEval', isLoggedIn, function(req, res) {
+        Evaluation.remove({ _id: req.body.id }, function(err) {
             if (err)
                 console.log(err);
             else {
@@ -200,10 +165,11 @@ module.exports = function (app, passport) {
                 res.status(201).send("Selected evaluation deleted.");
             }
         });
-    })
+	});
+
     //db.evaluations.update({ _id: eval._id, "toolsvisited.name":"Share Your Results" }, { $set: { "toolsvisited.$.status": "started" } });
-    app.post('/api/unshared', isLoggedIn, function (req, res) {
-        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started" } }, function (err) {
+    app.post('/api/unshared', isLoggedIn, function(req, res) {
+        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started" } }, function(err) {
             if (err)
                 console.log(err);
             else {
@@ -211,7 +177,7 @@ module.exports = function (app, passport) {
                 res.status(201).send("Selected evaluation unshared.");
             }
         });
-    })
+    });
 
     app.post('/api/delUser', isAdmin, function (req, res) {
         Evaluation.remove({ userid: req.body.id }, function (err) {

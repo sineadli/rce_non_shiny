@@ -1,17 +1,60 @@
-﻿
+﻿<%
+function GetReturnPath(last_tool) {
+var rpath;
+switch (last_tool) {
+			case "Evaluation Plan":
+			    rpath = "evaluation_plan";
+				break;
+			case "Share Your Results":
+                rpath= "shareresult";
+				break;
+			case "Get Results" :
+                rpath = "getresult";
+				break;
+			case "Summarize Context":
+				rpath = "context_and_usage";
+				break;
+			case "The Basics":
+				rpath = "basics";
+				break;
+			case "Craft Your Research Question":
+				rpath = "craft_your_research_q";
+				break;
+			case "Random Assignment":
+				rpath = "randomization";
+				break;
+			case "Prepare for Random Assignment":
+				rpath = "prepare_data_random";
+				break;
+			case "Prepare Your Data for Analysis":
+				rpath = "prepare_data";
+				break;
+			case "matching":
+				ToolName = "Matching";
+				break;
+			case "Think About How You Will Use The Results":
+				rpath = "plan_next_steps";
+				break;
+			default:
+				rpath = "";
+		}
+  return rpath
+}
 
-<%
 var useMeasure = '';
-if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Result") {
-useMeasure = " as measured by " + defs.Outcome_Measure + " by " + defs.Success_Effect_Size + " or more " + defs.Measure_Units ;
+if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Result" && eval.last_tool != "Share Your Results" ) {
+useMeasure = " as measured by " + defs.Outcome_Measure + " by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units ;
+var returnpath = GetReturnPath(eval.last_tool);
 }
 
 
 
 if (user != "NOAUTHENTICATED") { %>
-  Does
-<span class='tech-name'><%= defs.Basics_Tech_Name  %></span>  <span class='change-direction'><%= defs.Outcome_Direction %></span> <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span> <%- useMeasure %> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
-
+<p>
+    Among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>,
+    does
+    <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>  <span class='change-direction'><%= defs.Outcome_Direction %></span> <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span> <%- useMeasure %> ?
+</p> 
 
 <% }
  if (user == "NOAUTHENTICATED") { %>
@@ -24,6 +67,6 @@ if (user != "NOAUTHENTICATED") { %>
 if (user != "NOAUTHENTICATED" && display  == 'online' && eval.last_tool != "Craft Your Research Question") { %>
 <p class="prev-answer hidden-print">
     <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-    <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
+    <a class="redirect-link" href="/craft_your_research_q?return=<%= returnpath %>">Craft Your Research Question</a>
 </p>
 <% } %>

@@ -1,0 +1,105 @@
+<!--
+//This file contains the JS used to format values on Coach pages.
+-->
+<%
+console.log('checkpoint 0');
+stripPercent = function(x) {
+    //console.log("in stripPercent and x = " + parseFloat(x.replace(/%/g, '')));
+    return parseFloat(x.replace(/%/g, ''));
+}
+
+capitalize = function(x) {
+    var out;
+
+    if (x.length === 0) {
+        out = '';
+    }
+    else {
+        out = x.toString()[0].toUpperCase() + x.toString().substring(1);
+    }
+    return out;
+}
+
+punctuate = function(x) {
+    return x.replace(/([^.?!])$/, "$1.")
+}
+
+sentence = function(x) {
+    // Capitalize first letter and if it doesn't end with punctuation, add a period.
+    return capitalize(punctuate(x));
+}
+
+round10 = function(value, exp) {
+    // If the exp is undefined or zero...
+    if (typeof exp === 'undefined' || +exp === 0)
+        return Math.round(value);
+
+    value = +value;
+    exp = +exp;
+    // If the value is not a number or the exp is not an integer...
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
+        return NaN;
+
+    // Shift
+    value = value.toString().split('e');
+    value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+
+    // Shift back
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
+}
+
+
+wordList = function(x) {
+    var out;
+
+    if (x === undefined || !(x instanceof Array)) {    
+    out = '';
+    }
+    else {
+       
+            x = x.filter( function(x) { return x !== '' && x !== undefined })
+
+            x = unique(x);
+
+            if (x.length === 0) {
+                out = '';
+            }
+            else if (x.length === 1) {
+                out = x[0];
+            }
+            else if (x.length === 2) {
+                out = x[0] + ' and ' + x[1];
+            }
+            else {
+                out = x.slice(0, x.length - 1).join(', ') + ', and ' + x.slice(-1);
+            }
+        
+        }
+
+    return out;
+}
+
+unique = function(x) {
+
+    for (var i = 0; i < x.length; i++) {
+        if (x.indexOf(x[i]) < i) {
+            x.splice(i, 1);
+            i--;
+        }
+    }
+
+    return x;
+}
+
+allBlank = function(x) {
+    return x.every( function(el) { return el === ''});
+}
+
+round3 = function(x) {
+    return Math.round(x * 1000) / 1000;
+};
+
+
+%>
+

@@ -17,8 +17,8 @@ exports.stripPercent = function (x) {
 }
 
 	exports.punctuate = function (x) {
-    return x.replace(/([^.?!])$/, "$1.")
-}
+	    return x.replace(/([^.?!])$/, "$1.");
+	}
 
 	exports.sentence = function (x) {
     // Capitalize first letter and if it doesn't end with punctuation, add a period.
@@ -29,7 +29,6 @@ exports.stripPercent = function (x) {
     // If the exp is undefined or zero...
 	    
 	value = Number(value.replace("%",""));
-		console.log("In round10 and value = " + value);
     if (typeof exp === 'undefined' || +exp === 0)
         return Math.round(value);
 	
@@ -58,7 +57,7 @@ exports.stripPercent = function (x) {
     }
     else {
         try {
-            x = x.filter(function (x) { return x !== '' && x !== undefined })
+            x = x.filter(function(x) { return x !== "" && x !== undefined });
 
             x = unique(x);
 

@@ -63,10 +63,8 @@
                         </div>
                         <div class="tool-header">
                             <h1 class="tool-title">
-                                <% if(query.peeking == 1) {
-                                var peekingnote = "You need to complete  &ldquo;The Basics&rdquo; before you can use this tool.";
-                                %>
-                                <span title="<%- peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                                <% if(query.peeking == 1) {%>
+                                <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
                                 <% } %>
                                 Create an Evaluation Plan
                             </h1>
@@ -74,7 +72,7 @@
 
                             <div class="tool-intro">
                                 <p>
-                                    This tool will help you put together an evaluation plan and create a timeline of key milestones. It will help with the following tasks: <ul>
+                                    This tool will help you put together an evaluation plan and create a timeline of key milestones that will help with the following tasks: <ul>
                                         <li>Confirm that the information you have provided the Coach makes sense.</li>
                                         <li>Confirm that the evaluation is feasible to implement.</li>
                                         <li>Explain the evaluation to stakeholders, gather their input, and build consensus.</li>
@@ -87,7 +85,7 @@
                                     Please review the information you have entered thus far. Some content can be revised from this tool, but for more substantive changes, you should use the links back to the information's source tool and update content from there.
                                 </p>
                                 <p>
-                                    When you have finished going through this tool you can save and print your evaluation plan.
+                                    When finished you can save and print your evaluation plan.
                                 </p>
 
                             </div>
@@ -133,7 +131,7 @@
                     </div>
 
                     <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#A">
+                        <div data-toggle="collapse" data-target="#B">
                             <h2 class="clickable">
                                 <% if (display === 'online') { %>
                                 <i class="fa fa-caret-down" aria-hidden="false"></i>
@@ -142,7 +140,7 @@
                             </h2>
                         </div>
                     </div>
-                    <div id="A" class="row collapse in  q-row">
+                    <div id="B" class="row collapse in  q-row">
                         <div class="col-xs-10">
                             <div class="step-subquestion">
                                 <% include ../views/partials/_researchQuestion.html %>
@@ -169,7 +167,7 @@
                                         <span class="capitalize-one"><%= defs.Basics_Tech_Name %></span> is
                                         <% if (display === 'online') { %>
 
-                                        <br /><textarea name="Tech_Purpose" id="Tech_Purpose" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Tech_Purpose %></textarea>
+                                        <br /><textarea name="planContext[Tech_Purpose]" id="Tech_Purpose" placeholder="Ex., a software program designed to improve reading achievement among under-performing students"><%= eval.planContext.Tech_Purpose %></textarea>
                                     </li>
                                     <% } else { %>
                                     <%= eval.planContext.Tech_Purpose %>
@@ -177,7 +175,7 @@
                                     <li>
                                         Key components include
                                         <% if (display === 'online') { %>
-                                        <br /><textarea name="Tech_Components" id="Tech_Components" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= eval.planContext.Tech_Components %></textarea>
+                                        <br /><textarea name="planContext[Tech_Components]" id="Tech_Components" rows="3" placeholder="Ex., a screening test and adaptive diagnostic testing as well as use of video content to engage students in skill-building tasks and a data interface that allows teachers to track students' progress."><%= eval.planContext.Tech_Components %></textarea>
                                     </li>
                                     <% } else { %>
                                     <%= eval.planContext.Tech_Components %>
@@ -194,7 +192,7 @@
 
 
                     <div class="step-header container">
-                        <div data-toggle="collapse" data-target="#B">
+                        <div data-toggle="collapse" data-target="#G">
                             <h2 class="clickable">
                                 <% if (display === 'online') { %>
                                 <i class="fa fa-caret-down" aria-hidden="false"></i>
@@ -203,7 +201,7 @@
                             </h2>
                         </div>
                     </div>
-                    <div id="B" class="row collapse in  q-row">
+                    <div id="G" class="row collapse in  q-row">
                         <div class="col-xs-12">
 
 
@@ -264,7 +262,7 @@
                                         </label>
                                     <% } %>
                                     <% if (display === 'online') { %>
-                                    <br /><textarea name="Expected_Dosage" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea><br />
+                                    <br /><textarea name="planContext[Expected_Dosage]" id="Expected_Dosage" placeholder="Ex., Twice per week for 40 minutes per session."><%= eval.planContext.Expected_Dosage %></textarea><br />
 
 
                                     <% } else { %>
@@ -307,27 +305,27 @@
                                 <p>The evaluation will result in one of three answers&mdash;<%= defs.Basics_Tech_Name %> has the intended effect, it does not have the intended effect, or we're not sure. This section summarizes how we plan to use the results to inform decisions in each scenario. </p>
                                 <ul>
                                     <li>
-                                        If there is a more than a <%= stripPercent(defs.Pass_Probability) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%=  defs.Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> had the intended effect. In this case I plan to
+                                        If there is a more than a <%= stripPercent(defs.Pass_Probability) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%=  defs.Measure_Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> had the intended effect. In this case I plan to
 
 
                                         <% if (display === 'online') { %>
-                                        <br /><textarea name="Action_Success"><%= eval.planNext.Action_Success %></textarea>
+                                        <br /><textarea name="planNext[Action_Success]"><%= eval.planNext.Action_Success %></textarea>
                                         <% } else { %>
                                         <%= eval.planNext.Action_Success %>
                                         <% } %>
                                     </li>
                                     <li>
-                                        If there is a less than a <%= stripPercent(defs.Fail_Probability) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> did not have the intended effect. In this case I plan to
+                                        If there is a less than a <%= stripPercent(defs.Fail_Probability) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Measure_Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> did not have the intended effect. In this case I plan to
                                         <% if (display === 'online') { %>
-                                        <br /><textarea name="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
+                                        <br /><textarea name="planNext[Action_Fail]"><%= eval.planNext.Action_Fail %></textarea>
                                     </li>
                                     <% } else { %>
                                     <%= eval.planNext.Action_Fail %>
                                     <% } %>
                                     <li>
-                                        If the probability is between <%= stripPercent(defs.Pass_Probability) %>% and <%= stripPercent(defs.Fail_Probability) %>% that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Units %> or more, I plan to
+                                        If the probability is between <%= stripPercent(defs.Pass_Probability) %>% and <%= stripPercent(defs.Fail_Probability) %>% that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Measure_Units %> or more, I plan to
                                         <% if (display === 'online') { %>
-                                        <br /><textarea name="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea>
+                                        <br /><textarea name="planNext[Action_Inconclusive]"><%= eval.planNext.Action_Inconclusive %></textarea>
                                     </li>
                                     <% } else { %>
                                     <%= eval.planNext.Action_Inconclusive %>
@@ -450,7 +448,7 @@
                                                         (ev.Milestones[11].Notes)];
 
                                                         var  ms = [(ev.Milestones[0].Milestone_Name == '' ? ("Meet with stakeholders to discuss the research plan") : ev.Milestones[0].Milestone_Name),
-                                                        (ev.Milestones[1].Milestone_Name == '' ? ("Assign " + defs.Basics_Users + " to the treatment and control groups") : ev.Milestones[1].Milestone_Name),
+                                                        (ev.Milestones[1].Milestone_Name == '' ? ("Assign " + defs.Basics_Users + " to the treatment and comparison groups") : ev.Milestones[1].Milestone_Name),
                                                         (ev.Milestones[2].Milestone_Name == '' ? (defs.Basics_Users + " will begin using " + defs.Basics_Tech_Name) : ev.Milestones[2].Milestone_Name),
                                                         (ev.Milestones[3].Milestone_Name == '' ? 'Check technology usage' : ev.Milestones[3].Milestone_Name),
                                                         (ev.Milestones[4].Milestone_Name == '' ? 'Collect outcome data' : ev.Milestones[4].Milestone_Name),

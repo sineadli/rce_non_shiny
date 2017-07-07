@@ -197,7 +197,7 @@
 
                                                 <div id="randon-1" class="panel-collapse collapse in">
                                                     <p>
-                                                        Random assignment is similar to putting the names of your <%= defs.Basics_Users %> in a hat and randomly picking some of the names. If you put in 10 names and select 5, those you pick would get to pilot (or try) the technology,and those not selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups. This process can also work with teachers, classes, or even schools.
+                                                        Random assignment is similar to putting the names of your <%= defs.Basics_Users %> in a hat and randomly picking some of the names. If you put in 10 names and select 5, those you pick would get to pilot (or try) the technology, and those not selected would continue with your existing program or curriculum. In this scenario, each individual would have a 50% chance of being chosen. The Coach can conduct this process for you using a digital hat and show you the similarities between the groups. This process can also work with teachers, classes, or even schools.
                                                     </p>
 
                                                     <h4 class="list-header">Advantages</h4>
@@ -501,14 +501,27 @@
                 ShowClusterOther(this);
                 setApproachConclusion();
             });
-            $("input[type=radio][name=Appr_How_Choose]").change(function () {
+            $("#Choose-Random").change(function () {
                 $("div.for-how-group").removeClass("selected");
                 $(this).parent("div.for-how-group").addClass("selected");
                 $('#Grouping_options  .panel-collapse.in').collapse('toggle');
 
                 setApproachConclusion();
             });
+            $("#Choose-Cutoff").change(function () {
+                $("div.for-how-group").removeClass("selected");
+                $(this).parent("div.for-how-group").addClass("selected");
+                $('#Grouping_options  .panel-collapse.in').collapse('toggle');
 
+                setApproachConclusion();
+            });
+            $("#Choose-Other").change(function () {
+                $("div.for-how-group").removeClass("selected");
+                $(this).parent("div.for-how-group").addClass("selected");
+                $('#Grouping_options  .panel-collapse.in').collapse('toggle');
+
+                setApproachConclusion();
+            });
 
             function setApproachConclusion() {
                 var currentNew = $('#Appr_Current_or_New').val();
@@ -532,7 +545,7 @@
                     $("#Step_Conclusion").hide();
                 }
                 else if (currentNew.toLowerCase() === "new" && (canGroup.toLowerCase() === "select an option" || canGroup.toLowerCase() === "yes") &&
-                    !$("input[type=radio][name=Appr_How_Choose]").is(":checked")) {
+                    (chooseRandom === "" && chooseCutoff === "" && chooseCriteria === "")) {
                     $("#All-Using").hide();
                     $("#New_Users").show();
                     $("#How-Group").show();
@@ -587,8 +600,10 @@
                     chooseRandom.toLowerCase() !== "" &&
                    ($('#Individual_Group').val() === "users" ||
                     ($('#Individual_Group').val() === "groups" &&
-                   $('#Cluster_Group').val() !== "Select an option"))) {
+                    $('#Cluster_Group').val() !== "Select an option"))) {
                     $("#How-Assign").show();
+                    $("#How-Group").show();
+                    $("#New_Users").show();
                     $("#Step_Conclusion").show();
                     $("#All-Using").hide();
                     $("#Con_Matched_Current").hide();
@@ -602,6 +617,8 @@
                 else if (currentNew.toLowerCase() === "new" &&
                 chooseRandom.toLowerCase() !== "") {
                     $("#How-Assign").show();
+                    $("#New_Users").show();
+                    $("#How-Group").show();
                     $("#Step_Conclusion").hide();
                     $("#All-Using").hide();
                     $("#Con_Matched_Current").hide();
@@ -614,6 +631,8 @@
                 }
                 else if (currentNew.toLowerCase() === "new" && chooseCutoff.toLowerCase() !== "") {
                     $("#Step_Conclusion").show();
+                    $("#New_Users").show();
+                    $("#How-Group").show();
                     $("#How-Assign").hide();
                     $("#All-Using").hide();
                     $("#Con_Matched_Current").hide();
@@ -626,6 +645,8 @@
                 }
                 else if (currentNew.toLowerCase() === "new" && chooseCriteria.toLowerCase() !== "") {
                     $("#Step_Conclusion").show();
+                    $("#New_Users").show();
+                    $("#How-Group").show();
                     $("#All-Using").hide();
                     $("#How-Assign").hide();
                     $("#Con_Matched_Current").hide();
