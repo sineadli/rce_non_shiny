@@ -43,7 +43,7 @@ switch (last_tool) {
 
 var useMeasure = '';
 if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Result" && eval.last_tool != "Share Your Results" ) {
-useMeasure = " as measured by " + defs.Outcome_Measure + " by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units ;
+useMeasure = " by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units + " on " + defs.Outcome_Measure + ",";
 var returnpath = GetReturnPath(eval.last_tool);
 }
 
@@ -51,9 +51,8 @@ var returnpath = GetReturnPath(eval.last_tool);
 
 if (user != "NOAUTHENTICATED") { %>
 <p>
-    Among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>,
-    does
-    <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>  <span class='change-direction'><%= defs.Outcome_Direction %></span> <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span> <%- useMeasure %> ?
+   Does
+    <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>  <span class='change-direction'><%= defs.Outcome_Direction %></span> <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span><%- useMeasure %> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
 </p> 
 
 <% }

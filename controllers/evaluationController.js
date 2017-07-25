@@ -236,19 +236,20 @@ module.exports.postByTool = function(req, res, display) {
 	if (thispath.indexOf("_download") > 0) {
 		thispath = thispath.substring(0, thispath.indexOf("_download"));
 	}
-	console.log("In get by tool and tool = " + thispath);
+	console.log("In post by tool and tool = " + thispath);
 	// There will be a return path if came to tool from a "where did I update this" link
     var returnpath = req.body.returnpath;
     if (returnpath === '') returnpath = thispath.substring(1);
-
+    console.log("In post by tool and return path = " + returnpath);
 	// Posted evaluation updates from tool
     var evalup = req.body;
-
+	
     Tool.findOne({ path: thispath }).exec(function(err, tool) {
         if (err) {
             console.log(err);
             return done(err);
         }
+		console.log("In post by tool and found tool = " + tool);
 		tool.setPeekingNote(sess);
         var toolstatus = req.body.status ? req.body.status : "complete";
         var toollist = { "name": tool.name, "status": toolstatus, "visited_at": new Date() };
@@ -258,27 +259,45 @@ module.exports.postByTool = function(req, res, display) {
         Evaluation.findById(sess.eval._id, function(err, eval) {
             if (eval) {
 			//Replace current evaluation values with updates 
-           
+		       // initialize for now, new dowloadpath fields
+                eval.matching.DownloadPath = "";
+                eval.random.DownloadPath = "";
                 for (var key in evalup) {
-                   
-                    if (evalup.hasOwnProperty(key)) {
-                        if (typeof evalup[key] == "object")
-                            for (var nkey in evalup[key]) {                           
-                                eval[key][nkey] = evalup[key][nkey];
-                            };
-                    }
-                    eval.markModified(key);
-                }
+					if (evalup.hasOwnProperty(key)) {
+						if (typeof evalup[key] == "object" && typeof eval[key] != "undefined")
+							for (var nkey in evalup[key]) {
+								console.log("Saving and key = " + key + " and nkey = " + nkey);
+								if (typeof evalup[key][nkey] == "object") {
+									for (var mkey in evalup[key][nkey]) {
+										console.log("Saving and mkey = " + mkey);
+										if ( typeof eval[key][nkey][mkey] != "undefined")
+										 {
+									        eval[key][nkey][mkey] = evalup[key][nkey][mkey];
+									    }
+									}
+								} else {
+									if (typeof eval[key][nkey] != "undefined" && typeof evalup[key][nkey] != "undefined")
+									 {
+										console.log("Saving and key = " + key + " and nkey = " + nkey);
+										eval[key][nkey] = evalup[key][nkey];
+										
+								    }
+								};
+							}
+					}
+					eval.markModified(key);
+				}
             };
             eval.last_step = tool.coachStep;
             eval.last_tool = tool.name;
+            console.log(eval.matching.DownloadPath);
             eval.toolsvisited = req.session.eval.toolsvisited;
             eval.stepsclicked = req.session.eval.stepsclicked;
 
             eval.save(function(err, savedeval) {
                 if (savedeval) {
                     sess.eval = savedeval;
-                    if (req.body.status === "started" || display==="online") {
+                    if (req.body.status === "started" || req.body.status === "" || display==="online") {
                         req.flash('saveMessage', 'Changes Saved.');
                         console.log("Just saved changes and now being redirected to tool = " + returnpath);
                         return res.redirect('/' + returnpath);

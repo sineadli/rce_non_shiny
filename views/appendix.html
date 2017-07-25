@@ -32,7 +32,7 @@
 
 </head>
     <%
-    include('../views/partials/brief_appendix_evaluation_processing.html')
+
     var tabcounter = 0; var figcounter = 0;
 
 %>
@@ -59,36 +59,17 @@
                     <% if (eval.path == "path-matching") { %>
                     <p> This evaluation used matching to create treatment and comparison groups that are similar on observable characteristics. The Coach matches users to non-users by minimizing the net difference for each selected matching characteristic. For example, if pre-test scores were selected, the Coach would calculate the absolute value of the difference between each user and non-user&rsquo;s pre-test scores in different combinations until it finds the combination that yields the lowest overall value. To learn more about how the Coach conducts matching, refer to the Matching Technical Appendix.
                     </p>
-                    <% } %>
-                    <% if (defs.wasMatched) { %>
-                    <p>
-                        Because the matching tool uses 1 to 1 matching, some students may not have matches. Table 1 presents the number of students in each group before and after matching.
-                    </p>
+                <% } %>
 
-                  
+                    <% if (defs.wasMatched) { %>
 
                     <% include ../views/partials/_matchingResultSummaryTable.html %>
 
-                </div>
-                <div class="no-page-break">
-                    <p>The Matching tool reports the similarity between the treatment and comparison groups before and after matching. Figure 1 shows the difference <%= defs.Results_By_Grade_Flag %> between the two groups on selected characteristics and displays the extent to which the groups are balanced (similar on each characteristic). If the matched sample has good balance, then we can be more confident that the observed differences in outcomes are caused by <%= defs.Basics_Tech_Name %>. The levels of balance follow the WWC standards shown below.</p>
-
-                    <label class="chart" style="clear:both;display:block;">Figure 1. Similarity (Balance) of users and non-Users in matched sample</label>
-
-                    <% for (grade in MResult.results_by_grade) {
-
-                    var thisgrade = MResult.results_by_grade[grade];
-
-                    %>
-                    <div class="figdiv" style="width:45%; float:left; display:inline; margin-left: 20px;">
-                        <label class="chart">Grade <%= grade %></label>
-                        <img src="data:image/png;base64,<%- thisgrade.plot %>">
-
-
-                    </div>
-
-                    <% } // end for each grade %>
+                
+                    <% include ../views/partials/_matchingResultFigures.html %>
                     <div class="clearfix">&nbsp;</div>
+              
+                <div class="no-page-break">
                     <p>
                         The Coach also checks the final dataset used by the Get Results tool to check if the treatment and comparison groups are balanced.
 
@@ -97,7 +78,7 @@
                         {
                         %>
                     <p>
-                        For this evaluation we randomly assigned <%= defs.Cluster_Group %> to the treatment and comparison groups. Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving us the most confidence that any differences in outcomes between the groups are due to using BrandNew. 
+                        For this evaluation we randomly assigned <%= defs.Cluster_Group %> to the treatment and comparison groups. Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving us the most confidence that any differences in outcomes between the groups are due to using BrandNew.
                         For random assignmen, the Coach takes advantage of the base R function "sample.int." You can think of this process as flipping a digital, fair,
                         coin to assign <%= defs.Cluster_Group %>s to either pilot the technology or not.
                     </p>
@@ -105,7 +86,7 @@
                         The Coach performs checks to verify that the randomization process worked as expected. The Coach will check the treatment and comparison groups&rsquo; baseline equivalence, or their similarity before the technology was introduced.
 
 
-                        <% } // End path random 
+                        <% } // End path random
 
 
                         if (defs.hasResults && Object.keys(Result.control_vars).length > 0) {
@@ -120,7 +101,7 @@
 
                     <% } // has results and control vars
                     else { %>
-                
+
                     <p>
                         We've improved the Coach's Get Results tool. To see the updated results here, please return to the Get Results tool and re-run the analysis.
                     </p>
@@ -132,7 +113,7 @@
                     <h2> Estimating the Effect of <%= defs.Basics_Tech_Name %></h2>
 
                     <p>
-                        The RCE Coach calculates the probability that the effect of an educational technology is above or below a threshold selected by the user, given the data. The threshold chosen for this evaluation was <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> (as indicated by the vertical line in Figure 2).
+                        The RCE Coach calculates the probability that the effect of an educational technology is above or below a threshold selected by the user, given the data. The threshold chosen for this evaluation was <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> (as indicated by the vertical line in Figure A.2).
                     </p><% if (user != "NOAUTHENTICATED") {%>
                     <p class="prev-answer">
                         <i class="fa fa-hand-o-right"></i> Where did I select the thresholds? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How You Will Use The Results</a>
@@ -140,7 +121,7 @@
                     <% } %>
 
                     <p>
-                        Figure 2 displays the posterior distribution of the effect of <%= defs.Basics_Tech_Name %> <%= defs.Results_By_Grade_Flag %>. The green shaded area in the figure represents the probability that the educational technology has an effect greater than or equal to the selected threshold.
+                        Figure A.2. displays the posterior distribution of the effect of <%= defs.Basics_Tech_Name %> <%= defs.Results_By_Grade_Flag %>. The green shaded area in the figure represents the probability that the educational technology has an effect greater than or equal to the selected threshold.
 
                     </p>
 

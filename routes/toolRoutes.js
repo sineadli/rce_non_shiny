@@ -19,6 +19,8 @@ var evaluationController = require('../controllers/evaluationController.js');
 var isLoggedIn = require("../middleware/isLoggedIn.js");
 var textHelpers = require('../public/js/textHelpers.js');
 var configDB = require('../config/database.js');
+var querystring = require('querystring');
+var https = require('https');
 var sess;
 //please note that req.sess.step is for managing the active tab for coach.html
 
@@ -147,8 +149,6 @@ module.exports = function (app, passport) {
 		return evaluationController.getByTool(req, res, "online");
     });    
 	app.post('/getresult', isLoggedIn, function (req, res) {
-		console.log("posting get results");
-	    console.log(req.body);
 		return evaluationController.postByTool(req, res);
     });
 	app.get('/appendix_matching', isLoggedIn, function (req, res) {
@@ -160,7 +160,8 @@ module.exports = function (app, passport) {
     
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
 		return evaluationController.getByEvalId(req, res, "online");
-    });
+	});
+	
 	app.post('/shareresult', isLoggedIn, function (req, res) {
 
         var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
@@ -168,8 +169,6 @@ module.exports = function (app, passport) {
         sess.eval.last_step = 6;
         sess.step = 6;
 		var obj = req.body;
-		console.log("in post ShareResult route");
-        console.log(obj);
 		var returnpath = obj.returnpath;
 		if (returnpath === '') returnpath = "shareresult";
         var dt = new Date();
@@ -318,7 +317,11 @@ module.exports = function (app, passport) {
             if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
             return res.redirect('/' + returnpath);
         });
-    });
+	});
+
+
+	
+
 
 };
 

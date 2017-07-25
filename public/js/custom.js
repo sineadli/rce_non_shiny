@@ -131,7 +131,23 @@ $(document).ready(function() {
    }); //<-end document.ready
 
 
+function UrlExists(url) {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+    return http.status === 200;
+}
 
+function IfDownloadFile(dl) {
+	if (dl !== '') {
+		$("#downloadData")
+			.removeClass("disabled");
+	    $("#downloadDataDiv").removeClass("hidden");
+		$("#downloadData").removeClass("hidden")
+			.attr("target", "_blank")
+			.attr("href", $("#coreurl").val() + $("#downloadPath").val()).removeAttr("disabled");
+	}
+}
 
 function capitalize(x) {
 	return x[0].toUpperCase() + x.substring(1);
