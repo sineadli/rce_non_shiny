@@ -41,7 +41,7 @@ var toolSchema = mongoose.Schema({
 });
 
 toolSchema.methods.setPeekingNote = function (sess) {
-    console.log("session step = " + sess.step + " and tool step = " + this.coachStep);
+   // console.log("session step = " + sess.step + " and tool step = " + this.coachStep);
 	if (this.coachStep > 3) {
 		sess.defaults.peekingnote = this.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "Based on your answers in &ldquo;Determine Your Approach,&rdquo; you do not need to use this tool to complete your evaluation.";
 	} else {

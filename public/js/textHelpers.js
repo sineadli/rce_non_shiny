@@ -28,7 +28,7 @@ exports.stripPercent = function (x) {
 	exports.round10 = function (value, exp) {
     // If the exp is undefined or zero...
 	    
-	value = Number(value.replace("%",""));
+		value = Number(value.toString().replace("%",""));
     if (typeof exp === 'undefined' || +exp === 0)
         return Math.round(value);
 	

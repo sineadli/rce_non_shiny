@@ -105,7 +105,7 @@
                     <p><%= defs.ResultSummary %></p>
                     <h3> Research Question</h3>
                     <% include ../views/partials/_researchQuestion.html %>
-                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> as measured by <%= defs.Outcome_Measure %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</p>
+                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> on <%= defs.Outcome_Measure %>.</p>
                     <% if (display === 'online' && user != "NOAUTHENTICATED") { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
@@ -122,7 +122,7 @@
 
                     <table class="resultsFig">
                         <caption>
-                            Based on this evaluation's data, Figure 1 shows the effect of <%= defs.Basics_Tech_Name %>  on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %>. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> as measured by the <%= defs.Outcome_Measure %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
+                            Based on this evaluation's data, Figure 1. shows the effect of <%= defs.Basics_Tech_Name %>  on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %>. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> as measured by the <%= defs.Outcome_Measure %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
 
                         </caption>
                         <tr>
@@ -141,11 +141,11 @@
 
                         var thisgrade = Result.results_by_grade[grade];
                         console.log(thisgrade);
-                        var meetGoal = thisgrade.interpretation.probability >= defs.Pass_Probability ? "Yes" :"No";
+                        var meetGoal = round10(thisgrade.interpretation.probability,0) >= round10(defs.Pass_Probability) ? "Yes" :"No";
 
-                        var thresholdStyle = "background:linear-gradient(to right, #C7C7C7 " + defs.Fail_Probability + "%, #D5D5D5 " + defs.Fail_Probability + "%, #D5D5D5 " + defs.Pass_Probability + "%, #f2f2f2 " + defs.Pass_Probability + "%)";
+                        var thresholdStyle = "background:linear-gradient(to right, #C7C7C7 " + round10(defs.Fail_Probability,0) + "%, #D5D5D5 " + round10(defs.Fail_Probability,0) + "%, #D5D5D5 " + round10(defs.Pass_Probability,0) + "%, #f2f2f2 " + round10(defs.Pass_Probability,0) + "%)";
 
-                        var barStyle = "style='background-color: #5B9BD5; display:block;width:" + thisgrade.interpretation.probability + "'";
+                        var barStyle = "style='background-color: #5B9BD5; display:block;width:" + round10(thisgrade.interpretation.probability,0) + "%'";
                         %>
                         <tr>
                             <td><%= grade %></td>
@@ -162,8 +162,8 @@
                                 <% if (thisgrade.outcome_means) { %>
                                 <%= round10(thisgrade.outcome_means.comparison) %>
                                 <% } else { %>
-                                Not available, re-run get results
-                                <% } %>
+                                Not available <% if (query.sharing != 1) { %> , re-run get results
+                                <% } } %>
                             </td>
                             <% if(defs.hasSample) { %>
                             <td>
@@ -181,8 +181,8 @@
                             <td style="width: 300px; padding: 0;">
                                 <div style="display: block; padding: 8px 0; width: 300px;font-size:.8em;">
 
-                                    <div style="display: inline; padding: 0; margin-left: <%-defs.Fail_Probability-4%>%;"><%= defs.Fail_Probability %>%</div>
-                                    <div style="display: inline; padding: 0; margin-left: <%- defs.Pass_Probability- defs.Fail_Probability - 8 %>%;"><%= defs.Pass_Probability %>%</div>
+                                    <div style="display: inline; padding: 0; margin-left: <%-round10(defs.Fail_Probability,0)-4%>%;"><%= round10(defs.Fail_Probability,0) %>%</div>
+                                    <div style="display: inline; padding: 0; margin-left: <%- round10(defs.Pass_Probability,0)- round10(defs.Fail_Probability,0) - 8 %>%;"><%= round10(defs.Pass_Probability,0) %>%</div>
 
                                 </div>
                             </td>
@@ -201,14 +201,14 @@
                     <% } %>
                     <% if (Result.args.cluster_var != "") { %>
                     <div class="note" style="margin-top: 15px;">
-                        <p>The sample sizes in Figure 1 represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level. Table 3 in the appendix shows the number of <%= defs.Cluster_Group %>s in each group.</p>
+                        <p>The sample sizes in Figure 1. represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level. Table 3 in the appendix shows the number of <%= defs.Cluster_Group %>s in each group.</p>
 
                     </div>
                     <% } %>
 
                     <div class="clearfix"></div>
                     <div class="white-background-blue-border">
-                        <h3 class="warning">Warning</h3>
+                        <h3 class="warning">Cautions</h3>
 
                         <ul>
                             <li>These findings apply only to <%= defs.Basics_Users %> who were included in the final evaluation sample. Table 1 in the appendix summarizes the number of <%= defs.Basics_Users %> in each group. </li>

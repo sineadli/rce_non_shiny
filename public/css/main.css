@@ -1439,9 +1439,10 @@ div.step-to-consider p.note {
     border-width:1px;
 }
 div#results p.note {
-    margin: 15px 0;
+    margin: 0;
     width: 85%;
     border: none;
+    padding: 0;
 }
 body.brief p.smallnote {
     margin: 10px auto 25px;
@@ -1499,11 +1500,17 @@ div.step-example-box {
 	margin-bottom:3px;
   vertical-align:top;
 }
+div#downloadDataDiv {
+    margin-top: 35px;
+}
 div.bottom-buttons {
     margin-top: 35px;
     text-align: center;
     margin-bottom: 65px;
     /*margin-right: 20px;*/
+}
+div#downloadDataDiv div.bottom-buttons {
+    margin-top: 20px;
 }
 div.action-buttons {
   margin-left:70%;
@@ -1578,10 +1585,11 @@ div.loading {
 }
 label.chart , caption {
     color:#65614D;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   letter-spacing: normal;
   font-size: .85em;
-  margin-top:5px;
+  margin-top:0;
+    padding-top: 0;
     font-weight: 600;
 }
 .figcaption {
@@ -2097,7 +2105,7 @@ body.brief p.note {
             text-align: center;
         }
 
-      body.brief  table {
+      body.brief table {
             width: 99%;
     font-size: .9em;
     margin: 30px auto 30px auto;

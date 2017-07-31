@@ -305,7 +305,7 @@
                                 <p>The evaluation will result in one of three answers&mdash;<%= defs.Basics_Tech_Name %> has the intended effect, it does not have the intended effect, or we're not sure. This section summarizes how we plan to use the results to inform decisions in each scenario. </p>
                                 <ul>
                                     <li>
-                                        If there is a more than a <%= stripPercent(defs.Pass_Probability) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%=  defs.Measure_Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> had the intended effect. In this case I plan to
+                                        If there is a more than a <%= stripPercent(defs.Pass_Probability) %>% probability that the intervention <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> on <%= defs.Outcome_Measure %>,  We would conclude that <%= defs.Basics_Tech_Name %> had the intended effect. In this case we plan to
 
 
                                         <% if (display === 'online') { %>
@@ -315,7 +315,7 @@
                                         <% } %>
                                     </li>
                                     <li>
-                                        If there is a less than a <%= stripPercent(defs.Fail_Probability) %>% probability that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Measure_Units %> or more, I would conclude that <%= defs.Basics_Tech_Name %> did not have the intended effect. In this case I plan to
+                                        If there is a less than a <%= stripPercent(defs.Fail_Probability) %>% probability that the intervention <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> on <%= defs.Outcome_Measure %>,  We would conclude that <%= defs.Basics_Tech_Name %> did not have the intended effect. In this case we plan to
                                         <% if (display === 'online') { %>
                                         <br /><textarea name="planNext[Action_Fail]"><%= eval.planNext.Action_Fail %></textarea>
                                     </li>
@@ -323,7 +323,7 @@
                                     <%= eval.planNext.Action_Fail %>
                                     <% } %>
                                     <li>
-                                        If the probability is between <%= stripPercent(defs.Pass_Probability) %>% and <%= stripPercent(defs.Fail_Probability) %>% that the intervention improves <%= defs.Basics_Outcome %> <%= defs.Outcome_Measure %> by <%= eval.planNext.Success_Effect_Size %> <%= defs.Measure_Units %> or more, I plan to
+                                        If the probability is between <%= stripPercent(defs.Pass_Probability) %>% and <%= stripPercent(defs.Fail_Probability) %>% that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d  <%= defs.Basics_Outcome.toLowerCase() %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> on <%= defs.Outcome_Measure %>, we plan to
                                         <% if (display === 'online') { %>
                                         <br /><textarea name="planNext[Action_Inconclusive]"><%= eval.planNext.Action_Inconclusive %></textarea>
                                     </li>

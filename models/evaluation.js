@@ -216,6 +216,7 @@ var Matching = mongoose.Schema({
     n_matched: { type: String, default: '' },
     n_matched_treat: { type: String, default: '' },
     Result: { type: String, default: '' },
+	DownloadPath: { type: String, default: '' },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
@@ -230,10 +231,10 @@ var ShareResult = new mongoose.Schema({
     challenges_limitations: { type: String, default: '' },
     conclusions_next_steps: { type: String, default: '' },
     baseline_var_relabels: [String],
-	control_var_relabels: [String],
+    control_var_relabels: [String],
     created_at: { type: Date, default: Date.now },
     updated_at: Date
-})
+});
 
 //Tools visited array
 var toollist = new mongoose.Schema({

@@ -1,4 +1,25 @@
-﻿
+﻿<%
+var Res = "";
+var grades = [];
+if( (eval.last_tool == "Matching"  && defs.wasMatched)) {
+    Res = MResult;
+    tabcounter ++;
+    grades = Res.results_by_grade;
+} else if ((eval.last_tool == "Random Assignment" && defs.wasRandomized)) {
+    Res = MResult;
+    tabcounter ++;
+grades = Res.results_by_block;
+} else if (defs.hasResults) {
+    Res = Result;
+    tabcounter ++;
+    grades = Res.results_by_grade;
+}
+if(eval)
+console.log("Was randomized = " + defs.wasRandomized);
+console.log("Las tool = " + eval.last_tool);
+console.log("baseline means = ");
+console.log(grades.baseline_var_means);
+%>
 <table>
     <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
     <thead>
@@ -11,89 +32,89 @@
             <th> Comparison</th>
             <th> Difference</th>
             <th> Standardized<br/> difference</th>
+            <th> Balanced</th>
         </tr>
     </thead>
     <tbody>
+        <% 
+        for (grade in grades) {
 
-        <% for (grade in Result.results_by_grade) {
-
-        var thisgrade = Result.results_by_grade[grade];
-
+        var thisgrade = grades[grade];
+   
+      
         var means = thisgrade.baseline_var_means;
-
         var samples = thisgrade.samples;
-
+        var hasSample = thisgrade.samples ? true : false;
         var samples_cluster = thisgrade.samples_cluster;
-
-        var char = Object.keys(means);
-         var growspan =char.length + 1;
-         if (samples_cluster) {
-             growspan =char.length + 2;
+        console.log("means = ");
+        console.log(means);
+        var growspan = 1;
+        var char = [];
+        if(means && (typeof means == "object")){
+    char = Object.keys(means);
+        console.log("number of baseline chars = " + (char.length + 1));
+              var growspan =char.length + 1;
+              if (samples_cluster) {
+                growspan =char.length + 2;
+             }
         }
 
     for (var index in char) {
-        console.log("baseline vars");
-        console.log(index);
+       
         var thischar = char[index];
 
         %>
         <tr>
-            <% if (defs.hasResults  && index == 0) { %>
+            <% if (index == 0) { %>
             <td rowspan="<%- growspan %>"> <%= grade %></td>
-            <% } %>
+           <% } %>
             <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= thischar %></span></td>
 
 
             <td>
-                <script>
-                     document.write(textHelpers.round10("<%= means[thischar].overall[0] %>", 0))
-                </script>
+                <%= round10(means[thischar].overall[0], 2) %>
             </td>
             <td>
-                <script>
-                     document.write(textHelpers.round10("<%= means[thischar].intervention[0]; %>", 0))
-                </script>
+                <%= round10(means[thischar].intervention[0], 2) %>
             </td>
             <td>
-                <script>
-                     document.write(textHelpers.round10("<%= means[thischar].comparison[0] %>", 0))
-                </script>
+                <%= round10(means[thischar].comparison[0], 2) %>
             </td>
             <td>
-                <script>
-                     document.write(textHelpers.round10("<%= means[thischar].difference[0] %>", 0))
-                </script>
+                <%= round10(means[thischar].difference[0], 2) %>
             </td>
             <td>
-                <script>
-                     document.write(textHelpers.round10("<%= means[thischar].effect_size[0] %>", 0))
-                </script>
+                <%= round10(means[thischar].effect_size[0], 2) %>
             </td>
+            <td><%= Math.abs(means[thischar].effect_size[0]) > 0.25 ? "False" : "True" %></td>
         </tr>
-        <% } %>
+    <% } 
+        if (hasSample) { %>
         <tr>
-
-
             <td> Number of <%= defs.Basics_Users %></td>
             <td> <%= samples.n_full %></td>
-            <td> <%= samples.n_full_treat %></td>
-            <td> <%= samples.n_full - samples.n_full_treat %></td>
+            <td> <%= eval.last_tool == "Random Assignment" ? samples.n_treat :  samples.n_full_treat %></td>
+            <td> <%= eval.last_tool == "Random Assignment" ? samples.n_full - samples.n_treat : samples.n_full - samples.n_full_treat %></td>
+            <td> --</td>
             <td> --</td>
             <td> --</td>
         </tr>
-        <%
-   if (Result.args.cluster_var.indexOf("no cluster") === -1) {
+    <% }
+        if( eval.last_tool != "Matching" && eval.last_tool != "Random Assignment") {
+         if (Res.args.cluster_var.indexOf("no cluster") === -1  && defs.hasCluster) {
         %>
         <tr>
 
-            <td> Number of <%= Result.args.cluster_var %></td>
+            <td> Number of <%= Res.args.cluster_var %></td>
             <td> <%= samples_cluster.n_full %></td>
             <td> <%= samples_cluster.n_full_treat %></td>
             <td> <%= samples_cluster.n_full - samples_cluster.n_full_treat %> </td>
-<td> --</td>
+            <td> --</td>
+            <td> --</td>
             <td> --</td>
         </tr>
-    <% } %>
+    <%      }
+        } %>
  <% } %>
     </tbody>
 </table>

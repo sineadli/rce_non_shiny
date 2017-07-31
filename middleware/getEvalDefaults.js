@@ -12,6 +12,7 @@
 var Evaluation = require('../models/evaluation');
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 var textHelpers = require('../public/js/textHelpers.js');
+var configDB = require('../config/database.js');
 var async = require('async');
 
 var getEvalDefaults = function (sess, user) {
@@ -30,6 +31,7 @@ var getEvalDefaults = function (sess, user) {
 		setPlanContext(sess);
 		setEvalPlan(sess);
 	}
+    sess.defaults.shiny_url = configDB.shiny_url;
     return;
 }
 
@@ -211,7 +213,7 @@ function setMatching(sess) {
 
 function setRandom(sess) {
     var random = sess.eval.random;
-    console.log("In set random and path = " + sess.eval.path);
+   // console.log("In set random and path = " + sess.eval.path);
     sess.defaults.wasRandomized = false;
     if (random.Result) {
         sess.defaults.wasRandomized = random.Result === "" ? false : (sess.eval.path == "path-random" ? true : false);
@@ -225,6 +227,7 @@ function setGetResults(sess) {
 
 	sess.defaults.hasResults = false;
     sess.defaults.hasSample = false;
+	sess.defaults.hasCluster = false;
 
     if (eval.getresult.Result) {
 
@@ -242,7 +245,6 @@ function setGetResults(sess) {
 			sess.defaults.Results_By_Grade_Flag = "";
 		}
 
-
         var balanced = true, clusterGroupWarning = false;
 		var successCount = 0, inconclusiveCount = 0, failureCount = 0;
         var clusterGroupWarningComparison = "";
@@ -253,17 +255,18 @@ function setGetResults(sess) {
                 var thisresult = result.results_by_grade[grade];
 
                 sess.defaults.hasSample = thisresult.samples ? true : false;
+				sess.defaults.hasCluster = thisresult.samples_cluster ? true : false;
 
                 //For warnings
                 // Balance warning
                 balanced = isBalanced(thisresult.baseline_var_means);
 
                 // Cluster warning
-                if (result.args.cluster_var.indexOf("no cluster") === -1) {
+                if (result.args.cluster_var.indexOf("no cluster") === -1 && sess.defaults.hasCluster) {
 
-                    if (thisresult.samples_cluster.n_full_treat == 1 || (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1)) {
+                    if (thisresult.samples_cluster.n_full_treat === 1 || (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1)) {
                         clusterGroupWarning = true;
-                        clusterGroupWarningComparison = (Result.results_by_grade[grade].samples_cluster.n_full - Result.results_by_grade[grade].samples_cluster.n_full_treat === 1) ? "not" : "";
+                        clusterGroupWarningComparison = (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1) ? "not" : "";
                     }
                 }
 
@@ -341,8 +344,8 @@ function setShareResults(sess, user) {
         sess.defaults.author = sess.eval.author || "Anonymous";
         sess.defaults.company = sess.eval.company || "Unknown Organization";
     }
-	console.log("Eval userid = " + eval.userid);
-	console.log("current userid = " + user._id);
+	//console.log("Eval userid = " + eval.userid);
+	//console.log("current userid = " + user._id);
 
 }
 
@@ -352,7 +355,7 @@ function isBalanced(baselines) {
     var balanced = true;
     for (var blvar in baselines) {
         if (baselines.hasOwnProperty(blvar)) {
-            if (baselines[blvar].effect_size > 0.25) {
+            if (Math.abs(baselines[blvar].effect_size) > 0.25) {
                 balanced = false;
             }
         }

@@ -1,7 +1,12 @@
-﻿  <%  tabcounter = tabcounter + 1; %>
-<table class="group-summary">
-    <caption>Table <%= tabcounter %>. Sample size before and after matching</caption>
-    <thead>
+﻿  <% tabcounter = tabcounter + 1; %>
+
+<div class="no-page-break">
+    <p>
+         Table <%= tabcounter %> presents the number of students in each group before and after matching.
+    </p>
+    <table class="group-summary">
+        <caption>Table <%= tabcounter %>. Sample size before and after matching</caption>
+        <thead>
         <tr>
             <th scope="col">Grade</th>
             <th scope="col">Group</th>
@@ -9,29 +14,29 @@
             <th scope="col">Sample size after matching</th>
             <th scope="col">Percentage of total</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <% for (grade in MResult.results_by_grade) {
         var thisgrade = MResult.results_by_grade[grade].samples;
-        console.log("appendix - grade = " + grade);
-        console.log(thisgrade);
+       
+      
         %>
         <tr>
             <td rowspan="2"><%= grade %></td>
             <td>Treatment</td>
             <td>
                 <script>
-                                                       document.write(textHelpers.round10("<%= thisgrade.n_full_treat[0] %>", 0))
+                    document.write(textHelpers.round10("<%= thisgrade.n_full_treat[0] %>", 0))
                 </script>
             </td>
             <td>
                 <script>
-                                                       document.write(textHelpers.round10("<%= thisgrade.n_matched_treat[0] %>", 0))
+                    document.write(textHelpers.round10("<%= thisgrade.n_matched_treat[0] %>", 0))
                 </script>
             </td>
             <td>
                 <script>
-                                                       document.write(textHelpers.round10("<%= (thisgrade.n_matched_treat[0]/thisgrade.n_full_treat[0]) *100 %>", 0) + "%")
+                    document.write(textHelpers.round10("<%= (thisgrade.n_matched_treat[0]/thisgrade.n_full_treat[0]) *100 %>", 0) + "%")
                 </script>
             </td>
         </tr>
@@ -39,20 +44,22 @@
             <td>Comparison</td>
             <td>
                 <script>
-                                                       document.write(textHelpers.round10("<%= thisgrade.n_full[0]- thisgrade.n_full_treat[0] %>", 0))
+                    document.write(textHelpers.round10("<%= thisgrade.n_full[0]- thisgrade.n_full_treat[0] %>", 0))
                 </script>
             </td>
             <td>
                 <script>
-                                                       document.write(textHelpers.round10("<%= thisgrade.n_matched[0] - thisgrade.n_matched_treat[0] %>", 0))
+                    document.write(textHelpers.round10("<%= thisgrade.n_matched[0] - thisgrade.n_matched_treat[0] %>", 0))
                 </script>
             </td>
             <td>
                 <script>
-                                                       document.write(textHelpers.round10("<%= ((thisgrade.n_matched[0] - thisgrade.n_matched_treat[0])/(thisgrade.n_full[0]- thisgrade.n_full_treat[0])) *100 %>", 0) + "%")
+                    document.write(textHelpers.round10("<%= ((thisgrade.n_matched[0] - thisgrade.n_matched_treat[0])/(thisgrade.n_full[0]- thisgrade.n_full_treat[0])) *100 %>", 0) + "%")
                 </script>
             </td>
         </tr>
         <% } //End for each grade %>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+    <p class="note">Note: because the matching tool uses 1 to 1 matching, some students may not have matches.</p>
+</div>
