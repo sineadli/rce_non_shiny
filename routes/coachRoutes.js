@@ -37,12 +37,21 @@ module.exports = function (app, passport) {
         sess = req.session;
         res.render('dashboard.html', { user: req.user, evals: sess.evals });
     });
-    app.get('/admin', isLoggedIn, getSelectedEvaluations, function (req, res) {
+    app.get('/admin', isLoggedIn, function (req, res) {
         sess = req.session;
-        res.render('adminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: '' });
+        query = require('url').parse(req.url, true).query;
+        res.render('adminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: "" });
+    });
+
+    app.post('/admin', isLoggedIn, getSelectedEvaluations, function (req, res) {
+        
+        sess = req.session;
+        console.log(req.body.search);
+        res.render('adminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: "" });
     });
     app.get('/api/admin/:search', isLoggedIn, getSelectedEvaluations, function (req, res) {
         sess = req.session;
+        query = require('url').parse(req.url, true).query;
         res.render('partials/evaluationListsforAdmin.html', { user: req.user, evalLists: sess.evalLists, obj: '' });
     });
     app.get('/userAdmin', isLoggedIn, getAllUsers, function (req, res) {
@@ -301,6 +310,26 @@ module.exports = function (app, passport) {
         }
         );
     });
+
+    app.get('/table', isAdmin, function (req, res) {
+        User.find().skip(50).limit(100).select("local.email profile.user_name receive_update profile.organization_name profile.role profile.role_other created_at profile.first_name profile.last_name").then(function (table) {
+
+            res.json(table); // table.total, table.data
+        })
+    });
+    app.get('/table1', isLoggedIn, getSelectedEvaluations, function (req, res) {
+        sess = req.session;
+        res.json(sess.evalLists);
+    });
+    //app.get('/table',  function(req, res) {
+    //    User.dataTables({
+    //        limit: 50,
+    //        skip: 50
+    //    }).then(function (table) {
+
+    //        res.json(table); // table.total, table.data
+    //    })
+    //});
 }
 
 

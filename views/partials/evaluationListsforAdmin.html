@@ -1,4 +1,6 @@
 ﻿<div class="container-fluid">
+    
+    <% if(evalLists) { %>
     <h2 class="page-title ">Evaluation management</h2>
     <table id="myTable" data-order='[[ 1, "asc" ]]' class="table table-striped">
         <thead>
@@ -16,6 +18,7 @@
             </tr>
         </thead>
         <tbody>
+            
             <% if(evalLists.length>0){
 
             var d, tech_name, outcomes, grades, id, state_district;
@@ -40,16 +43,16 @@
 
 
             if (evalLists[i].planContext){
-	    if (evalLists[i].planContext.Grades) {
- var ln = evalLists[i].planContext.Grades.length
+            if (evalLists[i].planContext.Grades) {
+            var ln = evalLists[i].planContext.Grades.length
 
             if (ln) {
             grades = evalLists[i].planContext.Grades[0] +  " - " + evalLists[i].planContext.Grades[ln-1];
             }
 
             }
-		}
-           
+            }
+
 
             %>
             <tr>
@@ -70,6 +73,7 @@
             <% } } %>
         </tbody>
     </table>
+    <% } %>
     <div id="deleteConfirm" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -93,5 +97,5 @@
         </div>
     </div>
 
-    </div>
+</div>
 

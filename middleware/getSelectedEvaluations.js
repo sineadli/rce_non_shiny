@@ -15,7 +15,10 @@ var Evaluation = require('../models/evaluation');
 var getSelectedEvaluations = function (req, res, next) {
     sess = req.session;
     var sort = 1;
-    var search = req.params.search;
+    var search = req.body.search;
+   // var query = require('url').parse(req.url, true).query;
+   // if (query.search) search = query.search;
+ //   var search = req.params.search;
     if (search == "all") search = "";
 
     if (search) {
@@ -30,7 +33,7 @@ var getSelectedEvaluations = function (req, res, next) {
                 return next();
             } else {
 
-                if (evals) { sess.evalLists = evals; return next(); }
+                if (evals) { sess.evalLists = evals;  return next(); }
                 return next();
             }
         });
@@ -42,7 +45,7 @@ var getSelectedEvaluations = function (req, res, next) {
                 return next();
             } else {
 
-                if (evals) { sess.evalLists = evals; return next(); }
+                if (evals) { sess.evalLists = evals; console.log(evals); return next(); }
                 return next();
             }
         });
