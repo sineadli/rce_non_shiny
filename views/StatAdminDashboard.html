@@ -36,10 +36,10 @@
 
             <p>Number of Evaluations: <%= evalStats.evalCount %></p>
             <p>Average Percent Completed: <%= evalStats.averagePerComplete %></p>
-            <table id="myTable" data-order='[[ 1, "asc" ]]' class="table table-striped">
+            <table id="myTable" data-order='[[ 0, "asc" ]]' class="table table-striped">
                 <thead>
                 <tr>
-
+                    <th>Step</th>
                     <th>Tool</th>
                     <th>Number Started/Never Completed</th>
                     <th>Percent Started/Never Completed</th>
@@ -54,6 +54,7 @@
                 if (stats.ToolName != "") {
                 %>
                 <tr>
+                    <td><%= stats.Order %></td>
                     <td><%= stats.ToolName %></td>
                     <td><%= stats.Started %></td>
                     <td><%= stats.StartedPer %>%</td>
@@ -69,7 +70,33 @@
     </div>
 </div>
         <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function() {
 
+            var buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function(data, row, column, node) {
+                            var dt;
+                            return column === 0 ?
+                                '' :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#myTable').dataTable({
+                "dom": "Brt",
+                "paging": false,
+                "buttons": [
+                    $.extend(true, {}, buttonCommon, {
+                        extend: 'excel'
+                    })
+                ]
+                
+            });
+        });
+    </script>
 </body>
 
 </html>  

@@ -45,7 +45,7 @@ var getAllEvalStats = function(req, res, next) {
                 var atool = tools[itool];
                 var key = atool.coachStep.toString() + "." + atool.order.toString();
                 evalStats.tools.push({
-                    id: key,
+                    Order: key,
                     ToolName: atool.name,
                     Started: 0,
                     Completed: 0,
