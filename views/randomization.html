@@ -11,9 +11,10 @@
 <head>
     <title>Randomization - Ed Tech RCE Coach</title>
     <% include ../views/partials/scriptHeader.html %>
+    <% include ../views/partials/_formatters.html %>
 </head>
 <% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
-<body class="<%- peekingThis %>">
+<body class="<%- peekingThis %> brief">
     <% include ../views/partials/header.html %>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -25,7 +26,13 @@
     <% include ../views/partials/toolHeader.html %>
     <% } %>
     <form action="/randomization" method="post">
+        <%
 
+        if (eval.random) {
+
+        if (eval.random.Result) Result = eval.random.Result;
+        }
+        %>
         <input type="hidden" id="coreurl" value="<%= shiny_url %>" />
     <div class="container-fluid">
     <div class="row">
@@ -158,7 +165,7 @@
                 </div>
                 <% if (user != "NOAUTHENTICATED") { %>
                 <p class="prev-answer">
-                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/prepare_data_random?return=randomization">Prepare for Random Assignment</a>
+                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/determine_your_approach?return=randomization">Determine Your Approach</a>
                 </p>
                 <% } %>
             </div>
@@ -243,13 +250,76 @@
             </div>
         </div>
     </div>
+
+        <% if(defs.wasRandomized) {
+        var tabcounter = 0;
+        var MResult = "";
+        var MResult = JSON.parse(eval.random.Result);
+        newUploadTitle = "Upload your data to re-run random assignment"
+    %>
+ <div id="results">
     <div class="step-header container">
-        <div data-toggle="collapse" data-target="#C">
-            <h2 class="clickable">
-                <i class="fa fa-caret-down" aria-hidden="false"></i> Upload your data
-            </h2>
+        <div data-toggle="collapse" data-target="#R">
+           
+                <h2 class="clickable">
+                    <i class="fa fa-caret-down" aria-hidden="false"></i> Random Assignment Results
+                </h2>
+           
         </div>
     </div>
+    <div id="R" class="row  collapse in q-row">
+        <div class="col-xs-12">
+
+
+
+            <%  if (!MResult.randomize_success[0]) { %>
+            <p style='margin-left:-40px' class='stop-warning'>
+                Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. You can re-run randomization or <a href='mailto:edtechrce@mathematica-mpr.com'>contact us for assistance</a>.
+            </p>
+            <% } %>
+
+            <% include ../views/partials/_backgroundCharsTable.html %>
+
+
+
+            <label class="chart" style="clear:both;display:block;">
+                Figure 1. Baseline equivalence of the treatment and comparison groups.
+            </label>
+            <% for (grade in MResult.results_by_block) {
+
+            var thisgrade = MResult.results_by_block[grade];
+
+            %>
+            <div class="figdiv" style="width:45%; float:left; display:inline; margin-left: 20px;">
+                <label class="chart">Grade <%= grade %></label>
+                <img src="data:image/png;base64,<%- thisgrade.plot %>">
+
+
+            </div>
+
+            <% } // end for each grade %>
+        </div>
+        <div class="clearfix"></div>
+        <div id="downloadDataDiv" class="hidden">
+            <p>The Coach added a &ldquo;Treatment&rdquo; variable to your dataset that identifies which ' + basicsUsers + ' are in the treatment and comparison groups. <strong>Download this revised dataset.</strong> Later, you will add your evaluation results to it and the <strong>Get Results</strong> tool will use it to determine whether your educational technology is moving the needle.
+            </p>
+            <div class="bottom-buttons">
+            <a id="downloadData" class="btn btn-primary btn-lg shiny-download-link  shiny-bound-output hidden" href="#" target="_blank" disabled="disabled">
+                <i class="fa fa-download"></i>
+                Download Revised Dataset
+            </a>
+            </div>
+        </div>
+    </div>
+</div>
+        <% } %>
+        <div class="step-header container">
+            <div data-toggle="collapse" data-target="#B">
+                <h2 class="clickable">
+                    <i class="fa fa-caret-down" aria-hidden="false"></i> <%= newUploadTitle  %>
+                </h2>
+            </div>
+        </div>
     <div id="C" class="row  collapse in q-row">
         <div>
             <div class="col-xs-7">
@@ -343,13 +413,10 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div id="randomResults">
-
+           
+            <div id="error" class="col-xs-11"></div>
                
-                    <div id="Step_Conclusion" class="container">
-                      
-                        <div id="results" class="shiny-html-output shiny-bound-output"></div>
-                    </div>
+                   
                     <div id='loadingmessage'  hidden>
                         <div class="loading">
                             <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
@@ -359,10 +426,7 @@
                     </div>
                         <div id="shinybuttons" class="row  bottom-buttons hidden ">
                             <button id="match" type="button" class="btn btn-primary btn-lg " disabled="disabled">RANDOMIZE<br /> </button>
-                            <a id="downloadData" class="btn btn-primary btn-lg shiny-download-link  shiny-bound-output disabled hidden" href="#" target="_blank" disabled="disabled">
-                                <i class="fa fa-download"></i>
-                                Download Revised Dataset
-                            </a>
+                           
                         </div>
                     </div>
                   
@@ -372,9 +436,9 @@
 
     </div>
     </div>
-    </div>
+  
 
-    </div>
+ 
         <div id="warning-modal" class="modal fade hidden-print" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
@@ -399,26 +463,30 @@
                 </div>
             </div>
         </div>
-        <div class="hidden">
-            <input type="hidden" name="s_pretest" id="s_pretest" />
-            <input type="hidden" name="s_baseline_vars" id="s_baseline_vars" />
-            <input type="hidden" name="s_block_id" id="s_block_id" />
-            <input type="hidden" name="s_unit_id" id="s_unit_id" />
-            <input type="hidden" name="result" id="mresult" />
-        </div>
+    <div class="hidden">
+
+        <input type="hidden" name="random[DownloadPath]" id="downloadPath" value='<%= (eval.random.DownloadPath) ? (eval.random.DownloadPath) : "" %>' />
+
+        <input type="hidden" name="s_pretest" id="s_pretest"/>
+        <input type="hidden" name="s_baseline_vars" id="s_baseline_vars"/>
+        <input type="hidden" name="s_block_id" id="s_block_id"/>
+        <input type="hidden" name="s_unit_id" id="s_unit_id"/>
+        <input type="hidden" name="random[Result]" id="mresult" value='<%= (eval.random.Result) ? eval.random.Result : "" %>' />
+    </div>
         <% include ../views/partials/toolButtons.html %>
     </form>
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function() {
             
-            if ($("#Basics_Users").val().toLowerCase() === "other") {
-                $("#Question_Users_Other").show();
-            }
-            if ($("#Cluster_Group").val().toLowerCase() === "other") {
-                $("#Question_Cluster_Other").show();
-            }
+            //if ($("#Basics_Users").val().toLowerCase() === "other") {
+            //    $("#Question_Users_Other").show();
+            //}
+            //if ($("#Cluster_Group").val().toLowerCase() === "other") {
+            //    $("#Question_Cluster_Other").show();
+            //}
             setUserLimitsSelections();
+            IfDownloadFile($("#downloadPath").val());
            
 
             var group = $("#Individual_Group").val();
@@ -481,7 +549,7 @@
                         $("select.from-upload").empty();
                         $(".before-upload").addClass("after-upload");
                         $(".after-upload").removeClass("before-upload");
-                        $('#randomResults').show();
+                    
                         $("#block_id")
                             .append($("<option></option>")
                                 .attr("value", "Do not block")
@@ -510,6 +578,7 @@
                 $('#loadingmessage').show();
                 $('#warning-modal').modal("show");
                 $('#results').html("");
+                $('#error').html("");
                 $("#downloadData").addClass("disabled");
                 $("#downloadData").addClass("hidden");
                 var formData = new FormData();
@@ -556,120 +625,39 @@
                         $.ajax({
                             url: $("#coreurl").val() + responsePaths[0] + "/json",
                             type: "GET",
-                            success: function (data) {
+                            success: function(data) {
                                 $('#loadingmessage').hide();
                                 $('#warning-modal').modal("hide");
-                                $('#randomResults').show();
+                              
                                 console.log(data);
                                 var error = data.error_message[0];
-                                $('#results').html("");
+                             
                                 if (error) {
-                                    $('#results').append('<h2 class="stop-warning">There appears to be something wrong with your data set.</h2>  <p>Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p><p>Detailed error message: ' + error + '</p>');
+                                    $('#error').append('<h2 class="stop-warning">There appears to be something wrong with your data set.</h2>  <p>Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p><p>Detailed error message: ' + error + '</p>');
                                     return;
                                 } else {
-                                    var finaltext = "";
-                                    var rSuccess = "<h2 style='margin-left:-40px'>Random assignment was successful</h2>";
-                                    var basicsUsers = $("#Basics_Users").val();
-                                    if (basicsUsers.toLowerCase() === "other") {
-                                        basicsUsers = $("#Basics_Users_Other").val();
-                                    }
-                                    var figlabel = 'Figure 1. Baseline equivalence of the treatment and comparison groups.';
-                                    var nextstep = 'The Coach added a &ldquo;Treatment&rdquo; variable to your dataset that identifies which ' + basicsUsers + ' are in the treatment and comparison groups. <strong>Download this revised dataset.</strong> Later, you will add your evaluation results to it and the &ldquo;Get Results&rdquo; tool will use it to determine whether your educational technology is moving the needle.';
-                                    var balance, baseline_vars;
-                                    if (!data.randomize_success[0]) {
-                                        rSuccess = "<h2 style='margin-left:-40px' class='stop-warning'>Randomization did not produce balanced treatment and control groups. Please review the output below to see which characteristics could not be balanced. You can re-run randomization or <a href='mailto:edtechrce@mathematica-mpr.com'>contact us for assistance</a>.";
-                                    } else finaltext = nextstep;
 
-                                    var results_by_block = data.results_by_block;
-                                    var n_full_com = 0, n_full_treat = 0, n_matched = 0, n_matched_treat = 0;
 
-                                    $('#results').append(rSuccess);
-                                    for (var key in results_by_block) {
-                                        if (results_by_block.hasOwnProperty(key)) {
-                                            var imgid = "plot" + key;
-                                            var title = "";
-                                            // if (block_id) {title=block_id + " = " +  key; }
-                                            var block_object = results_by_block[key];
-                                            if (block_object.samples) {
-                                                n_full_com = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
-                                                n_full_treat = block_object.samples.n_treat[0];
+                                    $("#mresult").val(JSON.stringify(data));
+
+                                    if (data.randomize_success[0]) {
+
+                                        // Look for download path, in case ordering shifts.
+                                        var downloadPath = '';
+
+                                        for (var i = 0; i < responsePaths.length; i++) {
+                                            if (responsePaths[i].indexOf('/files/randomize-') > -1) {
+                                                downloadPath = responsePaths[i];
+                                                break;
                                             }
-
-                                            if (block_object.good_balance) {
-                                                if (block_object.good_balance[0] === null) {
-                                                    balance = "N/A (no baseline variables specified)";
-                                                } else {
-                                                    balance = block_object.good_balance[0] === true ? "Yes" : "No";
-                                                }
-                                            } else {
-                                                balance = "N/A";
-                                            }
-
-                                            //show block name if block specified
-                                            if (title) $('#results').append(title);
-                                            $('#results').append('<ul Style="margin-left:15px;"><li><span>Treatment group size:  ' + n_full_treat + ' </li><li><span>Comparision group size:  ' + n_full_com + ' </li><li><span>Balanced:  ' + balance + ' </span></li></ul>');
-
-
-                                            if (block_object.baseline_var_means) {
-                                                var x = document.createElement("TABLE");
-                                                var cap = x.createCaption();
-                                                cap.innerHTML = "Baseline characteristics of " + basicsUsers + "  in the evaluation sample.";
-                                                x.setAttribute("id", "table" + key);
-
-                                                $('#results').append(x);
-
-                                                baseline_vars = block_object.baseline_var_means;
-                                                for (var bvar in baseline_vars) {
-                                                    if (baseline_vars.hasOwnProperty(bvar)) {
-
-                                                        var row = x.insertRow(0);
-                                                        console.log(baseline_vars[bvar]);
-                                                        row.insertCell(0).innerHTML = "<span>" + bvar + "</span>";
-                                                        row.insertCell(1).innerHTML = "<span>" + baseline_vars[bvar].intervention[0] + "</span>";
-                                                        row.insertCell(2).innerHTML = "<span>" + baseline_vars[bvar].comparison[0] + "</span>";
-                                                        row.insertCell(3).innerHTML = "<span>" + baseline_vars[bvar].difference[0] + "</span>";
-                                                        row.insertCell(4).innerHTML = "<span>" + balance + "</span>";
-                                                    }
-                                                }
-                                                var header = x.createTHead();
-                                                var hrow = header.insertRow(0);
-                                                hrow.insertCell(0).outerHTML = "<th>Baseline Variable</th>";
-                                                hrow.insertCell(1).outerHTML = "<th>Treatment</th>";
-                                                hrow.insertCell(2).outerHTML = "<th>Comparison</th>";
-                                                hrow.insertCell(3).outerHTML = "<th>Difference</th>";
-                                                hrow.insertCell(4).outerHTML = "<th>Balanced</th>";
-
-                                            }
-
-                                            if (block_object.plot) {
-                                                $('#results').append('<div id= ' + imgid + ' class="shiny-plot-output shiny-bound-output" >' + '<img id=' + imgid + ' src=data:image/png;base64,' + block_object.plot + ' />' + '<p>' + figlabel + '<br/></p></div>');
-                                            }
-
                                         }
-                                        $('#results').append('<div><p style="margin-top:40px;">' + finaltext + '</p></div>');
-                                    }
 
-                                }
-                                $("#mresult").val(JSON.stringify(data));
-
-                                if (data.randomize_success[0]) {
-
-                                    // Look for download path, in case ordering shifts.
-                                    var downloadPath = '';
-
-                                    for (var i = 0; i < responsePaths.length; i++) {
-                                        if (responsePaths[i].indexOf('/files/randomize-') > -1) {
-                                            downloadPath = responsePaths[i];
-                                            break;
+                                        if (downloadPath !== '') {
+                                            $("#downloadPath").val(downloadPath);
+                                            console.log("download path = " + downloadPath);
                                         }
-                                    }
 
-                                    if (downloadPath !== '') {
-                                        $("#downloadData")
-                                            .removeClass("disabled");
-                                        $("#downloadData").removeClass("hidden")
-                                          .attr("target", "_blank")
-                                          .attr("href", $("#coreurl").val() + downloadPath).removeAttr("disabled");
+                                        $("#randomization").submit();
                                     }
                                 }
                             },

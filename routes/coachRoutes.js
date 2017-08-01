@@ -13,6 +13,7 @@
 var isLoggedIn = require('../middleware/isLoggedIn.js');
 var getCurrentEvaluation = require('../middleware/getCurrentEvaluation.js');
 var getAllEvaluations = require('../middleware/getAllEvaluations.js');
+var getAllEvalStats = require('../middleware/getAllEvalStats.js');
 var getAllPublications = require('../middleware/getAllPublications.js');
 var noCache = require('../middleware/noCache.js');
 var getSelectedEvaluations = require('../middleware/getSelectedEvaluations.js');
@@ -50,6 +51,12 @@ module.exports = function (app, passport) {
         query = require('url').parse(req.url, true).query;
         //res.render("test.html");
         res.render('userAdminDashboard.html', { user: req.user, userLists: sess.userLists, obj: query });
+    });
+	app.get('/statsAdmin/:fid', isLoggedIn, getAllEvalStats, function (req, res) {
+        sess = req.session;
+        query = require('url').parse(req.url, true).query;
+        //res.render("test.html");
+        res.render('statAdminDashboard.html', { user: req.user, evalStats: sess.evalStats, Title: sess.statsTitle, obj: query });
     });
 
     app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {
