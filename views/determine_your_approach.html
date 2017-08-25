@@ -62,7 +62,7 @@
                 <div class="col-xs-12">
                     <div class="tool-questions">
                         <div id="Can-Group">
-                            <div class="step-header container">
+                            <div class="step-header container first">
                                 <div data-toggle="collapse" data-target="#D">
                                     <h2 class="clickable">
                                         <i class="fa fa-caret-down" aria-hidden="false"></i>
@@ -254,7 +254,7 @@
                                                 var selected = ( eval.probAppr.Appr_How_Choose == "other" ) ? "selected" : "";
 
                                                 %>
-                                                <div class="panel-heading for-how-group <%= selected %>">
+                                               <div class="panel-heading for-how-group <%= selected %>">
 
 
 
@@ -327,7 +327,7 @@
                                                     <select name="prepareRandom[Cluster_Group]" id="Cluster_Group">
                                                         <%
                                                         var options = ["Select an option", "By class", "By school", "Other" ];
-                                                        var ovals = ["Select an option", "classes", "schools", "other" ];
+                                                        var ovals = ["Select an option", "classroom", "school", "other" ];
                                                         for ( var i = 0; i < options.length; i++ )
                                                         {
                                                         var selected;

@@ -11,10 +11,9 @@
 <head>
     <title>Share Your Results - Ed Tech RCE Coach</title>
 
-    
-
     <% include ../views/partials/_formatters.html %>
     <%
+
     if (display === undefined) display = 'online';
     if (display === 'online') { %>
     <% include ../views/partials/scriptHeader.html %>
@@ -32,11 +31,12 @@
     if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings"; 
     if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists"; }
     if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard"; }
+  //  console.log(defs);
     %>
 
 </head>
-
-<body class="brief <%- bodyclass %>">
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %> brief">
     <% if (display === 'online') { %>
     <div class="hidden-print">
         <% include ../views/partials/header.html %>
@@ -69,6 +69,9 @@
                 <div class="row">
                     <div>
                         <h1 class="tool-title">
+                            <% if(query.peeking == 1) { %>
+                            <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br />
+                            <% } %>
                             <%= defs.Cap_Basics_Tech_Name %>
                             Findings Brief
                         </h1>
@@ -102,10 +105,12 @@
             <div class="row no-page-break">
                 <div class="col-xs-12">
                     <h2>Summary of Results</h2>
-                    <p><%= defs.ResultSummary %></p>
+                    <div id="Result_Conclusion" class="container">
+                    <p style="font-size: larger;"><%= defs.ResultSummary %></p>
+                    </div>
                     <h3> Research Question</h3>
                     <% include ../views/partials/_researchQuestion.html %>
-                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> on <%= defs.Outcome_Measure %>.</p>
+                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by <%= defs.Outcome_Measure %>.</p>
                     <% if (display === 'online' && user != "NOAUTHENTICATED") { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
@@ -116,83 +121,13 @@
                     <h3> Findings</h3>
 
                     <%
-                    console.log("In Share results and has results = " + defs.hasResults);
-                
+                 
                     if (defs.hasResults) { %>
 
-                    <table class="resultsFig">
-                        <caption>
-                            Based on this evaluation's data, Figure 1. shows the effect of <%= defs.Basics_Tech_Name %>  on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %>. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> as measured by the <%= defs.Outcome_Measure %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
-
-                        </caption>
-                        <tr>
-                            <th scope="col">Grade</th>
-                            <th scope="col">Meeting your goal?</th>
-                            <th scope="col" style="width: 300px;">Probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> or more</th>
-                            <th scope="col">Estimated effect</th>
-                            <th scope="col">Comparison group average</th>
-                            <% if(defs.hasSample) { %>
-                            <th scope="col">Number of <%- defs.Basics_Users %> in treatment group</th>
-                            <th scope="col">Number of <%- defs.Basics_Users %> in comparison group</th>
-                            <% } %>
-                        </tr>
-
-                        <% for (grade in Result.results_by_grade) {
-
-                        var thisgrade = Result.results_by_grade[grade];
-                        console.log(thisgrade);
-                        var meetGoal = round10(thisgrade.interpretation.probability,0) >= round10(defs.Pass_Probability) ? "Yes" :"No";
-
-                        var thresholdStyle = "background:linear-gradient(to right, #C7C7C7 " + round10(defs.Fail_Probability,0) + "%, #D5D5D5 " + round10(defs.Fail_Probability,0) + "%, #D5D5D5 " + round10(defs.Pass_Probability,0) + "%, #f2f2f2 " + round10(defs.Pass_Probability,0) + "%)";
-
-                        var barStyle = "style='background-color: #5B9BD5; display:block;width:" + round10(thisgrade.interpretation.probability,0) + "%'";
-                        %>
-                        <tr>
-                            <td><%= grade %></td>
-                            <td><%= meetGoal %></td>
-                            <td class="prob-bar" style="width: 300px; padding: 0; <%=thresholdStyle %>">
-                                <div style="width: 300px; display: block;">
-                                    <span <%- barStyle %>>&nbsp;&nbsp;<%- round10(thisgrade.interpretation.probability)%>%</span>
-                                </div>
-                            </td>
-                            <td>
-                                <%= round10(thisgrade.impact) %>
-                            </td>
-                            <td>
-                                <% if (thisgrade.outcome_means) { %>
-                                <%= round10(thisgrade.outcome_means.comparison) %>
-                                <% } else { %>
-                                Not available <% if (query.sharing != 1) { %> , re-run get results
-                                <% } } %>
-                            </td>
-                            <% if(defs.hasSample) { %>
-                            <td>
-                                <%= round10(thisgrade.samples.n_full_treat) %>
-                            </td>
-                            <td>
-                                <%= round10(thisgrade.samples.n_full -thisgrade.samples.n_full_treat) %>
-                            </td>
-                        </tr>
-                        <% } %>
-                        <% } %>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td style="width: 300px; padding: 0;">
-                                <div style="display: block; padding: 8px 0; width: 300px;font-size:.8em;">
-
-                                    <div style="display: inline; padding: 0; margin-left: <%-round10(defs.Fail_Probability,0)-4%>%;"><%= round10(defs.Fail_Probability,0) %>%</div>
-                                    <div style="display: inline; padding: 0; margin-left: <%- round10(defs.Pass_Probability,0)- round10(defs.Fail_Probability,0) - 8 %>%;"><%= round10(defs.Pass_Probability,0) %>%</div>
-
-                                </div>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-
+                    <% include ../views/partials/_findingsTable.html %>
+                    <p>
+                        Table 1. shows the effect of <%= defs.Basics_Tech_Name %>  on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %> based on this evaluation's data. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by the <%= defs.Outcome_Measure %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
+                    </p>
                     <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
@@ -201,7 +136,10 @@
                     <% } %>
                     <% if (Result.args.cluster_var != "") { %>
                     <div class="note" style="margin-top: 15px;">
-                        <p>The sample sizes in Figure 1. represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level. Table 3 in the appendix shows the number of <%= defs.Cluster_Group %>s in each group.</p>
+                        <p>
+                            The sample sizes in Table 1. represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
+
+                        </p>
 
                     </div>
                     <% } %>
@@ -211,16 +149,20 @@
                         <h3 class="warning">Cautions</h3>
 
                         <ul>
-                            <li>These findings apply only to <%= defs.Basics_Users %> who were included in the final evaluation sample. Table 1 in the appendix summarizes the number of <%= defs.Basics_Users %> in each group. </li>
+                            <li>
+                                These findings apply only to <%= defs.Basics_Users %> who were included in the final evaluation sample. This means you should use caution when using these results to make decisions for <%= defs.Basics_Users %> who do not have the same characteristics as those included in the evaluation. <% if (defs.wasMatched) { %>
+                                Table A.<%= defs.Match_Summary_Tab_Num %> in the appendix shows the number of <%= defs.Basics_Users %> in each group before and after matching.
+                                <% } %>
+                            </li>
                             <%
                             if (defs.Cluster_Group_Warning) {
                             var ByGrades = defs.Results_By_Grade_Flag == "by grade" ? " for some grades " : "";
                             %>
                             <li>Since <%= ByGrades %> all <%= defs.Basics_Users %> <%= defs.Cluster_Group_Warning_Add_Not %> using <%= defs.Basics_Tech_Name %> belonged to one <%= Result.args.cluster_var %>, the effect of <%= defs.Basics_Tech_Name %> cannot be separated from other factors that may be unique to that <%= defs.Cluster_Group %>.</li>
                             <% }
-                            if (!defs.Balanced) {
+                            if (!defs.isBalanced) {
                             %>
-                            <li>The comparison and treatment groups do not meet the most rigorous similarity standards. Table 3 in the appendix summarizes the similarity between the comparison group and the treatment group on selected variables.</li>
+                            <li>The comparison and treatment groups are not very similar. As a general rule, we have less confidence in the results when the comparison and treatment groups are less similar. This means you should be cautious when interpreting these results and seek other information to inform your decisions. See table Tables A.<%= defs.BackGround_Tab_Num %> and A.<%= defs.Baseline_Tab_Num %> in the appendix for more information about the differences between the groups. </li>
                             <% } %>
                         </ul>
                     </div>
@@ -257,12 +199,16 @@
                         </div>
                         <div class="char-row-div">
                             <div class="char-label-div"> Key Components</div>
-                            <div class="char-content-div"> <%= defs.Components %>
+                            <div class="char-content-div">
+                                <%= defs.Components %>
                             </div>
                         </div>
-
-
-
+                        <div class="char-row-div">
+                            <div class="char-label-div"> Developer Implementation Guidelines</div>
+                            <div class="char-content-div">
+                                <%= defs.Developer_Guidelines %>
+                            </div>
+                        </div>
                         <div class="char-row-div">
                             <div class="char-label-div">Target Outcomes</div>
                             <div class="char-content-div">
@@ -274,7 +220,7 @@
                         <div class="char-row-div">
                             <p class="prev-answer hidden-print">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                                <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                <a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a>
                             </p>
                         </div>
                         <% } %>
@@ -316,19 +262,20 @@
                         </li>
                         <% if(defs.wasMatched && defs.Results_By_Grade_Flag == " by grade"){ %>
                         <li>
-                            <%= defs.Basics_Users %> were matched by grade.
+                            <span class="capitalize-one"><%= defs.Basics_Users %></span> were matched by grade.
                         </li>
 
                         <% }
-                        if (defs.wasMatched || defs.wasRandomized) {
+                        if ((defs.wasMatched || defs.wasRandomized) && defs.baselinetest_vars != "none selected") {
                         if (eval.path === 'path-random') {
                         baseline_tool = 'randomization';
                         } else if (eval.path === 'path-matching') {
                         baseline_tool = 'matching';
                         }
                         %>
+
                         <li>
-                            Baseline equivalence (or similarity between treatment and comparison groups before <%= defs.Basics_Tech_Name %> was introduced) was tested in the <%= baseline_tool %> tool using: <%- defs.match_vars_relabel.toString().replace(/,/g,', ') %>
+                            Baseline equivalence (or similarity between treatment and comparison groups before <%= defs.Basics_Tech_Name %> was introduced) was tested in the <%= baseline_tool %> tool using: <%- defs.baselinetest_vars.toString().replace(/,/g,', ') %>
                             <span class="baseline-vars-wordlist"></span>.
                         </li>
                         <% } else { %>
@@ -341,12 +288,12 @@
 
                         if (Result.args.control_vars.length > 0) { %>
                         <li>
-                            The analysis controlled for <span class="control-vars-wordlist"><%= Result.args.control_vars.join(", ") %></span>.
+                            The analysis controlled for <span class="control-vars-wordlist"><%= Result.args.control_vars.join(", ") %></span>. Summary statistics from the evaluation sample are shown in Table A.<%= defs.BackGround_Tab_Num %> in the appendix.
 
 
                         </li>
                         <% }
-                        if (defs.Results_By_Grade_Flag === "by grade") { %>
+                        if (defs.Results_By_Grade_Flag === " by grade") { %>
                         <li>
                             The analysis was conducted by grade.
                         </li>
@@ -361,62 +308,98 @@
                     } // end has results %>
 
 
-                    <h3><%= defs.Basics_Tech_Name %> Usage</h3>
+                    <%
+                    var sayclassroom = defs.Grades_Used.length > 1 ? defs.Grades_Used + " grade" : "";
+                    var saygrade = sayclassroom;
+                    if(defs.Classroom_Types.indexOf("Not reported") == -1) {
+                    sayclassroom = saygrade + " " + defs.Classroom_Types.toLowerCase() + " classrooms";
+                    }
+                    %>
+                    <div class="white-background-blue-border">
+                        <h3><%= defs.Basics_Tech_Name %> Implementation</h3>
 
-                    <ul>
-                        <%
-                        var saygrade = defs.Grades_Used.length > 1 ? defs.Grades_Used + " grade" : "";
-                        
-                        if(defs.Classroom_Types.indexOf("Not reported") == -1) {
-                            var sayclassroom = saygrade + " " + defs.Classroom_Types.toLowerCase() + " classrooms";
-                        %>
+                        <div class="char-row-div">
+                            <div class="char-label-div"> Setting</div>
+                            <div class="char-content-div"> <% if(sayclassroom.length > 0) { %>
+                                Used in <%- sayclassroom %>
 
-                        <li><%= defs.Basics_Tech_Name %> was used in  <%- sayclassroom %>.</li>
+                                <% } else {%>
+                                Not reported
+                                <% } %> </div>
+                        </div>
+
+                        <div class="char-row-div">
+                            <div class="char-label-div">Delivery Method</div>
+                            <div class="char-content-div">
+                                <span class="capitalize-one">
+                                    <%= defs.Delivery_Types.toLowerCase() %>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div">Evaluation Period</div>
+                            <div class="char-content-div">
+                                <span class="capitalize-one"><%= defs.Eval_Duration %></span>
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div"> Treatment Group Usage</div>
+                            <div class="char-content-div">
+                                <span class="capitalize-one">
+                                    <%= defs.Basics_Tech_Name %> was used 
+                                    <%= defs.Expected_Dosage %>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="char-row-div">
+                            <div class="char-label-div"> Implementation Considerations</div>
+                            <div class="char-content-div">
+                                <span class="capitalize-one">
+                                    <%= defs.Other_Notes %>
+                                </span>
+                            </div>
+                        </div>
+                      
+                        <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
+                        <p class="prev-answer hidden-print">
+                            <i class="fa fa-hand-o-right"></i> Where did I enter this information? See
+                            <a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a>
+                        </p>
                         <% } %>
-                        <li><%= defs.Basics_Tech_Name %> was delivered <%= defs.Delivery_Types.toLowerCase() %>. </li>
-                        <li>The <%= defs.Basics_Users %> in the treatment group used <%= defs.Basics_Tech_Name %> <%= defs.Expected_Dosage %>.</li>
-                        <li><%= defs.Developer_Guidelines %></li>
-                    </ul>
-                    <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
-                    <p class="prev-answer hidden-print">
-                        <i class="fa fa-hand-o-right"></i> Where did I enter this information? See
-                        <a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a>
-                    </p>
-                    <% } %>
+                    </div>
 
-                    <h3>Outcomes</h3>
 
-                    <ul>
-                        <li>
-                            <%= defs.Cap_Basics_Outcome %> was measured using <%= defs.Outcome_Measure %>.
-                        </li>
-                        <li>The <%= defs.Outcome_Measure %> results for treatment and comparison group <%= defs.Basics_Users %> ranged from a minimum of [min] to a maximum of [max].</li>
-                        <li>Table 3 in the appendix shows the average outcomes for the treatment and comparison groups without statistical adjustments. </li>
-                    </ul>
 
-                </div>
+
+
+                       
+
+                        <h3>Outcomes</h3>
+
+                        <ul>
+                            <li>
+                                <%= defs.Cap_Basics_Outcome %> was measured using <%= defs.Outcome_Measure %>.
+                            </li>
+                            <% if (defs.hasResults) { %>
+                            <li>In the dataset used for analysis, the <%= defs.Outcome_Measure %> results for treatment and comparison group <%= defs.Basics_Users %> ranged from a minimum of <%= defs.Outcome_Min %> to a maximum of <%= defs.Outcome_Max %>.</li>
+                            <% } %>
+                            <li>Table A.<%= defs.BackGround_Tab_Num %> in the appendix shows the average outcomes for the treatment and comparison groups without statistical adjustments. </li>
+                        </ul>
+
+                    </div>
             </div>
 
             <div class="row no-page-break">
                 <div class="col-xs-12">
                     <h2>Context for the Intervention</h2>
 
-                    <ul>
-                        <li>This evaluation studied <%= defs.Basics_Tech_Name %>'s impact on <%= saygrade %> <%= defs.Basics_Users %>.</li>
-                        <li>The evaluation period lasted <%= defs.Eval_Duration %>.</li>
-                        <li><%= defs.Other_Notes %></li>
-                    </ul>
-                    <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                    <p class="prev-answer hidden-print">
-                        <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
-                        <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
-                    </p>
-                    <% } %>
+                    <p>This evaluation studied <%= defs.Basics_Tech_Name %>'s impact on <%= saygrade %> <%= defs.Basics_Users %>.</p>
+                  
 
                     <div class="col-xs-12">
                         <div class="white-background-blue-border">
                             <div class="col-xs-5">
-                                <h3> Evaluation Context</h3>
+                                <h3> School/District Characteristics</h3>
                                 <div class="char-row-div">
                                     <div class="char-label-div-wide">
                                         School Type
@@ -497,7 +480,7 @@
                             <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
                             <p class="prev-answer hidden-print">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer the above? See
-                                <a class="redirect-link" href="/context_and_usage?return=shareresult">Context and Usage</a>
+                                <a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a>
                             </p>
                             <% } %>
                         </div>
@@ -529,12 +512,7 @@
             </div>
         </div>
 
-        <%
       
-        if ((defs.wasMatched || defs.wasRandomized) && defs.hasResults) { %>
-        <% include ../views/appendix.html %>
-
-        <% } %>
 
         <div id="data-issues-modal" class="modal fade hidden-print" role="dialog">
             <div class="modal-dialog">
@@ -610,7 +588,7 @@
                             <div class="col-xs-6">
                                 <label>Document</label><br />
                                 <input type="radio" name="download_route" value="shareresult" checked> Findings Brief<br>
-                                <input type="radio" name="download_route" value="appendix_<%- defs.pilot_type %>"> Technical Appendix<br>
+                                <input type="radio" name="download_route" value="appendix"> Technical Appendix<br>
                             </div>
                             <div class="col-xs-6">
                                 <label>File Format</label><br />

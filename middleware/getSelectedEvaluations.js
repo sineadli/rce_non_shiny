@@ -45,7 +45,7 @@ var getSelectedEvaluations = function (req, res, next) {
                 return next();
             } else {
 
-                if (evals) { sess.evalLists = evals; console.log(evals); return next(); }
+                if (evals) { sess.evalLists = evals;  return next(); }
                 return next();
             }
         });

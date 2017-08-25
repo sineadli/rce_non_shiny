@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="tool-questions">
-                        <div class="step-header container">
+                        <div class="step-header container first">
 
                             <div data-toggle="collapse" data-target="#A">
                                 <h2 class="clickable">
@@ -177,7 +177,7 @@
                                     var brk = "";
 
                                     %>
-
+                                    <input type="hidden" name="<%= cbname %>" value="deleted" />
                                     <input type="checkbox" id="<%= cbid %>" name="<%= cbname %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
                                     <label for="<%= cbid %>" <%- tallclass %> >
                                      <%= cbvalue %>
@@ -326,7 +326,7 @@
                                     if (i==1) brk = "<br />" ;
                                     }
                                     %>
-
+                                    <input type="hidden" name="<%= cbname %>" value="deleted" />
                                     <input type="checkbox" id="<%= cbid %>" name="<%= cbname %>" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
                                     <label for="<%= cbid %>">
                                         <%= cbvalue %>
@@ -401,12 +401,14 @@
                                     var cbname = names[i];
                                     var cbvalue = options[i];
                                     %>
-
+                                    <input type="hidden" name="<%= cbname %>" value="deleted" />
                                     <input type="checkbox" id="<%= cbid %>" name="<%= cbname %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
+
                                     <label for="<%= cbid %>">
                                         <%= cbvalue %>
 
                                     </label>
+                                   
                                     <%
                                     }
                                     %>
@@ -437,7 +439,7 @@
                                     <div id="Question_Outcome_Other" hidden="true" style="padding-left: 20px;">
                                         <p>
                                             <label for="Basics_Outcome_Other">Please specify:</label>
-
+                                           
                                             <input type="text" name='basics[Basics_Outcome_Other]' id="Basics_Outcome_Other" value="<%= eval.basics.Basics_Outcome_Other %>" />
                                         </p>
                                     </div>
@@ -480,7 +482,7 @@
                                     if (i==taller[j]) tallclass= "class='tall-box'" ;
                                     }
                                     %>
-
+                                    
                                     <input type="checkbox" id="<%= cbid %>" name="planContext[Outcomes][]" class="cus-input" value="<%= cbvalue %>" <%- checked %>/>
                                     <label for="<%= cbid %>" tabindex="0" <%- tallclass %> >
                             <%- cblabel %> <%- addtip %></label>
@@ -584,7 +586,7 @@
                                     var brk = "";
                                     if(i == breaks) brk="<br />";
                                     %>
-
+                                    <input type="hidden" name="<%= cbname %>" value="deleted" />
                                     <input type="checkbox" id="<%= cbid %>" name="<%= cbname %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
                                     <label for="<%= cbid %>">
                                         <%= cbvalue %>
@@ -632,7 +634,7 @@
                                     cbname = names[i];
                                     var cbvalue = options[i];
                                     %>
-
+                                    <input type="hidden" name="<%= cbname %>" value="deleted" />
                                     <input type="checkbox" id="<%= cbid %>" name="<%= cbname %>" class="cus-input" value="<%= cbvalue %>" <%- checked %> />
                                     <label for="<%= cbid %>">
                                         <%= cbvalue %>

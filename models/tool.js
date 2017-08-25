@@ -41,12 +41,17 @@ var toolSchema = mongoose.Schema({
 });
 
 toolSchema.methods.setPeekingNote = function (sess) {
+	if (!sess.defaults) {
+        sess.defaults = {};
+    } 
    // console.log("session step = " + sess.step + " and tool step = " + this.coachStep);
-	if (this.coachStep > 3) {
-		sess.defaults.peekingnote = this.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "Based on your answers in &ldquo;Determine Your Approach,&rdquo; you do not need to use this tool to complete your evaluation.";
-	} else {
-		sess.defaults.peekingnote = "You need to complete &ldquo;The Basics&rdquo; before you can use this tool.";
-	}
+    if (this.coachStep > 5) {
+        sess.defaults.peekingnote = this.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "You need to complete &lsquo;Summarize Context&rdquo; and &lsquo;Get Results&rdquo; before you can complete this tool.";
+    } else if (this.coachStep > 3) {
+        sess.defaults.peekingnote = this.path == "" ? "You need to complete &ldquo;Determine Your Approach,&rdquo; before you can use this tool." : "Based on your answers in &ldquo;Determine Your Approach,&rdquo; you do not need to use this tool to complete your evaluation.";
+    } else {
+        sess.defaults.peekingnote = "You need to complete &ldquo;The Basics&rdquo; before you can use this tool.";
+    }
 
     return;
 };

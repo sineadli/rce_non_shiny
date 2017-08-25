@@ -1,0 +1,596 @@
+<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+<html>
+<head>
+    <title>Matching</title>
+
+    <% include ../views/partials/scriptHeader.html %>
+    <% include ../views/partials/_formatters.html %>
+
+   
+
+</head>
+<% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
+<body class="<%- peekingThis %> brief">
+    <% include ../views/partials/header.html %>
+    <% if (user != "NOAUTHENTICATED") { %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/coach"><span class="fa fa-caret-left"></span> Back to Preparing Your Data</a></li>
+    </ol>
+    <% if (message.length>0) { %>
+    <div class="alert alert-success"><%= message %></div>
+    <% } %>
+    <% include ../views/partials/toolHeader.html %>
+    <% var newUploadTitle = "Upload your data"
+    } %>
+
+
+<form action="/matching" method="post" id="matching">
+    <%
+
+    if (eval.matching) {
+
+    if (eval.matching.Result) Result = eval.matching.Result;
+    }
+    %>
+<input type="hidden" id="user_email" value="<%= user %>"/>
+<input type="hidden" id="coreurl" value="<%= defs.shiny_url %>" />
+<div class="container-fluid">
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="tool-top">
+            <div class="dl-guide">
+                <a onclick="window.open('/static/pdf/Matching Overview.pdf', ''); return false;" href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+            </div>
+            <div class="tool-header">
+                <h1 class="tool-title">
+                    <% if(query.peeking == 1) { %>
+                    <span title="<%- defs.peekingnote %>" data-toggle="tooltip" class="tooltip-gr peeking-pretitle">PEEKING AT</span><br/>
+                    <% } %>
+                    Build Your Evaluation Sample Using Matching
+                </h1>
+                <div class="tool-intro">
+                    <p>Compare apples to apples by creating a comparison group that is similar to the group using the technology. </p>
+
+                </div>
+                <div class="tool-help">
+                    <p>
+                        <b>Challenge.</b> You want to compare outcomes for people who used a technology to outcomes for those who didn&rsquo;t, but technology users can differ from non-users in important ways. For example, if all students are provided access to an optional reading technology, the ones who choose to use it might be the students who are already reading at or above grade-level. To get a good estimate of the effect of the technology, you want to compare students with similar reading levels and characteristics. See the <a target="_blank" href="../static/pdf/Matching%20Overview.pdf">Matching Overview</a> to learn more.
+                    </p>
+                    <p>
+                        <b>Solution:</b> You can match each technology user to a non-user who is very similar on important characteristics. By comparing outcomes for these matched groups of users and non-users, you will be able to get better information about whether or not the technology is moving the needle.
+                    </p>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+<div class="tool-questions">
+<div class="step-header container first">
+    <div data-toggle="collapse" data-target="#A">
+        <h2 class="clickable">
+            <i class="fa fa-caret-<%= defs.miconFirst %>" aria-hidden="<%= defs.mhideFirst %>"></i> Describe your sample
+        </h2>
+    </div>
+</div>
+    <div id="A" class="row  collapse <%= defs.minFirst %> q-row">
+        <div class="col-xs-7">
+            <div class="step-subquestion">
+
+                <h4> <label for="Intervention_Group_Desc">The group that used <%= defs.Basics_Tech_Name %> (the treatment group) includes:</label></h4>
+
+            </div>
+            <div class="step-action">
+
+                <textarea name="planQuestion[Intervention_Group_Desc]" id="Intervention_Group_Desc" rows="2" placeholder="Ex. 5th grade English learners who used eZumi Learning in their classrooms" class="shiny-bound-input"><%= eval.planQuestion.Intervention_Group_Desc %></textarea>
+                <% if (user != "NOAUTHENTICATED") { %>
+                <p class="prev-answer">
+                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=matching">Craft Your Research Question</a>
+                </p>
+                <% } %>
+
+            </div>
+            <div class="step-subquestion">
+                <h4>
+                    <label for="Comparison_Group_Desc">The group that did not use <%= defs.Basics_Tech_Name %> (the potential members of the comparison group) includes:</label>
+                </h4>
+
+            </div>
+            <div class="step-action">
+
+                <textarea name="planQuestion[Comparison_Group_Desc]" id="Comparison_Group_Desc" rows="2" placeholder="Ex. similar 5th grade English Learners with no access to eZumi Learning" class="shiny-bound-input"><%= eval.planQuestion.Comparison_Group_Desc %></textarea>
+                <% if (user != "NOAUTHENTICATED") { %>
+                <p class="prev-answer">
+                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=matching">Craft Your Research Question</a>
+                </p>
+                <% } %>
+
+            </div>
+            <div class="step-subquestion">
+
+
+                <h4>
+                    <label for="Targeted_Access">Was use of <%= defs.Basics_Tech_Name %> targeted in any way, for example, to low performing students, or English learners? </label>
+
+                </h4>
+            </div>
+            <div class="step-action">
+                <select name="matching[Targeted_Access]" id="Targeted_Access">
+                    <%
+                    var options = ["Select an option", "Yes", "No" ];
+                    var ovals = ["Select an option", "yes", "no" ];
+                    for ( var i = 0; i < options.length; i++ ) {
+                    var selected = (eval.matching.Targeted_Access == ovals[i] ) ? "selected" : "";
+
+                    %>
+                    <option value="<%=ovals[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
+                    <% } %>
+
+                </select>
+                <div id="Question_Targeted_Desc" hidden="true">
+                    <p>
+                        <label for="Target_Group_Desc">What were the characteristics of the group selected to use <%= defs.Basics_Tech_Name %>?</label>
+                        <textarea name="matching[Target_Group_Desc]" rows="2" placeholder="Ex. In intervention group, all 5th grade English Learners were given access to the eZumi technology." class="shiny-bound-input"><%= eval.matching.Target_Group_Desc %></textarea>
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xs-5">
+            <div class="step-to-consider">
+
+                <div class="panel-group" id="ttc2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading accordion-toggle">
+                            <h3 class="panel-title sec-label clickable">
+
+                                <a data-toggle="collapse" data-parent="#ttc2" href="#consider2">
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                    Things to Consider
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="consider2" class="panel-collapse collapse in">
+
+                            <p>The information about the treatment and comparison groups is from your research question. You can edit the descriptions to make corrections or provide more detail. </p>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading accordion-toggle">
+                            <h3 class="panel-title sec-label clickable">
+
+                                <a data-toggle="collapse" data-parent="#ttc2" href="#example2">
+                                    <i class="fa fa-caret-right" aria-hidden="true"></i>
+                                    Example
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="example2" class="panel-collapse collapse">
+                            <ul>
+                                <li>Treatment group: seven schools that used Everest Learning Lab in their fifth grade classrooms</li>
+                                <li>Comparison group: five schools that did not use Everest Learning Lab</li>
+                                <li>Targeted: in treatment group schools, students in the bottom half of the class on the 2014 K-PREP test were given access</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="results" >
+        <% if(defs.wasMatched) {
+        var tabcounter = 0;
+        var MResult = "";
+        var MResult = JSON.parse(eval.matching.Result);
+        newUploadTitle = "Upload your data to re-run matching"
+        %>
+        <div class="step-header container">
+            <div data-toggle="collapse" data-target="#R">
+
+                <h2 class="clickable">
+                    <i class="fa fa-caret-down" aria-hidden="false"></i> Matching Results
+                </h2>
+               
+               
+            </div>
+        </div>
+        <div id="R" class="row  collapse in q-row">
+            <div class="col-xs-12">
+                <div class="step-subquestion">
+                    <div id="Result_Conclusion" class="container">
+                        <h3><%= defs.mSuccess %></h3>
+                    </div>
+                    <% include ../views/partials/_matchingResultSummaryTable.html %>
+                    <% include ../views/partials/_matchingResultFigures.html %>
+                    <% include ../views/partials/_WWCStandards.html %>
+
+                    <div class="clearfix"></div>
+                    <div id="downloadDataDiv" class="hidden">
+                        <p>
+                            The Coach added a &ldquo;Treatment&rdquo; variable to your dataset that identifies which <%= defs.Basics_Users %> are in the treatment and comparison groups. <strong>Download this revised dataset</strong> to use with the <strong>Get Results</strong> tool to determine whether your educational technology is moving the needle.
+                        </p>
+
+                        <div class="bottom-buttons">
+                            <a id="downloadData" class="btn btn-primary btn-lg shiny-download-link  shiny-bound-output hidden" href="<%= defs.mDownloadPath %>" target="_blank">
+                                <i class="fa fa-download"></i>
+                                Download Revised Dataset
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+                </div>
+                <% } %>
+            </div>
+        <div class="step-header container">
+            <div data-toggle="collapse" data-target="#B">
+                <h2 class="clickable">
+                    <i class="fa fa-caret-down" aria-hidden="false"></i> <%= newUploadTitle  %>
+                </h2>
+            </div>
+        </div>
+        <div id="B" class="row  collapse in q-row">
+            <div>
+                <div class="col-xs-7">
+                    <div class="step-subquestion">
+                        <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
+                        <p>
+                            Your data file should have one row for each one of the <%= defs.Basics_Users %> in your sample and one column for each data field (for example, test scores and background characteristics). The file must include any characteristics you want to use for matching users with non-users and an indicator of who used the technology. For more information, please read <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a>.
+                        </p>
+                    </div>
+                    <div class="step-action">
+                        <p class="warning">
+                            Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
+                        </p>
+                        <input id="chosenfile" size="1" type="file" accept=".csv">
+                        <div id='loadingmessageUp' hidden>
+                            <div class="loading">
+                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                                <span class="sr-only">Loading...</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="before-upload">
+                        <div class="step-subquestion">
+                            <h4><label for="treat_var">Who is using <%= defs.Basics_Tech_Name %>?</label></h4>
+                            <p>Choose the name of the data field that distinguishes who is using <%= defs.Basics_Tech_Name %> from who isn't (1= users, 0 = non-users). </p>
+                            <p>
+                                <em class="stronger"><i class="fa fa-asterisk red"></i> Required</em>
+                            </p>
+                        </div>
+                        <div class="step-action ">
+                            <div>
+                                <select id="treat_var" class="multiselect from-upload required nodefault ">
+                                    <option value="">Select a data field</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="step-subquestion">
+                            <h4><label for="pretest">Select your pretest outcome measure.</label> </h4>
+                            <p>
+                                <em class="stronger"><i class="fa fa-asterisk"></i> Required</em>
+                            </p>
+                        </div>
+                        <div class="step-action ">
+                            <select id="pretest" class="multiselect from-upload nodefault">
+                                <option value="Select a variable" selected="selected">Select a data field</option>
+                            </select>
+
+                        </div>
+                        <div class="step-subquestion">
+                            <h4> Which characteristics matter when matching users to similar non-users? </h4>
+                            <p>
+                                <label for="match_vars">Select characteristics of your <%= defs.Basics_Users %> that could affect <%= defs.Basics_Outcome %>.</label>
+                            </p>
+                            <p>
+                                <em class="stronger"><i class="fa fa-asterisk"></i> More than one is recommended.</em>
+                            </p>
+                        </div>
+                        <div class="step-action  ">
+                            <select id="match_vars" name="match_vars" class="multiselect from-upload required" multiple="multiple">
+                                <option value="Select matching variables">Select matching variables</option>
+                            </select>
+                        </div>
+                        <div class="step-subquestion">
+                            <h4>Should matched <%= defs.Basics_Users %> always be in the same grade?</h4>
+                            <p>In some cases it is important that matched pairs of students are always in the same grade, to ensure comparability. If this is not relevant or is not a concern for your evaluation&mdash;for example, if you&rsquo;re using a vertically scaled assessment&mdash;leave "match any grade" selected. Otherwise, please select the name of the data field that indicates student grade. </p>
+                        </div>
+                        <div class="step-action ">
+                            <label for="grade_var" class="hidden">please select the name of the data field that indicates student grade. If grade is not relevant, leave as match any grade.</label>
+                            <select id="grade_var" class="multiselect from-upload required nodefault ">
+                                <option value="match any grade" selected="selected">match any grade</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <div class="step-to-consider">
+                        <div class="panel-group" id="ttc3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title sec-label clickable">
+
+                                        <a data-toggle="collapse" data-parent="#ttc3" href="#consider3">
+                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                            Things to Consider
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div id="consider3" class="panel-collapse collapse in">
+
+                                    <p>
+                                        The Coach suggests that you create an anonymous ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will enable you to add more information or link files in the future.
+                                    </p>
+                                    <div class="before-upload">
+                                        <p>
+                                            It is most important that users and non-users had similar <%= defs.Basics_Outcome %> levels before they started using <%= defs.Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
+                                        </p>
+                                        <p>
+                                            You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology.
+                                        </p>
+                                    </div>
+                                    <p>
+                                        Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                                    </p>
+                                    <p>
+                                        For more information on how the Coach conducts matching you can refer to the <a href="/static/pdf/Matching Technical Appendix.pdf" target="_blank">Matching Technical Appendix</a>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div id="error" class="col-xs-11"></div>
+                <div id='loadingmessage' hidden>
+                    <div class="loading">
+                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+
+                    </div>
+                </div>
+
+                <div id="shinybuttons" class="bottom-buttons hidden ">
+                    <button id="match" type="button" data-action="/shareresult" class="btn btn-primary btn-lg " disabled="disabled">MATCH</button>
+                </div>
+               
+
+
+            </div>
+
+
+
+        </div> <!--end class=body-section-->
+    </div>
+</div>
+</div>
+    <div id="warning-modal" class="modal fade hidden-print" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">This may take a few minutes.</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div>
+                            <p style="padding: 20px;">Depending on the number of participants in your evaluation and the number of baseline variables, matching could take several minutes. Please stay on this page. </p>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">OK</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="hidden">
+    <input type="hidden" name="basicsUsers" id="basicsUsers" value="<%= defs.Basics_Users %>"/>
+ 
+    <input type="hidden" name="matching[DownloadPath]" id="downloadPath" value='<%= (eval.matching.DownloadPath) ? (eval.matching.DownloadPath) : "" %>'/>
+  
+    
+    <input type="hidden" name="matching[Result]" id="mresult"  value='<%= (eval.matching.Result) ? eval.matching.Result : "" %>'/>
+</div>
+<% include ../views/partials/toolButtons.html %>
+</form>
+<% include ../views/partials/footer.html %>
+
+    <script>
+        $(document).ready(function() {
+            var value = $("#Targeted_Access").val();
+            var descSpecify = $("#Question_Targeted_Desc");
+            if (value.toLowerCase() === "yes") descSpecify.show();
+            $('.multiselect').multiselect();
+
+             IfDownloadFile($("#downloadPath").val());
+           
+
+        });   
+
+        $("#Targeted_Access").change(function () {
+
+            var value = $("#Targeted_Access").val();
+
+            var descSpecify = $("#Question_Targeted_Desc");
+            if (value.toLowerCase() === "yes") descSpecify.show();
+            else {
+                $("#Target_Group_Desc").val("");
+                descSpecify.hide();
+            }
+        });
+
+        $("#treat_var").change(function () {
+            enablebuttons();
+        });
+        $("#grade_var").change(function () {
+            enablebuttons();
+        });
+        $("#pretest").change(function () {
+            enablebuttons();
+        });
+        $("#match_vars").change(function () {
+            enablebuttons();
+        });
+
+        $("#chosenfile").change(function () {
+            var formData = new FormData();
+            $('#loadingmessageUp').show();
+            formData.append("data", $(this)[0].files[0]);
+            $.ajax({
+                url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/csv_colnames/json",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    $('#loadingmessageUp').hide();
+                    $("select.from-upload").empty();
+                    $(".before-upload").addClass("after-upload");
+                    $(".after-upload").removeClass("before-upload");
+                    $("#grade_var")
+                      .append($("<option></option>")
+                      .attr("value", "match any grade")
+                      .text("Match any grade"));
+                    $("select.nodefault")
+                       .append($("<option></option>")
+                       .attr("value", "None selected")
+                       .text("None selected"));
+                    $.each(data.colnames, function (index, value) {
+                        $("select.from-upload")
+                          .append($("<option></option>")
+                          .attr("value", value)
+                          .text(value));
+                    });
+                    $('.multiselect').multiselect('destroy');
+                    $('.multiselect').multiselect();
+                    $("#shinybuttons").removeClass("hidden");
+                    //$("#match").prop("disabled", false);
+                }
+            });
+        });
+        $("#match").click(function () {
+            $('#results').html("");
+            $('#error').html("");
+            $('#loadingmessage').show();
+            $('#warning-modal').modal("show");
+            var formData = new FormData();
+            var match_vars = $("#match_vars").val();
+            //match_vars.push($("#pretest").val());
+            if (match_vars && $("#pretest").val() !== "None selected") {
+                match_vars.push($("#pretest").val());
+            } else match_vars = $("#pretest").val();
+            $("#s_treat_var").val(JSON.stringify($("#treat_var").val()));
+            $("#s_match_vars").val(JSON.stringify(match_vars));
+            $("#s_grade_var").val(JSON.stringify($("#grade_var").val()));
+
+            console.log("treat_var: " + JSON.stringify($("#treat_var").val()));
+            console.log("match_vars: " + JSON.stringify(match_vars));
+            console.log("grade_var: " + JSON.stringify($("#grade_var").val()));
+            
+            formData.append("data", $("#chosenfile")[0].files[0]);
+            formData.append("treat_var", JSON.stringify($("#treat_var").val()));
+            formData.append("match_vars", JSON.stringify(match_vars));
+            formData.append("grade_var", JSON.stringify($("#grade_var").val()));
+         
+            $.ajax({
+                url: $("#coreurl").val() + "/ocpu/library/edtechrce/R/matching",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    var responsePaths = data.split("\n");
+          
+                    $.ajax({
+                        url: $("#coreurl").val() + responsePaths[0] + "/json",
+                        type: "GET",
+                        success: function (data) {
+
+                            $('#loadingmessage').hide();
+                            $('#warning-modal').modal("hide");
+                            var error = data.error_message[0];
+                      
+                            if (error) {
+                                $('#error').append('<h2 class="stop-warning">There appears to be something wrong with your data set.</h2>  <p>Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance.</p><p>Detailed error message: ' + error + '</p>');
+                                return;
+                            } else {
+                          
+                                $("#mresult").val(JSON.stringify(data));
+                             
+
+                                // Look for download path, in case ordering shifts.
+                                var downloadPath = '';
+
+                                for (var i = 0; i < responsePaths.length; i++) {
+                                    if (responsePaths[i].indexOf('/files/matching-') > -1) {
+                                        downloadPath = responsePaths[i];
+                                        break;
+                                    }
+                                }
+                              
+                                if (downloadPath !== '') {
+                                    $("#downloadPath").val(downloadPath);
+                                   
+                                }
+                                
+                                $("#matching").submit();
+                            }
+                        },
+                        error: function (xhr) {
+                                $('#loadingmessage').hide();
+                             
+                                var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
+                                $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                            }
+                    });
+                },
+                    error: function (xhr) {
+                        $('#loadingmessage').hide();
+                        
+                        var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
+                        $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                    }
+            });
+        });
+   
+    function enablebuttons() {
+        if ($("#treat_var").val() !== "None selected" && $("#grade_var").val() !== "None selected"
+            && $("#pretest").val() !== "None selected" ) {
+            $("#match").prop("disabled", false);
+        }
+        else {
+            $("#match").prop("disabled", true);
+        }
+      
+    }
+
+    //init feedback_me plugin
+    var fm_options = setFeedbackOptions($("#user_email").val(), "matching");
+    fm.init(fm_options);
+    </script>
+</body>
+</html>

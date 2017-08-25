@@ -1,0 +1,87 @@
+﻿
+<table class="resultsFig">
+    <caption>
+        Table 1. The effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %> based on this evaluation's data.
+
+    </caption>
+    <tr>
+        <th scope="col">Grade</th>
+        <th scope="col">Meeting your goal?</th>
+        <th scope="col" style="width: 300px;">Probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> or more</th>
+        <th scope="col">Estimated size of <%= defs.Outcome_Direction %></th>
+        <th scope="col">Comparison group average</th>
+        <% if(defs.hasSample) { %>
+        <th scope="col">Number of <%- defs.Basics_Users %> in treatment group</th>
+        <th scope="col">Number of <%- defs.Basics_Users %> in comparison group</th>
+        <% } %>
+    </tr>
+
+    <% for (grade in Result.results_by_grade) {
+
+    var thisgrade = Result.results_by_grade[grade];
+
+    var meetGoal = round10(thisgrade.interpretation.probability,0) >= round10(defs.Pass_Probability) ? "Yes" :"No";
+
+    var thresholdStyle = "background:linear-gradient(to right, #C7C7C7 " + round10(defs.Fail_Probability,0) + "%, #D5D5D5 " + round10(defs.Fail_Probability,0) + "%, #D5D5D5 " + round10(defs.Pass_Probability,0) + "%, #f2f2f2 " + round10(defs.Pass_Probability,0) + "%)";
+
+    var barStyle = "style='background-color: #5B9BD5; display:block;width:" + round10(thisgrade.interpretation.probability,0) + "%'";
+    %>
+    <tr>
+        <td><%= grade %></td>
+        <td><%= meetGoal %></td>
+        <td class="prob-bar" style="width: 300px; padding: 0; <%=thresholdStyle %>">
+            <div style="width: 300px; display: block;">
+                <span <%- barStyle %>>&nbsp;&nbsp;<%- round10(thisgrade.interpretation.probability)%>%</span>
+            </div>
+        </td>
+        <td>
+            <%- round10(thisgrade.impact, 0) %>
+        </td>
+        <td>
+            <% if (thisgrade.outcome_means) { %>
+            <%= round10(thisgrade.outcome_means.comparison) %>
+            <% } else { %>
+            Not available <% if (query.sharing != 1) { %> , re-run get results
+            <% } } %>
+        </td>
+        <% if(defs.hasSample) { %>
+        <td>
+            <%= round10(thisgrade.samples.n_full_treat) %>
+        </td>
+        <td>
+            <%= round10(thisgrade.samples.n_full -thisgrade.samples.n_full_treat) %>
+        </td>
+    </tr>
+    <% } %>
+    <% } %>
+    <tr style="border-bottom: none">
+        <td></td>
+        <td></td>
+        <td style="width: 300px; padding: 0;">
+            <div style="display: block; padding: 4px 0; width: 300px; font-size: .8em;">
+
+                <div style="display: inline; padding: 0; margin-left: <%-round10(defs.Fail_Probability, 0) -4%>%;"><%= round10(defs.Fail_Probability,0) %>%</div>
+                <div style="display: inline; padding: 0; margin-left: <%- round10(defs.Pass_Probability, 0)- round10(defs.Fail_Probability, 0) - 8 %>%;"><%= round10(defs.Pass_Probability,0) %>%</div>
+
+            </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr style="border: none">
+        <td></td>
+        <td></td>
+        <th style="width: 300px; padding: 0;">
+            <div style="display: block; padding: 0px 0; width: 300px; font-size: .8em; border: none;">
+
+                <div style="text-align: center; margin-left: <%-round10(defs.Fail_Probability, 0)%>%; width: <%- round10(defs.Pass_Probability, 0)- round10(defs.Fail_Probability, 0)%>%">Thresholds</div>
+            </div>
+        </th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>

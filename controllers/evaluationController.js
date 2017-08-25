@@ -35,9 +35,15 @@ function updateLastTool(sess, toollist) {
 var renderDownloadVersion = function (req, res, thispath) {
 	var query = require('url').parse(req.url, true).query;
     var obj = req.body;
+	var downloadRoute = obj.download_route;
 
+	var filenameMap = {
+                    shareresult: 'findings-brief',
+                    appendix: 'technical-appendix',
+					evaluation_plan: 'evaluation_plan'
+                };
 
-	res.render(thispath.substring(1) + ".html", {
+	res.render(downloadRoute + ".html", {
 		user: req.user,
 		eval: req.session.eval,
 		defs: req.session.defaults,
@@ -51,7 +57,7 @@ var renderDownloadVersion = function (req, res, thispath) {
 			} else {
 		
 				if (obj.file_format === 'html') {
-					res.setHeader('Content-disposition', 'attachment; filename="evaluation-plan.html"');
+					res.setHeader('Content-disposition', 'attachment; filename="' + filenameMap[downloadRoute] + '.html"');
 					res.setHeader('Content-type', 'text/html');
 					res.write(html);
 					res.send();
@@ -62,12 +68,12 @@ var renderDownloadVersion = function (req, res, thispath) {
 						var wkhtmltopdf = require('wkhtmltopdf');
 
 						wkhtmltopdf(html).pipe(res);
-						res.setHeader('Content-disposition', 'attachment; filename="' + thispath.substring(1) + '.pdf"');
+						res.setHeader('Content-disposition', 'attachment; filename="' + filenameMap[downloadRoute] + '.pdf"');
 						res.setHeader('Content-type', 'application/pdf');
 
 					} catch (e) {
 
-						res.setHeader('Content-disposition', 'attachment; filename="' + thispath.substring(1) +'.html"');
+						res.setHeader('Content-disposition', 'attachment; filename="' + downloadRoute +'.html"');
 						res.setHeader('Content-type', 'text/html');
 						res.write(html);
 						res.send();
@@ -96,7 +102,13 @@ module.exports.getByEvalId = function(req, res, display) {
             var thisurl = thispath.substring(1) + '.html';
             var query = url.parse(req.url, true).query;
 
-		    getEvalDefaults(req.session, req.user);
+			getEvalDefaults(req.session, req.user);
+
+			console.log("this path = " + thispath);
+			if (display === "download") {
+				renderDownloadVersion(req, res, thispath);
+				return;
+			}
 
             res.render(thisurl, {
                     user: req.user,
@@ -164,7 +176,7 @@ module.exports.getByTool = function (req, res, display) {
 
 		//Geth this tools info
 		var thispath = url.parse(req.url, true).pathname;
-
+    console.log("this path = " + thispath);
 	if (display === "download") {
 		renderDownloadVersion(req, res, thispath);
 	    return;
@@ -175,7 +187,7 @@ module.exports.getByTool = function (req, res, display) {
             console.log(err);
             return done(err);
         }
-		tool.setPeekingNote(sess);
+		tool.setPeekingNote(sess);		
         sess.step = tool.coachStep;
 
 
@@ -233,9 +245,7 @@ module.exports.postByTool = function(req, res, display) {
     var sess = req.session;
     sess.valerrs = []; // Clear out old errors.sess.valerrs = []; 
 	var thispath = url.parse(req.url, true).pathname;
-	if (thispath.indexOf("_download") > 0) {
-		thispath = thispath.substring(0, thispath.indexOf("_download"));
-	}
+	
 	console.log("In post by tool and tool = " + thispath);
 	// There will be a return path if came to tool from a "where did I update this" link
     var returnpath = req.body.returnpath;
@@ -248,10 +258,11 @@ module.exports.postByTool = function(req, res, display) {
         if (err) {
             console.log(err);
             return done(err);
-        }
-		console.log("In post by tool and found tool = " + tool);
+        } 
+		//console.log("In post by tool and found tool = " + tool);
 		tool.setPeekingNote(sess);
         var toolstatus = req.body.status ? req.body.status : "complete";
+        console.log("In post by tool, tool name =  " + tool.name + " status = " + toolstatus);
         var toollist = { "name": tool.name, "status": toolstatus, "visited_at": new Date() };
         updateLastTool(sess, toollist);
 
@@ -266,20 +277,28 @@ module.exports.postByTool = function(req, res, display) {
 					if (evalup.hasOwnProperty(key)) {
 						if (typeof evalup[key] == "object" && typeof eval[key] != "undefined")
 							for (var nkey in evalup[key]) {
-								console.log("Saving and key = " + key + " and nkey = " + nkey);
-								if (typeof evalup[key][nkey] == "object") {
+								
+								if (typeof evalup[key][nkey] == "object" && !(Array.isArray(evalup[key][nkey]))) { 
 									for (var mkey in evalup[key][nkey]) {
-										console.log("Saving and mkey = " + mkey);
+										//console.log("Saving and mkey = " + mkey);
 										if ( typeof eval[key][nkey][mkey] != "undefined")
 										 {
 									        eval[key][nkey][mkey] = evalup[key][nkey][mkey];
 									    }
 									}
 								} else {
-									if (typeof eval[key][nkey] != "undefined" && typeof evalup[key][nkey] != "undefined")
-									 {
-										console.log("Saving and key = " + key + " and nkey = " + nkey);
-										eval[key][nkey] = evalup[key][nkey];
+									if (typeof eval[key][nkey] != "undefined" && typeof evalup[key][nkey] != "undefined") {
+									    var hold = evalup[key][nkey];
+										if (Array.isArray(hold)) {
+											hold = hold.filter(function (s) {
+												return s !== 'deleted';
+											});
+										
+										} else if (hold == "deleted") {
+											hold = "";
+										}
+										
+										eval[key][nkey] = hold;
 										
 								    }
 								};
@@ -290,7 +309,6 @@ module.exports.postByTool = function(req, res, display) {
             };
             eval.last_step = tool.coachStep;
             eval.last_tool = tool.name;
-            console.log(eval.matching.DownloadPath);
             eval.toolsvisited = req.session.eval.toolsvisited;
             eval.stepsclicked = req.session.eval.stepsclicked;
 

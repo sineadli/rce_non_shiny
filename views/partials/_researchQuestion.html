@@ -6,7 +6,7 @@ switch (last_tool) {
 			    rpath = "evaluation_plan";
 				break;
 			case "Share Your Results":
-                rpath= "shareresult";
+                rpath= "shareresult";               
 				break;
 			case "Get Results" :
                 rpath = "getresult";
@@ -40,18 +40,20 @@ switch (last_tool) {
 		}
   return rpath
 }
+var verb = "Does";
 
 var useMeasure = '';
 if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Result" && eval.last_tool != "Share Your Results" ) {
 useMeasure = " by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units + " on " + defs.Outcome_Measure + ",";
 var returnpath = GetReturnPath(eval.last_tool);
+
 }
 
-
+if(eval.last_tool == "Share Your Results") { verb = "Did";}
 
 if (user != "NOAUTHENTICATED") { %>
 <p>
-   Does
+   <%= verb %>
     <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>  <span class='change-direction'><%= defs.Outcome_Direction %></span> <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span><%- useMeasure %> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
 </p> 
 

@@ -47,7 +47,7 @@ module.exports = function (app, passport) {
     app.post('/admin', isLoggedIn, getSelectedEvaluations, function (req, res) {
         
         sess = req.session;
-        console.log(req.body.search);
+       // console.log(req.body.search);
         res.render('adminDashboard.html', { user: req.user, evalLists: sess.evalLists, obj: "" });
     });
     app.get('/api/admin/:search', isLoggedIn, getSelectedEvaluations, function (req, res) {
@@ -65,7 +65,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         query = require('url').parse(req.url, true).query;
         //res.render("test.html");
-        res.render('statAdminDashboard.html', { user: req.user, evalStats: sess.evalStats, Title: sess.statsTitle, obj: query });
+        res.render('StatAdminDashboard.html', { user: req.user, evalStats: sess.evalStats, Title: sess.statsTitle, obj: query });
     });
 
     app.get('/evaluations', isLoggedIn, getAllEvaluations, function (req, res) {

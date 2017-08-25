@@ -1,28 +1,41 @@
 ﻿<div class="no-page-break">
-    <% tabcounter = tabcounter + 1 %>
+    <% 
+    var tabprefix = "";
+    if(eval.last_tool == "Share Your Results"){
+    tabprefix = "A.";
+    }
+    var baselineTabNum = defs.Baseline_Tab_Num;
+    if(eval.last_tool == "Matching") {
+        baselineTabNum = defs.Baseline_Tab_Num - 1;
+    }
+    %>
     <table id="table2">
         <caption>
-            Table <%= tabcounter %>. WWC standards for baseline equivalence
+            Table <%= tabprefix %><%= baselineTabNum %>. WWC standards for baseline equivalence
         </caption>
 
         <thead>
             <tr>
                 <th>Absolute value of difference between groups</th>
-                <th>WWC conclusion on baseline equivalence</th>
+                <th>Balance</th>
+                <th>Conclusion</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>standardized difference &le; 0.05</td>
-                <td>Satisfies baseline equivalence requirement</td>
+                <td>Great</td>
+                <td>Satisfies similarity requirement</td>
             </tr>
             <tr>
                 <td>0.05 &lt; standardized difference &le; 0.25</td>
+                <td>Good</td>
                 <td>Requires statistical adjustment</td>
             </tr>
             <tr>
                 <td>0.25 &lt; standardized difference</td>
-                <td>Does not satisfy baseline equivalence requirement</td>
+                <td>Unbalanced</td>
+                <td>Does not satisfy similarity requirement</td>
             </tr>
         </tbody>
     </table>

@@ -65,7 +65,7 @@ var getAllEvalStats = function(req, res, next) {
                   
                     var maxstep = 0;
                     var maxstatus = 0.0;
-
+				
                     console.log(evals.length);
                     for (var thiseval in evals) {
                         var eval = evals[thiseval];
@@ -73,8 +73,14 @@ var getAllEvalStats = function(req, res, next) {
 
 
                         maxstep = tempArray[0] + maxstep;
-                        var status = textHelpers.stripPercent(eval.status);
-                        maxstatus = status + maxstatus;
+					var status = textHelpers.stripPercent(eval.status);
+                  //  if(status == "NaN"){ console.log("status = " + status);}  
+					if (typeof status == "number") {
+						//console.log("status num = " + status);
+						maxstatus = status + maxstatus;
+							 
+						}
+					
 
                         eval.toolsvisited.forEach(function(vtool) {
                             UpdateStats(vtool, evalStats);

@@ -110,6 +110,12 @@ $(document).ready(function() {
 	$('button#Save').click(function () {
 		$('#status').val('started');
 	});
+	$('button#match').click(function () {
+		$('#status').val('started');
+	});
+	$('button#match').click(function () {
+		$('#status').val('started');
+	});
 
 	$(".redirect-link").click(function (e) {
 		e.preventDefault();
@@ -121,9 +127,8 @@ $(document).ready(function() {
 	});
 
 	$(".capitalize-one").each(function () {
-		var x = $(this).text();
-		;
-		$(this).text(capitalize(x));
+		var x = $(this).text().trim();
+		if(x.length > 0) {$(this).text(capitalize(x));}
 	});
 
 	
@@ -131,22 +136,27 @@ $(document).ready(function() {
    }); //<-end document.ready
 
 
+
 function UrlExists(url) {
     var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
+    http.open('GET', url, false);
     http.send();
-    return http.status === 200;
+	console.log("Status = " + http.status);
+    return http.status == 200;
 }
 
 function IfDownloadFile(dl) {
-	if (dl !== '') {
-		$("#downloadData")
-			.removeClass("disabled");
-	    $("#downloadDataDiv").removeClass("hidden");
-		$("#downloadData").removeClass("hidden")
-			.attr("target", "_blank")
-			.attr("href", $("#coreurl").val() + $("#downloadPath").val()).removeAttr("disabled");
-	}
+	var url = $("#coreurl").val() + dl;
+  // alert("does url exist " + UrlExists(url));  
+   if (UrlExists(url)) {
+            $("#downloadData")
+                .removeClass("disabled");
+            $("#downloadDataDiv").removeClass("hidden");
+            $("#downloadData").removeClass("hidden")
+                .attr("target", "_blank")
+                .attr("href", $("#coreurl").val() + $("#downloadPath").val()).removeAttr("disabled");
+        }
+    
 }
 
 function capitalize(x) {
@@ -190,16 +200,16 @@ function techNameUpdate(t) {
 }
 function outcomeUpdate(t) {
 
-	var value = $(t).val();
+	var value = $(t).val().toLowerCase();
 
 	var otherSpecify = $("#Question_Outcome_Other");
-	if (value.toLowerCase() === "other") otherSpecify.show();
+	if (value === "other") otherSpecify.show();
 	else {
 		$("#Basics_Outcome_Other").val("");
 		otherSpecify.hide();
 	}
 
-	if (value.toLowerCase() !== "other" && value.toLowerCase() !== "select an option") {
+	if (value !== "other" && value !== "select an option") {
 		$(".eval-outcome").text(value);
 	} else {
 		$(".eval-outcome").text("B");
@@ -449,7 +459,7 @@ function ShowClusterOther(t) {
 
     if (value.toLowerCase() === "other") otherSpecify.show();
 	else {
-		$("#Cluster_Group_Otherr").val("");
+		$("#Cluster_Group_Other").val("");
 		otherSpecify.hide();
 	}
 
@@ -487,7 +497,7 @@ function setUserLimitsSelections() {
         scluster = 'class';
     }
 	else if (cluster === 'other') {
-	    scluster = 'groups';
+	    scluster = 'group';
 	}else scluster = cluster.substr(0, cluster.length - 1);
 
 	var ocluster = $('#Cluster_Group_Other').val();

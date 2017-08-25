@@ -61,7 +61,9 @@
                     </p>
                 <% } %>
 
-                    <% if (defs.wasMatched) { %>
+                <% if (defs.wasMatched) {
+                tabcounter++;
+                    %>
 
                     <% include ../views/partials/_matchingResultSummaryTable.html %>
 
@@ -94,7 +96,7 @@
                         %>
 
 
-                        Large differences on important characteristics (like a baseline test) mean you should interpret the estimated effect of the intervention with caution. Differences in the outcome may be caused in part by pre-existing differences between the two groups. Table <%= tabcounter %> summarizes key characteristics of the final sample and presents the difference between the two groups. You can check if the final sample is balanced by comparing the absolute value of the standardized difference from Table <%= tabcounter %> to the values indicated in Table <%= tabcounter+1 %>.
+                        Large differences on important characteristics (like a baseline test) mean you should interpret the estimated effect of the intervention with caution. Differences in the outcome may be caused in part by pre-existing differences between the two groups. Table A.<%= defs.BackGround_Tab_Num  %> summarizes key characteristics of the final sample and presents the difference between the two groups. You can check if the final sample is balanced by comparing the absolute value of the standardized difference from Table A.<%= defs.BackGround_Tab_Num  %> to the values indicated in Table A.<%= defs.Baseline_Tab_Num  %>.
                     </p>
 
                     <% include ../views/partials/_backgroundCharsTable.html %>
@@ -105,7 +107,9 @@
                     <p>
                         We've improved the Coach's Get Results tool. To see the updated results here, please return to the Get Results tool and re-run the analysis.
                     </p>
-                    <% } %>
+                    <% }
+                  
+                    %>
                     <% include ../views/partials/_WWCStandards.html %>
                 </div>
              
@@ -124,13 +128,13 @@
                         Figure A.2. displays the posterior distribution of the effect of <%= defs.Basics_Tech_Name %> <%= defs.Results_By_Grade_Flag %>. The green shaded area in the figure represents the probability that the educational technology has an effect greater than or equal to the selected threshold.
 
                     </p>
+                    <label class="chart" style="clear: both; display: block;">Figure A.2. Probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>s <%= defs.Basics_Outcome %>, as measured by the <%= defs.Outcome_Measure %>, by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>,  given the uploaded data</label>
 
                     <%  if (defs.hasResults){
                     for (grade in Result.results_by_grade) {
                     var thisgrade = Result.results_by_grade[grade];
-                    
-                    var Interpretation_1 = thisgrade.interpretation.texts[1].toString().replace("units", defs.Measure_Units);
-                    var Interpretation_0 = thisgrade.interpretation.texts[0].toString().replace("units", defs.Measure_Units);
+
+                  
 
                     %>
 
@@ -141,10 +145,11 @@
                         <img src="data:image/png;base64,<%- thisgrade.posterior_plot %>">
 
                         <ul>
-                            <li> <%= Interpretation_1 %></li>
-                            <li> <%= Interpretation_0 %></li>
-                            <li>
-                                The point estimate (e.g., our best guess) of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is
+                            <li> There is a
+<script>
+    document.write(textHelpers.round10("<%= thisgrade.interpretation.probability[0] %>", 0)); </script>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>s the outcome by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</li>
+                           
+                            <li>The point estimate (e.g., our best guess) of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is
                                 <script> document.write(textHelpers.round10("<%= thisgrade.impact %>", 2)); </script>.
                             </li>
                         </ul>
@@ -167,7 +172,7 @@
                     <ul>
                         <li>The distribution of posterior probability describes our understanding of <%= defs.Basics_Tech_Name %>’s effect, based on the available data. The area under the curve represents the likelihood that the effect is between any two values on the horizontal axis. The point estimate or best guess of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is calculated as the mean of the posterior distribution.</li>
 
-                        <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table <%= tabcounter %> below. For more information on the Bayesian statistical analysis, refer to the Impact Estimation Technical Appendix.</li>
+                        <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table A.<%= defs.Frequentist_Tab_Num %> below. For more information on the Bayesian statistical analysis, refer to the Impact Estimation Technical Appendix.</li>
 
                         <% if (eval.path == "path-matching") { %>
                         <li>This analysis was performed using a matched comparison design. Several assumptions were made to simplify the user's choices. The Matching Technical Appendix explains these assumptions in more detail.</li>
@@ -185,14 +190,14 @@
 
                     <%
                     if (defs.hasResults && Result.args.outcome_var) {
-                    tabcounter = tabcounter +1 %>
+                    %>
 
                     <p>The following table summarizes the findings using the frequentist approach:<p>
 
 
                         <table id="table3">
                             <caption>
-                                Table <%= tabcounter %>. Impact Results Obtained Using the Frequentist Approach
+                                Table A.<%= defs.Frequentist_Tab_Num %>. Impact Results Obtained Using the Frequentist Approach
                             </caption>
 
                             <thead>
@@ -227,7 +232,7 @@
                                 var ci = [impact - (1.96 * se), impact + (1.96 * se)];
                                 }
 
-                                var ci_string = '[' + round10(ci[0],3) + ', ' + round10(ci[1],3) + ']';
+                                var ci_string = '[' + round10(ci[0],2) + ', ' + round10(ci[1],2) + ']';
 
                                 var significant = (pvalue <= 0.05) ? '' : ' not';
 
@@ -238,9 +243,9 @@
                                     <td><%= grade %></td>
 
                                     <td><%= outcome_var %></td>
-                                    <td><%= round3(impact) %> <br /> (<%= round3(se) %>)</td>
-                                    <td><%= round3(effect_size) %></td>
-                                    <td><%= round3(pvalue) %></td>
+                                    <td><%= round10(impact,2) %> <br /> (<%= round10(se,2) %>)</td>
+                                    <td><%= round10(effect_size,2) %></td>
+                                    <td><%= round10(pvalue,2) %></td>
                                     <td><%= ci_string %></td>
                                 </tr>
 
@@ -255,12 +260,13 @@
                             </tbody>
                         </table>
 
-                        <p>
-                            With the frequentist approach, a statistical analysis begins with a null hypothesis stating that the true impact of the technology on the outcome is 0, or in other words, it has no impact. Using the evaluation's data, an impact estimate is calculated and tested to determine the likelihood that the actual impact is greater than or equal to the impact estimate instead of 0. This likelihood is the p-value. By comparing the p-value to a designated cutoff, one can test whether or not the null hypothesis can be rejected. Traditionally researchers have used 0.05 as the cutoff. </p>
-                        <p>For every row in table <%= tabcounter %> where the p-value &le; 0.05, we reject the null hypothesis, and instead conclude the calculated impact estimate is a reliable estimate of <%= defs.Basics_Tech_Name %>’s impact.
+                    <p>
+                        With the frequentist approach, a statistical analysis would typically begin with a null hypothesis stating that the true impact of the technology on the outcome is 0. Using the evaluation's data, an impact estimate is calculated (which is reported as the Impact Estimate in Table A.<%= defs.Frequentist_Tab_Num %>. The analysis then calculates  the likelihood of achieving that point estimate, or a value more extreme than the point estimate, under the assumption that the true impact is 0 (as stated by your null hypothsis). This likelihood is the p-value (as seen in Table A.<%= defs.Frequentist_Tab_Num %>). By comparing the p-value to a designated cutoff, one can test whether or not the null hypothesis can be rejected. Traditionally researchers have used 0.05 as the cutoff.  </p>
+
+                        <p>For every row in Table A.<%= defs.Frequentist_Tab_Num %> where the p-value &le; 0.05, we reject the null hypothesis that the impact of  <%= defs.Basics_Tech_Name %> is 0.
                     </p>
                     <p>
-                        It is important to note that the calculated impact estimate is not the true effect of <%= defs.Basics_Tech_Name %>, just what could be estimated based on the evaluation&rsquo;s sample. The true effect is unknown. The confidence interval shown in Table <%= tabcounter %> is the plausible range for the true effect based on the observed effect. A 95% threshold for the confidence interval is commonly used, though one could calculate the interval for a different threshold. A 95% confidence interval means that if we were to conduct our evaluation 100 times, in 95 cases we would calculate an interval that includes the true effect of the technology.
+                        It is important to note that the calculated impact estimate is not the true effect of <%= defs.Basics_Tech_Name %>, just what could be estimated based on the evaluation&rsquo;s sample. The true effect is unknown. The confidence interval shown in Table A.<%= defs.Frequentist_Tab_Num %> is an estimate of the plausible range for the true effect based on the observed effect. A 95% threshold for the confidence interval is commonly used, though one could calculate the interval for a different threshold. A 95% confidence interval means that if we were to conduct our evaluation 100 times, in 95 cases we would calculate an interval that includes the true effect of the technology.
                     </p>
                 </div>
 

@@ -9,6 +9,7 @@ var coachsteps = function (req, res, next) {
             console.log(err);
         }
         else {
+						coachSteps.sort(dynamicSort("step"));
             sess.coachsteps = coachSteps;
         }   
     });

@@ -13,5 +13,5 @@ module.exports = {
   //  'url': 'mongodb://db1.edtechrce.org,db2.edtechrce.org/GateWayToRCTE?replicaSet=edtechrce',  //for prod
     'config': { autoIndex: false },
     'shiny_url': 'http://52.222.20.48'  //for dev and local
-   // 'shiny_url': 'https://edtechrce.org'  //for prod
+    //'shiny_url': 'https://edtechrce.org'  //for prod
 };

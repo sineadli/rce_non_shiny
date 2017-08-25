@@ -11,11 +11,12 @@
 <head>
     <title>Get Results - Ed Tech RCE Coach</title>
     <% include ../views/partials/scriptHeader.html %>
+    <% include ../views/partials/_formatters.html %>
    
 
 </head>
 <% var peekingThis = query.peeking == 1 ? "peeking" : ""; %>
-<body class="<%- peekingThis %>">
+<body class="<%- peekingThis %> brief">
     <% include ../views/partials/header.html %>
     <% if (user != "NOAUTHENTICATED") { %>
     <ol class="breadcrumb">
@@ -26,18 +27,16 @@
     <% } %>
     <% include ../views/partials/toolHeader.html %>
     <% } %>
-<form action="/getresult" method="post">
+<form id="getresult" action="/getresult" method="post">
 
 <%
 
-console.log("The defaults");
-    console.log(defs);
 var Result="";
 
 if (user != "NOAUTHENTICATED"){
 if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
 }
-
+    var newUploadTitle = "Upload your data"
 %>
 
 <input type="hidden" id="coreurl" value="<%= shiny_url %>"/>
@@ -68,14 +67,15 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
 </div>
 <div class="row">
 <div class="tool-questions">
-<div class="step-header container">
+<div class="step-header container first">
+
     <div data-toggle="collapse" data-target="#P">
         <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> Review your previous answers.
+            <i class="fa fa-caret-<%= defs.iconFirst %>" aria-hidden="<%= defs.hideFirst %>"></i> Review your previous answers.
         </h2>
     </div>
 </div>
-<div id="P" class="row  collapse in q-row">
+<div id="P" class="row  collapse <%= defs.inFirst %> q-row">
     <div class="col-xs-7">
         <div class="step-subquestion">
             <h4><label for="Outcome_Measure">What measure did you use to test whether there was an effect?</label></h4>
@@ -186,10 +186,47 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
         </div>
     </div>
 </div>
+    <div id="results">
+        <% if(defs.hasResults) {
+       
+            var Result = "";
+            var Result = JSON.parse(eval.getresult.Result);
+            newUploadTitle = "Upload your data to re-run the analysis"
+        
+        %>
+        <div class="step-header container">
+           
+                <div data-toggle="collapse" data-target="#R">
+
+                    <h2 class="clickable">
+                        <i class="fa fa-caret-down" aria-hidden="false"></i> Analysis Results
+                    </h2>
+
+
+               
+                </div>
+            </div>
+        <div id="R" class="row  collapse in q-row">
+            <div class="col-xs-12">
+                <div class="step-subquestion">
+                    <div id="Result_Conclusion" class="container">
+                        <h3><%= defs.ResultSummary %></h3>
+                    </div>
+                      
+
+                    <% include ../views/partials/_findingsTable.html %>
+                       
+
+                    </div>
+            </div>
+       </div>
+        <% } %>
+    </div>
+
 <div class="step-header container">
     <div data-toggle="collapse" data-target="#A">
         <h2 class="clickable">
-            <i class="fa fa-caret-down" aria-hidden="false"></i> Upload your data.
+            <i class="fa fa-caret-down" aria-hidden="false"></i> <%= newUploadTitle  %>
         </h2>
     </div>
 </div>
@@ -336,10 +373,9 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
             </div>
         </div>
         <div class="clearfix"></div>
-        <div id="Step_Conclusion" class="container">
-
-            <div id="results" class="shiny-html-output shiny-bound-output"></div>
-        </div>
+       
+            <div id="error" class="col-xs-11"></div>
+     
         <div id='loadingmessage' hidden>
             <div class="loading">
                 <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
@@ -511,44 +547,20 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                                 
                                 var errors = data.error_message;
                                 if (errors.length > 0) {
-                                    $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
+                                    $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
                                     return;
                                 } else {
-                                    console.log(data);
-                                    var results_by_grade = data.results_by_grade;
 
-                                    $('#results').append('<h2 style="margin-left:-40px;">Analysis Results: Did the technology move the needle?</h2>');
-                                    for (var key in results_by_grade) {
-                                        if (results_by_grade.hasOwnProperty(key)) {
 
-                                            var grade_object = results_by_grade[key];
-                                            $('#results').append('<h3>Grade ' + grade_object.grade + '</h3>');
-                                            if (grade_object.interpretation) {
-                                                var text1 = "";
-                                                if ($("#Success_Effect_Size").val() > 0 && grade_object.interpretation_cutoff_0) {
-                                                    text1 = "<li>There is a " + grade_object.interpretation_cutoff_0.probability[0] + " probability that  " + $("#techName").val() + " " + $("#Outcome_Direction").val() + "s " + $("#evalOutcome").val() + ".</li>";
-                                                }
-                                                var text2 = "<li>There is a " + grade_object.interpretation.probability[0] + " probability that  " + $("#techName").val() + " " + $("#Outcome_Direction").val() + "s " + $("#evalOutcome").val() + " by " + $("#Success_Effect_Size").val() + " " + $("#measureUnits").val() + " or more.</li>";
-
-                                                $('#results').append('<ul>' + text1 + text2);
-                                            }
-
-                                        }
-                                    }
-
+                                    $("#gresult").val(JSON.stringify(data));
+                                    // $("#gresult").val("data");
+                                    $("#getresult").submit();
                                 }
-                                $("#gresult").val(JSON.stringify(data));
-                                // $("#gresult").val("data");
-                                $("#download-button, #download-link")
-                                            .prop("disabled", false);
-                                $("#download-link")
-                                    .attr("target", "_blank")
-                                    .attr("href", $("#coreurl").val() + responsePaths[9]);
                             },
                             error: function (xhr) {
                                 $('#loadingmessage').hide();
                                 var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
-                                $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                                $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
                             }
                         });
                     },
@@ -556,7 +568,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                         $('#loadingmessage').hide();
                         console.log(xhr);
                         var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
-                        $('#results').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                        $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
                         //alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
                     }
                 });

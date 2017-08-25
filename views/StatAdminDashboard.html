@@ -17,8 +17,7 @@
     <%
     var groupsFilter = ["", "{ status: 100 }", "{ path: 'path-matching' }", "{ path: 'path-random' }"];
     var groupsTitle = ["All Evaluatons", "Completed Evaluations", "Matching Evaluations", "Random Assignment Evaluations"];
-    console.log("In stats admin page");
-    console.log(evalStats);
+ 
 
     %>
     <div class="row">
@@ -35,7 +34,7 @@
             <h2><%= Title %></h2>
 
             <p>Number of Evaluations: <%= evalStats.evalCount %></p>
-            <p>Average Percent Completed: <%= evalStats.averagePerComplete %></p>
+            <p>Average Percent Completed: <%= evalStats.averagePerComplete %>%</p>
             <table id="myTable" data-order='[[ 0, "asc" ]]' class="table table-striped">
                 <thead>
                 <tr>

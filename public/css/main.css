@@ -9,7 +9,7 @@ body {
     font-size: 1.6em;
     line-height: 1.5em;
     margin: 0 auto;
-    min-height: 95%;
+    min-height: 100%;
     background-color: #FBFAF7;
     color: #000;
     padding: 0 15px 180px 15px;
@@ -294,12 +294,10 @@ div.tool-header {
 
 .note {
     font-style: italic;
-
-    margin-top: 8px;
     color: #222;
-          margin: 15px auto;
+    margin: 15px auto;
     /*border: solid 2px  #666;*/
-    padding: 15px;
+    /*padding: 15px;*/
     /*border-radius: 8px;*/
     width: 95%;
 }
@@ -1049,16 +1047,22 @@ div.tool-div div.tool-bottom p {
 
     div.tool-div a.tool-view-button {
 
-        width: 110px;
+        /*width: 110px;*/
         margin: 0 0px 15px 0;
         float: right;
         padding: 10px 6px;
         font-size: 1em;
+        font-weight: bold;
        
 
 
     }
 
+        div.tool-div a.tool-view-button.peeking {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #e44e0d;
+        } 
 div.tool-status {
     width: 135px;
     display: table-cell;
@@ -1082,10 +1086,10 @@ div.tool-row div.col-xs-3 {
     padding-right: 0;
     padding-left: 0;
 }
-div.tool-top {
+/*div.tool-top {
      border-bottom: solid 3px #337AB7; 
 
-}
+}*/
 div.tool-header {
      
           padding: 15px 15px 15px 15px;
@@ -1120,7 +1124,8 @@ div.tool-help{
    /*margin-bottom: 35px;*/
 }
 div.tool-questions {
-	padding:10px 0;
+/*	padding:10px 0; */
+    margin-bottom: 15px;
 }
 
 .begin-em {
@@ -1138,16 +1143,24 @@ div.step {
   width:100%;
   display:inline-block;
 }
-div.step-header {
+div.step-header  {
   display:inline-block;
+  border-top: solid 2px #E0DDDD;
 }
+    div.step-header.first {
+        border-top: solid 3px #337AB7;
+    }
 div.step-conclusion {
-
+    border-top: solid 2px #E0DDDD;
     display: inline-block;
-             margin-top:20px;
-    padding-left: 0;
+    margin-top:20px;
+    padding: 15px 0;
 }
-
+div#Step_Conclusion {
+		border-top: solid 2px #E0DDDD;
+    margin-left: 0;
+    padding: 15px 0 0;
+}
 div#Step_Conclusion h2, div.step-conclusion h2 {
     font-size: 1.5em;
     font-family: 'Open Sans';
@@ -1158,6 +1171,21 @@ div#Step_Conclusion h2, div.step-conclusion h2 {
     min-height: 50px;
     padding-left: 55px;
     padding-top: 5px;
+}
+div#Result_Conclusion {
+  margin-left: 0;
+    padding-left: 0;  
+    color: #006982;
+    font-weight: 600;
+}
+div#Result_Conclusion h3{
+    font-size: 1.2em;
+     color: #006982;
+    margin-left: 0;
+    padding-left: 0;
+    padding-top: 0px;
+    margin-top: 0px;
+
 }
 
 .shiny-html-output {
@@ -1265,7 +1293,7 @@ div.step-action-long {
   display:inline-block;
 }
 div.q-row {
-    border-bottom: solid 2px #E0DDDD;
+    /*border-bottom: solid 2px #E0DDDD;*/
     padding: 0px 0px 25px 0px;
 
 }
@@ -1439,7 +1467,7 @@ div.step-to-consider p.note {
     border-width:1px;
 }
 div#results p.note {
-    margin: 0;
+  
     width: 85%;
     border: none;
     padding: 0;
@@ -1482,7 +1510,7 @@ div.step-example-box {
   margin-bottom:5px;
 }
 .warning {
-    margin: 20px;
+    /*margin: 20px;*/
     color: #C80000;
     font-style: italic;
     font-weight: 500;
@@ -1732,6 +1760,8 @@ body.brief table.resultsFig {
     width: 99%;
 }
 
+
+
 body.brief table.resultsFig tr {
     background-color: #ffffff;
     border-bottom: 1px solid #aaa;
@@ -1745,7 +1775,6 @@ body.brief table.resultsFig tr td, table.resultsFig tr th {
         vertical-align: bottom;
         padding: 8px;
     }
-
 th, td {
     padding: 18px;
     border: hidden;
@@ -2007,6 +2036,7 @@ div .sbar {
 
         body.brief h2 {
             color: #006982;
+            color: #000000;
             font-size: 1.55em;
             margin-top: 30px;
           
@@ -2089,7 +2119,7 @@ body.brief p.note {
 }
         body.brief .white-background-blue-border h3 {
             font-size: 1.2em;
-            margin-top: 20px;
+            margin-top: 5px;
             padding: 0 0 10px 0;
             border-bottom: 1px solid #C1BEAE;
         }

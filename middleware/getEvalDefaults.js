@@ -14,22 +14,27 @@ var isLoggedIn = require('../middleware/isLoggedIn.js');
 var textHelpers = require('../public/js/textHelpers.js');
 var configDB = require('../config/database.js');
 var async = require('async');
+var http = require('http'),
+	url = require('url');
 
 var getEvalDefaults = function (sess, user) {
 
-    sess.defaults = {};
+    if (!sess.defaults) {
+        sess.defaults = {};
+    } 
 	if (sess.eval) {
-		setShareResults(sess, user);
+		
 		setBasics(sess);
 		setApproach(sess);
 		setResearchQ(sess);
 		setPlanNext(sess);
+		setEvalPlan(sess);
+		setPlanContext(sess);
 		setPrepareRandom(sess);
 		setMatching(sess);
 		setRandom(sess);
-		setGetResults(sess);
-		setPlanContext(sess);
-		setEvalPlan(sess);
+		setGetResults(sess);		
+		setShareResults(sess, user);
 	}
     sess.defaults.shiny_url = configDB.shiny_url;
     return;
@@ -53,7 +58,7 @@ function setBasics(sess) {
 	if (sess.defaults.Basics_Users)
 		sess.defaults.Singular_User = sess.defaults.Basics_Users.substring(0, sess.defaults.Basics_Users.length - 1);
 	sess.defaults.Cap_Basics_Outcome = textHelpers.capitalize(sess.defaults.Basics_Outcome);
-
+	sess.defaults.Cap_Basics_Users = textHelpers.capitalize(sess.defaults.Basics_Users);
 	sess.defaults.Cap_Basics_Tech_Name = textHelpers.capitalize(sess.defaults.Basics_Tech_Name);
     return;
 };
@@ -62,10 +67,15 @@ function setApproach(sess) {
 
     var currentNew = sess.eval.probAppr.Appr_Current_or_New;
     var verb = currentNew === "Current" ? "did" : "will";
-    var verb2 = currentNew === "Current" ? "is" : "was";
+	var verb2 = currentNew === "Current" ? "was" : "is";
+	var verb3 = currentNew === "Current" ? "were" : "are";
+	var verb4 = currentNew === "Current" ? "received" : "are receiving";
+	
 
     sess.defaults.VerbDidWill = verb;
-    sess.defaults.VerbIsWas = verb2;
+	sess.defaults.VerbIsWas = verb2;
+	sess.defaults.VerbAreWere = verb3;
+	sess.defaults.VerbAreReceivingReceived = verb4;
 
     return;
 }
@@ -114,7 +124,11 @@ function setPrepareRandom(sess) {
 
 	if (sess.defaults.Basics_Users)
 		sess.defaults.Random_Level = sess.defaults.Basics_Users.charAt(0).toUpperCase() + sess.defaults.Basics_Users.slice(1);
-
+	if (sess.defaults.Cluster_Group.toLowerCase == "classes") {
+	    sess.defaults.Cluster_Group = "classroom";
+	} else if (sess.defaults.Cluster_Group.toLowerCase == "schools") {
+		sess.defaults.Cluster_Group = "school";
+	}
     return;
 };
 
@@ -122,7 +136,7 @@ function setPlanContext(sess) {
 	var planContext = sess.eval.planContext;
 
 	var defstocheck = {
-        Tech_Purpose: 'Not reported',
+        Tech_Purpose: '&rsquo;s description was not provided',
         Tech_Components: 'Not reported',
         Total_Students: "Not reported",
         District_State: "Not reported",
@@ -189,11 +203,22 @@ function setMatching(sess) {
     var matching = sess.eval.matching;
     var mresult = null;
     sess.defaults.wasMatched = false;
+	sess.defaults.mhideFirst = false;
+    sess.defaults.minFirst = "in";
+    sess.defaults.miconFirst = "down";
+
+
+
+	
 
 	if (matching.Result) {
 		sess.defaults.wasMatched = matching.Result === "" ? false : (sess.eval.path == "path-matching" ? true : false);
         var mresult = JSON.parse(matching.Result);
-    }
+		sess.defaults.mSuccess = wasSuccessful(mresult);
+		sess.defaults.mhideFirst = true;
+		sess.defaults.minFirst = "";
+		sess.defaults.miconFirst = "right";
+	}
 
     
     if (matching.Targeted_Access === "" || matching.Targeted_Access === 'Select an option') {
@@ -207,17 +232,33 @@ function setMatching(sess) {
     } else {
         sess.defaults.Targeted_Access = matching.Targeted_Access.toLowerCase() == "no" ? "None" : matching.Target_Group_Desc;
     }
+	sess.defaults.MatchingDLExists = false;
+    var dlpath = configDB.shiny_url + matching.DownloadPath;
+   
+	
 
-	sess.defaults.match_vars_relabel = mresult ? (mresult.args.match_vars || "none selected") : "none selected";
 }
 
 function setRandom(sess) {
     var random = sess.eval.random;
    // console.log("In set random and path = " + sess.eval.path);
+	sess.defaults.rhideFirst = false;
+    sess.defaults.rinFirst = "in";
+    sess.defaults.riconFirst = "down";
+
+  
+
+		
     sess.defaults.wasRandomized = false;
     if (random.Result) {
         sess.defaults.wasRandomized = random.Result === "" ? false : (sess.eval.path == "path-random" ? true : false);
+		sess.defaults.rhideFirst = true;
+		sess.defaults.rinFirst = "";
+		sess.defaults.riconFirst = "right";
     }
+   
+
+
     return;
 }
 
@@ -228,13 +269,26 @@ function setGetResults(sess) {
 	sess.defaults.hasResults = false;
     sess.defaults.hasSample = false;
 	sess.defaults.hasCluster = false;
+    sess.defaults.Outcome_Min = "not available";
+	sess.defaults.Outcome_Max = "not available";
+    sess.defaults.hideFirst = false;
+    sess.defaults.inFirst = "in";
+    sess.defaults.iconFirst = "down";
 
     if (eval.getresult.Result) {
 
 		sess.defaults.hasResults = eval.getresult.Result === "" ? false : true;
-   
-        var result = JSON.parse(eval.getresult.Result);
 
+		sess.defaults.hideFirst = true;
+		sess.defaults.inFirst = "";
+		sess.defaults.iconFirst = "right";
+
+        var result = JSON.parse(eval.getresult.Result);
+        if (result.outcome_range) {
+            sess.defaults.Outcome_Min = result.outcome_range.min;
+            sess.defaults.Outcome_Max = result.outcome_range.max;
+        }
+        sess.defaults.Outcome_Max = "not available";
 		if (result.args) {
             sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
 		}
@@ -272,8 +326,13 @@ function setGetResults(sess) {
 
                 //For Interpretation
                 var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
-                var success = (probability > eval.planNext.Pass_Probability);
-                var inconclusive = (probability < eval.planNext.Pass_Probability) && (probability > eval.planNext.Fail_Probability);
+				var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
+				var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
+                console.log("probability = " + probability);
+				console.log("pass probability = " + pass_probability);
+				console.log("fail probability = " + fail_probability);
+                var success = (probability > pass_probability);
+                var inconclusive = (probability < pass_probability) && (probability > fail_probability);
 
                 if (success) {
                     successCount++;
@@ -309,9 +368,9 @@ function setGetResults(sess) {
 				nextSteps = eval.planNext.Action_Success;
 				start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle";
 			}
-			header = start + ' on ' + eval.basics.Basics_Outcome + gradeQualifier + inconclusiveQualifier + '.';
+			header = start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + inconclusiveQualifier + '.';
 		}
-
+       
 		// Defaults to use on pages
 		sess.defaults.ResultSummary = header;
 		sess.defaults.Cluster_Group_Warning = clusterGroupWarning;
@@ -327,7 +386,33 @@ function setGetResults(sess) {
 function setShareResults(sess, user) {
     var eval = sess.eval;
 	var publishedAt = eval.published_at;
-	
+
+	var matchsumtable = 0;
+	var bkgrndtable = 1;
+	var baselinetable = 2;
+	var freqtable = 3;
+
+    if (eval.path == "path-matching" && sess.defaults.wasMatched) {
+        matchsumtable = 1;
+        bkgrndtable = 2;
+        baselinetable = 3;
+        freqtable = 4;
+    }
+    sess.defaults.Match_Summary_Tab_Num = matchsumtable;
+	sess.defaults.BackGround_Tab_Num = bkgrndtable;
+	sess.defaults.Baseline_Tab_Num = baselinetable;
+	sess.defaults.Frequentist_Tab_Num = freqtable;
+    var baselineTestVars = [];
+     if (eval.path === "path-matching" && sess.defaults.wasMatched) {
+         var resm = JSON.parse(eval.matching.Result);
+		 if (resm.args) { baselineTestVars = resm.args.match_vars;}
+ 
+     } else if (eval.path === "path-random" && sess.defaults.wasRandomized) {
+		 var resr = JSON.parse(eval.random.Result);
+		 baselineTestVars = resr.args.baseline_vars;
+     } else {baselineTestVars = "none selected";}
+
+    sess.defaults.baselinetest_vars = baselineTestVars;
     sess.defaults.pilot_type = eval.path === "path-random" ? "randomized" : "matched";
 
 	if (publishedAt) {
@@ -355,12 +440,27 @@ function isBalanced(baselines) {
     var balanced = true;
     for (var blvar in baselines) {
         if (baselines.hasOwnProperty(blvar)) {
+           
             if (Math.abs(baselines[blvar].effect_size) > 0.25) {
                 balanced = false;
             }
         }
     }
     return balanced;
+}
+
+
+function wasSuccessful(mresult) {
+    var balanceResult = "";
+    var countGrades = 0;
+    var countBalanced = 0;
+    for (var grade in mresult.results_by_grade) {
+        if (mresult.results_by_grade.hasOwnProperty(grade)) {
+            countGrades++;
+            countBalanced = (mresult.results_by_grade[grade].good_balance ? 1 : 0) + countBalanced;
+        }
+    }
+    return balanceResult = (countBalanced == countGrades) ? "Matching was successful." : (countBalanced === 0 ? "The Coach was unable to create treatment and comparison groups that are balanced on the characteristics of the <%= defs.Basics_Users %> selected." : ((countBalanced !== 0 && countBalanced !== countGrades) ? "The Coach was able to create treatment and comparison groups that are balanced on the characteristics of the <%= defs.Basics_Users %> selected for some grades but not for all." : ""));
 }
 
 function populateDefaults(defstocheck, tool, sess, incomplete) {

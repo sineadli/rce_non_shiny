@@ -26,25 +26,7 @@ var sess;
 
 
 module.exports = function (app, passport) {
-  	
-		
-	function updateLastTool(eval, toollist) {
-		var tool = eval.toolsvisited.filter(function (x) { return x.name === toollist.name });
-		if (tool.length == 0) {
-			eval.toolsvisited.push(toollist);
-		}
-		else {
-			var index = eval.toolsvisited.indexOf(tool[0]);
-			if (index > -1) {
-				if (tool[0].status === "completed") toollist = { "name": toollist.name, "status": "completed", "visited_at": new Date() };
-				eval.toolsvisited.splice(index, 1);
-				eval.toolsvisited.push(toollist);
-			}
-		}
-		if (eval.stepsclicked.indexOf(eval.last_step) < 0) eval.stepsclicked.push(eval.last_step);
-	} 
-	
-	
+
 
 	//02.03 The Basics
 	app.get('/basics', isLoggedIn, function (req, res) {
@@ -127,10 +109,6 @@ module.exports = function (app, passport) {
 		return evaluationController.postByTool(req, res);	
     });
 
-	app.post('/evaluation_plan_download', function (req, res) {
-		return evaluationController.postByTool(req, res, "download");	
-	});
-
     app.get('/matching', isLoggedIn, function (req, res) {
 		return evaluationController.getByTool(req, res, "online");
     });    
@@ -142,6 +120,7 @@ module.exports = function (app, passport) {
        return evaluationController.getByTool(req, res, "online");
     });
 	app.post('/randomization', function (req, res) {
+	 //   console.log("post randomizaton route");
 		return evaluationController.postByTool(req, res);
 	});
 
@@ -163,164 +142,13 @@ module.exports = function (app, passport) {
 	});
 	
 	app.post('/shareresult', isLoggedIn, function (req, res) {
-
-        var toollist = { "name": "Share Your Results", "status": req.body.status, "visited_at": new Date() };
-        sess = req.session;
-        sess.eval.last_step = 6;
-        sess.step = 6;
-		var obj = req.body;
-		var returnpath = obj.returnpath;
-		if (returnpath === '') returnpath = "shareresult";
-        var dt = new Date();
-        async.waterfall([
-            function (done) {
-                if (sess.eval) {
-                    Evaluation.findOne({ _id: sess.eval._id }).exec(function (err, eval) {
-                        if (!eval) {
-                            req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/coach');
-                        }
-                        if (err) {
-                            console.log(err);
-                            return res.redirect('/coach');
-                        }
-                        return done(err, eval);
-                    });
-                }
-                else
-                    res.redirect('/coach');
-            },
-            function (eval, done) {
-                eval.last_step = 6;
-                eval.last_tool = "Share Your Results";
-                //eval find so update the toolsVisisted accordingly
-				updateLastTool(eval, toollist);
-
-                // Turn relabel inputs into an array rather than 
-                var relabel_index = 0;
-				var relabels = [];
-				var crelabel_index = 0;
-				var crelabels = [];
-
-                while (obj['relabel-baseline-var-' + relabel_index]) {
-                    relabels.push(obj['relabel-baseline-var-' + relabel_index]);
-                    delete obj['relabel-baseline-var-' + relabel_index];
-                    relabel_index++;
-				}
-				while (obj['relabel-control-var-' + crelabel_index]) {
-					crelabels.push(obj['relabel-control-var-' + crelabel_index]);
-					delete obj['relabel-control-var-' + crelabel_index];
-					crelabel_index++;
-				}
-				eval.author = obj.author;
-				eval.company = obj.company;
-			
-				var shareresult = obj;
-				shareresult.baseline_var_relabels = relabels;
-				shareresult.control_var_relabels = crelabels;
-
-                if (!eval.shareresult) {
-                    shareresult.created_at = dt;
-                }
-                else {
-                    shareresult.updated_at = dt;
-                };
-
-                eval.shareresult = shareresult;
-			
-               
-                eval.save(function (err) {
-                    if (err) {
-                        console.log(err); return done(err);
-                    }
-                    sess.eval = eval;
-                    if (req.body.status == "started") {
-                        req.flash('saveMessage', 'Changes Saved.');
-                        return res.redirect('/' + returnpath);
-                    }
-                    else {
-                        return res.redirect('/publications');
-                    }
-                });
-            }
-        ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
-            return res.redirect('/' + returnpath); 
-        });
-    });
-
-    app.post('/download/:id', isLoggedIn, function (req, res) {
-        var obj = req.body;
-        var query = require('url').parse(req.url, true).query;
-        var download_route = obj.download_route;
-
-        async.waterfall([
-            function (callback) {
-                if (req.params.id ) {
-                    Evaluation.findOne({ _id: req.params.id }).exec(function (err, eval) {
-                        if (!eval) {
-                            req.flash('error', 'No evaluation exists.');
-                            return res.redirect('/coach');
-                        }
-                        if (err) {
-                            console.log(err);
-                            return res.redirect('/coach');
-                        }
-                        callback(err, eval);
-                    });
-                }
-                else
-                    res.redirect('/coach');
-            },
-
-            function (eval, callback) {
-                // Need to generate document file here
-                var filename_map = {
-                    shareresult: 'findings-brief',
-                    appendix_randomized: 'technical-appendix',
-                    appendix_matched: 'technical-appendix'
-                };
-
-                var filename = filename_map[download_route];
-                res.render(download_route + '.html', { user: req.user, eval: eval, message: req.flash('saveMessage'), query: query, display: 'download' },
-                    function (err, html) {
-                        console.log(err);
-
-                        if (obj.file_format === 'html') {
-
-                            res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.html"');
-                            res.setHeader('Content-type', 'text/html');
-                            res.write(html);
-                            res.send();
-
-                        } else if (obj.file_format === 'pdf') {
-
-                            // Try to convert to PDF, and if it fails, revert to HTML;
-                            try {
-                                var wkhtmltopdf = require('wkhtmltopdf');
-
-                                wkhtmltopdf(html).pipe(res);
-                                res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.pdf"');
-                                res.setHeader('Content-type', 'application/pdf');
-
-                            } catch (e) {
-
-                                res.setHeader('Content-disposition', 'attachment; filename="' + filename + '.html"');
-                                res.setHeader('Content-type', 'text/html');
-                                res.write(html);
-                                res.send();
-                            }
-                        }
-                    });
-            }
-        ], function (err) {
-            if (err) if (err) req.flash('saveMessage', 'There is an error, please re-try. ' + err);
-            return res.redirect('/' + returnpath);
-        });
+		return evaluationController.postByTool(req, res, "online");
 	});
-
-
-	
+  
+    app.post('/download/:id', isLoggedIn, function (req, res) {
+		return evaluationController.getByEvalId(req, res, "download");
+	});
+ 
 
 
 };

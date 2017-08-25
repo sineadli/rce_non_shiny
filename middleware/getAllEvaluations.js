@@ -11,7 +11,6 @@
 // middleware/getAllEvaluations.js
 //load the thing we need
 var Evaluation = require('../models/evaluation');
-var evalStats = require('../models/evalStats');
 var textHelpers = require('../public/js/textHelpers.js');
 
 

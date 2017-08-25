@@ -1,4 +1,8 @@
 ﻿<%
+ var tabprefix = "";
+ if(eval.last_tool == "Share Your Results"){
+        tabprefix = "A.";
+    }
 var Res = "";
 var grades = [];
 if( (eval.last_tool == "Matching"  && defs.wasMatched)) {
@@ -9,19 +13,16 @@ if( (eval.last_tool == "Matching"  && defs.wasMatched)) {
     Res = MResult;
     tabcounter ++;
 grades = Res.results_by_block;
-} else if (defs.hasResults) {
+} else if ( defs.hasResults) {
     Res = Result;
-    tabcounter ++;
+  
     grades = Res.results_by_grade;
 }
-if(eval)
-console.log("Was randomized = " + defs.wasRandomized);
-console.log("Las tool = " + eval.last_tool);
-console.log("baseline means = ");
-console.log(grades.baseline_var_means);
+
+
 %>
 <table>
-    <caption>Table <%= tabcounter %>. Background Characteristics of the Evaluation Sample</caption>
+    <caption>Table <%= tabprefix %><%= defs.BackGround_Tab_Num %>. Background Characteristics of the Evaluation Sample</caption>
     <thead>
         <tr>
            
@@ -36,39 +37,56 @@ console.log(grades.baseline_var_means);
         </tr>
     </thead>
     <tbody>
-        <% 
-        for (grade in grades) {
+    <%
+    // Old version of get results object did not include var name with baseline_means object.
+    // Also, if renaming vars, then names will be in a separate array.
+        var chars= [];
+    if(Res.control_vars) {
+         chars= Res.control_vars;
+    }
+    
+        console.log(Res.control_vars);
+    for (grade in grades) {
 
         var thisgrade = grades[grade];
-   
-      
-        var means = thisgrade.baseline_var_means;
+
+
+         var means = thisgrade.baseline_var_means;
+        
         var samples = thisgrade.samples;
         var hasSample = thisgrade.samples ? true : false;
         var samples_cluster = thisgrade.samples_cluster;
-        console.log("means = ");
-        console.log(means);
+
         var growspan = 1;
         var char = [];
         if(means && (typeof means == "object")){
-    char = Object.keys(means);
-        console.log("number of baseline chars = " + (char.length + 1));
-              var growspan =char.length + 1;
-              if (samples_cluster) {
+        char = Object.keys(means);
+      
+        var growspan =char.length + 1;
+        if (samples_cluster) {
+            if(Object.keys(samples_cluster).length > 0) {
                 growspan =char.length + 2;
-             }
+                }
+            }
         }
 
     for (var index in char) {
-       
-        var thischar = char[index];
+    console.log("index = " + index);
+
+
+    var thischar = char[index];
+        console.log("thischar = " + thischar);
+    var varname = thischar;
+    if (chars.length > 0) {
+             varname = chars[index];
+        } 
 
         %>
         <tr>
             <% if (index == 0) { %>
             <td rowspan="<%- growspan %>"> <%= grade %></td>
            <% } %>
-            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= thischar %></span></td>
+            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= varname %></span></td>
 
 
             <td>

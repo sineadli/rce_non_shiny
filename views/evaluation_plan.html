@@ -102,7 +102,7 @@
             <div class="row">
                 <div class="tool-questions">
 
-                    <div class="step-header container">
+                    <div class="step-header container first">
                         <div data-toggle="collapse" data-target="#A">
                             <h2 class="clickable">
                                 <% if (display === 'online') { %>
@@ -619,9 +619,10 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-6">
-                                <label>File Format</label><br />
+                                <input type="hidden" name="download_route" value="evaluation_plan">
+                                <label>File Format</label><br/>
                                 <input type="radio" name="file_format" value="pdf" checked> PDF<br>
-                                <input type="radio" name="file_format" value="html"> HTML
+                                <input type="radio" name="file_format" value="html"/> HTML
                                 <span data-toggle="tooltip" title="The HTML version can be viewed in any browser, with or without an internet connection." class="tooltip-gr"><i class="fa fa-question-circle"></i></span>
                             </div>
                         </div>
@@ -629,7 +630,7 @@
                     <div class="modal-footer">
                         <% var route="/download/" +eval._id %>
                         <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                        <button type="submit" id="Download" data-action="/evaluation_plan_download" class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
+                        <button type="submit" id="Download" data-action=<%= route %> class="btn btn-primary btn-lg" data-dismiss="modal">DOWNLOAD</button>
                     </div>
                 </div>
             </div>
