@@ -232,10 +232,10 @@ function setMatching(sess) {
     } else {
         sess.defaults.Targeted_Access = matching.Targeted_Access.toLowerCase() == "no" ? "None" : matching.Target_Group_Desc;
     }
-	sess.defaults.MatchingDLExists = false;
-    var dlpath = configDB.shiny_url + matching.DownloadPath;
-   
 	
+    var dlpath = configDB.shiny_url + (matching.DownloadPath ? matching.DownloadPath :"") ;
+    sess.defaults.mDownloadPath = dlpath;
+
 
 }
 
@@ -257,7 +257,8 @@ function setRandom(sess) {
 		sess.defaults.riconFirst = "right";
     }
    
-
+	var dlpath = configDB.shiny_url + (random.DownloadPath ? random.DownloadPath : "");
+	sess.defaults.rDownloadPath = dlpath;
 
     return;
 }

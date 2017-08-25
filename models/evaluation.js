@@ -200,6 +200,7 @@ var Random = mongoose.Schema({
     s_block_id: { type: String, default: '' },
     s_baseline_vars: { type: String, default: '' },  
     Result: { type: String, default: '' },
+	DownloadPath: { type: String, default: '' },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 });
