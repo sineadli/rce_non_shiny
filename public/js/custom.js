@@ -138,6 +138,9 @@ $(document).ready(function() {
 
 
 function UrlExists(url) {
+	if (url == $("#coreurl").val()) {
+		return false;
+	} 
     var http = new XMLHttpRequest();
     http.open('GET', url, false);
     http.send();

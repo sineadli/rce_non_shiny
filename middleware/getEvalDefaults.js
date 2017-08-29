@@ -233,8 +233,8 @@ function setMatching(sess) {
         sess.defaults.Targeted_Access = matching.Targeted_Access.toLowerCase() == "no" ? "None" : matching.Target_Group_Desc;
     }
 	
-    var dlpath = configDB.shiny_url + (matching.DownloadPath ? matching.DownloadPath :"") ;
-    sess.defaults.mDownloadPath = dlpath;
+	var dlpath = (matching.DownloadPath ? matching.DownloadPath : "");
+	sess.defaults.mDownloadPath = dlpath;
 
 
 }
@@ -257,7 +257,7 @@ function setRandom(sess) {
 		sess.defaults.riconFirst = "right";
     }
    
-	var dlpath = configDB.shiny_url + (random.DownloadPath ? random.DownloadPath : "");
+	var dlpath = (random.DownloadPath ? random.DownloadPath : "");
 	sess.defaults.rDownloadPath = dlpath;
 
     return;
