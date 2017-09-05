@@ -21,8 +21,15 @@
     <% } else if (display === 'download') { %>
     <% include ../views/partials/downloadStyle.html %>
     <% }
+    var sharing = 0;
+    var backto = "coach"
     var bodyclass = query.peeking == 1 ? "peeking" : "";
-    bodyclass = query.sharing == 1 ? "sharing" : "";
+    if(query.sharing == 1) {
+        bodyclass = "sharing";
+        sharing = 1;
+        backto = "publications";
+    }
+    
     var tabcounter = 0; var figcounter = 0;
 
     var Result = "";
@@ -31,7 +38,7 @@
     if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings"; 
     if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists"; }
     if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard"; }
-  //  console.log(defs);
+
     %>
 
 </head>
@@ -40,7 +47,6 @@
     <% if (display === 'online') { %>
     <div class="hidden-print">
         <% include ../views/partials/header.html %>
-
 
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<%= rtnPath %>"><span class="fa fa-caret-left"></span> <%= rtnDesc %></a></li>
@@ -53,7 +59,8 @@
         <% if (query.sharing != 1) { %>
         <% include ../views/partials/toolHeader.html %>
         <% }
-        } // display on line %>
+        } // display on line
+        %>
     </div>
     <div class="clearfix"></div>
     <form action="" method="post">
@@ -274,15 +281,22 @@
 
                         <% }
                         if ((defs.wasMatched || defs.wasRandomized) && defs.baselinetest_vars != "none selected") {
-                        if (eval.path === 'path-random') {
-                        baseline_tool = 'randomization';
-                        } else if (eval.path === 'path-matching') {
-                        baseline_tool = 'matching';
-                        }
+                          if (eval.path === 'path-random') {
+                              baseline_tool = 'randomization';
+                           } else if (eval.path === 'path-matching') {
+                              baseline_tool = 'matching';
+                           }
                         %>
 
+
                         <li>
-                            Baseline equivalence (or similarity between treatment and comparison groups before <%= defs.Basics_Tech_Name %> was introduced) was tested in the <%= baseline_tool %> tool using: <%- defs.baselinetest_vars.toString().replace(/,/g,', ') %><span class="baseline-vars-wordlist"></span>.
+                            Baseline equivalence (or similarity between treatment and comparison groups before <%= defs.Basics_Tech_Name %> was introduced) was tested in the <%= baseline_tool %> tool using: <ul>
+                                <% for(var i=0; i < defs.baselinetest_vars.length; i++) { %>
+
+                                <li><%= defs.baselinetest_vars[i] %></li>
+
+                                <%  }  %>
+                            </ul>
                         </li>
                         <% } else { %>
                         <li>
@@ -294,27 +308,32 @@
 
                         if (Result.args.control_vars.length > 0) { %>
                         <li>
-                            The analysis controlled for <span class="control-vars-wordlist"><%= Result.args.control_vars.join(", ") %></span>. Summary statistics from the evaluation sample are shown in Table A.<%= defs.BackGround_Tab_Num %> in the appendix.
+                            The analysis controlled for:<ul>
+                                <% for(var i=0; i < Result.args.control_vars.length; i++)                   { %>
+                                <li><%= Result.args.control_vars[i] %></li>
 
-
+                                <% } %>
+                            </ul>
                         </li>
-                        <% }
+
+                        <% } %>
+                        <% 
                         if (defs.Results_By_Grade_Flag === " by grade") { %>
                         <li>
                             The analysis was conducted by grade.
                         </li>
                         <% } %>
+                        <li>Summary statistics from the program evaluation sample are shown in Table A.<%= defs.BackGround_Tab_Num %> in the appendix.</li>
+
+                        <% } // end has results %>
                     </ul>
-                    <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
+                   <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See
                         <a class="redirect-link" href="/getresult?return=shareresult">Get Results</a>
                     </p>
                     <% }
-                    } // end has results %>
 
-
-                    <%
                     var sayclassroom = defs.Grades_Used.length > 1 ? defs.Grades_Used + " grade" : "";
                     var saygrade = sayclassroom;
                     if(defs.Classroom_Types.indexOf("Not reported") == -1) {
@@ -496,28 +515,30 @@
                 </div>
             </div>
 
-            <div class="row no-page-break">
-                <div class="col-xs-12">
+        <div class="row no-page-break">
+            <div class="col-xs-12">
 
-                    <h2> Conclusion</h2>
-                    <h3>Next Steps</h3>
+                <h2> Conclusion</h2>
+                <h3>Next Steps</h3>
 
-                    <p>
-                        <%= defs.Result_Next_Steps %>
+                <p>
+                    <%= defs.Result_Next_Steps %>
+                </p>
+                <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                <div class="clearfix"></div>
+                <div>
+                    <p class="prev-answer hidden-print">
+                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                        <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How to Use Your Results</a>
                     </p>
-                    <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
-                    <div class="clearfix"></div>
-                    <div>
-                        <p class="prev-answer hidden-print">
-                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How to Use Your Results</a>
-                        </p>
-                    </div>
-                    <% } %>
-
-
                 </div>
+                <% } %>
+
+
             </div>
+        </div>
+
+       
         </div>
 
       
@@ -594,15 +615,15 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
-                                <label>Document</label><br />
-                                <input type="radio" name="download_route" value="shareresult" checked> Findings Brief<br>
-                                <input type="radio" name="download_route" value="appendix"> Technical Appendix<br>
+                                <strong>Document</strong><br />
+                                <input id="download-brief" type="radio" name="download_route" value="shareresult" checked /> <label for="download-brief">Findings Brief</label><br>
+                                <input id="download-appendix" type="radio" name="download_route" value="appendix"> <label for="download-appendix">Technical Appendix</label><br>
                             </div>
                             <div class="col-xs-6">
-                                <label>File Format</label><br />
-                                <input type="radio" name="file_format" value="pdf" checked> PDF<br>
-                                <input type="radio" name="file_format" value="html"> HTML
-                                <span data-toggle="tooltip" title="The HTML version can be viewed in any browser, with or without an internet connection." class="tooltip-gr"><i class="fa fa-question-circle"></i></span>
+                                <strong>File Format</strong><br />
+                                <input id="format-html" type="radio" name="file_format" value="html" checked> <label for="format-html">HTML</label>
+                                <span data-toggle="tooltip" title="The HTML version can be viewed in any browser, with or without an internet connection." class="tooltip-gr"><i class="fa fa-question-circle"></i></span><br>
+                                <input id="format-pdf" type="radio" name="file_format" value="pdf"> <label for="format-html">PDF</label>
                             </div>
                         </div>
                     </div>
@@ -653,12 +674,12 @@
         </div>
 
 
-        <% if (display === 'online' && query.sharing != 1) { %>
-        <div class="hidden-print">
+        <% if (display === 'online') { %>
+        <div class="hidden-print in-brief">
             <% include ../views/partials/shareresultButtons.html %>
         </div>
 
-
+       
         <div class="hidden-print">
             <% include ../views/partials/footer.html %>
         </div>

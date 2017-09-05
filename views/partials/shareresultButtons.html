@@ -12,8 +12,11 @@
 <input class="hidden" name="returnpath" id="returnpath" />
   <%  if (user != "NOAUTHENTICATED" && !query.peeking ) { %>
 <div class="bottom-buttons">
-    <button type="submit" id="Save" data-action="/shareresult" class="btn btn-info btn-lg">SAVE CHANGES</button>
-    <button type="button" id="open-download-modal" class="btn btn-info btn-lg" role="link" data-toggle="modal" data-target="#download-modal">DOWNLOAD </button>
-    <button type="button" id="open-complete-evaluation-modal" class="btn btn-primary btn-lg" role="link" data-toggle="modal" data-target="#complete-evaluation-modal">COMPLETE EVALUATION </button>
+    <a href="/appendix/<%= eval._id %>?sharing=<%= sharing %>&backto=<%= backto %>" class="btn btn-info btn-lg appendix">VIEW TECHNICAL APPENDIX</a>
+    <a href="/shareresult/<%= eval._id %>?sharing=<%= sharing %>&backto=<%= backto %>" class="btn btn-info btn-lg brief">VIEW BRIEF</a>
+    <button type="button" id="open-download-modal" class="btn btn-info btn-lg appendix" role="link" data-toggle="modal" data-target="#download-modal">DOWNLOAD </button>
+    <% if (display === 'online' && sharing != 1) { %>
+    <button type="button" id="open-complete-evaluation-modal" class="btn btn-primary btn-lg appendix" role="link" data-toggle="modal" data-target="#complete-evaluation-modal">COMPLETE EVALUATION </button>
+    <% } %>
 </div>
         <% } %>

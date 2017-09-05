@@ -130,8 +130,8 @@ module.exports = function (app, passport) {
 	app.post('/getresult', isLoggedIn, function (req, res) {
 		return evaluationController.postByTool(req, res);
     });
-	app.get('/appendix_matching', isLoggedIn, function (req, res) {
-		return evaluationController.getByEval(req, res, "download");
+	app.get('/appendix', isLoggedIn, function (req, res) {
+		return evaluationController.getByEval(req, res, "online");
 	});
     app.get('/shareresult', isLoggedIn, function (req, res) {
        return evaluationController.getByTool(req, res, "online");
@@ -140,7 +140,9 @@ module.exports = function (app, passport) {
     app.get('/shareresult/:id', isLoggedIn, function (req, res) {
 		return evaluationController.getByEvalId(req, res, "online");
 	});
-	
+	app.get('/appendix/:id', isLoggedIn, function (req, res) {
+		return evaluationController.getByEvalId(req, res, "online");
+	});
 	app.post('/shareresult', isLoggedIn, function (req, res) {
 		return evaluationController.postByTool(req, res, "online");
 	});

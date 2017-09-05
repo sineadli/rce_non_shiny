@@ -185,7 +185,9 @@ nav.footer.navbar-default {
     background-color: #E3E1CE;
     border-radius: 0;
 }
-
+.modal-body label {
+    font-weight: normal;
+}
 div.breadcrumbs, .sec-label, li.breadcrumb-item {
 	color:#56ACE0;
 	text-transform:uppercase;
@@ -1754,6 +1756,10 @@ div.action-buttons {
     width: 100%;
 }
 
+div.in-appendix a.appendix,div.in-appendix button.appendix, div.in-brief a.brief {
+    display: none;
+}
+
 body.brief table.resultsFig {
     background-color: #ffffff;
     margin-top: 10px;
@@ -2056,7 +2062,10 @@ div .sbar {
             margin-bottom: 10px;
             font-size: 16px;
         }
-
+        body.brief li ul li {
+            margin-bottom: 0;
+            font-size: 16px;
+        }
        body.brief p {
            font-size: 1em;
             margin: 0 0 20px;
