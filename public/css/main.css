@@ -1596,17 +1596,28 @@ input[type=date] {
     width: 50%;
 }
 
+.radio input[type=radio] {
+    width: 20px;
+     margin: 0 3px;
+     position: relative;
+}
 
 .multiselect-container>li>a>label.checkbox {
     text-transform: none;
+       padding: 0 25px 0 0;
 }
-.multiselect-container>li>a>label>input[type=checkbox]  
- {
-    margin-top: 3px;
-    margin-left: -90px;
+.multiselect-container > li > a > label.radio {
+    padding: 0 25px 0 0 ;
+}
+.multiselect-container > li > a > label > input[type=checkbox] {
+    margin: 0 3px;
+    padding: 0;
+    position: relative;
+    width: 25px;
+}
 
 
-}
+
 
 div.loading {
     margin: 20px auto;
@@ -1635,6 +1646,9 @@ table.tool-table th {
     width: 20%;
     font-weight: 600;
 }
+
+
+
 
 
 div.hcenter input[type=checkbox], div.panel-body div.form-group input[type=checkbox]  {
