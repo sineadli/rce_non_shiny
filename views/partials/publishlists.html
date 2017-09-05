@@ -1,9 +1,14 @@
 ﻿<div class="col-xs-12 content">
-   
-    <% if(publishlists.length>0){
-    var d, tech_name, author, company, outcomes, grades, id;
+
+    <%
+    //console.log("In publish lists partial view and number of publications = " + publishlists.length);
+    
+    if(publishlists.length>0){
+    var d, tech_name, author, company, outcomes, grades, id, foutcomes;
 
     for (var i=0; i < publishlists.length; i++){
+    console.log("In publish lists partial view and planContext = ");
+    console.log(publishlists[i].planContext)
     grades = []; outcomes=[];
     id =publishlists[i]._id ;
     d = new Date(publishlists[i].published_at);
@@ -13,6 +18,7 @@
     company = publishlists[i].company;
 
     if (publishlists[i].planContext.Outcomes) {
+  
     outcomes = publishlists[i].planContext.Outcomes;
     foutcomes = outcomes.join(', ');
  

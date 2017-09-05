@@ -32,7 +32,7 @@ switch (last_tool) {
 			case "matching":
 				ToolName = "Matching";
 				break;
-			case "Think About How You Will Use The Results":
+			case "Think About How to Use Your Results":
 				rpath = "plan_next_steps";
 				break;
 			default:
@@ -43,7 +43,7 @@ switch (last_tool) {
 var verb = "Does";
 
 var useMeasure = '';
-if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Result" && eval.last_tool != "Share Your Results" ) {
+if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Results" && eval.last_tool != "Share Your Results" ) {
 useMeasure = " by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units + " on " + defs.Outcome_Measure + ",";
 var returnpath = GetReturnPath(eval.last_tool);
 

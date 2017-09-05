@@ -137,7 +137,7 @@ exports.stripPercent = function (x) {
             }
 
             var durationPlural = (duration.length > 1) ? 's' : '';
-            var durationString = duration.length === 0 ? "Not Reported" : duration.length.toString() + ' ' + duration.unit + durationPlural;
+            var durationString = duration.length === 0 ? "Not reported" : duration.length.toString() + ' ' + duration.unit + durationPlural;
 
             return durationString;
 

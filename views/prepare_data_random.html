@@ -139,11 +139,12 @@
                                     <select name="prepareRandom[Cluster_Group]" id="Cluster_Group">
                                         <%
                                         var options = ["Select an option", "By class", "By school", "Other" ];
-                                        var ovals = ["Select an option", "classes", "schools", "other" ];
+                                        var ovals = ["Select an option", "classroom", "school", "other" ];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
                                         var selected;
-                                        selected = ( eval.prepareRandom.Cluster_Group== ovals[i] ) ? "selected" : "";
+                                        var wasSelected = eval.prepareRandom.Cluster_Group == "classes" ? "classroom" : (eval.prepareRandom.Cluster_Group == "schools" ? "school" : eval.prepareRandom.Cluster_Group);
+                                        selected = ( wasSelected == ovals[i] ) ? "selected" : "";
                                         %>
                                         <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                         }

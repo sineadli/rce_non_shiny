@@ -92,7 +92,7 @@ $(document).ready(function() {
 				ToolName = "Matching";
 				break;
 			case "plan_next_steps":
-				ToolName = "Think About How You Will Use The Results";
+				ToolName = "Think About How to Use Your Results";
 				break;
 			default:
 				ToolName = "";
@@ -494,14 +494,24 @@ function setUserLimitsSelections() {
 
 	var gORi = $('#Individual_Group').val();
     var cluster = $('#Cluster_Group').val();
-    var scluster = '';
-	
+    var scluster = "";
+    var pcluster = "";
+   
     if (cluster === 'classes') {
         scluster = 'class';
+        pcluster = 'classrooms';
+    }
+	else if (cluster === 'schools') {
+        scluster = 'school';
+        pcluster = 'schools';
     }
 	else if (cluster === 'other') {
-	    scluster = 'group';
-	}else scluster = cluster.substr(0, cluster.length - 1);
+        scluster = 'group';
+        pcluster = 'groups';
+    } else {
+        scluster = cluster;
+        pcluster = cluster + "s";
+    }
 
 	var ocluster = $('#Cluster_Group_Other').val();
     var datanote = "";
@@ -519,10 +529,10 @@ function setUserLimitsSelections() {
 		pretestnote = "You indicated you will randomly assign " + users + " by "
 			+ scluster + ".  Your data set can be at the individual or group level. If at the group level, A " + scluster + "'s pretest value should be the average value for all " + users + " in the " + scluster + ".";
 	}
-	if (cluster.toLowerCase() !== "select an option") {
-		assign = cluster;
+	if (cluster.toLowerCase() !== "select an option" && gORi === "groups") {
+		assign = pcluster;
 	}
-	if (cluster.toLowerCase() === "other") {
+	if (cluster.toLowerCase() === "other" ) {
 		$('#Question_Cluster_Other').show();
 
 	}

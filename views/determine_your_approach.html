@@ -26,8 +26,9 @@
     <% }} %>
 
     <form action="/determine_your_approach" method="post" novalidate>
-      
+        <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
+        <% } %>
      
        
         <input type="hidden" id="Basics_Users" value="<%= defs.Basics_Users %>" />
@@ -331,7 +332,8 @@
                                                         for ( var i = 0; i < options.length; i++ )
                                                         {
                                                         var selected;
-                                                        selected = ( eval.prepareRandom.Cluster_Group== ovals[i] ) ? "selected" : "";
+                                                        var wasSelected = eval.prepareRandom.Cluster_Group == "classes" ? "classroom" : (eval.prepareRandom.Cluster_Group == "schools" ? "school" : eval.prepareRandom.Cluster_Group);
+                                                        selected = ( wasSelected == ovals[i] ) ? "selected" : "";
                                                         %>
                                                         <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[i] %></option><%
                                                         }
@@ -495,11 +497,13 @@
             $('#Individual_Group').change(function () {
                 ShowCluster(this);
                 setApproachConclusion();
+                setUserLimitsSelections();
             });
             $('#Cluster_Group').change(function () {
                 
                 ShowClusterOther(this);
                 setApproachConclusion();
+                setUserLimitsSelections();
             });
             $("#Choose-Random").change(function () {
                 $("div.for-how-group").removeClass("selected");

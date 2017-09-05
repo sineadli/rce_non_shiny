@@ -114,7 +114,7 @@
                     <% if (display === 'online' && user != "NOAUTHENTICATED") { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                        <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a>
+                        <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How to Use Your Results</a>
                     </p>
                     <% } %>
 
@@ -126,7 +126,11 @@
 
                     <% include ../views/partials/_findingsTable.html %>
                     <p>
-                        Table 1. shows the effect of <%= defs.Basics_Tech_Name %>  on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %> based on this evaluation's data. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by the <%= defs.Outcome_Measure %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
+                        Table 1. shows the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %> based on this evaluation's data. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by the <%= defs.Outcome_Measure %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
+                    </p>
+                    <p>
+                        The sample sizes in Table 1. represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
+
                     </p>
                     <% if (user != "NOAUTHENTICATED" && display === 'online') { %>
                     <p class="prev-answer hidden-print">
@@ -136,10 +140,7 @@
                     <% } %>
                     <% if (Result.args.cluster_var != "") { %>
                     <div class="note" style="margin-top: 15px;">
-                        <p>
-                            The sample sizes in Table 1. represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
-
-                        </p>
+                       
 
                     </div>
                     <% } %>
@@ -187,10 +188,16 @@
                     <h3>What is being evaluated</h3>
                     <p>
                         This evaluation tested the effectiveness of <%= defs.Basics_Tech_Name %>.
-                        <%= defs.Cap_Basics_Tech_Name %> is
-                        <%= defs.Tech_Purpose %>
+                        <%= defs.Cap_Basics_Tech_Name %><%- defs.Tech_Purpose %>
                     </p>
-
+                    <% if (user != "NOAUTHENTICATED" && display === 'online') {%>
+                    <div class="char-row-div">
+                        <p class="prev-answer hidden-print">
+                            <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                            <a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a>
+                        </p>
+                    </div>
+                    <% } %>
                     <div class="white-background-blue-border">
                         <h3> The Basics of <%= defs.Basics_Tech_Name %></h3>
                         <div class="char-row-div">
@@ -237,7 +244,7 @@
                         <div class="char-row-div">
                             <p class="prev-answer hidden-print">
                                 <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                                <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                                <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How to Use Your Results</a>
                             </p>
                         </div>
                         <% } %>
@@ -337,7 +344,7 @@
                             </div>
                         </div>
                         <div class="char-row-div">
-                            <div class="char-label-div">Evaluation Period</div>
+                            <div class="char-label-div">Evaluation </div>
                             <div class="char-content-div">
                                 <span class="capitalize-one"><%= defs.Eval_Duration %></span>
                             </div>
@@ -448,7 +455,7 @@
                                         Hispanic
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= defs.Ethnicity_Hispanic %>%
+                                        <%= defs.Ethnicity_Hispanic == "Not reported" ? defs.Ethnicity_Hispanic : defs.Ethnicity_Hispanic + "%" %>
                                     </div>
                                 </div>
                                 <div class="char-row-div">
@@ -456,7 +463,7 @@
                                         Female
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= defs.Gender_Female %>%
+                                        <%- defs.Gender_Female == "Not reported" ? defs.Gender_Female : defs.Gender_Female + "%" %>
                                     </div>
                                 </div>
                                 <div class="char-row-div">
@@ -464,7 +471,8 @@
                                         English Learners
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= defs.English_Learners %>%
+                                   
+                                        <%- defs.English_Learners == "Not reported" ? defs.English_Learners : defs.English_Learners + "%" %>
                                     </div>
                                 </div>
                                 <div class="char-row-div">
@@ -472,7 +480,8 @@
                                         Students with IEPs
                                     </div>
                                     <div class="char-content-div-narrow">
-                                        <%= defs.IEP %>%
+                                
+                                        <%- defs.IEP == "Not reported" ? defs.IEP : defs.IEP + "%" %>
                                     </div>
                                 </div>
                             </div>
@@ -502,7 +511,7 @@
                     <div>
                         <p class="prev-answer hidden-print">
                             <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Plan Next Steps</a>
+                            <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How to Use Your Results</a>
                         </p>
                     </div>
                     <% } %>
@@ -536,7 +545,7 @@
                                     <li><a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a></li>
                                     <% }
                                     if(defs.planNextIncomplete) { %>
-                                    <li><a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How You Will Use The Results</a></li>
+                                    <li><a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How to Use Your Results</a></li>
                                     <% }
                                     if(defs.planContextIncomplete) { %>
                                     <li><a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a></li>

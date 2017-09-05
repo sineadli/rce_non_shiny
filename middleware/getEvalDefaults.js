@@ -136,7 +136,7 @@ function setPlanContext(sess) {
 	var planContext = sess.eval.planContext;
 
 	var defstocheck = {
-        Tech_Purpose: '&rsquo;s description was not provided',
+        Tech_Purpose: '&rsquo;s description was not provided.',
         Tech_Components: 'Not reported',
         Total_Students: "Not reported",
         District_State: "Not reported",
@@ -148,9 +148,11 @@ function setPlanContext(sess) {
 		Developer_Guidelines: "No information was provided regarding the recommended usage by the developer of the technology.",
 		Other_Notes: "No other factors or initiatives were identified as potentially contributing to the results."
 	}
-
+   
     sess.defaults.planContextIncomplete = populateDefaults(defstocheck, planContext, sess, false);
+  
 	sess.defaults.Components = textHelpers.capitalize(sess.defaults.Tech_Components);
+	sess.defaults.Tech_Purpose = (sess.defaults.Tech_Purpose !== "&rsquo;s description was not provided.") ? " is " + sess.defaults.Tech_Purpose : sess.defaults.Tech_Purpose;
 	sess.defaults.Purpose = textHelpers.punctuate(sess.defaults.Tech_Purpose);
 
 	//List of arrays to turn into comma delimited lists;
@@ -201,25 +203,28 @@ function setEvalPlan(sess) {
 function setMatching(sess) {
 
     var matching = sess.eval.matching;
-    var mresult = null;
+ 
     sess.defaults.wasMatched = false;
 	sess.defaults.mhideFirst = false;
     sess.defaults.minFirst = "in";
     sess.defaults.miconFirst = "down";
-
-
-
-	
+    var mresult = "";
 
 	if (matching.Result) {
-		sess.defaults.wasMatched = matching.Result === "" ? false : (sess.eval.path == "path-matching" ? true : false);
-        var mresult = JSON.parse(matching.Result);
+		 mresult = safelyParseJSON(matching.Result);
+		sess.defaults.wasMatched = mresult === "" ? false : (sess.eval.path == "path-matching" ? true : false);
+	}
+
+	if (sess.defaults.wasMatched) {
 		sess.defaults.mSuccess = wasSuccessful(mresult);
 		sess.defaults.mhideFirst = true;
 		sess.defaults.minFirst = "";
 		sess.defaults.miconFirst = "right";
-	}
+		if (mresult.args) {
+			sess.defaults.baselinetest_vars = mresult.args.match_vars;
+		} else { sess.defaults.baselinetest_vars = "none selected"; }
 
+	}
     
     if (matching.Targeted_Access === "" || matching.Targeted_Access === 'Select an option') {
         sess.defaults.matchingIncomplete = true;
@@ -235,8 +240,7 @@ function setMatching(sess) {
 	
 	var dlpath = (matching.DownloadPath ? matching.DownloadPath : "");
 	sess.defaults.mDownloadPath = dlpath;
-
-
+return;
 }
 
 function setRandom(sess) {
@@ -245,20 +249,26 @@ function setRandom(sess) {
 	sess.defaults.rhideFirst = false;
     sess.defaults.rinFirst = "in";
     sess.defaults.riconFirst = "down";
+    var rresult = "";
 
-  
-
-		
+	
     sess.defaults.wasRandomized = false;
     if (random.Result) {
-        sess.defaults.wasRandomized = random.Result === "" ? false : (sess.eval.path == "path-random" ? true : false);
+		 rresult = safelyParseJSON(random.Result);
+        sess.defaults.wasRandomized = rresult === "" ? false : (sess.eval.path === "path-random" ? true : false);		
+    }
+
+	if (sess.defaults.wasRandomized) {
 		sess.defaults.rhideFirst = true;
 		sess.defaults.rinFirst = "";
 		sess.defaults.riconFirst = "right";
-    }
-   
-	var dlpath = (random.DownloadPath ? random.DownloadPath : "");
-	sess.defaults.rDownloadPath = dlpath;
+		if (rresult.args) {
+			sess.defaults.baselinetest_vars = rresult.args.baseline_vars;
+		} else { sess.defaults.baselinetest_vars = "none selected"; }
+
+	}
+ 
+		sess.defaults.rDownloadPath = (random.DownloadPath ? random.DownloadPath : "");;
 
     return;
 }
@@ -278,110 +288,110 @@ function setGetResults(sess) {
 
     if (eval.getresult.Result) {
 
-		sess.defaults.hasResults = eval.getresult.Result === "" ? false : true;
+		var result = safelyParseJSON(eval.getresult.Result);
+        sess.defaults.hasResults = (result === "")  ? false : true;
+     
 
-		sess.defaults.hideFirst = true;
-		sess.defaults.inFirst = "";
-		sess.defaults.iconFirst = "right";
-
-        var result = JSON.parse(eval.getresult.Result);
-        if (result.outcome_range) {
-            sess.defaults.Outcome_Min = result.outcome_range.min;
-            sess.defaults.Outcome_Max = result.outcome_range.max;
-        }
-        sess.defaults.Outcome_Max = "not available";
-		if (result.args) {
-            sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
-		}
-		if (typeof result == "object") {
-			sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
-
-		} else {
-			sess.defaults.Results_By_Grade_Flag = "";
-		}
-
-        var balanced = true, clusterGroupWarning = false;
-		var successCount = 0, inconclusiveCount = 0, failureCount = 0;
-        var clusterGroupWarningComparison = "";
-
-		for (grade in result.results_by_grade) {
-            if (result.results_by_grade.hasOwnProperty(grade)) {
-
-                var thisresult = result.results_by_grade[grade];
-
-                sess.defaults.hasSample = thisresult.samples ? true : false;
-				sess.defaults.hasCluster = thisresult.samples_cluster ? true : false;
-
-                //For warnings
-                // Balance warning
-                balanced = isBalanced(thisresult.baseline_var_means);
-
-                // Cluster warning
-                if (result.args.cluster_var.indexOf("no cluster") === -1 && sess.defaults.hasCluster) {
-
-                    if (thisresult.samples_cluster.n_full_treat === 1 || (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1)) {
-                        clusterGroupWarning = true;
-                        clusterGroupWarningComparison = (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1) ? "not" : "";
-                    }
-                }
-
-                //For Interpretation
-                var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
-				var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
-				var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
-                console.log("probability = " + probability);
-				console.log("pass probability = " + pass_probability);
-				console.log("fail probability = " + fail_probability);
-                var success = (probability > pass_probability);
-                var inconclusive = (probability < pass_probability) && (probability > fail_probability);
-
-                if (success) {
-                    successCount++;
-                } else if (inconclusive) {
-                    inconclusiveCount++;
-                } else {
-                    failureCount++;
-                }
-
+		if (sess.defaults.hasResults) {
+            sess.defaults.hideFirst = true;
+            sess.defaults.inFirst = "";
+            sess.defaults.iconFirst = "right";
+			
+            if (result.outcome_range) {
+                sess.defaults.Outcome_Min = result.outcome_range.min;
+                sess.defaults.Outcome_Max = result.outcome_range.max;
             }
-        } // For each grade
+            
+            if (result.args) {
+                sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
+            }
+            if (typeof result == "object") {
+                sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
 
-		// Create result summary string
-		var header, start, gradeQualifier, inconclusiveQualifier, nextSteps;
-		header = start = gradeQualifier = inconclusiveQualifier = nextSteps = "";
+            } else {
+                sess.defaults.Results_By_Grade_Flag = "";
+            }
 
-		if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
-			header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive";
-			nextSteps = eval.planNext.Action_Inconclusive;
-		}
-		else {
-			if (successCount === 0) {
-				start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " did not have the intended effect ";
-				nextSteps = eval.planNext.Action_Fail;
-			}
-			if (successCount > 0 && failureCount > 0) {
-				start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " had the intended effect ";
-				gradeQualifier = ' for some grades, but not for others';
-				nextSteps = eval.planNext.Action_Inconclusive;
-			}
-			if (inconclusiveCount > 0) inconclusiveQualifier = ' For some grades, results were inconclusive.';
-			if (successCount > 0 && failureCount === 0 && successCount > inconclusiveCount) {
-				nextSteps = eval.planNext.Action_Success;
-				start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle";
-			}
-			header = start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + inconclusiveQualifier + '.';
-		}
-       
-		// Defaults to use on pages
-		sess.defaults.ResultSummary = header;
-		sess.defaults.Cluster_Group_Warning = clusterGroupWarning;
-		sess.defaults.Cluster_Group_Warning_Add_Not = clusterGroupWarningComparison;
-		sess.defaults.isBalanced = balanced;
-		sess.defaults.Result_Next_Steps = nextSteps;
+            var balanced = true, clusterGroupWarning = false;
+            var successCount = 0, inconclusiveCount = 0, failureCount = 0;
+            var clusterGroupWarningComparison = "";
 
-	} 
+            for (grade in result.results_by_grade) {
+                if (result.results_by_grade.hasOwnProperty(grade)) {
 
-	return;
+                    var thisresult = result.results_by_grade[grade];
+
+                    sess.defaults.hasSample = thisresult.samples ? true : false;
+                    sess.defaults.hasCluster = thisresult.samples_cluster ? true : false;
+
+                    //For warnings
+                    // Balance warning
+                    balanced = isBalanced(thisresult.baseline_var_means);
+					
+                    // Cluster warning
+                    if (result.args.cluster_var.indexOf("no cluster") === -1 && sess.defaults.hasCluster) {
+
+                        if (thisresult.samples_cluster.n_full_treat === 1 || (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1)) {
+                            clusterGroupWarning = true;
+                            clusterGroupWarningComparison = (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1) ? "not" : "";
+                        }
+                    }
+
+                    //For Interpretation
+                    var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
+                    var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
+                    var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
+                   
+                    var success = (probability > pass_probability);
+                    var inconclusive = (probability < pass_probability) && (probability > fail_probability);
+
+                    if (success) {
+                        successCount++;
+                    } else if (inconclusive) {
+                        inconclusiveCount++;
+                    } else {
+                        failureCount++;
+                    }
+
+                }
+            } // For each grade
+
+            // Create result summary string
+            var header, start, gradeQualifier, inconclusiveQualifier, nextSteps;
+            header = start = gradeQualifier = inconclusiveQualifier = nextSteps = "";
+
+            if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
+                header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive";
+                nextSteps = eval.planNext.Action_Inconclusive;
+            } else {
+                if (successCount === 0) {
+                    start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " did not have the intended effect ";
+                    nextSteps = eval.planNext.Action_Fail;
+                }
+                if (successCount > 0 && failureCount > 0) {
+                    start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " had the intended effect ";
+                    gradeQualifier = ' for some grades, but not for others';
+                    nextSteps = eval.planNext.Action_Inconclusive;
+                }
+                if (inconclusiveCount > 0) inconclusiveQualifier = ' For some grades, results were inconclusive.';
+                if (successCount > 0 && failureCount === 0 && successCount > inconclusiveCount) {
+                    nextSteps = eval.planNext.Action_Success;
+                    start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle";
+                }
+                header = start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + inconclusiveQualifier + '.';
+            }
+
+            // Defaults to use on pages
+            sess.defaults.ResultSummary = header;
+            sess.defaults.Cluster_Group_Warning = clusterGroupWarning;
+            sess.defaults.Cluster_Group_Warning_Add_Not = clusterGroupWarningComparison;
+            sess.defaults.isBalanced = balanced;
+            sess.defaults.Result_Next_Steps = nextSteps;
+
+        }
+    }
+
+    return;
 };
 
 function setShareResults(sess, user) {
@@ -403,17 +413,8 @@ function setShareResults(sess, user) {
 	sess.defaults.BackGround_Tab_Num = bkgrndtable;
 	sess.defaults.Baseline_Tab_Num = baselinetable;
 	sess.defaults.Frequentist_Tab_Num = freqtable;
-    var baselineTestVars = [];
-     if (eval.path === "path-matching" && sess.defaults.wasMatched) {
-         var resm = JSON.parse(eval.matching.Result);
-		 if (resm.args) { baselineTestVars = resm.args.match_vars;}
- 
-     } else if (eval.path === "path-random" && sess.defaults.wasRandomized) {
-		 var resr = JSON.parse(eval.random.Result);
-		 baselineTestVars = resr.args.baseline_vars;
-     } else {baselineTestVars = "none selected";}
-
-    sess.defaults.baselinetest_vars = baselineTestVars;
+   
+    sess.defaults.baselinetest_vars = sess.defaults.baselinetest_vars == null ? "None Selected" : sess.defaults.baselinetest_vars;
     sess.defaults.pilot_type = eval.path === "path-random" ? "randomized" : "matched";
 
 	if (publishedAt) {
@@ -437,6 +438,17 @@ function setShareResults(sess, user) {
 
 
 // General functions
+
+function safelyParseJSON(json) {
+	try {
+	    return parsed = JSON.parse(json);
+	} catch (e) {
+		console.log("parse error = " + e);
+	    return "";
+	}
+
+}
+
 function isBalanced(baselines) {
     var balanced = true;
     for (var blvar in baselines) {
@@ -455,6 +467,10 @@ function wasSuccessful(mresult) {
     var balanceResult = "";
     var countGrades = 0;
     var countBalanced = 0;
+
+	if (mresult === "") {
+	    return balanceResult;
+	}
     for (var grade in mresult.results_by_grade) {
         if (mresult.results_by_grade.hasOwnProperty(grade)) {
             countGrades++;
@@ -466,29 +482,38 @@ function wasSuccessful(mresult) {
 
 function populateDefaults(defstocheck, tool, sess, incomplete) {
     for (var check in defstocheck) {
+        console.log("In populate defaults and check = " + check);
         if (defstocheck.hasOwnProperty(check)) {
 
 			if (tool[check] == null) {
-				sess.defaults[check] = "";
+			//	console.log(check + " is null  = " + tool[check]);
+				sess.defaults[check] = defstocheck[check];
 			} else if (typeof tool[check] == "number") {
+				console.log(check + " is a number = " + tool[check]);
                 sess.defaults[check] = tool[check];
             } else if (tool[check] === "" || tool[check] === 'Select an option') {
                 incomplete = true;
+			//	console.log(check + " is blank or select an option and  = " + tool[check]);
                 sess.defaults[check] = defstocheck[check];
             } else if (tool[check].toLowerCase() === "other") {
                 var ocheck = check + "_Other";
 
                 if (tool[ocheck] === "") {
+                   // console.log("In populate defs and checking for missing " + tool[ocheck]);
                     incomplete = true;
                     sess.defaults[check] = defstocheck[check];
                 }
                 else {
+				//	console.log(check + " should = somehthing = " + tool[check]);
                     sess.defaults[check] = tool[ocheck];
+					
                 }
 
             } else {
                 sess.defaults[check] = tool[check];
+				
             }
+		//	console.log("In populate defs and checking for missing " + tool[check]);
         }
     }
 

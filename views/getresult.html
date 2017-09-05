@@ -129,7 +129,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
 
             <% if (user != "NOAUTHENTICATED") {%>
             <p class="prev-answer">
-                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How You Will Use The Results</a>
+                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How to Use Your Results</a>
             </p>
             <% } %>
         </div>
@@ -152,7 +152,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
             </p>
             <% if (user != "NOAUTHENTICATED") {%>
             <p class="prev-answer">
-                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How You Will Use The Results</a>
+                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/plan_next_steps?return=getresult">Think About How to Use Your Results</a>
             </p>
             <% } %>
         </div>
@@ -424,7 +424,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
     <input type="hidden" id="evalOutcome" value="<%= defs.Basics_Outcome %>"/>
     <input type="hidden" id="outDirection" value="<%= defs.Outcome_Direction %>"/>
     <input type="hidden" id="measureUnits" value="<%= defs.Units %>"/>
-    <input type="hidden" name="getresult[Result]" id="gresult" value="<%= Result %>"/>
+    <input type="hidden" name="getresult[Result]" id="gresult" value='<%= (eval.getresult.Result) ? eval.getresult.Result : "" %>'/>
 </div>
 <% include ../views/partials/toolButtons.html %>
 </form>
