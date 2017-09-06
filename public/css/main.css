@@ -188,6 +188,9 @@ nav.footer.navbar-default {
 .modal-body label {
     font-weight: normal;
 }
+.modal-body input {
+    width: 25px;
+}
 div.breadcrumbs, .sec-label, li.breadcrumb-item {
 	color:#56ACE0;
 	text-transform:uppercase;
