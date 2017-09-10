@@ -191,6 +191,12 @@ nav.footer.navbar-default {
 .modal-body input {
     width: 25px;
 }
+.modal-body input[type=text] {
+    width: 85%;
+}
+div.modal-body p {
+    margin:10px 0 !important;
+}
 div.breadcrumbs, .sec-label, li.breadcrumb-item {
 	color:#56ACE0;
 	text-transform:uppercase;
@@ -243,7 +249,6 @@ div.eval-div.current h3 {
     font-weight:bold;
 }
 div.eval-div p {
-
     margin: 0px 0px;
 }
 .outer-status-bar {
@@ -460,6 +465,27 @@ h2 {
   font-weight:600;
   margin-top: 5px;
     margin-bottom: 15px;
+}
+h2 > em, h3 > em {
+    font-size:.8em;
+    font-weight:normal;
+
+    color: #4081A8;
+    color: #e44e0d;
+     color: #71714A;
+}
+body.coach h2 > em, body.coach h3 > em {
+    font-size:.8em;
+    font-weight:normal;
+      color: #e44e0d;
+     color: #71714A;
+    color: #4081A8;
+      color: #71714A;
+  
+}
+div.r_a i.orange {
+    color: #e44e0d;
+    font-weight:normal;
 }
 div.tool-title h2 {
     font-size: 1.55em;
@@ -844,8 +870,9 @@ div.wizard-header-row {
     div.wizard-header-row p {
         font-weight: 600;
     }
-h2.eval-header {
+h2.eval-header, body.brief h2.eval-header {
     font-size: 2em;
+    margin-top: 5px;
     margin-bottom: 25px;
     display: inline-block;
 }
@@ -991,7 +1018,7 @@ div.col-xs-3, div.col-xs-2 {
         width: 98%;
     }
 }
-div#result div.col-xs-2 {
+div#result div.col-xs-2, div.col-xs-2.vbutton {
     min-width: 120px;
 }
 div.col-xs-6, div.col-xs-4, div.col-xs-5,div.col-xs-7, div.col-xs-8{

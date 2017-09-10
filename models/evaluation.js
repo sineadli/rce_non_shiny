@@ -42,12 +42,12 @@ totalToolNumber = 11; //for completed status
 //02.03 determine your approach
 var Basics = mongoose.Schema({
     Basics_Have: { type: String,  default: '' },
-    Basics_Tech_Name: { type: String, default: '', validate: validateChar  }, // was Plan_Question_A
+    Basics_Tech_Name: { type: String, default: ''  }, // was Plan_Question_A
     Basics_Using: { type: String, default: '' }, // was Prob_Appr_A This is not used.  Replaced by Prob_Appr_Current_or_New
     Basics_Users: { type: String, default: ''}, // Was Prob_Appr_B
 	Basics_Users_Other: { type: String, default: ''}, // Was Prob_Appr_B_other	 
     Basics_Outcome: { type: String, default: '', help: 'what you hope to change' }, 
-	Basics_Outcome_Other: { type: String, default: '', validate: validateChar },   
+	Basics_Outcome_Other: { type: String, default: '' },   
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
@@ -65,8 +65,8 @@ var ProbAppr = mongoose.Schema({
 var PlanQuestion = mongoose.Schema({
     Outcome_Measure: { type: String, default: '' }, // was Plan_Question_B_2
     Outcome_Direction: { type: String, default: '' }, // was  Plan_Question_B_3
-    Intervention_Group_Desc: { type: String, default: '', validate: validateChar }, // was  Plan_Question_C
-    Comparison_Group_Desc: { type: String, default: '', validate: validateChar }, // was Plan_Question_D
+    Intervention_Group_Desc: { type: String, default: '' }, // was  Plan_Question_C
+    Comparison_Group_Desc: { type: String, default: '' }, // was Plan_Question_D
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
@@ -248,6 +248,7 @@ var toollist = new mongoose.Schema({
 var evaluationSchema = mongoose.Schema({
     userid: { type: mongoose.Schema.ObjectId, required: true },
     title: { type: String, required: true },
+	trialflag: { type: Boolean, default: false },
     last_step: Number,
     next_path: Number,
     is_completed: Boolean,

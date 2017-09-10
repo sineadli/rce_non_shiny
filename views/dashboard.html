@@ -40,14 +40,16 @@
                     <div class="row">
                         <ul class="wizard-menu">
                             <li class="wizard-item">
-                               <button type="button" class="btn-link sec-label" role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION </button></li>
+                                <button type="button" class="btn-link sec-label" role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION </button>
+                            </li>
 
                             <li class="wizard-item">
 
-                                <button role="link" id="btnPublishedList" class="btn-link sec-label" onclick="">View Shared Evaluations </button></li>
+                                <button role="link" id="btnPublishedList" class="btn-link sec-label" onclick="">View Shared Evaluations </button>
+                            </li>
 
                         </ul>
-                       
+
                     </div>
                 </div>
             </div>
@@ -75,7 +77,7 @@
                 helpdetail = ""
                 if (eval[0].created_at)
                 {
-                startdate = eval[0].created_at 
+                startdate = eval[0].created_at
                 }
                 }
                 %>
@@ -83,28 +85,28 @@
                     <div class="panel-heading">
                         <h2 class="panel-title  clickable">
                             <a data-toggle="collapse" data-target="#welcomeDetails" style="display: block;">
-                                <i class="fa <%= helpcaret %>" <%= helphidden %> ></i> Need help getting started? 
+                                <i class="fa <%= helpcaret %>" <%= helphidden %> ></i> Need help getting started?
                             </a>
                         </h2>
                     </div>
                     <div id="welcomeDetails" class="panel-collapse collapse <%= helpdetail %>">
-                       
-                            <div class="col-sm-6 help-panel help-sec">
-                                <h3 class="sec-label">Overview of the Ed Tech RCE Coach</h3>
-                                <p style="min-height: 53px;">We&rsquo;ll help you get answers in 5 easy steps. </p>
-                                <p class="pull-right">
-                                    <a onclick=" window.open('/static/pdf/Graphic Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
-                                </p>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="col-sm-6 help-panel ">
-                                <h3 class="sec-label">What You’ll Need to Get Started </h3>
-                                <p>Get acquainted with the skills and data necessary to conduct a successful evaluation. </p>
-                                <p class="pull-right">
-                                    <a onclick=" window.open('/static/pdf/What you need to get started.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
-                                </p>
-                                <div class="clearfix"></div>
-                            </div>
+
+                        <div class="col-sm-6 help-panel help-sec">
+                            <h3 class="sec-label">Overview of the Ed Tech RCE Coach</h3>
+                            <p style="min-height: 53px;">We&rsquo;ll help you get answers in 5 easy steps. </p>
+                            <p class="pull-right">
+                                <a onclick=" window.open('/static/pdf/Graphic Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                            </p>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="col-sm-6 help-panel ">
+                            <h3 class="sec-label">What You’ll Need to Get Started </h3>
+                            <p>Get acquainted with the skills and data necessary to conduct a successful evaluation. </p>
+                            <p class="pull-right">
+                                <a onclick=" window.open('/static/pdf/What you need to get started.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                            </p>
+                            <div class="clearfix"></div>
+                        </div>
                         <div class="help-main clearfix"> </div>
                         <div class="col-sm-6 help-panel help-sec">
                             <h3 class="sec-label">Choosing a technology</h3>
@@ -129,7 +131,7 @@
                 <div class="dash-well eval-div current <%= statusstyle %>">
                     <div style="float: left; width: 75%;">
 
-                        <h3><%= evaltitle %></h3>
+                        <h3><%= evaltitle %><%- eval[0].trialflag ? "<br /><em style='font-size: .8em;'><i title='trial run' class='fa fa-exclamation-triangle'></i> Trial run</em>" : "" %></h3>
                         <div class="sec-label current"><%= evallabel %></div>
                         <% if (eval.length>0) { %>
                         <div class="indentleft10">
@@ -147,11 +149,11 @@
                             Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
                         </p>
                         <% } %>
-                        </div>
+                    </div>
 
                     <div style="float: right; height: 100%;">
                         <% if (eval.length>0) { %>
-                        <a class="text-right btn btn-primary" href="/coach/<%= eval[0]._id %>" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br/>
+                        <a class="text-right btn btn-primary" href="/coach/<%= eval[0]._id %>" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
                         <div style="float: right; margin: 16px 10px 0 0;">
                             <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (eval[0].status ==='100') { %>
@@ -165,37 +167,48 @@
 
                     </div>
                     <% if (eval.length>0) { %>
-                   
-                        <% } %>
-                        <div class="clearfix"></div>
 
-                        <!-- Trigger the modal with a button -->
-                        <!-- Modal -->
-                        <div id="myModal" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Enter a name for your evaluation.</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <% var evalid; if (eval) {evalid = eval._id} %>
-                                        <input type="hidden" id="evalid" value="<%= evalid %>" />
+                    <% } %>
+                    <div class="clearfix"></div>
+
+                    <!-- Trigger the modal with a button -->
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h3 class="modal-title">New Evaluation.</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        <label for="title">Enter a name for your evaluation:</label>
                                         <input type="text" id="title" />
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                                        <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
-                                    </div>
+                                    </p>
+                                    <p>Is this evaluation a demo or trial run?</p>
+                                    <input id="trialflag-yes" type="radio" name="trialflag" value="true" checked /><label for="trialflag-yes">Yes<span class="hidden"> this evaluation is a demo or trial run </span></label>&nbsp;&nbsp;
+                                    <input id="trialflag-no" type="radio" name="trialflag" value="false"><label for="trialflag-no">No<span class="hidden"> this evaluation is not a demo or trial run</span></label><br>
+                                    <% var evalid; if (eval) {evalid = eval._id} %>
+                                    <input type="hidden" id="evalid" value="<%= evalid %>" />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                    <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                <%  if(evals.length>0){ for (var i=0; i < evals.length; i++){
+                </div>
+          <% if(evals.length>0){ 
+                for (var i=0; i < evals.length; i++){
                 if (evals[i]._id.equals(user.evalid) ){continue;}
-          
+                console.log("this eval");
+                
                 var evaltitle = evals[i].title;
+                var trialflag = evals[i].trialflag ? "<em><i class='fa fa-exclamation-triangle' title='trial run'></i>&nbsp;</em>" : "";
+                console.log(evals[i]);
                 var status=parseInt(evals[i].status) + "% Completed";
                 var statuslength = evals[i].status > 0 ? (200*(evals[i].status/100))  : 0;
                 var statusstyle = evals[i].status == 100 ? "completed" : "";
@@ -206,7 +219,7 @@
                 var helpdetail = "in" %>
                 <div class="dash-well eval-div <%= statusstyle %>">
                     <div style="float: left; width: 75%;">
-                        <h3><%= evaltitle %></h3>
+                         <h3><%- trialflag %><%= evaltitle %></h3>
                         <p>
                             <span class="sec-label evaldate">Started</span>: <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
                         </p>
@@ -219,7 +232,7 @@
 
                     <div style="float: right;">
 
-                        <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a><br/>
+                        <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a><br />
                         <div style="float: right;  margin: 16px 10px 0 0;">
                             <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (evals[i].status==='100') { %>
@@ -229,37 +242,16 @@
                         </div>
 
                     </div>
-                   
+
 
                     <div class="clearfix"></div>
-                   
-                    <div class="clearfix"></div>
                 </div>
-                
+
                 <%}} %>
             </div>
             <!-- Trigger the modal with a button -->
             <!-- Modal -->
-            <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Enter a name for your evaluation.</h4>
-                        </div>
-                        <div class="modal-body">
-                            <% var evalid; if (eval) {evalid = eval._id} %>
-                            <input type="hidden" id="evalid" value="<%= evalid %>" />
-                            <input type="text" id="title" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
-                            <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div id="deleteConfirm" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
@@ -295,30 +287,31 @@
 
                 //get delete-id attribute of the clicked element
                 var deletedId = $(e.relatedTarget).data('delete-id');
-          //      console.log(deletedId);
+                //      console.log(deletedId);
                 var title = $(e.relatedTarget).data('delete-title');
 
                 //populate the textbox
                 $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
                 $(e.currentTarget).find('label[id="evaltl"]').text(title);
             });
-            
+
         });
 
         $("#getTitle").click(function (e) {
             var etitle = $("#title").val();
+            var trialflag = $("input[name='trialflag']:checked").val();
             var url = '/api/eval';
             $.ajax({
                 type: "POST",
                 url: url,
-                data: JSON.stringify({ "title": etitle }),
+                data: JSON.stringify({ "title": etitle, "trialflag": trialflag }),
                 dataType: "json",
                 contentType: "application/json",
                 success: function (data) {
                     window.location = "/coach";
                 }
             }).done(function (msg) {
-            });;
+            });
         });
         $("#btnPublishedList").click(function (e) {
             document.location.href = "/publications";
@@ -328,36 +321,36 @@
 
             var url = '/api/delEval';
             $.ajax({
-                type: "POST",
-                url: url,
-                data: JSON.stringify({ "id": idtobedeleted }),
-                dataType: "json",
-                contentType: "application/json",
-                success: function (data) {
-                  
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({ "id": idtobedeleted }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function(data) {
+
+                    }
                 }
-            }
-            )
+            );
             $(document).ajaxStop(function () { location.reload(true); });
         });
         $(".unshared").click(function (e) {
-           // alert(e.target.id);
+            // alert(e.target.id);
             var unsharedid = e.target.id;
-              var url = '/api/unshared';
+            var url = '/api/unshared';
             $.ajax({
-                type: "POST",
-                url: url,
-                data: JSON.stringify({ "id": unsharedid }),
-                dataType: "json",
-                contentType: "application/json",
-                success: function (data) {
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({ "id": unsharedid }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function(data) {
 
+                    }
                 }
-            }
-            )
+            );
             $(document).ajaxStop(function () { location.reload(true); });
         });
-       
+
     </script>
 </body>
 </html>

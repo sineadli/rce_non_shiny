@@ -82,7 +82,7 @@
                             <%= defs.Cap_Basics_Tech_Name %>
                             Findings Brief
                         </h1>
-                        <h3><%= eval.title %></h3>
+                        <h3><%= eval.title %><%- eval.trialflag && sharing == 1 ? "<br /><em style='font-size: .8em; color:#e44e0d;'><i title='trial run' class='fa fa-exclamation-triangle'></i> Trial run</em>" : "" %></h3>
 
                         <%
                         if(query.sharing == 1 || display == 'download') {

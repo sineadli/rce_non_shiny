@@ -11,7 +11,7 @@
     <div class="col-xs-7">
         <div class="sec-label">Evaluating</div>
         <% var t = ""; if (eval) t = eval.title; %>
-        <h2 class="eval-header" id="evalTitle"><%= t %></h2>
+        <h2 class="eval-header" id="evalTitle"><%= t %> <%- eval.trialflag ? "<br /><em><i title='trial run' class='fa fa-exclamation-triangle'></i> Trial run</em>" : "" %> </h2>
     </div>
     <div class="col-xs-2">
         <div class="sec-label">Start Date</div>

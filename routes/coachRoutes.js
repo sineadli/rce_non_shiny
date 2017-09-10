@@ -132,7 +132,7 @@ module.exports = function (app, passport) {
         sess = req.session;
         sess.step = 2;
         if (!req.body.id) {
-            var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0' });
+            var eval = new Evaluation({ userid: req.user._id, title: req.body.title, status: '0', trialflag: req.body.trialflag });
 			  eval.updated_at = new Date();
             eval.save(function (err) {
                 if (err)
@@ -155,6 +155,7 @@ module.exports = function (app, passport) {
                         eval = new Evaluation({ _id: req.body.id, userid: req.user._id });
                     }
                     eval.title = req.body.title;
+                    eval.trialflag = req.body.trialflag;
                     sess.eval = eval;
                     eval.updated_at = new Date();
                     eval.save(function (err) {

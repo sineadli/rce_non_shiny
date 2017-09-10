@@ -84,7 +84,7 @@ if (user != "NOAUTHENTICATED") {
             <div class="row">
                 <div class="col-xs-12">
                     <h1 class="tool-title"> Findings Brief Appendix</h1>
-                    <%= eval.title %><br />
+                    <h3><%= eval.title %><%- eval.trialflag && sharing == 1 ? "<br /><em style='color:#e44e0d;'><i title='trial run' class='fa fa-exclamation-triangle'></i> Trial run</em>" : "" %></h3>
                     <%= defs.author %><br />
                     <%= defs.company %><br />
                     <%= defs.published_at %>

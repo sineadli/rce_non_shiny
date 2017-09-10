@@ -19,7 +19,7 @@ var textHelpers = require('../public/js/textHelpers.js');
 var getAllEvaluations = function (req, res, next) {
     sess = req.session;
 
-	Evaluation.find({ userid: req.user._id }).sort({ updated_at: -1 }).select("title status created_at").exec(function (err, evals) {
+	Evaluation.find({ userid: req.user._id }).sort({ updated_at: -1 }).select("title status created_at trialflag").exec(function (err, evals) {
 		if (err) {
 			console.log(err);
 			return next();

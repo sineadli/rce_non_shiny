@@ -7754,14 +7754,14 @@ div.tool-header {
 }
 
 .note, .pnote{
-    font-style: italic;
 
-    margin-top: 8px;
+    font-style: italic;
     color: #222;
-          margin: 15px 55px;
-    border: solid 2px /*#006982*/ #666;
-    padding: 15px;
-    border-radius: 8px;
+    margin: 15px auto;
+    /*border: solid 2px  #666;*/
+    /*padding: 15px;*/
+    /*border-radius: 8px;*/
+    width: 95%;
 }
 .prev-answer{
     font-style: italic;
@@ -9286,18 +9286,23 @@ div#sbar {
 }
 
        /* Specific to share results */
+     /* Specific to share results */
 
         body.brief h2 {
             color: #006982;
-            padding-top: 15px;
+            color: #000000;
+            font-size: 1.55em;
+            margin-top: 0;
+          
         }
 
          body.brief   h2.grade-header {
-                font-size: 16px;
+                font-size: 1.3em;
+             margin: 10px 0 0 0;
             }
 
       body.brief  h3 {
-            padding-top: 10px;
+            padding-top: 0;
             letter-spacing: normal; /* default for rest of site is 1px, but it gets distorted in pdf output */
         }
 
@@ -9305,30 +9310,41 @@ div#sbar {
             margin-bottom: 10px;
             font-size: 16px;
         }
-
-       body.brief p {
+        body.brief li ul li {
+            margin-bottom: 0;
             font-size: 16px;
+        }
+       body.brief p {
+           font-size: 1em;
+            margin: 0 0 20px;
         }
 
        body.brief .row {
-            padding-top: 15px;
+            padding-top: 0;
+          /*margin-bottom: 35px;*/
         }
-
+body.brief p.note {
+    width: 85%;
+    margin: 20px auto;
+}
        body.brief img {
             max-width: 100%;
             padding-bottom: 20px;
-            /* Following two lines keep image centered horizontally */
-            display: block;
-            margin: 0 auto;
         }
        
-
+ body.brief hr {
+     margin: 15px 0 0px 0;
+ }
        body.brief .white-background-blue-border {
             border: 3px #006982 solid;
             border-radius: 25px;
             font-size: 16px;
             line-height: 1.5em;
             padding: 15px;
+           background-color: #ffffff;
+           width: 99%;
+    margin: 10px auto;
+           
         }
 
        body.brief .blue-background-white-text {
@@ -12216,6 +12232,10 @@ body.brief p.pnote, body.brief p.note {
     width: 85%;
     margin: 20px auto;
 }
+div#Result_Conclusion {
+    margin: 0;
+    padding: 0;
+}
 p.pnote {
     border: none;
 }
@@ -12371,4 +12391,26 @@ label.chart , caption {
     width: 90%;
     margin: 20px auto;
 }
+
+body.brief table.resultsFig {
+    background-color: #ffffff;
+    margin-top: 10px;
+    width: 99%;
+}
+
+
+
+body.brief table.resultsFig tr {
+    background-color: #ffffff;
+    border-bottom: 1px solid #aaa;
+}
+body.brief table.resultsFig tr td, table.resultsFig tr th {
+    border: #aaa;
+    vertical-align: middle;
+}
+ body.brief table.resultsFig tr th {
+        font-size: .8em;
+        vertical-align: bottom;
+        padding: 8px;
+    }
 </style>
