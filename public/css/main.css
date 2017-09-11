@@ -516,6 +516,7 @@ h4.list-header {
 div.fixed-col-head {
      border-bottom: 1px solid #ccc;  
        background-color: #D6EBF8;
+       border-radius: 4px;
        padding: 5px;
 
 }
@@ -1888,6 +1889,7 @@ div.context-tag input.cus-input {
     margin: -2px;
     padding: 0;
     font-size: 0;
+    opacity: 0;
 }
 input.per-input {
     width: 40px;

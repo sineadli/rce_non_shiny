@@ -98,7 +98,7 @@ module.exports = function (app, passport) {
       
         Evaluation.findOne({ _id: req.params.id }, function(err, eval) {
             //var eval = Evaluation.getById(req.params.id);
-            console.log("In get Coach for specific evaluation");
+          //  console.log("In get Coach for specific evaluation");
            
 			sess.eval = eval;
 			
@@ -307,7 +307,7 @@ module.exports = function (app, passport) {
         if (req.body.id) {
             query = { _id: req.body.id };
         } 
-        console.log(query);
+        //  console.log(query);
         Tool.findOneAndUpdate(query, req.body, { upsert: true }, function (err) {
             if (err)
                 console.log(err);

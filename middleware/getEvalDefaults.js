@@ -482,14 +482,14 @@ function wasSuccessful(mresult) {
 
 function populateDefaults(defstocheck, tool, sess, incomplete) {
     for (var check in defstocheck) {
-        console.log("In populate defaults and check = " + check);
+       // console.log("In populate defaults and check = " + check);
         if (defstocheck.hasOwnProperty(check)) {
 
 			if (tool[check] == null) {
 			//	console.log(check + " is null  = " + tool[check]);
 				sess.defaults[check] = defstocheck[check];
 			} else if (typeof tool[check] == "number") {
-				console.log(check + " is a number = " + tool[check]);
+				//console.log(check + " is a number = " + tool[check]);
                 sess.defaults[check] = tool[check];
             } else if (tool[check] === "" || tool[check] === 'Select an option') {
                 incomplete = true;

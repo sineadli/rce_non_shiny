@@ -57,6 +57,7 @@
                 <%
                 var evallabel = "Begin Evaluation"
                 var evaltitle = "Ready to test an app?";
+                var trialflag = "";
                 var status= "New";
                 var startdate = new Date();
                 var statuslength = 0;
@@ -68,6 +69,7 @@
                 if (eval.length>0) {
                 var EvalButtonText = eval[0].status == 100 ? "Edit" : "Continue";
                 evaltitle = eval[0].title;
+                trialflag = eval[0].trialflag ? "<br /><em style='font-size: .8em;'><i title='trial run' class='fa fa-exclamation-triangle'></i> Trial run</em>" : ""; 
                 status=parseInt(eval[0].status) + "% Completed";
                 statuslength = eval[0].status > 0 ? (200*(eval[0].status/100)) : 0;
                 var statusstyle = eval[0].status == 100 ? "completed" : "";
@@ -131,7 +133,7 @@
                 <div class="dash-well eval-div current <%= statusstyle %>">
                     <div style="float: left; width: 75%;">
 
-                        <h3><%= evaltitle %><%- eval[0].trialflag ? "<br /><em style='font-size: .8em;'><i title='trial run' class='fa fa-exclamation-triangle'></i> Trial run</em>" : "" %></h3>
+                        <h3><%= evaltitle %><%- trialflag %></h3>
                         <div class="sec-label current"><%= evallabel %></div>
                         <% if (eval.length>0) { %>
                         <div class="indentleft10">
@@ -188,8 +190,8 @@
                                         <input type="text" id="title" />
                                     </p>
                                     <p>Is this evaluation a demo or trial run?</p>
-                                    <input id="trialflag-yes" type="radio" name="trialflag" value="true" checked /><label for="trialflag-yes">Yes<span class="hidden"> this evaluation is a demo or trial run </span></label>&nbsp;&nbsp;
-                                    <input id="trialflag-no" type="radio" name="trialflag" value="false"><label for="trialflag-no">No<span class="hidden"> this evaluation is not a demo or trial run</span></label><br>
+                                    <input id="trialflag-yes" type="radio" name="trialflag" value="true"  /><label for="trialflag-yes">Yes<span class="hidden"> this evaluation is a demo or trial run </span></label>&nbsp;&nbsp;
+                                    <input id="trialflag-no" type="radio" name="trialflag" value="false" checked ><label for="trialflag-no">No<span class="hidden"> this evaluation is not a demo or trial run</span></label><br>
                                     <% var evalid; if (eval) {evalid = eval._id} %>
                                     <input type="hidden" id="evalid" value="<%= evalid %>" />
                                 </div>
@@ -204,11 +206,11 @@
           <% if(evals.length>0){ 
                 for (var i=0; i < evals.length; i++){
                 if (evals[i]._id.equals(user.evalid) ){continue;}
-                console.log("this eval");
+               
                 
                 var evaltitle = evals[i].title;
                 var trialflag = evals[i].trialflag ? "<em><i class='fa fa-exclamation-triangle' title='trial run'></i>&nbsp;</em>" : "";
-                console.log(evals[i]);
+               
                 var status=parseInt(evals[i].status) + "% Completed";
                 var statuslength = evals[i].status > 0 ? (200*(evals[i].status/100))  : 0;
                 var statusstyle = evals[i].status == 100 ? "completed" : "";

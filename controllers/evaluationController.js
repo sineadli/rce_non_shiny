@@ -246,11 +246,11 @@ module.exports.postByTool = function(req, res, display) {
     sess.valerrs = []; // Clear out old errors.sess.valerrs = []; 
 	var thispath = url.parse(req.url, true).pathname;
 	
-	console.log("In post by tool and tool = " + thispath);
+	//console.log("In post by tool and tool = " + thispath);
 	// There will be a return path if came to tool from a "where did I update this" link
     var returnpath = req.body.returnpath;
     if (returnpath === '') returnpath = thispath.substring(1);
-    console.log("In post by tool and return path = " + returnpath);
+  //  console.log("In post by tool and return path = " + returnpath);
 	// Posted evaluation updates from tool
     var evalup = req.body;
 	
@@ -262,7 +262,7 @@ module.exports.postByTool = function(req, res, display) {
 		//console.log("In post by tool and found tool = " + tool);
 		tool.setPeekingNote(sess);
         var toolstatus = req.body.status ? req.body.status : "complete";
-        console.log("In post by tool, tool name =  " + tool.name + " status = " + toolstatus);
+       // console.log("In post by tool, tool name =  " + tool.name + " status = " + toolstatus);
         var toollist = { "name": tool.name, "status": toolstatus, "visited_at": new Date() };
         updateLastTool(sess, toollist);
 
@@ -317,7 +317,7 @@ module.exports.postByTool = function(req, res, display) {
                     sess.eval = savedeval;
                     if (req.body.status === "started" || req.body.status === "" || display==="online") {
                         req.flash('saveMessage', 'Changes Saved.');
-                        console.log("Just saved changes and now being redirected to tool = " + returnpath);
+                       // console.log("Just saved changes and now being redirected to tool = " + returnpath);
                         return res.redirect('/' + returnpath);
                     }
 					else if (display === "download") {

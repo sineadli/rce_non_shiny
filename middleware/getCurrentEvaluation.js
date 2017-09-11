@@ -16,7 +16,7 @@ var getEvalDefaults = require('../middleware/getEvalDefaults.js');
 
 
 var getCurrentEvaluation = function (req, res, next) {
-	console.log("getting current eval");
+	//console.log("getting current eval");
     sess = req.session;
 
         Evaluation.findOne({ _id: req.user.evalid }).exec(function (err, eval) {

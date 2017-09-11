@@ -1,51 +1,12 @@
 ﻿<%
-function GetReturnPath(last_tool) {
-var rpath;
-switch (last_tool) {
-			case "Evaluation Plan":
-			    rpath = "evaluation_plan";
-				break;
-			case "Share Your Results":
-                rpath= "shareresult";               
-				break;
-			case "Get Results" :
-                rpath = "getresult";
-				break;
-			case "Summarize Context":
-				rpath = "context_and_usage";
-				break;
-			case "The Basics":
-				rpath = "basics";
-				break;
-			case "Craft Your Research Question":
-				rpath = "craft_your_research_q";
-				break;
-			case "Random Assignment":
-				rpath = "randomization";
-				break;
-			case "Prepare for Random Assignment":
-				rpath = "prepare_data_random";
-				break;
-			case "Prepare Your Data for Analysis":
-				rpath = "prepare_data";
-				break;
-			case "matching":
-				ToolName = "Matching";
-				break;
-			case "Think About How to Use Your Results":
-				rpath = "plan_next_steps";
-				break;
-			default:
-				rpath = "";
-		}
-  return rpath
-}
+
 var verb = "Does";
 
 var useMeasure = '';
-if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Results" && eval.last_tool != "Share Your Results" ) {
+if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Results" && eval.last_tool != "Share Your Results" && eval.last_tool != "Craft Your Research Question") {
 useMeasure = " by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units + " on " + defs.Outcome_Measure + ",";
-var returnpath = GetReturnPath(eval.last_tool);
+// console.log("last tool = " + eval.last_tool);
+
 
 }
 
@@ -62,12 +23,6 @@ if (user != "NOAUTHENTICATED") { %>
           Does A do B among C compared to D?
  <% } %>
 
-<%
 
 
-if (user != "NOAUTHENTICATED" && display  == 'online' && eval.last_tool != "Craft Your Research Question") { %>
-<p class="prev-answer hidden-print">
-    <i class="fa fa-hand-o-right"></i> Where did I answer this? See
-    <a class="redirect-link" href="/craft_your_research_q?return=<%= returnpath %>">Craft Your Research Question</a>
-</p>
-<% } %>
+

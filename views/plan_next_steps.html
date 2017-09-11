@@ -393,11 +393,18 @@
                                                 </div>
                                                 <div id="consider7" class="panel-collapse collapse in">
                                                     <p>
-                                                        <b>Your research question:</b> <br/>
+                                                        <b>Your research question:</b> <br />
                                                         <% include ../views/partials/_researchQuestion.html %>
+                                                    </p>
+                                                        <%   if (user != "NOAUTHENTICATED" && display  == 'online') { %>
+                                                    <p class="prev-answer hidden-print">
+                                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                                                        <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
+                                                    </p>
+                                                    <% } %>
 
                                                       
-                                                    </p>
+                                                    
                                                     <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you have to make.</p>
                                                 </div>
                                             </div>

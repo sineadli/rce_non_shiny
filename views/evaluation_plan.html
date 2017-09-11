@@ -93,6 +93,9 @@
                         <% } else { %>
                         <div class="tool-header">
                             <h1 class="tool-title">Evaluation Plan</h1>
+                            <h3><%= eval.title %><%- eval.trialflag ? "<br /><em style='font-size: .8em; color:#e44e0d;'><i title='trial run' class='fa fa-exclamation-triangle'></i> Trial run</em>" : "" %></h3>
+                            <%= defs.author %><br />
+                            <%= defs.company %><br />
                         </div>
                         <% } %>
                         <div class="clearfix"></div>
@@ -144,6 +147,12 @@
                         <div class="col-xs-10">
                             <div class="step-subquestion">
                                 <% include ../views/partials/_researchQuestion.html %>
+                             <%   if (user != "NOAUTHENTICATED" && display  == 'online') { %>
+                                <p class="prev-answer hidden-print">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See
+                                    <a class="redirect-link" href="/craft_your_research_q?return=evaluation_plan">Craft Your Research Question</a>
+                                </p>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -531,7 +540,7 @@
                                                             </td>
                                                             <td>
                                                                 <% if (display === 'online') { %>
-                                                                <textarea name="evalPlan[Milestones][<%= i %>][Notes]" id="Notes_<%= i %>" class="autosizejs"> <%= notes[i]  %></textarea>
+                                                                <textarea name="evalPlan[Milestones][<%= i %>][Notes]" id="Notes_<%= i %>" class="autosizejs"><%= notes[i]  %></textarea>
                                                                 <% } else { %>
                                                                 <%= notes[i]  %>
                                                                 <% } %>
@@ -621,8 +630,8 @@
                             <div class="col-xs-6">
                                 <input type="hidden" name="download_route" value="evaluation_plan">
                                 <label>File Format</label><br/>
-                                <input type="radio" name="file_format" value="pdf" checked> PDF<br>
-                                <input type="radio" name="file_format" value="html"/> HTML
+                                <input type="radio" name="file_format" value="html" checked> HTML<br>
+                                <input type="radio" name="file_format" value="pdf"/> PDF
                                 <span data-toggle="tooltip" title="The HTML version can be viewed in any browser, with or without an internet connection." class="tooltip-gr"><i class="fa fa-question-circle"></i></span>
                             </div>
                         </div>
