@@ -549,8 +549,11 @@ function setUserLimitsSelections() {
 	$(".group-pretest-prep-note").text(pretestnote);
 
 	
-
+	//Your data file can have one row   *for each of your *pcluster* or one row for each  *user*  and a unique *scluster* identifier*. 
     $(".indiv-or-group").text("one of your " + assign);
+	if (gORi == "groups") {
+		$(".indiv-or-group").text(" of your " + pcluster + ", or one row for each one of your  " + users +  " and a unique " + scluster + " identifier, ");
+	}
 
 	$("select#intervention_type").empty();
 

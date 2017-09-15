@@ -139,7 +139,7 @@
                                     <select name="prepareRandom[Cluster_Group]" id="Cluster_Group">
                                         <%
                                         var options = ["Select an option", "By class", "By school", "Other" ];
-                                        var ovals = ["Select an option", "classroom", "school", "other" ];
+                                         var ovals = ["Select an option", "classroom", "school", "other" ];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
                                         var selected;
@@ -271,7 +271,7 @@
                                 <p class="sub-label">
                                     Provide data on the background characteristics of your <span class="tech_users"><%= defs.Basics_Users %></span>, such as gender, ethnicity, individualized education plan status, English learner status, and socioeconomic status. Include characteristics that would make you skeptical of your results if they were found to be unbalanced between your treatment and comparison groups.
                                 </p>
-                                <p class="sub-label">It is preferable to measure all background characteristics before introducing <%= defs.Basics_Tech_Name %>. Because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software), it is important to know if characteristics were recorded before or after introducing <%= defs.Basics_Tech_Name %>. </p>
+                                <p class="sub-label">It is important to know if characteristics were recorded before or after the introduction of <%= defs.Basics_Tech_Name %>, because some background characteristics, such as English learner status, can change over time and even change as a result of using a technology (for example, introducing a reading software). It is preferable to measure all background characteristics before introducing <%= defs.Basics_Tech_Name %>.  </p>
                                 <p class="sub-label"> <%- bcpathnote %></p>
                                 <p class='sub-label'><span class='group-data-prep-note'></span></p>
 

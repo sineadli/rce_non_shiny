@@ -33,8 +33,8 @@ var getAllPublications = function (req, res, next) {
                 } else {
 
 					if (evals) {
-						console.log("Getting shared evals.");
-						console.log(evals);
+				//		console.log("Getting shared evals.");
+				//		console.log(evals);
 						sess.publishlists = evals;
 									
                         return next();
@@ -159,7 +159,7 @@ var getAllPublications = function (req, res, next) {
     }
     {
 		if (!search) {
-		    console.log("In get all publications not search");
+		   // console.log("In get all publications not search");
             Evaluation.find({ status: '100' }).sort({ "published_at": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
@@ -167,7 +167,7 @@ var getAllPublications = function (req, res, next) {
                 } else {
 
                     if (evals) {
-						console.log("In get all publications not search and evals found = " + evals.length);
+				//		console.log("In get all publications not search and evals found = " + evals.length);
                        // evals.sort(dynamicSort(sort));
                         sess.publishlists = evals;
                         return next();
