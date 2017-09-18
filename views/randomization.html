@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Randomization - Ed Tech RCE Coach</title>
+    <title>Random Assignment</title>
     <% include ../views/partials/scriptHeader.html %>
     <% include ../views/partials/_formatters.html %>
 </head>
@@ -28,13 +28,7 @@
 
     } %>
     <form id="randomization" action="/randomization" method="post">
-        <%
-
-        if (eval.random) {
-
-        if (eval.random.Result) Result = eval.random.Result;
-        }
-        %>
+       
         <input type="hidden" id="coreurl" value="<%= shiny_url %>" />
     <div class="container-fluid">
     <div class="row">
@@ -174,7 +168,7 @@
                             <% } %>
                         </div>
                         <div class="step-subquestion">
-                            <h4><label for="User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups"><%= defs.Cluster_Group %></span> that can be given access to the technology?</label></h4>
+                            <h4><label for="User_Limit_Exist">Are there any limits on the number of <span class="indivs-or-groups"><%= defs.Cluster_Groups %></span> that can be given access to the technology?</label></h4>
 
 
                         </div>
@@ -257,18 +251,19 @@
                 <div id="results">
                     <% if(defs.wasRandomized) {
                     var tabcounter = 0;
-                    var MResult = "";
+                    var Result = "";
                     var nComparison = 0;
                     var nTreadment = 0;
                     var Balanced = "N/A";
-                    var MResult = JSON.parse(eval.random.Result);
+                    var Result = JSON.parse(eval.random.Result);
+                    var Grades = Result.results_by_block
+                   
+                     newUploadTitle = "Upload your data to re-run random assignment"
 
-                    newUploadTitle = "Upload your data to re-run random assignment"
+                    for (var key in Result.results_by_block) {
+                    if (Result.results_by_block.hasOwnProperty(key)) {
 
-                    for (var key in MResult.results_by_block) {
-                    if (MResult.results_by_block.hasOwnProperty(key)) {
-
-                    var block_object = MResult.results_by_block[key];
+                    var block_object = Result.results_by_block[key];
                     if (block_object.samples) {
                     nComparison = block_object.samples.n_full[0] - block_object.samples.n_treat[0];
                     nTreatment = block_object.samples.n_treat[0];
@@ -318,9 +313,9 @@
                                 <label class="chart" style="clear: both; display: block;">
                                     Figure 1. Baseline equivalence of the treatment and comparison groups.
                                 </label>
-                                <% for (grade in MResult.results_by_block) {
+                                <% for (grade in Result.results_by_block) {
 
-                                var thisgrade = MResult.results_by_block[grade];
+                                var thisgrade = Result.results_by_block[grade];
 
                                 %>
                                 <div class="figdiv" style="width: 45%; float: left; display: inline; margin-left: 20px;">
@@ -383,7 +378,7 @@
                             </div>
                             <div class="before-upload">
                                 <div class="step-subquestion">
-                                    <h4><label for="unit_id">Select the variable that contains the anonymous id that uniquely identifies each <span class="indiv-or-group">technology user or group of users</span>.</label></h4>
+                                    <h4><label for="unit_id">Select the variable that contains the anonymous id that uniquely identifies each <span class="indivs-or-group">technology user or group of users</span>.</label></h4>
                                     <p>
                                         <em class="stronger"><i class="fa fa-asterisk"></i> Required</em>
                                     </p>

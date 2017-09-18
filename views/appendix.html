@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Share Your Results - Ed Tech RCE Coach</title>
+    <title>Appendix - Share Your Results</title>
 
     <%
 
@@ -35,11 +35,22 @@
 
 
     var Result = "";
-    if (defs.hasResults) Result = JSON.parse(eval.getresult.Result);
-    var MResult = "";
-    if (defs.wasMatched) MResult = JSON.parse(eval.matching.Result);
     var RResult = "";
-    if (defs.wasRandomized) RResult = JSON.parse(eval.random.Result);
+    var MResult = "";
+    
+   
+    // Want to use grade result from getresults tool if available, otherwise I would use from another tool.
+    if (defs.wasMatched) {
+        MResult = JSON.parse(eval.matching.Result);
+    }
+    if (defs.wasRandomized) {
+        RResult = JSON.parse(eval.random.Result);
+    }
+    if (defs.hasResults) {
+        Result = JSON.parse(eval.getresult.Result);
+    }
+    
+   
 
     %>
 
@@ -124,9 +135,9 @@ if (user != "NOAUTHENTICATED") {
                             {
                             %>
                         <p>
-                            For this evaluation we randomly assigned <%= defs.Cluster_Group %> to the treatment and comparison groups. Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving us the most confidence that any differences in outcomes between the groups are due to using <%= defs.Basics_Tech_Name %>.
+                            For this evaluation we randomly assigned <%= defs.Cluster_Groups %> to the treatment and comparison groups. Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving us the most confidence that any differences in outcomes between the groups are due to using <%= defs.Basics_Tech_Name %>.
                             For random assignment, the Coach takes advantage of the base R function "sample.int." You can think of this process as flipping a digital, fair,
-                            coin to assign <%= defs.Cluster_Group %> to either pilot the technology or not.
+                            coin to assign <%= defs.Cluster_Groups %> to either pilot the technology or not.
                         </p>
                         <p>
                             The Coach performs checks to verify that the randomization process worked as expected. The Coach will check the treatment and comparison groups&rsquo; baseline equivalence, or their similarity before the technology was introduced.

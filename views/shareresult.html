@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>Share Your Results - Ed Tech RCE Coach</title>
+    <title>Share Your Results</title>
 
     <% include ../views/partials/_formatters.html %>
     <%
@@ -36,7 +36,7 @@
     if (defs.hasResults) Result = JSON.parse(eval.getresult.Result);
 
     if (user != "NOAUTHENTICATED") { var rtnPath="/coach" , rtnDesc="Back to Summarizing Your Findings"; 
-    if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication Lists"; }
+    if (query.backto=="publications") {rtnPath="/publications"; rtnDesc="Back to Publication List"; }
     if (query.backto=="dashboard") {rtnPath="/dashboard"; rtnDesc="Back to Dashboard"; }
 
     %>
@@ -139,10 +139,10 @@
 
                     <% include ../views/partials/_findingsTable.html %>
                     <p>
-                        Table 1. shows the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %> based on this evaluation's data. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by the <%= defs.Outcome_Measure %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
+                        Table 1 shows the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %> based on this evaluation's data. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by the <%= defs.Outcome_Measure %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
                     </p>
                     <p>
-                        The sample sizes in Table 1. represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
+                        The sample sizes in Table 1 represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
 
                     </p>
                     <% if (user != "NOAUTHENTICATED" && display === 'online'  && sharing != 1) { %>
@@ -172,7 +172,7 @@
                             if (defs.Cluster_Group_Warning) {
                             var ByGrades = defs.Results_By_Grade_Flag == "by grade" ? " for some grades " : "";
                             %>
-                            <li>Since <%= ByGrades %> all <%= defs.Basics_Users %> <%= defs.Cluster_Group_Warning_Add_Not %> using <%= defs.Basics_Tech_Name %> belonged to one <%= Result.args.cluster_var %>, the effect of <%= defs.Basics_Tech_Name %> cannot be separated from other factors that may be unique to that <%= defs.Cluster_Group %>.</li>
+                            <li>Since <%= ByGrades %> all <%= defs.Basics_Users %> <%= defs.Cluster_Group_Warning_Add_Not %> using <%= defs.Cluster_Group %> belonged to one <%= Result.args.cluster_var %>, the effect of <%= defs.Basics_Tech_Name %> cannot be separated from other factors that may be unique to that <%= defs.Cluster_Group %>.</li>
                             <% }
                             if (!defs.isBalanced) {
                             %>
@@ -576,8 +576,8 @@
                                     if(defs.planContextIncomplete) { %>
                                     <li><a class="redirect-link" href="/context_and_usage?return=shareresult">Summarize Context</a></li>
                                     <% }
-                                    if(defs.matchingIncomplete && eval.path === "path-matching") { %>
-                                    <li><a class="redirect-link" href="/matching?return=shareresult">Matching</a></li>
+                                    if((defs.prepareRandomIncomplete || defs.randomIncomplete)  && eval.path === "path-random") { %>
+                                    <li><a class="redirect-link" href="/randomization?return=shareresult">Random Assignment</a></li>
                                     <% }
                                     if(defs.prepareRandomIncomplete && eval.path === "path-random") { %>
                                     <li><a class="redirect-link" href="/prepare_data_random?return=shareresult">Prepare for Randomization</a></li>

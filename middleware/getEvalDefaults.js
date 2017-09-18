@@ -113,23 +113,30 @@ function setPlanNext(sess) {
 };
 
 function setPrepareRandom(sess) {
-	var prepareRandom = sess.eval.prepareRandom;
+    var prepareRandom = sess.eval.prepareRandom;
 
 
-	var defstocheck = {
-		Individual_Group: "individuals or groups",
-		Cluster_Group: "group (e.g. classroom or school)"
+    var defstocheck = {
+        Individual_Group: "individuals or groups",
+        Cluster_Group: "group (e.g. classroom or school)"
+    }
+    sess.defaults.prepareRandomIncomplete = populateDefaults(defstocheck, prepareRandom, sess, false);
+
+
+        sess.defaults.Random_Level = sess.defaults.Basics_Users.charAt(0).toUpperCase() + sess.defaults.Basics_Users.slice(1);
+    if (sess.defaults.Cluster_Group.toLowerCase == "classes") {
+        sess.defaults.Cluster_Group = "classroom";
+    } else if (sess.defaults.Cluster_Group.toLowerCase == "schools") {
+        sess.defaults.Cluster_Group = "school";
+    }
+    sess.defaults.Cluster_Groups = sess.defaults.Cluster_Group == "group (e.g. classroom or school)" ? "groups" : sess.defaults.Cluster_Group + "s";
+
+    sess.defaults.Random_Level = sess.defaults.Basics_Users;
+	if (sess.defaults.Individual_Group == "groups") {
+		sess.defaults.Random_Level = sess.defaults.Cluster_Groups;
 	}
-	sess.defaults.prepareRandomIncomplete = populateDefaults(defstocheck, prepareRandom, sess, false);
 
-	if (sess.defaults.Basics_Users)
-		sess.defaults.Random_Level = sess.defaults.Basics_Users.charAt(0).toUpperCase() + sess.defaults.Basics_Users.slice(1);
-	if (sess.defaults.Cluster_Group.toLowerCase == "classes") {
-	    sess.defaults.Cluster_Group = "classroom";
-	} else if (sess.defaults.Cluster_Group.toLowerCase == "schools") {
-		sess.defaults.Cluster_Group = "school";
-	}
-    return;
+return;
 };
 
 function setPlanContext(sess) {
@@ -203,7 +210,7 @@ function setEvalPlan(sess) {
 function setMatching(sess) {
 
     var matching = sess.eval.matching;
- 
+	sess.defaults.matchingIncomplete = false;
     sess.defaults.wasMatched = false;
 	sess.defaults.mhideFirst = false;
     sess.defaults.minFirst = "in";
@@ -225,7 +232,9 @@ function setMatching(sess) {
 		} else { sess.defaults.baselinetest_vars = "none selected"; }
 
 	}
-    
+	if (sess.eval.path === "path-matching" && !sess.defaults.wasMatched) {
+		sess.defaults.matchingIncomplete = true;
+    }
     if (matching.Targeted_Access === "" || matching.Targeted_Access === 'Select an option') {
         sess.defaults.matchingIncomplete = true;
         sess.defaults.Targeted_Access = "[Not Specified]";
@@ -246,6 +255,7 @@ return;
 function setRandom(sess) {
     var random = sess.eval.random;
    // console.log("In set random and path = " + sess.eval.path);
+	sess.defaults.randomIncomplete = false;
 	sess.defaults.rhideFirst = false;
     sess.defaults.rinFirst = "in";
     sess.defaults.riconFirst = "down";
@@ -267,7 +277,9 @@ function setRandom(sess) {
 		} else { sess.defaults.baselinetest_vars = "none selected"; }
 
 	}
- 
+	if (sess.eval.path === "path-random" && !sess.defaults.wasRandomized) {
+		sess.defaults.randomIncomplete = true;
+    }
 		sess.defaults.rDownloadPath = (random.DownloadPath ? random.DownloadPath : "");;
 
     return;
