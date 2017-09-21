@@ -1,4 +1,30 @@
-﻿(function (exports) {
+﻿
+function calculateDurObject(d) {
+	var duration =
+		{
+			length: d,
+			unit: "day",
+			remainder: 0
+		}
+	if (d < 7) {
+		// default 
+	} else if (d < 49) {
+		duration.length = Math.floor(d / 7);
+		duration.unit = 'week';
+		duration.remainder = d % 7;
+	} else if (d < 335) {
+		duration.length = Math.floor(d / 30);
+		duration.unit = 'month';
+		duration.remainder = d % 30;
+	} else {
+		duration.length = Math.floor(d / 365);
+		duration.unit = 'year';
+		duration.remainder = d % 365;
+	}
+	return duration;
+}
+
+(function (exports) {
 exports.stripPercent = function (x) {
     //console.log("in stripPercent and x = " + parseFloat(x.replace(/%/g, '')));
     return parseFloat(x.replace(/%/g, ''));
@@ -113,38 +139,35 @@ exports.stripPercent = function (x) {
 	}
 }
 
-	exports.calculateDuration = function(sd, ed) {
+	exports.calculateDuration = function (sd, ed) {
         try {
             var beginDate = new Date(sd);
-            var endDate = new Date(ed);
-			var duration =
-            {
-                length: (Math.ceil((endDate - beginDate) / 86400000)),
-                unit:"day"
-            }
-             var d = duration.length;
+			var endDate = new Date(ed);
 
-             if (d < 49) {
-				 duration.length = Math.ceil(d / 7);
-                 duration.unit = 'week';
-		
-			 } else if (d < 335) {
-				 duration.length = Math.ceil(d / 30);
-                duration.unit = 'month';
-            } else {
-                duration = Math.ceil(d / 365);
-                duration.unit = 'year';
-            }
+            var d = (Math.ceil((endDate - beginDate) / 86400000));
 
-            var durationPlural = (duration.length > 1) ? 's' : '';
-            var durationString = duration.length === 0 ? "Not reported" : duration.length.toString() + ' ' + duration.unit + durationPlural;
+			var duration = calculateDurObject(d);
+            var durationPlural = (duration.length > 1) ? "s" : "";
+			var durationString = duration.length === 0 ? "Not reported" : duration.length.toString() + ' ' + duration.unit + durationPlural;
+
+			if ((duration.remainder > 6) || (duration.remainder > 0 && duration.unit === "week")) {
+				var rduration = calculateDurObject(duration.remainder);
+				durationPlural = (rduration.length > 1) ? "s" : "";
+				durationString = durationString + ((rduration.remainder > 6) || (rduration.remainder > 0 && duration.unit === "week") ? ", " : " and ") + rduration.length.toString() + " " + rduration.unit + durationPlural;
+
+				if ((rduration.remainder > 6) || (rduration.remainder > 0 && duration.unit === "week")) {
+					var r2Duration = calculateDurObject(rduration.remainder);
+					durationPlural = (r2Duration.length > 1) ? "s" : "";
+					durationString = durationString + ", and " + r2Duration.length.toString() + " " + r2Duration.unit + durationPlural;
+				}
+			}
 
             return durationString;
 
         } catch (e) {
-            return "Not Reported" ;
+            return "Not Reported";
         }
-}
+	}
 	exports.createGradeString = function(selected) {
 	var gradeMap = {
 		"PK": "pre-kindergarten",
