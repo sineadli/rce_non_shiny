@@ -1638,13 +1638,16 @@ input[type=date] {
        padding: 0 25px 0 0;
 }
 .multiselect-container > li > a > label.radio {
-    padding: 0 25px 0 0 ;
+    padding: 0 25px 0 0;
 }
-.multiselect-container > li > a > label > input[type=checkbox] {
+.multiselect-container>li>a>label>input[type=checkbox]  
+ {
     margin: 0 3px;
     padding: 0;
     position: relative;
     width: 25px;
+
+
 }
 
 
@@ -2112,9 +2115,29 @@ div .sbar {
             margin-bottom: 0;
             font-size: 16px;
         }
+        ul.list-col-3 {
+            -moz-column-count: 3;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 20px;
+    column-count: 3;
+    column-gap: 20px;
+      list-style: none;
+            margin-top: 10px;
+        }
+          ul.list-col-2 {
+            -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;
+    column-count: 2;
+    column-gap: 20px;
+      list-style: none;
+            margin-top: 10px;
+        }
        body.brief p {
            font-size: 1em;
-            margin: 0 0 20px;
+          
         }
 
        body.brief .row {
@@ -2141,7 +2164,7 @@ body.brief p.note {
             padding: 15px;
            background-color: #ffffff;
            width: 99%;
-    margin: 10px auto;
+    margin: 20px 10px auto;
            
         }
 

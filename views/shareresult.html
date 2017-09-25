@@ -180,7 +180,7 @@
                             <% } %>
                         </ul>
                     </div>
-
+                    <div clase="clearfix"></div>
                     <% } else { %>
 
                     <p class="Warning">
@@ -250,7 +250,11 @@
                                 <%= defs.Tech_Cost_Saves %>
                             </div>
                             <div class="char-content-div">
-                                $<%= defs.Tech_Amount %> per <%= defs.Tech_Cost_User %>
+                             <% if(defs.Cost_Other !== "") { %>
+                                 <%= defs.Cost_Other %>
+                              <%  } else { %>
+                                 $<%= defs.Tech_Amount %> per <%= defs.Tech_Cost_User %>
+                               <% } %>
                             </div>
                         </div><% if (user != "NOAUTHENTICATED" && display === 'online'  && sharing != 1) {%>
 
@@ -263,6 +267,7 @@
                         <% } %>
                         <div class="clearfix"></div>
                     </div>
+                    <div clase="clearfix"></div>
                 </div>
             </div>
 
@@ -291,18 +296,20 @@
                               baseline_tool = 'randomization';
                            } else if (eval.path === 'path-matching') {
                               baseline_tool = 'matching';
-                           }
+                        }
+
+                        var bliststyle = defs.baselinetest_vars.length > 8 ? "list-col-3" : (defs.baselinetest_vars.length > 5 ? "list-col-2" : "")
                         %>
 
 
                         <li>
-                            Baseline equivalence (or similarity between treatment and comparison groups before <%= defs.Basics_Tech_Name %> was introduced) was tested in the <%= baseline_tool %> tool using: <ul>
-                                <% for(var i=0; i < defs.baselinetest_vars.length; i++) { %>
+                            Baseline equivalence (or similarity between treatment and comparison groups before <%= defs.Basics_Tech_Name %> was introduced) was tested in the <%= baseline_tool %> tool using: <ul class="<%- bliststyle %>">
+    <% for(var i=0; i < defs.baselinetest_vars.length; i++) { %>
 
-                                <li><%= defs.baselinetest_vars[i] %></li>
+    <li><%= defs.baselinetest_vars[i] %></li>
 
-                                <%  }  %>
-                            </ul>
+    <%  }  %>
+</ul>
                         </li>
                         <% } else { %>
                         <li>
@@ -312,9 +319,11 @@
 
                         <% if (defs.hasResults) {
 
-                        if (Result.args.control_vars.length > 0) { %>
+                        if (Result.args.control_vars.length > 0) {
+                          var cliststyle = Result.args.control_vars.length > 8 ? "list-col-3" : (Result.args.control_vars.length > 5 ? "list-col-2" : "")
+                        %>
                         <li>
-                            The analysis controlled for:<ul>
+                            The analysis controlled for:<ul class="<%- bliststyle %>">
                                 <% for(var i=0; i < Result.args.control_vars.length; i++)                   { %>
                                 <li><%= Result.args.control_vars[i] %></li>
 
@@ -399,12 +408,7 @@
                         <% } %>
                     </div>
 
-
-
-
-
-                       
-
+                    <div clase="clearfix"></div>
                         <h3>Outcomes</h3>
 
                         <ul>
@@ -517,7 +521,8 @@
                             </p>
                             <% } %>
                         </div>
-                    </div>
+                        <div clase="clearfix"></div>
+                     </div>
                 </div>
             </div>
 
@@ -555,14 +560,20 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Data Issues Found</h4>
+                        <h3 class="modal-title">About This Report</h3>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-12">
-                                <h4>Missing Data</h4>
-                                <p>This report uses the information you entered as you completed your evaluation using the Coach. Information is missing from the tools listed below, which may prevent creating a full findings brief. You might want to return to these tools and enter any missing information.</p>
-                                <p>If this message persists after addressing each item, please contact us at <a href="mailto:EdTechRCE@mathematica-mpr.com">EdTechRCE@mathematica-mpr.com</a>.</p>
+                                <h4>Editing information</h4>
+                                <p>This report uses the information you entered as you completed your evaluation using the Coach. As you read through the report, you might notice items that you would like to edit. Look for the <span class="fa fa-hand-o-right"></span> links back to the item&rsquo;s source tool, to return to that tool and make changes.
+                                </p>
+                                <h4>Missing information</h4>
+                                <% if(defs.BasicsIncomplete || defs.planQuestionIncomplete
+                                || defs.planNextIncomplete || defs.planContextIncomplete
+                                || ((defs.prepareRandomIncomplete || defs.randomIncomplete) && eval.path === "path-random")
+                                || (defs.matchingIncomplete  && eval.path === "path-matching")
+                                || !defs.hasResults  ) { %>                                <p> Information is missing from the tool(s) listed below, which may prevent creating a full findings brief. You might want to return to these tools and enter any missing information.</p>
                                 <ul>
                                     <% if(defs.BasicsIncomplete) { %>
                                     <li><a class="redirect-link" href="/basics?return=shareresult">Basics</a></li>
@@ -579,15 +590,17 @@
                                     if((defs.prepareRandomIncomplete || defs.randomIncomplete)  && eval.path === "path-random") { %>
                                     <li><a class="redirect-link" href="/randomization?return=shareresult">Random Assignment</a></li>
                                     <% }
-                                    if(defs.prepareRandomIncomplete && eval.path === "path-random") { %>
-                                    <li><a class="redirect-link" href="/prepare_data_random?return=shareresult">Prepare for Randomization</a></li>
+                                    if(defs.matchingIncomplete  &&( eval.path === "path-matching"))
+                                    { %>
+                                    <li><a class="redirect-link" href="/matching?return=shareresult">Matching</a></li>
                                     <% }
                                     if(!defs.hasResults) { %>
                                     <li><a class="redirect-link" href="/getresult?return=shareresult">Get Results</a></li>
                                     <% } %>
                                 </ul>
-
-
+                                <% }  else { %>
+                                <p>No missing information found.</p>
+                                <% } %>
                             </div>
                         </div>
                     </div>

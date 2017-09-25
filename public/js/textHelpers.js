@@ -8,11 +8,11 @@ function calculateDurObject(d) {
 		}
 	if (d < 7) {
 		// default 
-	} else if (d < 49) {
+	} else if (d < 30) {
 		duration.length = Math.floor(d / 7);
 		duration.unit = 'week';
 		duration.remainder = d % 7;
-	} else if (d < 335) {
+	} else if (d < 365) {
 		duration.length = Math.floor(d / 30);
 		duration.unit = 'month';
 		duration.remainder = d % 30;
@@ -147,18 +147,21 @@ exports.stripPercent = function (x) {
             var d = (Math.ceil((endDate - beginDate) / 86400000));
 
 			var duration = calculateDurObject(d);
+			console.log("duration  object");
+			console.log(duration);
             var durationPlural = (duration.length > 1) ? "s" : "";
 			var durationString = duration.length === 0 ? "Not reported" : duration.length.toString() + ' ' + duration.unit + durationPlural;
-
+			console.log("duration = " + durationString);
 			if ((duration.remainder > 6) || (duration.remainder > 0 && duration.unit === "week")) {
 				var rduration = calculateDurObject(duration.remainder);
 				durationPlural = (rduration.length > 1) ? "s" : "";
 				durationString = durationString + ((rduration.remainder > 6) || (rduration.remainder > 0 && duration.unit === "week") ? ", " : " and ") + rduration.length.toString() + " " + rduration.unit + durationPlural;
-
+				console.log("duration = " + durationString);
 				if ((rduration.remainder > 6) || (rduration.remainder > 0 && duration.unit === "week")) {
 					var r2Duration = calculateDurObject(rduration.remainder);
 					durationPlural = (r2Duration.length > 1) ? "s" : "";
 					durationString = durationString + ", and " + r2Duration.length.toString() + " " + r2Duration.unit + durationPlural;
+					console.log("duration = " + durationString);
 				}
 			}
 

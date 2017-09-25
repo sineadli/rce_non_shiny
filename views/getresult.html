@@ -546,7 +546,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                                 
                                 var errors = data.error_message;
                                 if (errors.length > 0) {
-                                    $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
+                                    $('#error').append('<h2 class="stop-warning" >Unable to analyze results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. </p><p>Detailed error message: ' + errors + '</p></h2>');
                                     return;
                                 } else {
 
