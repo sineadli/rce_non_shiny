@@ -2067,14 +2067,13 @@ div .fbar {
     margin-right:17px;*/
 }
 .fbar input[type=text] {
-    width: 80%;
+    width: 65%;
     height: 30px;
 
 }
 div .sbar {   
     float: right;
     clear:right;
-    width: 45%;
     font-size: 1em;
     line-height: 1.8em;
     text-align:right;
@@ -2083,7 +2082,7 @@ div .sbar {
     float: right;
     clear: right;
     margin-right:15px;
-    width: 60%;
+    width: 58%;
     height: 30px;
 }
 
