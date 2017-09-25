@@ -47,7 +47,7 @@ module.exports = getEvalDefaults;
 
 // set defaults for tools
 function setBasics(sess) {
-
+    sess.defaults.BasicsIncomplete = false;
     var defstocheck = {
         Basics_Users: "the technology users",
 		Basics_Tech_Name: "the educational technology",
@@ -81,6 +81,7 @@ function setApproach(sess) {
 }
 
 function setResearchQ(sess) {
+    sess.defaults.planQuestionIncomplete = false;
 	var defstocheck = {
         Outcome_Direction: "improve",
         Outcome_Measure: "outcome measure",
@@ -94,46 +95,68 @@ function setResearchQ(sess) {
 };
 
 function setPlanNext(sess) {
+    sess.defaults.planNextIncomplete = false;
 	var defstocheck = {
 		Measure_Units: "units",
 		Success_Effect_Size: '0',
 		Pass_Probability: '75',
 		Fail_Probability: '50',
-        Tech_Cost_Saves: '[Saves/Costs]',
-        Tech_Amount: '[amount]',
-		Tech_Cost_User: '[user]',
+       
 		Action_Success: '[next step if moving the needle]',
 		Action_Fail: '[next step if not moving the needle]',
 		Action_Inconclusive: '[next step if results inconclusive]'
 	}
 
     sess.defaults.planNextIncomplete = populateDefaults(defstocheck, sess.eval.planNext, sess, false);
-	sess.defaults.Tech_Cost_Saves = textHelpers.capitalize(sess.defaults.Tech_Cost_Saves);
+
+    if (sess.eval.planNext.Tech_Cost_Desc === "") {
+        var odefstocheck = {
+            Tech_Cost_Saves: '[Saves/Costs]',
+            Tech_Amount: '[amount]',
+            Tech_Cost_User: '[user]'
+        }
+        sess.defaults.planNextIncomplete = populateDefaults(odefstocheck, sess.eval.planNext, sess, false);
+		sess.defaults.Tech_Cost_Saves = textHelpers.capitalize(sess.defaults.Tech_Cost_Saves);
+    } else {
+        sess.defaults.Cost_Other = textHelpers.capitalize(sess.eval.planNext.Tech_Cost_Desc);
+        sess.defaults.Tech_Cost_Saves = "Cost";
+    }
+
+   
     return;
 };
 
 function setPrepareRandom(sess) {
-	var prepareRandom = sess.eval.prepareRandom;
+    var prepareRandom = sess.eval.prepareRandom;
+    sess.defaults.prepareRandomIncomplete = false;
 
 
-	var defstocheck = {
-		Individual_Group: "individuals or groups",
-		Cluster_Group: "group (e.g. classroom or school)"
+    var defstocheck = {
+        Individual_Group: "individuals or groups",
+        Cluster_Group: "group (e.g. classroom or school)"
+    }
+    sess.defaults.prepareRandomIncomplete = populateDefaults(defstocheck, prepareRandom, sess, false);
+
+
+        sess.defaults.Random_Level = sess.defaults.Basics_Users.charAt(0).toUpperCase() + sess.defaults.Basics_Users.slice(1);
+    if (sess.defaults.Cluster_Group.toLowerCase == "classes") {
+        sess.defaults.Cluster_Group = "classroom";
+    } else if (sess.defaults.Cluster_Group.toLowerCase == "schools") {
+        sess.defaults.Cluster_Group = "school";
+    }
+    sess.defaults.Cluster_Groups = sess.defaults.Cluster_Group == "group (e.g. classroom or school)" ? "groups" : sess.defaults.Cluster_Group + "s";
+
+    sess.defaults.Random_Level = sess.defaults.Basics_Users;
+	if (sess.defaults.Individual_Group == "groups") {
+		sess.defaults.Random_Level = sess.defaults.Cluster_Groups;
 	}
-	sess.defaults.prepareRandomIncomplete = populateDefaults(defstocheck, prepareRandom, sess, false);
 
-	if (sess.defaults.Basics_Users)
-		sess.defaults.Random_Level = sess.defaults.Basics_Users.charAt(0).toUpperCase() + sess.defaults.Basics_Users.slice(1);
-	if (sess.defaults.Cluster_Group.toLowerCase == "classes") {
-	    sess.defaults.Cluster_Group = "classroom";
-	} else if (sess.defaults.Cluster_Group.toLowerCase == "schools") {
-		sess.defaults.Cluster_Group = "school";
-	}
-    return;
+return;
 };
 
 function setPlanContext(sess) {
 	var planContext = sess.eval.planContext;
+    sess.defaults.planContextIncomplete = false;
 
 	var defstocheck = {
         Tech_Purpose: '&rsquo;s description was not provided.',
@@ -203,7 +226,7 @@ function setEvalPlan(sess) {
 function setMatching(sess) {
 
     var matching = sess.eval.matching;
- 
+	sess.defaults.matchingIncomplete = false;
     sess.defaults.wasMatched = false;
 	sess.defaults.mhideFirst = false;
     sess.defaults.minFirst = "in";
@@ -225,7 +248,9 @@ function setMatching(sess) {
 		} else { sess.defaults.baselinetest_vars = "none selected"; }
 
 	}
-    
+	if (sess.eval.path === "path-matching" && !sess.defaults.wasMatched) {
+		sess.defaults.matchingIncomplete = true;
+    }
     if (matching.Targeted_Access === "" || matching.Targeted_Access === 'Select an option') {
         sess.defaults.matchingIncomplete = true;
         sess.defaults.Targeted_Access = "[Not Specified]";
@@ -246,6 +271,7 @@ return;
 function setRandom(sess) {
     var random = sess.eval.random;
    // console.log("In set random and path = " + sess.eval.path);
+	sess.defaults.randomIncomplete = false;
 	sess.defaults.rhideFirst = false;
     sess.defaults.rinFirst = "in";
     sess.defaults.riconFirst = "down";
@@ -267,7 +293,9 @@ function setRandom(sess) {
 		} else { sess.defaults.baselinetest_vars = "none selected"; }
 
 	}
- 
+	if (sess.eval.path === "path-random" && !sess.defaults.wasRandomized) {
+		sess.defaults.randomIncomplete = true;
+    }
 		sess.defaults.rDownloadPath = (random.DownloadPath ? random.DownloadPath : "");;
 
     return;
@@ -293,103 +321,105 @@ function setGetResults(sess) {
      
 
 		if (sess.defaults.hasResults) {
-            sess.defaults.hideFirst = true;
-            sess.defaults.inFirst = "";
-            sess.defaults.iconFirst = "right";
-			
-            if (result.outcome_range) {
-                sess.defaults.Outcome_Min = result.outcome_range.min;
-                sess.defaults.Outcome_Max = result.outcome_range.max;
-            }
-            
-            if (result.args) {
-                sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
-            }
-            if (typeof result == "object") {
-                sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
+		    sess.defaults.hideFirst = true;
+		    sess.defaults.inFirst = "";
+		    sess.defaults.iconFirst = "right";
 
-            } else {
-                sess.defaults.Results_By_Grade_Flag = "";
-            }
+		    if (result.outcome_range) {
+		        sess.defaults.Outcome_Min = result.outcome_range.min;
+		        sess.defaults.Outcome_Max = result.outcome_range.max;
+		    }
 
-            var balanced = true, clusterGroupWarning = false;
-            var successCount = 0, inconclusiveCount = 0, failureCount = 0;
-            var clusterGroupWarningComparison = "";
+		    if (result.args) {
+		        sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
+		    }
+		    if (typeof result == "object") {
+		        sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
 
-            for (grade in result.results_by_grade) {
-                if (result.results_by_grade.hasOwnProperty(grade)) {
+		    } else {
+		        sess.defaults.Results_By_Grade_Flag = "";
+		    }
 
-                    var thisresult = result.results_by_grade[grade];
+		    var balanced = true, clusterGroupWarning = false;
+		    var successCount = 0, inconclusiveCount = 0, failureCount = 0;
+		    var clusterGroupWarningComparison = "";
 
-                    sess.defaults.hasSample = thisresult.samples ? true : false;
-                    sess.defaults.hasCluster = thisresult.samples_cluster ? true : false;
+		    for (grade in result.results_by_grade) {
+		        if (result.results_by_grade.hasOwnProperty(grade)) {
 
-                    //For warnings
-                    // Balance warning
-                    balanced = isBalanced(thisresult.baseline_var_means);
-					
-                    // Cluster warning
-                    if (result.args.cluster_var.indexOf("no cluster") === -1 && sess.defaults.hasCluster) {
+		            var thisresult = result.results_by_grade[grade];
 
-                        if (thisresult.samples_cluster.n_full_treat === 1 || (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1)) {
-                            clusterGroupWarning = true;
-                            clusterGroupWarningComparison = (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1) ? "not" : "";
-                        }
-                    }
+		            sess.defaults.hasSample = thisresult.samples ? true : false;
+		            sess.defaults.hasCluster = thisresult.samples_cluster ? true : false;
 
-                    //For Interpretation
-                    var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
-                    var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
-                    var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
-                   
-                    var success = (probability > pass_probability);
-                    var inconclusive = (probability < pass_probability) && (probability > fail_probability);
+		            //For warnings
+		            // Balance warning
+		            balanced = isBalanced(thisresult.baseline_var_means);
 
-                    if (success) {
-                        successCount++;
-                    } else if (inconclusive) {
-                        inconclusiveCount++;
-                    } else {
-                        failureCount++;
-                    }
+		            // Cluster warning
+		            if (result.args.cluster_var.indexOf("no cluster") === -1 && sess.defaults.hasCluster) {
 
-                }
-            } // For each grade
+		                if (thisresult.samples_cluster.n_full_treat === 1 || (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1)) {
+		                    clusterGroupWarning = true;
+		                    clusterGroupWarningComparison = (thisresult.samples_cluster.n_full - thisresult.samples_cluster.n_full_treat === 1) ? "not" : "";
+		                }
+		            }
 
-            // Create result summary string
-            var header, start, gradeQualifier, inconclusiveQualifier, nextSteps;
-            header = start = gradeQualifier = inconclusiveQualifier = nextSteps = "";
+		            //For Interpretation
+		            var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
+		            var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
+		            var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
 
-            if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
-                header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive";
-                nextSteps = eval.planNext.Action_Inconclusive;
-            } else {
-                if (successCount === 0) {
-                    start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " did not have the intended effect ";
-                    nextSteps = eval.planNext.Action_Fail;
-                }
-                if (successCount > 0 && failureCount > 0) {
-                    start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " had the intended effect ";
-                    gradeQualifier = ' for some grades, but not for others';
-                    nextSteps = eval.planNext.Action_Inconclusive;
-                }
-                if (inconclusiveCount > 0) inconclusiveQualifier = ' For some grades, results were inconclusive.';
-                if (successCount > 0 && failureCount === 0 && successCount > inconclusiveCount) {
-                    nextSteps = eval.planNext.Action_Success;
-                    start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle";
-                }
-                header = start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + inconclusiveQualifier + '.';
-            }
+		            var success = (probability > pass_probability);
+		            var inconclusive = (probability < pass_probability) && (probability > fail_probability);
 
-            // Defaults to use on pages
-            sess.defaults.ResultSummary = header;
-            sess.defaults.Cluster_Group_Warning = clusterGroupWarning;
-            sess.defaults.Cluster_Group_Warning_Add_Not = clusterGroupWarningComparison;
-            sess.defaults.isBalanced = balanced;
-            sess.defaults.Result_Next_Steps = nextSteps;
+		            if (success) {
+		                successCount++;
+		            } else if (inconclusive) {
+		                inconclusiveCount++;
+		            } else {
+		                failureCount++;
+		            }
 
-        }
-    }
+		        }
+		    } // For each grade
+
+		    // Create result summary string
+		    var header, start, gradeQualifier, inconclusiveQualifier, nextSteps;
+		    header = start = gradeQualifier = inconclusiveQualifier = nextSteps = "";
+
+		    if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
+		        header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive.";
+		        nextSteps = eval.planNext.Action_Inconclusive;
+		    } else {
+		        if (successCount === 0) {
+		            start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " did not have the intended effect ";
+		            nextSteps = eval.planNext.Action_Fail;
+		        }
+		        if (successCount > 0 && (successCount !== (inconclusiveCount + successCount + failureCount))) {
+		            start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " had the intended effect ";
+		            gradeQualifier = ' for some grades, but not for others.';
+		            nextSteps = eval.planNext.Action_Inconclusive;
+		        }
+		        if (inconclusiveCount > 0) inconclusiveQualifier = ' For some grades, results were inconclusive.';
+		        if (successCount > 0 && failureCount === 0 && successCount > inconclusiveCount) {
+		            nextSteps = eval.planNext.Action_Success;
+		            start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle ";
+		        }
+				header = start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + ((gradeQualifier === "") ? "." : "") + inconclusiveQualifier;
+		    }
+
+		    // Defaults to use on pages
+		    sess.defaults.ResultSummary = header;
+		    sess.defaults.Cluster_Group_Warning = clusterGroupWarning;
+		    sess.defaults.Cluster_Group_Warning_Add_Not = clusterGroupWarningComparison;
+		    sess.defaults.isBalanced = balanced;
+		    sess.defaults.Result_Next_Steps = nextSteps;
+
+		} 
+    } else {
+		sess.defaults.ResultSummary = "Results were not analyzed.";
+	}
 
     return;
 };
