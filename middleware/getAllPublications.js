@@ -16,16 +16,17 @@ var dynamicSort = require('./dynamicSort');
 var getAllPublications = function (req, res, next) {
     var sort = "-published_at";
     var search = "";
+    var trial = {$ne: true};
     var query = require('url').parse(req.url, true).query;
     if (query.search) search = query.search;
     if (query.sort) sort = query.sort;
+    if (query.trial=='on') trial = true;
 
-   
     sess = req.session;
     if (sort === "-basics.Basics_Tech_Name") {
         if (!search) {
            
-            Evaluation.find({ status: '100' }).sort({"basics.Basics_Tech_Name":-1}).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100', trialflag: trial }).sort({"basics.Basics_Tech_Name":-1}).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
 				if (err) {
 					console.log("Error getting shared evals.");
                     console.log(err);
@@ -48,7 +49,7 @@ var getAllPublications = function (req, res, next) {
 
             Evaluation.find({
                 $and:
-                [{ status: '100' }, {
+                [{ status: '100',  trialflag: trial }, {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]
@@ -72,7 +73,7 @@ var getAllPublications = function (req, res, next) {
     else if (sort === "basics.Basics_Tech_Name") {
         if (!search) {
             console.log(query.sort);
-            Evaluation.find({ status: '100' }).sort({ "basics.Basics_Tech_Name": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "basics.Basics_Tech_Name": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -92,7 +93,7 @@ var getAllPublications = function (req, res, next) {
 
             Evaluation.find({
                 $and:
-                [{ status: '100' }, {
+                [{ status: '100',  trialflag: trial }, {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]
@@ -116,7 +117,7 @@ var getAllPublications = function (req, res, next) {
     else if (sort === "-published_at") {
         if (!search) {
             console.log(query.sort);
-            Evaluation.find({ status: '100' }).sort({ "published_at": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "published_at": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -136,7 +137,7 @@ var getAllPublications = function (req, res, next) {
 
             Evaluation.find({
                 $and:
-                [{ status: '100' }, {
+                [{ status: '100',  trialflag: trial }, {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]
@@ -160,7 +161,7 @@ var getAllPublications = function (req, res, next) {
     {
 		if (!search) {
 		   // console.log("In get all publications not search");
-            Evaluation.find({ status: '100' }).sort({ "published_at": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "published_at": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -181,7 +182,7 @@ var getAllPublications = function (req, res, next) {
 
             Evaluation.find({
                 $and:
-                [{ status: '100' }, {
+                [{ status: '100',  trialflag: trial }, {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]

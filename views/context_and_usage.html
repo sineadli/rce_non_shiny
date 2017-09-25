@@ -25,7 +25,7 @@
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
 
-    <form action="/context_and_usage" method="post">
+    <form id='updateformwithcheckbox' action="/context_and_usage" method="post">
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
         <% }%>
@@ -894,7 +894,21 @@
     <% include ../views/partials/footer.html %>
     <script>
         $(document).ready(function () {
+            $("#updateformwithcheckbox").submit(
+          function () {
 
+              $(this).find('input[type=checkbox]').each(function (i, el) {
+                  if (!el.checked) {
+                      var hidden_el = $(el).clone();
+                      hidden_el[0].checked = true;
+                      hidden_el[0].value = '';
+                      hidden_el[0].type = 'hidden'
+                      hidden_el.insertAfter($(el));
+                  }
+              });
+              return true;    // Don't abort the form submit
+
+          });
             //var bootstrapButton = $.fn.button.noConflict(); // return $.fn.button to previously assigned value
             //$.fn.bootstrapBtn = bootstrapButton; // give $().bootstrapBtn the Bootstrap functionality
             ////set up some minimal options for the feedback_me plugin
