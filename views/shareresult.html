@@ -297,8 +297,12 @@
                            } else if (eval.path === 'path-matching') {
                               baseline_tool = 'matching';
                         }
+                        var listVarsLength = defs.baselinetest_vars.length;
+                        if (Result.args.control_vars.length > 0) {
+                        listVarsLength = Math.max(Result.args.control_vars.length, defs.baselinetest_vars.length) ;
+                        }
 
-                        var bliststyle = defs.baselinetest_vars.length > 8 ? "list-col-3" : (defs.baselinetest_vars.length > 5 ? "list-col-2" : "")
+                        var bliststyle = listVarsLength > 8 ? "list-col-3" : (listVarsLength > 5 ? "list-col-2" : "")
                         %>
 
 
@@ -318,9 +322,14 @@
                         <% } %>
 
                         <% if (defs.hasResults) {
+                        if (Result.args.control_vars.length > 0) { 
+                        var listVarsLength = Result.args.control_vars.length;
+                        if (defs.baselinetest_vars.length > 0) {
+                        listVarsLength = Math.max(Result.args.control_vars.length, defs.baselinetest_vars.length) ;
+                        }
 
-                        if (Result.args.control_vars.length > 0) {
-                          var cliststyle = Result.args.control_vars.length > 8 ? "list-col-3" : (Result.args.control_vars.length > 5 ? "list-col-2" : "")
+                        bliststyle = listVarsLength > 8 ? "list-col-3" : (listVarsLength > 5 ? "list-col-2" : "")
+                        
                         %>
                         <li>
                             The analysis controlled for:<ul class="<%- bliststyle %>">
