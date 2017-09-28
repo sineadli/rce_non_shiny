@@ -35,7 +35,19 @@ module.exports = function (app, passport) {
     app.post('/basics', isLoggedIn, function (req, res) {        
         return evaluationController.postByTool(req, res,"The Basics", 2);	
     });
-    
+    //02.03 The Outcome & Measure
+    app.get('/outcome_measure', isLoggedIn, function (req, res) {
+       return evaluationController.getByTool(req, res);
+    });
+    app.post('/outcome_measure', isLoggedIn, function (req, res) {
+        return evaluationController.postByTool(req, res);
+    });
+    app.get('/measure_instrument', isLoggedIn, function (req, res) {
+        return evaluationController.getByTool(req, res);
+    });
+    app.post('/measure_instrument', isLoggedIn, function (req, res) {
+        return evaluationController.postByTool(req, res);
+    });
 	//02. Who used and how	   
 	app.get('/who_and_how', function (req, res) {
 		return evaluationController.getByTool(req, res, "online");
