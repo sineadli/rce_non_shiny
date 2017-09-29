@@ -8,7 +8,7 @@
     } %>
     <p>The Matching tool reports the similarity between the treatment and comparison groups before and after matching. Figure <%= figCount %>  shows the difference <%= defs.Results_By_Grade_Flag %> between the two groups on selected characteristics and displays the extent to which the groups are balanced (similar on each characteristic). If the matched sample has good balance, then we can be more confident that the observed differences in outcomes are caused by <%= defs.Basics_Tech_Name %>. The levels of balance follow the standards shown below in Table <%= tabprefix %><%= defs.Baseline_Tab_Num %>.</p>
 
-    <label class="chart" style="clear: both; display: block;">Figure <%= figCount %> Similarity (Balance) of users and non-users in matched sample</label>
+    <label class="chart" style="clear: both; display: block;">Figure <%= figCount %> Similarity (balance) of users and non-users in matched sample</label>
 
     <% for (grade in MResult.results_by_grade) {
 
