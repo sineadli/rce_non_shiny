@@ -47,7 +47,8 @@ var Basics = mongoose.Schema({
     Basics_Users: { type: String, default: ''}, // Was Prob_Appr_B
 	Basics_Users_Other: { type: String, default: ''}, // Was Prob_Appr_B_other	 
     Basics_Outcome: { type: String, default: '', help: 'what you hope to change' }, 
-	Basics_Outcome_Other: { type: String, default: '' },   
+    Basics_Outcome_Other: { type: String, default: '' }, 
+    Basics_Outcome_NonAcademic: { type: String, default: '' },  
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
@@ -63,10 +64,14 @@ var ProbAppr = mongoose.Schema({
 });
 //03.01 crafting a research question
 var PlanQuestion = mongoose.Schema({
+	Has_Outcome_Measure: { type: String, default: '' },
     Outcome_Measure: { type: String, default: '' }, // was Plan_Question_B_2
     Outcome_Direction: { type: String, default: '' }, // was  Plan_Question_B_3
     Intervention_Group_Desc: { type: String, default: '' }, // was  Plan_Question_C
-    Comparison_Group_Desc: { type: String, default: '' }, // was Plan_Question_D
+    Comparison_Group_Desc: { type: String, default: '' }, // was Plan_Question_D   
+    Measurement_Align: { type: String, default: '' },
+    Measurement_Design: { type: String, default: '' },
+    Measurement_Validated: { type: String, default: '' },
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
