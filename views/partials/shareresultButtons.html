@@ -9,8 +9,9 @@
 
 <input type="hidden" id="user_email" value="<%= user %>" />
 <input class="hidden" name="status" id="status" />
-<input class="hidden" name="returnpath" id="returnpath" />
-  <%  if (user != "NOAUTHENTICATED" && !query.peeking ) { %>
+<input class="hidden" name="returnpath" id="returnpath"/>
+
+  <%  if (user != "NOAUTHENTICATED" && !query.peeking && display === 'online' ) { %>
 <div class="bottom-buttons">
     <% if(sharing == 1) { %>
     <a href="/appendix/<%= eval._id %>?sharing=<%= sharing %>&backto=<%= backto %>" class="btn btn-info btn-lg appendix">VIEW TECHNICAL APPENDIX</a>

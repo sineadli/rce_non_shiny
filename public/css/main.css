@@ -418,7 +418,7 @@ ul {
 }
 div.step-to-consider ul {
     padding: 5px;
-    margin-left: 15px;
+    /*margin-left: 15px;*/
 }
 ul.no-bullet {
 	list-style-type: none;
@@ -1390,7 +1390,7 @@ input[type=checkbox] {
     margin-right: 5px;*/
 }
 /* hide input */
-div#How-Group input.radio:empty,
+div#How-Group input.radio:empty,div#How-Group input.radio:empty,
 div.check-list input[type=checkbox]:empty {
 	margin-left: -999px;
     visibility:hidden;

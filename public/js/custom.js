@@ -64,6 +64,12 @@ $(document).ready(function() {
 			case "evaluation_plan":
 			    ToolName = "Evaluation Plan";
 				break;
+			case "outcome_measure":
+				ToolName = "Define Your Outcome and Measure";
+				break;
+			case "measure_instrument":
+				ToolName = "Find an Instrument to Measure Your Outcome";
+				break;
 			case "shareresult":
 			    ToolName = "Share Your Results";
 				break;

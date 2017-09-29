@@ -43,6 +43,9 @@ module.exports = function (app, passport) {
         return evaluationController.postByTool(req, res);
     });
     app.get('/measure_instrument', isLoggedIn, function (req, res) {
+        console.log("Getting measure instrument");
+     //   console.log(req);
+
         return evaluationController.getByTool(req, res);
     });
     app.post('/measure_instrument', isLoggedIn, function (req, res) {
