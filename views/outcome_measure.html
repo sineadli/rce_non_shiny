@@ -24,7 +24,7 @@
     <div class="alert alert-success"><%= message %></div>
     <% }} %>
 
-    <form novalidate>
+    <form action="/outcome_measure" method="post" novalidate>
         <% if (user != "NOAUTHENTICATED") { %>
         <% include ../views/partials/toolHeader.html %>
         <% } %>
@@ -34,7 +34,7 @@
                     <div class="tool-top">
                         <div class="dl-guide">
 
-                            <a onclick=" window.open('/static/pdf/Prepare your data for analysis_matching.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
+                            <a onclick="window.open('/static/pdf/Choosing_Outcome_Measure.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.4em;">View Guide <span class="fa fa-download" aria-hidden="true"></span></a>
 
                         </div>
                         <div class="tool-header">
@@ -42,8 +42,8 @@
                             <div class="clearfix"></div>
                             <div class="tool-intro">
                                 <p>An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (for example, engaging with an educational technology). </p>
-                                <p>There are numerous types of outcomes that you can hope to affect with [your technology place holder]. Outcomes range from student academic achievement, for example student learning in a subject, to a teacher practice, such as teacher’s use of time, to student or parent engagement. For each evaluation you need to select a single outcome as your focus.</p>
-                                <p>This tool will help you think through the outcome you intend to affect and determine how you will measure(?) that outcome. For more a more detailed guide to the process, review our guide to choosing an outcome and measure. </p>
+                                <p>There may be numerous types of outcomes that you hope to affect with <%= defs.Basics_Tech_Name %>. However, for each Coach evaluation you need to select a single outcome as your focus.</p>
+                                <p>This tool will help you think through the outcome you intend to affect and determine how you will measure that outcome.</p>
                             </div>
                         </div>
                         <div class="clearfix">&nbsp;</div>
@@ -53,129 +53,130 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="tool-questions">
-                        <div id="How-Group">
+                       
                             <div class="step-header container first">
                                 <div data-toggle="collapse" data-target="#A">
                                     <h2 class="clickable">
                                         <i class="fa fa-caret-down" aria-hidden="false"></i>
-                                        What type of outcome(? need to do something here) do you hope to change by using the technology?
+                                        What type of outcome do you hope to change by using the technology?
                                     </h2>
                                 </div>
                             </div>
                             <div id="A" class="row  collapse in q-row">
-                                <div class="col-xs-7">
-                                    <div class="step-action-panel">
-                                        <p>
-                                            <em class="stronger"><i class="fa fa-asterisk"></i> Select one.</em>
-                                        </p>
-                                        <div id="Outcome_options" class="panel-group">
-                                            <% console.log(eval.basics.Basics_Outcome) %>
-                                            <div class="panel panel-default">
+                                <div id="How-Group">
+                                    <div class="col-xs-7">
+                                        <div class="step-action-panel">
+                                            <p>
+                                                <em class="stronger"><i class="fa fa-asterisk"></i> Select one.</em>
+                                            </p>
+                                            <div id="Outcome_options" class="panel-group">
+                                                <% console.log(eval.basics.Basics_Outcome) %>
+                                                <div class="panel panel-default">
 
-                                                <% var checked = ( eval.basics.Basics_Outcome== "academic" ) ? "checked" : "";
-                                                var selected = (eval.basics.Basics_Outcome== "academic" ) ? "selected" : "";
-                                                %>
-                                                <div class="panel-heading for-how-group <%= selected %>">
-                                                    <input type="radio" id="Outcome-Academic" name="basics[Basics_Outcome]" value="academic" class="radio" <%= checked %>/>
-                                                    <label class="panel-title" for="Outcome-Academic">Student academic achievement</label>
-                                                    <a data-toggle="collapse" href="#oucome-1">Learn more <i class="fa fa-caret-down" aria-hidden="false"></i> </a>
-                                                    <div class="clearfix"></div>
+                                                    <% var checked = ( eval.basics.Basics_Outcome== "academic" ) ? "checked" : "";
+                                                    var selected = (eval.basics.Basics_Outcome== "academic" ) ? "selected" : "";
+                                                    %>
+                                                    <div class="panel-heading for-how-group <%= selected %>">
+                                                        <input type="radio" id="Outcome-Academic" name="basics[Basics_Outcome]" value="academic" class="radio" <%= checked %>/>
+                                                        <label class="panel-title" for="Outcome-Academic">Student academic achievement</label>
+                                                        <a data-toggle="collapse" href="#oucome-1">Learn more<i class="fa fa-caret-down" aria-hidden="false"></i> </a>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div id="oucome-1" class="panel-collapse collapse in">
+                                                        <p>
+                                                            Student academic achievement refers to student skills or content knowledge in any subject.
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div id="oucome-1" class="panel-collapse collapse in">
-                                                    <p>
-                                                        Student academic achievement refers to student skills or content knowledge in any subject.
-                                                    </p>
+                                                <div class="panel panel-default">
+                                                    <% var checked = ( eval.basics.Basics_Outcome== "nonacademic" ) ? "checked" : "";
+                                                    var selected = (eval.basics.Basics_Outcome== "nonacademic" ) ? "selected" : "";
+                                                    %>
+                                                    <div class="panel-heading for-how-group <%= selected %>">
+                                                        <input type="radio" id="Outcome-NonAcademic" name="basics[Basics_Outcome]" value="nonacademic" class="radio" <%= checked %>/>
+                                                        <label class="panel-title" for="Outcome-NonAcademic">Student non-academic achievement</label>
+                                                        <a data-toggle="collapse" href="#oucome-2">Learn more<i class="fa fa-caret-right" aria-hidden="true"></i> </a>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div id="oucome-2" class="panel-collapse collapse">
+                                                        <p>
+                                                            Student non-academic skills refers to important skills that do not fall into traditional subject-matter categories. This includes social-emotional skills, attitudes, behaviors, and 21st century skills such as collaboration, communication, critical thinking, and creativity.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <% var checked = ( eval.basics.Basics_Outcome== "other" ) ? "checked" : "";
+                                                    var selected = (eval.basics.Basics_Outcome== "other" ) ? "selected" : "";
+                                                    %>
+                                                    <div class="panel-heading for-how-group <%= selected %>">
+                                                        <input type="radio" id="Outcome-Other" name="basics[Basics_Outcome]" value="other" class="radio" <%= checked %>/>
+                                                        <label class="panel-title" for="Outcome-Other">Other</label>
+                                                        <a data-toggle="collapse" href="#oucome-3">Learn more<i class="fa fa-caret-right" aria-hidden="true"></i> </a>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div id="oucome-3" class="panel-collapse collapse">
+                                                        <p>
+                                                            There are numerous possible outcomes of interest. A few examples include teacher-related outcomes, parental engagement, school climate, and technology integration.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="panel panel-default">
+                                                    <% var checked = ( eval.basics.Basics_Outcome== "notsure" ) ? "checked" : "";
+                                                    var selected = (eval.basics.Basics_Outcome== "notsure" ) ? "selected" : "";
+                                                    %>
+                                                    <div class="panel-heading for-how-group <%= selected %>">
+                                                        <input type="radio" id="Outcome-NotSure" name="basics[Basics_Outcome]" value="notsure" class="radio" <%= checked %>/>
+                                                        <label class="panel-title" for="Outcome-NotSure">Not sure</label>
+                                                        <a data-toggle="collapse" href="#oucome-4">Learn more<i class="fa fa-caret-right" aria-hidden="false"></i> </a>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div id="oucome-4" class="panel-collapse collapse">
+                                                        <p>
+                                                            You will need to identify an outcome before proceeding with your evaluation. We encourage you to meet with your team and determine the outcome you are most interested in affecting.
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="panel panel-default">
-                                                <% var checked = ( eval.basics.Basics_Outcome== "nonacademic" ) ? "checked" : "";
-                                                var selected = (eval.basics.Basics_Outcome== "nonacademic" ) ? "selected" : "";
-                                                %>
-                                                <div class="panel-heading for-how-group <%= selected %>">
-                                                    <input type="radio" id="Outcome-NonAcademic" name="basics[Basics_Outcome]" value="nonacademic" class="radio" <%= checked %>/>
-                                                    <label class="panel-title" for="Outcome-NonAcademic">Student non-academic achievement</label>
-                                                    <a data-toggle="collapse" href="#oucome-2">Learn more <i class="fa fa-caret-down" aria-hidden="false"></i> </a>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                                <div id="oucome-2" class="panel-collapse collapse in">
-                                                    <p>
-                                                        Student non-academic skills refers to important skills that do not fall into traditional subject-matter categories. This includes social-emotional skills, attitudes, behaviors, and 21st century skills such as collaboration, communication, critical thinking, and creativity.
-                                                    </p>
-                                                </div>
+                                            <div id="Question_Outcome_NonAcademic" hidden="true" class="other-div">
+                                                <h4><label for="Basics_Outcome_NonAcademic">If possible, please specify the non-academic skill (or set of skills) of interest. </label></h4>
+                                                <input type="text" id="Basics_Outcome_NonAcademic" name="basic[Basics_Outcome_NonAcademic]" />
                                             </div>
-                                            <div class="panel panel-default">
-                                                <% var checked = ( eval.basics.Basics_Outcome== "other" ) ? "checked" : "";
-                                                var selected = (eval.basics.Basics_Outcome== "other" ) ? "selected" : "";
-                                                %>
-                                                <div class="panel-heading for-how-group <%= selected %>">
-                                                    <input type="radio" id="Outcome-Other" name="basics[Basics_Outcome]" value="other" class="radio" <%= checked %>/>
-                                                    <label class="panel-title" for="Outcome-Other">Other</label>
-                                                    <a data-toggle="collapse" href="#oucome-3">Learn more <i class="fa fa-caret-down" aria-hidden="false"></i> </a>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                                <div id="oucome-3" class="panel-collapse collapse in">
-                                                    <p>
-                                                        There are numerous possible outcomes of interest. A few examples include teacher-related outcomes, parental engagement, school climate, and technology integration.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-default">
-                                                <% var checked = ( eval.basics.Basics_Outcome== "notsure" ) ? "checked" : "";
-                                                var selected = (eval.basics.Basics_Outcome== "notsure" ) ? "selected" : "";
-                                                %>
-                                                <div class="panel-heading for-how-group <%= selected %>">
-                                                    <input type="radio" id="Outcome-NotSure" name="basics[Basics_Outcome]" value="notsure" class="radio" <%= checked %>/>
-                                                    <label class="panel-title" for="Outcome-NotSure">Not sure</label>
-                                                    <a data-toggle="collapse" href="#oucome-4">Learn more <i class="fa fa-caret-down" aria-hidden="false"></i> </a>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                                <div id="oucome-4" class="panel-collapse collapse in">
-                                                    <p>
-                                                        You will need to identify an outcome before proceeding with your evaluation. We encourage you to meet with your team and determine the outcome you are most interested in affecting.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="Question_Outcome_NonAcademic" hidden="true" class="other-div">
-                                            <h4><label for="Basics_Outcome_NonAcademic">If possible, please specify the non-academic skill (or set of skills) of interest. </label></h4>
-                                            <input type="text" id="Basics_Outcome_NonAcademic" name="basic[Basics_Outcome_NonAcademic]" />
-                                        </div>
-                                        <div id="Question_Outcome_Other" hidden="true" class="other-div">
-                                            <h4><label for="Basics_Outcome_Other">Please specify the other outcome of interest</label></h4>
-                                            <input type="text" id="Basics_Outcome_Other" name="basic[Basics_Outcome_Other]" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-5">
-                                    <div class="step-to-consider">
-                                        <div class="panel-group" id="ttc1">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title sec-label clickable">
-
-                                                        <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
-                                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
-                                                            Things to Consider
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                                <div id="consider1" class="panel-collapse collapse in">
-                                                    To identify your outcome, consider:
-                                                    <ul>
-                                                        <li>What do you want to change? </li>
-                                                        <li>Is the intervention aimed at students, teachers, or other users?</li>
-                                                        <li>What specific aspect of their skills, knowledge, behavior, attitudes, etc. is the intervention targeting?</li>
-                                                        <li>Over what time frame do you expect to see changes?</li>
-                                                    </ul>
-                                                    </p>
-                                                    <p> We recommend discussing the appropriate outcome with other stakeholders in the district before getting started. Our guide to choosing an outcome and measure can help you walk through the decision.</p>
-                                                    <p>This case study [link to Wake] illustrates the perils of leaving this discussion until the end of the evaluation.</p>
-                                                </div>
+                                            <div id="Question_Outcome_Other" hidden="true" class="other-div">
+                                                <h4><label for="Basics_Outcome_Other">Please specify the other outcome of interest</label></h4>
+                                                <input type="text" id="Basics_Outcome_Other" name="basic[Basics_Outcome_Other]" />
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <div class="step-to-consider">
+                                            <div class="panel-group" id="ttc1">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title sec-label clickable">
+
+                                                            <a data-toggle="collapse" data-parent="#ttc1" href="#consider1">
+                                                                <i class="fa fa-caret-down" aria-hidden="false"></i>
+                                                                Things to Consider
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    <div id="consider1" class="panel-collapse collapse in">
+                                                        <ul>
+                                                            <li>What do you want to change? </li>
+                                                            <li>Is <%= defs.Basics_Tech_Name %> aimed at students, teachers, or other users?</li>
+                                                            <li>What specific aspect of their skills, knowledge, behavior, attitudes, etc. is <%= defs.Basics_Tech_Name %> targeting?</li>
+                                                            <li>Over what time frame do you expect to see changes?</li>
+                                                        </ul>
+                                                        </p>
+                                                        <p> We recommend discussing the appropriate outcome with other stakeholders in the district before getting started.  The <a href="/static/pdf/CaseStudy_WakeCounty_81417.pdf">Case Study-Wake County Public School System: Are We Measuring the Right Outcome?</a> illustrates the perils of leaving this discussion until the end of the evaluation.</p>
+                                                        <p>Our <a href="#">guide to choosing an outcome and measure</a> can help you walk through this decision.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                               
                         </div>
                         <div id="measure-select">
                             <div class="step-header container">
@@ -188,7 +189,7 @@
                             <div id="B" class="row collapse in  q-row">
                                 <div class="col-xs-7">
                                     <div class="step-subquestion">
-                                        <p>The next step is figuring out how you can measure the outcome you are interested in. Sometimes this is straightforward, such as using an achievement test when you are targeting student knowledge on a particular topic. Other times measuring your outcome of interest can be more challenging. Your measure, be it an assessment, survey, or administrative records, must provide you with a quantitative result that reflects the underlying attribute you are trying to affect.</p>
+                                        <p>The next step is figuring out how you can measure your outcome. Sometimes this is straightforward, such as using an achievement test to measure student knowledge on a topic, other times it can be more challenging <span data-toggle='tooltip' title='A growing number of education technologies claim to benefit students’ non-academic traits such as grit and self-efficacy or 21st century skills such as creativity and critical thinking. Outcomes such as these are more difficult to measure directly and may require a survey, observation, or performance task assessment' class='tooltip-gr'><i class='fa fa-question-circle'></i></span>.</p><p>Your measure, be it an assessment, survey, or administrative records, must provide you with a quantitative result that reflects the underlying attribute you are trying to affect.</p>
                                         <p style="margin-bottom:25px;">Table 1 in our <a>guide to choosing an outcome and measure </a>provides suggestions for how to measure different types of outcomes</p>
 
                                         <h4><label for="Outcome_Measurd_Instrument">Do you already know how you will measure your outcome?</label></h4>
@@ -197,12 +198,19 @@
 
                                         <select required name="planQuestion[Has_Outcome_Measure]" id="Has_Outcome_Measure">
                                             <%
+                                            console.log("Measure=" + eval.planQuestion.Outcome_Measure);
                                             var options = ["Select an option", "Yes", "No"];
                                             var ovals = ["Select an option", "yes", "no"];
+                                            var hasMeasure = eval.planQuestion.Has_Outcome_Measure;
+                                            if(eval.planQuestion.Outcome_Measure != "") {
+                                                 hasMeasure = "yes";
+                                            }
+
                                             for ( var i = 0; i < options.length; i++ )
                                             {
-
-                                            var selected = ( eval.planQuestion.Has_Outcome_Measure == ovals[i] ) ? "selected" : "";
+                                            
+                                            var selected = (hasMeasure == ovals[i]) ? "selected" : "";
+                                           
 
                                             %>
                                             <option value="<%=ovals[ i ] %>" <%=selected %> ><%=options[ i ] %></option>
@@ -228,6 +236,15 @@
                                             </p>
 
                                         </div>
+
+                                        <div id="No-Measure" class=""hidden">
+                                            <h3 >No problem!</h3>
+                                                <p>
+                                                    How you measure your outcome can be as important as the outcome itself. The following resources can help you choose the best measure to use in your evaluation: <ul><li>See our <a href="/static/pdf/Choosing_Outcome_Measure.pdf">guide to choosing an outcome and measure</a> for an indepth look at what matters when selecting a measure. </li><li>The <a href="/measure_instrument">Find an Instrument to Measure Your Outcome</a> tool also provides guidelines for selecting measures and includes a list of possible instruments that measure common non-academic outcomes.</li></ul>
+                                           
+                                                    
+                                                </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
@@ -247,7 +264,7 @@
 
                                                     <ul>
                                                         <li>Does your school or district already measure the outcome? </li>
-                                                        <li>If the outcome can’t be measured directly, are there proxies(?) you could look at?</li>
+                                                        <li>If the outcome can’t be measured directly, are there proxies <span data-toggle='tooltip' title='A proxy measure refers to another outcome that is not directly relevant, but is closely related to the outcome you are interested in. Using a proxy is an indirect way of measuring an outcome.' class='tooltip-gr'><i class='fa fa-question-circle'></i></span> you could look at?</li>
                                                         <li>When will you need the data to be available?</li>
                                                         <li>What type of assessment or survey would work in your context?</li>
                                                         <li>How much does the instrument cost to use (in terms of both time and money)?</li>
@@ -266,7 +283,7 @@
                                                         <li>
                                                             <strong>Reliability</strong> – This is how consistently the instrument measures what you are interested in
                                                         </li>
-                                                        <li>Learn more about these issues in our <a>guide to choosing and outcome and measure</a>.</li>
+                                                      
                                                     </ul>
                                                 </div>
                                             </div>
@@ -291,11 +308,17 @@
     <script>
         $(document).ready(function () {
 
-            if ($('#Has_Outcome_Measure').val() === "yes"  || $('#Outcome_Measure').val() !="" ) {
+            if ($('#Has_Outcome_Measure').val() === "yes" || $('#Outcome_Measure').val() != "") {
                 $("#Outcome_Measurd_Instrument").show();
+                $("#No-Measure").hide();
+            } else if ($('#Has_Outcome_Measure').val() === "no") {
+                $("#Outcome_Measurd_Instrument").hide();
+                $("#No-Measure").show();
             } else {
                 $("#Outcome_Measurd_Instrument").hide();
+                $("#No-Measure").hide();
             }
+
             if ($('#Outcome-Other').is(':checked')) {
                 $("#Question_Outcome_Other").show();
             } else { $("#Question_Outcome_Other").hide(); }
@@ -309,14 +332,14 @@
             var chooseOther = $('#Outcome-Other').is(':checked') ? $('#Outcome-Other').val() : "";
             var chooseNotSure = $('#Outcome-NotSure').is(':checked') ? $('#Outcome-NotSure').val() : "";
 
-        
+      
 
 
         $("#Outcome-Academic").change(function () {
             $("div.for-how-group").removeClass("selected");
             $(this).parent("div.for-how-group").addClass("selected");
-            $('#Outcome_options .panel-collapse.in').collapse('toggle');
-            $('#oucome-1.panel-collapse.collapse').collapse('show');
+            $('#Outcome_options .panel-collapse.in').collapse('hide');
+            $('#oucome-1').collapse('show');
             $("#Question_Outcome_NonAcademic").hide();
             $("#Question_Outcome_Other").hide();
             return true;
@@ -324,8 +347,8 @@
         $("#Outcome-NonAcademic").change(function () {
             $("div.for-how-group").removeClass("selected");
             $(this).parent("div.for-how-group").addClass("selected");
-            $('#Outcome_options .panel-collapse.in').collapse('toggle');
-            $('#oucome-2.panel-collapse.collapse').collapse('show');
+            $('#Outcome_options .panel-collapse.in').collapse('hide');
+            $('#oucome-2').collapse('show');
             if ($('#Outcome-NonAcademic').is(':checked')) {
                 $("#Question_Outcome_NonAcademic").show();
                 $("#Question_Outcome_Other").hide();
@@ -335,8 +358,8 @@
         $("#Outcome-Other").change(function () {
             $("div.for-how-group").removeClass("selected");
             $(this).parent("div.for-how-group").addClass("selected");
-            $('#Outcome_options .panel-collapse.in').collapse('toggle');
-            $('#oucome-3.panel-collapse').collapse('show');
+            $('#Outcome_options .panel-collapse.in').collapse('hide');
+            $('#oucome-3').collapse('show');
             //$('#oucome-3.panel-collapse').addClass('in');
             //$('#oucome-3.panel-collapse').attr("aria-expanded", "true");
             if ($('#Outcome-Other').is(':checked')) {
@@ -348,8 +371,8 @@
         $("#Outcome-NotSure").change(function () {
             $("div.for-how-group").removeClass("selected");
             $(this).parent("div.for-how-group").addClass("selected");
-            $('#Outcome_options .panel-collapse.in').collapse('toggle');
-            $('#oucome-4.panel-collapse.collapse').collapse('show');
+            $('#Outcome_options .panel-collapse.in').collapse('hide');
+            $('#oucome-4').collapse('show');
             $("#Question_Outcome_NonAcademic").hide();
             $("#Question_Outcome_Other").hide();
             return true;
@@ -358,16 +381,23 @@
 
 
         $('#Has_Outcome_Measure').change(function () {
-            var haveMeasure = $('#Has_Outcome_Measure').val();
-            alert(haveMeasure);
+    
             if ($('#Has_Outcome_Measure').val() === "yes") {
                 $("#Outcome_Measurd_Instrument").show();
+                $("#No-Measure").hide();
+            } else if ($('#Has_Outcome_Measure').val() === "no") {
+                $("#Outcome_Measurd_Instrument").hide();
+                $("#No-Measure").show();
             } else {
                 $("#Outcome_Measurd_Instrument").hide();
+                $("#No-Measure").hide();
             }
+
+           
             return true;
         });
         });
+      
     </script>
 
 </body>

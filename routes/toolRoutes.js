@@ -37,7 +37,7 @@ module.exports = function (app, passport) {
     });
     //02.03 The Outcome & Measure
     app.get('/outcome_measure', isLoggedIn, function (req, res) {
-       return evaluationController.getByTool(req, res);
+		return evaluationController.getByTool(req, res, "online");
     });
     app.post('/outcome_measure', isLoggedIn, function (req, res) {
         return evaluationController.postByTool(req, res);
@@ -46,7 +46,7 @@ module.exports = function (app, passport) {
         console.log("Getting measure instrument");
      //   console.log(req);
 
-        return evaluationController.getByTool(req, res);
+        return evaluationController.getByTool(req, res, "online");
     });
     app.post('/measure_instrument', isLoggedIn, function (req, res) {
         return evaluationController.postByTool(req, res);

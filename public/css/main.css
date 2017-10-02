@@ -45,6 +45,9 @@ body.peeking div.step-action a, body.peeking div.step-action input {
    cursor: default;
     text-decoration: none;
 }
+p {
+    margin: 0 0 18px;
+}
 
 h1 span.peeking-pretitle {
     font-size: .8em;
@@ -555,11 +558,13 @@ h2.clickable ,p.clickable {
 h2.clickable, h2.clickable label {
     font-size: 1.5em;
     margin: 20px 0 10px 0;
+    color: #006982;
 
 }
     h2.clickable label {
         font-weight: 600;
         font-size: 1em;
+            
     }
 div.header-section {
 }
@@ -1340,7 +1345,7 @@ div.step-to-consider .panel-heading, div#How-Group div.step-to-consider .panel-h
     padding: 12px;
 }
 div.step-to-consider .panel-collapse {
-	padding:8px 20px 0px 20px;
+	padding:0px 20px 0px 20px;
 
 }
 div#How-Group .panel-group {
@@ -1365,7 +1370,7 @@ div.error p.alert-danger {
 
 div#How-Group .panel-collapse {
 	clear: both;
-	    margin: 10px 15px 15px;
+	    margin: 0 15px 15px;
 }
 
 div#How-Group .panel-collapse label {
@@ -1401,9 +1406,9 @@ div#How-Group input.radio:empty ~ label,
 div.check-list input[type=checkbox]:empty ~ label {
 	position: relative;
 	float: left;
-	/*line-height: 2.5em;
-	text-indent: 3.25em;*/
-	
+	line-height: 2.5em;
+	/*text-indent: 3.25em;*/
+    vertical-align: middle;
 	cursor: pointer;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -1416,7 +1421,7 @@ div#How-Group input.radio ~ a {
 	float: right;
 	line-height: 2.5em;
 	text-indent: .5em;
-	
+    margin-right: 3px;
 	cursor: pointer;
 	-webkit-user-select: none;
 	-moz-user-select: none;
