@@ -210,9 +210,14 @@ module.exports.getByTool = function (req, res, display) {
 					// populate defaults
                     getEvalDefaults(sess, req.user);
 
-					var thisurl = thispath.substring(1) + '.html';
+                    var thisurl = thispath.substring(1) + '.html';
+        
 					var query = url.parse(req.url, true).query;
-					
+                    var instruments;
+
+                    if (thisurl == "measure_instrument.html") {
+                        instruments = sess.instruments;
+                    }
 					res.render(thisurl, {
 						user: req.user,
 						eval: sess.eval,
@@ -221,7 +226,8 @@ module.exports.getByTool = function (req, res, display) {
 						query: query,
 						valerrs: req.session.valerrs,
 						shiny_url: configDB.shiny_url,
-						display: display
+                        display: display,
+                        lists: instruments
 					}//,
 						//function (err, html) {
 						//	if (err) {

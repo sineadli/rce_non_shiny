@@ -25,6 +25,7 @@ var User = require('../models/user');
 var CoachStep = require('../models/coachStep.js');
 var Tool= require('../models/tool.js');
 var coachsteps = require('../middleware/coachsteps.js');
+var Instrument = require('../models/instrument.js');
 var sess;
 
 
@@ -329,15 +330,53 @@ module.exports = function (app, passport) {
         sess = req.session;
         res.json(sess.evalLists);
     });
-    //app.get('/table',  function(req, res) {
-    //    User.dataTables({
-    //        limit: 50,
-    //        skip: 50
-    //    }).then(function (table) {
 
-    //        res.json(table); // table.total, table.data
-    //    })
-    //});
+    app.get('/instrument', isAdmin, function (req, res) {
+        sess = req.session;
+        Instrument.find(function (err, instruments) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render('InstrumentAdmin.html', {
+                    user: req.user,
+                    lists: instruments
+                });
+            }
+        });
+
+
+    });
+
+    app.post('/api/delInstrument', isAdmin, function (req, res) {
+        Instrument.remove({ _id: req.body.id }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                console.log("Selected tool deleted.");
+                res.status(201).send("Selected tool deleted.");
+            }
+        }
+        );
+    });
+
+    app.post('/api/upsertInstrument', isAdmin, function (req, res) {
+        var query = { order: req.body.order, name: req.body.name };
+        if (req.body.id) {
+            query = { _id: req.body.id };
+        }
+        console.log(req.body);
+        Instrument.findOneAndUpdate(query, req.body, { upsert: true }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                res.status(201).send("Selected instrument updated/added.");
+            }
+        }
+        );
+    });
 }
 
 

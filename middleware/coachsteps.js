@@ -1,6 +1,7 @@
 ﻿
 var CoachStep = require('../models/coachStep'),
-    Tool = require('../models/tool.js');
+    Tool = require('../models/tool.js'),
+    Instrument =require('../models/instrument.js');
 var dynamicSort = require('./dynamicSort');
 var coachsteps = function (req, res, next) {
     sess = req.session;
@@ -20,6 +21,15 @@ var coachsteps = function (req, res, next) {
         else {
             tools.sort(dynamicSort("order"));
             sess.tools = tools;       
+        }
+    });
+    Instrument.find(function (err, instruments) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            instruments.sort(dynamicSort("order"));
+            sess.instruments = instruments;
         }
     });
     next();
