@@ -1,13 +1,14 @@
 ﻿<% if(lists.length>0){
 
 var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
-     var list_student_outcome = lists.filter(function (x) { console.log(x.type); return x.type.toLowerCase().indexOf("student") !== -1 });
+     var list_student_outcome = lists.filter(function (x) {  return x.type.toLowerCase().indexOf("student") !== -1 });
+
      var list_teacher_outcome =lists.filter(function (x) { return x.type.toLowerCase().indexOf("teacher") !== -1 });
      var list_other_outcome =lists.filter(function (x) { return x.type.toLowerCase().indexOf("other") !== -1 });
 
  %>
-<% if(list_student_outcome.length> 0) { %>
-<table id="studentoutcome" data-order='[[ 2, "asc" ], [3, "asc"]]' class="table table-striped">
+<% if(list_student_outcome.length> 0) {   %>
+<table id="studentoutcome" data-order='[[ 0, "asc" ], [1, "asc"]]' class="table table-striped">
     <caption><%= list_student_outcome[0].type %></caption>
     <thead>
         <tr>           
@@ -24,6 +25,7 @@ var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
         <% 
         
         for (var i=0; i < list_student_outcome.length; i++){
+
         id =list_student_outcome[i]._id ;
         order = list_student_outcome[i].order;
         name =list_student_outcome[i].name;
@@ -41,21 +43,24 @@ var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
             <td><%= order %></td>
             <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
             <td><ul> 
-                <% for (var i=0; i < topic_areas_covered.length; i++){ %>
+                <% for (var j=0; j< topic_areas_covered.length; j++){ %>
                     <li>
-                        <%= topic_areas_covered[i] %>
+                        <%= topic_areas_covered[j] %>
                     </li>
                 <% } %>
               </ul></td>
-            <td><label><a href="<%= url_source %>"><%= source %></a></label></td>
+            <td>
+            <% if(url_source) { %><label><a href="<%= url_source %>"><%= source %></a></label>
+             <% } else { %> <label><%= source %></label>
+                <% } %>
+            </td>
         </tr>
-        <% } } %>
+        <% }  %>
     </tbody>
-</table>
-
+</table>  <% } %>
 
 <% if(list_teacher_outcome.length> 0) { %>
-<table id="teacheroutcome" data-order='[[ 2, "asc" ], [3, "asc"]]' class="table table-striped">
+<table id="teacheroutcome" data-order='[[ 0, "asc" ], [3, "asc"]]' class="table table-striped">
     <caption>Teacher outcome</caption>
     <thead>
         <tr>
@@ -70,9 +75,9 @@ var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
     </thead>
     <tbody>
         <%
-      
+
         for (var i=0; i < list_teacher_outcome.length; i++){
-  
+
         order = list_teacher_outcome[i].order;
         name =list_teacher_outcome[i].name;
         url_name = list_teacher_outcome[i].url_name;
@@ -89,21 +94,21 @@ var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
             <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
             <td>
                 <ul>
-                    <% for (var i=0; i < topic_areas_covered.length; i++){ %>
+                    <% for (var j=0; j < topic_areas_covered.length; j++){ %>
                     <li>
-                        <%= topic_areas_covered[i] %>
+                        <%= topic_areas_covered[j] %>
                     </li>
                     <% } %>
                 </ul>
             </td>
             <td><label><a href="<%= url_source %>"><%= source %></a></label></td>
         </tr>
-        <% } } %>
+        <% }  %>
     </tbody>
-</table>
+</table><% } %>
 
 <% if(list_other_outcome.length> 0) { %>
-<table id="otheroutcome" data-order='[[ 2, "asc" ], [3, "asc"]]' class="table table-striped">
+<table id="otheroutcome" data-order='[[ 0, "asc" ], [3, "asc"]]' class="table table-striped">
     <caption>Other outcome</caption>
     <thead>
         <tr>
@@ -137,18 +142,19 @@ var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
             <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
             <td>
                 <ul>
-                    <% for (var i=0; i < topic_areas_covered.length; i++){ %>
+                    <% for (var j=0; j < topic_areas_covered.length; j++){ %>
                     <li>
-                        <%= topic_areas_covered[i] %>
+                        <%= topic_areas_covered[j] %>
                     </li>
                     <% } %>
                 </ul>
             </td>
             <td><label><a href="<%= url_source %>"><%= source %></a></label></td>
         </tr>
-        <% } } %>
+        <% }  %>
     </tbody>
-</table>
+</table><% } %>
+
 <% } %>
 
 
