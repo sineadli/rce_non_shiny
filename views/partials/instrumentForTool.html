@@ -1,160 +1,64 @@
 ﻿<% if(lists.length>0){
-
 var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
-     var list_student_outcome = lists.filter(function (x) {  return x.type.toLowerCase().indexOf("student") !== -1 });
+var tablename = ["student", "teacher" , "other"];
+for (var k=0; k < tablename.length; k++){
 
-     var list_teacher_outcome =lists.filter(function (x) { return x.type.toLowerCase().indexOf("teacher") !== -1 });
-     var list_other_outcome =lists.filter(function (x) { return x.type.toLowerCase().indexOf("other") !== -1 });
+     var list_outcome = lists.filter(function (x) {  return x.type.toLowerCase().indexOf(tablename[k]) !== -1 });
 
  %>
-<% if(list_student_outcome.length> 0) {   %>
-<table id="studentoutcome" data-order='[[ 0, "asc" ], [1, "asc"]]' class="table table-striped">
-    <caption><%= list_student_outcome[0].type %></caption>
-    <thead>
-        <tr>           
-            <th>No.</th>
-            <th>name</th>
-            
-            <th>topic areas covered</th>
-            <th>source</th>
-            
-            
-        </tr>
-    </thead>
-    <tbody>
-        <% 
-        
-        for (var i=0; i < list_student_outcome.length; i++){
+<% if(list_outcome.length> 0) {   %>
+<div class="row">
+    <table id="studentoutcome" data-order='[[ 0, "asc" ], [1, "asc"]]' class="table table-striped">
+        <caption><%= list_outcome[0].type %> (Click the table header to expend/collapse outcome lists)</caption>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>name</th>
 
-        id =list_student_outcome[i]._id ;
-        order = list_student_outcome[i].order;
-        name =list_student_outcome[i].name;
-        url_name = list_student_outcome[i].url_name;
-        topic_areas_covered=list_student_outcome[i].topic_areas_covered.split(";");
-    
-        source =list_student_outcome[i].source;
+                <th>topic areas covered</th>
+                <th>source</th>
 
-        url_source =list_student_outcome[i].url_source;
+        <tbody style="display:none;">
+            <%
 
-        type =lists[i].type;
+            for (var i=0; i < list_outcome.length; i++){
 
-        %>
-        <tr>         
-            <td><%= order %></td>
-            <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
-            <td><ul> 
-                <% for (var j=0; j< topic_areas_covered.length; j++){ %>
-                    <li>
-                        <%= topic_areas_covered[j] %>
-                    </li>
-                <% } %>
-              </ul></td>
-            <td>
-            <% if(url_source) { %><label><a href="<%= url_source %>"><%= source %></a></label>
-             <% } else { %> <label><%= source %></label>
-                <% } %>
-            </td>
-        </tr>
-        <% }  %>
-    </tbody>
-</table>  <% } %>
+            id =list_outcome[i]._id ;
+            order = list_outcome[i].order;
+            name =list_outcome[i].name;
+            url_name = list_outcome[i].url_name;
+            topic_areas_covered=list_outcome[i].topic_areas_covered.split(";");
 
-<% if(list_teacher_outcome.length> 0) { %>
-<table id="teacheroutcome" data-order='[[ 0, "asc" ], [3, "asc"]]' class="table table-striped">
-    <caption>Teacher outcome</caption>
-    <thead>
-        <tr>
-            <th>No.</th>
-            <th>name</th>
+            source =list_outcome[i].source;
 
-            <th>topic areas covered</th>
-            <th>source</th>
+            url_source =list_outcome[i].url_source;
 
-
-        </tr>
-    </thead>
-    <tbody>
-        <%
-
-        for (var i=0; i < list_teacher_outcome.length; i++){
-
-        order = list_teacher_outcome[i].order;
-        name =list_teacher_outcome[i].name;
-        url_name = list_teacher_outcome[i].url_name;
-        topic_areas_covered=list_teacher_outcome[i].topic_areas_covered.split(";");
-
-        source =list_teacher_outcome[i].source;
-
-        url_source =list_teacher_outcome[i].url_source;
-
-
-        %>
-        <tr>
-            <td><%= order%></td>
-            <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
-            <td>
-                <ul>
-                    <% for (var j=0; j < topic_areas_covered.length; j++){ %>
-                    <li>
-                        <%= topic_areas_covered[j] %>
-                    </li>
+            %>
+            <tr>
+                <td><%= order %></td>
+                <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
+                <td>
+                    <ul>
+                        <% for (var j=0; j< topic_areas_covered.length; j++){ %>
+                        <li>
+                            <%= topic_areas_covered[j] %>
+                        </li>
+                        <% } %>
+                    </ul>
+                </td>
+                <td>
+                    <% if(url_source) { %><label><a href="<%= url_source %>"><%= source %></a></label>
+                    <% } else { %> <label><%= source %></label>
                     <% } %>
-                </ul>
-            </td>
-            <td><label><a href="<%= url_source %>"><%= source %></a></label></td>
-        </tr>
-        <% }  %>
-    </tbody>
-</table><% } %>
-
-<% if(list_other_outcome.length> 0) { %>
-<table id="otheroutcome" data-order='[[ 0, "asc" ], [3, "asc"]]' class="table table-striped">
-    <caption>Other outcome</caption>
-    <thead>
-        <tr>
-            <th>No.</th>
-            <th>name</th>
-
-            <th>topic areas covered</th>
-            <th>source</th>
+                </td>
+            </tr>
+            <% }  %>
+        </tbody>
 
 
-        </tr>
-    </thead>
-    <tbody>
-        <%
 
-        for (var i=0; i < list_other_outcome.length; i++){
-
-        order = list_other_outcome[i].order;
-        name =list_other_outcome[i].name;
-        url_name = list_other_outcome[i].url_name;
-        topic_areas_covered=list_other_outcome[i].topic_areas_covered.split(";");
-
-        source =list_other_outcome[i].source;
-
-        url_source =list_other_outcome[i].url_source;
-
-
-        %>
-        <tr>
-            <td><%= order%></td>
-            <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
-            <td>
-                <ul>
-                    <% for (var j=0; j < topic_areas_covered.length; j++){ %>
-                    <li>
-                        <%= topic_areas_covered[j] %>
-                    </li>
-                    <% } %>
-                </ul>
-            </td>
-            <td><label><a href="<%= url_source %>"><%= source %></a></label></td>
-        </tr>
-        <% }  %>
-    </tbody>
-</table><% } %>
-
-<% } %>
+    </table>
+</div>  
+<% } } } %>
 
 
