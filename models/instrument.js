@@ -17,7 +17,7 @@ var mongoose = require('mongoose');
 
 // define the schema for our evaluation model
 var instrumentSchema = mongoose.Schema({
-    order: String,
+    order: Number,
     name: String,
     url_name: String,
     topic_areas_covered: String,
