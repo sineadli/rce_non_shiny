@@ -157,6 +157,7 @@
                         <% if (eval.length>0) { %>
                         <a class="text-right btn btn-primary" href="/coach/<%= eval[0]._id %>" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
                         <div style="float: right; margin: 16px 10px 0 0;">
+                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#cloneEvaluation" data-toggle="modal" data-copy-id="<%= user.evalid  %>" data-copy-title="<%= evaltitle %>">Duplicate <i ></i></a></br>
                             <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (eval[0].status ==='100') { %>
                             <br /><a class="btn-link  sec-label" style="vertical-align: bottom;" href="/shareresult/<%= user.evalid %>?backto=dashboard" id="viewbrief">View Brief</a><br />
@@ -236,6 +237,7 @@
 
                         <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a><br />
                         <div style="float: right;  margin: 16px 10px 0 0;">
+                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#cloneEvaluation" data-toggle="modal" data-copy-id="<%= evals[i].title  %>" data-copy-title="<%= evals[i].title %>">Duplicate <i></i></a></br>
                             <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (evals[i].status==='100') { %>
                             <br /><a class="btn-link sec-label" style="vertical-align: bottom;" href="/shareresult/<%= evals[i]._id %>?backto=dashboard" id="viewbrief">View Brief</a>
@@ -276,6 +278,33 @@
                     </div>
                 </div>
             </div>
+            <div id="cloneEvaluation" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="modal-title">Create a Duplicate Evaluation</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                <label for="title">Please enter a name for your evaluation:</label>
+                                <input type="text" id="clonetitle" />
+                            </p>
+                            <p>Is this evaluation a demo or trial run?</p>
+                            <input id="clonetrialflag-yes" type="radio" name="cloneTrialflag" value="true" /><label for="trialflag-yes">Yes<span class="hidden"> this evaluation is a demo or trial run </span></label>&nbsp;&nbsp;
+                            <input id="clonetrialflag-no" type="radio" name="cloneTrialflag" value="false" checked><label for="trialflag-no">No<span class="hidden"> this evaluation is not a demo or trial run</span></label><br>
+
+                            <input type="hidden" id="cloneevalid" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                            <button type="button" id="cloneEval" class="btn btn-primary btn-lg" data-dismiss="modal">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <% include ../views/partials/footer.html %>
@@ -297,6 +326,16 @@
                 $(e.currentTarget).find('label[id="evaltl"]').text(title);
             });
 
+            $('#cloneEvaluation').on('show.bs.modal', function (e) {
+
+                //get delete-id attribute of the clicked element
+                var cloneId = $(e.relatedTarget).data('copy-id');
+                var clonetitle = "Copy of " +  $(e.relatedTarget).data('copy-title');
+                //populate the textbox
+                $(e.currentTarget).find('input[id="cloneevalid"]').val(cloneId);
+                $(e.currentTarget).find('input[id="clonetitle"]').val(clonetitle);
+            });
+
         });
 
         $("#getTitle").click(function (e) {
@@ -309,8 +348,8 @@
                 data: JSON.stringify({ "title": etitle, "trialflag": trialflag }),
                 dataType: "json",
                 contentType: "application/json",
-                success: function (data) {
-                    window.location = "/coach";
+                success: function (data) {                 
+                   window.location = "/coach";
                 }
             }).done(function (msg) {
             });
@@ -352,7 +391,23 @@
             );
             $(document).ajaxStop(function () { location.reload(true); });
         });
-
+        $("#cloneEval").click(function (e) {
+            var etitle = $("#clonetitle").val();
+            var trialflag = $("input[name='cloneTrialflag']:checked").val();
+            var idtobecloned = $("#cloneevalid").val();
+            var url = '/api/copyEval';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({"id": idtobecloned,"title": etitle, "trialflag": trialflag }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    window.location = "/coach";
+                }
+            }).done(function (msg) {
+            });
+        });
     </script>
 </body>
 </html>

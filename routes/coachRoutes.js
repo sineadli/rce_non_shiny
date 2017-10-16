@@ -26,6 +26,7 @@ var CoachStep = require('../models/coachStep.js');
 var Tool= require('../models/tool.js');
 var coachsteps = require('../middleware/coachsteps.js');
 var Instrument = require('../models/instrument.js');
+var mongoose = require('mongoose');
 var sess;
 
 
@@ -376,6 +377,29 @@ module.exports = function (app, passport) {
             }
         }
         );
+    });
+
+    app.post('/api/copyEval', isLoggedIn, function (req, res) {
+
+        Evaluation.findOne({
+            _id: req.body.id
+        })
+            .then(function (eval) {
+                eval._id = undefined;
+                eval.title = req.body.title;
+                eval.trialflag = req.body.trialflag;
+                return Evaluation.create(eval.toObject());
+            }).then(function (eval) {
+                sess.eval = eval;
+                req.user.evalid = eval._id;
+                req.user.save();
+                return res.json({
+                    success: true,
+                    id: eval._id
+                });
+            }).catch(function (err) {
+                console.log(err);
+            });
     });
 }
 

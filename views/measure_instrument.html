@@ -230,7 +230,8 @@ var path = eval.path;
     <% include ../views/partials/footer.html %>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("thead").find("th").on("click", function () {
+            $("caption").on("click", function () {
+                $(this).closest("table").find("thead").toggle();
                 $(this).closest("table").find("tbody").toggle(); //you can set delay within toggle as well, like .toggle(500);
             });
         })
