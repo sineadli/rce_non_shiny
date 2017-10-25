@@ -552,7 +552,7 @@ label.registrationFormAlert {
     text-transform: none;
     color: #ec2b2b;
 }
-h2.clickable ,p.clickable {
+h2.clickable ,p.clickable, h3.clickable {
   cursor:pointer;
 }
 h2.clickable, h2.clickable label {

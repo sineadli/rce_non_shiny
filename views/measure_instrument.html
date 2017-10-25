@@ -58,7 +58,8 @@ var path = eval.path;
 
                             <div class="tool-intro">
                                 <p>
-                                    How you measure your outcome can be as important as the outcome itself.  This tool will help you identify an appropriate instrument for your evaluation. This tool provides a list of instruments that target a variety of non-student academic achievement outcomes and links to other resources that can help you find an instrument. Our guide <a href="#">How to choose an outcome and measure</a>, can help you think through these concepts in more detail and apply them to your potential instruments.</p>
+                                    How you measure your outcome can be as important as the outcome itself. This tool will help you identify an appropriate instrument for your evaluation. This tool provides a list of instruments that target a variety of non-student academic achievement outcomes and links to other resources that can help you find an instrument. Our guide <a href="#">How to choose an outcome and measure</a>, can help you think through these concepts in more detail and apply them to your potential instruments.
+                                </p>
 
                             </div>
                         </div>
@@ -81,7 +82,7 @@ var path = eval.path;
                         <div class="col-xs-6">
                             <div class="step-subquestion">
                                 <p>There are many ways to measure the same outcome. For example, you can measure student academic achievement through scores on standardized tests or through performance on teacher or district developed assessments. You can measure student engagement through attendance records or through a student survey.</p>
-                                <p>You may not be able to directly measure your outcome. You may need to analyze your technology&rsquo;s effect on another, related outcome instead.  For example, if your outcome is teacher effectiveness, your best measure might be one that measures their students&rsquo; achievement. </p>
+                                <p>You may not be able to directly measure your outcome. You may need to analyze your technology&rsquo;s effect on another, related outcome instead. For example, if your outcome is teacher effectiveness, your best measure might be one that measures their students&rsquo; achievement. </p>
                             </div>
                         </div>
                         <div class="col-xs-6">
@@ -98,7 +99,7 @@ var path = eval.path;
                                             </h3>
                                         </div>
                                         <div id="consider2" class="panel-collapse collapse in">
-                                           
+
                                             <ul>
                                                 <li>Does your school or district already measure the outcome? </li>
                                                 <li>If the outcome can’t be measured directly, are there proxies <span data-toggle='tooltip' title='A proxy measure refers to another outcome that is not directly relevant, but is closely related to the outcome you are interested in. Using a proxy is an indirect way of measuring an outcome.' class='tooltip-gr'><i class='fa fa-question-circle'></i></span> you could look at?</li>
@@ -126,7 +127,7 @@ var path = eval.path;
                                 var checked = ( eval.planQuestion.Measurement_Align == "Measure_Is_Alligned" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Measurement_Align" name="planQuestion[Measurement_Align]" value="Measure_Is_Alligned" <%- checked %>/><label class="sec-label" for="Measurement_Align">
-                                             The instrument aligns with your outcome of interest.
+                                    The instrument aligns with your outcome of interest.
                                 </label><br />
 
                                 <p class="sub-label">
@@ -144,18 +145,18 @@ var path = eval.path;
                                 var checked = ( eval.planQuestion.Measurement_Design == "Measure_Has_Design" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Measurement_Design" name="planQuestion[Measurement_Design]" value="Measure_Has_Design" <%- checked %>/><label class="sec-label" for="Measurement_Design">
-                                              The instrument is designed for your target population.
+                                    The instrument is designed for your target population.
                                 </label><br />
 
 
-                                <p class="sub-label"> If your outcome of interest is student stress, and you find a survey intended to measure stress, you want to make sure the instrument is designed for students and not adults.  Similarly, an instrument designed for high school students may not be appropriate for elementary school students and an instrument designed in 1995 to measure technology literacy may not be appropriate today.  </p>
+                                <p class="sub-label"> If your outcome of interest is student stress, and you find a survey intended to measure stress, you want to make sure the instrument is designed for students and not adults. Similarly, an instrument designed for high school students may not be appropriate for elementary school students and an instrument designed in 1995 to measure technology literacy may not be appropriate today. </p>
 
                                 <%
 
                                 var checked = ( eval.planQuestion.Measurement_Validated == "Measurement_Is_Validated" ) ? "checked" : "";
                                 %>
                                 <input type="checkbox" id="Measurement_Validated" name="planQuestion[Measurement_Validated]" value="Measurement_Is_Validated" <%- checked %> /><label class="sec-label" for="Measurement_Validated">
-                                         The instrument has been validated.
+                                    The instrument has been validated.
                                 </label><br />
 
                                 <p class="sub-label"> Validity refers to the extent to which an instrument measures what it is supposed to measure. Many of the instruments below have been validated by external researchers. This is not the only consideration when selecting an instrument, but all else equal, it is better to use a validated instrument. </p>
@@ -179,10 +180,12 @@ var path = eval.path;
                         <div class="col-xs-6">
                             <div class="step-subquestion">
                                 <p>
-                                    Below is a list of instruments that cover a variety of topics. This list is not meant to be comprehensive. The instruments in the list were selected because they were:<ul style="margin-top: -15px;"><li>readily available</li><li>potentially useful for school districts</li><li>of high quality</li></ul>
+                                    Below are lists of instruments that cover a variety of topics. These lists are not meant to be comprehensive. The instruments in the lists were selected because they were:<ul style="margin-top: -15px;"><li>readily available</li><li>potentially useful for school districts</li><li>of high quality</li></ul>
                                 </p>
                                 <p>Instruments can be multidimensional. Sometimes only certain sections or items of an instrument will be appropriate for measuring your outcome of interest. </p>
-                                <p>Many non-academic achievement instruments, like the ones listed below, are surveys. See our guide to <a href="#">Using Surveys</a> for tips on working with surveys.</p>
+                                <p>
+                                    Many non-academic achievement instruments, like the ones listed below, are surveys. See our guide to <a href="#">Using Surveys</a> for tips on working with surveys.
+                                </p>
                             </div>
                         </div>
                         <div class="col-xs-6">
@@ -200,7 +203,7 @@ var path = eval.path;
                                         </div>
                                         <div id="consider2" class="panel-collapse collapse in">
                                             <p>Using off-the-shelf instruments can save resources and they have often been externally validated. However, off-the-shelf instruments were not necessarily designed to measure exactly what you are interested in, nor were they designed with your context in mind. All of these considerations are important when selecting an instrument.</p>
-                                          
+
                                             <p>A growing number of education technologies claim to benefit students&rsquo; non-academic traits such as grit and self-efficacy or 21st century skills such as creativity and critical thinking. Outcomes such as these are more difficult to measure directly and may require a survey, observation, or performance task assessment.</p>
 
                                         </div>
@@ -220,14 +223,17 @@ var path = eval.path;
                 <% include ../views/partials/instrumentForTool.html %>
             </div>
             <% include ../views/partials/toolButtons.html %>
-        </div>
 
-        <div class="row" id="testing">
+
+            <div class="row" id="testing">
+
+            </div>
 
         </div>
     </form>
-
     <% include ../views/partials/footer.html %>
+
+
     <script type="text/javascript">
         $(document).ready(function () {
             $("caption").on("click", function () {
@@ -235,7 +241,8 @@ var path = eval.path;
                 $(this).closest("table").find("tbody").toggle(); //you can set delay within toggle as well, like .toggle(500);
             });
         })
-        
+
     </script>
 </body>
+
 </html>
