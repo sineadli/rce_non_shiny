@@ -388,6 +388,15 @@ module.exports = function (app, passport) {
                 eval._id = undefined;
                 eval.title = req.body.title;
                 eval.trialflag = req.body.trialflag;
+                if (eval.status == "100") {                   
+                    var tool = eval.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "share your results" });
+                    if (tool.length > 0) {
+                        var toollist = { "name": "share your results" , "status": "started", "visited_at": new Date() };
+                        var index = eval.toolsvisited.indexOf(tool[0]);
+                        eval.toolsvisited.splice(index, 1)
+                        eval.toolsvisited.push(toollist);
+                    }             
+                }
                 return Evaluation.create(eval.toObject());
             }).then(function (eval) {
                 sess.eval = eval;

@@ -157,7 +157,7 @@
                         <% if (eval.length>0) { %>
                         <a class="text-right btn btn-primary" href="/coach/<%= eval[0]._id %>" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br />
                         <div style="float: right; margin: 16px 10px 0 0;">
-                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#cloneEvaluation" data-toggle="modal" data-copy-id="<%= user.evalid  %>" data-copy-title="<%= evaltitle %>">Duplicate <i ></i></a></br>
+                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#cloneEvaluation" data-toggle="modal" data-copy-id="<%= user.evalid  %>" data-copy-title="<%= evaltitle %>">Make a copy <i ></i></a></br>
                             <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (eval[0].status ==='100') { %>
                             <br /><a class="btn-link  sec-label" style="vertical-align: bottom;" href="/shareresult/<%= user.evalid %>?backto=dashboard" id="viewbrief">View Brief</a><br />
@@ -237,7 +237,7 @@
 
                         <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a><br />
                         <div style="float: right;  margin: 16px 10px 0 0;">
-                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#cloneEvaluation" data-toggle="modal" data-copy-id="<%= evals[i].title  %>" data-copy-title="<%= evals[i].title %>">Duplicate <i></i></a></br>
+                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#cloneEvaluation" data-toggle="modal" data-copy-id="<%= evals[i]._id  %>" data-copy-title="<%= evals[i].title %>">Make a copy <i></i></a></br>
                             <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete <i class="fa  fa-times-circle"></i></a>
                             <% if (evals[i].status==='100') { %>
                             <br /><a class="btn-link sec-label" style="vertical-align: bottom;" href="/shareresult/<%= evals[i]._id %>?backto=dashboard" id="viewbrief">View Brief</a>

@@ -73,7 +73,7 @@
                                                 <% console.log(eval.basics.Basics_Outcome) %>
                                                 <div class="panel panel-default">
 
-                                                    <% var checked = ( eval.basics.Basics_Outcome== "academic" ) ? "checked" : "";
+                                                    <% var checked = ( eval.basics.Basics_Outcome== "academic" || eval.basics.Basics_Outcome=="student academic achievement") ? "checked" : "";
                                                     var selected = (eval.basics.Basics_Outcome== "academic" ) ? "selected" : "";
                                                     %>
                                                     <div class="panel-heading for-how-group <%= selected %>">
@@ -89,7 +89,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="panel panel-default">
-                                                    <% var checked = ( eval.basics.Basics_Outcome== "nonacademic" ) ? "checked" : "";
+                                                    <% var checked = ( eval.basics.Basics_Outcome== "nonacademic" || eval.basics.Basics_Outcome== "student non-academic achievement" ) ? "checked" : "";
                                                     var selected = (eval.basics.Basics_Outcome== "nonacademic" ) ? "selected" : "";
                                                     %>
                                                     <div class="panel-heading for-how-group <%= selected %>">
@@ -105,8 +105,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="panel panel-default">
-                                                    <% var checked = ( eval.basics.Basics_Outcome== "other" ) ? "checked" : "";
-                                                    var selected = (eval.basics.Basics_Outcome== "other" ) ? "selected" : "";
+                                                    <% var oVlue=eval.basics.Basics_Outcome; var checked = ( oVlue== "other" || oVlue== "teacher performance" || oVlue== "parental engagement" ) ? "checked" : "";
+                                                    var selected = ( oVlue== "other" || oVlue== "teacher performance" || oVlue== "parental engagement" ) ? "selected" : "";
                                                     %>
                                                     <div class="panel-heading for-how-group <%= selected %>">
                                                         <input type="radio" id="Outcome-Other" name="basics[Basics_Outcome]" value="other" class="radio" <%= checked %>/>
