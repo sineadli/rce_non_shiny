@@ -291,19 +291,21 @@
                         </li>
 
                         <% }
-                        if ((defs.wasMatched || defs.wasRandomized) && defs.baselinetest_vars != "none selected") {
+                        var listVarsLength = 0;
+                        if ((defs.wasMatched || defs.wasRandomized) && defs.baselinetest_vars[0].toLowerCase() != "n") {
                           if (eval.path === 'path-random') {
                               baseline_tool = 'randomization';
                            } else if (eval.path === 'path-matching') {
                               baseline_tool = 'matching';
                         }
-                        var listVarsLength = defs.baselinetest_vars.length;
+                        listVarsLength = defs.baselinetest_vars.length;
                         if(defs.hasResults) {
                              if (Result.args.control_vars.length > 0) {
                              listVarsLength = Math.max(Result.args.control_vars.length, defs.baselinetest_vars.length) ;
-                            }
                         }
-
+                       
+                        }
+                       
                         var bliststyle = listVarsLength > 8 ? "list-col-3" : (listVarsLength > 5 ? "list-col-2" : "")
                         %>
 
@@ -323,13 +325,15 @@
                         </li>
                         <% } %>
 
-                        <% if (defs.hasResults) {
+                        <%
+                        
+                        if (defs.hasResults) {
                         if (Result.args.control_vars.length > 0) { 
-                        var listVarsLength = Result.args.control_vars.length;
-                        if (defs.baselinetest_vars.length > 0) {
+                        listVarsLength = Result.args.control_vars.length;
+                        if (defs.baselinetest_vars.length > 0 && defs.baselinetest_vars[0].toLowerCase() != "n") {
                         listVarsLength = Math.max(Result.args.control_vars.length, defs.baselinetest_vars.length) ;
                         }
-
+                       
                         bliststyle = listVarsLength > 8 ? "list-col-3" : (listVarsLength > 5 ? "list-col-2" : "")
                         
                         %>
