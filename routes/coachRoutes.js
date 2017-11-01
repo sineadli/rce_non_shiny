@@ -188,7 +188,7 @@ module.exports = function (app, passport) {
 
     //db.evaluations.update({ _id: eval._id, "toolsvisited.name":"Share Your Results" }, { $set: { "toolsvisited.$.status": "started" } });
     app.post('/api/unshared', isLoggedIn, function(req, res) {
-        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started" } }, function(err) {
+        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started", published_at: "" } }, function(err) {
             if (err)
                 console.log(err);
             else {
@@ -388,14 +388,19 @@ module.exports = function (app, passport) {
                 eval._id = undefined;
                 eval.title = req.body.title;
                 eval.trialflag = req.body.trialflag;
-                if (eval.status == "100") {                   
+                eval.created_at = new Date();
+                eval.published_at = "";
+                if (eval.status == "100") {  
+                    eval.status = "73";                 
                     var tool = eval.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "share your results" });
+
                     if (tool.length > 0) {
-                        var toollist = { "name": "share your results" , "status": "started", "visited_at": new Date() };
-                        var index = eval.toolsvisited.indexOf(tool[0]);
-                        eval.toolsvisited.splice(index, 1)
-                        eval.toolsvisited.push(toollist);
-                    }             
+                      //  var toollist = { "name": "share your results" , "status": "started", "visited_at": new Date() };
+                        tool.forEach(i => eval.toolsvisited.splice(eval.toolsvisited.indexOf(i), 1));             
+                     //   eval.toolsvisited.push(toollist);
+                        
+                    }   
+                   
                 }
                 return Evaluation.create(eval.toObject());
             }).then(function (eval) {

@@ -26,8 +26,8 @@ var getAllEvalStats = function(req, res, next) {
     var evalStats = [];
     evalStats.tools = [];
 
-    var groupsFilter = [{}, { status: 100 }, { path: "path-matching" }, { path: "path-random" }];
-    var groupsTitle = ["All Evaluatons", "Completed Evaluations", "Matching Evaluations", "Random Assignment Evaluations"];
+    var groupsFilter = [{}, { status: 100 }, { path: "path-matching" }, { path: "path-random" }, { "planContext.District_State": { $ne: null } }];
+    var groupsTitle = ["All Evaluatons", "Completed Evaluations", "Matching Evaluations", "Random Assignment Evaluations", "Evaluations with district state"];
 
 
     var filter = groupsFilter[req.params.fid];
