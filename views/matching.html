@@ -471,6 +471,8 @@
                 success: function (data) {
                     // console.log(data);
                     var list = $(".white-background-blue-border").append('<ul></ul>').find('ul');
+                    $(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
+                    $(".white-background-blue-border").append('<p>It&lsquo;s possible that columns have been misinterpreted. For example, columns containing mostly numbers may also have some missing values represented by text values, like &lsquo;missing&lsquo; or &lsquo;N/A&lsquo;. If that&rsaquo;s the case in your data, please replace those values as instructed in the Preparing Your Data tool, then save the file and upload it again.</p>')
                
                     var diff = $(data.numeric_columns).not(data.binary_columns).get();
                  //   console.log(diff);
