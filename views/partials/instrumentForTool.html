@@ -19,7 +19,7 @@ for (var k=0; k < tablename.length; k++){
             </h3>
         </div>
     </div>
-    <div id="<%= colid %>" class=" collapse in  q-row">
+    <div id="<%= colid %>" class="q-row collapse " aria-expanded="false">
         <table id="studentoutcome" data-order='[[ 0, "asc" ], [1, "asc"]]' class="measure table table-striped">
 
             <thead>
@@ -61,9 +61,7 @@ for (var k=0; k < tablename.length; k++){
                         </ul>
                     </td>
                     <td>
-                        <% if(url_source) { %><div class="source"><a href="<%= url_source %>"><%- source %></a></div>
-                        <% } else { %> <div class="source"><%- source %></div>
-                        <% } %>
+                        <div class="source"><%- source %></div>
                     </td>
                 </tr>
                 <% }  %>
@@ -81,7 +79,7 @@ for (var k=0; k < tablename.length; k++){
         </div>
     </div>
 <div class="clearfix"></div>
-    <div id="resource" class="collapse in  q-row">
+    <div id="resource" class="q-row collapse " aria-expanded="false">
         <p>If none of the instruments listed above are what you are looking for, you might want to check out these other resources that can also help you identify an instrument that is appropriate for your situation.</p>
         <table id="resource" data-order='[[ 0, "asc" ], [1, "asc"]]' class="table table-striped">
 
@@ -121,9 +119,7 @@ for (var k=0; k < tablename.length; k++){
 
                     </td>
                     <td>
-                        <% if(url_source) { %><div class="resource"><a href="<%= url_source %>"><%- source %></a></div>
-                        <% } else { %> <div class="resource"><%- source %></div>
-                        <% } %>
+                        <div class="resource"><%- source %></div>
                     </td>
                 </tr>
                 <% }  %>
