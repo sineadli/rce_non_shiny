@@ -85,7 +85,7 @@
     </div>
 </div>
     <div id="A" class="row  collapse <%= defs.minFirst %> q-row">
-        <div class="col-xs-7">
+        <div class="col-xs-6">
             <div class="step-subquestion">
 
                 <h4> <label for="Intervention_Group_Desc">The group that used <%= defs.Basics_Tech_Name %> (the treatment group) includes:</label></h4>
@@ -149,7 +149,7 @@
 
         </div>
 
-        <div class="col-xs-5">
+        <div class="col-xs-6">
             <div class="step-to-consider">
 
                 <div class="panel-group" id="ttc2">
@@ -247,7 +247,7 @@
         </div>
         <div id="B" class="row  collapse in q-row">
             <div>
-                <div class="col-xs-7">
+                <div class="col-xs-6">
                     <div class="step-subquestion">
                         <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
                         <p>
@@ -259,7 +259,7 @@
                             Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
                         </p>
                         <input id="chosenfile" size="1" type="file" accept=".csv">
-                        <div class="col-xs-11"><div class="white-background-blue-border"></div></div>
+                        
                        
                             <div id='loadingmessageUp' hidden>
                                 <div class="loading">
@@ -324,7 +324,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-5">
+                <div class="col-xs-6">                  
                     <div class="step-to-consider">
                         <div class="panel-group" id="ttc3">
                             <div class="panel panel-default">
@@ -355,11 +355,15 @@
                                     </p>
                                     <p>
                                         For more information on how the Coach conducts matching you can refer to the <a href="/static/pdf/Matching Technical Appendix.pdf" target="_blank">Matching Technical Appendix</a>.
-                                    </p>
+                                    </p>                                   
                                 </div>
-                            </div>
+                            </div>                           
                         </div>
                     </div>
+                    <div class="step-to-consider">
+                        <div class="white-background-blue-border"></div>
+                    </div>
+                    
                 </div>
                 <div class="clearfix"></div>
                 <div id="error" class="col-xs-11"></div>
@@ -469,11 +473,10 @@
                 contentType: false,
                 data: formData,
                 success: function (data) {
-                    // console.log(data);
+                    // console.log(data);                  
+                //    $(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
+                    $(".white-background-blue-border").append('<p>The following checks were automatically performed on the data you uploaded. It is possible that the Coach has misinterpreted some of your data when conducting these checks and you may need to do additional data cleaning as detailed in our <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a> guide.</p>')
                     var list = $(".white-background-blue-border").append('<ul></ul>').find('ul');
-                    $(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
-                    $(".white-background-blue-border").append('<p>It&lsquo;s possible that columns have been misinterpreted. For example, columns containing mostly numbers may also have some missing values represented by text values, like &lsquo;missing&lsquo; or &lsquo;N/A&lsquo;. If that&rsaquo;s the case in your data, please replace those values as instructed in the Preparing Your Data tool, then save the file and upload it again.</p>')
-               
                     var diff = $(data.numeric_columns).not(data.binary_columns).get();
                  //   console.log(diff);
                     $('#loadingmessageUp').hide();
@@ -488,11 +491,12 @@
                        .append($("<option></option>")
                        .attr("value", "None selected")
                        .text("None selected"));
-                    if (data.numeric_columns.length > 0) list.append('<li>The following columns contain numeric values, and can therefore be selected as the outcome or matching/covariate variables: </br><span style="font-weight: bold;" >' + data.numeric_columns.join(', ') + '</span></li>');
-                    if (data.binary_columns.length > 0) list.append('<li>The following columns contain binary (0 or 1) values, and can therefore be selected as the treatment variable: </br><span style="font-weight: bold;" > ' + data.binary_columns.join(', ') + '</span ></li>');
-                    if (data.high_cor_columns.length > 0) list.append('<li>The following sets of columns are very highly correlated, meaning it’s generally best only to include one column from each set as (matching/randomization/analysis) characteristics: </br><span style="font-weight: bold;">' + data.high_cor_columns.join(', ') + '</span ></li>');
-                    if (data.categorical_columns.length > 0) list.append('<li>The following columns appear to contain categorical values. If you plan to use them as characteristics in (matching/randomization/analysis), these columns should be split into separate columns for each category, with the values converted to 0 and 1. See the section about converting categorical variables in the Preparing Your Data tool. If these columns are not truly categorical, you can ignore this message: </br><span style="font-weight: bold;">' + data.categorical_columns.join(', ') + '</span ></li>');
-                    if (data.nonnumeric_columns.length > 0) list.append('<li>The following columns appear to contain non-numeric values, and will not be allowed for selection as the outcome, treatment, or matching/covariate variables: </br><span style="font-weight: bold;" >' + data.nonnumeric_columns.join(', ') + '</span ></li>');
+                    if (data.nonnumeric_columns.length > 0) list.append('<li>The following columns appear to contain non-numeric values, and will not be allowed for selection as the treatment, pretest, or matching variables:  </br><span style="font-weight: bold;" >' + data.nonnumeric_columns.join(',  ') + '</span ></li>');
+                    if (data.binary_columns.length > 0) list.append('<li>The following columns contain binary (0 or 1) values, and can therefore be used to identify who is using the technology:  </br><span style="font-weight: bold;" > ' + data.binary_columns.join(',  ') + '</span ></li>');
+                    if (data.numeric_columns.length > 0) list.append('<li>The following columns contain numeric values, and can therefore be selected as the pretest or matching variables: </br><span style="font-weight: bold;" >' + data.numeric_columns.join(',  ') + '</span></li>');                   
+                    if (data.high_cor_columns.length > 0) list.append('<li>The following sets of columns are very highly correlated, meaning it is generally best only to include one column from each set as a characteristic for matching: </br><span style="font-weight: bold;">' + data.high_cor_columns.join(';  ') + '</span ></li>');
+                    if (data.categorical_columns.length > 0) list.append('<li>The following columns appear to contain categorical values. If you plan to use them as characteristics for matching, these columns should be split into separate columns for each category, with the values converted to 0 and 1. See the section about converting categorical variables in the <a class="redirect-link" href="/prepare_data"> Preparing Your Data</a> tool. If these columns are not actually categorical, you can ignore this message:</br><span style="font-weight: bold;">' + data.categorical_columns.join(',  ') + '</span ></li>');
+                    
                     $(".white-background-blue-border").show();
                     //binary                  
                     $.each(data.binary_columns, function (index, value) {
