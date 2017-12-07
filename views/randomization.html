@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div id="A" class="row  collapse <%= defs.rinFirst %> q-row">
-                    <div class="col-xs-7">
+                    <div class="col-xs-6">
                         <div class="step-subquestion">
                             <h4>
                                 <label for="Basics_Users">
@@ -219,7 +219,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         <div class="step-to-consider">
                             <div class="step-to-consider">
                                 <div class="panel-group" id="ttc5">
@@ -353,7 +353,7 @@
                 </div>
                 <div id="C" class="row  collapse in q-row">
                     <div>
-                        <div class="col-xs-7">
+                        <div class="col-xs-6">
                             <div class="step-subquestion">
                                 <h4>
                                     Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.
@@ -368,6 +368,7 @@
                                     Before uploading data, make sure personally identifiable information (PII), such as names and descriptors that could identify your evaluation participants, has been removed.
                                 </p>
                                 <input id="chosenfile" size="1" type="file" accept=".csv">
+                                <!--<div class="col-xs-11"><div class="white-background-blue-border"></div></div>-->
                                 <div id='loadingmessageUp' hidden>
                                     <div class="loading">
                                         <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
@@ -385,7 +386,7 @@
                                 </div>
                                 <div class="step-action ">
                                     <div>
-                                        <select id="unit_id" name="unit_id" class="multiselect from-upload nodefault">
+                                        <select id="unit_id" name="unit_id" class="multiselect from-upload from-all nodefault">
                                             <option value="">Select a variable</option>
                                         </select>
                                     </div>
@@ -398,7 +399,7 @@
                                     </p>
                                 </div>
                                 <div class="step-action ">
-                                    <select id="pretest" class="multiselect from-upload nodefault">
+                                    <select id="pretest" class="multiselect from-upload from-numeric-non-binary nodefault">
                                         <option value="Select a variable" selected="selected">Select a data field</option>
                                     </select>
 
@@ -411,7 +412,7 @@
                                     </p>
                                 </div>
                                 <div class="step-action ">
-                                    <select id="baseline_vars" name="baseline_vars" class="multiselect from-upload" multiple="multiple">
+                                    <select id="baseline_vars" name="baseline_vars" class="multiselect from-upload from-numeric" multiple="multiple">
                                         <option value="Select matching variables">Select variables</option>
                                     </select>
                                 </div>
@@ -420,7 +421,7 @@
                             </div>
 
                         </div>
-                        <div class="col-xs-5">
+                        <div class="col-xs-6">
                             <div class="step-to-consider">
                                 <div class="panel-group" id="ttc3">
                                     <div class="panel panel-default">
@@ -444,6 +445,9 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="step-to-consider">
+                                <div class="white-background-blue-border"></div>
                             </div>
                         </div>
 
@@ -534,7 +538,7 @@
             else specifyLimits.hide();
 
             $('.multiselect').multiselect();
-
+            $(".white-background-blue-border").hide();
             var fm_options = setFeedbackOptions($("#user_email").val(), "randomization");
             fm.init(fm_options);
            
@@ -579,6 +583,11 @@
                     contentType: false,
                     data: formData,
                     success: function (data) {
+                       
+                        //$(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
+                        $(".white-background-blue-border").append('<p>The following checks were automatically performed on the data you uploaded. It is possible that the Coach has misinterpreted some of your data when conducting these checks and you may need to do additional data cleaning as detailed in our <a target="_blank" href="/static/pdf/Prepare your data for randomization.pdf">Prepare Your Data for Randomization</a> guide.</p>')
+                        var list = $(".white-background-blue-border").append('<ul></ul>').find('ul');
+                        var diff = $(data.numeric_columns).not(data.binary_columns).get();
                         $('#loadingmessageUp').hide();
                         $("select.from-upload").empty();
                         $(".before-upload").addClass("after-upload");
@@ -592,11 +601,32 @@
                             .append($("<option></option>")
                                 .attr("value", "None selected")
                                 .text("None selected"));
+                        if (data.nonnumeric_columns.length > 0) list.append('<li>The following columns appear to contain non-numeric values, and will not be allowed for selection as pretest or balancing variables:  </br><span style="font-weight: bold;" >' + data.nonnumeric_columns.join(', ') + '</span ></li>');
+                        if (data.numeric_columns.length > 0) list.append('<li>The following columns contain numeric values, and can therefore be selected as the pretest or balancing variables: </br><span style="font-weight: bold;" >' + data.numeric_columns.join(',  ') + '</span></li>');
+                        //if (data.binary_columns.length > 0) list.append('<li>The following columns contain binary (0 or 1) values, and can therefore be selected as the treatment variable: </br><span style="font-weight: bold;" > ' + data.binary_columns.join(',  ') + '</span ></li>');
+                        if (data.high_cor_columns.length > 0) list.append('<li>The following sets of columns are very highly correlated, meaning it is generally best only to include one column from each set as a characteristic for randomization: </br><span style="font-weight: bold;">' + data.high_cor_columns.join(';  ') + '</span ></li>');
+                        if (data.categorical_columns.length > 0) list.append('<li>The following columns appear to contain categorical values. If you plan to use them as characteristics for randomization, these columns should be split into separate columns for each category, with the values converted to 0 and 1. See the section about converting categorical variables in the<a class="redirect-link" href="/prepare_data"> Preparing Your Data</a> tool. If these columns are not actually categorical, you can ignore this message:  </br><span style="font-weight: bold;">' + data.categorical_columns.join(', ') + '</span ></li>');
+                      
+                        $(".white-background-blue-border").show();
                         $.each(data.colnames, function (index, value) {
-                            $("select.from-upload")
+                            $("select.from-upload.from-all")
                                 .append($("<option></option>")
                                     .attr("value", value)
                                     .text(value));
+                        });
+                        //numeric non-binary                   
+                        $.each(diff, function (index, value) {
+                            $("select.from-upload.from-numeric-non-binary ")
+                              .append($("<option></option>")
+                              .attr("value", value)
+                              .text(value));
+                        });
+                        //numeric                  
+                        $.each(data.numeric_columns, function (index, value) {
+                            $("select.from-upload.from-numeric")
+                              .append($("<option></option>")
+                              .attr("value", value)
+                              .text(value));
                         });
                         $('.multiselect').multiselect('destroy');
                         $('.multiselect').multiselect();

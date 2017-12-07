@@ -377,7 +377,7 @@ evaluationSchema.pre('save', function (next) {
         }
         if (this.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "share your results" && x.status.toLowerCase() === "completed") }).length===1) {
             this.status = "100";
-            this.published_at = currentDate; 
+           if (! this.published_at) this.published_at = currentDate; 
             var doc = this;
             User.findById(this.userid, function (err, user) {
                 if (err) {
