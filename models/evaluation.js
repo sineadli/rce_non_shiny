@@ -56,8 +56,11 @@ var Basics = mongoose.Schema({
 var ProbAppr = mongoose.Schema({
 	Appr_Current_or_New: { type: String, default: '' }, // Replaces Prob_Appr_A but values are different.
     Appr_All_Using: { type: String, default: '' }, // was Prob_Appr_C
+	Appr_Diff_Usage: {type: String, default: '' },
     Appr_Can_Group: { type: String, default: '' },
     Appr_How_Choose: { type: String, default: '' }, 
+	Appr_Treatment_Group: { type: String, default: '' },
+	Appr_Comparison_Group: { type: String, default: '' }, 
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
