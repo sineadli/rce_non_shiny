@@ -25,6 +25,7 @@ var getEvalDefaults = function (sess, user) {
 	if (sess.eval) {
 		
 		setBasics(sess);
+		setOutcome(sess);
 		setApproach(sess);
 		setResearchQ(sess);
 		setPlanNext(sess);
@@ -50,16 +51,35 @@ function setBasics(sess) {
     sess.defaults.BasicsIncomplete = false;
     var defstocheck = {
         Basics_Users: "the technology users",
-		Basics_Tech_Name: "the educational technology",
-		Basics_Outcome: "Outcome"
+		Basics_Tech_Name: "the educational technology"
 	}
 
     sess.defaults.BasicsIncomplete = populateDefaults(defstocheck, sess.eval.basics, sess, false);
 	if (sess.defaults.Basics_Users)
 		sess.defaults.Singular_User = sess.defaults.Basics_Users.substring(0, sess.defaults.Basics_Users.length - 1);
-	sess.defaults.Cap_Basics_Outcome = textHelpers.capitalize(sess.defaults.Basics_Outcome);
+	
 	sess.defaults.Cap_Basics_Users = textHelpers.capitalize(sess.defaults.Basics_Users);
 	sess.defaults.Cap_Basics_Tech_Name = textHelpers.capitalize(sess.defaults.Basics_Tech_Name);
+    return;
+};
+// set defaults for tools
+function setOutcome(sess) {
+    sess.defaults.BasicsIncomplete = false;
+    var defstocheckb = {
+     
+		Basics_Outcome: "Outcome"
+	}
+	var defstocheckq = {
+
+        Outcome_Measure: "outcome measure"
+	}
+
+    var outcomeIncompleteb = populateDefaults(defstocheckb, sess.eval.basics, sess, false);
+	var outcomeIncompleteq = populateDefaults(defstocheckq, sess.eval.planQuestion, sess, false);
+    sess.defaults.OutcomeIncomplete = (outcomeIncompleteb || outcomeIncompleteq);
+    console.log(sess.defaults);
+	sess.defaults.Cap_Basics_Outcome = textHelpers.capitalize(sess.defaults.Basics_Outcome);
+	
     return;
 };
 
@@ -84,7 +104,6 @@ function setResearchQ(sess) {
     sess.defaults.planQuestionIncomplete = false;
 	var defstocheck = {
         Outcome_Direction: "improve",
-        Outcome_Measure: "outcome measure",
         Intervention_Group_Desc: "group using technology",
         Comparison_Group_Desc: "non-users"
     }

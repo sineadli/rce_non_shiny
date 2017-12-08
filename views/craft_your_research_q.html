@@ -126,8 +126,8 @@ if(valerrs) valerrors = valerrs;
                             <div class="step-action">
                                 <select required name="basics[Basics_Outcome]" id="Basics_Outcome">
                                     <%
-                                    var options = ["Student academic achievement", "Student non-academic achievement","Teacher performance","Parental engagement","Other" ];
-                                    var ovalues = ["student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other" ];
+                                    var options = ["Student academic achievement", "Student non-academic achievement","Other" ];
+                                    var ovalues = ["student academic achievement", "student non-academic achievement","other" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
                                     var selected = ( eval.basics.Basics_Outcome== ovalues[i] ) ? "selected" : "";
@@ -163,7 +163,7 @@ if(valerrs) valerrors = valerrs;
                                 </div>
                                 <% if (user != "NOAUTHENTICATED") {%>
                                 <p class="prev-answer">
-                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/basics?return=craft_your_research_q">The Basics</a>
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/outcome_measure?return=craft_your_research_q">Outcome and Measure</a>
                                 </p>
                                 <% } %>
                             </div>
@@ -184,6 +184,7 @@ if(valerrs) valerrors = valerrs;
                                     %>
 
                                 </select>
+                               
                             </div>
                             <div class="step-subquestion">
                                 <p><label for="Outcome_Direction">What measure will you use to test whether there was an effect?</label></p>
@@ -191,8 +192,13 @@ if(valerrs) valerrors = valerrs;
                             <div class="step-action">
 
                                 <textarea name="planQuestion[Outcome_Measure]" id="Outcome_Measure" placeholder="Ex., a midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
+                                <% if (user != "NOAUTHENTICATED") {%>
+                                <p class="prev-answer">
+                                    <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/outcome_measure?return=craft_your_research_q">Outcome and Measure</a>
+                                </p>
+                                <% } %>
                             </div>
-
+                          
                         </div>
 
                         <div class="col-xs-5">

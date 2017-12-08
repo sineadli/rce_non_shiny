@@ -64,6 +64,12 @@ $(document).ready(function() {
 			case "evaluation_plan":
 			    ToolName = "Evaluation Plan";
 				break;
+			case "outcome_measure":
+				ToolName = "Define Your Outcome and Measure";
+				break;
+			case "measure_instrument":
+				ToolName = "Find an Instrument to Measure Your Outcome";
+				break;
 			case "shareresult":
 			    ToolName = "Share Your Results";
 				break;
@@ -225,9 +231,7 @@ function setBasicsConclusion() {
 	var techName = $('#Basics_Tech_Name').val();
 	var whoUsers = $('#Basics_Users').val();
 	if (whoUsers.toLowerCase() === "other") whoUsers = $('#Basics_Users_Other').val();
-	var haveOutcome = $('#Basics_Outcome').val();
-	if (haveOutcome.toLowerCase() === "other") haveOutcome = $('#Basics_Outcome_Other').val();
-
+	
 
 	if (haveTech.toLowerCase() === "no") {
 
@@ -241,17 +245,10 @@ function setBasicsConclusion() {
 		$("button.complete").attr("disabled", "disabled");
 
 	}
-	else if (haveOutcome.toLowerCase() === "not sure") {
-		$("#Step_Conclusion").show();
-		$("#stop-no-outcome").show();
-		$("#stop-no-tech").hide();
-		$("#success").hide();
-		$("button.complete").attr("disabled", "disabled");
-	}
+	
 	else if (techName !== "" &&
 		whoUsers.toLowerCase() !== "select an option" && whoUsers.toLowerCase() !== "" &&
-		haveTech.toLowerCase() !== "no" && haveOutcome.toLowerCase() !== "not sure" &&
-		haveOutcome.toLowerCase() !== "select an option" && haveOutcome.toLowerCase() !== "") {
+		haveTech.toLowerCase() !== "no" ) {
 		$("#Step_Conclusion").show();
 		$("#success").show();
 		$("#stop-no-tech").hide();

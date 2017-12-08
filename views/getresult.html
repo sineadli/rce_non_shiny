@@ -32,7 +32,7 @@
 <%
 
 var Result="";
-
+console.log(eval.path);
 if (user != "NOAUTHENTICATED"){
 if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
 }
@@ -86,7 +86,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
 
             <% if (user != "NOAUTHENTICATED") {%>
             <p class="prev-answer">
-                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=getresult">Craft Your Research Question</a>
+                <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/outcome_measure?return=getresult">Outcome and Measure</a>
             </p>
             <% } %>
         </div>
@@ -243,6 +243,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     Before uploading data, make sure you have removed any personally identifiable information (PII), such as names.
                 </p>
                 <input id="chosenfile" size="1" type="file" accept=".csv">
+                <!--<div class="col-xs-11"><div class="white-background-blue-border"></div></div>-->
                 <div id='loadingmessageUp' hidden>
                     <div class="loading">
                         <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
@@ -262,7 +263,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                 </div>
                 <div class="step-action ">
                     <div>
-                        <select class="multiselect from-upload" id="outcome_var">
+                        <select class="multiselect from-upload from-numeric" id="outcome_var">
                             <option value="">Select the outcome variable</option>
                         </select>
                     </div>
@@ -271,13 +272,18 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     <h4>Who is using the technology?</h4>
                     <p><label for="treat_var">Choose the name of the variable that tells us who is using <%= defs.Basics_Tech_Name %>&mdash;the intervention versus comparison group identifier. Remember, it should equal 1 for the technology users and 0 for non-users.</label>
                     </p>
+                    <% if(eval.path == "path-random") { %>
+                    <p>If groups of users and non-users were chosen rather than as individuals, choose the variable that identifies the &ldquo;clusters&rdquo; or group. For example, If all students in a school either get the technology or don't, then select the "School ID" variable. Similarly, if the intervention is at the classroom level, the clusters are the classrooms.</p>
+                   
+
+                    <% } %>
                     <p>
                         <em class="stronger"><i class="fa fa-asterisk"></i> Required</em>
                     </p>
                 </div>
                 <div class="step-action ">
                     <div>
-                        <select class="multiselect from-upload" id="treat_var">
+                        <select class="multiselect from-upload from-binary" id="treat_var">
                             <option value="">Select the treatment status variable</option>
                         </select>
                     </div>
@@ -299,7 +305,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                 </div>
                 <div class="step-action ">
                     <div>
-                        <select id="control_vars" class="multiselect from-upload" multiple="multiple">
+                        <select id="control_vars" class="multiselect from-upload from-numeric" multiple="multiple">
                             <option value="">Select balance variables</option>
                         </select>
                     </div>
@@ -309,16 +315,17 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     <h4><label for="cluster_var">If individuals are clustered, for example within classrooms or schools, select the cluster variable.</label></h4>
                 </div>
                 <div class="step-action ">
-                    <select class="multiselect from-upload" id="cluster_var">
+                    <select class="multiselect from-upload from-all" id="cluster_var">
                         <option value="Select cluster variables">Select cluster variable</option>
                     </select>
                 </div>
 
                 <div class="step-subquestion">
-                    <h4><label for="grade_var">Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. Otherwise, select &ldquo;combine all grades.&rdquo;</label> </h4>
+                    <h4><label for="grade_var">Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. If this does not matter for your evaluation, leave &ldquo;combine all grades&rdquo; selected.</label> </h4>
+                    <p>In some cases it is important that the analysis be conducted within groups of students in the same grade. This would be important if the outcome measure is not comparable across grades. </p>
                 </div>
                 <div class="step-action ">
-                    <select class="multiselect from-upload" id="grade_var">
+                    <select class="multiselect from-upload from-all" id="grade_var">
                         <option value="Select grade variable">Select grade variable</option>
                     </select>
                 </div>
@@ -348,10 +355,8 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                                 You should have downloaded a dataset after randomly creating treatment and comparison groups. Upload that dataset here after merging it with your outcome data.
                             </p>
                             <% } %>
-                            <div class="before-upload">
-                                <p>If users and non-users were chosen based on groups they belonged to rather than as individuals, we need to identify these &ldquo;clusters&rdquo; in order to correctly estimate the effect of the intervention. If the decision to give students a technology was made by principals, and all students in a school either get the technology or don't, then select the "School ID" variable or some other indicator of which school the student attended. Similarly, if the intervention is at the classroom level, the clusters are the classrooms.</p>
-                                <p>In some cases it is important that analysis be conducted within groups of students in the same grade. This would be important if the outcome measure is not comparable across grades. If this does not matter for your evaluation, leave "combine all grades" selected.</p>
-                            </div>
+                            <div class="white-background-blue-border"></div>
+                           
                             <% if(eval.path == "path-matching") { %>
                             <p class="matching-path">
 
@@ -370,6 +375,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     </div>
                 </div>
             </div>
+          
         </div>
         <div class="clearfix"></div>
        
@@ -436,7 +442,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
             $('.multiselect').multiselect();
             enablebuttons();
             $('.success-effect-size').text($("#Success_Effect_Size").val());
-
+            $(".white-background-blue-border").hide();
             //init feedback_me plugin
             var fm_options = setFeedbackOptions($("#user_email").val(), "getresult");
             fm.init(fm_options);
@@ -469,6 +475,10 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     contentType: false,
                     data: formData,
                     success: function (data) {
+                        
+                        //$(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
+                        $(".white-background-blue-border").append('<p>The following checks were automatically performed on the data you uploaded. It is possible that the Coach has misinterpreted some of your data when conducting these checks and you may need to do additional data cleaning as detailed in our <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> guide.</p>')
+                        var list = $(".white-background-blue-border").append('<ul></ul>').find('ul');
                         $('#loadingmessageUp').hide();
                         $("select.from-upload").empty();
                         $("#outcome_var").append($("<option></option>")
@@ -487,11 +497,33 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                 .text("No cluster"));
                         $(".before-upload").addClass("after-upload");
                         $(".after-upload").removeClass("before-upload");
+                        if (data.nonnumeric_columns.length > 0) list.append('<li>The following columns appear to contain non-numeric values, and will not be allowed for selection as the outcome, treatment, or covariate variables: </br><span style="font-weight: bold;" >' + data.nonnumeric_columns.join(',  ') + '</span ></li>');
+                        if (data.numeric_columns.length > 0) list.append('<li>The following columns contain numeric values, and can therefore be selected as the outcome or covariate variables: </br><span style="font-weight: bold;" >' + data.numeric_columns.join(',  ') + '</span></li>');
+                        if (data.binary_columns.length > 0) list.append('<li>The following columns contain binary (0 or 1) values, and can therefore be used to identify who is using the technology: </br><span style="font-weight: bold;" > ' + data.binary_columns.join(',  ') + '</span ></li>');
+                        if (data.high_cor_columns.length > 0) list.append('<li>The following sets of columns are very highly correlated, meaning it’s generally best only to include one column from each set as  a characteristic in your analysis: </br><span style="font-weight: bold;">' + data.high_cor_columns.join(';  ') + '</span ></li>');
+                        if (data.categorical_columns.length > 0) list.append('<li>The following columns appear to contain categorical values. If you plan to use them as characteristics in your analysis, these columns should be split into separate columns for each category, with the values converted to 0 and 1. See the section about converting categorical variables in the <a class="redirect-link" href="/prepare_data"> Preparing Your Data</a> tool. If these columns are not actually categorical, you can ignore this message: </br><span style="font-weight: bold;">' + data.categorical_columns.join(',  ') + '</span ></li>');
+                       
+                        $(".white-background-blue-border").show();
+                        $.each(data.binary_columns, function (index, value) {
+                            $("select.from-upload.from-binary")
+                              .append($("<option></option>")
+                              .attr("value", value)
+                              .text(value));
+                        });
+                      
+                        //numeric                  
+                        $.each(data.numeric_columns, function (index, value) {
+                            $("select.from-upload.from-numeric")
+                              .append($("<option></option>")
+                              .attr("value", value)
+                              .text(value));
+                        });
+                        //all
                         $.each(data.colnames, function (index, value) {
-                            $("select.from-upload")
-                            .append($("<option></option>")
-                            .attr("value", value)
-                            .text(value));
+                            $("select.from-upload.from-all")
+                              .append($("<option></option>")
+                              .attr("value", value)
+                              .text(value));
                         });
                         $('.multiselect').multiselect('destroy');
                         $('.multiselect').multiselect();
@@ -534,7 +566,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        console.log(data);
+                       // console.log(data);
                         var responsePaths = data.split("\n");
 
                         $.ajax({
@@ -559,7 +591,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                             error: function (xhr) {
                                 $('#loadingmessage').hide();
                                 var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
-                                $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                                $('#error').append('<h2 class="stop-warning">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
                             }
                         });
                     },
@@ -567,7 +599,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                         $('#loadingmessage').hide();
                         console.log(xhr);
                         var error = 'Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText;
-                        $('#error').append('<h2 class="stop-warning" style="margin-left:-40px;">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
+                        $('#error').append('<h2 class="stop-warning">Unable to analyize results.</h2><p>There appears to be something wrong with your data set.  Please check that you selected the correct variables above.  Please <a href="mailto:edtechrce@mathematica-mpr.com">contact us</a> if you need further assistance. ' + error + '</p></h2>');
                         //alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
                     }
                 });

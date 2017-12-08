@@ -25,6 +25,8 @@ var User = require('../models/user');
 var CoachStep = require('../models/coachStep.js');
 var Tool= require('../models/tool.js');
 var coachsteps = require('../middleware/coachsteps.js');
+var Instrument = require('../models/instrument.js');
+var mongoose = require('mongoose');
 var sess;
 
 
@@ -186,7 +188,7 @@ module.exports = function (app, passport) {
 
     //db.evaluations.update({ _id: eval._id, "toolsvisited.name":"Share Your Results" }, { $set: { "toolsvisited.$.status": "started" } });
     app.post('/api/unshared', isLoggedIn, function(req, res) {
-        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started" } }, function(err) {
+        Evaluation.update({ _id: req.body.id, "toolsvisited.name": "Share Your Results" }, { $set: { status: "73", "toolsvisited.$.status": "started", published_at: "" } }, function(err) {
             if (err)
                 console.log(err);
             else {
@@ -329,15 +331,90 @@ module.exports = function (app, passport) {
         sess = req.session;
         res.json(sess.evalLists);
     });
-    //app.get('/table',  function(req, res) {
-    //    User.dataTables({
-    //        limit: 50,
-    //        skip: 50
-    //    }).then(function (table) {
 
-    //        res.json(table); // table.total, table.data
-    //    })
-    //});
+    app.get('/instrument', isAdmin, function (req, res) {
+        sess = req.session;
+        Instrument.find(function (err, instruments) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.render('InstrumentAdmin.html', {
+                    user: req.user,
+                    lists: instruments
+                });
+            }
+        });
+
+
+    });
+
+    app.post('/api/delInstrument', isAdmin, function (req, res) {
+        Instrument.remove({ _id: req.body.id }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                console.log("Selected tool deleted.");
+                res.status(201).send("Selected tool deleted.");
+            }
+        }
+        );
+    });
+
+    app.post('/api/upsertInstrument', isAdmin, function (req, res) {
+        var query = { order: req.body.order, name: req.body.name };
+        if (req.body.id) {
+            query = { _id: req.body.id };
+        }
+        console.log(req.body);
+        Instrument.findOneAndUpdate(query, req.body, { upsert: true }, function (err) {
+            if (err)
+                console.log(err);
+            else {
+
+                res.status(201).send("Selected instrument updated/added.");
+            }
+        }
+        );
+    });
+
+    app.post('/api/copyEval', isLoggedIn, function (req, res) {
+
+        Evaluation.findOne({
+            _id: req.body.id
+        })
+            .then(function (eval) {
+                eval._id = undefined;
+                eval.title = req.body.title;
+                eval.trialflag = req.body.trialflag;
+                eval.created_at = new Date();
+                eval.published_at = "";
+                if (eval.status == "100") {  
+                    eval.status = "73";                 
+                    var tool = eval.toolsvisited.filter(function (x) { return x.name.toLowerCase() === "share your results" });
+
+                    if (tool.length > 0) {
+                      //  var toollist = { "name": "share your results" , "status": "started", "visited_at": new Date() };
+                        tool.forEach(i => eval.toolsvisited.splice(eval.toolsvisited.indexOf(i), 1));             
+                     //   eval.toolsvisited.push(toollist);
+                        
+                    }   
+                   
+                }
+                return Evaluation.create(eval.toObject());
+            }).then(function (eval) {
+                sess.eval = eval;
+                req.user.evalid = eval._id;
+                req.user.save();
+                return res.json({
+                    success: true,
+                    id: eval._id
+                });
+            }).catch(function (err) {
+                console.log(err);
+            });
+    });
 }
 
 

@@ -130,103 +130,7 @@ if (message.length>0) { %>
         </div>
     </div>
 </div>
-<div id="Q_Have_Outcome">
-    <div class="step-header container">
-        <div data-toggle="collapse" data-target="#E">
-            <h2 class="clickable">
-                <i class="fa fa-caret-down" aria-hidden="false"></i> <label for="Basics_Outcome">What outcome do you hope to change by using the technology?</label>
-            </h2>
-        </div>
-    </div>
-    <div id="E" class="row  collapse in  q-row">
-        <div class="col-xs-7">
 
-            <div class="step-action">
-                <select required name="basics[Basics_Outcome]" id="Basics_Outcome">
-                    <%
-                    var options = ["Select an option","Student academic achievement", "Student non-academic achievement","Teacher performance","Parental engagement","Other","Not sure" ];
-                    var values = ["Select an option","student academic achievement", "student non-academic achievement","teacher performance","parental engagement","other","not sure" ];
-                    for ( var i = 0; i < options.length; i++ )
-                    {
-                    var selected = ( eval.basics.Basics_Outcome== values[i] ) ? "selected" : "";
-
-
-                    %>
-                    <option value="<%=values[i] %>" <%=selected %> ><%=options[ i ] %></option><%
-                    }
-                    %>
-
-                </select>
-                <div id="Question_Outcome_Other" hidden="true" class="other-div">
-                    <p>
-                        <label for="Basics_Outcome_Other">Please specify:</label>
-
-                        <%
-                        var valueToUse = eval.basics.Basics_Outcome_Other;
-                        if(valerrors['basics.Basics_Outcome_Other']) {
-                        valueToUse = valerrors['basics.Basics_Outcome_Other'].value;
-                        }
-                        %>
-
-                        <input type="text" name='basics[Basics_Outcome_Other]' id="Basics_Outcome_Other" value="<%= valueToUse %>"/>
-                    </p>
-                    <div class="error">
-                        <%
-                        if(valerrors['basics.Basics_Outcome_Other']) {
-                        %>
-                        <%- validationMessage %>
-
-                        <% } %>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-xs-5">
-            <div class="step-to-consider">
-
-                <div class="panel-group" id="ttc5">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title sec-label clickable">
-
-                                <a data-toggle="collapse" data-parent="#ttc5" href="#consider5"><i class="fa fa-caret-down" aria-hidden="false"></i>
-                                    Things to Consider
-                                </a>
-                            </h3>
-                        </div>
-                        <div id="consider5" class="panel-collapse collapse in">
-                            <p>
-                                An outcome is knowledge, skills, attitudes, or other desired benefits that are attained as a result of an activity (for example, engaging with the educational technology).
-                                We encourage you to meet with your team and determine the outcome you are most interested in measuring during your evaluation.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading accordion-toggle">
-                            <h3 class="panel-title sec-label clickable">
-
-                                <a data-toggle="collapse" data-parent="#ttc5" href="#example5"><i class="fa fa-caret-right" aria-hidden="true"></i>
-                                    Example
-                                </a>
-                            </h3>
-                        </div>
-                        <div id="example5" class="panel-collapse collapse">
-
-                            <ul>
-                                <li>Student academic achievement: end-of-year math test scores</li>
-                                <li>Student non-academic achievement: attendance </li>
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
 <div id="Q_Who_Users">
     <div class="step-header container">
         <div data-toggle="collapse" data-target="#D">
@@ -306,14 +210,14 @@ if (message.length>0) { %>
                 </div>
 
             </div>
-            <
+         
         </div>
     </div>
 </div>
 
 </div>
 <div id="Step_Conclusion">
-    <div class="step-conclusion container">
+    <div class="container">
 
     </div>
     <div class="row">

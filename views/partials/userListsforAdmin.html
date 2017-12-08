@@ -9,8 +9,11 @@
                 <% } %>
                 <th>User name</th>
                 <th>Email</th>
+                <th>Year joined</th>
+                <th>Month joined</th>
                 <th>Receive update?</th>
-                <th>Organization and role</th>
+                <th>Organization</th>
+                <th>Role</th>
             </tr>
         </thead>
         <tbody>
@@ -21,11 +24,14 @@
             grades = []; outcomes=[];
             id =userLists[i]._id ;
             d = new Date(userLists[i].created_at);
+            var yyyy = d.getFullYear().toString();
+            var mm = (d.getMonth()+1).toString();
+            d = d.toLocaleDateString();
             username = userLists[i].profile.user_name;
             email =userLists[i].local.email;
             company = userLists[i].profile.organization_name ;
-            role = userLists[i].profile.role_other? " -" + userLists[i].profile.role_other:
-            (userLists[i].profile.role?" -" +userLists[i].profile.role:"");
+            role = userLists[i].profile.role_other ? userLists[i].profile.role_other :
+            (userLists[i].profile.role ? userLists[i].profile.role : "");
             receive_update=userLists[i].receive_update?"Yes":"No";
             %>
             <tr>
@@ -39,8 +45,12 @@
                 <% } %>
                 <td><%= username %> </td>
                 <td><%= email %></td>
+                <!--<td><%= d %></td>-->
+                <td><%= yyyy %></td>
+                <td><%= mm %></td>
                 <td><%= receive_update %></td>
-                <td><%= company %><%= role %></td>
+                <td><%= company %></td>
+                <td><%= role %></td>
             </tr>
             <% } } %>
         </tbody>

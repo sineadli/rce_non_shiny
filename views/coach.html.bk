@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+
+
+<html lang="en">
+<head>
+
+    <title>Coach</title>
+    <% include ../views/partials/scriptHeader.html %>
+
+</head>
+<body>
+    <% include ../views/partials/header.html %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+    </ol>
+    <div class="container-fluid">
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Edit the name of your evaluation.</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="evalid" value="<%= eval._id %>" />
+                        <input type="hidden" id="steps" value="<%= coachSteps %>" />
+                        <input type="hidden" id="step" value="<%= step %>" />
+                        <input type="hidden" id="stepvisited" value="<%= eval.stepsclicked %>" />
+
+                        <input type="text" id="title" value="<%= eval.title %>" autofocus />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                        <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="wizard-header-row">
+                <div class="col-xs-7">
+                    <div class="sec-label">Evaluating</div>
+
+                    <h2 class="eval-header" id="evalTitle">
+                        <%= eval.title %>
+                        <% if (eval.userid == user.id) { %>
+                        <button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button>
+                        <% } %> 
+                    </h2>
+
+
+                </div>
+                <div class="col-xs-2">
+                    <div class="sec-label">Start Date</div>
+                    <% var d = new Date(); if(eval) {d= new Date(eval.created_at);} %>
+                    <p>
+                        <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
+                    </p>
+                </div>
+                <div class="col-xs-3">
+                    <div class="sec-label">Status</div>
+
+                    <% var status='New'; if (eval) {status = parseInt(eval.status) + "% Completed";
+
+                    var statuslength = eval.status > 0 ? (200*(eval.status/100))  : 0;
+                    var statusstyle = eval.status == 100 ? "completed" : "";
+
+                    } %>
+                    <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;"></div></div>
+
+                    <p>
+                        <%= status %>
+                    </p>
+                </div>
+                <div class="col-xs-12" style="padding: 0; margin: 0;">
+                    <ul class="wizard-menu">
+                        <!--<li id="1" class="wizard-item" hidden="hidden">
+                            <p>Welcome</p>
+                        </li>-->
+                        <li id="2" class="wizard-item" style="padding-top: 15px;">
+                            <p>Getting Started</p>
+                        </li>
+                        <li id="3" class="wizard-item">
+                            <p>Planning Your Research</p>
+                        </li>
+                        <li id="4" class="wizard-item ">
+                            <p>Preparing Your Data</p>
+                        </li>
+                        <li id="5" class="wizard-item">
+                            <p>Analyzing your Data</p>
+                        </li>
+                        <li id="6" class="wizard-item">
+                            <p>Summarizing Your Findings</p>
+                        </li>
+                    </ul>
+                    <div style="clear: both; display: block;"></div>
+
+                </div>
+                <div style="clear: both; display: block;"></div>
+            </div>
+        </div>
+
+        <h1 id="p-title"><%= coachSteps[step-2].name %></h1>
+        <div class="result"></div>
+        <div class="step-nav">
+
+
+            <% if(eval.last_step !== "2") {%>
+            <div class="bottom-prev pull-left">
+                <a href="#" id="Prev-link" class="step-label"> </a>
+            </div>
+            <% } %>
+            <% if(eval.last_step !== "6") { %>
+            <div class="bottom-next pull-right">
+                <a href="#" id="Next-link" class="step-label"></a>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //just load the first one for now, will have to determine which is the active currently for returning user with
+            //an ongoing eval
+      
+
+            var stepvisited = $("#stepvisited").val();
+            var step = $("#step").val();
+            if (!step || step === "0" || step === "") { step = 2; }  //step 1 is moved to dashboard
+
+            setWizardNav(step, stepvisited);
+
+
+            /** Load Header **/
+   
+            $.get("/tools/" + step, function (data) {
+                $(".result").html(data);
+            });
+
+
+            $('ul.wizard-menu li').click(function (e) {
+
+                var id = $(this).attr('id');
+
+                $("ul.wizard-menu li.wizard-item").removeClass("active");
+
+                setWizardNav(id, $("#stepvisited").val());
+
+                var url = "/tools/" + id;
+                $.get(url, function (data) {
+                    $(".result").html(data);
+                });
+            });
+
+            $("#Next-link").click(function (e) {
+
+                var id = $("ul.wizard-menu li.active").attr('id');
+                $("#" + id).removeClass("active");
+                var next = parseInt(id) + 1;
+
+                setWizardNav(next, $("#stepvisited").val());
+
+                var url = "/tools/" + next;
+                $.get(url, function (data) {
+                    $(".result").html(data);
+                });
+            });
+
+            $("#Prev-link").click(function (e) {
+
+                var id = $("ul.wizard-menu li.active").attr('id');
+                $("#" + id).removeClass("active");
+                var prev = parseInt(id) - 1;
+
+                setWizardNav(prev, $("#stepvisited").val());
+
+
+                var url = "/tools/" + prev;
+                $.get(url, function (data) {
+                    $(".result").html(data);
+                });
+            });
+
+            $("#getTitle").click(function (e) {
+
+                $("#evalTitle").html($("#title").val());
+                var etitle = $("#title").val();
+                var url = '/api/eval';
+                var evalid = $("#evalid").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({
+                        "id": evalid,
+                        "title": etitle
+                    }),
+
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+                        $('#evalTitle').append('<button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button>');
+                    }
+
+                }
+                );
+            });
+
+            //init feedback_me plugin
+            var fm_options = setFeedbackOptions($("#user_email").val(), "context_and_usage");
+            fm.init(fm_options);
+
+        });
+
+
+
+
+    </script>
+
+</body>
+</html>

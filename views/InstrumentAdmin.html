@@ -1,0 +1,147 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Evaluation management</title>
+    <% include ../views/partials/scriptAdminHeader.html %>
+</head>
+<body class="one-col">
+    <% include ../views/partials/header.html %>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Evaluation Dashboard</a></li>
+        </ol>
+    </div>
+
+    <div id="result">
+        <% include ../views/partials/instrumentForAdmin.html %>
+    </div>
+    <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function (data, row, column, node) {
+                            var dt;
+                            return column === 0 ?
+                                '' :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#myTable').dataTable({
+                "iDisplayLength": 10,
+                "dom": "Bfrtlpi",
+                "buttons": [
+                   $.extend(true, {}, buttonCommon, {
+                       extend: 'excel'
+                   })
+                ]
+            });
+
+
+            $('#deleteConfirm').on('show.bs.modal', function (e) {
+                //get delete-id attribute of the clicked element
+                var deletedId = $(e.relatedTarget).data('delete-id');
+                var title = $(e.relatedTarget).data('delete-title');
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
+                $(e.currentTarget).find('label[id="step"]').text(title);
+            });
+
+            $("#delInstrument").click(function () {
+                var idtobedeleted = $("#toDeleted").val();
+                var url = '/api/delInstrument';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({ "id": idtobedeleted }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+
+                    }
+                }
+                )
+                $(document).ajaxStop(function () { location.reload(true); });
+            });
+            $('#updateConfirm').on('show.bs.modal', function (e) {
+                //get delete-id attribute of the clicked element
+
+                var id = $(e.relatedTarget).data('update-id');
+                var order = $(e.relatedTarget).data('update-order');
+                var name = $(e.relatedTarget).data('update-name');
+                var url_name = $(e.relatedTarget).data('update-url-name');
+                
+                
+                var topicareas = $(e.relatedTarget).data('update-topicareas');
+
+                var source = $(e.relatedTarget).data('update-source');
+                var url_source = $(e.relatedTarget).data('update-url-source');
+                var type = $(e.relatedTarget).data('update-type');
+               
+                console.log($(e.relatedTarget).data('update-type'));
+     
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toUpdate"]').val(id);
+                $(e.currentTarget).find('input[id="order"]').val(order);
+                $(e.currentTarget).find('input[id="name"]').val(name);
+                $(e.currentTarget).find('input[id="url_name"]').val(url_name);
+                
+                $(e.currentTarget).find('textarea[id="topic_areas_covered"]').text(topicareas);
+                $(e.currentTarget).find('textarea[id="source"]').val(source);
+                $(e.currentTarget).find('input[id="url_source"]').val(url_source);
+                $(e.currentTarget).find('input[id="type"]').val(type);
+
+            });
+
+            $("#upsertInstrument").click(function () {
+                var idtobedeleted = $("#toUpdate").val();
+                var order = $("#order").val();
+                var name = $("#name").val();
+                var url_name = $("#url_name").val();
+                
+                var topic_areas_covered = $("#topic_areas_covered").val();
+                var source = $("#source").val();
+                var url_source = $("#url_source").val();
+                var type = $("#type").val();
+                console.log(type);
+                //alert($("textarea#step_intro").val());
+                var url = '/api/upsertInstrument';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(
+                        {
+                            "id": idtobedeleted, "order": order, "name": name, "url_name": url_name,
+                            "topic_areas_covered": topic_areas_covered, "source": source, "url_source": url_source, "type": type
+                        }
+                        ),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+
+                    }
+                }
+                )
+                $(document).ajaxStop(function () { location.reload(true); });
+            });
+
+
+           
+        });
+
+    </script>
+</body>
+</html>

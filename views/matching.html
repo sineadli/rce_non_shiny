@@ -259,14 +259,16 @@
                             Before uploading data, make sure personally identifiable information (PII), such as names, has been removed.
                         </p>
                         <input id="chosenfile" size="1" type="file" accept=".csv">
-                        <div id='loadingmessageUp' hidden>
-                            <div class="loading">
-                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
-                                <span class="sr-only">Loading...</span>
+                        
+                       
+                            <div id='loadingmessageUp' hidden>
+                                <div class="loading">
+                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                     <div class="before-upload">
                         <div class="step-subquestion">
@@ -278,7 +280,7 @@
                         </div>
                         <div class="step-action ">
                             <div>
-                                <select id="treat_var" class="multiselect from-upload required nodefault ">
+                                <select id="treat_var" class="multiselect from-upload from-binary required nodefault ">
                                     <option value="">Select a data field</option>
                                 </select>
                             </div>
@@ -286,27 +288,36 @@
 
                         <div class="step-subquestion">
                             <h4><label for="pretest">Select your pretest outcome measure.</label> </h4>
+                           
+                            <p>
+                                It is most important that users and non-users had similar <%= defs.Basics_Outcome %> levels before they started using <%= defs.Basics_Tech_Name %>. For example, if you are examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
+
                             <p>
                                 <em class="stronger"><i class="fa fa-asterisk"></i> Required</em>
-                            </p>
-                        </div>
+                            </p>                        </div>
                         <div class="step-action ">
-                            <select id="pretest" class="multiselect from-upload nodefault">
+                            <select id="pretest" class="multiselect from-upload from-numeric-non-binary nodefault">
                                 <option value="Select a variable" selected="selected">Select a data field</option>
                             </select>
 
                         </div>
                         <div class="step-subquestion">
                             <h4> Which characteristics matter when matching users to similar non-users? </h4>
+                           
+                            <p>
+                                You should try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology.
+                            Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                            </p>
                             <p>
                                 <label for="match_vars">Select characteristics of your <%= defs.Basics_Users %> that could affect <%= defs.Basics_Outcome %>.</label>
                             </p>
                             <p>
                                 <em class="stronger"><i class="fa fa-asterisk"></i> More than one is recommended.</em>
                             </p>
+                           
                         </div>
                         <div class="step-action  ">
-                            <select id="match_vars" name="match_vars" class="multiselect from-upload required" multiple="multiple">
+                            <select id="match_vars" name="match_vars" class="multiselect from-upload from-numeric required" multiple="multiple">
                                 <option value="Select matching variables">Select matching variables</option>
                             </select>
                         </div>
@@ -316,13 +327,13 @@
                         </div>
                         <div class="step-action ">
                             <label for="grade_var" class="hidden">please select the name of the data field that indicates student grade. If grade is not relevant, leave as match any grade.</label>
-                            <select id="grade_var" class="multiselect from-upload required nodefault ">
+                            <select id="grade_var" class="multiselect from-upload from-all required nodefault ">
                                 <option value="match any grade" selected="selected">match any grade</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-5">
+                <div class="col-xs-5">                  
                     <div class="step-to-consider">
                         <div class="panel-group" id="ttc3">
                             <div class="panel panel-default">
@@ -341,23 +352,21 @@
                                         The Coach suggests that you create an anonymous ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will enable you to add more information or link files in the future.
                                     </p>
                                     <div class="before-upload">
-                                        <p>
-                                            It is most important that users and non-users had similar <%= defs.Basics_Outcome %> levels before they started using <%= defs.Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
-                                        </p>
-                                        <p>
-                                            You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology.
-                                        </p>
+                                      
                                     </div>
+                                    
+                                    <div class="white-background-blue-border"></div>
+
                                     <p>
-                                        Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
-                                    </p>
-                                    <p>
+<p>
                                         For more information on how the Coach conducts matching you can refer to the <a href="/static/pdf/Matching Technical Appendix.pdf" target="_blank">Matching Technical Appendix</a>.
-                                    </p>
+                                    </p>                                   
                                 </div>
-                            </div>
+                            </div>                           
                         </div>
                     </div>
+                   
+                    
                 </div>
                 <div class="clearfix"></div>
                 <div id="error" class="col-xs-11"></div>
@@ -428,7 +437,7 @@
 
             IfDownloadFile($("#downloadPath").val());
            
-
+            $(".white-background-blue-border").hide();
         });   
 
         $("#Targeted_Access").change(function () {
@@ -467,6 +476,12 @@
                 contentType: false,
                 data: formData,
                 success: function (data) {
+                    // console.log(data);                  
+                //    $(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
+                    $(".white-background-blue-border").append('<p>The following checks were automatically performed on the data you uploaded. It is possible that the Coach has misinterpreted some of your data when conducting these checks and you may need to do additional data cleaning as detailed in our <a target="_blank" href="/static/pdf/Prepare your data for analysis_matching.pdf">Prepare Your Data for Analysis</a> guide.</p>')
+                    var list = $(".white-background-blue-border").append('<ul></ul>').find('ul');
+                    var diff = $(data.numeric_columns).not(data.binary_columns).get();
+                 //   console.log(diff);
                     $('#loadingmessageUp').hide();
                     $("select.from-upload").empty();
                     $(".before-upload").addClass("after-upload");
@@ -479,12 +494,43 @@
                        .append($("<option></option>")
                        .attr("value", "None selected")
                        .text("None selected"));
-                    $.each(data.colnames, function (index, value) {
-                        $("select.from-upload")
+                    if (data.nonnumeric_columns.length > 0) list.append('<li>The following columns appear to contain non-numeric values, and will not be allowed for selection as the treatment, pretest, or matching variables:  </br><span style="font-weight: bold;" >' + data.nonnumeric_columns.join(',  ') + '</span ></li>');
+                    if (data.binary_columns.length > 0) list.append('<li>The following columns contain binary (0 or 1) values, and can therefore be used to identify who is using the technology:  </br><span style="font-weight: bold;" > ' + data.binary_columns.join(',  ') + '</span ></li>');
+                    if (data.numeric_columns.length > 0) list.append('<li>The following columns contain numeric values, and can therefore be selected as the pretest or matching variables: </br><span style="font-weight: bold;" >' + data.numeric_columns.join(',  ') + '</span></li>');                   
+                    if (data.high_cor_columns.length > 0) list.append('<li>The following sets of columns are very highly correlated, meaning it is generally best only to include one column from each set as a characteristic for matching: </br><span style="font-weight: bold;">' + data.high_cor_columns.join(';  ') + '</span ></li>');
+                    if (data.categorical_columns.length > 0) list.append('<li>The following columns appear to contain categorical values. If you plan to use them as characteristics for matching, these columns should be split into separate columns for each category, with the values converted to 0 and 1. See the section about converting categorical variables in the <a class="redirect-link" href="/prepare_data"> Preparing Your Data</a> tool. If these columns are not actually categorical, you can ignore this message:</br><span style="font-weight: bold;">' + data.categorical_columns.join(',  ') + '</span ></li>');
+                    
+                    $(".white-background-blue-border").show();
+                    //binary                  
+                    $.each(data.binary_columns, function (index, value) {
+                        $("select.from-upload.from-binary")
                           .append($("<option></option>")
                           .attr("value", value)
                           .text(value));
                     });
+                    //numeric non-binary                   
+                    $.each(diff, function (index, value) {
+                        $("select.from-upload.from-numeric-non-binary ")
+                          .append($("<option></option>")
+                          .attr("value", value)
+                          .text(value));
+                    });
+                    //numeric                  
+                    $.each(data.numeric_columns, function (index, value) {
+                        $("select.from-upload.from-numeric")
+                          .append($("<option></option>")
+                          .attr("value", value)
+                          .text(value));
+                    });
+                    //all
+                    $.each(data.colnames, function (index, value) {
+                        $("select.from-upload.from-all")
+                          .append($("<option></option>")
+                          .attr("value", value)
+                          .text(value));
+                    });
+                    
+                   
                     $('.multiselect').multiselect('destroy');
                     $('.multiselect').multiselect();
                     $("#shinybuttons").removeClass("hidden");

@@ -1,0 +1,100 @@
+﻿
+<table id="myTable" data-order='[[ 2, "asc" ], [3, "asc"]]' class="table table-striped">
+    <thead>
+        <tr>
+            <% if (user.isAdmin) { %>
+            <th><button class="btn btn-primary " href="#updateConfirm" data-toggle="modal" data-update-id="<%= '' %>" data-update-name="<%= '' %>" data-update-order="<%='' %>" >ADD</button>  </th>
+            <% } %>
+            <th>No</th>
+            <th>name</th>
+            <th>instrument url</th>
+            <th>topic areas covered</th>
+            <th>source</th>
+            <th>source url</th>
+            <th>type</th>        
+        </tr>
+    </thead>
+    <tbody>
+        <% if(lists.length>0){
+        var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
+        for (var i=0; i < lists.length; i++){
+        id =lists[i]._id ;
+        order = lists[i].order;
+        name =lists[i].name;
+        url_name = lists[i].url_name; 
+        topic_areas_covered=lists[i].topic_areas_covered;
+        source =lists[i].source;
+        console.log(source)
+        url_source =lists[i].url_source;
+        console.log(url_source)
+        type =lists[i].type;
+        console.log(type)
+        %>
+        <tr>
+            <% if (user.isAdmin) { %>
+            <td>
+                <a class="btn-link sec-label " href="#updateConfirm" data-toggle="modal" data-update-id="<%= id %>" data-update-order="<%= order %>"  data-update-name="<%= name %>"  data-update-url-name="<%=url_name %>"
+                   data-update-topicareas="<%= topic_areas_covered %>" data-update-source="<%= source %>"  data-update-url-source="<%= url_source %>" data-update-type="<%= type %>" >UPDATE</a>
+                <a class="btn-link sec-label " href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= id %>" data-delete-title="<%= name %>">DELETE</a>
+            </td>
+            <% } %>
+            <td><%= order %></td>
+            <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
+            <td><%= url_name %> </td>
+            <td><%= topic_areas_covered %></td>
+            <td><label><a href="<%= url_source %>"><%= source %></a></label></td>
+            <td><%= url_source %></td>
+            <td><%= type %> </td>
+        </tr>
+        <% } } %>
+    </tbody>
+</table>
+
+<div id="deleteConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Instument</h4>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Are you sure you want to Instument <label id="step"></label>?
+                </label>
+                <input type="hidden" id="toDeleted" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                <button type="button" id="delInstrument" class="btn btn-primary btn-lg" data-dismiss="modal">DELETE</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="updateConfirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update/Add Instrument</h4>
+            </div>
+            <div class="modal-body">
+                <label>Order:</label><br /><input type="number" id="order" /><br />
+                <label> Name:</label><br /><input type="text" id="name" /><br />
+                <label>Instrumen url:</label><br /><input type="text" id="url_name" /><br />
+                
+                <label> Topic Areas covered(comma delimited):</label><br /><textarea id="topic_areas_covered"></textarea><br />
+                <label>Source: </label><br /><textarea rows="5" id="source" ></textarea><br />
+                <label>Source url:</label><br /><input type="text" id="url_source" /><br />
+                <label>Type:</label><br /><input type="text" id="type" /><br />
+                <input type="hidden" id="toUpdate" />
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                <button type="button" id="upsertInstrument" class="btn btn-primary btn-lg" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

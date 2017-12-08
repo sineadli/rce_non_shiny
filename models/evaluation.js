@@ -56,19 +56,22 @@ var Basics = mongoose.Schema({
 var ProbAppr = mongoose.Schema({
 	Appr_Current_or_New: { type: String, default: '' }, // Replaces Prob_Appr_A but values are different.
     Appr_All_Using: { type: String, default: '' }, // was Prob_Appr_C
+	Appr_Diff_Usage: {type: String, default: '' },
     Appr_Can_Group: { type: String, default: '' },
     Appr_How_Choose: { type: String, default: '' }, 
+	Appr_Treatment_Group: { type: String, default: '' },
+	Appr_Comparison_Group: { type: String, default: '' }, 
     created_at: { type: Date, default: Date.now },
     updated_at: Date
 
 });
 //03.01 crafting a research question
 var PlanQuestion = mongoose.Schema({
+	Has_Outcome_Measure: { type: String, default: '' },
     Outcome_Measure: { type: String, default: '' }, // was Plan_Question_B_2
     Outcome_Direction: { type: String, default: '' }, // was  Plan_Question_B_3
     Intervention_Group_Desc: { type: String, default: '' }, // was  Plan_Question_C
-    Comparison_Group_Desc: { type: String, default: '' }, // was Plan_Question_D
-    Outcome_Measurd_Instrument: { type: String, default: '' },
+    Comparison_Group_Desc: { type: String, default: '' }, // was Plan_Question_D   
     Measurement_Align: { type: String, default: '' },
     Measurement_Design: { type: String, default: '' },
     Measurement_Validated: { type: String, default: '' },
@@ -374,7 +377,7 @@ evaluationSchema.pre('save', function (next) {
         }
         if (this.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "share your results" && x.status.toLowerCase() === "completed") }).length===1) {
             this.status = "100";
-            this.published_at = currentDate; 
+           if (! this.published_at) this.published_at = currentDate; 
             var doc = this;
             User.findById(this.userid, function (err, user) {
                 if (err) {

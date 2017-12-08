@@ -291,14 +291,22 @@
                         </li>
 
                         <% }
-                        if ((defs.wasMatched || defs.wasRandomized) && defs.baselinetest_vars != "none selected") {
+                        var listVarsLength = 0;
+                        if ((defs.wasMatched || defs.wasRandomized) && defs.baselinetest_vars[0].toLowerCase() != "n") {
                           if (eval.path === 'path-random') {
                               baseline_tool = 'randomization';
                            } else if (eval.path === 'path-matching') {
                               baseline_tool = 'matching';
                         }
-
-                        var bliststyle = defs.baselinetest_vars.length > 8 ? "list-col-3" : (defs.baselinetest_vars.length > 5 ? "list-col-2" : "")
+                        listVarsLength = defs.baselinetest_vars.length;
+                        if(defs.hasResults) {
+                             if (Result.args.control_vars.length > 0) {
+                             listVarsLength = Math.max(Result.args.control_vars.length, defs.baselinetest_vars.length) ;
+                        }
+                       
+                        }
+                       
+                        var bliststyle = listVarsLength > 8 ? "list-col-3" : (listVarsLength > 5 ? "list-col-2" : "")
                         %>
 
 
@@ -317,10 +325,17 @@
                         </li>
                         <% } %>
 
-                        <% if (defs.hasResults) {
-
-                        if (Result.args.control_vars.length > 0) {
-                          var cliststyle = Result.args.control_vars.length > 8 ? "list-col-3" : (Result.args.control_vars.length > 5 ? "list-col-2" : "")
+                        <%
+                        
+                        if (defs.hasResults) {
+                        if (Result.args.control_vars.length > 0) { 
+                        listVarsLength = Result.args.control_vars.length;
+                        if (defs.baselinetest_vars.length > 0 && defs.baselinetest_vars[0].toLowerCase() != "n") {
+                        listVarsLength = Math.max(Result.args.control_vars.length, defs.baselinetest_vars.length) ;
+                        }
+                       
+                        bliststyle = listVarsLength > 8 ? "list-col-3" : (listVarsLength > 5 ? "list-col-2" : "")
+                        
                         %>
                         <li>
                             The analysis controlled for:<ul class="<%- bliststyle %>">
@@ -569,14 +584,17 @@
                                 <p>This report uses the information you entered as you completed your evaluation using the Coach. As you read through the report, you might notice items that you would like to edit. Look for the <span class="fa fa-hand-o-right"></span> links back to the item&rsquo;s source tool, to return to that tool and make changes.
                                 </p>
                                 <h4>Missing information</h4>
-                                <% if(defs.BasicsIncomplete || defs.planQuestionIncomplete
+                                <% if(defs.BasicsIncomplete || defs.OutcomeIncomplete || defs.planQuestionIncomplete
                                 || defs.planNextIncomplete || defs.planContextIncomplete
                                 || ((defs.prepareRandomIncomplete || defs.randomIncomplete) && eval.path === "path-random")
                                 || (defs.matchingIncomplete  && eval.path === "path-matching")
                                 || !defs.hasResults  ) { %>                                <p> Information is missing from the tool(s) listed below, which may prevent creating a full findings brief. You might want to return to these tools and enter any missing information.</p>
                                 <ul>
                                     <% if(defs.BasicsIncomplete) { %>
-                                    <li><a class="redirect-link" href="/basics?return=shareresult">Basics</a></li>
+                                    <li><a class="redirect-link" href="/basics?return=shareresult">The Basics</a></li>
+                                    <% }
+                                     if(defs.OutcomeIncomplete) { %>
+                                    <li><a class="redirect-link" href="/outcome_measure?return=shareresult">Define Your Outcome and Measure</a></li>
                                     <% }
                                     if(defs.planQuestionIncomplete) { %>
                                     <li><a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a></li>
