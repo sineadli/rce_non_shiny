@@ -1,0 +1,363 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Dashboard - Ed Tech RCE Coach</title>
+    <% include ../views/partials/scriptHeader.html %>
+</head>
+<body class="dashboard">
+    <% include ../views/partials/header.html %>
+    <div class="container-fluid">
+        <input type="hidden" id="user_name" value="<%= user.profile.user_name %>" />
+        <input type="hidden" id="user_email" value="<%= user.email %>" />
+        <div class="page-header">
+            <h1 class="page-title">Evaluation Dashboard</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="dash-well user-p">
+                    <h2 class="text-center">
+                        <%= user.profile.user_name %>
+                    </h2>
+                    <% var role = user.profile.role; if (role == "other") (role =user.profile.role_other ) %>
+                    <p class="text-center"><%= role %></p>
+                    <p class="text-center">
+                        <span class="fa fa-user fa-5x" style="color: #dddddd;"></span>
+                    </p>
+                    <p class="text-center">
+                        <%= user.profile.organization_name %>
+                    </p>
+                </div>
+                <div class="dash-well sidebar-left">
+                    <div class="row">
+                        <ul class="wizard-menu">
+                            <li class="wizard-item">
+                               <button type="button" class="btn-link sec-label" role="link" data-toggle="modal" data-target="#myModal">START A NEW EVALUATION </button></li>
+
+                            <li class="wizard-item">
+
+                                <button role="link" id="btnPublishedList" class="btn-link sec-label" onclick="">View Shared Evaluations </button></li>
+
+                        </ul>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <%
+                var evallabel = "Begin Evaluation"
+                var evaltitle = "Ready to test an app?";
+                var status= "New";
+                var startdate = new Date();
+                var statuslength = 0;
+                var helpcaret = "fa-caret-down";
+                var helphidden = "aria-hidden='false'"
+                var helpdetail = "in"
+                var eval = evals.filter(function (x) { return x._id.equals(user.evalid)});
+                if (eval.length===0 && evals.length > 0) {eval[0] = evals[0];user.evalid =evals[0]._id;  }
+                if (eval.length>0) {
+                var EvalButtonText = eval[0].status == 100 ? "Edit" : "Continue";
+                evaltitle = eval[0].title;
+                status=parseInt(eval[0].status) + "% Completed";
+                statuslength = eval[0].status > 0 ? (200*(eval[0].status/100)) : 0;
+                var statusstyle = eval[0].status == 100 ? "completed" : "";
+                evallabel = "Current Evaluation";
+                helpcaret = "fa-caret-right";
+                helphidden = "aria-hidden='true'"
+                helpdetail = ""
+                if (eval[0].created_at)
+                {
+                startdate = eval[0].created_at 
+                }
+                }
+                %>
+                <div class="panel panel-default dash-well">
+                    <div class="panel-heading">
+                        <h2 class="panel-title  clickable">
+                            <a data-toggle="collapse" data-target="#welcomeDetails" style="display: block;">
+                                <i class="fa <%= helpcaret %>" <%= helphidden %> ></i> Need help getting started? 
+                            </a>
+                        </h2>
+                    </div>
+                    <div id="welcomeDetails" class="panel-collapse collapse <%= helpdetail %>">
+                       
+                            <div class="col-sm-6 help-panel help-sec">
+                                <h3 class="sec-label">Overview of the Ed Tech RCE Coach</h3>
+                                <p style="min-height: 53px;">We&rsquo;ll help you get answers in 5 easy steps. </p>
+                                <p class="pull-right">
+                                    <a onclick=" window.open('/static/pdf/Graphic Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                </p>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-sm-6 help-panel ">
+                                <h3 class="sec-label">What You’ll Need to Get Started </h3>
+                                <p>Get acquainted with the skills and data necessary to conduct a successful evaluation. </p>
+                                <p class="pull-right">
+                                    <a onclick=" window.open('/static/pdf/What you need to get started.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                                </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        <div class="help-main clearfix"> </div>
+                        <div class="col-sm-6 help-panel help-sec">
+                            <h3 class="sec-label">Choosing a technology</h3>
+                            <p style="min-height: 92px;">If you are looking for a technology to implement, use this guide to help you with that process. </p>
+                            <p class="pull-right">
+                                <a onclick=" window.open('/static/pdf/Choose a Technology.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                            </p>
+                        </div>
+                        <div class="col-sm-6 help-panel ">
+                            <h3 class="sec-label">Understanding types of evidence</h3>
+                            <p>What are the common types and sources of evidence? How can evidence support claims that a technology is effective?</p>
+                            <p class="pull-right">
+                                <a onclick=" window.open('/static/pdf/Understanding types of evidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">View <span class="fa fa-download" aria-hidden="true"></span></a>
+                            </p>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <h2>Your Evaluations</h2>
+                <div class="dash-well eval-div current <%= statusstyle %>">
+                    <div style="float: left; width: 75%;">
+
+                        <h3><%= evaltitle %></h3>
+                        <div class="sec-label current"><%= evallabel %></div>
+                        <% if (eval.length>0) { %>
+                        <div class="indentleft10">
+                            <p>
+                                <span class="sec-label">Started</span>: <%= startdate.getMonth() + 1 + '/' + startdate.getDate() + '/' + startdate.getFullYear() %>
+                            </p>
+                            <span class="sec-label">Status</span>:
+                            <div class="outer-status-bar">
+                                <div class="status-bar" style="width: <%=statuslength + 'px'%>;">&nbsp;</div>
+                            </div> <%= status %>
+                        </div>
+                        <% } %>
+                        <% if (eval.length===0) { %>
+                        <p>
+                            Let the Ed Tech RCE Coach guide you through each step of evaluating your educational technology.
+                        </p>
+                        <% } %>
+                        </div>
+
+                    <div style="float: right; height: 100%;">
+                        <% if (eval.length>0) { %>
+                        <a class="text-right btn btn-primary" href="/coach/<%= eval[0]._id %>" id="startEval" class="btn btn-primary btn-lg"><%= EvalButtonText %></a> <br/>
+                        <div style="float: right; margin: 16px 10px 0 0;">
+                            <a class="btn-link sec-label" style="vertical-align: bottom;" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= user.evalid  %>" data-delete-title="<%= evaltitle %>">Delete <i class="fa  fa-times-circle"></i></a>
+                            <% if (eval[0].status ==='100') { %>
+                            <br /><a class="btn-link  sec-label" style="vertical-align: bottom;" href="/shareresult/<%= user.evalid %>?backto=dashboard" id="viewbrief">View Brief</a><br />
+                            <a class="unshared btn-link  sec-label" style="vertical-align: bottom;" href="#" id="<%= user.evalid %>">Un-Share</a>
+                            <% } %>
+                        </div>
+                        <% } else if (eval.length===0) { %>
+                        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">START</button>
+                        <% } %>
+
+                    </div>
+                    <% if (eval.length>0) { %>
+                   
+                        <% } %>
+                        <div class="clearfix"></div>
+
+                        <!-- Trigger the modal with a button -->
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Enter a name for your evaluation.</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <% var evalid; if (eval) {evalid = eval._id} %>
+                                        <input type="hidden" id="evalid" value="<%= evalid %>" />
+                                        <input type="text" id="title" />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                                        <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%  if(evals.length>0){ for (var i=0; i < evals.length; i++){
+                if (evals[i]._id.equals(user.evalid) ){continue;}
+          
+                var evaltitle = evals[i].title;
+                var status=parseInt(evals[i].status) + "% Completed";
+                var statuslength = evals[i].status > 0 ? (200*(evals[i].status/100))  : 0;
+                var statusstyle = evals[i].status == 100 ? "completed" : "";
+                var EvalButtonText = evals[i].status == 100 ? "Edit" : "Continue";
+                var d = new Date(evals[i].created_at)
+                var helpcaret = "fa-caret-down";
+                var helphidden = "false"
+                var helpdetail = "in" %>
+                <div class="dash-well eval-div <%= statusstyle %>">
+                    <div style="float: left; width: 75%;">
+                        <h3><%= evaltitle %></h3>
+                        <p>
+                            <span class="sec-label evaldate">Started</span>: <%= d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() %>
+                        </p>
+
+                        <span class="sec-label">Status</span>: <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;">&nbsp;</div></div> <%= status %>
+
+
+
+                    </div>
+
+                    <div style="float: right;">
+
+                        <a class="text-right btn btn-primary" href="/coach/<%= evals[i]._id %>" id="startEval"><%= EvalButtonText %></a><br/>
+                        <div style="float: right;  margin: 16px 10px 0 0;">
+                            <a class="btn-link sec-label" href="#deleteConfirm" data-toggle="modal" data-delete-id="<%= evals[i]._id %>" data-delete-title="<%= evals[i].title %>">Delete <i class="fa  fa-times-circle"></i></a>
+                            <% if (evals[i].status==='100') { %>
+                            <br /><a class="btn-link sec-label" style="vertical-align: bottom;" href="/shareresult/<%= evals[i]._id %>?backto=dashboard" id="viewbrief">View Brief</a>
+                            <br /><a class="unshared btn-link sec-label " style="vertical-align: bottom;" href="#" id="<%= evals[i]._id %>">Un-Share</a>
+                            <% } %>
+                        </div>
+
+                    </div>
+                   
+
+                    <div class="clearfix"></div>
+                   
+                    <div class="clearfix"></div>
+                </div>
+                
+                <%}} %>
+            </div>
+            <!-- Trigger the modal with a button -->
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Enter a name for your evaluation.</h4>
+                        </div>
+                        <div class="modal-body">
+                            <% var evalid; if (eval) {evalid = eval._id} %>
+                            <input type="hidden" id="evalid" value="<%= evalid %>" />
+                            <input type="text" id="title" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                            <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="deleteConfirm" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Delete Evaluation</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label>
+                                Are you sure you want to delete <label id="evaltl"></label>?
+                            </label>
+                            <input type="hidden" id="toDeleted" />
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                            <button type="button" id="delEval" class="btn btn-primary btn-lg" data-dismiss="modal">DELETE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //init feedback_me plugin
+            var fm_options = setFeedbackOptions($("#user_email").val(), "dashboard");
+            fm.init(fm_options);
+
+            $('#deleteConfirm').on('show.bs.modal', function (e) {
+
+                //get delete-id attribute of the clicked element
+                var deletedId = $(e.relatedTarget).data('delete-id');
+          //      console.log(deletedId);
+                var title = $(e.relatedTarget).data('delete-title');
+
+                //populate the textbox
+                $(e.currentTarget).find('input[id="toDeleted"]').val(deletedId);
+                $(e.currentTarget).find('label[id="evaltl"]').text(title);
+            });
+            
+        });
+
+        $("#getTitle").click(function (e) {
+            var etitle = $("#title").val();
+            var url = '/api/eval';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "title": etitle }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    window.location = "/coach";
+                }
+            }).done(function (msg) {
+            });;
+        });
+        $("#btnPublishedList").click(function (e) {
+            document.location.href = "/publications";
+        });
+        $("#delEval").click(function (e) {
+            var idtobedeleted = $("#toDeleted").val();
+
+            var url = '/api/delEval';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "id": idtobedeleted }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                  
+                }
+            }
+            )
+            $(document).ajaxStop(function () { location.reload(true); });
+        });
+        $(".unshared").click(function (e) {
+           // alert(e.target.id);
+            var unsharedid = e.target.id;
+              var url = '/api/unshared';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "id": unsharedid }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+
+                }
+            }
+            )
+            $(document).ajaxStop(function () { location.reload(true); });
+        });
+       
+    </script>
+</body>
+</html>
