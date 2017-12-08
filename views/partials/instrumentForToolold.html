@@ -1,0 +1,116 @@
+﻿<% if(lists.length>0){
+var id, order, name,  url_name, topic_areas_covered, source, url_source, type;
+var resource = lists.filter(function (x) {  return x.type.toLowerCase().indexOf("resource") !== -1 });
+var tablename = ["student", "teacher" , "other outcome"];
+for (var k=0; k < tablename.length; k++){
+
+     var list_outcome = lists.filter(function (x) {  return x.type.toLowerCase().indexOf(tablename[k]) !== -1 });
+
+ %>
+<% if(list_outcome.length> 0) {   %>
+<div class="row">
+    <table id="studentoutcome" data-order='[[ 0, "asc" ], [1, "asc"]]' class="measure table table-striped">
+        <caption><%= list_outcome[0].type %><span data-toggle='tooltip' title='Click to expand/collapse outcome lists.' class='tooltip-gr'><i class='fa fa-question-circle'></i></span></caption>
+        <thead style="display:none;">
+            <tr>
+                <th>No.</th>
+                <th>Name</th>
+
+                <th>Topic areas covered</th>
+                <th>Source</th>
+            </tr>
+
+        </thead>
+        <tbody style="display:none;">
+            <%
+
+            for (var i=0; i < list_outcome.length; i++){
+
+            id =list_outcome[i]._id ;
+            order = list_outcome[i].order;
+            name =list_outcome[i].name;
+            url_name = list_outcome[i].url_name;
+            topic_areas_covered=list_outcome[i].topic_areas_covered.split(";");
+
+            source =list_outcome[i].source;
+
+            url_source =list_outcome[i].url_source;
+
+            %>
+            <tr>
+                <td data-order="<%= i %>"><%= order %></td>
+                <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
+                <td>
+                    <ul>
+                        <% for (var j=0; j< topic_areas_covered.length; j++){ %>
+                        <li>
+                            <%= topic_areas_covered[j] %>
+                        </li>
+                        <% } %>
+                    </ul>
+                </td>
+                <td>
+                    <% if(url_source) { %><label><a href="<%= url_source %>"><%= source %></a></label>
+                    <% } else { %> <label><%= source %></label>
+                    <% } %>
+                </td>
+            </tr>
+            <% }  %>
+        </tbody>
+
+    </table>
+</div>
+<% } }  %>
+<% if (resource.length> 0 ) {  %>
+<div class="row">
+    <table id="resource" data-order='[[ 0, "asc" ], [1, "asc"]]' class="table table-striped">
+        <caption>Other resource <span data-toggle='tooltip' title='Click to expend/collapse outcome lists.' class='tooltip-gr'><i class='fa fa-question-circle'></i></span>
+            <p>If none of the instruments listed above are what you are looking for, you might want to check out these other resources that can also help you identify an instrument that is appropriate for your situation.</p>
+        </caption>
+        <thead style="display:none;">
+            <tr>
+                <th>No.</th>
+                <th>Resource</th>
+
+                <th>Summary</th>
+                <th>Source</th>
+            </tr>
+
+        </thead>
+        <tbody style="display:none;">
+            <%
+
+            for (var r=0; r < resource.length; r++){
+
+            id =resource[r]._id ;
+            order = resource[r].order;
+            name =resource[r].name;
+            url_name = resource[r].url_name;
+            topic_areas_covered=resource[r].topic_areas_covered;
+
+            source =resource[r].source;
+
+            url_source =resource[r].url_source;
+
+            %>
+            <tr>
+                <td data-order="<%= i %>"><%= order %></td>
+                <td><label><a href="<%= url_name %> "><%= name %></a></label> </td>
+                <td>
+
+                    <%= topic_areas_covered  %>
+
+                </td>
+                <td>
+                    <% if(url_source) { %><label><a href="<%= url_source %>"><%= source %></a></label>
+                    <% } else { %> <label><%= source %></label>
+                    <% } %>
+                </td>
+            </tr>
+            <% }  %>
+        </tbody>
+    </table>
+</div>
+<% } } %>
+
+

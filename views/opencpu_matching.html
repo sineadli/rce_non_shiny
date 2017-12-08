@@ -1,0 +1,126 @@
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+</head>
+
+<body>
+  <h4>Upload data file</h4>
+    <input id="data" type="file">
+
+  <h4>Select treatment variable</h4>
+    <select id="treat_var">
+    </select>
+
+  <h4>Select grade variable</h4>
+    <select id="grade_var">
+    </select>
+
+  <h4>Select matching variables</h4>
+    <select id="match_vars" multiple>
+    </select>
+
+  <hr>
+
+  <button id="match" disabled>Match</button>
+
+  <button id="download-button" disabled>
+    <a href="#" id="download-link" disabled>Download</a>
+  </button>
+
+  <hr>
+
+  <h4>Results</h4>
+
+  <div id="results">
+  </div>
+
+<script>
+
+  /* When data input changes:
+      1. Send file to openCPU API to get column names as R parses them (to ensure consistency)
+      2. Empty select inputs, then add column names from file.
+      3. Enable Match button.
+  */
+  $("#data").change( function() {
+
+    var formData = new FormData();
+
+    formData.append("data", $(this)[0].files[0]);
+
+    $.ajax({
+      url: "https://52.222.20.48/ocpu/library/edtechrce/R/csv_colnames/json",
+      type: "POST",
+      processData: false,
+      contentType: false,
+      data: formData,
+      success: function(data) {
+
+        $("select").empty();
+
+        $("#grade_var")
+          .append($("<option></option>")
+          .attr("value", "match any grade")
+          .text("match any grade"));
+
+        $.each(data.colnames, function(index, value) {
+          $("select")
+            .append($("<option></option>")
+            .attr("value", value)
+            .text(value));
+        });
+
+        $("#match").prop("disabled", false);
+      }
+    });
+  });
+
+  /* When match button is clicked:
+    1. Collect all inputs in FormData object.
+    2. Send to openCPU API.
+    3. Use returned JSON to populate screen output and save to database.
+  */
+  $("#match").click( function() {
+
+    var formData = new FormData();
+
+    formData.append("data", $("#data")[0].files[0]);
+    formData.append("treat_var", JSON.stringify($("#treat_var").val()));
+    formData.append("match_vars", JSON.stringify($("#match_vars").val()));
+    formData.append("grade_var", JSON.stringify($("#grade_var").val()));
+
+    $.ajax({
+      url: "https://52.222.20.48/ocpu/library/edtechrce/R/matching",
+      type: "POST",
+      processData: false,
+      contentType: false,
+      data: formData,
+      success: function(data) {
+
+        var responsePaths = data.split("\n");
+
+        $.ajax({
+          url: "https://52.222.20.48" + responsePaths[0] + "/json",
+          type: "GET",
+          success: function(data) {
+            $("#results").text(JSON.stringify(data));
+
+            // Put result text and plots on screen.
+
+            // Save results to database.
+          }
+        });
+
+        $("#download-button, #download-link")
+          .prop("disabled", false);
+
+        $("#download-link")
+          .attr("target", "_blank")
+          .attr("href", "https://52.222.20.48" + responsePaths[9]);
+      }
+    });
+  });
+
+</script>
+
+</body>
+</html>

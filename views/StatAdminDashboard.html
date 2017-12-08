@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Statistics</title>
+    <% include ../views/partials/scriptAdminHeader.html %>
+</head>
+<body>
+    <% include ../views/partials/header.html %>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+        </ol>
+    </div>
+<h1 class="page-title ">User Statistics</h1>
+<div id="result">
+
+    <%
+    var groupsFilter = ["", "{ status: 100 }", "{ path: 'path-matching' }", "{ path: 'path-random' }"];
+    var groupsTitle = ["All Evaluatons", "Completed Evaluations", "Matching Evaluations", "Random Assignment Evaluations"];
+ 
+
+    %>
+    <div class="row">
+        <div class="col-sm-3">
+            <ul>
+                <% for(var i=0; i < groupsTitle.length; i++) { %>
+                <li><a href="/statsAdmin/<%= i %>"><%= groupsTitle[i] %></a></li>
+
+                <% } %>
+            </ul>
+        </div>
+
+        <div class="col-sm-9">
+            <h2><%= Title %></h2>
+
+            <p>Number of Evaluations: <%= evalStats.evalCount %></p>
+            <p>Average Percent Completed: <%= evalStats.averagePerComplete %>%</p>
+            <table id="myTable" data-order='[[ 0, "asc" ]]' class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Step</th>
+                    <th>Tool</th>
+                    <th>Number Started/Never Completed</th>
+                    <th>Percent Started/Never Completed</th>
+                    <th>Number Completed</th>
+                    <th>Percent Completed</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <% for (var key in evalStats.tools){
+                var stats = evalStats.tools[key];
+                if (stats.ToolName != "") {
+                %>
+                <tr>
+                    <td><%= stats.Order %></td>
+                    <td><%= stats.ToolName %></td>
+                    <td><%= stats.Started %></td>
+                    <td><%= stats.StartedPer %>%</td>
+                    <td><%= stats.Completed %></td>
+                    <td><%= stats.CompletedPer %>%</td>
+                </tr>
+                <% } } %>
+
+                </tbody>
+            </table>
+         
+        </div>
+    </div>
+</div>
+        <% include ../views/partials/footer.html %>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            var buttonCommon = {
+                exportOptions: {
+                    format: {
+                        body: function(data, row, column, node) {
+                            var dt;
+                            return column === 0 ?
+                                '' :
+                                data;
+                        }
+                    }
+                }
+            };
+            $('#myTable').dataTable({
+                "dom": "Brt",
+                "paging": false,
+                "buttons": [
+                    $.extend(true, {}, buttonCommon, {
+                        extend: 'excel'
+                    })
+                ]
+                
+            });
+        });
+    </script>
+</body>
+
+</html>  
