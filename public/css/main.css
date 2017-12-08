@@ -2171,6 +2171,9 @@ body.brief p.note {
     margin: 20px 10px auto;
            
         }
+body.brief div.step-to-consider .white-background-blue-border {
+    margin: 20px auto;
+}
 
 .relabel-div {
         font-size: .8em;

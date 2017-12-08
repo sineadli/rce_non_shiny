@@ -32,7 +32,7 @@
 <%
 
 var Result="";
-
+console.log(eval.path);
 if (user != "NOAUTHENTICATED"){
 if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;}}
 }
@@ -76,7 +76,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
     </div>
 </div>
 <div id="P" class="row  collapse <%= defs.inFirst %> q-row">
-    <div class="col-xs-6">
+    <div class="col-xs-7">
         <div class="step-subquestion">
             <h4><label for="Outcome_Measure">What measure did you use to test whether there was an effect?</label></h4>
         </div>
@@ -157,7 +157,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
             <% } %>
         </div>
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-5">
         <div class="step-to-consider">
 
             <div class="panel-group" id="ttc11">
@@ -231,7 +231,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
 </div>
 <div id="A" class="row  collapse in q-row">
     <div>
-        <div class="col-xs-6">
+        <div class="col-xs-7">
             <div class="step-subquestion">
                 <p>
                     Upload a CSV file of your data. The file should have one row for each <%= defs.Singular_User %> in your sample, and one column for each data field (for example, test scores and background characteristics). Read <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> for more information.
@@ -272,6 +272,11 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     <h4>Who is using the technology?</h4>
                     <p><label for="treat_var">Choose the name of the variable that tells us who is using <%= defs.Basics_Tech_Name %>&mdash;the intervention versus comparison group identifier. Remember, it should equal 1 for the technology users and 0 for non-users.</label>
                     </p>
+                    <% if(eval.path == "path-random") { %>
+                    <p>If groups of users and non-users were chosen rather than as individuals, choose the variable that identifies the &ldquo;clusters&rdquo; or group. For example, If all students in a school either get the technology or don't, then select the "School ID" variable. Similarly, if the intervention is at the classroom level, the clusters are the classrooms.</p>
+                   
+
+                    <% } %>
                     <p>
                         <em class="stronger"><i class="fa fa-asterisk"></i> Required</em>
                     </p>
@@ -316,7 +321,8 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                 </div>
 
                 <div class="step-subquestion">
-                    <h4><label for="grade_var">Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. Otherwise, select &ldquo;combine all grades.&rdquo;</label> </h4>
+                    <h4><label for="grade_var">Select the name of the variable that indicates student grade level if the analysis should be conducted by grade. If this does not matter for your evaluation, leave &ldquo;combine all grades&rdquo; selected.</label> </h4>
+                    <p>In some cases it is important that the analysis be conducted within groups of students in the same grade. This would be important if the outcome measure is not comparable across grades. </p>
                 </div>
                 <div class="step-action ">
                     <select class="multiselect from-upload from-all" id="grade_var">
@@ -325,7 +331,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                 </div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-5">
             <div class="step-to-consider">
                 <div class="panel-group" id="ttc1">
                     <div class="panel panel-default">
@@ -349,10 +355,8 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                                 You should have downloaded a dataset after randomly creating treatment and comparison groups. Upload that dataset here after merging it with your outcome data.
                             </p>
                             <% } %>
-                            <div class="before-upload">
-                                <p>If users and non-users were chosen based on groups they belonged to rather than as individuals, we need to identify these &ldquo;clusters&rdquo; in order to correctly estimate the effect of the intervention. If the decision to give students a technology was made by principals, and all students in a school either get the technology or don't, then select the "School ID" variable or some other indicator of which school the student attended. Similarly, if the intervention is at the classroom level, the clusters are the classrooms.</p>
-                                <p>In some cases it is important that analysis be conducted within groups of students in the same grade. This would be important if the outcome measure is not comparable across grades. If this does not matter for your evaluation, leave "combine all grades" selected.</p>
-                            </div>
+                            <div class="white-background-blue-border"></div>
+                           
                             <% if(eval.path == "path-matching") { %>
                             <p class="matching-path">
 
@@ -371,9 +375,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     </div>
                 </div>
             </div>
-            <div class="step-to-consider">
-                <div class="white-background-blue-border"></div>
-            </div>
+          
         </div>
         <div class="clearfix"></div>
        
@@ -564,7 +566,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        console.log(data);
+                       // console.log(data);
                         var responsePaths = data.split("\n");
 
                         $.ajax({

@@ -85,7 +85,7 @@
     </div>
 </div>
     <div id="A" class="row  collapse <%= defs.minFirst %> q-row">
-        <div class="col-xs-6">
+        <div class="col-xs-7">
             <div class="step-subquestion">
 
                 <h4> <label for="Intervention_Group_Desc">The group that used <%= defs.Basics_Tech_Name %> (the treatment group) includes:</label></h4>
@@ -149,7 +149,7 @@
 
         </div>
 
-        <div class="col-xs-6">
+        <div class="col-xs-5">
             <div class="step-to-consider">
 
                 <div class="panel-group" id="ttc2">
@@ -247,7 +247,7 @@
         </div>
         <div id="B" class="row  collapse in q-row">
             <div>
-                <div class="col-xs-6">
+                <div class="col-xs-7">
                     <div class="step-subquestion">
                         <h4>Upload a <span data-toggle="tooltip" title="A CSV (comma separated values) file stores data in tables as plain text and is widely used to exchange or transfer information." class="tooltip-gr">CSV</span> file containing your data.</h4>
                         <p>
@@ -288,10 +288,13 @@
 
                         <div class="step-subquestion">
                             <h4><label for="pretest">Select your pretest outcome measure.</label> </h4>
+                           
+                            <p>
+                                It is most important that users and non-users had similar <%= defs.Basics_Outcome %> levels before they started using <%= defs.Basics_Tech_Name %>. For example, if you are examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
+
                             <p>
                                 <em class="stronger"><i class="fa fa-asterisk"></i> Required</em>
-                            </p>
-                        </div>
+                            </p>                        </div>
                         <div class="step-action ">
                             <select id="pretest" class="multiselect from-upload from-numeric-non-binary nodefault">
                                 <option value="Select a variable" selected="selected">Select a data field</option>
@@ -300,12 +303,18 @@
                         </div>
                         <div class="step-subquestion">
                             <h4> Which characteristics matter when matching users to similar non-users? </h4>
+                           
+                            <p>
+                                You should try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology.
+                            Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
+                            </p>
                             <p>
                                 <label for="match_vars">Select characteristics of your <%= defs.Basics_Users %> that could affect <%= defs.Basics_Outcome %>.</label>
                             </p>
                             <p>
                                 <em class="stronger"><i class="fa fa-asterisk"></i> More than one is recommended.</em>
                             </p>
+                           
                         </div>
                         <div class="step-action  ">
                             <select id="match_vars" name="match_vars" class="multiselect from-upload from-numeric required" multiple="multiple">
@@ -324,7 +333,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-6">                  
+                <div class="col-xs-5">                  
                     <div class="step-to-consider">
                         <div class="panel-group" id="ttc3">
                             <div class="panel panel-default">
@@ -343,26 +352,20 @@
                                         The Coach suggests that you create an anonymous ID for each study participant in your file. Be sure to create and keep a key&mdash;a file that includes the original names or IDs alongside the new random IDs. This will enable you to add more information or link files in the future.
                                     </p>
                                     <div class="before-upload">
-                                        <p>
-                                            It is most important that users and non-users had similar <%= defs.Basics_Outcome %> levels before they started using <%= defs.Basics_Tech_Name %>. For example, if you are interested in examining the effect of a technology on math achievement, you would want students in each group to have similar scores on a math test taken just prior to using the technology and you would use that math test as your pretest matching variable.
-                                        </p>
-                                        <p>
-                                            You can (and should) try to match your technology users to non-users on more than one characteristic. For example, if you are matching students, you might want to match on <acronym title="individualized education program">IEP</acronym> or English learner status, as well as characteristics of their teachers, like years of experience, if the teacher plays an important role in students&rsquo; use of the technology.
-                                        </p>
+                                      
                                     </div>
+                                    
+                                    <div class="white-background-blue-border"></div>
+
                                     <p>
-                                        Please refer to <a href="/static/pdf/Matching Overview.pdf" target="_blank">The Matching Overview</a> for more on which variables should be included.
-                                    </p>
-                                    <p>
+<p>
                                         For more information on how the Coach conducts matching you can refer to the <a href="/static/pdf/Matching Technical Appendix.pdf" target="_blank">Matching Technical Appendix</a>.
                                     </p>                                   
                                 </div>
                             </div>                           
                         </div>
                     </div>
-                    <div class="step-to-consider">
-                        <div class="white-background-blue-border"></div>
-                    </div>
+                   
                     
                 </div>
                 <div class="clearfix"></div>
