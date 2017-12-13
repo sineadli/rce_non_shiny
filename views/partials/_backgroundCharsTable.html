@@ -1,0 +1,165 @@
+﻿<%
+ var tabprefix = "";
+ if(eval.last_tool == "Share Your Results" || query.sharing == 1){
+        tabprefix = "A.";
+}
+// Appendix sends 3 results, one for matching (MResult), randomization(RResult) and one from getresults (Result).
+// Other tools just send Result
+console.log("In background chars table patial");
+var Res = "";
+var grades = [];
+
+if( (defs.wasMatched && eval.path == "path-matching")) {
+console.log("has matching results");
+    Res = (typeof MResult === "undefined") ? Result : MResult;
+    grades = Res.results_by_grade;
+   // console.log(Res);
+}
+if( (defs.wasRandomized) && eval.path == "path-random") {
+    console.log("has random results");
+    Res = (typeof RResult === "undefined") ? Result : RResult;
+    grades = Res.results_by_block ? Res.results_by_block : "";
+  //  console.log(Res);
+}
+ if ( defs.hasResults) {
+    Res = Result;
+   // console.log("has results");
+   // console.log(Res);
+// Only newer versions of result object has the baseline means.
+// If no baseline means from getresults, use numbers from other tools.
+grades = Res.results_by_grade ? Res.results_by_grade : Res.results_by_block;
+
+
+}
+console.log("grades");
+ // console.log(grades);
+
+
+if(grades) {
+%>
+<table>
+    <caption>Table <%= tabprefix %><%= defs.BackGround_Tab_Num %>. Background characteristics of the evaluation sample</caption>
+    <thead>
+        <tr>
+         <%  if(eval.last_tool != "Random Assignment") { %>
+            <th>Grade</th>
+            <% } %>
+            <th> Characteristic</th>
+            <th> Overall</th>
+            <th> Treatment</th>
+            <th> Comparison</th>
+            <th> Difference</th>
+            <th> Standardized<br/> difference</th>
+            <th> Balanced?</th>
+        </tr>
+    </thead>
+    <tbody>
+    <%
+    // Old version of get results object did not include var name with baseline_var_means object.
+    // Also, if renaming vars, then names will be in a separate array.
+        var chars= [];
+    if(Res.control_vars) {
+         chars= Res.control_vars;
+    }
+   
+    
+    for (grade in grades) {
+
+        var thisgrade = grades[grade];
+
+
+    var means = thisgrade.baseline_var_means;
+        console.log("This grade");
+        //console.log(thisgrade);
+        var samples = thisgrade.samples;
+        var hasSample = thisgrade.samples ? true : false;
+        var samples_cluster = thisgrade.samples_cluster;
+
+        var growspan = 1;
+        var char = [];
+        if(means && (typeof means == "object")){
+        char = Object.keys(means);
+      
+        var growspan =char.length + 1;
+        if (samples_cluster) {
+            if(Object.keys(samples_cluster).length > 0) {
+                growspan =char.length + 2;
+                }
+            }
+        }
+if(means) {
+    for (var index in char) {
+        var thischar = char[index];
+        if(means[thischar].overall[0] != null) {
+             var varname = thischar;
+             if (chars.length > 0) {
+                varname = chars[index];
+             } 
+
+        %>
+        <tr>
+            <% if (index == 0 && (eval.last_tool != "Random Assignment")) { %>
+            <td rowspan="<%- growspan %>"> <%= grade %></td>
+           <% } %>
+            <td> <span class="table1-relabel-baseline-var-<%- index %>"><%= varname %></span></td>
+
+
+            <td>
+                <%= round10(means[thischar].overall[0], 2) %>
+            </td>
+            <td>
+                <%= round10(means[thischar].intervention[0], 2) %>
+            </td>
+            <td>
+                <%= round10(means[thischar].comparison[0], 2) %>
+            </td>
+            <td>
+                <%= round10(means[thischar].difference[0], 2) %>
+            </td>
+            <td>
+                <%= round10(means[thischar].effect_size[0], 2) %>
+            </td>
+            <td><%= Math.abs(means[thischar].effect_size[0]) > 0.25 ? "False" : "True" %></td>
+        </tr>
+    <% } } 
+    if (hasSample) {
+    console.log("individuals or groups= " + defs.Individual_Group);
+        %>
+        <tr>
+            <td> Number of <%= eval.last_tool == "Random Assignment" ? defs.Random_Level : defs.Basics_Users %></td>
+            <td> <%= samples.n_full %></td>
+            <td> <%= samples.n_treat ? samples.n_treat :  samples.n_full_treat %></td>
+            <td> <%= samples.n_treat ? samples.n_full - samples.n_treat : samples.n_full - samples.n_full_treat %></td>
+            <td> --</td>
+            <td> --</td>
+            <td> --</td>
+        </tr>
+    <% }
+    if( eval.last_tool != "Matching" && eval.last_tool != "Random Assignment") {
+        // Only showing this row in the appendix or get results view.
+    if (Res.args.cluster_var.indexOf("no cluster") === -1 && defs.hasCluster) {
+        // And only show if a cluster variable was used in get results
+        var groups = defs.Cluster_Groups;
+        if(defs.Cluster_Groups == "groups") {
+            groups = "groups (" + Res.args.cluster_var + ")";
+    } 
+
+    %>
+        <tr>
+
+            <td> Number of <%= groups %></td>
+            <td> <%= samples_cluster.n_full %></td>
+            <td> <%= samples_cluster.n_full_treat %></td>
+            <td> <%= samples_cluster.n_full - samples_cluster.n_full_treat %> </td>
+            <td> --</td>
+            <td> --</td>
+            <td> --</td>
+        </tr>
+    <%      }
+        } %>
+    <% } else { %>
+    <tr><td colspan="8">The &ldquo;Get Results&rdquo; tool was updated.  Please re-run &ldquo;Get Results&rdquo; to see this table.</td></tr>
+        <%    } } %>
+    </tbody>
+</table>
+<% } %>
