@@ -166,13 +166,16 @@
                                 <h2 class="clickable">
                                     <i class="fa fa-caret-down" aria-hidden="false"></i> B. What would success look like?
                                 </h2>
-                                <p>
-                                    The Coach will calculate the probability that <%= defs.Basics_Tech_Name %> has an effect at least as large as the number you choose here. The Coach uses the units of whatever you are using to measure outcomes. This could be points on a test if you&rsquo;re trying to improve math achievement or days absent if you are trying to improve school attendance.
-                                </p>
+                               
                             </div>
                         </div>
                         <div id="B" class="row collapse in q-row">
                             <div class="col-xs-7">
+                                <% if(defs.HasResults) { %>
+                                <div class="step-subquestion">
+                                    <p class="note">If you change your answers to the questions below, you must re-run your analysis in the &ldquo;Get Results&rdquo; tool. </p>
+                                </div>
+                                <% } %>
                                 <div class="step-subquestion">
                                     <p>What is the direction of intended change in <%= defs.Basics_Outcome %>?</p>
                                 </div>
@@ -180,7 +183,7 @@
                                     <label class="hidden" for="Outcome_Direction">Select direction of intended change.</label><select required name="planQuestion[Outcome_Direction]" id="Outcome_Direction">
                                         <%
                                         var options = ["Select an option", "Increase", "Decrease" ];
-                                                                                                                                  var values = ["Select an option", "increase", "decrease" ];
+                                        var values = ["Select an option", "increase", "decrease" ];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
                                         var selected;
@@ -207,7 +210,7 @@
                                     <label class="hidden" for="Outcome_Measure">Enter outcome measure.</label><textarea name="planQuestion[Outcome_Measure]" id="Outcome_Measure" placeholder="Ex., a midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
                                     <% if (user != "NOAUTHENTICATED") { %>
                                     <p class="prev-answer">
-                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See  <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
                                     </p>
                                     <% } %>
                                 </div>
@@ -222,7 +225,7 @@
                                     <label class="hidden" for="Measure_Units">Select outcome measure units.</label><select required name="planNext[Measure_Units]" id="Measure_Units">
                                         <%
                                         var options = ["Select an option", "Test score points", "Days", "Percentage points", "Other" ];
-                                                                                                                       var values = ["Select an option", "test score points", "days", "percentage points", "other" ];
+                                        var values = ["Select an option", "test score points", "days", "percentage points", "other" ];
                                         for ( var i = 0; i < options.length; i++ ) {
                                         var selected = (eval.planNext.Measure_Units == values[i] ) ? "selected" : "";
 
@@ -235,7 +238,7 @@
                                         <p>
                                             <label for="Measure_Units_Other">Please specify:</label>
 
-                                            <input type="text" name='planNext[Measure_Units_Other]' id="Measure_Units_Other" value="<%= eval.planNext.Measure_Units_Other %>" />
+                                            <input type="text" name='planNext[Measure_Units_Other]' id="Measure_Units_Other" value="<%= eval.planNext.Measure_Units_Other %>"/>
                                         </p>
                                     </div>
                                 </div>
@@ -246,6 +249,9 @@
 
                                         <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="planNext[Success_Effect_Size]" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" step="any"/>
                                         <span class="measure-units">units</span> on <span class="effect-measure"><%= defs.Outcome_Measure %></span> a success.
+                                    </p>
+                                    <p>
+                                        The Coach will calculate the probability that <%= defs.Basics_Tech_Name %> has an effect at least as large as the number you choose here. The Coach uses the units of whatever you are using to measure outcomes. This could be points on a test if you&rsquo;re trying to improve math achievement or days absent if you are trying to improve school attendance.
                                     </p>
                                 </div>
                             </div>
@@ -301,9 +307,14 @@
                                     <p>&hellip; <%= defs.Basics_Tech_Name %> did not move the needle?</p>
 
                                     <p>
-                                        If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="planNext[Fail_Probability]" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= defs.Basics_Tech_Name %> <span class='change-direction'><%= defs.Outcome_Direction %></span>s <%= defs.Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> did not have the intended effect.
+                                        If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="planNext[Fail_Probability]" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px"/>% probability that <%= defs.Basics_Tech_Name %> <span class='change-direction'><%= defs.Outcome_Direction %></span>s <%= defs.Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> did not have the intended effect.
                                     </p>
                                 </div>
+                                <% if(defs.HasResults) { %>
+                                <div class="step-subquestion">
+                                    <p class="note">If you change your answers to the questions above, you must re-run your analysis in the &ldquo;Get Results&rdquo; tool. </p>
+                                </div>
+                                <% } %>
                             </div>
                             <div class="col-xs-5">
                                 <div class="step-to-consider">

@@ -49,10 +49,10 @@
                             <div class="clearfix"></div>
                             <div class="tool-intro">
                                 <p>
-                                    In any evaluation of effectiveness you will have to compare the group using the technology (the treatment group) to a similar group not using the technology (the comparison group).
-                                    This tool will help you identify the best approach for creating these two groups.
+                                    Evaluating your technology will require you to have two groups, a treatment group and a comparison group. The individuals in each group and the engagement they have with a technology will vary based on your context and the question you would like to answer.  This tool will help you identify the best approach for creating these two groups.
                                 </p>
                                 <p>If you&rsquo;re already using the technology, the Coach will check that you meet the requirements to conduct a backward-looking evaluation. If you're piloting a new technology or expanding a current one to new users, the Coach will recommend one of several forward-looking evaluations.</p>
+                                <p>If you want to get a better understanding of how your design and your research question interact, please read <a href="/static/pdf/Question Limitations.pdf" target="_blank">Limitations on the Type of Question You Can Answer</a>.</p>
                             </div>
                         </div>
                         <div class="clearfix">&nbsp;</div>
@@ -67,7 +67,7 @@
                                 <div data-toggle="collapse" data-target="#D">
                                     <h2 class="clickable">
                                         <i class="fa fa-caret-down" aria-hidden="false"></i>
-                                        Can you create two similar groups, one of <%= defs.Basics_Users %> using <%= defs.Basics_Tech_Name %> and one of <%= defs.Basics_Users %> who have yet to use <%= defs.Basics_Tech_Name %>?
+                                        Can you create two similar groups? For example, one of <%= defs.Basics_Users %> using <%= defs.Basics_Tech_Name %> and one of <%= defs.Basics_Users %> who have yet to use <%= defs.Basics_Tech_Name %>, or two groups using <%= defs.Basics_Tech_Name %> in different ways.
                                     </h2>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                                 for ( var i = 0; i < options.length; i++ )
                                                 {
                                                 var selected;
-                                             selected = ( eval.probAppr.Appr_All_Using == options[i] ) ? "selected" : "";
+                                                selected = ( eval.probAppr.Appr_All_Using == options[i] ) ? "selected" : "";
 
                                                 %>
                                                 <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option><%
@@ -129,6 +129,30 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div id="Using-Differently">
+                                        <div class="step-subquestion">
+                                            <p class="diff-implement">
+                                                Can you implement <%= defs.Basics_Tech_Name %> in two distinct ways and create groups based on how users are engaging with <%= defs.Basics_Tech_Name %>? For example, can you vary how often and for how long <%= defs.Basics_Users %> use <%= defs.Basics_Tech_Name %>?
+                                            </p>
+                                            <p class="diff-usage">Do you have usage data that shows that there are <%= defs.Basics_Users %> who are &ldquo;high users&rdquo; and <%= defs.Basics_Users %> who are &ldquo;low users&rdquo;?</p>
+                                        </div>
+                                        <div class="step-action">
+                                            <select name="probAppr[Appr_Diff_Usage]" id="Appr_Diff_Usage">
+                                                <%
+                                                var options = ["Select an option", "Yes", "No"];
+                                                for ( var i = 0; i < options.length; i++ )
+                                                {
+                                                var selected;
+                                                selected = ( eval.probAppr.Appr_Diff_Usage == options[i] ) ? "selected" : "";
+
+                                                %>
+                                                <option value="<%=options[ i ] %>" <%= selected %> ><%=options[ i ] %></option><%
+                                                }
+                                                %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                  
                                 </div>
                                 <div class="col-xs-6">
                                     <div class="step-to-consider">
@@ -147,7 +171,10 @@
                                                     <p>If you are targeting a specific group of <%= defs.Basics_Users %> (for example English learners or Title 1 schools) answer this question only for those <%= defs.Basics_Users %>.</p>
                                                     <p> The more similar the two groups are at the start of the evaluation, the more confident you can be at the end of the evaluation that the measured differences found can be attributed to using the technology.</p>
                                                     <p>The Coach does not recommend comparing volunteers to non-volunteers because those that volunteer are inherently different from those that do not. If you must ask for volunteers, the Coach recommends selecting users and non-users from your pool of volunteers.</p>
-                                                </div>
+                                                    <p class="diff-implement">
+                                                        Sometimes using a technology in different ways can lead to different results. You may want to understand how the amount of time, or the number of days that the technology is used influences outcomes. For example, do students who use the technology for 120 minutes per week have better outcomes than students who only use it for 60 minutes per week? Or, do students who use the technology for 120 minutes over three days perform better than students who use the technology for 120 minutes over two days? You might also want to know if there&rsquo;s a difference between using the technology during class time compared to using it at home, or whether unlocking certain features within the technology makes a difference. These are all implementation questions that you can answer using the Coach. However, it requires you to make sure your two groups each implement the technology in a specific way.</p>
+                                                    <p class="diff-usage">Your users may decide to engage with the technology in different ways. Some users may use the technology more, while others use it less. If you have access to usage data you can determine whether this is the case for your technology by looking at the number of logins or amount of time each user has used the technology. Then by setting a threshold that defines low and high usage you can categorize users into two groups. These two groups can be compared to provide suggestive evidence about how using the technology more influences outcomes. </p>
+</div>
                                             </div>
                                         </div>
                                     </div>
@@ -390,9 +417,7 @@
 
 
                         </div>
-
-
-
+                 
                     </div>
                 </div>
             </div>
@@ -423,7 +448,7 @@
                                     In order to evaluate whether the educational technology is moving the needle, you&#39;ll need to be able to compare <%= defs.Basics_Users %> using the technology to similar <%= defs.Basics_Users %> not using the technology. Your answers indicate that all <%= defs.Basics_Users %> will be using the technology.
                                 </p>
                                 <p>
-                                  You might be able to test options for improving implementation of the technology. Contact us at EdTechRCE@mathematica-mpr.com if you wish to discuss alternative options.
+                                    You might be able to test options for improving implementation of the technology. Contact us at EdTechRCE@mathematica-mpr.com if you wish to discuss alternative options.
                                 </p>
                             </div>
                             <div id="Con_Matched_Current">
@@ -441,8 +466,14 @@
                                 </p>
 
                             </div>
+
+
+
+
                         </div>
-                        <div class="col-xs-6">
+
+
+                        <div class="col-xs-5">
                             <div class="step-to-consider">
                                 <div class="panel-group" id="ttc6">
                                     <div class="panel panel-default">
@@ -463,6 +494,49 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
+                        <div id="Describe-Groups">
+
+
+                            <div class="step-subquestion">
+                                <p class="diff-implement">
+                                    <strong>Note:</strong> The Coach generally refers to the treatment group as technology users and the comparison group as technology non-users. For your evaluation you should think of the treatment group as one way of implementation and the comparison group as the other way of implementation. Because you are creating groups based on differences in implementation you will only be able to compare the effect of using <%= defs.Basics_Tech_Name %> in one way to using <%= defs.Basics_Tech_Name %> in a different way. An example research question for this design is: <em>Do students using the technology for 120 minutes per week perform better on the end of year math assessment compared to similar students using the technology for 60 minutes per week?</em> To learn more, please read <a href="../static/pdf/Question%20Limitations.pdf" target="_new">
+                                        Limitations on the Type of Question
+                                        You Can Answer
+                                    </a>.
+                                </p>
+                                <p class="diff-usage">
+                                    <strong>Note:</strong> The Coach generally refers to the treatment group as technology users and the comparison group as technology non-users. For your evaluation you should think of the treatment group as &ldquo;high usage users&rdquo; and the comparison group as &ldquo;low usage users&rdquo;. Because you are creating groups based on differences in usage you will only be able to compare the effect of using the technology more to the effect of using it less, and there may be some unobserved variables influencing whatever outcomes you observe. An example research question for this design is: <em>Do students with &ldquo;high usage&rdquo; perform better on the end of year math assessment compared to similar students with &ldquo;low usage&rdquo;?</em> To learn more, please read <a href="../static/pdf/Question%20Limitations.pdf" target="_new">
+                                        Limitations on the Type of Question
+                                        You Can Answer
+                                    </a>.
+                                </p>
+                            </div>
+
+                            <div class="step-action">
+                                <div class="diff-implement">
+                                    <label for="Appr_Treatment_Group">How will you implementation <%= defs.Basics_Tech_Name %> with your &lsquo;treatment&rsquo; group? </label>
+                                </div>
+                                <div class="diff-usage">
+                                    <label for="Appr_Treatment_Group_u">How did <%= defs.Basics_Users %> in your &lsquo;treatment&rsquo; group use <%= defs.Basics_Tech_Name %>? </label>
+                                </div>
+                                    <textarea name="probAppr[Appr_Treatment_Group]" id="Appr_Treatment_Group" placeholder="Ex., students will use the technology for 120 minutes per week"><%= eval.probAppr.Appr_Treatment_Group %></textarea>
+                                </div>
+                            <div class="step-action">
+                                <div class="diff-implement">
+                                    <label for="Appr_Treatment_Group">How will you implementation <%= defs.Basics_Tech_Name %> with your &lsquo;comparison&rsquo; group? </label>
+                                </div>
+                                <div class="diff-usage">
+                                    <label for="Appr_Treatment_Group_u">How did <%= defs.Basics_Users %> in your &lsquo;comparison&rsquo; use <%= defs.Basics_Tech_Name %>? </label>
+                                </div>
+                                    <textarea name="probAppr[Appr_Comparison_Group]" id="Appr_Comparison_Group" placeholder="Ex., students will use the technology for 60 minutes per week"><%= eval.probAppr.Appr_Comparison_Group  %></textarea>
+                               
+                            </div>
+
+                          
+
+
+                        </div>
                     </div>
                 </div>
 
@@ -479,18 +553,27 @@
         $(document).ready(function () {
             setUserLimitsSelections();
             setApproachConclusion();
-
+            var currentNew = $('#Appr_Current_or_New').val();
+            //setttc();
+            if (currentNew.toLowerCase() === 'current') $("#New_Users").hide();
 
 
             $('#Appr_Current_or_New').change(function () {
-
+         
                 setApproachConclusion();
             });
+           
             $('#Appr_Can_Group').change(function () {
+               
                 setApproachConclusion();
             });
 
             $('#Appr_All_Using').change(function () {
+                
+                setApproachConclusion();
+            });
+            $('#Appr_Diff_Usage').change(function () {
+
                 setApproachConclusion();
             });
 
@@ -526,11 +609,32 @@
 
                 setApproachConclusion();
             });
-
+            function setttc(currentNew, canGroup, allUsing, diffusing) {
+                $("#Using-Differently").hide();
+                $(".diff-usage").hide();
+                $(".diff-implement").hide();
+                $("#Describe-Groups").hide();
+              
+                if (currentNew.toLowerCase() === 'current' && allUsing.toLowerCase() === 'yes') {
+                    $(".diff-usage").show();
+                    $(".diff-implement").hide();
+                    $("#Using-Differently").show();
+                    if (diffusing.toLowerCase() === 'yes') $("#Describe-Groups").show();
+                }
+                else if (currentNew.toLowerCase() === 'new' && canGroup.toLowerCase() === 'no') {
+                    $(".diff-implement").show();
+                    $(".diff-usage").hide();
+                    $("#Using-Differently").show();
+                    if (diffusing.toLowerCase() === 'yes') $("#Describe-Groups").show();
+                }
+            }
             function setApproachConclusion() {
                 var currentNew = $('#Appr_Current_or_New').val();
+                var diffusing = $('#Appr_Diff_Usage').val();
                 var allUsing = $('#Appr_All_Using').val();
                 var canGroup = $('#Appr_Can_Group').val();
+
+                setttc(currentNew, canGroup, allUsing, diffusing); 
 
                 if (currentNew.toLowerCase() === "current") {
                     $("input[type=radio][name=Appr_How_Choose]:checked").prop('checked', false);
@@ -541,25 +645,85 @@
                 var chooseCriteria = $('#Choose-Other').is(':checked') ? $('#Choose-Other').val() : "";
 
 
-                if (currentNew.toLowerCase() === "current" && allUsing.toLowerCase() === "select an option") {
-                    $("#All-Using").show();
-                    $("#New_Users").hide();
-                    $("#How-Group").hide();
-                    $("#How-Assign").hide();
-                    $("#Step_Conclusion").hide();
-                }
-                else if (currentNew.toLowerCase() === "new" && (canGroup.toLowerCase() === "select an option" || canGroup.toLowerCase() === "yes") &&
-                    (chooseRandom === "" && chooseCutoff === "" && chooseCriteria === "")) {
-                    $("#All-Using").hide();
-                    $("#New_Users").show();
+                $("#Can-Group").show(); // The whole set of grouping questions.
+                $('#Appr_Current_or_New').show();
+                $("#All-Using").hide();
+                $("#New_Users").hide();
+                $("#How-Group").hide(); // Select group creation menthod
+                $("#How-Assign").hide(); // To cluster or not
+                $("#Step_Conclusion").hide();
+                $("#Con_Random").hide();
+                $("#Con_Cutoff").hide();
+                $("#Con_NoGroups").hide();
+                $("#Con_Matched_Current").hide();
+                $("#Con_Matched_Selected").hide();
+               
+               
+                $("button.complete").attr("disabled", "disabled");
+
+                if (currentNew.toLowerCase() === "new" &&  (canGroup.toLowerCase() === "yes" || diffusing.toLowerCase() === "yes")) {
                     $("#How-Group").show();
-                    $("#How-Assign").hide();
-                    $("#Step_Conclusion").hide();
+                    if (chooseRandom.toLowerCase() !== "") {
+                        $("#How-Assign").show();
+                    }
                 }
-                else if (currentNew.toLowerCase() === "new" && canGroup.toLowerCase() === "no") {
-                    $("#All-Using").hide();
-                    $("#New_Users").show();
-                    $("#How-Group").hide();
+         
+                 if (currentNew.toLowerCase() === "current") {
+                     $("#All-Using").show();
+                     $("#New_Users").hide();
+                     $("#How-Group").hide();
+                 }
+                 if (currentNew.toLowerCase() === "new") {
+                     $("#All-Using").hide();
+                     $("#New_Users").show();
+                 }
+
+                 if (allUsing.toLowerCase() === "no" && currentNew.toLowerCase() === "current") {
+                     $("#Step_Conclusion").show();
+                     $("#Con_Matched_Current").show();
+                     $("button.complete").removeAttr("disabled");
+                 }
+
+                 if (currentNew.toLowerCase() === "new" &&
+                   chooseRandom.toLowerCase() !== "" &&
+                  ($('#Individual_Group').val() === "users" ||
+                   ($('#Individual_Group').val() === "groups" &&
+                   $('#Cluster_Group').val() !== "Select an option"))) {
+                     $("#Step_Conclusion").show();
+                     $("#Con_Matched_Current").hide();
+                     $("#Con_Random").show();
+                     $("#Con_Cutoff").hide();
+                     $("#Con_Criteria").hide();
+                     $("#Con_NoGroups").hide();
+                     $("#Con_Matched_Selected").hide();
+                     $("button.complete").removeAttr("disabled");
+                 }
+                 if (currentNew.toLowerCase() === "new" &&
+                chooseRandom.toLowerCase() !== "") {
+                     $("#How-Assign").show();
+
+                 }
+                 if (currentNew.toLowerCase() === "new" && chooseCutoff.toLowerCase() !== "") {
+                     $("#Step_Conclusion").show();
+                     $("#Con_Matched_Current").hide();
+                     $("#Con_Random").hide();
+                     $("#Con_Cutoff").show();
+                     $("#Con_Criteria").hide();
+                     $("#Con_NoGroups").hide();
+                     $("#Con_Matched_Selected").hide();
+                     $("button.complete").removeAttr("disabled");
+                 }
+                 if (currentNew.toLowerCase() === "new" && chooseCriteria.toLowerCase() !== "") {
+                     $("#Step_Conclusion").show();
+                     $("#Con_Matched_Current").hide();
+                     $("#Con_Random").hide();
+                     $("#Con_Cutoff").hide();
+                     $("#Con_NoGroups").hide();
+                     $("#Con_Matched_Selected").show();
+                     $("button.complete").removeAttr("disabled");
+                 }
+
+                 if (currentNew.toLowerCase() === "current" && allUsing.toLowerCase() === "yes" && diffusing.toLowerCase() === "no") {
                     $("#Step_Conclusion").show();
                     $("#Con_Matched_Current").hide();
                     $("#Con_Random").hide();
@@ -567,120 +731,37 @@
                     $("#Con_NoGroups").show();
                     $("#Con_Matched_Selected").hide();
                     $("button.complete").removeAttr("disabled");
-                }
-                else if (currentNew.toLowerCase() === "current" && allUsing.toLowerCase() === "yes") {
+                 }
 
-                    $("#New_Users").hide();
-                    $("#How-Group").hide();
-                    $("#How-Assign").hide();
-                    $("#All-Using").show();
-                    $("#Step_Conclusion").show();
-                    $("#Con_Matched_Current").hide();
-                    $("#Con_Random").hide();
-                    $("#Con_Cutoff").hide();
-                    $("#Con_NoGroups").show();
-                    $("#Con_Matched_Selected").hide();
-                    $("button.complete").removeAttr("disabled");
-
-                }
-                else if (currentNew.toLowerCase() === "current" && allUsing.toLowerCase() === "no") {
-
-                    $("#New_Users").hide();
-                    $("#How-Group").hide();
-                    $("#How-Assign").hide();
-                    $("#All-Using").show();
-
+                 if (currentNew.toLowerCase() === "new" && canGroup.toLowerCase() === "no" && diffusing.toLowerCase() === "no") {
+                     $("#Step_Conclusion").show();
+                     $("#Con_Matched_Current").hide();
+                     $("#Con_Random").hide();
+                     $("#Con_Cutoff").hide();
+                     $("#Con_NoGroups").show();
+                     $("#Con_Matched_Selected").hide();
+                     $("button.complete").removeAttr("disabled");
+                 }
+            
+                if (currentNew.toLowerCase() === "current" && allUsing.toLowerCase() === "yes" && diffusing.toLowerCase() === "yes") {
                     $("#Step_Conclusion").show();
                     $("#Con_Matched_Current").show();
+                    $("#Describe-Groups").show();
+                    $(".diff-usage").show();
+
                     $("#Con_Random").hide();
                     $("#Con_Cutoff").hide();
                     $("#Con_NoGroups").hide();
                     $("#Con_Matched_Selected").hide();
                     $("button.complete").removeAttr("disabled");
-
-                }
-
-                else if (currentNew.toLowerCase() === "new" &&
-                    chooseRandom.toLowerCase() !== "" &&
-                   ($('#Individual_Group').val() === "users" ||
-                    ($('#Individual_Group').val() === "groups" &&
-                    $('#Cluster_Group').val() !== "Select an option"))) {
-                    $("#How-Assign").show();
-                    $("#How-Group").show();
-                    $("#New_Users").show();
-                    $("#Step_Conclusion").show();
-                    $("#All-Using").hide();
-                    $("#Con_Matched_Current").hide();
-                    $("#Con_Random").show();
-                    $("#Con_Cutoff").hide();
-                    $("#Con_Criteria").hide();
-                    $("#Con_NoGroups").hide();
-                    $("#Con_Matched_Selected").hide();
-                    $("button.complete").removeAttr("disabled");
-                }
-                else if (currentNew.toLowerCase() === "new" &&
-                chooseRandom.toLowerCase() !== "") {
-                    $("#How-Assign").show();
-                    $("#New_Users").show();
-                    $("#How-Group").show();
-                    $("#Step_Conclusion").hide();
-                    $("#All-Using").hide();
-                    $("#Con_Matched_Current").hide();
-                    $("#Con_Random_individuals").show();
-                    $("#Con_Cutoff").hide();
-                    $("#Con_Criteria").hide();
-                    $("#Con_NoGroups").hide();
-                    $("#Con_Matched_Selected").hide();
-                    $("button.complete").removeAttr("disabled");
-                }
-                else if (currentNew.toLowerCase() === "new" && chooseCutoff.toLowerCase() !== "") {
-                    $("#Step_Conclusion").show();
-                    $("#New_Users").show();
-                    $("#How-Group").show();
-                    $("#How-Assign").hide();
-                    $("#All-Using").hide();
-                    $("#Con_Matched_Current").hide();
-                    $("#Con_Random").hide();
-                    $("#Con_Cutoff").show();
-                    $("#Con_Criteria").hide();
-                    $("#Con_NoGroups").hide();
-                    $("#Con_Matched_Selected").hide();
-                    $("button.complete").removeAttr("disabled");
-                }
-                else if (currentNew.toLowerCase() === "new" && chooseCriteria.toLowerCase() !== "") {
-                    $("#Step_Conclusion").show();
-                    $("#New_Users").show();
-                    $("#How-Group").show();
-                    $("#All-Using").hide();
-                    $("#How-Assign").hide();
-                    $("#Con_Matched_Current").hide();
-                    $("#Con_Random").hide();
-                    $("#Con_Cutoff").hide();
-                    $("#Con_NoGroups").hide();
-                    $("#Con_Matched_Selected").show();
-                    $("button.complete").removeAttr("disabled");
-
-
-                } else {
-                    $("#Can-Group").show();
-                    $("#How-Assign").hide();
-                    $("#All-Using").show();
-                    $("#New_Users").show();
-                    $("#How-Group").hide();
-                    $("#Step_Conclusion").hide();
-                    $("#Con_Random").hide();
-                    $("#Con_Cutoff").hide();
-                    $("#Con_NoGroups").hide();
-                    $("#Con_Matched_Current").hide();
-                    $("#Con_Matched_Selected").hide();
-
-                    $("button.complete").attr("disabled", "disabled");
-                }
+                 }
+                
+              
                 return true;
             }
 
             //init feedback_me plugin
-            var fm_options = setFeedbackOptions($("#user_email").val(), "craft_your_research_q");
+            var fm_options = setFeedbackOptions($("#user_email").val(), "determine_your_approach");
             fm.init(fm_options);
 
         });
