@@ -513,15 +513,15 @@
                                 </p>
                             </div>
 
-                            <div class="step-action">
+                            <div class="step-action">                            
                                 <div class="diff-implement">
                                     <label for="Appr_Treatment_Group">How will you implementation <%= defs.Basics_Tech_Name %> with your &lsquo;treatment&rsquo; group? </label>
                                 </div>
                                 <div class="diff-usage">
                                     <label for="Appr_Treatment_Group_u">How did <%= defs.Basics_Users %> in your &lsquo;treatment&rsquo; group use <%= defs.Basics_Tech_Name %>? </label>
                                 </div>
-                                    <textarea name="probAppr[Appr_Treatment_Group]" id="Appr_Treatment_Group" placeholder="Ex., students will use the technology for 120 minutes per week"><%= eval.probAppr.Appr_Treatment_Group %></textarea>
-                                </div>
+                                <textarea name="probAppr[Appr_Treatment_Group]" id="Appr_Treatment_Group" placeholder="Ex., students will use the technology for 120 minutes per week"><%= eval.probAppr.Appr_Treatment_Group %></textarea>
+                            </div>
                             <div class="step-action">
                                 <div class="diff-implement">
                                     <label for="Appr_Treatment_Group">How will you implementation <%= defs.Basics_Tech_Name %> with your &lsquo;comparison&rsquo; group? </label>
@@ -609,7 +609,7 @@
 
                 setApproachConclusion();
             });
-            function setttc(currentNew, canGroup, allUsing, diffusing) {
+            function setImpPath(currentNew, canGroup, allUsing, diffusing) {
                 $("#Using-Differently").hide();
                 $(".diff-usage").hide();
                 $(".diff-implement").hide();
@@ -620,12 +620,17 @@
                     $(".diff-implement").hide();
                     $("#Using-Differently").show();
                     if (diffusing.toLowerCase() === 'yes') $("#Describe-Groups").show();
+                    $("#Appr_Treatment_Group").attr("placeholder", "Ex., students used the technology for 120 minutes per week").placeholder();
+                    $("#Appr_Comparison_Group").attr("placeholder", "Ex., students used the technology for 60 minutes per week").placeholder();
                 }
                 else if (currentNew.toLowerCase() === 'new' && canGroup.toLowerCase() === 'no') {
+                    var chooseCutoff = $('#Choose-Cutoff').is(':checked') ? $('#Choose-Cutoff').val() : "";
                     $(".diff-implement").show();
                     $(".diff-usage").hide();
                     $("#Using-Differently").show();
-                    if (diffusing.toLowerCase() === 'yes') $("#Describe-Groups").show();
+                    if ((diffusing.toLowerCase() === 'yes') && chooseCutoff !== "cutoff") $("#Describe-Groups").show();
+                    $("#Appr_Treatment_Group").attr("placeholder", "Ex., students will use the technology for 120 minutes per week").placeholder();
+                    $("#Appr_Comparison_Group").attr("placeholder", "Ex., students will use the technology for 60 minutes per week").placeholder();
                 }
             }
             function setApproachConclusion() {
@@ -634,7 +639,7 @@
                 var allUsing = $('#Appr_All_Using').val();
                 var canGroup = $('#Appr_Can_Group').val();
 
-                setttc(currentNew, canGroup, allUsing, diffusing); 
+                setImpPath(currentNew, canGroup, allUsing, diffusing);
 
                 if (currentNew.toLowerCase() === "current") {
                     $("input[type=radio][name=Appr_How_Choose]:checked").prop('checked', false);
