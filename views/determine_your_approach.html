@@ -518,7 +518,7 @@
                                     <label for="Appr_Treatment_Group">How will you implementation <%= defs.Basics_Tech_Name %> with your &lsquo;treatment&rsquo; group? </label>
                                 </div>
                                 <div class="diff-usage">
-                                    <label for="Appr_Treatment_Group_u">How did <%= defs.Basics_Users %> in your &lsquo;treatment&rsquo; group use <%= defs.Basics_Tech_Name %>? </label>
+                                    <label for="Appr_Treatment_Group">How did <%= defs.Basics_Users %> in your &lsquo;treatment&rsquo; group use <%= defs.Basics_Tech_Name %>? </label>
                                 </div>
                                 <textarea name="probAppr[Appr_Treatment_Group]" id="Appr_Treatment_Group" placeholder="Ex., students will use the technology for 120 minutes per week"><%= eval.probAppr.Appr_Treatment_Group %></textarea>
                             </div>
@@ -527,7 +527,7 @@
                                     <label for="Appr_Treatment_Group">How will you implementation <%= defs.Basics_Tech_Name %> with your &lsquo;comparison&rsquo; group? </label>
                                 </div>
                                 <div class="diff-usage">
-                                    <label for="Appr_Treatment_Group_u">How did <%= defs.Basics_Users %> in your &lsquo;comparison&rsquo; use <%= defs.Basics_Tech_Name %>? </label>
+                                    <label for="Appr_Treatment_Group">How did <%= defs.Basics_Users %> in your &lsquo;comparison&rsquo; use <%= defs.Basics_Tech_Name %>? </label>
                                 </div>
                                     <textarea name="probAppr[Appr_Comparison_Group]" id="Appr_Comparison_Group" placeholder="Ex., students will use the technology for 60 minutes per week"><%= eval.probAppr.Appr_Comparison_Group  %></textarea>
                                
@@ -620,8 +620,8 @@
                     $(".diff-implement").hide();
                     $("#Using-Differently").show();
                     if (diffusing.toLowerCase() === 'yes') $("#Describe-Groups").show();
-                    $("#Appr_Treatment_Group").attr("placeholder", "Ex., students used the technology for 120 minutes per week").placeholder();
-                    $("#Appr_Comparison_Group").attr("placeholder", "Ex., students used the technology for 60 minutes per week").placeholder();
+                    $("#Appr_Treatment_Group").attr("placeholder", "Ex., students used the technology for 120 minutes per week");
+                    $("#Appr_Comparison_Group").attr("placeholder", "Ex., students used the technology for 60 minutes per week");
                 }
                 else if (currentNew.toLowerCase() === 'new' && canGroup.toLowerCase() === 'no') {
                     var chooseCutoff = $('#Choose-Cutoff').is(':checked') ? $('#Choose-Cutoff').val() : "";
@@ -629,8 +629,8 @@
                     $(".diff-usage").hide();
                     $("#Using-Differently").show();
                     if ((diffusing.toLowerCase() === 'yes') && chooseCutoff !== "cutoff") $("#Describe-Groups").show();
-                    $("#Appr_Treatment_Group").attr("placeholder", "Ex., students will use the technology for 120 minutes per week").placeholder();
-                    $("#Appr_Comparison_Group").attr("placeholder", "Ex., students will use the technology for 60 minutes per week").placeholder();
+                    $("#Appr_Treatment_Group").attr("placeholder", "Ex., students will use the technology for 120 minutes per week");
+                    $("#Appr_Comparison_Group").attr("placeholder", "Ex., students will use the technology for 60 minutes per week");
                 }
             }
             function setApproachConclusion() {
