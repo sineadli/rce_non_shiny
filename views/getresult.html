@@ -476,7 +476,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        
+                        $(".white-background-blue-border").empty();
                         //$(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
                         $(".white-background-blue-border").append('<p>The following checks were automatically performed on the data you uploaded. It is possible that the Coach has misinterpreted some of your data when conducting these checks and you may need to do additional data cleaning as detailed in our <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> guide.</p>')
                         var list = $(".white-background-blue-border").append('<ul></ul>').find('ul');
