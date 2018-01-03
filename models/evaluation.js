@@ -92,6 +92,7 @@ var PlanNext = mongoose.Schema({
     Fail_Probability: { type: String, default: '' },// was Plan_Next_C_2
     Action_Success: { type: String, default: '' }, // was Plan_Next_D_1
     Action_Fail: { type: String, default: '' },// was Plan_Next_D_2
+	Action_NoChange: { type: String, default: '' },
     Action_Inconclusive: { type: String, default: '' }, // Plan_Next_D_3
     created_at: { type: Date, default: Date.now },
     updated_at: Date

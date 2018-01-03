@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div id="A" class="row  collapse in q-row">
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
                                 <div class="step-action">
                                     <p>
                                         It <label class="hidden" for="Tech_Cost_Saves">Indicate if technology costs or saves money.</label>
@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <div class="step-to-consider">
                                     <div class="panel-group" id="ttc4">
                                         <div class="panel panel-default">
@@ -164,15 +164,58 @@
                         <div class="step-header container">
                             <div data-toggle="collapse" data-target="#B">
                                 <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> B. What would success look like?
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> B. What is the smallest difference in outcomes that would be meaningful for the decision you need to make?
                                 </h2>
-                                <p>
-                                    The Coach will calculate the probability that <%= defs.Basics_Tech_Name %> has an effect at least as large as the number you choose here. The Coach uses the units of whatever you are using to measure outcomes. This could be points on a test if you&rsquo;re trying to improve math achievement or days absent if you are trying to improve school attendance.
-                                </p>
+                               
                             </div>
                         </div>
                         <div id="B" class="row collapse in q-row">
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
+                                <% if(defs.HasResults) { %>
+                                <div class="step-subquestion">
+                                    <p class="note">If you change your answers to the questions below, you must re-run your analysis in the &ldquo;Get Results&rdquo; tool. </p>
+                                </div>
+                                <% } %>
+                                <div class="step-subquestion">
+                                    <p>What measure will you use to test whether there was an effect?</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <label class="hidden" for="Outcome_Measure">Enter outcome measure.</label><textarea name="planQuestion[Outcome_Measure]" id="Outcome_Measure" placeholder="Ex., a midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
+                                    <% if (user != "NOAUTHENTICATED") { %>
+                                    <p class="prev-answer">
+                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
+                                    </p>
+                                    <% } %>
+                                </div>
+
+
+                                <div class="step-subquestion">
+                                    <p>
+                                        What unit of measurement does <span class="effect-measure"><%= defs.Outcome_Measure %></span> use to measure <%= defs.Basics_Outcome %>?
+                                    </p>
+                                </div>
+                                <div class="step-action">
+                                    <label class="hidden" for="Measure_Units">Select outcome measure units.</label><select required name="planNext[Measure_Units]" id="Measure_Units">
+                                        <%
+                                        var options = ["Select an option", "Test score points", "Days", "Percentage points", "Other" ];
+                                        var values = ["Select an option", "test score points", "days", "percentage points", "other" ];
+                                        for ( var i = 0; i < options.length; i++ ) {
+                                        var selected = (eval.planNext.Measure_Units == values[i] ) ? "selected" : "";
+
+                                        %>
+                                        <option value="<%=values[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
+                                        <% } %>
+
+                                    </select>
+                                    <div id="Question_Units_Other" hidden="true" class="other-div">
+                                        <p>
+                                            <label for="Measure_Units_Other">Please specify:</label>
+
+                                            <input type="text" name='planNext[Measure_Units_Other]' id="Measure_Units_Other" value="<%= eval.planNext.Measure_Units_Other %>" />
+                                        </p>
+                                    </div>
+                                </div>
                                 <div class="step-subquestion">
                                     <p>What is the direction of intended change in <%= defs.Basics_Outcome %>?</p>
                                 </div>
@@ -180,7 +223,7 @@
                                     <label class="hidden" for="Outcome_Direction">Select direction of intended change.</label><select required name="planQuestion[Outcome_Direction]" id="Outcome_Direction">
                                         <%
                                         var options = ["Select an option", "Increase", "Decrease" ];
-                                                                                                                                  var values = ["Select an option", "increase", "decrease" ];
+                                        var values = ["Select an option", "increase", "decrease" ];
                                         for ( var i = 0; i < options.length; i++ )
                                         {
                                         var selected;
@@ -199,57 +242,45 @@
                                     </p>
                                     <% } %>
                                 </div>
-                                <div class="step-subquestion">
-                                    <p>What measure will you use to test whether there was an effect?</p>
-                                </div>
+
                                 <div class="step-action">
 
-                                    <label class="hidden" for="Outcome_Measure">Enter outcome measure.</label><textarea name="planQuestion[Outcome_Measure]" id="Outcome_Measure" placeholder="Ex., a midyear math assessment"><%= eval.planQuestion.Outcome_Measure %></textarea>
-                                    <% if (user != "NOAUTHENTICATED") { %>
-                                    <p class="prev-answer">
-                                        <i class="fa fa-hand-o-right"></i> Where did I answer this? See  <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
+                                    <p> Think about your goals for <%= defs.Basics_Tech_Name %>. How large of a change would you need to see in order to conclude that the <%= defs.Basics_Tech_Name %> is having the intended effect and is preferable to the alternative? This is called the <strong>minimum meaningful effect or MME</strong>. 
+                                       
                                     </p>
-                                    <% } %>
-                                </div>
+                                    <p>For this evaluation, is a(n) <span class="change-direction"><%= defs.Outcome_Direction %></span> of any amount in <%= defs.Basics_Outcome %> meaningful?
 
-
-                                <div class="step-subquestion">
-                                    <p>
-                                        What unit of measurement does <span class="effect-measure"><%= defs.Outcome_Measure %></span> use to measure <%= defs.Basics_Outcome %>?
                                     </p>
-                                </div>
-                                <div class="step-action">
-                                    <label class="hidden" for="Measure_Units">Select outcome measure units.</label><select required name="planNext[Measure_Units]" id="Measure_Units">
-                                        <%
-                                        var options = ["Select an option", "Test score points", "Days", "Percentage points", "Other" ];
-                                                                                                                       var values = ["Select an option", "test score points", "days", "percentage points", "other" ];
-                                        for ( var i = 0; i < options.length; i++ ) {
-                                        var selected = (eval.planNext.Measure_Units == values[i] ) ? "selected" : "";
+                                    <div>
+                                        <select id="Any_Amount">
+                                            <%
 
-                                        %>
-                                        <option value="<%=values[ i ] %>" <%= selected %> ><%=options[ i ] %></option>
-                                        <% } %>
+                                            var options =["Select an option","Yes", "No"];
 
-                                    </select>
-                                    <div id="Question_Units_Other" hidden="true" class="other-div">
-                                        <p>
-                                            <label for="Measure_Units_Other">Please specify:</label>
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+                                            var selected = ( (defs.AnyAmount.toLowerCase() == options[i].toLowerCase() ) ? "selected" : "");
+                                            %>
+                                            <option value="<%=options[i] %>" <%= selected %> ><%=options[i] %></option><%
+                                            }
+                                            %>
 
-                                            <input type="text" name='planNext[Measure_Units_Other]' id="Measure_Units_Other" value="<%= eval.planNext.Measure_Units_Other %>" />
-                                        </p>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="step-action">
+                                <div class="some-amount">
+                                    <div class="step-action">
+                                        <p>
+                                            I would consider any <span class="change-direction"><%= defs.Outcome_Direction %></span> at least
 
-                                    <p>
-                                        I would consider any <span class="change-direction"><%= defs.Outcome_Direction %></span> at least
-
-                                        <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="planNext[Success_Effect_Size]" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" step="any"/>
-                                        <span class="measure-units">units</span> on <span class="effect-measure"><%= defs.Outcome_Measure %></span> a success.
-                                    </p>
+                                            <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="planNext[Success_Effect_Size]" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" step="any" />
+                                            <span class="measure-units">units</span> on <span class="effect-measure"><%= defs.Outcome_Measure %></span> a success.
+                                        </p>
+                                        <p> The Coach will use your answer to this question to divide the range of possible effects into three regions&mdash;one where the two groups are equivalent, one where treatment group performs better than the comparison group by an amount at least as large as the MME, and one where the treatment group performs worse than the comparison group by an amount at least as large as the MME. The figure below shows what this looks like.</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <div class="step-to-consider">
                                     <div class="step-to-consider">
                                         <div class="panel-group" id="ttc5">
@@ -264,11 +295,16 @@
                                                     </h3>
                                                 </div>
                                                 <div id="consider5" class="panel-collapse collapse in">
+
                                                     <ul>
+                                                        <li>
+                                                            The MME will be different for different situations. For example, if you&rsquo;re looking at a free app, you may be happy with any positive change&mdash;in this case the MME is 0. But if you&rsquo;re considering a substantial and costly change to a curriculum, you may want to see a larger difference between the treatment and comparison groups. In that case, you might choose 5 points on your assessment as the MME.
+                                                        </li>
+                                                        
+                                                        <li>Remember that the Coach will compare average outcomes for the intervention group to average outcomes for the comparison group. This difference is what will be compared to the MME. </li>
+                                                        <li>To choose the MME, consider the range of values for that outcome. If it&rsquo;s unusual to see differences of 10 points between groups of students, then 10 might be too high. </li>
                                                         <li>If you hope to see an increase in a reading test score, would a 1 point increase, on average, be a meaningful increase? What about 5 points?</li>
-                                                        <li>This number could be 0 or even negative. A 0 means that you would consider any increase in the outcome a success, as long as it is positive. If the technology saves you a lot of money, you might be willing to consider any change that is greater than a small negative number a success.</li>
-
-
+                                                        <li>Make sure the number you select here matches the magnitude of the outcomes in your data. For example, if your units are percent, you could use values between 0 and 1 or between 0 and 100. If you use values between 0 and 1 in your dataset you should put a value between 0 and 1 here. </li>
 
                                                     </ul>
                                                 </div>
@@ -281,31 +317,33 @@
                         <div class="step-header container">
                             <div data-toggle="collapse" data-target="#C">
                                 <h2 class="clickable">
-                                    <i class="fa fa-caret-down" aria-hidden="false"></i> C. How confident do you want to be that &hellip;
+                                    <i class="fa fa-caret-down" aria-hidden="false"></i> C. How much certainty do you need? 
                                 </h2>
                             </div>
                         </div>
                         <div id="C" class="row collapse in q-row">
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
                                 <div class="step-subquestion">
-                                    <p>&hellip; <%= defs.Basics_Tech_Name %> moved the needle?</p>
+                                    <p>The Coach will use your data to calculate how likely it is that <%= defs.Basics_Tech_Name %> is meeting your goals. It is very unlikely that the Coach will be able to tell you this with 100% certainty, so you have to decide how much uncertainty you are willing accept when making a decision based on this analysis. </p>
+                                    <p>You make these types of decisions all the time, for example, when you decide whether or not to take an umbrella after looking at the day&rsquo;s weather forecast. Some people will take an umbrella if the probability of rain is 10%, others might only take an umbrella if a 60% chance is forcasted. That is, different people have different thresholds for how much risk they are willing to take. And you may have a different threshold for different kinds of decision. </p>
+                                    <p>What certainty threshold do you want to use for this case? Fill in this number in the statement below:</p>
                                 </div>
                                 <div class="step-action">
                                     <p>
-                                        If I learned that there was a
+                                        If the Coach determines that, given the data, there is a 
 
-                                        <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="planNext[Pass_Probability]" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% probability that <%= defs.Basics_Tech_Name %> <span class='change-direction'><%= defs.Outcome_Direction %></span>s <%= defs.Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> had the intended effect.
+                                        <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="planNext[Pass_Probability]" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% or higher probability that <%= defs.Basics_Tech_Name %> had the intended effect, I will feel comfortable concluding that  <%= defs.Basics_Tech_Name %> is moving the needle.
                                     </p>
-                                </div>
-                                <div class="step-subquestion">
-                                    <p>&hellip; <%= defs.Basics_Tech_Name %> did not move the needle?</p>
 
-                                    <p>
-                                        If I learned that there was less than a <label class="hidden" for="Fail_Probability">Input probability as percent.</label><input type="text" name="planNext[Fail_Probability]" id="Fail_Probability" placeholder="50" value="<%= eval.planNext.Fail_Probability %>" style="width: 50px" />% probability that <%= defs.Basics_Tech_Name %> <span class='change-direction'><%= defs.Outcome_Direction %></span>s <%= defs.Basics_Outcome %> by <span class='success-effect-size'>0</span> or more <span class="measure-units">units</span>, I would feel comfortable concluding that <%= defs.Basics_Tech_Name %> did not have the intended effect.
-                                    </p>
+                                    <% if(defs.HasResults) { %>
+                                    <div class="step-subquestion">
+                                        <p class="note">If you change your answers to the questions above, you must re-run your analysis in the &ldquo;Get Results&rdquo; tool. </p>
+                                    </div>
+                                    <% } %>
                                 </div>
+
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <div class="step-to-consider">
                                     <div class="step-to-consider">
                                         <div class="panel-group" id="ttc6">
@@ -320,7 +358,13 @@
                                                     </h3>
                                                 </div>
                                                 <div id="consider6" class="panel-collapse collapse in">
-                                                    <p>We rarely have enough evidence to be completely certain that a technology will work if implemented well. Thinking forward to your results, what likelihood (or probability) would you need to be comfortable concluding that the educational technology is moving the needle? You might want a higher level of certainty, and therefore a higher probability, if your results will affect a higher stakes decision, such as implementing a district-wide curriculum. But you might be comfortable with a lower probability for a lower stakes decision. </p>
+                                                    <ul>
+                                                        <li>The default setting is 75%, but you should consider whether this is appropriate for your decision.</li>
+                                                        <li>You might want a higher level of certainty, and therefore a higher probability, if your results will affect a higher stakes decision, such as implementing a district-wide curriculum. But you might be comfortable with a lower probability for a lower stakes decision.</li>
+                                                        <li>If you choose a probability that is too high, for example 100 the Coach will likely conclude that there is not enough evidence. </li>
+                                                        <li>The Coach will calculate this probability based on the data you provide. You should only believe these findings to the extent you believe you have a good comparison group in the data.</li>
+                                                    </ul>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -336,48 +380,50 @@
                             </div>
                         </div>
                         <div id="D" class="row collapse in q-row">
-                            <div class="col-xs-7">
+                            <div class="col-xs-6">
                                 <div class="step-subquestion">
+                                    <image src="static/image/HasFavorableEffect.png"/>
                                     <p>
-                                        &hellip; the evidence suggests that it is likely that
-
-
-                                        <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= defs.Outcome_Direction %></span>s <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
-                                        <% } %>
-                                        <% if (user == "NOAUTHENTICATED") { %>
-                                        A does B among C compared to D?
-                                        <% } %>
+                                        &hellip; the data suggests that the treatment group does better than the comparison group.
                                     </p>
+
                                 </div>
                                 <div class="step-action">
                                     <label class="hidden" for="Action_Success">Input what you would do if confident that technology improved outcomes.</label>
-                                    <textarea name="planNext[Action_Success]"><%= eval.planNext.Action_Success %></textarea>
+                                    <textarea name="planNext[Action_Success]" id="Action_Success"><%= eval.planNext.Action_Success %></textarea>
                                 </div>
                                 <div class="step-subquestion">
+                                    <image src="static/image/HasUnfavorableEffect.png" />
                                     <p>
-                                        &hellip; the evidence suggests that it is not likely that
-                                        <% if (user != "NOAUTHENTICATED") { %>
-                                        <span class='tech-name'><%= defs.Basics_Tech_Name  %></span>&nbsp;<span class='change-direction'><%= defs.Outcome_Direction  %></span>s <span class='eval-outcome'><%= eval.basics.Basics_Outcome !='' ? defs.Basics_Outcome: "B" %></span> among <span class='treatment-group'><%= eval.planQuestion.Intervention_Group_Desc != '' ? defs.Intervention_Group_Desc : "C" %></span> compared to <span class='comparison-group'><%= eval.planQuestion.Comparison_Group_Desc !='' ? defs.Comparison_Group_Desc :  "D" %></span>?
-                                        <% } %>
-                                        <% if (user == "NOAUTHENTICATED") { %>
-                                        A does B among C compared to D?
-                                        <% } %>
+
+                                        &hellip; the data suggests that the treatment group does worse than the comparison group.
                                     </p>
                                 </div>
                                 <div class="step-action">
 
-                                    <label class="hidden" for="Action_Fail">Input what you would do if confident that technology did not improve outcomes.</label><textarea name="planNext[Action_Fail]"><%= eval.planNext.Action_Fail %></textarea>
+                                    <label class="hidden" for="Action_NoChange">Input what you would do if confident that technology worsened outcomes.</label><textarea name="planNext[Action_NoChange]" id="Action_NoChange"><%= eval.planNext.Action_NoChange %></textarea>
                                 </div>
                                 <div class="step-subquestion">
-                                    <p>&hellip; the results are inconclusive?</p>
+                                    <image src="static/image/NoEffect.png" />
+                                    <p>
+
+                                        &hellip; the data suggests that the two groups are equivalent.
+                                    </p>
                                 </div>
                                 <div class="step-action">
 
-                                    <label class="hidden" for="Action_Inconclusive">Input what you would do if not sure of technology's impact on outcomes.</label><textarea name="planNext[Action_Inconclusive]"><%= eval.planNext.Action_Inconclusive %></textarea>
+                                    <label class="hidden" for="Action_Fail">Input what you would do if confident that technology did not change outcomes.</label><textarea name="planNext[Action_Fail]" id="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
+                                </div>
+                                <div class="step-subquestion">
+                                    <image src="static/image/UncertainEffect.png" />
+                                    <p>&hellip; the results are inconclusive (i.e. none of the bars exceed the threshold).</p>
+                                </div>
+                                <div class="step-action">
+
+                                    <label class="hidden" for="Action_Inconclusive">Input what you would do if not sure of technology's impact on outcomes.</label><textarea name="planNext[Action_Inconclusive]" id="Action_Inconclusive"><%= eval.planNext.Action_Inconclusive %></textarea>
                                 </div>
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <div class="step-to-consider">
                                     <div class="step-to-consider">
                                         <div class="panel-group" id="ttc7">
@@ -405,7 +451,7 @@
 
                                                       
                                                     
-                                                    <p>There are three possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you have to make.</p>
+                                                    <p>There are four possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you have to make.</p>
                                                 </div>
                                             </div>
                                             <div class="panel panel-default">
@@ -413,16 +459,17 @@
                                                     <h3 class="panel-title sec-label clickable">
 
                                                         <a data-toggle="collapse" data-parent="#ttc7" href="#example7">
-                                                            <i class="fa fa-caret-right" aria-hidden="true"></i>
+                                                            <i class="fa fa-caret-down" aria-hidden="false"></i>
                                                             Example
                                                         </a>
                                                     </h3>
                                                 </div>
-                                                <div id="example7" class="panel-collapse collapse">
+                                                <div id="example7" class="panel-collapse collapse in">
                                                     <ul>
                                                         <li>Roll out eZumi to all students in grades 3-5</li>
-                                                        <li>Not renew our eZumi license for the next school year</li>
-                                                        <li>Collect more data to improve the precision of our analysis</li>
+                                                        <li>Do not renew our eZumi license for the next school year</li>
+                                                        <li>Collect more data to see if one technology works better for students with specific characteristics</li>
+                                                        <li>Collect more data to build more evidence</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -454,7 +501,20 @@
             $(".measure-units").text(munits);
 
             $('.success-effect-size').text($("#Success_Effect_Size").val());
+            setCutOffAmount();
         });
+
+        function setCutOffAmount() {
+            var anyAmount = $('#Any_Amount').val();
+            console.log(anyAmount);
+            if (anyAmount.toLowerCase() == 'yes') {
+                $("#Success_Effect_Size").val(0);
+                $('.success-effect-size').text($("#Success_Effect_Size").val());
+                $('.some-amount').hide();
+                console.log(anyAmount);
+            }
+            else $('.some-amount').show();
+        }
 
         $('#Outcome_Direction').change(function () {
             outcomeDirectionUpdate(this);
@@ -479,6 +539,9 @@
 
         $('#Fail_Probability').change(function () {
             failProbUpdate(this);
+        });
+        $('#Any_Amount').change(function () {
+            setCutOffAmount();
         });
 
 

@@ -77,7 +77,7 @@ function setOutcome(sess) {
     var outcomeIncompleteb = populateDefaults(defstocheckb, sess.eval.basics, sess, false);
 	var outcomeIncompleteq = populateDefaults(defstocheckq, sess.eval.planQuestion, sess, false);
     sess.defaults.OutcomeIncomplete = (outcomeIncompleteb || outcomeIncompleteq);
-    console.log(sess.defaults);
+    //console.log(sess.defaults);
 	sess.defaults.Cap_Basics_Outcome = textHelpers.capitalize(sess.defaults.Basics_Outcome);
 	
     return;
@@ -115,17 +115,20 @@ function setResearchQ(sess) {
 
 function setPlanNext(sess) {
     sess.defaults.planNextIncomplete = false;
+    sess.defaults.Cost_Other = "";
 	var defstocheck = {
 		Measure_Units: "units",
 		Success_Effect_Size: '0',
 		Pass_Probability: '75',
 		Fail_Probability: '50',
        
-		Action_Success: '[next step if moving the needle]',
-		Action_Fail: '[next step if not moving the needle]',
+		Action_Success: '[next step if treatment group do better than comparison group]',
+		Action_Fail: '[next step if treatment group do worse than comparison group]',
+		Action_NoChange: '[next step if treatment and comparison group results are similar]',
 		Action_Inconclusive: '[next step if results inconclusive]'
 	}
 
+	
     sess.defaults.planNextIncomplete = populateDefaults(defstocheck, sess.eval.planNext, sess, false);
 
     if (sess.eval.planNext.Tech_Cost_Desc === "") {
@@ -140,8 +143,10 @@ function setPlanNext(sess) {
         sess.defaults.Cost_Other = textHelpers.capitalize(sess.eval.planNext.Tech_Cost_Desc);
         sess.defaults.Tech_Cost_Saves = "Cost";
     }
-
-   
+    if (sess.defaults.Success_Effect_Size == '1') sess.defaults.Measure_Units = sess.defaults.Measure_Units.slice(0, -1);
+    sess.defaults.AnyAmount = sess.defaults.Success_Effect_Size == '0' ? 'Yes' : "No";
+   // console.log("defaults:");
+   // console.log(sess.defaults);
     return;
 };
 
@@ -176,7 +181,7 @@ return;
 function setPlanContext(sess) {
 	var planContext = sess.eval.planContext;
     sess.defaults.planContextIncomplete = false;
-
+    var eval = sess.eval;
 	var defstocheck = {
         Tech_Purpose: '&rsquo;s description was not provided.',
         Tech_Components: 'Not reported',
@@ -192,7 +197,16 @@ function setPlanContext(sess) {
 	}
    
     sess.defaults.planContextIncomplete = populateDefaults(defstocheck, planContext, sess, false);
-  
+
+    if (sess.defaults.Expected_Dosage == "No information was provided regarding the usage of the technology by the treatment group.") {
+		// This would only be true if no value was saved for expected dosage.
+        eval.planContext.Expected_Dosage = ((eval.probAppr.Appr_Treatment_Group != null) ? eval.probAppr.Appr_Treatment_Group + " " : "") + ((eval.probAppr.Appr_Comparison_Group != null) ? eval.probAppr.Appr_Comparison_Group : "");
+            
+    }
+
+
+	
+		
 	sess.defaults.Components = textHelpers.capitalize(sess.defaults.Tech_Components);
 	sess.defaults.Tech_Purpose = (sess.defaults.Tech_Purpose !== "&rsquo;s description was not provided.") ? " is " + sess.defaults.Tech_Purpose : sess.defaults.Tech_Purpose;
 	sess.defaults.Purpose = textHelpers.punctuate(sess.defaults.Tech_Purpose);
