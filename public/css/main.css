@@ -1828,6 +1828,7 @@ body.brief table.resultsFig tr {
 body.brief table.resultsFig tr td, table.resultsFig tr th {
     border: #aaa;
     vertical-align: middle;
+    padding: 2px;
 }
  body.brief table.resultsFig tr th {
         font-size: .8em;

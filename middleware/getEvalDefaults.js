@@ -122,11 +122,13 @@ function setPlanNext(sess) {
 		Pass_Probability: '75',
 		Fail_Probability: '50',
        
-		Action_Success: '[next step if moving the needle]',
-		Action_Fail: '[next step if not moving the needle]',
+		Action_Success: '[next step if treatment group do better than comparison group]',
+		Action_Fail: '[next step if treatment group do worse than comparison group]',
+		Action_NoChange: '[next step if treatment and comparison group results are similar]',
 		Action_Inconclusive: '[next step if results inconclusive]'
 	}
 
+	
     sess.defaults.planNextIncomplete = populateDefaults(defstocheck, sess.eval.planNext, sess, false);
 
     if (sess.eval.planNext.Tech_Cost_Desc === "") {
@@ -141,8 +143,10 @@ function setPlanNext(sess) {
         sess.defaults.Cost_Other = textHelpers.capitalize(sess.eval.planNext.Tech_Cost_Desc);
         sess.defaults.Tech_Cost_Saves = "Cost";
     }
-
-   
+    if (sess.defaults.Success_Effect_Size == '1') sess.defaults.Measure_Units = sess.defaults.Measure_Units.slice(0, -1);
+    sess.defaults.AnyAmount = sess.defaults.Success_Effect_Size == '0' ? 'Yes' : "No";
+   // console.log("defaults:");
+   // console.log(sess.defaults);
     return;
 };
 
