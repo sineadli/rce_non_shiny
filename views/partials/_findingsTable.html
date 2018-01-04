@@ -3,7 +3,7 @@
     <caption>
         Table 1. 
 
-        This table summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability of there being a meaningful difference (at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> ) between the treatment and comparison groups in <%= defs.Basics_Outcome %>  as measured by <%= defs.Outcome_Measure %>.
+        This table summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability of <%= defs.Basics_Tech_Name %> meaningfully increasing or decreasing (by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> ) <%= defs.Basics_Outcome %> as measured by <%= defs.Outcome_Measure %> in the treatment group relative to the comparison group. It also shows the probability that there is no change in <%= defs.Basics_Outcome %> between the treatment and comparison groups. 
 
     </caption>
     <tr>
@@ -54,7 +54,7 @@
         <td rowspan="3"><%= grade %></td>
         <td rowspan="3" style="<%=highlight %>"><%= meetGoal %></td>
         <td style="<%=hlincrease %>">
-            <span class="fa fa-arrow-up"></span><span class="hidden">Increased</span>
+            <span class="fa fa-arrow-up" title="increase"></span><span class="hidden">Increased</span>
         </td>
         <td style="<%=hlincrease %>"><%= prop_increased %>%</td>
         <td rowspan="3">
@@ -79,13 +79,13 @@
 
     <tr style="border-bottom: none">
         <td>
-            <span style="font-size: 2em; font-weight: bold">=</span><span class="hidden">Same</span>
+            <span style="font-size: 2em; font-weight: bold" title="no change">=</span><span class="hidden">Same</span>
         </td>
         <td><%=prop_same %>%</td>
     </tr>
     <tr style="border-bottom: none">
         <td style="<%=hldecrease %>">
-            <span class="fa fa-arrow-down"></span><span class="hidden">Decreased</span>
+            <span class="fa fa-arrow-down" title="decrease"></span><span class="hidden">Decreased</span>
         </td>
         <td style="<%=hldecrease %>"><%= prop_decreased %>%</td>
     </tr>
