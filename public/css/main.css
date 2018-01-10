@@ -62,7 +62,7 @@ h1 span.peeking-pretitle {
     float: none;
 }
 ul li {
-    margin-top: 5px;
+    margin-top: 15px;
 }
 .legal .copyright {
     margin: 65px;
@@ -1338,6 +1338,9 @@ div.q-row {
 div.step-to-consider {
     margin-top: 5px;
 }
+div.step-to-consider ul li {
+    margin-top: 10px;
+}
 div.step-to-consider .panel-group .panel, div.step-to-consider .panel-heading {
 	background-color:#F4F2EB;
 }
@@ -1499,6 +1502,9 @@ div.step-to-consider h3 {
 
 div.step-to-consider p {
 	margin-bottom:20px;
+}
+div.step-to-consider p ul {
+	margin-top:-10px;
 }
 div.step-to-consider p.note {
 	margin:10px 0 20px 0;
@@ -1822,14 +1828,23 @@ body.brief table.resultsFig {
 
 
 body.brief table.resultsFig tr {
-    background-color: #ffffff;
+   
     border-bottom: 1px solid #aaa;
 }
 body.brief table.resultsFig tr td, table.resultsFig tr th {
     border: #aaa;
     vertical-align: middle;
+    text-align: center;
     padding: 2px;
+    font-size: .8em;
 }
+body.brief table.resultsFig tr td.show-border {
+    text-align: left;
+    padding: 3px;
+    padding-left: 20px;
+    border: 1px #aaa solid !important;
+}
+
  body.brief table.resultsFig tr th {
         font-size: .8em;
         vertical-align: bottom;

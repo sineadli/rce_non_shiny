@@ -47,14 +47,75 @@
                                     The Coach will help you think about how the answer to your research question will inform the decisions you make regarding your technology. To complete this tool you will need to consider:
                                 </p>
                                 <ul>
-                                    <li>What would success look like?</li>
-                                    <li>How much risk are you willing to take when making a decision or a recommendation?</li>
+                                    <li>What would success look like or what is the <strong>minimal meaningful effect (MME)</strong>? The minimal meaningful effect is the minimal amount of change you would need to see between your treatment and comparison groups in order to conclude the technology is having the intended effect and is preferable to the alternative. The MME will be different for different situations. For example, you may want a large MME for an app that requires a big investment, but be okay with a small change if the app is free. The MME should make sense given your outcome measure&rsquo;s normal variability.
+                                    </li>
+                                    <li>
+                                        <p>How much risk are you willing to take or what is your <strong>Certainty threshold</strong>? The certainty threshold is the amount of uncertainty you are willing to accept when making a decision or a recommendation based on your evaluation. You might want a higher level of certainty, and therefore a higher probability, if your results will affect a higher stakes decision, such as implementing a district-wide curriculum. You might be comfortable with a lower probability for a lower stakes decision.</p>
+                                        <p>You make these types of decisions all the time, for example, when you decide whether or not to take an umbrella after looking at the day&rsquo;s weather forecast. Some people will take an umbrella if the probability of rain is 50%, others might only take an umbrella if an 80% chance is forcasted. That is, different people have different thresholds for how much risk they are willing to take. And you may have a different threshold for different kinds of decision. </p>
+                                    </li>
                                 </ul>
+                              
+                               
 
                             </div>
                             <div class='tool-instructions'>
-                                <p>Sections A through D will help you think about these questions. Remember, you can always come back to this step and change your answers. In other words, nothing you enter here is permanent, so just fill this out as best you can.</p>
+                                <p>Scroll through the following examples to see how different factors may impact the MME and certainty threshold you set for your evaluation.
+                                </p>
+                                <div id="annoCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+                                    <!-- Indicators -->
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#annoCarousel" data-slide-to="0" class="active"></li>
+                                        <li data-target="#annoCarousel" data-slide-to="1"></li>
+                                        <!--<li data-target="#annoCarousel" data-slide-to="2"></li>
+                                        <li data-target="#annoCarousel" data-slide-to="3"></li>-->
+                                    </ol>
+
+                                    <!-- Wrapper for slides -->
+                                    <div class="carousel-inner" role="listbox">
+
+
+                                        <div class="item  active">
+
+                                            <p>
+                                                <img src="../static/image/MME-CTExample1.png"/>
+                                            </p>
+
+                                        </div>
+                                        <div class="item">
+
+                                            <p>
+                                                <img src="../static/image/MME-CTExample2.png"/>
+                                            </p>
+
+                                        </div>
+                                        <!--<div class="item">
+
+                                            <p> Valid values for categorical variables are 1 (yes or true) and 0 (no or false).</p>
+
+                                        </div>
+                                        <div class="item">
+
+                                            <p>Missing data is replaced with NA (not available) so that the Coach skips that cell.</p>
+
+                                        </div>-->
+                                    </div>
+
+                                    <!-- Left and right controls -->
+                                    <a class="left carousel-control" href="#annoCarousel" role="button" data-slide="prev">
+                                        <span style="font-size: 3em; color: #194F81;" aria-hidden="true">&lsaquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#annoCarousel" role="button" data-slide="next">
+                                        <span style="font-size: 3em; color: #194F81;" aria-hidden="true">&rsaquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+
+                               
                             </div>
+
+
+                        
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -245,10 +306,8 @@
 
                                 <div class="step-action">
 
-                                    <p> Think about your goals for <%= defs.Basics_Tech_Name %>. How large of a change would you need to see in order to conclude that the <%= defs.Basics_Tech_Name %> is having the intended effect and is preferable to the alternative? This is called the <strong>minimum meaningful effect or MME</strong>. 
-                                       
-                                    </p>
-                                    <p>For this evaluation, is a(n) <span class="change-direction"><%= defs.Outcome_Direction %></span> of any amount in <%= defs.Basics_Outcome %> meaningful?
+                                  
+                                    <p>For this evaluation, is any <span class="change-direction"><%= defs.Outcome_Direction %></span> in <%= defs.Basics_Outcome %> meaningful?
 
                                     </p>
                                     <div>
@@ -271,12 +330,12 @@
                                 <div class="some-amount">
                                     <div class="step-action">
                                         <p>
-                                            I would consider any <span class="change-direction"><%= defs.Outcome_Direction %></span> at least
+                                            I would consider any <span class="change-direction"><%= defs.Outcome_Direction %></span> of at least
 
                                             <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="planNext[Success_Effect_Size]" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" step="any" />
-                                            <span class="measure-units">units</span> on <span class="effect-measure"><%= defs.Outcome_Measure %></span> a success.
+                                            <span class="measure-units"><%= defs.Measure_Units %></span> on <span class="effect-measure"><%= defs.Outcome_Measure %></span> to be meaningful.
                                         </p>
-                                        <p> The Coach will use your answer to this question to divide the range of possible effects into three regions&mdash;one where the two groups are equivalent, one where treatment group performs better than the comparison group by an amount at least as large as the MME, and one where the treatment group performs worse than the comparison group by an amount at least as large as the MME. The figure below shows what this looks like.</p>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -297,13 +356,11 @@
                                                 <div id="consider5" class="panel-collapse collapse in">
 
                                                     <ul>
-                                                        <li>
-                                                            The MME will be different for different situations. For example, if you&rsquo;re looking at a free app, you may be happy with any positive change&mdash;in this case the MME is 0. But if you&rsquo;re considering a substantial and costly change to a curriculum, you may want to see a larger difference between the treatment and comparison groups. In that case, you might choose 5 points on your assessment as the MME.
-                                                        </li>
                                                         
-                                                        <li>Remember that the Coach will compare average outcomes for the intervention group to average outcomes for the comparison group. This difference is what will be compared to the MME. </li>
+                                                        
+                                                        <li>Remember that the Coach will compare average outcomes for the treatement group to average outcomes for the comparison group. This difference is what will be compared to the MME. </li>
                                                         <li>To choose the MME, consider the range of values for that outcome. If it&rsquo;s unusual to see differences of 10 points between groups of students, then 10 might be too high. </li>
-                                                        <li>If you hope to see an increase in a reading test score, would a 1 point increase, on average, be a meaningful increase? What about 5 points?</li>
+                                                        
                                                         <li>Make sure the number you select here matches the magnitude of the outcomes in your data. For example, if your units are percent, you could use values between 0 and 1 or between 0 and 100. If you use values between 0 and 1 in your dataset you should put a value between 0 and 1 here. </li>
 
                                                     </ul>
@@ -324,22 +381,20 @@
                         <div id="C" class="row collapse in q-row">
                             <div class="col-xs-6">
                                 <div class="step-subquestion">
-                                    <p>The Coach will use your data to calculate how likely it is that <%= defs.Basics_Tech_Name %> is meeting your goals. It is very unlikely that the Coach will be able to tell you this with 100% certainty, so you have to decide how much uncertainty you are willing accept when making a decision based on this analysis. </p>
-                                    <p>You make these types of decisions all the time, for example, when you decide whether or not to take an umbrella after looking at the day&rsquo;s weather forecast. Some people will take an umbrella if the probability of rain is 10%, others might only take an umbrella if a 60% chance is forcasted. That is, different people have different thresholds for how much risk they are willing to take. And you may have a different threshold for different kinds of decision. </p>
-                                    <p>What certainty threshold do you want to use for this case? Fill in this number in the statement below:</p>
+                                 
+                                   
+                                    <p> <label  for="Pass_Probability">What certainty threshold do you want to use for this case?</label><input type="text" name="planNext[Pass_Probability]" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />%</p>
                                 </div>
                                 <div class="step-action">
-                                    <p>
-                                        If the Coach determines that, given the data, there is a 
-
-                                        <label class="hidden" for="Pass_Probability">Input probability for success as percent.</label><input type="text" name="planNext[Pass_Probability]" id="Pass_Probability" placeholder="75" value="<%= eval.planNext.Pass_Probability %>" style="width: 50px" />% or higher probability that <%= defs.Basics_Tech_Name %> had the intended effect, I will feel comfortable concluding that  <%= defs.Basics_Tech_Name %> is moving the needle.
-                                    </p>
+                                    
 
                                     <% if(defs.HasResults) { %>
                                     <div class="step-subquestion">
                                         <p class="note">If you change your answers to the questions above, you must re-run your analysis in the &ldquo;Get Results&rdquo; tool. </p>
                                     </div>
                                     <% } %>
+
+                                   
                                 </div>
 
                             </div>
@@ -360,8 +415,8 @@
                                                 <div id="consider6" class="panel-collapse collapse in">
                                                     <ul>
                                                         <li>The default setting is 75%, but you should consider whether this is appropriate for your decision.</li>
-                                                        <li>You might want a higher level of certainty, and therefore a higher probability, if your results will affect a higher stakes decision, such as implementing a district-wide curriculum. But you might be comfortable with a lower probability for a lower stakes decision.</li>
-                                                        <li>If you choose a probability that is too high, for example 100 the Coach will likely conclude that there is not enough evidence. </li>
+                                                        
+                                                        <li>If you choose a probability that is too high, for example 100, the Coach will likely conclude that there is not enough evidence. </li>
                                                         <li>The Coach will calculate this probability based on the data you provide. You should only believe these findings to the extent you believe you have a good comparison group in the data.</li>
                                                     </ul>
 
@@ -438,20 +493,22 @@
                                                     </h3>
                                                 </div>
                                                 <div id="consider7" class="panel-collapse collapse in">
+                                                    <p> The Coach will use your MME to divide the range of possible outcomes into three regions: <ul style="margin-top: -15px;"><li>the treatment group does better than the comparison group by an amount at least as large as the MME</li><li>the two groups are equivalent</li><li>the treatment group does worse than the comparison group by an amount at least as large as the MME</li></ul> To help you answer your research question, the Coach will calculate the propability of each of these 3 possibilities being the actual outcome and compare those propabilities to your certainty threshold.</p>
                                                     <p>
-                                                        <b>Your research question:</b> <br />
+                                                        <b>Your research question:</b> <br/>
                                                         <% include ../views/partials/_researchQuestion.html %>
                                                     </p>
-                                                        <%   if (user != "NOAUTHENTICATED" && display  == 'online') { %>
+                                                    <% if (user != "NOAUTHENTICATED" && display == 'online') { %>
                                                     <p class="prev-answer hidden-print">
                                                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
                                                         <a class="redirect-link" href="/craft_your_research_q?return=plan_next_steps">Craft Your Research Question</a>
                                                     </p>
                                                     <% } %>
 
-                                                      
-                                                    
+
+
                                                     <p>There are four possible answers to your research question. Thinking about what you will do under each scenario can help you determine whether your research question is the right one for the decisions you have to make.</p>
+
                                                 </div>
                                             </div>
                                             <div class="panel panel-default">
