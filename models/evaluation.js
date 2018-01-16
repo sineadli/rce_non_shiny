@@ -343,7 +343,7 @@ evaluationSchema.pre('save', function (next) {
         if (this.probAppr) {
 
             if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current" &&
-                this.probAppr.Appr_All_Using.toLowerCase() === "no") {
+                (this.probAppr.Appr_All_Using.toLowerCase() === "no") || this.probAppr.Appr_Diff_Usage.toLowerCase() === "yes") {
                 this.path = "path-matching"; //disable random tools or hide them
             } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "random") {
                 this.path = "path-random"; //disable matching tools or hide them
