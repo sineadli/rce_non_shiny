@@ -13,6 +13,7 @@ var nodemailer = require('nodemailer');
 var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
+var configDB = require('../config/database.js');
 User = require('../models/user');
 module.exports = function (app) {
     // =====================================
@@ -51,7 +52,8 @@ module.exports = function (app) {
               
                 var transport = nodemailer.createTransport( {
                     port: 25, 
-                    host: 'edtechrce.org'                 
+                    host: configDB.emailHost
+                 
                 });
                 var mailOptions = {
                     to: user.local.email,
@@ -113,7 +115,7 @@ module.exports = function (app) {
             function (user, done) {
                 var transport = nodemailer.createTransport({
                     port: 25, 
-                    host: 'edtechrce.org' 
+                    host: configDB.emailHost
                  
                 });
                 var mailOptions = {
