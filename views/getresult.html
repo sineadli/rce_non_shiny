@@ -464,7 +464,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
         });
 
         $("#chosenfile").change(function () {
-            $(".white-background-blue-border").html("");
+            $(".white-background-blue-border").hide();
                 var formData = new FormData();
                 $('#loadingmessageUp').show();
                 formData.append("data", $(this)[0].files[0]);
@@ -475,7 +475,7 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        
+                        console.log(data);
                         //$(".white-background-blue-border").append('<h4>Note that these interpretations won&lsquo;t always be perfect, so I would add some text like the following:</h4>')
                         $(".white-background-blue-border").append('<p>The following checks were automatically performed on the data you uploaded. It is possible that the Coach has misinterpreted some of your data when conducting these checks and you may need to do additional data cleaning as detailed in our <a target="_blank" href="https://edtechrce.org/static/pdf/04.01PrepareYourDataForAnalysis.pdf">Prepare Your Data For Analysis</a> guide.</p>')
                         var list = $(".white-background-blue-border").append('<ul></ul>').find('ul');
@@ -500,7 +500,9 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                         if (data.nonnumeric_columns.length > 0) list.append('<li>The following columns appear to contain non-numeric values, and will not be allowed for selection as the outcome, treatment, or covariate variables: </br><span style="font-weight: bold;" >' + data.nonnumeric_columns.join(',  ') + '</span ></li>');
                         if (data.numeric_columns.length > 0) list.append('<li>The following columns contain numeric values, and can therefore be selected as the outcome or covariate variables: </br><span style="font-weight: bold;" >' + data.numeric_columns.join(',  ') + '</span></li>');
                         if (data.binary_columns.length > 0) list.append('<li>The following columns contain binary (0 or 1) values, and can therefore be used to identify who is using the technology: </br><span style="font-weight: bold;" > ' + data.binary_columns.join(',  ') + '</span ></li>');
-                        if (data.high_cor_columns != undefined) {if(data.high_cor_columns.length > 0) list.append('<li>The following sets of columns are very highly correlated, meaning it’s generally best only to include one column from each set as  a characteristic in your analysis: </br><span style="font-weight: bold;">' + data.high_cor_columns.join(';  ') + '</span ></li>');}
+                        //if (data.high_cor_columns != undefined) {
+                            if(data.high_cor_columns.length > 0) list.append('<li>The following sets of columns are very highly correlated, meaning it’s generally best only to include one column from each set as  a characteristic in your analysis: </br><span style="font-weight: bold;">' + data.high_cor_columns.join(';  ') + '</span ></li>');
+                        //}
                         if (data.categorical_columns.length > 0) list.append('<li>The following columns appear to contain categorical values. If you plan to use them as characteristics in your analysis, these columns should be split into separate columns for each category, with the values converted to 0 and 1. See the section about converting categorical variables in the <a class="redirect-link" href="/prepare_data"> Preparing Your Data</a> tool. If these columns are not actually categorical, you can ignore this message: </br><span style="font-weight: bold;">' + data.categorical_columns.join(',  ') + '</span ></li>');
                        
                         $(".white-background-blue-border").show();

@@ -70,7 +70,7 @@
                  continue;
              }
         }
-        if (tools[i].coachStep===6 || tools[i].coachStep===5) {
+        if (tools[i].coachStep===6) {
          var toolsDepends = eval.toolsvisited.filter(function (x) { return (x.name.toLowerCase() === "summarize context" || x.name.toLowerCase() === "get results")})
         if(!eval.path) {
             tooltip=dyaMessage;
