@@ -1,18 +1,19 @@
 ﻿
-<table class="resultsFig">
-    <caption>
-        Table 1. 
 
-        This table summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability that <%= defs.Basics_Tech_Name %> meaningfully increased or decreased (by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> ) <%= defs.Basics_Outcome %> as measured by <%= defs.Outcome_Measure %> in the treatment group relative to the comparison group. It also shows the probability that there is no meaningful change in <%= defs.Basics_Outcome %> between the treatment and comparison groups. To meet our goal, the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> had to be <%= defs.Pass_Probability %>% or higher.
+<p>Table 1 summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability that <%= defs.Basics_Tech_Name %> meaningfully increased or decreased (by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> ) <%= defs.Basics_Outcome %> as measured by <%= defs.Outcome_Measure %> in the treatment group relative to the comparison group. It also shows the probability that there is no meaningful change in <%= defs.Basics_Outcome %> between the treatment and comparison groups. To meet our goal, the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> had to be <%= defs.Pass_Probability %>% or higher.</p>
+<table class="resultsFig">
+   
+    <caption>
+        Table 1. Summary of Results
 
     </caption>
     <tr>
         <th scope="col">Grade</th>
         <th scope="col">Meets goal?</th>
         <th scope="col" style="text-align: left;">Possible change in outcomes (treatement vs. comparison)</th>
-   
+
         <th scope="col">Probability of change</th>
-       
+
         <th scope="col">Estimated size of effect</th>
         <th scope="col">Comparison group average</th>
         <% if(defs.hasSample) { %>
@@ -51,6 +52,15 @@
     hldecrease = "background-color:#C2FA96";
     }
     }
+    var effect = round10(thisgrade.impact, 0) ;
+    if(Math.abs(thisgrade.impact) < 10 )
+    {
+     effect = round10(thisgrade.impact, 1)
+    }
+    if(Math.abs(thisgrade.impact) < 1 )
+    {
+    effect = round10(thisgrade.impact, 2)
+    } 
     %>
     <tr style="border-top: 1px #aaa solid">
         <td rowspan="3"><%= grade %></td>
@@ -59,11 +69,11 @@
             <span class="fa fa-arrow-up" title="increased"></span> increase >= <%= defs.Success_Effect_Size %>
         </td>
         <td style="<%=hlincrease %>" class="show-border"><%= prop_increased %>%</td>
-       
+
         <td rowspan="3">
-            <%- round10(thisgrade.impact, 0) %>
+            <%- effect %>
         </td>
-       
+
         <td rowspan="3">
             <% if (thisgrade.outcome_means) { %>
             <%= round10(thisgrade.outcome_means.comparison) %>
@@ -80,18 +90,19 @@
         </td>
         <% } %>
     </tr>
-
+    <% if(defs.Success_Effect_Size != 0) { %>
     <tr >
         <td class="show-border">
             Between -<%= defs.Success_Effect_Size %> and <%= defs.Success_Effect_Size %>
         </td>
         <td class="show-border"><%=prop_same %>%</td>
     </tr>
+    <% } %>
     <tr style="border-bottom: none">
-        <td style="<%=hldecrease %> " class="show-border">
+        <td style="<%=hldecrease %>" class="show-border">
             <span class="fa fa-arrow-down" title="decreased"></span>  Decrease >= <%= defs.Success_Effect_Size %>
         </td>
-        <td style="<%=hldecrease %>" class="show-border"><%= prop_decreased %>%</td>
+        <td style="<%= hldecrease %>" class="show-border"><%= prop_decreased %>%</td>
     </tr>
 
     <% } %>
