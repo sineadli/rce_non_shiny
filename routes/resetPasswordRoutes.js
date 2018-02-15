@@ -13,6 +13,7 @@ var nodemailer = require('nodemailer');
 var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
+var configDB = require('../config/database.js');
 User = require('../models/user');
 module.exports = function (app) {
     // =====================================
@@ -50,15 +51,9 @@ module.exports = function (app) {
             function (token, user, done) {
               
                 var transport = nodemailer.createTransport( {
-                   // service: '???',
-                    port: 25, //confirm with company or 465?
-                   // host: 'edtechrce.org' //for qa server
-                    host: 'intrelay.mathematica-mpr.com' //for local
-                   // host: 'smtp.mathematica-mpr.com',
-                    //auth: {
-                    //    user: '???',    //get this from ITS?
-                    //    pass: '???'
-                    //}
+                    port: 25, 
+                    host: configDB.emailHost
+                 
                 });
                 var mailOptions = {
                     to: user.local.email,
@@ -119,15 +114,9 @@ module.exports = function (app) {
             },
             function (user, done) {
                 var transport = nodemailer.createTransport({
-                    //service: 'Yahoo',
-                    port: 25, //confirm with company or 465?
-                    // host: 'edtechrce.org' //for qa server
-                    host: 'intrelay.mathematica-mpr.com' //for local
-                   // host: 'smtp.mathematica-mpr.com',
-                    //auth: {
-                    //    user: '???',    //get this from ITS?
-                    //    pass: '???'
-                    //}
+                    port: 25, 
+                    host: configDB.emailHost
+                 
                 });
                 var mailOptions = {
                     to: user.local.email,
