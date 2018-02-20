@@ -367,7 +367,7 @@ module.exports = function (app, passport) {
         if (req.body.id) {
             query = { _id: req.body.id };
         }
-        console.log(req.body);
+       // console.log(req.body);
         Instrument.findOneAndUpdate(query, req.body, { upsert: true }, function (err) {
             if (err)
                 console.log(err);
