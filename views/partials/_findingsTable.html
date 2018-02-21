@@ -1,6 +1,16 @@
-﻿
+﻿<%
+var effectSizeText = "by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units;
+var rsp = 3;
+var nochangetext = "It also shows the probability that there is no meaningful change in " + defs.Basics_Outcome + " between the treatment and comparison groups.";
+if (defs.Success_Effect_Size ==0) {
+    effectSizeText = "by any amount" ;
+rsp = 2;
+nochangetext = "";
+}
+%>
 
-<p>Table 1 summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability that <%= defs.Basics_Tech_Name %> meaningfully increased or decreased (by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> ) <%= defs.Basics_Outcome %> as measured by <%= defs.Outcome_Measure %> in the treatment group relative to the comparison group. It also shows the probability that there is no meaningful change in <%= defs.Basics_Outcome %> between the treatment and comparison groups. To meet our goal, the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> had to be <%= defs.Pass_Probability %>% or higher.</p>
+
+<p>Table 1 summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability that <%= defs.Basics_Tech_Name %> meaningfully increased or decreased (<%= effectSizeText %>) <%= defs.Basics_Outcome %>, as measured by <%= defs.Outcome_Measure %>, in the treatment group relative to the comparison group. <%= nochangetext %> To meet our goal, the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> <%= effectSizeText %> had to be <%= defs.Pass_Probability %>% or higher.</p>
 <table class="resultsFig">
 
     <caption>
@@ -63,18 +73,18 @@
     }
     %>
     <tr style="border-top: 1px #aaa solid">
-        <td rowspan="3"><%= grade %></td>
-        <td rowspan="3" style="<%=highlight %>"><%= meetGoal %></td>
+        <td rowspan="<%= rsp %>"><%= grade %></td>
+        <td rowspan="<%= rsp %>" style="<%=highlight %>"><%= meetGoal %></td>
         <td style="<%=hlincrease %>" class="show-border">
             <span class="fa fa-arrow-up" title="increased"></span> increase >= <%= defs.Success_Effect_Size %>
         </td>
         <td style="<%=hlincrease %>" class="show-border"><%= prop_increased %>%</td>
 
-        <td rowspan="3">
+        <td rowspan="<%= rsp %>">
             <%- effect %>
         </td>
 
-        <td rowspan="3">
+        <td rowspan="<%= rsp %>">
             <% if (thisgrade.outcome_means) { %>
             <%= round10(thisgrade.outcome_means.comparison) %>
             <% } else { %>
@@ -82,10 +92,10 @@
             <% } } %>
         </td>
         <% if(defs.hasSample) { %>
-        <td rowspan="3">
+        <td rowspan="<%= rsp %>">
             <%= round10(thisgrade.samples.n_full_treat) %>
         </td>
-        <td rowspan="3">
+        <td rowspan="<%= rsp %>">
             <%= round10(thisgrade.samples.n_full -thisgrade.samples.n_full_treat) %>
         </td>
         <% } %>

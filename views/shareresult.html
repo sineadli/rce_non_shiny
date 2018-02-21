@@ -122,8 +122,15 @@
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
                         <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
                     </p>
-                    <% } %>
-                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by <%= defs.Outcome_Measure %>.</p>
+                    <% }
+
+                    var effectSizeText = "by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units + " as measured by " + defs.Outcome_Measure ;
+                    if (defs.Success_Effect_Size ==0) {
+                        effectSizeText = "by any amount" ;
+                    }
+                    
+                    %>
+                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> <%= effectSizeText %>.</p>
                     <% if (display === 'online' && user != "NOAUTHENTICATED"  && sharing != 1) { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
