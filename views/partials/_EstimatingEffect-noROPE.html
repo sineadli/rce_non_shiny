@@ -1,0 +1,54 @@
+﻿<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+
+                        <p>
+                            The RCE Coach calculates the probability that the effect of an educational technology is above or below a threshold selected by the user, given the data. The threshold chosen for this evaluation was <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> (as indicated by the vertical line in Figure A.2).
+                        </p>
+
+                        <p>
+                            Figure A.2. displays the posterior distribution of the effect of <%= defs.Basics_Tech_Name %> <%= defs.Results_By_Grade_Flag %>. The green shaded area in the figure represents the probability that the educational technology has an effect greater than or equal to the selected threshold.
+
+                        </p>
+                        <label class="chart" style="clear: both; display: block;">Figure A.2. Probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>s <%= defs.Basics_Outcome %>, as measured by the <%= defs.Outcome_Measure %>, by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>, given the uploaded data</label>
+
+                        <% if (defs.hasResults){
+                        for (grade in Result.results_by_grade) {
+                        var thisgrade = Result.results_by_grade[grade];
+
+
+
+                        %>
+
+
+                        <div class="figdiv" style="width: 45%; float: left; display: inline; margin-left: 20px;">
+                            <label class="chart">Grade <%= grade %></label>
+
+                            <img src="data:image/png;base64,<%- thisgrade.posterior_plot %>">
+
+                            <ul>
+                                <li> There is a <%= round10(thisgrade.interpretation.probability[0], 0) %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>s the outcome by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</li>
+
+                                <li>
+                                    The point estimate (e.g., our best guess) of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is <%= round10(thisgrade.impact, 2) %>.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <% } // End by grade %>
+                        <% } else { %>
+                        <p>
+                            Analysis results are missing or incomplete.
+                        </p>
+                        <% } %>
+
+                        <div class="clearfix"></div>
+
+
+                   

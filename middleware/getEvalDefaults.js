@@ -339,6 +339,7 @@ function setGetResults(sess) {
 	var eval = sess.eval;
 
 	sess.defaults.hasResults = false;
+    sess.defaults.UsesROPE = false;
     sess.defaults.hasSample = false;
 	sess.defaults.hasCluster = false;
     sess.defaults.Outcome_Min = "not available";
@@ -367,7 +368,21 @@ function setGetResults(sess) {
 		        sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
 		    }
 		    if (typeof result == "object") {
-		        sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
+				sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
+		        for (grade in result.results_by_grade) {
+		            if (result.results_by_grade.hasOwnProperty(grade)) {
+
+
+						var thisgrade = result.results_by_grade[grade];
+						console.log("in get defaults and checking for ROPE");
+		                console.log(thisgrade.rope_output);
+
+		                if (thisgrade.rope_output != undefined) {
+		                    sess.defaults.UsesROPE = true;
+						}
+						console.log(sess.defaults.UsesROPE);
+		            }
+		        }
 
 		    } else {
 		        sess.defaults.Results_By_Grade_Flag = "";

@@ -212,8 +212,14 @@ if (eval.getresult) {if (eval.getresult.Result) {Result = eval.getresult.Result;
                         <h3><%= defs.ResultSummary %></h3>
                     </div>
                       
+                    <%
+                    if (sess.defaults.UsesROPE == true) {
+                    %>
 
                     <% include ../views/partials/_findingsTable.html %>
+                    <% } else { %>
+                    <% include ../views/partials/_findingsTable-noROPE.html %>
+                    <% } %>
                        
                     <% include ../views/partials/_backgroundCharsTable.html %>                    </div>
             </div>

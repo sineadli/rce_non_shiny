@@ -1,0 +1,56 @@
+﻿<p>
+    <% if(defs.Success_Effect_Size != 0) { %> For this evaluation the minimal meaningful effect on <%= defs.Basics_Outcome %> as measured by <%= defs.Outcome_Measure %> was set at <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>
+    <% } else {%>
+    For this evaluation , any change in <%= defs.outcome %> is considered meaningful
+    <% } %>
+    and the certainty threshold was set at <%= defs.Pass_Probability %>%.
+    Based on these settings and the evaluation results, the RCE Coach calculates the probability <%= defs.Basics_Tech_Name %>
+    <% if(defs.Success_Effect_Size != 0) { %> increases, decreases, or has no effect on <%= defs.Basics_Outcome %><% } else {%>
+    Increases or decreases <%= defs.Basics_Outcome %><% } %>. These probabilities are summarized in Figure 1. Figure A.2 is an alternative way to present these findings including some additional details.
+
+
+</p>
+                        <% if (display === 'online' && user != "NOAUTHENTICATED"  && sharing != 1) { %>
+<p class="prev-answer hidden-print">
+    <i class="fa fa-hand-o-right"></i> Where did I set the minimum meaningful effect size and the certainty threshold? See
+    <a class="redirect-link" href="/plan_next_steps?return=shareresult">Think About How to Use Your Results</a>
+</p>
+                        <% } %>
+<label class="chart" style="clear: both; display: block;">Figure A.2. Based on this evaluation&rsquo;s results, the probability that <%= defs.Basics_Tech_Name %> affects student achievement by a meaningful amount.</label>
+
+                        <% if (defs.hasResults){
+                        for (grade in Result.results_by_grade) {
+                        var thisgrade = Result.results_by_grade[grade];
+                        console.log("How many grades = ");
+                        console.log(Object.keys(Result.results_by_grade).length);
+                        var gradetext = Object.keys(Result.results_by_grade).length > 1 ? "in grade " + grade : "";
+
+
+                        %>
+
+
+<div class="figdiv" style="width: 45%; float: left; display: inline; margin-left: 20px;">
+    <label class="chart">Grade <%= grade %></label>
+
+    <img src="data:image/png;base64,<%- thisgrade.rope_output.plots.bar %>">
+
+    <ul>
+        <li>There is a <%= round10(thisgrade.rope_output.probabilities.greater_than *100,0) %>% probability that adopting <%= defs.Basics_Tech_Name %> <%= gradetext %> would increase <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</li>
+        <% if(defs.Success_Effect_Size != 0) { %>
+        <li>There is a <%= round10(thisgrade.rope_output.probabilities.equal*100,0) %>% probability that adopting <%= defs.Basics_Tech_Name %> <%= gradetext %> would not meaningully change <%= defs.Basics_Outcome %>. To be more precise, the change would be in the range of ± <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</li>
+        <% } %>
+        <li>There is a <%= round10(thisgrade.rope_output.probabilities.less_than*100,0) %>% probability that adopting <%= defs.Basics_Tech_Name %> <%= gradetext %> would decrease <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</li>
+
+
+    </ul>
+</div>
+
+                        <% } // End by grade %>
+                        <% } else { %>
+<p>
+    Analysis results are missing or incomplete.
+</p>
+                        <% } %>
+
+<div class="clearfix"></div>
+

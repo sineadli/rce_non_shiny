@@ -134,11 +134,15 @@
                     <h3> Findings</h3>
 
                     <%
-                 
-                    if (defs.hasResults) { %>
+
+                    if (defs.hasResults) {
+                    if (sess.defaults.UsesROPE == true) {
+                    %>
                     
                     <% include ../views/partials/_findingsTable.html %>
-                   
+                    <% } else { %>
+                    <% include ../views/partials/_findingsTable-noROPE.html %>
+                    <% } %>
                     <p>
                         The sample sizes in Table 1 represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
 
