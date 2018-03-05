@@ -186,10 +186,10 @@ if (user != "NOAUTHENTICATED") {
                         <ul>
                             <!--<li>The distribution of posterior probability describes our understanding of <%= defs.Basics_Tech_Name %>’s effect, based on the available data. The area under the curve represents the likelihood that the effect is between any two values on the horizontal axis. The point estimate or best guess of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is calculated as the mean of the posterior distribution.</li>-->
 
-                            <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table A.<%= defs.Frequentist_Tab_Num %> below. For more information on the Bayesian statistical analysis, refer to the <a href="<%= defs.shiny_url %>/static/pdf/Impact Estimation Technical Appendix.pdf">Impact Estimation Technical Appendix</a>.</li>
+                            <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table A.<%= defs.Frequentist_Tab_Num %> below. For more information on the Bayesian statistical analysis, refer to the <a target="_blank" href="<%= defs.shiny_url %>/static/pdf/Impact Estimation Technical Appendix.pdf">Impact Estimation Technical Appendix</a>.</li>
 
                             <% if (eval.path == "path-matching") { %>
-                            <li>This analysis was performed using a matched comparison design. Several assumptions were made to simplify the user's choices. The <a href="<%= defs.shiny_url %>/static/pdf/Matching Technical Appendix.pdf">Matching Technical Appendix</a> explains these assumptions in more detail.</li>
+                            <li>This analysis was performed using a matched comparison design. Several assumptions were made to simplify the user's choices. The <a target="_blank" href="<%= defs.shiny_url %>/static/pdf/Matching Technical Appendix.pdf">Matching Technical Appendix</a> explains these assumptions in more detail.</li>
                             <% } %>
 
                         </ul>
