@@ -742,7 +742,7 @@
                         <div id="D" class="row collapse in q-row">
                             <div class="col-xs-6">
                                 <div class="step-subquestion">
-                                    <image src="static/image/HasFavorableEffect.png"/>
+                                    <image  class="fav-image" src="static/image/HasFavorableEffect.png"/>
                                     <p>
                                         &hellip; the data suggests that the treatment group does better than the comparison group.
                                     </p>
@@ -753,7 +753,7 @@
                                     <textarea name="planNext[Action_Success]" id="Action_Success"><%= eval.planNext.Action_Success %></textarea>
                                 </div>
                                 <div class="step-subquestion">
-                                    <image src="static/image/HasUnfavorableEffect.png" />
+                                    <image class="unfav-image" src="static/image/HasUnfavorableEffect.png" />
                                     <p>
 
                                         &hellip; the data suggests that the treatment group does worse than the comparison group.
@@ -777,7 +777,7 @@
                                     </div>
                                 </div>
                                 <div class="step-subquestion">
-                                    <image src="static/image/UncertainEffect.png" />
+                                    <image class="uncert-image" src="static/image/UncertainEffect.png" />
                                     <p>&hellip; the results are inconclusive (i.e. none of the bars exceed the threshold).</p>
                                 </div>
                                 <div class="step-action">
@@ -800,7 +800,7 @@
                                                     </h3>
                                                 </div>
                                                 <div id="consider7" class="panel-collapse collapse in">
-                                                    <p> The Coach will use your MME to divide the range of possible outcomes into three regions: <ul style="margin-top: -15px;"><li>the treatment group does better than the comparison group by an amount at least as large as <span class="success-effect-size">the MME</span> <span class="measure-units"></span></li><li>the two groups are equivalent</li><li>the treatment group does worse than the comparison group by an amount at least as large as <span class="success-effect-size">the MME</span> <span class="measure-units"></span></li></ul> To help you answer your research question, the Coach will calculate the propability of each of these 3 possibilities being the actual outcome and compare those propabilities to your <span class="prob-success"></span>  certainty threshold.</p>
+                                                    <p> The Coach will use your MME to divide the range of possible outcomes into <span class="num_regions">three </span>regions: <ul style="margin-top: -15px;"><li>the treatment group does better than the comparison group <span class="success-effect-size_text">by an amount at least as large as the MME</span></li><li class="no-effect">the two groups are equivalent</li><li>the treatment group does worse than the comparison group <span class="success-effect-size_text">by an amount at least as large as the MME</span></li></ul> To help you answer your research question, the Coach will calculate the propability of each of these <span class="num_regions">three </span> possibilities being the actual outcome and compare those propabilities to your <span class="prob-success"></span>  certainty threshold.</p>
                                                     <p>
                                                         <b>Your research question:</b> <br/>
                                                         <% include ../views/partials/_researchQuestion.html %>
@@ -865,19 +865,30 @@
             $(".measure-units").text(munits);
 
             $('.prob-success').text($("#Pass_Probability").val() + "%");
-            $('.success-effect-size').text($("#Success_Effect_Size").val());
+          
             setCutOffAmount();
         });
 
         function setCutOffAmount() {
-            
-            if ($("#Success_Effect_Size").val() == 0) {
-              
-                $('.success-effect-size').text($("#Success_Effect_Size").val());
+
+            if ($("#Success_Effect_Size").val() > 0) {
+
+                $('.success-effect-size_text').text("by an amount at least as large as " + $("#Success_Effect_Size").val() + " " + $("#Measure_Units").val());
+                $('.no-effect').show();
+                $('.num_regions').text("three ");
+                $('.fav-image').attr("src","static/image/HasFavorableEffect.png");
+                $('.unfav-image').attr("src","static/image/HasUnfavorableEffect.png");
+                $('.uncert-image').attr("src","static/image/UncertainEffect.png");
+
+
+            }  else if ($("#Success_Effect_Size").val() == 0) {
                 $('.no-effect').hide();
-              
-            }
-            else $('.no-effect').show();
+                $('.success-effect-size_text').text("by any amount");
+                $('.num_regions').text("two ");
+                $('.fav-image').attr("src","static/image/AnyPositive.png");
+                $('.unfav-image').attr("src","static/image/AnyNegative.png");
+                $('.uncert-image').attr("src","static/image/AnyUncertain.png");
+            } 
         }
 
         $('#Outcome_Direction').change(function () {
@@ -888,13 +899,16 @@
         });
         $('#Measure_Units').change(function () {
             measureUnitsUpdate(this);
+            setCutOffAmount();
         });
         $("#Measure_Units_Other").change(function () {
             measureUnitsOtherUpdate(this);
+            setCutOffAmount();
         });
 
         $('#Success_Effect_Size').change(function () {
             successEffectSizeUpdate(this);
+            setCutOffAmount();
         });
 
         $('#Pass_Probability').change(function () {
