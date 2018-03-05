@@ -27,14 +27,14 @@ var getEvalDefaults = function (sess, user) {
 		setBasics(sess);
 		setOutcome(sess);
 		setApproach(sess);
+		setGetResults(sess);
 		setResearchQ(sess);
 		setPlanNext(sess);
 		setEvalPlan(sess);
 		setPlanContext(sess);
 		setPrepareRandom(sess);
 		setMatching(sess);
-		setRandom(sess);
-		setGetResults(sess);		
+		setRandom(sess);		
 		setShareResults(sess, user);
 	}
     sess.defaults.shiny_url = configDB.shiny_url;
@@ -147,6 +147,11 @@ function setPlanNext(sess) {
     sess.defaults.AnyAmount = sess.defaults.Success_Effect_Size == '0' ? 'Yes' : "No";
    // console.log("defaults:");
    // console.log(sess.defaults);
+
+	if (!sess.defaults.hasResults) {
+		sess.defaults.resultCutoff = sess.defaults.Success_Effect_Size;
+		sess.defaults.resultProbability = sess.defaults.Pass_Probability;
+	}
     return;
 };
 
@@ -347,6 +352,7 @@ function setGetResults(sess) {
     sess.defaults.hideFirst = false;
     sess.defaults.inFirst = "in";
     sess.defaults.iconFirst = "down";
+   
 
     if (eval.getresult.Result) {
 
@@ -357,7 +363,10 @@ function setGetResults(sess) {
 		if (sess.defaults.hasResults) {
 		    sess.defaults.hideFirst = true;
 		    sess.defaults.inFirst = "";
-		    sess.defaults.iconFirst = "right";
+			sess.defaults.iconFirst = "right";
+
+			sess.defaults.resultCutoff = result.args.cutoff[0];
+			sess.defaults.resultProbability = result.args.probability[0];
 
 		    if (result.outcome_range) {
 		        sess.defaults.Outcome_Min = result.outcome_range.min;
@@ -374,8 +383,8 @@ function setGetResults(sess) {
 
 
 						var thisgrade = result.results_by_grade[grade];
-						console.log("in get defaults and checking for ROPE");
-		                console.log(thisgrade.rope_output);
+						//console.log("in get defaults and checking for ROPE");
+		              //  console.log(thisgrade.rope_output);
 
 		                if (thisgrade.rope_output != undefined) {
 		                    sess.defaults.UsesROPE = true;

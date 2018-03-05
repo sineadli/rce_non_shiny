@@ -150,10 +150,7 @@
                     <% } else { %>
                     <% include ../views/partials/_findingsTable-noROPE.html %>
                     <% } %>
-                    <p>
-                        The sample sizes in Table 1 represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
-
-                    </p>
+                   
                     <% if (user != "NOAUTHENTICATED" && display === 'online'  && sharing != 1) { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See

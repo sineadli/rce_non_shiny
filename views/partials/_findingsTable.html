@@ -1,16 +1,27 @@
 ﻿<%
-var effectSizeText = "by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units;
+console.log("Success_Effect_Size = " + defs.Success_Effect_Size);
+console.log("Result cutoff = " + defs.resultCutoff);
+var changeNote = "";
+var changeTextEF = (defs.Success_Effect_Size != defs.resultCutoff) ? "the minimum meaningful effect size" : "";
+var changeTextCT = (defs.Pass_Probability != defs.resultProbability) ? "the certaintity threshold" : "";
+var changeConnect = (defs.Success_Effect_Size != defs.resultCutoff && defs.Pass_Probability != defs.resultProbability) ? " and ": "";
+if(defs.Success_Effect_Size != defs.resultCutoff || defs.Pass_Probability != defs.resultProbability)
+{
+changeNote = "It looks like " + changeTextEF + changeConnect + changeTextCT + " changed since the last time this analysis was run. Please re-run the analysis in the  <a href='/getresult'>Get Results</a> tool to update these results.";
+}
+
+var effectSizeText = "by at least " + defs.resultCutoff + " " + defs.Measure_Units;
 var rsp = 3;
 var nochangetext = "It also shows the probability that there is no meaningful change in " + defs.Basics_Outcome + " between the treatment and comparison groups.";
-if (defs.Success_Effect_Size ==0) {
+if (defs.resultCutoff ==0) {
     effectSizeText = "by any amount" ;
 rsp = 2;
 nochangetext = "";
 }
 %>
+<p class="warning"><%- changeNote %> </p>
 
-
-<p>Table 1 summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability that <%= defs.Basics_Tech_Name %> meaningfully increased or decreased (<%= effectSizeText %>) <%= defs.Basics_Outcome %>, as measured by <%= defs.Outcome_Measure %>, in the treatment group relative to the comparison group. <%= nochangetext %> To meet our goal, the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> <%= effectSizeText %> had to be <%= defs.Pass_Probability %>% or higher.</p>
+<p>Table 1 summarizes the results of this evaluation. It shows, given this evaluation&rsquo;s data and implementation of <%= defs.Basics_Tech_Name %>, the probability that <%= defs.Basics_Tech_Name %> meaningfully increased or decreased (<%= effectSizeText %>) <%= defs.Basics_Outcome %>, as measured by <%= defs.Outcome_Measure %>, in the treatment group relative to the comparison group. <%= nochangetext %> To meet our goal, the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> <%= effectSizeText %> had to be <%= defs.resultProbability %>% or higher.</p>
 <table class="resultsFig">
 
     <caption>
@@ -46,12 +57,13 @@ nochangetext = "";
     var hldecrease = "";
 
     var thisgrade = Result.results_by_grade[grade];
+   
 
     if (thisgrade.rope_output != undefined){
     var prop_increased = round10(thisgrade.rope_output.probabilities.greater_than *100,0);
     var prop_decreased = round10(thisgrade.rope_output.probabilities.less_than*100,0) ;
     var prop_same = round10(thisgrade.rope_output.probabilities.equal*100,0) ;
-    var meetGoal = (prop_decreased >= round10(defs.Pass_Probability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : ((prop_increased >= round10(defs.Pass_Probability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : "No") ;
+    var meetGoal = (prop_decreased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : ((prop_increased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : "No") ;
     }
     if(meetGoal == "Yes") {
     highlight = "background-color:#C2FA96";
@@ -76,7 +88,7 @@ nochangetext = "";
         <td rowspan="<%= rsp %>"><%= grade %></td>
         <td rowspan="<%= rsp %>" style="<%=highlight %>"><%= meetGoal %></td>
         <td style="<%=hlincrease %>" class="show-border">
-            <span class="fa fa-arrow-up" title="increased"></span> increase >= <%= defs.Success_Effect_Size %>
+            <span class="fa fa-arrow-up" title="increased"></span> increase >= <%= defs.resultCutoff%>
         </td>
         <td style="<%=hlincrease %>" class="show-border"><%= prop_increased %>%</td>
 
@@ -100,17 +112,17 @@ nochangetext = "";
         </td>
         <% } %>
     </tr>
-    <% if(defs.Success_Effect_Size != 0) { %>
+    <% if(defs.resultCutoff != 0) { %>
     <tr >
         <td class="show-border">
-            Between -<%= defs.Success_Effect_Size %> and <%= defs.Success_Effect_Size %>
+            Between -<%= defs.resultCutoff %> and <%= defs.resultCutoff %>
         </td>
         <td class="show-border"><%=prop_same %>%</td>
     </tr>
     <% } %>
     <tr style="border-bottom: none">
         <td style="<%=hldecrease %>" class="show-border">
-            <span class="fa fa-arrow-down" title="decreased"></span>  Decrease >= <%= defs.Success_Effect_Size %>
+            <span class="fa fa-arrow-down" title="decreased"></span>  Decrease >= <%= defs.resultCutoff %>
         </td>
         <td style="<%=hldecrease %>" class="show-border"><%= prop_decreased %>%</td>
     </tr>
@@ -118,36 +130,3 @@ nochangetext = "";
     <% } %>
 </table>
 
- <!--Table 1 shows that based on this evaluation&rsquo;s data:
- <%
-
-
-    for (grade in Result.results_by_grade) {
-
-    var prop_increased = 0;
-    var prop_decreased = 0 ;
-    var prop_same = 0 ;
-    var meetGoal = "There is a problem with the analysis. Please re-run the 'Get Results' tool.";
-    var highlight = "";
-    var hlincrease = "";
-    var hldecrease = "";
-
-    var thisgrade = Result.results_by_grade[grade];
-
-    if (thisgrade.rope_output != undefined){
-    var prop_increased = round10(thisgrade.rope_output.probabilities.greater_than *100,0);
-    var prop_decreased = round10(thisgrade.rope_output.probabilities.less_than*100,0) ;
-    var prop_same = round10(thisgrade.rope_output.probabilities.equal*100,0) ;
-   }
-    %>
-<p>
-   Grade <%= grade %>:
-    <ul>
-        <li>There is a <%= prop_increased %>% probability that <%= defs.Basics_Tech_Name %> increases <%= defs.Basics_Outcome %> <%= defs.Success_Effect_Size %> or more <%= defs.Measure_Units %>.</li>
-        <li>There is a <%= prop_same %>% probability that <%= defs.Basics_Tech_Name %> does not change <%= defs.Basics_Outcome %>. To be more precise, the change would be within the range ± <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>, which is less than the minimum meaningful effect size.</li>
-        <li>There is a <%= prop_decreased %>% probability that <%= defs.Basics_Tech_Name %> decreases <%= defs.Basics_Outcome %> <%= defs.Success_Effect_Size %> or more <%= defs.Measure_Units %>.</li>
-    </ul>
-
-
-</p>
-  <% } %>-->

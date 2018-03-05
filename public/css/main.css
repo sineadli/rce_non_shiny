@@ -1557,7 +1557,8 @@ div.step-example-box {
     /*margin: 20px;*/
     color: #C80000;
     font-style: italic;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.1em;
 }
    .before-upload {
             display: none;
@@ -2138,15 +2139,15 @@ d/*iv.carousel-inner div.item.active, div.carousel-inner div.item {
         }
 
         .slide-left .arrowbox-container > .box {
-            background-color: #006060;
+            background-color: #006982;
         }
 
         .slide-center .arrowbox-container > .box {
-            background-color: #407040;
+            background-color: #006982;
         }
 
         .slide-right .arrowbox-container > .box {
-            background-color: rgba(0,105,130,1);
+            background-color: #006982;
         }
 
         .arrow > .stem {
@@ -2167,7 +2168,7 @@ d/*iv.carousel-inner div.item.active, div.carousel-inner div.item {
         .slide-center .arrow > .stem,
         .slide-right .arrow > .stem {
             background-color: rgba(255, 130, 5, 1);
-            background-color:#006060;
+            background-color:#006982;
         }
 
         .slide-left .arrow > .head,
@@ -2175,15 +2176,15 @@ d/*iv.carousel-inner div.item.active, div.carousel-inner div.item {
         .slide-right .arrow > .head
          {
             border-color: rgba(255, 130, 5, 1) transparent transparent transparent;
-            border-color:#006060 transparent transparent transparent;
+            border-color:#006982 transparent transparent transparent;
         }
 
         .slide-center .arrow > .stem {
-            background-color: #407040;
+            background-color: #006982;
         }
 
         .slide-center .arrow > .head {
-            border-color: #407040 transparent transparent transparent;
+            border-color: #006982 transparent transparent transparent;
         }
 
         .slide-right .arrow > .stem {
@@ -2199,7 +2200,7 @@ d/*iv.carousel-inner div.item.active, div.carousel-inner div.item {
         }
 
         .circle-container > .circle {
-            background-color: #444444;
+            background-color: #222222;
             border-radius:50%;
         
            /*border: 4px solid rgba(255, 130, 5, 1);*/

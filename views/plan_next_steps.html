@@ -608,7 +608,7 @@
                                     <% } %>
                                 </div>
 
-                                <div class="step-action">
+                                <!--<div class="step-action">
 
                                   
                                     <p>For this evaluation, is any <span class="change-direction"><%= defs.Outcome_Direction %></span> in <%= defs.Basics_Outcome %> meaningful?
@@ -630,15 +630,16 @@
 
                                         </select>
                                     </div>
-                                </div>
-                                <div class="some-amount">
+                                </div>-->
+                                <div >
                                     <div class="step-action">
                                         <p>
-                                            I would consider any <span class="change-direction"><%= defs.Outcome_Direction %></span> of at least
+                                            I would consider an <span class="change-direction"><%= defs.Outcome_Direction %></span> of at least
 
-                                            <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="planNext[Success_Effect_Size]" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" step="any" />
+                                            <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="planNext[Success_Effect_Size]" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" step="any"/>
                                             <span class="measure-units"><%= defs.Measure_Units %></span> on <span class="effect-measure"><%= defs.Outcome_Measure %></span> to be meaningful.
                                         </p>
+                                        <p class="note">If any change of any size would be meaningful, then enter 0 for this question.</p>
                                        
                                     </div>
                                 </div>
@@ -762,16 +763,18 @@
 
                                     <label class="hidden" for="Action_NoChange">Input what you would do if confident that technology worsened outcomes.</label><textarea name="planNext[Action_NoChange]" id="Action_NoChange"><%= eval.planNext.Action_NoChange %></textarea>
                                 </div>
-                                <div class="step-subquestion">
-                                    <image src="static/image/NoEffect.png" />
-                                    <p>
+                                <div class="no-effect">
+                                    <div class="step-subquestion">
+                                        <image src="static/image/NoEffect.png" />
+                                        <p>
 
-                                        &hellip; the data suggests that the two groups are equivalent.
-                                    </p>
-                                </div>
-                                <div class="step-action">
+                                            &hellip; the data suggests that the two groups are equivalent.
+                                        </p>
+                                    </div>
+                                    <div class="step-action">
 
-                                    <label class="hidden" for="Action_Fail">Input what you would do if confident that technology did not change outcomes.</label><textarea name="planNext[Action_Fail]" id="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
+                                        <label class="hidden" for="Action_Fail">Input what you would do if confident that technology did not change outcomes.</label><textarea name="planNext[Action_Fail]" id="Action_Fail"><%= eval.planNext.Action_Fail %></textarea>
+                                    </div>
                                 </div>
                                 <div class="step-subquestion">
                                     <image src="static/image/UncertainEffect.png" />
@@ -797,7 +800,7 @@
                                                     </h3>
                                                 </div>
                                                 <div id="consider7" class="panel-collapse collapse in">
-                                                    <p> The Coach will use your MME to divide the range of possible outcomes into three regions: <ul style="margin-top: -15px;"><li>the treatment group does better than the comparison group by an amount at least as large as the MME</li><li>the two groups are equivalent</li><li>the treatment group does worse than the comparison group by an amount at least as large as the MME</li></ul> To help you answer your research question, the Coach will calculate the propability of each of these 3 possibilities being the actual outcome and compare those propabilities to your certainty threshold.</p>
+                                                    <p> The Coach will use your MME to divide the range of possible outcomes into three regions: <ul style="margin-top: -15px;"><li>the treatment group does better than the comparison group by an amount at least as large as <span class="success-effect-size">the MME</span> <span class="measure-units"></span></li><li>the two groups are equivalent</li><li>the treatment group does worse than the comparison group by an amount at least as large as <span class="success-effect-size">the MME</span> <span class="measure-units"></span></li></ul> To help you answer your research question, the Coach will calculate the propability of each of these 3 possibilities being the actual outcome and compare those propabilities to your <span class="prob-success"></span>  certainty threshold.</p>
                                                     <p>
                                                         <b>Your research question:</b> <br/>
                                                         <% include ../views/partials/_researchQuestion.html %>
@@ -861,20 +864,20 @@
 
             $(".measure-units").text(munits);
 
+            $('.prob-success').text($("#Pass_Probability").val() + "%");
             $('.success-effect-size').text($("#Success_Effect_Size").val());
             setCutOffAmount();
         });
 
         function setCutOffAmount() {
-            var anyAmount = $('#Any_Amount').val();
-            console.log(anyAmount);
-            if (anyAmount.toLowerCase() == 'yes') {
-                $("#Success_Effect_Size").val(0);
+            
+            if ($("#Success_Effect_Size").val() == 0) {
+              
                 $('.success-effect-size').text($("#Success_Effect_Size").val());
-                $('.some-amount').hide();
-                console.log(anyAmount);
+                $('.no-effect').hide();
+              
             }
-            else $('.some-amount').show();
+            else $('.no-effect').show();
         }
 
         $('#Outcome_Direction').change(function () {
@@ -901,7 +904,7 @@
         $('#Fail_Probability').change(function () {
             failProbUpdate(this);
         });
-        $('#Any_Amount').change(function () {
+        $('#Success_Effect_Size').change(function () {
             setCutOffAmount();
         });
 
