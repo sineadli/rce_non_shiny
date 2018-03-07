@@ -1,0 +1,372 @@
+﻿<!DOCTYPE html>
+<!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+
+
+
+<html lang="en">
+<head>
+    <title>Guides and Resources</title>
+    <% include ../views/partials/scriptHeader.html %>
+</head>
+<body class="one-col downloads">
+    <% url="/", des="Back to Home"; if (user) {url="/dashboard"; des ="Back to Dashboard"; } %>
+    <% include ../views/partials/header.html %>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href= <%= url %>><span class="fa fa-caret-left"></span> <%= des %></a></li>
+    </ol>
+
+
+
+<div class="container-fluid">
+    <div class="page-header">
+        <h1 class="page-title">Guides and Reference Resources</h1>
+    </div>
+<div class="row">
+    <div class="res-well">
+        <div class="step-header container first">
+            <div data-toggle="collapse" data-target="#A">
+                <h2 class="clickable case-studies">
+
+                    Case Studies <i class="fa fa-caret-down" aria-hidden="false"></i>
+                </h2>
+                <span class="resource-intro">Take a look at what RCE Coach users are doing. These case studies explore evaluation challenges that educators or district staff faced and the solutions they discovered while using the Coach. </span>
+               
+            </div>
+        </div>
+        <div id="A" class="row collapse in q-row">
+                <div class="col-xs-12">
+                    <ul class="case-studies">
+                        <li>
+                            <div class="col-xs-3">
+                                <a onclick=" window.open('/static/pdf/CaseStudy_WakeCounty_81417.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;"><img src="/static/image/WakeCounty.png"/>
+                                </a>
+                            </div>
+                            <div class="col-xs-9">
+                                <span class="cs-author">Kate Place and Mikia Manley</span><br/>
+
+                                <a onclick=" window.open('/static/pdf/CaseStudy_WakeCounty_81417.pdf', ''); return false; " href="javascript:void(0);"><span class="cs-location">Wake County Public School System:</span>&nbsp;&nbsp;<span class="cs-title">Are We Measuring the Right Outcome?</span>
+                                </a><br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/> (159 KB)
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                   
+                            <div class="col-xs-3">
+                                <a onclick=" window.open('/static/pdf/CaseStudy_Uplift_final.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;"><img src="/static/image/upliftEd.png"/>
+                                </a>
+                            </div>
+                            <div class="col-xs-9">
+                                <span class="cs-author">Kate Place and Mikia Manley</span><br/>
+
+                                <a onclick=" window.open('/static/pdf/CaseStudy_Uplift_final.pdf', ''); return false; " href="javascript:void(0);"><span class="cs-location">Uplift Education:</span>&nbsp;&nbsp;<span class="cs-title">How Can We Use the Coach to Evaluate Non-Tech Initiatives in our Schools?</span>
+                                </a><br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/> (142 KB)
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+                                 <div class="col-xs-3">
+                                     <a onclick=" window.open('/static/pdf/CaseStudy_Clarksdale_081417.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;"><img src="/static/image/ClarksDale.png" />
+                                     </a>
+                                 </div>
+                                 <div class="col-xs-9">
+                                     <span class="cs-author">Kate Place and Mikia Manley</span><br />
+
+                                     <a onclick=" window.open('/static/pdf/CaseStudy_Clarksdale_081417.pdf', ''); return false; " href="javascript:void(0);"><span class="cs-location">Clarksdale Municipal School District:</span>&nbsp;&nbsp;<span class="cs-title">How to Make Sense of Mixed Results?</span>
+                                     </a><br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" /> (175 KB)
+
+                                 </div>
+                                 <div class="clearfix"></div>
+                        </li>
+
+                        <li>
+                            
+                            <div class="col-xs-3">
+                                <a onclick=" window.open('/static/pdf/CaseStudy_StVrainValley.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;"><img src="/static/image/StVrain.png"/>
+                                </a>
+                            </div>
+                            <div class="col-xs-9">
+                                <span class="cs-author">Kate Place and Mikia Manley</span><br/>
+
+                                <a onclick=" window.open('/static/pdf/CaseStudy_StVrainValley.pdf', ''); return false; " href="javascript:void(0);"><span class="cs-location"> St. Vrain Valley Schools:</span>&nbsp;&nbsp;<span class="cs-title">How Do We Interpret Developers&rsquo; Claims?</span>
+                                </a><br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/> (135 KB)
+
+                            </div>
+                            <div class="clearfix"></div>
+
+
+                        </li>
+                        <li>
+                            <div class="col-xs-3">
+                                <a onclick=" window.open('/static/pdf/CaseStudy_DSU_101017.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;"><img src="/static/image/DakotaState.png" />
+                                </a>
+                            </div>
+                            <div class="col-xs-9">
+                                <span class="cs-author">Kate Place and Mikia Manley</span><br />
+
+                                <a onclick=" window.open('/static/pdf/CaseStudy_DSU_101017.pdf', ''); return false; " href="javascript:void(0);"><span class="cs-location">Dakota State University:</span>&nbsp;&nbsp;<span class="cs-title">How Do We Make Evaluation More Relevant to Educators?</span>
+                                </a><br/><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" /> (99 KB)
+
+                            </div>
+                            <div class="clearfix"></div>
+                        
+                        </li>
+                       
+                    </ul>
+                </div>
+            </div>
+    </div>
+
+    <div class="res-well">
+        <div class="step-header container first">
+            <div data-toggle="collapse" data-target="#B">
+                <h2 class="clickable res-welcome">                    
+                    Welcome to the RCE for Ed Tech <i class="fa fa-caret-down" aria-hidden="false"></i>
+                </h2>
+                <span class="resource-intro">Welcome aboard! This set of tools will provide an overview of the Ed Tech RCE Coach and help you get started. </span>
+            </div>
+        </div>
+        <div id="B" class="row collapse in  q-row">
+            <div class="col-xs-10">
+                <ul>
+                    <li>
+
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/Graphic Overview.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Ed Tech RCE Coach Overview</a> (697 KB)
+                        <div class="tool-access">
+                        </div>
+                    </li>
+                    <li>
+
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/What you need to get started.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">What You’ll Need to Get Started</a> (153 KB)
+                        <div class="tool-access">
+                        </div>
+                    </li>
+                    <li>
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/Choose a Technology.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Choose a Technology</a> (176 KB)
+                        <div class="tool-access">
+                        </div>
+                    </li>
+                    <li>
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/Understanding types of evidence.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Understand Types of Evidence
+                        </a> (1.2 MB)
+                        <div class="tool-access">
+                        </div>
+                    </li>
+                    <li>
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/RCE Coach Handbook.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Ed Tech Rapid Cycle Evaluation Coach Handbook
+                        </a> (5.4 MB)
+                        <div class="tool-access">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="res-well">
+        <div class="step-header container first">
+            <div data-toggle="collapse" data-target="#D">
+                <h2 class="clickable things-to-consider">
+                    Things to Consider <i class="fa fa-caret-down" aria-hidden="false"></i>
+                </h2>
+                <span class="resource-intro">The &ldquo;Things to Consider&rdquo; infographics will guide you through important considerations as you design your evaluation and interpret the results.  </span>
+            </div>
+        </div>
+        <div id="D" class="row collapse in  q-row">
+            <div class="col-xs-10">
+                <ul class="case-studies">
+                    <li>
+                        <div class="col-xs-4">
+                            <a onclick="window.open('/static/pdf/HowToDesignPilot.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;"><img src="/static/image/Pilot-Infog.png" />
+                            </a>
+                        </div>
+                        <div class="col-xs-8">
+                  
+                            <a onclick="window.open('/static/pdf/HowToDesignPilot.pdf', ''); return false; " href="javascript:void(0);">
+                                <h3>How to design a successful pilot</h3>
+                            </a>
+                            <p>It&rsquo;s common practice to rollout a new technology to all students as quickly as possible. But what if you could learn how likely a new technology was to work at your school, in your district, or in your unique setting before you rolled it out at scale? Here are somethings to think about to help you get the data needed to make evidence-based decisions.
+                                <br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" /> (448 KB)</p>
+                           
+                        </div>
+                        <div class="clearfix"></div>
+
+                        
+
+                    </li>
+                    <li>
+                        <div class="col-xs-4">
+                            <a onclick="window.open('/static/pdf/Why_need_compar_group_infographic.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">
+                                <img src="/static/image/UsingGroup-Infog.png" />
+                            </a>
+                        </div>
+                        <div class="col-xs-8">
+
+                            <a onclick="window.open('/static/pdf/Why_need_compar_group_infographic.pdf', ''); return false; " href="javascript:void(0);">
+                                <h3>Using a Comparison Group</h3>
+                            </a>
+                            <p>
+                                When we are interested in understanding how outcomes changed as a result of using an
+                                educational technology, we may wonder why we can’t just look at growth over the course of the
+                                year for the individuals who used the technology.
+                                <br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" /> (130 KB)
+                            </p>
+
+                        </div>
+                        <div class="clearfix"></div>
+                    
+
+                    </li>
+                    <li>
+                        <div class="col-xs-4">
+                            <a onclick="window.open('/static/pdf/Choosing_A_Good_Comparison_Group.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">
+                                <img src="/static/image/CreatingGroup-Infog.png" />
+                            </a>
+                        </div>
+                        <div class="col-xs-8">
+
+                            <a onclick="window.open('/static/pdf/Choosing_A_Good_Comparison_Group.pdf', ''); return false; " href="javascript:void(0);">
+                                <h3>Choosing a Good Comparison Group</h3>
+                            </a>
+                            <p>
+                                One way to test whether an educational technology is moving the needle is to conduct a matched comparison design evaluation. This method matches technology users to similar nonusers and then compares the differences in outcomes between the two groups. Here are some things to think about when selecting two similar groups.
+                                <br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" /> (744 KB)
+                            </p>
+
+                        </div>
+                        <div class="clearfix"></div>
+
+                       
+                    </li>
+                    <li>
+                        <div class="col-xs-4">
+                            <a onclick="window.open('/static/pdf/Question Limitations.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">
+                                <img src="/static/image/Question-Infog.png" />
+                            </a>
+                        </div>
+                        <div class="col-xs-8">
+
+                            <a onclick="window.open('/static/pdf/Question Limitations.pdf', ''); return false; " href="javascript:void(0);">
+                                <h3>Limitations on the Type of Question You Can Answer</h3>
+                            </a>
+                            <p>
+                                It is common for your context to limit the type of questions you can ask when conducting an evaluation. It is important to think about those limitations before crafting a research question to make sure your evaluation is based on a question you can actually answer. 
+                                <br /><img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" /> (129 KB)
+                            </p>
+
+                        </div>
+                        <div class="clearfix"></div>
+                       
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<div class="res-well">
+    <div class="step-header container first">
+        <div data-toggle="collapse" data-target="#E">
+            <h2 class="clickable training">
+                
+                Training Resources <i class="fa fa-caret-down" aria-hidden="false"></i>
+            </h2>
+            <span class="resource-intro">If you&rsquo;re considering hosting a training on the RCE Coach for your colleagues, this set of tools offers a pre-prepared presentation, workshop materials, and data and scenarios for practice evaluations.  </span>
+        </div>
+    </div>
+    <div id="E" class="row collapse in  q-row">
+        <div class="col-xs-10">
+            <ul>
+                <li>
+
+                    <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/RCEModuleStateTAToolkit.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Description: RCE Coach Module</a> (53 KB)
+                </li>
+                <li>
+                    <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/RCEModuleOverviewPresentation.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Presentation Slides: RCE Coach Module Overview</a> (1.5 MB)
+
+                </li>
+                <li>
+                    <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/PresentationNotes.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Presentation Notes: RCE Coach Module Overview</a> (1.6 MB)
+
+                </li>
+
+
+
+                <li>
+                    <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/RCE Scenarios SXSW.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">RCE Coach Workshop Scenarios</a> (112 KB)
+
+                </li>
+                <li>
+                    <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/RCEModuleFacilitatorGuideforDemo.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Facilitator Guide: RCE Coach Demo of MathTechX</a> (178 KB)
+
+                </li>
+                <li>
+                    <img src="/static/image/csv323.png" title="CSV file" alt="CSV file"/>&nbsp;&nbsp; <a href="/static/pdf/data_mathtechx.csv" style="font-size: 1.1em;">MathTech X test data</a> (107 KB)
+
+                </li>
+                <li>
+                    <img src="/static/image/csv323.png" title="CSV file" alt="CSV file"/>&nbsp;&nbsp; <a href="/static/pdf/data_schoolready.csv" style="font-size: 1.1em;">SchoolReady test data</a> (143 KB)
+
+                </li>
+                <li>
+                    <img src="/static/image/csv323.png" title="CSV file" alt="CSV file"/>&nbsp;&nbsp; <a href="/static/pdf/data_teachprep.csv" style="font-size: 1.1em;">TeachPrep test data</a> (25 KB)
+
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="res-well">
+        <div class="step-header container first">
+            <div data-toggle="collapse" data-target="#F">
+                <h2 class="clickable technical">
+                   
+                    Technical Appendices <i class="fa fa-caret-down" aria-hidden="false"></i>
+                </h2>
+                <span class="resource-intro">The technical appendices will provide you more detailed information on the methods and statistics that the Coach uses. </span>
+            </div>
+        </div>
+        <div id="F" class="row collapse in  q-row">
+            <div class="col-xs-10">
+                <ul>
+                    <li>
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/Randomization Technical Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">Random Assignment Technical Appendix</a> (163 KB)
+                    </li>
+                    <li>
+
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document"/>&nbsp;&nbsp; <a onclick=" window.open('/static/pdf/Matching Technical Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Matching Technical Appendix</a> (197 KB)
+                    </li>
+                    <li>
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp;
+                        <a onclick=" window.open('/static/pdf/Randomization Technical Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size: 1.1em;">Random Assignment Technical Appendix</a> (163 KB)
+                    </li>
+                    <li>
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp; <a onclick="window.open('/static/pdf/Impact Estimation Technical Appendix.pdf', ''); return false;" href="javascript:void(0);" style="font-size:1.1em;">Impact Estimation Technical Appendix</a> (474 KB)
+                    </li>
+                    <li>
+                        <img src="/static/image/pdf32.png" title="PDF document" alt="PDF document" />&nbsp;&nbsp;  <a onclick="window.open('/static/pdf/06.01a Findings Brief Appendix.pdf', ''); return false; " href="javascript:void(0);" style="font-size:1.1em;">
+                            Findings Brief Appendix
+                        </a> (692 KB)
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+</body>
+</html>
