@@ -797,13 +797,111 @@ a#next:hover, a#next:focus {
     }
 }
 
+/* Resources */
+div.res-well {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    border: 3px solid #337AB7;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    background-color: #ffffff;
+}
+    div.res-well h2.clickable {
+        font-size: 2em;
+        margin: 20px 0 0px 0;
+        color: #000000;
+        padding-top: 10px;
+    }
+div.res-well ul, ul.case-studies {
+    list-style: none;
+}
+div.res-well ul, ul.case-studies li {
+    min-height: 100px;
+    display: block;
+
+}
+div.res-well ul, ul.case-studies li img {
+    padding-top: 20px;
+
+}
+div.res-well div.step-header.first {
+    border-top: none;
+}
+ h2.things-to-consider, h2.training, h2.technical, h2.case-studies, h2.res-welcome {
+     padding-left: 75px;  
+     background-repeat: no-repeat;
+     background-position: top left;
+     min-height: 75px;
+     vertical-align: bottom;
+ 
+}
+
+ h2.things-to-consider {
+      background-image: url("/static/image/ThingsConsiderIcon65.png");
+  
+ }
+  h2.res-welcome {
+      background-image: url("/static/image/WelcomeIcon65.png");
+  
+ }
+ h2.things-to-consider {
+      background-image: url("/static/image/ThingsConsiderIcon65.png");
+  
+ }
+ h2.case-studies {
+      background-image: url("/static/image/CaseStudyIcon65.png");
+  
+ }
+  h2.technical {
+      background-image: url("/static/image/TechnicalIcon65.png");
+  
+ }
+    h2.training {
+      background-image: url("/static/image/ResourcesIcon65.png");
+  
+ }
+span.resource-intro {
+     font-size: 1em;
+     font-style: italic;
+     font-weight: normal;
+     line-height: 1em !important;
+   
+ }
+
+
+ div.res-well li div.col-xs-9{
+     padding: 25px 10px;
+     
+ }
+div.res-well li span {
+     line-height: 1.3em;
+}
+ span.cs-location {
+     font-size: 1.4em;
+     color: #006982;
+     
+ }
+ span.cs-title {
+     font-size: 1.6em;
+     font-weight: bold;
+     color: #006982;
+     
+ }
+ div.res-well li div.col-xs-3 {
+     min-width: 25%;
+ }
+ div.res-well li div.col-xs-4 {
+     min-width: 33%;
+ }
+
+
 /* Dashboard */
 div.dash-well {
     min-height: 20px;
     padding: 19px;
     margin-bottom: 20px;
     border: 1px solid #BAB38F;
-    border-radius: 6px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     background-color: #ffffff;
@@ -2000,7 +2098,7 @@ table#timeline textarea {
     text-align: center;
 }
 
-d/*iv.carousel-inner div.item.active, div.carousel-inner div.item {
+ div.carousel-inner.prepare div.item.active, div.carousel-inner div.item {
     margin:auto;
     width: 85%;
     font-size: 1.2em;
@@ -2008,7 +2106,8 @@ d/*iv.carousel-inner div.item.active, div.carousel-inner div.item {
     padding: 8px;
     border: 4px solid #FAC500;
     border-radius: 8px;
-}*/
+    min-height: 40px;
+}
 
 .carousel-control {
     text-align:center;

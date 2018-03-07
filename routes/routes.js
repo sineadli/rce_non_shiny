@@ -71,6 +71,12 @@ module.exports = function(app, passport) {
         // render the page and pass in any flash data if it exists
         res.render('PreviewTools.html', { user: user });
     });
+	app.get('/Resources', function (req, res) {
+        var user;
+        if (req.user) user = req.user
+        // render the page and pass in any flash data if it exists
+        res.render('Resources.html', { user: user });
+    });
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/dashboard', // redirect to the secure profile section
