@@ -55,6 +55,7 @@ nochangetext = "";
     var highlight = "";
     var hlincrease = "";
     var hldecrease = "";
+    var hlnochange = "";
 
     var thisgrade = Result.results_by_grade[grade];
    
@@ -64,16 +65,39 @@ nochangetext = "";
     var prop_decreased = round10(thisgrade.rope_output.probabilities.less_than*100,0) ;
     var prop_same = round10(thisgrade.rope_output.probabilities.equal*100,0) ;
     var meetGoal = (prop_decreased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : ((prop_increased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : "No") ;
+    var negImpact = (prop_decreased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : ((prop_increased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : "No") ;
+    var noImpact = ((negImpact != "Yes"  && meetGoal != "Yes") ? "Yes" : "No") ;
     }
+   
+   
     if(meetGoal == "Yes") {
-    highlight = "background-color:#C2FA96";
+    highlight = "background-color:#FFDE17";
     if (defs.Outcome_Direction.toLowerCase() == "increase") {
-    hlincrease = "background-color:#C2FA96";
+    hlincrease = "background-color:#FFDE17";
     }
     if (defs.Outcome_Direction.toLowerCase() == "decrease") {
-    hldecrease = "background-color:#C2FA96";
+    hldecrease = "background-color:#FFDE17";
     }
     }
+
+    if(negImpact == "Yes") {
+    highlight = "background-color:#FFDE17";
+    if (defs.Outcome_Direction.toLowerCase() == "increase") {
+    hldecrease = "background-color:#FFDE17";
+    }
+    if (defs.Outcome_Direction.toLowerCase() == "decrease") {
+    hlincrease = "background-color:#FFDE17";
+    }
+    }
+
+    if(noImpact == "Yes") {
+    highlight = "background-color:#FFDE17";
+    if (defs.Outcome_Direction.toLowerCase() == "increase") {
+    hlnochange = "background-color:#FFDE17";
+    }
+    
+    }
+
     var effect = round10(thisgrade.impact, 0) ;
     if(Math.abs(thisgrade.impact) < 10 )
     {
@@ -114,10 +138,10 @@ nochangetext = "";
     </tr>
     <% if(defs.resultCutoff != 0) { %>
     <tr >
-        <td class="show-border">
+        <td class="show-border" style="<%=hlnochange %>">
             Between -<%= defs.resultCutoff %> and <%= defs.resultCutoff %>
         </td>
-        <td class="show-border"><%=prop_same %>%</td>
+        <td class="show-border" style="<%=hlnochange %>"><%=prop_same %>%</td>
     </tr>
     <% } %>
     <tr style="border-bottom: none">

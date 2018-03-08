@@ -79,7 +79,7 @@
                                         <div class="arrowbox-containers row">
                                             <div class="slide-left col-sm-4">
                                                 <h4 class="text-bold">Cost</h4>
-                                                <div class="arrowbox-container">
+                                                <div class="arrowbox-container" style="padding-right: 14px;">
                                                     <div class="box">
                                                        
                                                         <span>Text messages sent are free.</span>
@@ -92,7 +92,7 @@
                                             </div>
                                             <div class="slide-center col-sm-4">
                                                 <h4 class="text-bold">Outcome Measure Considerations</h4>
-                                                <div class="arrowbox-container">
+                                                <div class="arrowbox-container" style="padding-left: 4px;">
                                                     <div class="box">
                                                         <span>Unknown</span>
                                                     </div>
@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="slide-right col-sm-4">
                                                 <h4 class="text-bold">Other Factors</h4>
-                                                <div class="arrowbox-container">
+                                                <div class="arrowbox-container" style="padding-left: 14px;">
                                                     <div class="box">
                                                         <span>There is no reason to expect the text messages would decrease attendance. </span>
                                                     </div>
@@ -308,7 +308,7 @@
                                                 <h4 class="text-bold">Other Factors</h4>
                                                 <div class="arrowbox-container">
                                                     <div class="box">
-                                                        <span>Recent investments have led to only small increases in achievement. District is looking for something with more of an impact.
+                                                        <span>Recent investments led to only small increases in achievement. Looking for something with more of an impact.
 </span>
                                                     </div>
                                                     <div class="arrow">
@@ -330,81 +330,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--<div class="messagebox-container">
-                                            <div class="messagebox-arrow">
-                                                <div class="arrow">
-                                                    <div class="stem"></div>
-                                                    <div class="head"></div>
-                                                </div>
-                                            </div>
-                                            <div class="box">
-                                                <h5>MME increases</h5>
-                                            </div>
-                                        </div>-->
-                                    </div>
-                                        <!--<div class="item">
-                                            <div class="arrowbox-containers row">
-                                                <div class="slide-left col-sm-4">
-                                                    <h4 class="text-bold">Cost</h4>
-                                                    <div class="arrowbox-container">
-                                                        <div class="box">
-                                                            <span>Technology requires a significant investment from the school district.</span>
-                                                        </div>
-                                                        <div class="arrow">
-                                                            <div class="stem"></div>
-                                                            <div class="head"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="slide-center col-sm-4">
-                                                    <h4 class="text-bold">Outcome Measure Considerations</h4>
-                                                    <div class="arrowbox-container">
-                                                        <div class="box">
-                                                            <span>Score range on the test is 0 to 300 points, and scores typically improve by 20 points over the year.</span>
-                                                        </div>
-                                                        <div class="arrow">
-                                                            <div class="stem"></div>
-                                                            <div class="head"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="slide-right col-sm-4">
-                                                    <h4 class="text-bold">Other Factors</h4>
-                                                    <div class="arrowbox-container">
-                                                        <div class="box">
-                                                            <span>The technology takes up a significant amount of class time.</span>
-                                                        </div>
-                                                        <div class="arrow">
-                                                            <div class="stem"></div>
-                                                            <div class="head"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="circle-container">
-                                                <div class="circle">
-                                                    <div class="top">
-                                                        Minimum meaningful effect:
-                                                        <b>40 points</b>
-                                                    </div>
-                                                    <div class="bottom">
-                                                        Certainty threshold:
-                                                        <b>90%;</b>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="messagebox-container">
-                                                <div class="messagebox-arrow">
-                                                    <div class="arrow">
-                                                        <div class="stem"></div>
-                                                        <div class="head"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="box">
-                                                    <h5>MME and certainty threshold increase</h5>
-                                                </div>
-                                            </div>
-                                        </div>-->
+                                      
                                     </div>
                                     <!-- Controls -->
                                     <a class="left carousel-control" href="#annoCarousel" role="button" data-slide="prev">
@@ -633,14 +559,15 @@
                                 </div>-->
                                 <div >
                                     <div class="step-action">
+                                        <p>For this evaluation, how large of a change would you consider meaningful?</p>
                                         <p>
-                                            I would consider an <span class="change-direction"><%= defs.Outcome_Direction %></span> of at least
+                                            I would consider a change of at least
 
                                             <label class="hidden" for="Success_Effect_Size">Input size for success.</label><input type="text" name="planNext[Success_Effect_Size]" id="Success_Effect_Size" placeholder="0" value="<%= eval.planNext.Success_Effect_Size %>" style="width: 50px" step="any"/>
                                             <span class="measure-units"><%= defs.Measure_Units %></span> on <span class="effect-measure"><%= defs.Outcome_Measure %></span> to be meaningful.
                                         </p>
                                         <p class="note">If any change of any size would be meaningful, then enter 0 for this question.</p>
-                                       
+
                                     </div>
                                 </div>
                             </div>
