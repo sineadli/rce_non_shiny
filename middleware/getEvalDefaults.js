@@ -27,8 +27,8 @@ var getEvalDefaults = function (sess, user) {
 		setBasics(sess);
 		setOutcome(sess);
 		setApproach(sess);
-		setGetResults(sess);
 		setResearchQ(sess);
+		setGetResults(sess);		
 		setPlanNext(sess);
 		setEvalPlan(sess);
 		setPlanContext(sess);
@@ -445,7 +445,7 @@ function setGetResults(sess) {
 
 		        var negImpact = (prop_decreased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : ((prop_increased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : false);
 
-		        var noImpact = ((!negImpact && !meetGoal) ? true : false);
+		        var noImpact = ((negImpact === false && meetGoal === false) ? true : false);
 			}
 
 			if (success  || meetGoal) {
@@ -471,11 +471,13 @@ function setGetResults(sess) {
 			header = start = gradeQualifier = inconclusiveQualifier = nextSteps = "";
 			var beginwith =  "Based on the data used in this analysis, " ;
 
-		    if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
-				header = sess.defaults.UsesROPE === true ? "None of the possible outcomes meet our certainty threshold. Therefore, it is not possible to come to a conclusion about " + eval.basics.Basics_Tech_Name  + "." : "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive.";
-		        nextSteps = eval.planNext.Action_Inconclusive;
-			} else if (sess.defaults.UsesROPE === false) {
-		        if (successCount === 0) {
+		   
+			if (sess.defaults.UsesROPE === false) {
+			    if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
+			        header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive.";
+			        nextSteps = eval.planNext.Action_Inconclusive;
+			    }
+			    if (successCount === 0) {
 					start = eval.basics.Basics_Tech_Name + "  did not have the intended effect ";
 		            nextSteps = eval.planNext.Action_Fail;
 		        }
@@ -490,19 +492,22 @@ function setGetResults(sess) {
 		            start = eval.basics.Basics_Tech_Name + " is moving the needle ";
 				}
 				header = beginwith + start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + ((gradeQualifier === "") ? "." : "") + inconclusiveQualifier;
-		    } else {
-					if (successCount === 0 && failureCount > 0 && noimpactCount === 0 ) {
+			} else {
+				if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
+					header = sess.defaults.UsesROPE === true ? "None of the possible outcomes meet our certainty threshold. Therefore, it is not possible to come to a conclusion about " + eval.basics.Basics_Tech_Name + "." : "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive.";
+					nextSteps = eval.planNext.Action_Inconclusive;
+				}else if (successCount === 0 && failureCount > 0 && noimpactCount === 0 ) {
 						start = eval.basics.Basics_Tech_Name + "  is worse than its alternative.";
 						nextSteps = eval.planNext.Action_Fail;
 					}
 					else if (successCount > 0 && failureCount === 0 && noimpactCount === 0) {
 						start = eval.basics.Basics_Tech_Name + "  is better than its alternative.";
-						nextSteps = eval.planNext.Action_Fail;
+						nextSteps = eval.planNext.Action_Success;
 					}
 					else if (noimpactCount > 0 && successCount == 0 && failureCount === 0) {
 		            start = eval.basics.Basics_Tech_Name + " is equivalent to its alternative.";
 		            gradeQualifier = ' for some grades, but not for others.';
-		            nextSteps = eval.planNext.Action_Inconclusive;
+					nextSteps = eval.planNext.Action_NoChange;
 					} else {
 						 start = " different results were found for different grades.";
 					}
