@@ -441,11 +441,11 @@ function setGetResults(sess) {
 		        var prop_decreased = round10(thisgrade.rope_output.probabilities.less_than * 100, 0);
 		        var prop_same = round10(thisgrade.rope_output.probabilities.equal * 100, 0);
 
-		        var meetGoal = (prop_decreased >= sess.defaults.resultProbability && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : ((prop_increased >= sess.defaults.resultProbability && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : false);
+		        var meetGoal = (prop_decreased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : ((prop_increased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : false);
 
-		        var negImpact = (prop_decreased >= sess.defaults.resultProbability && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : ((prop_increased >= sess.defaults.resultProbability && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : false);
+		        var negImpact = (prop_decreased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : ((prop_increased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : false);
 
-		        var noImpact = ((negImpact !== 1 && meetGoal !== 1) ? true : false);
+		        var noImpact = ((!negImpact && !meetGoal) ? true : false);
 			}
 
 			if (success  || meetGoal) {
