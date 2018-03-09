@@ -66,10 +66,20 @@ nochangetext = "";
     var prop_same = round10(thisgrade.rope_output.probabilities.equal*100,0) ;
     var meetGoal = (prop_decreased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : ((prop_increased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : "No") ;
     var negImpact = (prop_decreased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : ((prop_increased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : "No") ;
-    var noImpact = ((negImpact != "Yes"  && meetGoal != "Yes") ? "Yes" : "No") ;
+    var noImpact = ((negImpact != "Yes" && meetGoal != "Yes") ? "Yes" : "No") ;
+
+    console.log("table prop decreased = " + prop_decreased);
+    console.log("table prob the same = " + prop_same);
+    console.log("table prop increased = " + prop_increased);
+    console.log("table CT = " + sess.defaults.resultProbability);
+    console.log("table fails= " + negImpact);
+    console.log("table no impact = " + noImpact);
+    console.log("table success = " + meetGoal);
+
     }
    
-   
+    
+
     if(meetGoal == "Yes") {
     highlight = "background-color:#FFDE17";
     if (defs.Outcome_Direction.toLowerCase() == "increase") {
@@ -92,9 +102,9 @@ nochangetext = "";
 
     if(noImpact == "Yes") {
     highlight = "background-color:#FFDE17";
-    if (defs.Outcome_Direction.toLowerCase() == "increase") {
+   
     hlnochange = "background-color:#FFDE17";
-    }
+   
     
     }
 
