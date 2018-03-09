@@ -389,7 +389,7 @@ function setGetResults(sess) {
 		                if (thisgrade.rope_output != undefined) {
 		                    sess.defaults.UsesROPE = true;
 						}
-						console.log(sess.defaults.UsesROPE);
+						console.log("Uses ROPE" +sess.defaults.UsesROPE);
 		            }
 		        }
 
@@ -404,6 +404,7 @@ function setGetResults(sess) {
 
 		    for (grade in result.results_by_grade) {
 		        if (result.results_by_grade.hasOwnProperty(grade)) {
+		            console.log("Uses ROPE by grade" + sess.defaults.UsesROPE);
 
 		            var thisresult = result.results_by_grade[grade];
 
@@ -425,45 +426,52 @@ function setGetResults(sess) {
 
 		            //For Interpretation
 		            if (!sess.defaults.UsesROPE) {
-
+		                console.log("doesn't use ROPE" + sess.defaults.UsesROPE);
 		                var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
 		                var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
 		                var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
 
 		                var success = (probability > pass_probability);
 		                var inconclusive = (probability < pass_probability) && (probability > fail_probability);
+
+		            } else {
+		                console.log("used ROPE" + sess.defaults.UsesROPE);
+
+		                //"rope_output\":{\"probabilities\":{\"less_than\":[0],\"equal\":[1],\"greater_than\":[0]}
+						var prop_increased = textHelpers.round10(thisgrade.rope_output.probabilities.greater_than * 100, 0);
+						var prop_decreased = textHelpers.round10(thisgrade.rope_output.probabilities.less_than * 100, 0);
+						var prop_same = textHelpers.round10(thisgrade.rope_output.probabilities.equal * 100, 0);
+
+		                console.log("prop decreased = " + prop_decreased);
+		                console.log("prob the same = " + prop_same);
+		                console.log("prop increased = " + prop_increased);
+		                console.log("CT = " + sess.defaults.resultProbability);
+
+						var meetGoal = (prop_decreased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : ((prop_increased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : false);
+
+						var negImpact = (prop_decreased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : ((prop_increased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : false);
+						var noImpact = (prop_same >= textHelpers.round10(sess.defaults.resultProbability) ? true : false);
+
+		                inconclusive = ((negImpact === false && meetGoal === false && noImpact == false) ? true : false);
 		            }
-		        } else {
-		       
 
-		        //"rope_output\":{\"probabilities\":{\"less_than\":[0],\"equal\":[1],\"greater_than\":[0]}
-		        var prop_increased = round10(thisgrade.rope_output.probabilities.greater_than * 100, 0);
-		        var prop_decreased = round10(thisgrade.rope_output.probabilities.less_than * 100, 0);
-		        var prop_same = round10(thisgrade.rope_output.probabilities.equal * 100, 0);
+		            if (success || meetGoal) {
+		                successCount++;
+		            } else if (inconclusive) {
+		                inconclusiveCount++;
+		            } else if (noImpact) {
+		                noimpactCount++;
+		            } else if (negImpact) {
+		                failureCount++;
+		            }
+		        }
 
-		        var meetGoal = (prop_decreased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : ((prop_increased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : false);
-
-		        var negImpact = (prop_decreased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : ((prop_increased >= round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : false);
-
-		        var noImpact = ((negImpact === false && meetGoal === false) ? true : false);
-			}
-
-			if (success  || meetGoal) {
-				successCount++;
-			} else if (inconclusive) {
-				inconclusiveCount++;
-			} else if (noImpact) {
-			    noimpactCount++;
-			} else if (negImpact){
-				failureCount++;
-			}
-
-		
-			} // For each grade
+		    } // For each grade
 
 			console.log("fails= " + failureCount);
 			console.log("no impacts = " + noimpactCount);
 			console.log("successes = " + successCount);
+			console.log("inconclusive = " + inconclusiveCount);
 
 
 		    // Create result summary string
@@ -493,22 +501,23 @@ function setGetResults(sess) {
 				}
 				header = beginwith + start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + ((gradeQualifier === "") ? "." : "") + inconclusiveQualifier;
 			} else {
-				if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
-					header = sess.defaults.UsesROPE === true ? "None of the possible outcomes meet our certainty threshold. Therefore, it is not possible to come to a conclusion about " + eval.basics.Basics_Tech_Name + "." : "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive.";
+				if (inconclusiveCount > 0 && inconclusiveCount === (inconclusiveCount + noimpactCount + successCount + failureCount)) {
+				    header = "None of the possible outcomes meet our certainty threshold. Therefore, it is not possible to come to a conclusion about " + eval.basics.Basics_Tech_Name + ".";
 					nextSteps = eval.planNext.Action_Inconclusive;
-				}else if (successCount === 0 && failureCount > 0 && noimpactCount === 0 ) {
+				} else if (successCount === 0 && failureCount > 0 && noimpactCount === 0 && inconclusiveCount === 0) {
 						start = eval.basics.Basics_Tech_Name + "  is worse than its alternative.";
 						nextSteps = eval.planNext.Action_Fail;
 					}
-					else if (successCount > 0 && failureCount === 0 && noimpactCount === 0) {
+				else if (successCount > 0 && failureCount === 0 && noimpactCount === 0 && inconclusiveCount === 0) {
 						start = eval.basics.Basics_Tech_Name + "  is better than its alternative.";
 						nextSteps = eval.planNext.Action_Success;
 					}
-					else if (noimpactCount > 0 && successCount == 0 && failureCount === 0) {
+				else if (noimpactCount > 0 && successCount === 0 && failureCount === 0 && inconclusiveCount === 0) {
 		            start = eval.basics.Basics_Tech_Name + " is equivalent to its alternative.";
 		            gradeQualifier = ' for some grades, but not for others.';
 					nextSteps = eval.planNext.Action_NoChange;
-					} else {
+				}
+				else {
 						 start = " different results were found for different grades.";
 					}
 
