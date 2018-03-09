@@ -33,7 +33,7 @@
     <label class="chart">Grade <%= grade %></label>
 
     <img src="data:image/png;base64,<%- thisgrade.rope_output.plots.bar %>">
-
+    <p>Based on the data used in this analysis:</p>
     <ul>
         <li>There is a <%= round10(thisgrade.rope_output.probabilities.greater_than *100,0) %>% probability that adopting <%= defs.Basics_Tech_Name %> <%= gradetext %> would increase <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</li>
         <% if(defs.Success_Effect_Size != 0) { %>
