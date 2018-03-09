@@ -2324,7 +2324,7 @@ table#timeline textarea {
         }
 
         .circle-container > .circle {
-            background-color: rgba(255, 233, 22, .9);
+            background-color: #00596F;
             border-radius:50%;
         
            /*border: 4px solid rgba(255, 130, 5, 1);*/
@@ -2332,7 +2332,7 @@ table#timeline textarea {
             width: 225px;
             height: 225px;
             margin:auto;
-            color: #004C5E;            
+            color: #ffffff;            
             display: -ms-flexbox;
             display: -webkit-flex;
             display: flex;
@@ -2348,7 +2348,7 @@ table#timeline textarea {
 
         .circle-container b {
             display:block;
-            color: #000;
+            color: #FAC500;
             font-size: 1.1em;
             font-weight: bold;
         }
