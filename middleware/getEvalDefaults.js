@@ -367,6 +367,7 @@ function setGetResults(sess) {
 
 			sess.defaults.resultCutoff = result.args.cutoff[0];
 			sess.defaults.resultProbability = result.args.probability[0];
+			 
 
 		    if (result.outcome_range) {
 		        sess.defaults.Outcome_Min = result.outcome_range.min;
@@ -452,7 +453,7 @@ function setGetResults(sess) {
 						var negImpact = (prop_decreased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : ((prop_increased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : false);
 						var noImpact = (prop_same >= textHelpers.round10(sess.defaults.resultProbability) ? true : false);
 
-		                inconclusive = ((negImpact === false && meetGoal === false && noImpact == false) ? true : false);
+		                inconclusive = ((negImpact === false && meetGoal === false && noImpact === false) ? true : false);
 		            }
 
 		            if (success || meetGoal) {

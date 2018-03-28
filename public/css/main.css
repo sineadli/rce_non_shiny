@@ -2346,7 +2346,7 @@ table#timeline textarea {
             font-weight: 700;
         }
 
-        .circle-container b {
+        .circle-container strong {
             display:block;
             color: #FAC500;
             font-size: 1.1em;

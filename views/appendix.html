@@ -237,7 +237,7 @@ if (user != "NOAUTHENTICATED") {
                                     var impact = parseFloat(thisgrade.freq.impact);
                                     var se = parseFloat(thisgrade.freq.se);
                                     var effect_size = thisgrade.freq.effect_size;
-                                    var pvalue = thisgrade.freq.pvalue;
+                                    var pvalue = thisgrade.freq.pvalue < .01 ? "< .01" : (thisgrade.freq.pvalue == 1 ? "> .9" : thisgrade.freq.pvalue);
 
                                     if (thisgrade.freq.ub && thisgrade.freq.lb) {
                                     var lb = parseFloat(thisgrade.freq.lb);

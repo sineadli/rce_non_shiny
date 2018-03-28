@@ -66,7 +66,8 @@ nochangetext = "";
     var prop_same = round10(thisgrade.rope_output.probabilities.equal*100,0) ;
     var meetGoal = (prop_decreased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : ((prop_increased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : "No") ;
     var negImpact = (prop_decreased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "increase") ? "Yes" : ((prop_increased >= round10(defs.resultProbability) && defs.Outcome_Direction.toLowerCase() == "decrease") ? "Yes" : "No") ;
-    var noImpact = ((negImpact != "Yes" && meetGoal != "Yes") ? "Yes" : "No") ;
+    var equivImpact = (prop_same >= round10(defs.resultProbability)  ? "Yes" : "No") ;
+    var noImpact = ((negImpact != "Yes" && meetGoal != "Yes" && equivImpact !="Yes") ? "Not sure" : "No") ;
 
     console.log("table prop decreased = " + prop_decreased);
     console.log("table prob the same = " + prop_same);
@@ -100,7 +101,7 @@ nochangetext = "";
     }
     }
 
-    if(noImpact == "Yes") {
+    if(equivImpact == "Yes") {
     highlight = "background-color:#FFDE17";
    
     hlnochange = "background-color:#FFDE17";
@@ -120,11 +121,11 @@ nochangetext = "";
     %>
     <tr style="border-top: 1px #aaa solid">
         <td rowspan="<%= rsp %>"><%= grade %></td>
-        <td rowspan="<%= rsp %>" style="<%=highlight %>"><%= meetGoal %></td>
+        <td rowspan="<%= rsp %>" style="<%=highlight %>"><%= noImpact == "Not sure" ? noImpact : meetGoal %></td>
         <td style="<%=hlincrease %>" class="show-border">
             <span class="fa fa-arrow-up" title="increased"></span> increase >= <%= defs.resultCutoff%>
         </td>
-        <td style="<%=hlincrease %>" class="show-border"><%= prop_increased %>%</td>
+        <td style="<%=hlincrease %>" class="show-border"><%= prop_increased > 99 ? "> 99" : (prop_increased < 1 ? "< 1" : prop_decreased) %>%</td>
 
         <td rowspan="<%= rsp %>">
             <%- effect %>
@@ -151,14 +152,14 @@ nochangetext = "";
         <td class="show-border" style="<%=hlnochange %>">
             Between -<%= defs.resultCutoff %> and <%= defs.resultCutoff %>
         </td>
-        <td class="show-border" style="<%=hlnochange %>"><%=prop_same %>%</td>
+        <td class="show-border" style="<%=hlnochange %>"><%= prop_same > 99 ? "> 99" : (prop_same < 1 ? "< 1" : prop_same) %>%</td>
     </tr>
     <% } %>
     <tr style="border-bottom: none">
-        <td style="<%=hldecrease %>" class="show-border">
+        <td style="<%= hldecrease %>" class="show-border">
             <span class="fa fa-arrow-down" title="decreased"></span>  Decrease >= <%= defs.resultCutoff %>
         </td>
-        <td style="<%=hldecrease %>" class="show-border"><%= prop_decreased %>%</td>
+        <td style="<%= hldecrease %>" class="show-border"><%= prop_decreased > 99 ? "> 99" : (prop_decreased < 1 ? "< 1" : prop_decreased) %>%</td>
     </tr>
 
     <% } %>
