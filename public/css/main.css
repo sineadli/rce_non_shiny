@@ -21,7 +21,7 @@ body {
 body.homepage {
     max-width: 1000px;
     min-width: 335px;
-    padding: 0 0px 180px 0px;
+    padding: 0 0px 100px 0px;
 }
 body.one-col div.row div.content {
     margin: 0px auto;
@@ -679,13 +679,13 @@ div.front-header h1 {
   overflow: hidden;
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 350px;
 }
 
 #slides ul {
   list-style: none;
   width: 100%;
-  height: 250px;
+  height: 300px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -839,11 +839,20 @@ div.res-well ul, ul.case-studies li img {
 div.res-well div.step-header.first {
     border-top: none;
 }
- h2.things-to-consider, h2.training, h2.technical, h2.case-studies, h2.res-welcome {
+ h2.things-to-consider, h2.training, h2.technical, h2.case-studies, h2.res-welcome{
      padding-left: 75px;  
      background-repeat: no-repeat;
      background-position: top left;
      min-height: 75px;
+     vertical-align: bottom;
+ 
+}
+  h3.things-to-consider, h3.training, h3.technical, h3.case-studies, h3.res-welcome {
+     padding-left: 55px;
+      padding-top: 10px;
+     background-repeat: no-repeat;
+     background-position: top left;
+     min-height: 45px;
      vertical-align: bottom;
  
 }
@@ -852,25 +861,41 @@ div.res-well div.step-header.first {
       background-image: url("/static/image/ThingsConsiderIcon65.png");
   
  }
-  h2.res-welcome {
+ h3.things-to-consider {
+      background-image: url("/static/image/ThingsConsiderIcon45.png");
+  
+ }
+ h2.res-welcome  {
       background-image: url("/static/image/WelcomeIcon65.png");
   
  }
- h2.things-to-consider {
-      background-image: url("/static/image/ThingsConsiderIcon65.png");
+   h3.res-welcome  {
+      background-image: url("/static/image/WelcomeIcon45.png");
   
  }
  h2.case-studies {
       background-image: url("/static/image/CaseStudyIcon65.png");
   
  }
+h3.case-studies {
+      background-image: url("/static/image/CaseStudyIcon45.png");
   
+ }
+
   h2.technical {
       background-image: url("/static/image/TechnicalIcon65.png");
   
  }
+  h3.technical {
+      background-image: url("/static/image/TechnicalIcon45.png");
+  
+ }
     h2.training {
       background-image: url("/static/image/ResourcesIcon65.png");
+  
+ }
+    h3.training {
+      background-image: url("/static/image/ResourcesIcon45.png");
   
  }
 span.resource-intro {

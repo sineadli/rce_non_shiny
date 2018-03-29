@@ -237,7 +237,7 @@ if (user != "NOAUTHENTICATED") {
                                     var impact = parseFloat(thisgrade.freq.impact);
                                     var se = parseFloat(thisgrade.freq.se);
                                     var effect_size = thisgrade.freq.effect_size;
-                                    var pvalue = thisgrade.freq.pvalue < .01 ? "< .01" : (thisgrade.freq.pvalue == 1 ? "> .9" : thisgrade.freq.pvalue);
+                                    var pvalueString = thisgrade.freq.pvalue < .01 ? "< .01" : (thisgrade.freq.pvalue == 1 ? "> .9" : round10(thisgrade.freq.pvalue,2));
 
                                     if (thisgrade.freq.ub && thisgrade.freq.lb) {
                                     var lb = parseFloat(thisgrade.freq.lb);
@@ -249,9 +249,9 @@ if (user != "NOAUTHENTICATED") {
 
                                     var ci_string = '[' + round10(ci[0],2) + ', ' + round10(ci[1],2) + ']';
 
-                                    var significant = (pvalue <= 0.05) ? '' : ' not';
+                                    var significant = (thisgrade.freq.pvalue <= 0.05) ? '' : ' not';
 
-                                    var pvalue_comparison_sign = (pvalue <= 0.05) ? '<=' : '>';
+                                    var pvalue_comparison_sign = (thisgrade.freq.pvalue <= 0.05) ? '<=' : '>';
                                     %>
                                     <tr>
 
@@ -260,7 +260,7 @@ if (user != "NOAUTHENTICATED") {
                                         <td><%= outcome_var %></td>
                                         <td><%= round10(impact,2) %> <br /> (<%= round10(se,2) %>)</td>
                                         <td><%= round10(effect_size,2) %></td>
-                                        <td><%= round10(pvalue,2) %></td>
+                                        <td><%= pvalueString %></td>
                                         <td><%= ci_string %></td>
                                     </tr>
 
