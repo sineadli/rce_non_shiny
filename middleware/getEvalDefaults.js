@@ -503,7 +503,7 @@ function setGetResults(sess) {
 				header = beginwith + start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + ((gradeQualifier === "") ? "." : "") + inconclusiveQualifier;
 			} else {
 				if (successCount === 0 && failureCount === 0 && noimpactCount === 0 && inconclusiveCount > 0) {
-				    start = "None of the possible outcomes meet our certainty threshold. Therefore, it is not possible to come to a conclusion about " + eval.basics.Basics_Tech_Name + ".";
+				    start = "none of the possible outcomes meet our certainty threshold. Therefore, it is not possible to come to a conclusion about " + eval.basics.Basics_Tech_Name + ".";
 					nextSteps = eval.planNext.Action_Inconclusive;
 				} else if (successCount === 0 && failureCount > 0 && noimpactCount === 0 && inconclusiveCount === 0) {
 						start = eval.basics.Basics_Tech_Name + "  is worse than its alternative.";
