@@ -342,7 +342,7 @@ function setRandom(sess) {
 function setGetResults(sess) {
 
 	var eval = sess.eval;
-
+        
 	sess.defaults.hasResults = false;
     sess.defaults.UsesROPE = false;
     sess.defaults.hasSample = false;
@@ -537,6 +537,7 @@ function setGetResults(sess) {
 		} 
     } else {
 		sess.defaults.ResultSummary = "Results were not analyzed.";
+sess.defaults.Result_Next_Steps = "";
 	}
 
     return;

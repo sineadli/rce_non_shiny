@@ -280,6 +280,9 @@ module.exports.postByTool = function(req, res, display) {
                 eval.matching.DownloadPath = "";
                 eval.random.DownloadPath = "";
                 for (var key in evalup) {
+                        if (typeof eval[key] ==='string') {
+                        eval[key] = evalup[key];                     
+                    }
 					if (evalup.hasOwnProperty(key)) {
 						if (typeof evalup[key] == "object" && typeof eval[key] != "undefined")
 							for (var nkey in evalup[key]) {
