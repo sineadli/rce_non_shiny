@@ -342,7 +342,7 @@ function setRandom(sess) {
 function setGetResults(sess) {
 
 	var eval = sess.eval;
-        
+
 	sess.defaults.hasResults = false;
     sess.defaults.UsesROPE = false;
     sess.defaults.hasSample = false;
