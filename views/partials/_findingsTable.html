@@ -1,11 +1,12 @@
 ﻿<%
-console.log("Success_Effect_Size = " + defs.Success_Effect_Size);
-console.log("Result cutoff = " + defs.resultCutoff);
+
 var changeNote = "";
 var changeTextEF = (defs.Success_Effect_Size != defs.resultCutoff) ? "the minimum meaningful effect size" : "";
 var changeTextCT = (defs.Pass_Probability != defs.resultProbability) ? "the certaintity threshold" : "";
 var changeConnect = (defs.Success_Effect_Size != defs.resultCutoff && defs.Pass_Probability != defs.resultProbability) ? " and ": "";
-if((defs.Success_Effect_Size != defs.resultCutoff && defs.Success_Effect_Size != "" && defs.resultCutoff != "") || (defs.Pass_Probability != defs.resultProbability  && defs.Pass_Probability != "" && defs.resultProbability != ""))
+
+
+if((defs.Success_Effect_Size !== defs.resultCutoff && defs.Success_Effect_Size !== "" && defs.resultCutoff !== "") || (defs.Pass_Probability !== defs.resultProbability  && defs.Pass_Probability !== "" && defs.resultProbability !== ""))
 {
 console.log("Something changed and analysis should be re-run");
 changeNote = "It looks like " + changeTextEF + changeConnect + changeTextCT + " changed since the last time this analysis was run. Please re-run the analysis in the  <a href='/getresult'>Get Results</a> tool to update these results.";
