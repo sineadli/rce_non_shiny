@@ -125,7 +125,7 @@ nochangetext = "";
         <td style="<%=hlincrease %>" class="show-border">
             <span class="fa fa-arrow-up" title="increased"></span> increase >= <%= defs.resultCutoff%>
         </td>
-        <td style="<%=hlincrease %>" class="show-border"><%= prop_increased > 99 ? "> 99" : (prop_increased < 1 ? "< 1" : prop_decreased) %>%</td>
+        <td style="<%=hlincrease %>" class="show-border"><%= prop_increased > 99 ? "> 99" : (prop_increased < 1 ? "< 1" : prop_increased) %>%</td>
 
         <td rowspan="<%= rsp %>">
             <%- effect %>
