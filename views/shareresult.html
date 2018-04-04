@@ -122,8 +122,15 @@
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
                         <a class="redirect-link" href="/craft_your_research_q?return=shareresult">Craft Your Research Question</a>
                     </p>
-                    <% } %>
-                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by <%= defs.Outcome_Measure %>.</p>
+                    <% }
+
+                    var effectSizeText = "by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units + " as measured by " + defs.Outcome_Measure ;
+                    if (defs.Success_Effect_Size ==0) {
+                        effectSizeText = "by any amount" ;
+                    }
+                    
+                    %>
+                    <p>For this evaluation, we would feel comfortable answering yes to our research question if, based on our data, there was a greater than <%= defs.Pass_Probability.toString().replace(/%/g,"") %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> <%= effectSizeText %>.</p>
                     <% if (display === 'online' && user != "NOAUTHENTICATED"  && sharing != 1) { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> Where did I answer this? See
@@ -134,17 +141,16 @@
                     <h3> Findings</h3>
 
                     <%
-                 
-                    if (defs.hasResults) { %>
+
+                    if (defs.hasResults) {
+                    if (sess.defaults.UsesROPE == true) {
+                    %>
                     
                     <% include ../views/partials/_findingsTable.html %>
-                    <p>
-                        Table 1 shows the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %><%= defs.Results_By_Grade_Flag %> based on this evaluation's data. It indicates the probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>d <%= defs.Basics_Outcome %> by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> as measured by  <%= defs.Outcome_Measure %>, the estimated size of the <%= defs.Outcome_Direction %>, the average outcome for <%= defs.Basics_Users %> in the comparison group (<%= defs.Comparison_Group_Desc %>), and the sample sizes for the treatment and comparison groups.
-                    </p>
-                    <p>
-                        The sample sizes in Table 1 represent the number of <%= defs.Basics_Users %> in each group. However, the intervention was implemented at the <%= defs.Cluster_Group %> level.
-
-                    </p>
+                    <% } else { %>
+                    <% include ../views/partials/_findingsTable-noROPE.html %>
+                    <% } %>
+                   
                     <% if (user != "NOAUTHENTICATED" && display === 'online'  && sharing != 1) { %>
                     <p class="prev-answer hidden-print">
                         <i class="fa fa-hand-o-right"></i> How do I re-run the analysis? See

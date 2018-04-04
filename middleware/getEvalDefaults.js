@@ -28,13 +28,13 @@ var getEvalDefaults = function (sess, user) {
 		setOutcome(sess);
 		setApproach(sess);
 		setResearchQ(sess);
+		setGetResults(sess);		
 		setPlanNext(sess);
 		setEvalPlan(sess);
 		setPlanContext(sess);
 		setPrepareRandom(sess);
 		setMatching(sess);
-		setRandom(sess);
-		setGetResults(sess);		
+		setRandom(sess);		
 		setShareResults(sess, user);
 	}
     sess.defaults.shiny_url = configDB.shiny_url;
@@ -122,11 +122,13 @@ function setPlanNext(sess) {
 		Pass_Probability: '75',
 		Fail_Probability: '50',
        
-		Action_Success: '[next step if moving the needle]',
-		Action_Fail: '[next step if not moving the needle]',
+		Action_Success: '[next step if treatment group do better than comparison group]',
+		Action_Fail: '[next step if treatment group do worse than comparison group]',
+		Action_NoChange: '[next step if treatment and comparison group results are similar]',
 		Action_Inconclusive: '[next step if results inconclusive]'
 	}
 
+	
     sess.defaults.planNextIncomplete = populateDefaults(defstocheck, sess.eval.planNext, sess, false);
 
     if (sess.eval.planNext.Tech_Cost_Desc === "") {
@@ -141,8 +143,15 @@ function setPlanNext(sess) {
         sess.defaults.Cost_Other = textHelpers.capitalize(sess.eval.planNext.Tech_Cost_Desc);
         sess.defaults.Tech_Cost_Saves = "Cost";
     }
+    if (sess.defaults.Success_Effect_Size == 1) sess.defaults.Measure_Units = sess.defaults.Measure_Units.slice(0, -1);
+    sess.defaults.AnyAmount = sess.defaults.Success_Effect_Size == '0' ? 'Yes' : "No";
+   // console.log("defaults:");
+   // console.log(sess.defaults);
 
-   
+	if (!sess.defaults.hasResults) {
+		sess.defaults.resultCutoff = sess.defaults.Success_Effect_Size;
+		sess.defaults.resultProbability = sess.defaults.Pass_Probability;
+	}
     return;
 };
 
@@ -335,6 +344,7 @@ function setGetResults(sess) {
 	var eval = sess.eval;
 
 	sess.defaults.hasResults = false;
+    sess.defaults.UsesROPE = false;
     sess.defaults.hasSample = false;
 	sess.defaults.hasCluster = false;
     sess.defaults.Outcome_Min = "not available";
@@ -342,6 +352,7 @@ function setGetResults(sess) {
     sess.defaults.hideFirst = false;
     sess.defaults.inFirst = "in";
     sess.defaults.iconFirst = "down";
+   
 
     if (eval.getresult.Result) {
 
@@ -352,7 +363,11 @@ function setGetResults(sess) {
 		if (sess.defaults.hasResults) {
 		    sess.defaults.hideFirst = true;
 		    sess.defaults.inFirst = "";
-		    sess.defaults.iconFirst = "right";
+			sess.defaults.iconFirst = "right";
+
+			sess.defaults.resultCutoff = result.args.cutoff[0];
+			sess.defaults.resultProbability = result.args.probability[0];
+			 
 
 		    if (result.outcome_range) {
 		        sess.defaults.Outcome_Min = result.outcome_range.min;
@@ -363,7 +378,21 @@ function setGetResults(sess) {
 		        sess.defaults.control_vars_relabel = result.args.control_vars || "none selected";
 		    }
 		    if (typeof result == "object") {
-		        sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
+				sess.defaults.Results_By_Grade_Flag = Object.keys(result.results_by_grade).length > 1 ? " by grade" : "";
+		        for (grade in result.results_by_grade) {
+		            if (result.results_by_grade.hasOwnProperty(grade)) {
+
+
+						var thisgrade = result.results_by_grade[grade];
+						//console.log("in get defaults and checking for ROPE");
+		              //  console.log(thisgrade.rope_output);
+
+		                if (thisgrade.rope_output != undefined) {
+		                    sess.defaults.UsesROPE = true;
+						}
+						console.log("Uses ROPE" +sess.defaults.UsesROPE);
+		            }
+		        }
 
 		    } else {
 		        sess.defaults.Results_By_Grade_Flag = "";
@@ -371,10 +400,12 @@ function setGetResults(sess) {
 
 		    var balanced = true, clusterGroupWarning = false;
 		    var successCount = 0, inconclusiveCount = 0, failureCount = 0;
+		    noimpactCount = 0;
 		    var clusterGroupWarningComparison = "";
 
 		    for (grade in result.results_by_grade) {
 		        if (result.results_by_grade.hasOwnProperty(grade)) {
+		            console.log("Uses ROPE by grade" + sess.defaults.UsesROPE);
 
 		            var thisresult = result.results_by_grade[grade];
 
@@ -395,47 +426,105 @@ function setGetResults(sess) {
 		            }
 
 		            //For Interpretation
-		            var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
-		            var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
-		            var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
+		            if (!sess.defaults.UsesROPE) {
+		                console.log("doesn't use ROPE" + sess.defaults.UsesROPE);
+		                var probability = textHelpers.stripPercent(thisresult.interpretation.probability[0]);
+		                var pass_probability = textHelpers.stripPercent(eval.planNext.Pass_Probability);
+		                var fail_probability = textHelpers.stripPercent(eval.planNext.Fail_Probability);
 
-		            var success = (probability > pass_probability);
-		            var inconclusive = (probability < pass_probability) && (probability > fail_probability);
+		                var success = (probability > pass_probability);
+		                var inconclusive = (probability < pass_probability) && (probability > fail_probability);
 
-		            if (success) {
+		            } else {
+		                console.log("used ROPE" + sess.defaults.UsesROPE);
+
+		                //"rope_output\":{\"probabilities\":{\"less_than\":[0],\"equal\":[1],\"greater_than\":[0]}
+						var prop_increased = textHelpers.round10(thisgrade.rope_output.probabilities.greater_than * 100, 0);
+						var prop_decreased = textHelpers.round10(thisgrade.rope_output.probabilities.less_than * 100, 0);
+						var prop_same = textHelpers.round10(thisgrade.rope_output.probabilities.equal * 100, 0);
+
+		                console.log("prop decreased = " + prop_decreased);
+		                console.log("prob the same = " + prop_same);
+		                console.log("prop increased = " + prop_increased);
+		                console.log("CT = " + sess.defaults.resultProbability);
+
+						var meetGoal = (prop_decreased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : ((prop_increased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : false);
+
+						var negImpact = (prop_decreased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "increase") ? true : ((prop_increased >= textHelpers.round10(sess.defaults.resultProbability) && sess.defaults.Outcome_Direction.toLowerCase() == "decrease") ? true : false);
+						var noImpact = (prop_same >= textHelpers.round10(sess.defaults.resultProbability) ? true : false);
+
+		                inconclusive = ((negImpact === false && meetGoal === false && noImpact === false) ? true : false);
+		            }
+
+		            if (success || meetGoal) {
 		                successCount++;
 		            } else if (inconclusive) {
 		                inconclusiveCount++;
-		            } else {
+		            } else if (noImpact) {
+		                noimpactCount++;
+		            } else if (negImpact) {
 		                failureCount++;
 		            }
-
 		        }
+
 		    } // For each grade
+
+			console.log("fails= " + failureCount);
+			console.log("no impacts = " + noimpactCount);
+			console.log("successes = " + successCount);
+			console.log("inconclusive = " + inconclusiveCount);
+
 
 		    // Create result summary string
 		    var header, start, gradeQualifier, inconclusiveQualifier, nextSteps;
-		    header = start = gradeQualifier = inconclusiveQualifier = nextSteps = "";
+			header = start = gradeQualifier = inconclusiveQualifier = nextSteps = "";
+			var beginwith =  "Based on the data used in this analysis, " ;
 
-		    if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
-		        header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive.";
-		        nextSteps = eval.planNext.Action_Inconclusive;
-		    } else {
-		        if (successCount === 0) {
-		            start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " did not have the intended effect ";
+		   
+			if (sess.defaults.UsesROPE === false) {
+			    if (inconclusiveCount === (inconclusiveCount + successCount + failureCount)) {
+			        header = "The results from the evaluation of " + eval.basics.Basics_Tech_Name + " are inconclusive.";
+			        nextSteps = eval.planNext.Action_Inconclusive;
+			    }
+			    if (successCount === 0) {
+					start = eval.basics.Basics_Tech_Name + "  did not have the intended effect ";
 		            nextSteps = eval.planNext.Action_Fail;
 		        }
 		        if (successCount > 0 && (successCount !== (inconclusiveCount + successCount + failureCount))) {
-		            start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " had the intended effect ";
+					start = eval.basics.Basics_Tech_Name + " had the intended effect ";
 		            gradeQualifier = ' for some grades, but not for others.';
 		            nextSteps = eval.planNext.Action_Inconclusive;
 		        }
 		        if (inconclusiveCount > 0) inconclusiveQualifier = ' For some grades, results were inconclusive.';
 		        if (successCount > 0 && failureCount === 0 && successCount > inconclusiveCount) {
 		            nextSteps = eval.planNext.Action_Success;
-		            start = textHelpers.capitalize(eval.basics.Basics_Tech_Name) + " is moving the needle ";
-		        }
-				header = start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + ((gradeQualifier === "") ? "." : "") + inconclusiveQualifier;
+		            start = eval.basics.Basics_Tech_Name + " is moving the needle ";
+				}
+				header = beginwith + start + ' on ' + sess.defaults.Basics_Outcome.toLowerCase() + gradeQualifier + ((gradeQualifier === "") ? "." : "") + inconclusiveQualifier;
+			} else {
+				if (successCount === 0 && failureCount === 0 && noimpactCount === 0 && inconclusiveCount > 0) {
+				    start = "none of the possible outcomes meet our certainty threshold. Therefore, it is not possible to come to a conclusion about " + eval.basics.Basics_Tech_Name + ".";
+					nextSteps = eval.planNext.Action_Inconclusive;
+				} else if (successCount === 0 && failureCount > 0 && noimpactCount === 0 && inconclusiveCount === 0) {
+						start = eval.basics.Basics_Tech_Name + "  is worse than its alternative.";
+						nextSteps = eval.planNext.Action_Fail;
+					}
+				else if (successCount > 0 && failureCount === 0 && noimpactCount === 0 && inconclusiveCount === 0) {
+						start = eval.basics.Basics_Tech_Name + "  is better than its alternative.";
+						nextSteps = eval.planNext.Action_Success;
+					}
+				else if (noimpactCount > 0 && successCount === 0 && failureCount === 0 && inconclusiveCount === 0) {
+		            start = eval.basics.Basics_Tech_Name + " is equivalent to its alternative.";
+		            gradeQualifier = ' for some grades, but not for others.';
+					nextSteps = eval.planNext.Action_NoChange;
+				}
+				else {
+						 start = " different results were found for different grades.";
+					}
+
+					header = sess.defaults.hasResults ? beginwith + start : "Analysis is incomplete.";
+			
+				
 		    }
 
 		    // Defaults to use on pages
@@ -448,6 +537,7 @@ function setGetResults(sess) {
 		} 
     } else {
 		sess.defaults.ResultSummary = "Results were not analyzed.";
+sess.defaults.Result_Next_Steps = "";
 	}
 
     return;

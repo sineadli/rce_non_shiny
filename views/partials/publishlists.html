@@ -17,11 +17,12 @@
     trialflag = publishlists[i].trialflag ? "<em><i class='orange fa fa-exclamation-triangle' title='trial run'></i>&nbsp;</em>" : "";
     company = publishlists[i].company;
 
-    if (publishlists[i].planContext.Outcomes) {
-  
-    outcomes = publishlists[i].planContext.Outcomes;
+     if ( publishlists[i].planContext.Outcomes) {
+
+    outcomes = publishlists[i].planContext.Outcomes.filter(function(n){ return n !== '' });
+
     foutcomes = outcomes.join(', ');
- 
+
     }
 
 

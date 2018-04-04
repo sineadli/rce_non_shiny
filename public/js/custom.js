@@ -346,7 +346,7 @@ function successEffectSizeUpdate(t) {
 
 function passProbUpdate(t) {
 	var value = $(t).val();
-	$('.prob-success').text(value);
+	$('.prob-success').text(value + "%");
 };
 
 function failProbUpdate(t) {

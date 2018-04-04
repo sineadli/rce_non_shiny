@@ -92,6 +92,7 @@ var PlanNext = mongoose.Schema({
     Fail_Probability: { type: String, default: '' },// was Plan_Next_C_2
     Action_Success: { type: String, default: '' }, // was Plan_Next_D_1
     Action_Fail: { type: String, default: '' },// was Plan_Next_D_2
+	Action_NoChange: { type: String, default: '' },
     Action_Inconclusive: { type: String, default: '' }, // Plan_Next_D_3
     created_at: { type: Date, default: Date.now },
     updated_at: Date
@@ -340,15 +341,18 @@ evaluationSchema.pre('save', function (next) {
         }
         //path determine
         if (this.probAppr) {
-
+            console.log("new or current = " + this.probAppr.Appr_Current_or_New.toLowerCase());
+            console.log("diff usage = " + this.probAppr.Appr_Diff_Usage.toLowerCase());
+			console.log("how choose = " + this.probAppr.Appr_How_Choose.toLowerCase());
             if (this.probAppr.Appr_Current_or_New.toLowerCase() === "current" &&
-                this.probAppr.Appr_All_Using.toLowerCase() === "no") {
+                (this.probAppr.Appr_All_Using.toLowerCase() === "no" || this.probAppr.Appr_Diff_Usage.toLowerCase() === "yes")) {
                 this.path = "path-matching"; //disable random tools or hide them
             } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "random") {
                 this.path = "path-random"; //disable matching tools or hide them
             } else if (this.probAppr.Appr_Current_or_New.toLowerCase() === "new" && this.probAppr.Appr_How_Choose.toLowerCase() === "other") {
                 this.path = "path-matching"; //no available yet
             } else this.path = "";
+			console.log("path = " + this.path);
         }
 		
 		// Pre-populate milestones. Moved from get current eval.

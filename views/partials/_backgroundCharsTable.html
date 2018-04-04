@@ -70,7 +70,7 @@ if(grades) {
 
     var means = thisgrade.baseline_var_means;
         console.log("This grade");
-        //console.log(thisgrade);
+      //  console.log(thisgrade);
         var samples = thisgrade.samples;
         var hasSample = thisgrade.samples ? true : false;
         var samples_cluster = thisgrade.samples_cluster;
@@ -78,19 +78,28 @@ if(grades) {
         var growspan = 1;
         var char = [];
         if(means && (typeof means == "object")){
-        char = Object.keys(means);
+    char = Object.keys(means);
+     //   console.log("means ");
+        console.log(Object.keys(means));
       
         var growspan =char.length + 1;
-        if (samples_cluster) {
+    if (samples_cluster) {
+   
             if(Object.keys(samples_cluster).length > 0) {
                 growspan =char.length + 2;
                 }
             }
-        }
+    }
+        console.log("last tool = " + eval.last_tool)
 if(means) {
     for (var index in char) {
-        var thischar = char[index];
-        if(means[thischar].overall[0] != null) {
+
+    var thischar = char[index];
+    console.log("index = " + index);
+    console.log("thischar = " + thischar)
+    console.log("overall");
+        console.log(means[thischar].overall[0]);
+       
              var varname = thischar;
              if (chars.length > 0) {
                 varname = chars[index];
@@ -105,23 +114,23 @@ if(means) {
 
 
             <td>
-                <%= round10(means[thischar].overall[0], 2) %>
+                <%=  means[thischar].overall[0] != null ? round10(means[thischar].overall[0], 2) : "--" %>
             </td>
             <td>
-                <%= round10(means[thischar].intervention[0], 2) %>
+                <%= means[thischar].intervention[0] != null ? round10(means[thischar].intervention[0], 2) : "--" %>
             </td>
             <td>
-                <%= round10(means[thischar].comparison[0], 2) %>
+                <%= means[thischar].comparison[0] != null ? round10(means[thischar].comparison[0], 2) : "--" %>
             </td>
             <td>
-                <%= round10(means[thischar].difference[0], 2) %>
+                <%= means[thischar].difference[0] != null ? round10(means[thischar].difference[0], 2) : "--" %>
             </td>
             <td>
-                <%= round10(means[thischar].effect_size[0], 2) %>
+                <%= means[thischar].effect_size[0] != null ? round10(means[thischar].effect_size[0], 2) : "--" %>
             </td>
-            <td><%= Math.abs(means[thischar].effect_size[0]) > 0.25 ? "False" : "True" %></td>
+            <td><%= means[thischar].effect_size[0] != null ? (Math.abs(means[thischar].effect_size[0]) > 0.25 ? "False" : "True") : "--" %></td>
         </tr>
-    <% } } 
+    <% }  
     if (hasSample) {
     console.log("individuals or groups= " + defs.Individual_Group);
         %>

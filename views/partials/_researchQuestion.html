@@ -3,9 +3,9 @@
 var verb = "Does";
 
 var useMeasure = '';
-if(eval.planNext.Success_Effect_Size != "" && eval.last_tool != "Think About How to Use Your Results" && eval.last_tool != "Share Your Results" && eval.last_tool != "Craft Your Research Question") {
+if(eval.planNext.Success_Effect_Size > 0  && eval.last_tool != "Share Your Results" && eval.last_tool != "Craft Your Research Question" && eval.last_tool != "Think About How to Use Your Results") {
 useMeasure = " by at least " + defs.Success_Effect_Size + " " + defs.Measure_Units + " on " + defs.Outcome_Measure + ",";
-// console.log("last tool = " + eval.last_tool);
+console.log("last tool = " + eval.last_tool);
 
 
 }

@@ -128,9 +128,10 @@ if(valerrs) valerrors = valerrs;
                                     <%
                                     var options = ["Student academic achievement", "Student non-academic achievement","Other" ];
                                     var ovalues = ["student academic achievement", "student non-academic achievement","other" ];
+                                    var ovalues2 = ["academic", "nonacademic","other" ];
                                     for ( var i = 0; i < options.length; i++ )
                                     {
-                                    var selected = ( eval.basics.Basics_Outcome== ovalues[i] ) ? "selected" : "";
+                                    var selected = ( eval.basics.Basics_Outcome== ovalues[i]  || eval.basics.Basics_Outcome== ovalues2[i] ) ? "selected" : "";
 
 
                                     %>

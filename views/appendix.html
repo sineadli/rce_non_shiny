@@ -136,7 +136,7 @@ if (user != "NOAUTHENTICATED") {
                             %>
                         <p>
                             For this evaluation we randomly assigned <%= defs.Cluster_Groups %> to the treatment and comparison groups. Resulting treatment and comparison groups will, on average, be similar in both observed (for example, gender) and unobserved (for example, motivation) characteristics, giving us the most confidence that any differences in outcomes between the groups are due to using <%= defs.Basics_Tech_Name %>.
-                            For random assignment, the Coach takes advantage of the base R function "sample.int." You can think of this process as flipping a digital, fair,
+                            For random assignment, the Coach takes advantage of the base R function "sample.int." You can think of this process as flipping a digital, fair
                             coin to assign <%= defs.Cluster_Groups %> to either pilot the technology or not.
                         </p>
                         <p>
@@ -170,61 +170,26 @@ if (user != "NOAUTHENTICATED") {
 
                     <div class="no-page-break">
                         <h2> Estimating the Effect of <%= defs.Basics_Tech_Name %></h2>
+                        <%
 
-                        <p>
-                            The RCE Coach calculates the probability that the effect of an educational technology is above or below a threshold selected by the user, given the data. The threshold chosen for this evaluation was <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %> (as indicated by the vertical line in Figure A.2).
-                        </p>
-
-                        <p>
-                            Figure A.2. displays the posterior distribution of the effect of <%= defs.Basics_Tech_Name %> <%= defs.Results_By_Grade_Flag %>. The green shaded area in the figure represents the probability that the educational technology has an effect greater than or equal to the selected threshold.
-
-                        </p>
-                        <label class="chart" style="clear: both; display: block;">Figure A.2. Probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>s <%= defs.Basics_Outcome %>, as measured by the <%= defs.Outcome_Measure %>, by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>, given the uploaded data</label>
-
-                        <% if (defs.hasResults){
-                        for (grade in Result.results_by_grade) {
-                        var thisgrade = Result.results_by_grade[grade];
-
-
-
+                        if (sess.defaults.UsesROPE == true) {
                         %>
 
-
-                        <div class="figdiv" style="width: 45%; float: left; display: inline; margin-left: 20px;">
-                            <label class="chart">Grade <%= grade %></label>
-
-                            <img src="data:image/png;base64,<%- thisgrade.posterior_plot %>">
-
-                            <ul>
-                                <li> There is a <%= round10(thisgrade.interpretation.probability[0], 0) %>% probability that <%= defs.Basics_Tech_Name %> <%= defs.Outcome_Direction %>s the outcome by at least <%= defs.Success_Effect_Size %> <%= defs.Measure_Units %>.</li>
-
-                                <li>
-                                    The point estimate (e.g., our best guess) of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is <%= round10(thisgrade.impact, 2) %>.
-                                </li>
-                            </ul>
-                        </div>
-
-                        <% } // End by grade %>
+                        <% include ../views/partials/_EstimatingEffect-ROPE.html %>
                         <% } else { %>
-                        <p>
-                            Analysis results are missing or incomplete.
-                        </p>
+                        <% include ../views/partials/_EstimatingEffect-noROPE.html %>
                         <% } %>
-
-                        <div class="clearfix"></div>
-
-
                     </div>
                     <div class="no-page-break">
                         <h3> Notes</h3>
                         <% tabcounter = 1 + tabcounter; %>
                         <ul>
-                            <li>The distribution of posterior probability describes our understanding of <%= defs.Basics_Tech_Name %>’s effect, based on the available data. The area under the curve represents the likelihood that the effect is between any two values on the horizontal axis. The point estimate or best guess of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is calculated as the mean of the posterior distribution.</li>
+                            <!--<li>The distribution of posterior probability describes our understanding of <%= defs.Basics_Tech_Name %>’s effect, based on the available data. The area under the curve represents the likelihood that the effect is between any two values on the horizontal axis. The point estimate or best guess of the effect of <%= defs.Basics_Tech_Name %> on <%= defs.Basics_Outcome %> is calculated as the mean of the posterior distribution.</li>-->
 
-                            <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table A.<%= defs.Frequentist_Tab_Num %> below. For more information on the Bayesian statistical analysis, refer to the <a href="<%= defs.shiny_url %>/static/pdf/Impact Estimation Technical Appendix.pdf">Impact Estimation Technical Appendix</a>.</li>
+                            <li>This analysis was performed using a Bayesian approach, rather than a frequentist approach. Because frequentist approaches are commonly used by educational researchers, we provide results from a frequentist analysis of the same data in Table A.<%= defs.Frequentist_Tab_Num %> below. For more information on the Bayesian statistical analysis, refer to the <a target="_blank" href="<%= defs.shiny_url %>/static/pdf/Impact Estimation Technical Appendix.pdf">Impact Estimation Technical Appendix</a>.</li>
 
                             <% if (eval.path == "path-matching") { %>
-                            <li>This analysis was performed using a matched comparison design. Several assumptions were made to simplify the user's choices. The <a href="<%= defs.shiny_url %>/static/pdf/Matching Technical Appendix.pdf">Matching Technical Appendix</a> explains these assumptions in more detail.</li>
+                            <li>This analysis was performed using a matched comparison design. Several assumptions were made to simplify the user's choices. The <a target="_blank" href="<%= defs.shiny_url %>/static/pdf/Matching Technical Appendix.pdf">Matching Technical Appendix</a> explains these assumptions in more detail.</li>
                             <% } %>
 
                         </ul>
@@ -272,7 +237,7 @@ if (user != "NOAUTHENTICATED") {
                                     var impact = parseFloat(thisgrade.freq.impact);
                                     var se = parseFloat(thisgrade.freq.se);
                                     var effect_size = thisgrade.freq.effect_size;
-                                    var pvalue = thisgrade.freq.pvalue;
+                                    var pvalueString = thisgrade.freq.pvalue < .01 ? "< .01" : (thisgrade.freq.pvalue == 1 ? "> .9" : round10(thisgrade.freq.pvalue,2));
 
                                     if (thisgrade.freq.ub && thisgrade.freq.lb) {
                                     var lb = parseFloat(thisgrade.freq.lb);
@@ -284,9 +249,9 @@ if (user != "NOAUTHENTICATED") {
 
                                     var ci_string = '[' + round10(ci[0],2) + ', ' + round10(ci[1],2) + ']';
 
-                                    var significant = (pvalue <= 0.05) ? '' : ' not';
+                                    var significant = (thisgrade.freq.pvalue <= 0.05) ? '' : ' not';
 
-                                    var pvalue_comparison_sign = (pvalue <= 0.05) ? '<=' : '>';
+                                    var pvalue_comparison_sign = (thisgrade.freq.pvalue <= 0.05) ? '<=' : '>';
                                     %>
                                     <tr>
 
@@ -295,7 +260,7 @@ if (user != "NOAUTHENTICATED") {
                                         <td><%= outcome_var %></td>
                                         <td><%= round10(impact,2) %> <br /> (<%= round10(se,2) %>)</td>
                                         <td><%= round10(effect_size,2) %></td>
-                                        <td><%= round10(pvalue,2) %></td>
+                                        <td><%= pvalueString %></td>
                                         <td><%= ci_string %></td>
                                     </tr>
 
