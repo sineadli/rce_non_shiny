@@ -26,7 +26,7 @@ var getAllPublications = function (req, res, next) {
     if (sort === "-basics.Basics_Tech_Name") {
         if (!search) {
            
-            Evaluation.find({ status: '100', trialflag: trial }).sort({"basics.Basics_Tech_Name":-1}).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100', trialflag: trial }).sort({"basics.Basics_Tech_Name":-1}).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
 				if (err) {
 					console.log("Error getting shared evals.");
                     console.log(err);
@@ -53,7 +53,7 @@ var getAllPublications = function (req, res, next) {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]
-            }).sort({ "basics.Basics_Tech_Name": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            }).sort({ "basics.Basics_Tech_Name": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -73,7 +73,7 @@ var getAllPublications = function (req, res, next) {
     else if (sort === "basics.Basics_Tech_Name") {
         if (!search) {
             console.log(query.sort);
-            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "basics.Basics_Tech_Name": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "basics.Basics_Tech_Name": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -97,7 +97,7 @@ var getAllPublications = function (req, res, next) {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]
-            }).sort({ "basics.Basics_Tech_Name": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            }).sort({ "basics.Basics_Tech_Name": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -117,7 +117,7 @@ var getAllPublications = function (req, res, next) {
     else if (sort === "-published_at") {
         if (!search) {
             console.log(query.sort);
-            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "published_at": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "published_at": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -141,7 +141,7 @@ var getAllPublications = function (req, res, next) {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]
-            }).sort({ "published_at": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            }).sort({ "published_at": -1 }).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -161,7 +161,7 @@ var getAllPublications = function (req, res, next) {
     {
 		if (!search) {
 		   // console.log("In get all publications not search");
-            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "published_at": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            Evaluation.find({ status: '100',  trialflag: trial }).sort({ "published_at": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
@@ -186,7 +186,7 @@ var getAllPublications = function (req, res, next) {
                     $or: [{ "basics.Basics_Tech_Name": { $regex: new RegExp(search, "i") } }, { "author": { $regex: new RegExp(search, "i") } }, { "company": { $regex: new RegExp(search, "i") } },
                         { "planContext.Grades": { $regex: new RegExp(search, "i") } }, { "planContext.Outcomes": { $regex: new RegExp(search, "i") } }]
                 }]
-            }).sort({ "published_at": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext published_at author company").exec(function (err, evals) {
+            }).sort({ "published_at": 1 }).select("userid title trialflag basics.Basics_Tech_Name planContext.Outcomes planContext.Grades published_at author company").exec(function (err, evals) {
                 if (err) {
                     console.log(err);
                     return next();
