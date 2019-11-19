@@ -1,0 +1,641 @@
+<html lang="en" class="gr__edtechrce_org"><head>
+
+    <title>Coach</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link href="/static/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700italic,400italic,700italic,300,400,700);">
+<link rel="stylesheet" href="/static/css/main.css">
+<link rel="stylesheet" href="/static/css/font-awesome.min.css">
+<link rel="stylesheet" href="/static/css/jquery.feedback_me.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="/static/css/bootstrap-multiselect.css" rel="stylesheet">
+<link href="/static/css/jquery-tooltip.css" rel="stylesheet">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="/static/js/bootstrap-datepicker.min.js"></script>
+<script src="/static/js/jquery.feedback_me.js"></script>
+<script src="/static/js/url-search-params.js"></script>
+<script src="/static/js/custom.js"></script>
+<script src="/static/js/bootstrap-multiselect.js"></script>
+<script src="/static/js/carousel.js"></script>
+<script src="/static/js/textHelpers.js"></script>
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-86460597-1', 'auto');
+        ga('send', 'pageview');
+
+</script>
+
+</head>
+<body class="coach" data-gr-c-s-loaded="true">
+    <!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/partials/header.html -->
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/logout">
+            <h3 class="sec-label">
+                Ed Tech RCE Coach <!--<span style="text-transform: none;"><em>beta</em></span>-->
+            </h3>
+        </a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    
+    <div class="collapse navbar-collapse" id="nav-collapse">
+        <ul class="nav navbar-nav pull-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <!-- The Profile picture inserted via div class below, with shaping provided by Bootstrap -->
+                    <span class="fa fa-user" style="color: #000;"></span>
+                    Sinead Li <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="/setting">Edit Profile</a>
+                    </li>
+                    
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+</nav>
+<ol class="breadcrumb" id="breadcrb" hidden="">
+    <li class="breadcrumb-item"><a href="/resources"><span class="fa fa-caret-left"></span> Back to Preview Tools</a></li>
+</ol>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard"><span class="fa fa-caret-left"></span> Back to Dashboard</a></li>
+    </ol>
+    <div class="container-fluid">
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h3 class="modal-title">Edit Evaluation Name.</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <label for="title">Enter a name for your evaluation:</label>
+                            <input type="text" id="title" value="funwords" autofocus="">
+                        </p>
+                        <p>Is this evaluation a demo or trial run?</p>
+                      
+                        <input id="trialflag-yes" type="radio" name="trialflag" value="true"><label for="trialflag-yes">Yes<span class="hidden"> this is a trial evaluation</span></label>&nbsp;&nbsp;
+                        <input id="trialflag-no" type="radio" name="trialflag" value="false" checked=""><label for="trialflag-no">No<span class="hidden"> this is not a trial evaluation</span></label><br>
+
+                        <input type="hidden" id="evalid" value="5dc8e5876cfa206a06660f04">
+                        <input type="hidden" id="steps" value="{ _id: 57e93d6dc47bab44660210ad,
+  __v: 0,
+  intro: 'This step helps you understand the basics of using the Ed Tech Rapid Cycle Evaluation Coach. You will get a brief overview of the goals of the toolkit, the steps, and how to complete them. This step is shown on your first time through the toolkit and is available from the all tool dashboards for review at a later date.',
+  name: 'Welcome to the Ed Tech Rapid Cycle Evaluation Coach',
+  numTools: 5,
+  step: 1 },{ _id: 57ee975a593b9cc5459df3a3,
+  name: 'Getting Started',
+  step: 2,
+  numTools: 3,
+  intro: 'This step helps you to determine what approach you should take for your evaluation.' },{ _id: 57e94c977a530c7d49c73da8,
+  __v: 0,
+  intro: 'The Coach will help you write a research question, plan how to use potential results, describe your educational technology and the context where it is used, and create a practical plan for your evaluation.',
+  name: 'Planning Your Research',
+  numTools: 1,
+  step: 3 },{ _id: 57e94cc17a530c7d49c73da9,
+  __v: 0,
+  intro: 'This step will teach you how to organize your data so the RCE Coach can successfully analyze it.',
+  name: 'Preparing Your Data',
+  numTools: 1,
+  step: 4 },{ _id: 57e94ce17a530c7d49c73daa,
+  __v: 0,
+  intro: 'This step helps you process your data and determine whether your education technology works.',
+  name: 'Analyzing Your Data',
+  numTools: 2,
+  step: 5 },{ _id: 57e9400e873202486c6e6295,
+  __v: 0,
+  intro: 'This step prepares a summary document that will present your findings. You can share this document with members of your team and other stakeholders.',
+  name: 'Summarizing Your Findings',
+  numTools: 1,
+  step: 6 }">
+                        <input type="hidden" id="step" value="2">
+                        <input type="hidden" id="stepvisited" value="">
+
+                       
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">CANCEL</button>
+                        <button type="button" id="getTitle" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="wizard-header-row">
+                <div class="col-xs-7">
+                    <div class="sec-label">Evaluating</div>
+
+                    <h2 class="eval-header" id="evalTitle">funwords  
+                        <button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button>
+                        
+                       
+                    </h2>
+                    
+
+
+                </div>
+                <div class="col-xs-2">
+                    <div class="sec-label">Start Date</div>
+                    
+                    <p>
+                        11/10/2019
+                    </p>
+                </div>
+                <div class="col-xs-3">
+                    <div class="sec-label">Status</div>
+
+                    
+                    <div class="outer-status-bar"><div class="status-bar" style="width: 0px;"></div></div>
+
+                    <p>
+                        0% Completed
+                    </p>
+                </div>
+                <div class="col-xs-12" style="padding: 0; margin: 0;">
+                    <ul class="wizard-menu">
+                        <!--<li id="1" class="wizard-item" hidden="hidden">
+                            <p>Welcome</p>
+                        </li>-->
+                        <li id="2" class="wizard-item active" style="padding-top: 15px;">
+                            <p>Getting Started</p>
+                        </li>
+                        <li id="3" class="wizard-item">
+                            <p>Planning Your Research</p>
+                        </li>
+                        <li id="4" class="wizard-item ">
+                            <p>Preparing Your Data</p>
+                        </li>
+                        <li id="5" class="wizard-item">
+                            <p>Analyzing your Data</p>
+                        </li>
+                        <li id="6" class="wizard-item">
+                            <p>Summarizing Your Findings</p>
+                        </li>
+                    </ul>
+                    <div style="clear: both; display: block;"></div>
+
+                </div>
+                <div style="clear: both; display: block;"></div>
+            </div>
+        </div>
+
+        <h1 id="p-title">Getting Started</h1>
+        <div class="result"><!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/partials/tool.html -->
+
+<div class="row">
+    <div class="step-row">
+        <div class="col-xs-12">
+            <h1></h1>
+            <p></p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="tool-row">
+        
+        <div class="col-xs-3">
+
+            <div id="ToolDiv-0" class="tool-div NOT STARTED ">
+                <div class="tool-title">
+                    
+                    <h2 class="form ">The Basics </h2>
+                    <p>Do you have what you need to get started?</p>
+                </div>
+                <div class="tool-bottom">
+                    <div id="StatusDiv-0" class="tool-status status">
+                        
+                                              
+                        <p>
+                            Status<br><span class="all-caps" id="status"><strong>NOT STARTED</strong></span><br>
+
+                        </p>
+                        
+
+                    </div>
+                    <div class="tool-view-btn">
+
+                        
+                        
+                        <a href="/basics" class="tool-view-button btn btn-primary btn-lg ">START</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <input class="hidden" id="toolname" value="The Basics">
+            <input class="hidden" id="toolpath" value="/basics">
+            <input class="hidden" id="toolstep" value="">
+            <input class="hidden" id="wizardpath" value="">
+        </div>
+        
+        <div class="col-xs-3">
+
+            <div id="ToolDiv-1" class="tool-div NOT STARTED ">
+                <div class="tool-title">
+                    
+                    <h2 class="form locked">Outcome and Measure </h2>
+                    <p>Define Your Outcome and Measure</p>
+                </div>
+                <div class="tool-bottom">
+                    <div id="StatusDiv-1" class="tool-status status">
+                        
+                        <p>
+                            Status<br><span class="all-caps" id="status"><strong>NOT AVAILABLE</strong></span><br>
+                            
+                            <span data-toggle="tooltip" title="You need to complete “The Basics” before you can use this tool." class="tooltip-gr">
+                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                            </span>
+                        </p>
+                        
+
+                    </div>
+                    <div class="tool-view-btn">
+
+                        
+                        
+                        <a href="/outcome_measure?peeking=1" class="tool-view-button btn btn-primary btn-lg peeking">PEEK</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <input class="hidden" id="toolname" value="Outcome and Measure">
+            <input class="hidden" id="toolpath" value="/outcome_measure">
+            <input class="hidden" id="toolstep" value="">
+            <input class="hidden" id="wizardpath" value="">
+        </div>
+        
+        <div class="col-xs-3">
+
+            <div id="ToolDiv-2" class="tool-div NOT STARTED ">
+                <div class="tool-title">
+                    
+                    <h2 class="guide ">Find an Instrument to Measure Your Outcome </h2>
+                    <p>Find an Instrument to Measure Your Outcome</p>
+                </div>
+                <div class="tool-bottom">
+                    <div id="StatusDiv-2" class="tool-status status">
+                        
+                                              
+                        <p>
+                            Status<br><span class="all-caps" id="status"><strong>NOT STARTED</strong></span><br>
+
+                        </p>
+                        
+
+                    </div>
+                    <div class="tool-view-btn">
+
+                        
+                        
+                        <!--<button type="button" id="viewpdf" class="btn btn-primary btn-lg" >VIEW</button>-->
+                        <a href="/measure_instrument" class="tool-view-button btn btn-primary btn-lg">VIEW</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <input class="hidden" id="toolname" value="Find an Instrument to Measure Your Outcome">
+            <input class="hidden" id="toolpath" value="/measure_instrument">
+            <input class="hidden" id="toolstep" value="">
+            <input class="hidden" id="wizardpath" value="">
+        </div>
+        
+        <div class="col-xs-3">
+
+            <div id="ToolDiv-3" class="tool-div NOT STARTED ">
+                <div class="tool-title">
+                    
+                    <h2 class="form locked">Determine Your Approach </h2>
+                    <p>Discover the most appropriate design to evaluate your technology.</p>
+                </div>
+                <div class="tool-bottom">
+                    <div id="StatusDiv-3" class="tool-status status">
+                        
+                        <p>
+                            Status<br><span class="all-caps" id="status"><strong>NOT AVAILABLE</strong></span><br>
+                            
+                            <span data-toggle="tooltip" title="You need to complete “The Basics” before you can use this tool." class="tooltip-gr">
+                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                            </span>
+                        </p>
+                        
+
+                    </div>
+                    <div class="tool-view-btn">
+
+                        
+                        
+                        <a href="/determine_your_approach?peeking=1" class="tool-view-button btn btn-primary btn-lg peeking">PEEK</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <input class="hidden" id="toolname" value="Determine Your Approach">
+            <input class="hidden" id="toolpath" value="/determine_your_approach">
+            <input class="hidden" id="toolstep" value="">
+            <input class="hidden" id="wizardpath" value="">
+        </div>
+        
+
+
+        
+        <div style="clear: both; line-height: 0">&nbsp;</div>
+      
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    $("#viewpdf").click(function (e) {
+
+        var name = $("#toolname").val();
+        var step = $("#wizardpath").val();
+        var path = $("#toolpath").val();
+        var currentStatus = $("#status").text();
+
+
+        $.ajax({
+            type: "POST",
+            url: "../pdf_view",
+            data: JSON.stringify({
+                "tname": name,
+                "step": step
+            }),
+
+            dataType: "json",
+            contentType: "application/json",
+            success: function (eval, status, xhr) {
+
+                if (eval.toolsvisited) {
+                    tool = eval.toolsvisited.filter(function (x) { return x.name === $("#toolname").val() });
+                    if (tool.length > 0) {
+
+                        status = tool[0].status;
+                        var usestatus = "";
+                        if (status.toLowerCase() === "completed") {
+                            usestatus = "Viewed";
+                        }
+                        d = new Date(tool[0].visited_at);
+                        var NewStatus = '<p> Status<br /><span class="all-caps"><strong>' + usestatus + '</strong></span><br />Last Visit<br /><strong><span>' + d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() + '</span></strong></p>';
+                        $("#ToolDiv-" + $("#toolstep").val()).addClass(status);
+                        $("#ToolDiv-" + $("#toolstep").val()).addClass("current");
+                        $("#StatusDiv" + $("#toolstep").val()).html(NewStatus);
+                        setWizardNav($("#wizardpath").val(), $("#wizardpath").val());
+                    }
+                }
+
+
+            }
+        });
+
+
+        window.open($("#toolpath").val(), "_blank", "fullscreen=yes");
+    });
+    $("#toolsnotavailable").change(function () {
+        window.open($(this).val(), "_self");
+    });
+</script>
+
+
+
+
+
+
+
+</div>
+        <div class="step-nav">
+
+
+            
+            <div class="bottom-prev pull-left" style="display: none;">
+                <a href="#" id="Prev-link" class="step-label"> </a>
+            </div>
+            
+            
+            <div class="bottom-next pull-right">
+                <a href="#" id="Next-link" class="step-label">Planning Your Research <span class="fa fa-chevron-right fa-2x"></span> </a>
+            </div>
+            
+        </div>
+    </div>
+
+    <!--
+* RCE Coach software is available through a GLPv3 open-source software license.
+* Any attribution should include the following:
+*   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+*   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+*   by the U.S. Department of Education’s Office of Educational Technology through
+*   Contract No. ED-OOS-15-C-0053.
+-->
+<!-- views/partials/footer.ejs -->
+<div class="clearfix" style="margin-top: 20px;">&nbsp;</div>
+<nav class="footer navbar-default" role="navigation">
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <h3 class="sec-label">Ed Tech RCE Coach</h3>
+                </a>
+            </div>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="col-xs-8">
+            <div class="col-xs-3">
+                <ul class="footer-list">
+                    <li>
+                        <a href="/About" class="sec-label">About</a>
+                    </li>
+                
+                    <li>
+                        <a href="/TermsOfUse" class="sec-label">Terms of Use</a>
+                    </li>
+                    <li>
+                        <a href="/PrivacyPolicy" class="sec-label">Privacy Policy</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-3">
+                <ul style="list-style:none;margin-top:20px;">
+                    <li>
+                        <a class="sec-label" onclick="window.open('/static/pdf/Glossary.pdf', ''); return false; " href="javascript:void(0);">
+                           Glossary</a>
+                    </li>
+                    <li>
+                        <a class="sec-label" onclick="window.open('/static/pdf/RCE Coach FAQs.pdf', ''); return false; " href="javascript:void(0);">
+                            FAQ
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/resources" class="sec-label">Guides and Reference Resources </a>
+                    </li>
+                </ul>
+            </div>         
+        </div>
+        <div class="clearfix">
+            <p class="text-center text-muted">© 2016 Mathematica Policy Research, Inc. </p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</nav>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //just load the first one for now, will have to determine which is the active currently for returning user with
+            //an ongoing eval
+      
+
+            var stepvisited = $("#stepvisited").val();
+            var step = $("#step").val();
+            if (!step || step === "0" || step === "") { step = 2; }  //step 1 is moved to dashboard
+
+            setWizardNav(step, stepvisited);
+
+
+            /** Load Header **/
+   
+            $.get("/tools/" + step, function (data) {
+                $(".result").html(data);
+            });
+
+
+            $('ul.wizard-menu li').click(function (e) {
+
+                var id = $(this).attr('id');
+
+                $("ul.wizard-menu li.wizard-item").removeClass("active");
+
+                setWizardNav(id, $("#stepvisited").val());
+
+                var url = "/tools/" + id;
+                $.get(url, function (data) {
+                    $(".result").html(data);
+                });
+            });
+
+            $("#Next-link").click(function (e) {
+
+                var id = $("ul.wizard-menu li.active").attr('id');
+                $("#" + id).removeClass("active");
+                var next = parseInt(id) + 1;
+
+                setWizardNav(next, $("#stepvisited").val());
+
+                var url = "/tools/" + next;
+                $.get(url, function (data) {
+                    $(".result").html(data);
+                });
+            });
+
+            $("#Prev-link").click(function (e) {
+
+                var id = $("ul.wizard-menu li.active").attr('id');
+                $("#" + id).removeClass("active");
+                var prev = parseInt(id) - 1;
+
+                setWizardNav(prev, $("#stepvisited").val());
+
+
+                var url = "/tools/" + prev;
+                $.get(url, function (data) {
+                    $(".result").html(data);
+                });
+            });
+
+            $("#getTitle").click(function (e) {
+
+                $("#evalTitle").html($("#title").val());
+                var etitle = $("#title").val();
+                var url = '/api/eval';
+                var evalid = $("#evalid").val();
+                var trialflag = $("input[name='trialflag']:checked").val();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({
+                        "id": evalid,
+                        "title": etitle,
+                        "trialflag": trialflag
+                    }),
+
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (data) {
+                        var tag = "";
+                        if (trialflag === "true") {
+                            tag = "<br/><em><i class='fa fa-exclamation-triangle'></i>&nbsp;Trial run</em>";
+                        }
+                        $('#evalTitle').html(etitle + tag + ' <button id="forTitle" class="btn btn-link" role="link" type="button" data-toggle="modal" data-target="#myModal"><em>Edit</em></button>');
+                    }
+
+                }
+                );
+            });
+
+            //init feedback_me plugin
+            var fm_options = setFeedbackOptions($("#user_email").val(), "context_and_usage");
+            fm.init(fm_options);
+
+        });
+
+
+
+
+    </script>
+
+
+<div onclick="fm.stopPropagation(event);fm.triggerAction(event,'right-top');" class="feedback_trigger feedback_trigger_closed right-top fm_bootstrap  hero-unit jumbotron "><span class="feedback_trigger_text">Feedback</span></div><div class="feedback_content feedback_content_closed right-top fm_bootstrap  hero-unit jumbotron "><div class="feedback_title "><span class=""></span></div><form class="feedback_me_form"><ul><li>	<label for="feedback_name">Name</label>  <input type="text" class="feedback_name" required="" placeholder="Name please"> </li><li>	<label for="feedback_message">Message</label>  <textarea rows="5" class="feedback_message" placeholder="Please send us your feedback on the site’s functionality and appearance"></textarea> </li><li>	<button type="submit" onclick="fm.stopPropagation(event);fm.sendFeedback(event,'right-top');" class="feedback_submit  btn btn-primary ">Send</button> </li></ul></form></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div><div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div></body></html>
