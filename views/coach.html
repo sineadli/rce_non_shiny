@@ -90,7 +90,7 @@
                     var statusstyle = eval.status == 100 ? "completed" : "";
 
                     } %>
-                    <div class="outer-status-bar"><div class="status-bar" style="width: <%= statuslength + 'px' %>;"></div></div>
+                    <div class="outer-status-bar"><div class="status-bar" style="width: '<%=statuslength%>px';"></div></div>
 
                     <p>
                         <%= status %>
@@ -125,7 +125,245 @@
         </div>
 
         <h1 id="p-title"><%= coachSteps[step-2].name %></h1>
-        <div class="result"></div>
+        <div class="result">
+            
+            <!--
+            * RCE Coach software is available through a GLPv3 open-source software license.
+            * Any attribution should include the following:
+            *   © 2016, Mathematica Policy Research, Inc. The RCE Coach software was developed by
+            *   Mathematica Policy Research, Inc. as part of the Rapid Cycle Tech Evaluations project funded
+            *   by the U.S. Department of Education’s Office of Educational Technology through
+            *   Contract No. ED-OOS-15-C-0053.
+            -->
+            <!-- views/partials/tool.html -->
+
+            <div class="row">
+                <div class="step-row">
+                    <div class="col-xs-12">
+                        <h1></h1>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="tool-row">
+
+                    <div class="col-xs-3">
+
+                        <div id="ToolDiv-0" class="tool-div NOT STARTED ">
+                            <div class="tool-title">
+
+                                <h2 class="form ">The Basics </h2>
+                                <p>Do you have what you need to get started?</p>
+                            </div>
+                            <div class="tool-bottom">
+                                <div id="StatusDiv-0" class="tool-status status">
+
+
+                                    <p>
+                                        Status<br><span class="all-caps" id="status"><strong>NOT STARTED</strong></span><br>
+
+                                    </p>
+
+
+                                </div>
+                                <div class="tool-view-btn">
+
+
+
+                                    <a href="/basics" class="tool-view-button btn btn-primary btn-lg ">START</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input class="hidden" id="toolname" value="The Basics">
+                        <input class="hidden" id="toolpath" value="/basics">
+                        <input class="hidden" id="toolstep" value="">
+                        <input class="hidden" id="wizardpath" value="">
+                    </div>
+
+                    <div class="col-xs-3">
+
+                        <div id="ToolDiv-1" class="tool-div NOT STARTED ">
+                            <div class="tool-title">
+
+                                <h2 class="form locked">Outcome and Measure </h2>
+                                <p>Define Your Outcome and Measure</p>
+                            </div>
+                            <div class="tool-bottom">
+                                <div id="StatusDiv-1" class="tool-status status">
+
+                                    <p>
+                                        Status<br><span class="all-caps" id="status"><strong>NOT AVAILABLE</strong></span><br>
+
+                                        <span data-toggle="tooltip" title="You need to complete “The Basics” before you can use this tool." class="tooltip-gr">
+                                            <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                        </span>
+                                    </p>
+
+
+                                </div>
+                                <div class="tool-view-btn">
+
+
+
+                                    <a href="/outcome_measure?peeking=1" class="tool-view-button btn btn-primary btn-lg peeking">PEEK</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input class="hidden" id="toolname" value="Outcome and Measure">
+                        <input class="hidden" id="toolpath" value="/outcome_measure">
+                        <input class="hidden" id="toolstep" value="">
+                        <input class="hidden" id="wizardpath" value="">
+                    </div>
+
+                    <div class="col-xs-3">
+
+                        <div id="ToolDiv-2" class="tool-div NOT STARTED ">
+                            <div class="tool-title">
+
+                                <h2 class="guide ">Find an Instrument to Measure Your Outcome </h2>
+                                <p>Find an Instrument to Measure Your Outcome</p>
+                            </div>
+                            <div class="tool-bottom">
+                                <div id="StatusDiv-2" class="tool-status status">
+
+
+                                    <p>
+                                        Status<br><span class="all-caps" id="status"><strong>NOT STARTED</strong></span><br>
+
+                                    </p>
+
+
+                                </div>
+                                <div class="tool-view-btn">
+
+
+
+                                    <!--<button type="button" id="viewpdf" class="btn btn-primary btn-lg" >VIEW</button>-->
+                                    <a href="/measure_instrument" class="tool-view-button btn btn-primary btn-lg">VIEW</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input class="hidden" id="toolname" value="Find an Instrument to Measure Your Outcome">
+                        <input class="hidden" id="toolpath" value="/measure_instrument">
+                        <input class="hidden" id="toolstep" value="">
+                        <input class="hidden" id="wizardpath" value="">
+                    </div>
+
+                    <div class="col-xs-3">
+
+                        <div id="ToolDiv-3" class="tool-div NOT STARTED ">
+                            <div class="tool-title">
+
+                                <h2 class="form locked">Determine Your Approach </h2>
+                                <p>Discover the most appropriate design to evaluate your technology.</p>
+                            </div>
+                            <div class="tool-bottom">
+                                <div id="StatusDiv-3" class="tool-status status">
+
+                                    <p>
+                                        Status<br><span class="all-caps" id="status"><strong>NOT AVAILABLE</strong></span><br>
+
+                                        <span data-toggle="tooltip" title="You need to complete “The Basics” before you can use this tool." class="tooltip-gr">
+                                            <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                        </span>
+                                    </p>
+
+
+                                </div>
+                                <div class="tool-view-btn">
+
+
+
+                                    <a href="/determine_your_approach?peeking=1" class="tool-view-button btn btn-primary btn-lg peeking">PEEK</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input class="hidden" id="toolname" value="Determine Your Approach">
+                        <input class="hidden" id="toolpath" value="/determine_your_approach">
+                        <input class="hidden" id="toolstep" value="">
+                        <input class="hidden" id="wizardpath" value="">
+                    </div>
+
+
+
+
+                    <div style="clear: both; line-height: 0">&nbsp;</div>
+
+                </div>
+            </div>
+            
+            <script>
+                $(document).ready(function() {
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+                $("#viewpdf").click(function (e) {
+
+                    var name = $("#toolname").val();
+                    var step = $("#wizardpath").val();
+                    var path = $("#toolpath").val();
+                    var currentStatus = $("#status").text();
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "../pdf_view",
+                        data: JSON.stringify({
+                            "tname": name,
+                            "step": step
+                        }),
+
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (eval, status, xhr) {
+
+                            if (eval.toolsvisited) {
+                                tool = eval.toolsvisited.filter(function (x) { return x.name === $("#toolname").val() });
+                                if (tool.length > 0) {
+
+                                    status = tool[0].status;
+                                    var usestatus = "";
+                                    if (status.toLowerCase() === "completed") {
+                                        usestatus = "Viewed";
+                                    }
+                                    d = new Date(tool[0].visited_at);
+                                    var NewStatus = '<p> Status<br /><span class="all-caps"><strong>' + usestatus + '</strong></span><br />Last Visit<br /><strong><span>' + d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() + '</span></strong></p>';
+                                    $("#ToolDiv-" + $("#toolstep").val()).addClass(status);
+                                    $("#ToolDiv-" + $("#toolstep").val()).addClass("current");
+                                    $("#StatusDiv" + $("#toolstep").val()).html(NewStatus);
+                                    setWizardNav($("#wizardpath").val(), $("#wizardpath").val());
+                                }
+                            }
+
+
+                        }
+                    });
+
+
+                    window.open($("#toolpath").val(), "_blank", "fullscreen=yes");
+                });
+                $("#toolsnotavailable").change(function () {
+                    window.open($(this).val(), "_self");
+                });
+            </script>
+            
+        </div>
         <div class="step-nav">
 
 
